@@ -626,7 +626,6 @@
             this.dgvEndpoints.Size = new System.Drawing.Size(631, 129);
             this.dgvEndpoints.StandardTab = true;
             this.dgvEndpoints.TabIndex = 15;
-            this.dgvEndpoints.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEndpoints_CellEnter);
             this.dgvEndpoints.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.dgvEndpoints_CellParsing);
             this.dgvEndpoints.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEndpoints_CellValueChanged);
             this.dgvEndpoints.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvEndpoints_DataError);

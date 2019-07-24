@@ -11,40 +11,36 @@ namespace iba.Data
     {
         public OpcUaData()
         {
-            ResetToDefaults();
         }
 
         public bool Enabled { get; set; }
-        
+
 
         #region Connection settings
 
-        // todo. kls. move
+        [Serializable]
         public struct OpcUaEndPoint
         {
-            private OpcUaEndPoint(int port)
+            public OpcUaEndPoint(int port)
             {
-                Address = IPAddress.None;
-                Hostname = null;
+                Hostname = IPAddress.None.ToString();
                 Port = port;
             }
             public OpcUaEndPoint(string hostname, int port) : this(port)
             {
                 Hostname = hostname;
             }
-            public OpcUaEndPoint(IPAddress address, int port) : this(port)
+            public OpcUaEndPoint(IPAddress address, int port) : this(address.ToString(), port)
             {
-                Address = address;
             }
 
-            public readonly int Port;
-            /// <summary> Set <see cref="Hostname"/> to null if you want to use <see cref="Address"/>. </summary>
-            public readonly IPAddress Address;
+            public int Port;
+
             /// <summary> If <see cref="Hostname"/> is not null or whitespace, then <see cref="Address"/> is ignored. </summary>
-            public readonly string Hostname;
-            public string AddressOrHostName => string.IsNullOrWhiteSpace(Hostname) ? Address?.ToString() : Hostname;
+            public string Hostname;
+
             public string Uri => GetUriStringForEndpoint(this);
-            public static string GetUriStringForEndpoint(OpcUaEndPoint ep) => GetUriStringForEndpoint(ep.AddressOrHostName, ep.Port);
+            public static string GetUriStringForEndpoint(OpcUaEndPoint ep) => GetUriStringForEndpoint(ep.Hostname, ep.Port);
             public static string GetUriStringForEndpoint(string addressOrHostName, int port) => $@"opc.tcp://{addressOrHostName}:{port}";
             public override string ToString()
             {
@@ -59,6 +55,7 @@ namespace iba.Data
             SignEncrypt,
             SignSignEncrypt,
         };
+
         public string UserName { get; set; } = "Anonymous";
 
         public string Password { get; set; } = "";
@@ -75,7 +72,7 @@ namespace iba.Data
         public static string DefaultHostname = "localhost";
         public static OpcUaEndPoint DefaultEndPoint => new OpcUaEndPoint(DefaultHostname, DefaultPort);
 
-        public List<OpcUaEndPoint> Endpoints = new List<OpcUaEndPoint>(); // todo. kls. readonly
+        public List<OpcUaEndPoint> Endpoints = new List<OpcUaEndPoint>();
 
 
         #endregion
@@ -88,11 +85,15 @@ namespace iba.Data
             return newObj;
         }
 
-        public void ResetToDefaults()
+        public static OpcUaData DefaultData
         {
-            Enabled = false; // todo. kls. 
-            Endpoints.Clear();
-            Endpoints.Add(DefaultEndPoint);
+            get
+            {
+                if (!((new OpcUaData()).Clone() is OpcUaData data))
+                    return null;
+                data.Endpoints = new List<OpcUaEndPoint> { DefaultEndPoint };
+                return data;
+            }
         }
 
         public override bool Equals(object obj)
@@ -113,7 +114,7 @@ namespace iba.Data
                 this.HasUserCertificate == other.HasUserCertificate &&
                 this.SecurityBasic128Level == other.SecurityBasic128Level &&
                 this.SecurityBasic256Level == other.SecurityBasic256Level &&
-                Endpoints.SequenceEqual(other.Endpoints); // todo. kls. 
+                Endpoints.SequenceEqual(other.Endpoints); 
         }
 
         public override int GetHashCode()
@@ -125,13 +126,9 @@ namespace iba.Data
 
         public override string ToString()
         {
-            string epString = "";
-            if (Endpoints.Count == 0)
-                epString = "None";
-            else if (Endpoints.Count == 1)
-                epString = Endpoints[0].Uri;
+            var epString = Endpoints?.Count == 1 ? Endpoints[0].Uri : $"{Endpoints?.Count}";
 
-            return $"({Enabled}, EP:[{epString}]";
+            return $"{Enabled}, EP:[{epString}]";
         }
     }
 }

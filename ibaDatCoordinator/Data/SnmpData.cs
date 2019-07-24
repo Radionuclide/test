@@ -26,8 +26,8 @@ namespace iba.Data
 
         public object Clone()
         {
-            object newobj = MemberwiseClone();
-            return newobj;
+            var newObj = MemberwiseClone();
+            return newObj;
         }
 
         public void ResetToDefaults()

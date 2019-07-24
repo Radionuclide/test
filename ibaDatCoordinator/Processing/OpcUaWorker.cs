@@ -20,6 +20,7 @@ namespace iba.Processing
         {
             Status = ExtMonWorkerStatus.Errored;
             StatusString = Resources.opcUaStatusNotInit;
+            _opcUaData = OpcUaData.DefaultData;
         }
 
         public void Dispose()
@@ -42,7 +43,9 @@ namespace iba.Processing
                 _uaApplication.ApplicationType = ApplicationType.Server;
                 _uaApplication.ConfigSectionName = $"iba_ag.ibaDatCoordinatorUaServer";
 
-                // create ua server
+                // ensure we have at least one endpoint
+                if (_opcUaData.Endpoints.Count == 0)
+                    _opcUaData.Endpoints.Add(OpcUaData.DefaultEndPoint);
 
                 // load the application configuration.
                 _uaApplication.LoadApplicationConfiguration(false); // todo. kls. is done automatically on start (try to defer)
@@ -131,7 +134,7 @@ namespace iba.Processing
         /// <summary> A quick reference to <see cref="IbaOpcUaServer"/>.<see cref="IbaUaNodeManager"/> </summary>
         private IbaUaNodeManager NodeManager => IbaOpcUaServer?.IbaUaNodeManager;
 
-        private OpcUaData _opcUaData = new OpcUaData();
+        private OpcUaData _opcUaData;
         public OpcUaData OpcUaData
         {
             get => _opcUaData;
@@ -258,12 +261,6 @@ namespace iba.Processing
             Debug.Assert(OpcUaData != null);
 
             _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-
-            // todo. kls. remove tst
-            if (_opcUaData.Endpoints.Count > 1)
-                _opcUaData.Endpoints.RemoveAt(1);
-            if (_opcUaData.Endpoints.Count > 1)
-                _opcUaData.Endpoints.RemoveAt(1);
 
             foreach (var ep in _opcUaData.Endpoints)
                 _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);

@@ -90,9 +90,6 @@ namespace iba.Controls
                 // read from data to controls
                 ConfigurationFromDataToControls();
 
-                //// force rebuild worker's tree to ensure we have most recent information
-                // /*this is unnecessary*/ TaskManager.Manager.OpcUaRebuildObjectTree();
-
                 // rebuild gui-tree
                 RebuildObjectsTree(); 
 
@@ -105,7 +102,7 @@ namespace iba.Controls
             }
             catch (Exception ex)
             {
-                LogData.Data.Logger.Log(Level.Exception, @"OpcUaControl.LoadData() exception: " + ex.Message);
+                LogData.Data.Logger.Log(Level.Exception, $@"{nameof(OpcUaControl)}.{nameof(LoadData)}: " + ex.Message);
             }
         }
 
@@ -119,7 +116,7 @@ namespace iba.Controls
             }
             catch (Exception ex)
             {
-                LogData.Data.Logger.Log(Level.Exception, @"OpcUaControl.SaveData() exception: " + ex.Message);
+                LogData.Data.Logger.Log(Level.Exception, $@"{nameof(OpcUaControl)}.{nameof(SaveData)}: " + ex.Message);
             }
         }
 
@@ -143,9 +140,6 @@ namespace iba.Controls
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
-                // rebuild the tree because probably textual conventions were changed
-                //TaskManager.Manager.SnmpRebuildObjectTree();// todo. kls. 
-
                 // rebuild GUI tree
                 RebuildObjectsTree();
             }
@@ -158,7 +152,7 @@ namespace iba.Controls
 
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(this,
+                if (MessageBox.Show(this,
                     Resources.snmpQuestionReset, /*snmp string here is ok for opc ua also*/
                     Resources.snmpQuestionResetTitle, /*snmp string here is ok for opc ua also*/
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
@@ -168,16 +162,13 @@ namespace iba.Controls
 
             // copy default data to current data except enabled/disabled
             bool bOriginalEnabledState = _data.Enabled;
-            _data = (new OpcUaData()).Clone() as OpcUaData;
-            Debug.Assert(_data != null);
-            if (_data == null)
-                return;
+            _data = OpcUaData.DefaultData;
             _data.Enabled = bOriginalEnabledState;
 
             try
             {
                 ConfigurationFromDataToControls();
-                // set data to manager and restart snmp agent if necessary
+                // set data to manager and restart UA server if necessary
                 TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
                 // rebuild GUI tree
@@ -245,8 +236,7 @@ namespace iba.Controls
             if (_data.Endpoints != null)
             {
                 foreach (var ep in _data.Endpoints)
-                    //dgvEndpoints.Rows.Add("a",1,"bb");
-                                    dgvEndpoints.Rows.Add(EndpointToRow(ep));
+                    dgvEndpoints.Rows.Add(EndpointToRow(ep));
             }
 
             // show/hide elements
@@ -295,6 +285,7 @@ namespace iba.Controls
             comboBoxSecurity256.Enabled = cbSecurity256.Checked;
         }
 
+       
         #region Endpoints
 
         // todo. kls. delete
@@ -328,40 +319,10 @@ namespace iba.Controls
             dgvEndpoints.Rows.Add(dep.Hostname, dep.Port, dep.Uri);
         }
 
-        // todo. kls. 
-        private void RefreshEndpoints()
-        {
-            try
-            {
-                dgvEndpoints.Rows.Clear();
-                if (_data.Endpoints == null)
-                    return;
-                foreach (var ep in _data.Endpoints)
-                {
-                    dgvClients.Rows.Add(ep.AddressOrHostName, ep.Port, ep.Uri);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshClientsTable)}. {ex.Message}");
-            }
-        }
-
-        private void dgvEndpoints_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            if (!(sender is DataGridView view))
-                return;
-            DataGridViewRow row = view.Rows[e.RowIndex];
-            DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
-
-            //cell.
-        }
-
         private void dgvEndpoints_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
         {
             if (!(sender is DataGridView view))
                 return;
-            DataGridViewRow row = view.Rows[e.RowIndex];
             DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
             string val = cell.EditedFormattedValue as string;
@@ -374,7 +335,6 @@ namespace iba.Controls
 
                     break;
                 case 1: // port
-                    //var x = cell.EditedFormattedValue;
                     if (int.TryParse(val, out int intVal))
                     {
                         if (intVal < 0) intVal = 0;
@@ -392,7 +352,6 @@ namespace iba.Controls
         {
             try
             {
-                // todo. kls. reuse cell parsing
                 string hostVal = row.Cells[0].Value as string;
                 int port = (int)row.Cells[1].Value;
 
@@ -413,7 +372,7 @@ namespace iba.Controls
 
         private static object[] EndpointToRow(OpcUaData.OpcUaEndPoint ep)
         {
-            return new object[] { ep.AddressOrHostName, ep.Port, ep.Uri };
+            return new object[] { ep.Hostname, ep.Port, ep.Uri };
         }
 
         private void UpdateRowUri(DataGridViewRow row)
@@ -447,21 +406,43 @@ namespace iba.Controls
             UpdateRowUri(row);
         }
 
-        private void buttonEndpointCopy_Click(object sender, EventArgs e)
+        /// <summary> Gets a list of selected cells,
+        /// including the case when no entire string is selected but only one cell </summary>
+        /// <returns></returns>
+        private List<DataGridViewRow> GetSelectedRowsIncludingSingleCell()
         {
-            if (dgvEndpoints.SelectedRows.Count < 1)
+            List<DataGridViewRow> rows = new List<DataGridViewRow>();
+
+            if (dgvEndpoints.RowCount < 1)
             {
-                // todo. kls. handle single cell selection
-                DataGridViewSelectedCellCollection sc = dgvEndpoints.SelectedCells;
-                if (sc.Count != 1)
-                    return;
-                dgvEndpoints.SelectedRows.Insert(0, dgvEndpoints.Rows[sc[0].RowIndex]);
+                // table is empty, nothing to copy
+                return rows;
             }
 
-            for (int i = dgvEndpoints.SelectedRows.Count - 1; i >= 0; i--)
+            if (dgvEndpoints.SelectedRows.Count < 1)
             {
-                DataGridViewRow row = dgvEndpoints.SelectedRows[i];
+                // no rows selected, but probably at least one cell is selected
+                DataGridViewSelectedCellCollection sc = dgvEndpoints.SelectedCells;
 
+                int rowToProcess = sc.Count > 0
+                    ? sc[0].RowIndex /*process the cell's row*/
+                    : dgvEndpoints.RowCount - 1 /*process last row*/;
+
+                rows.Add(dgvEndpoints.Rows[rowToProcess]);
+            }
+            else
+            {
+                for (int i = dgvEndpoints.SelectedRows.Count - 1; i >= 0; i--)
+                    rows.Add(dgvEndpoints.SelectedRows[i]);
+            }
+            return rows;
+        }
+
+        private void buttonEndpointCopy_Click(object sender, EventArgs e)
+        {
+            // copy selected rows
+            foreach (var row in GetSelectedRowsIncludingSingleCell())
+            {
                 OpcUaData.OpcUaEndPoint ep = RowToEndpoint(row);
                 dgvEndpoints.Rows.Add(EndpointToRow(ep));
             }
@@ -469,15 +450,9 @@ namespace iba.Controls
 
         private void buttonEndpointDelete_Click(object sender, EventArgs e)
         {
-            if (dgvEndpoints.SelectedRows.Count < 1)
+            // delete selected rows
+            foreach (var row in GetSelectedRowsIncludingSingleCell())
             {
-                // todo. kls. handle single cell selection
-                return;
-            }
-
-            for (int i = dgvEndpoints.SelectedRows.Count - 1; i >= 0; i--)
-            {
-                DataGridViewRow row = dgvEndpoints.SelectedRows[i];
                 dgvEndpoints.Rows.Remove(row);
             }
         }
@@ -718,6 +693,8 @@ namespace iba.Controls
             Debug.Assert(_data != null);
             if (_data == null)
                 return;
+
+            _data.Enabled = true;
 
             _data.UserName = "Anonymous2";
             _data.Password = "123456";
