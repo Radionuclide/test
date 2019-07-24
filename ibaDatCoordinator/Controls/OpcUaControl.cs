@@ -465,6 +465,8 @@ namespace iba.Controls
 
         #region Diagnostics
 
+        private List<IbaOpcUaDiagClient> _diagClients;
+
         private void RefreshBriefStatus()
         {
             try
@@ -485,28 +487,94 @@ namespace iba.Controls
         {
             try
             {
-                // clear list
-                dgvClients.Rows.Clear();
+                // clear diagnostics
+                dgvSubscriptions.Rows.Clear();
+                tbDiagTmp.Text = "";
 
                 // show new data
-                //List<IbaSnmpDiagClient> clients = TaskManager.Manager.SnmpGetClients();
+                var diag = TaskManager.Manager.OpcUaGetDiagnostics();
+                _diagClients = diag.Item1;
+                var diagStr = diag.Item2;
 
-                //// can happen when suddenly disconnected
-                //if (clients == null)
-                //{
-                //    return;
-                //}
+                // can happen when suddenly disconnected
+                if (_diagClients == null)
+                {
+                    dgvClients.Rows.Clear();
+                    return;
+                }
 
-                //foreach (var client in clients)
-                //{
-                //    dgvClients.Rows.Add(client.Address, client.Version, client.MessageCount, client.LastMessageReceived);
-                //}
+                // todo. kls. remove tmp
+                tbDiagTmp.Text = diagStr;
+
+                // update rows
+                dgvClients.RowCount = _diagClients.Count;
+                for (var index = 0; index < _diagClients.Count; index++)
+                {
+                    UpdateClientRow(index, _diagClients[index]);
+                }
+
+                RefreshSubscriptionsTable();
             }
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshClientsTable)}. {ex.Message}");
             }
         }
+
+        private void UpdateClientRow(int index, IbaOpcUaDiagClient client)
+        {
+            var cells = dgvClients.Rows[index].Cells;
+            cells[0].Value = client.Name;
+            cells[1].Value = client.Id;
+            cells[2].Value = client.LastMessageTime;
+        }
+
+        private void dgvClients_SelectionChanged(object sender, EventArgs e)
+        {
+            RefreshSubscriptionsTable();
+        }
+
+        private void RefreshSubscriptionsTable()
+        {
+            // clear list
+            dgvSubscriptions.Rows.Clear();
+
+            if (_diagClients == null || dgvClients.RowCount == 0)
+                return;
+
+            // show for selected or first row
+            DataGridViewRow row = dgvClients.SelectedRows.Count == 0 ? dgvClients.Rows[0] : dgvClients.SelectedRows[0];
+
+            // get id
+            if (!(row.Cells[1].Value is string idStr))
+                return;
+
+            foreach (var client in _diagClients)
+            {
+                if (client.Id != idStr)
+                    continue;
+                RefreshSubscriptionsTable(client);
+                return;
+            }
+        }
+
+        private void RefreshSubscriptionsTable(IbaOpcUaDiagClient client)
+        {
+            // clear list
+            dgvSubscriptions.Rows.Clear();
+
+            // can happen when suddenly disconnected
+            if (client?.Subscriptions == null)
+            {
+                return;
+            }
+
+            foreach (var sub in client.Subscriptions)
+            {
+                dgvSubscriptions.Rows.Add(sub.Id, sub.MonitoredItemCount, sub.PublishingInterval, sub.NextSequenceNumber);
+            }
+        }
+
 
         private void timerRefreshStatus_Tick(object sender, EventArgs e)
         {
@@ -530,25 +598,7 @@ namespace iba.Controls
         private static bool IsConnectedOrLocal =>
             Program.RunsWithService == Program.ServiceEnum.NOSERVICE ||
             Program.RunsWithService == Program.ServiceEnum.CONNECTED;
-
-
-        // todo. kls. delete?
-        private void buttonClearClients_Click(object sender, EventArgs e)
-        {
-            // reset monitoring counters in ibaSnmp
-            try
-            {
-                //TaskManager.Manager.OpcUaClearClients();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(buttonClearClients_Click)}. {ex.Message}");
-            }
-
-            // refresh it in GUI
-            RefreshClientsTable();
-        }
-
+        
         #endregion
 
 
@@ -711,10 +761,6 @@ namespace iba.Controls
             ConfigurationFromDataToControls();
 
             buttonCopyToClipboard_Click(null,null);
-            
-            //// set data to manager and restart snmp agent if necessary
-            //TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
-
         }
 
         // todo. kls. delete
@@ -726,7 +772,7 @@ namespace iba.Controls
         // todo. kls. delete
         private void buttonRefreshGuiTree_Click(object sender, EventArgs e)
         {
-            this.RebuildObjectsTree();
+            RebuildObjectsTree();
         }
     }
 }

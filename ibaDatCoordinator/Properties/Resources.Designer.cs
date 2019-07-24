@@ -2710,7 +2710,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OPC UA server is not initialized..
+        ///   Looks up a localized string similar to OPC UA server is not initialized.
         /// </summary>
         internal static string opcUaStatusNotInit {
             get {
@@ -2719,11 +2719,11 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OPC UA server running on port {0}.
+        ///   Looks up a localized string similar to OPC UA server running.
         /// </summary>
-        internal static string opcUaStatusRunningOnPort {
+        internal static string opcUaStatusRunning {
             get {
-                return ResourceManager.GetString("opcUaStatusRunningOnPort", resourceCulture);
+                return ResourceManager.GetString("opcUaStatusRunning", resourceCulture);
             }
         }
         

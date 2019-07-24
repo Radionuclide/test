@@ -109,19 +109,6 @@ namespace iba.Processing
         }
 
 
-        public string Tst__GetInternalEndpoints()
-        {
-            string str = "";
-            foreach (string adr in _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses)
-            {
-                str += adr + "; ";
-            }
-
-            return str.Trim(' ', ';');
-
-            //_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-        }
-
         #endregion
 
 
@@ -185,7 +172,7 @@ namespace iba.Processing
 
             // finally, set status
             Status = ExtMonWorkerStatus.Started;
-            StatusString = String.Format(Resources.opcUaStatusRunningOnPort, _opcUaData.Endpoints[0]); // todo simplify strings???
+            StatusString = Resources.opcUaStatusRunning;
         }
 
         private void StopServer()
@@ -261,6 +248,12 @@ namespace iba.Processing
             Debug.Assert(OpcUaData != null);
 
             _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
+
+            // todo. kls. remove tst
+            //if (_opcUaData.Endpoints.Count > 1)
+            //    _opcUaData.Endpoints.RemoveAt(1);
+            //if (_opcUaData.Endpoints.Count > 1)
+            //    _opcUaData.Endpoints.RemoveAt(1);
 
             foreach (var ep in _opcUaData.Endpoints)
                 _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
@@ -513,7 +506,15 @@ namespace iba.Processing
         {
             if (xmv?.UaVar == null)
                 return;
-            NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
+
+            if (xmv.UaVar.IsDeleted)
+            {
+                NodeManager.SetNullValueAndMarkAsDeleted(xmv.UaVar);
+            }
+            else
+            {
+                NodeManager.SetValueScalar(xmv.UaVar, xmv.ObjValue);
+            }
         }
 
         #endregion
@@ -674,10 +675,6 @@ namespace iba.Processing
                 {
                     var monitoredNodes = NodeManager.GetMonitoredNodes();
 
-                    // todo. kls. remove tmp
-                    string tmp___Nodes = "";
-                    string tmp___Groups = "";
-
                     // prepare a set of groups to be refreshed
                     var groups = new HashSet<ExtMonData.ExtMonGroup>();
                     foreach (var kvp in monitoredNodes)
@@ -686,29 +683,20 @@ namespace iba.Processing
                         if (node is IbaOpcUaVariable iv && !iv.IsDeleted && iv.ExtMonVar?.Group != null)
                         {
                             groups.Add(iv.ExtMonVar.Group);
-                            tmp___Nodes += $@"{iv.ExtMonVar.Caption}, ";
                         }
                     }
 
-                    // todo rebuild monitoring groups only in On MonitoredItem add/remove handler
+                    // todo. kls. rebuild monitoring groups only in On MonitoredItem add/remove handler
                     // refresh all groups that have monitored items
                     foreach (var group in groups)
                     {
                         RefreshGroup(group);
-                        tmp___Groups += $@"{group.Caption}, ";
                     }
-
-                    tmp___Groups = tmp___Groups.TrimEnd(' ', ',');
-                    tmp___Nodes = tmp___Nodes.TrimEnd(' ', ',');
-                    // todo. kls. remove override
-                    StatusString = $@"Monitored {monitoredNodes.Count}: {{ I=[{tmp___Nodes}] G=[{tmp___Groups}] }}";
                 }
                 catch
                 {
-                    // todo. kls. 
+                    /*should not happen*/
                     Debug.Assert(false);
-                    ;
-                    /**/
                 }
                 finally
                 {
@@ -852,5 +840,61 @@ namespace iba.Processing
 
         #endregion
 
+        #region Diagnostics
+
+        public List<IbaOpcUaDiagClient> GetClients() => 
+            Status == ExtMonWorkerStatus.Started ? IbaOpcUaServer.GetClients() : null;
+        
+        public string GetDiagnosticString()
+        {
+            try
+            {
+                if (!OpcUaData.Enabled || NodeManager == null)
+                    return null;
+
+                string strEndpoints = "";
+                foreach (string adr in _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses)
+                {
+                    strEndpoints += adr + ", ";
+                }
+                strEndpoints = strEndpoints.Trim(' ', ',');
+
+
+                var monitoredNodes = NodeManager.GetMonitoredNodes();
+
+                string strMonNodes = "";
+                string strMonGroups = "";
+
+                var groups = new HashSet<ExtMonData.ExtMonGroup>(); // todo. kls. reuse groups field
+                foreach (var kvp in monitoredNodes)
+                {
+                    NodeState node = kvp.Value.Node;
+                    if (node is IbaOpcUaVariable iv && !iv.IsDeleted && iv.ExtMonVar?.Group != null)
+                    {
+                        groups.Add(iv.ExtMonVar.Group);
+                        strMonNodes += $@"{iv.ExtMonVar.Caption}, ";
+                    }
+                }
+
+                foreach (var group in groups)
+                {
+                    strMonGroups += $@"{group.Caption}, ";
+                }
+
+                strMonNodes = strMonNodes.TrimEnd(' ', ',');
+                strMonGroups = strMonGroups.TrimEnd(' ', ',');
+
+                return
+                    $"Endpoints: {strEndpoints}\r\nMonitoredGroups: {strMonGroups}\r\nMonitoredNodes: {strMonNodes}";
+            }
+            catch
+            {
+                /*getting diagnostic string is not critical*/
+                Debug.Assert(false);
+            }
+            return null;
+        }
+
+        #endregion
     }
 }

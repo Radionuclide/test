@@ -293,7 +293,6 @@ namespace iba.ibaOPCServer
             return _typeDict.TryGetValue(value.GetType(), out BuiltInType uaType) ? uaType : BuiltInType.Null;
         }
 
-
         /// <summary> Sets value, sets StatusCodes.Good, calls state-change handlers </summary>
         public void SetValueScalar(BaseDataVariableState varState, object value)
         {
@@ -310,7 +309,19 @@ namespace iba.ibaOPCServer
             // call state-change handlers
             varState.ClearChangeMasks(SystemContext, false);
         }
-        
+
+        public void SetNullValueAndMarkAsDeleted(BaseDataVariableState varState)
+        {
+            // set value
+            varState.Value = null;
+
+            // on success set status code
+            varState.StatusCode = StatusCodes.BadObjectDeleted;
+
+            // call state-change handlers
+            varState.ClearChangeMasks(SystemContext, false);
+        }
+
         /// <summary> Checks if a node with a given node ID not yet exists in a current namespace</summary>
         /// <param name="fullNodeId">For example, "Root.MyFolder.Var1"</param>
         private bool IsNodeIdUnique(string fullNodeId) => Find(fullNodeId) == null;

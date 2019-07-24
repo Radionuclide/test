@@ -31,14 +31,17 @@
             this.components = new System.ComponentModel.Container();
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
+            this.tbDiagTmp = new System.Windows.Forms.TextBox();
+            this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
+            this.colSubscrId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSubscrMonitoredItemsCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSubscrPublishingInterval = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSubscrNextSeq = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvClients = new System.Windows.Forms.DataGridView();
-            this.ColAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColProtocol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColMsgCounter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbStatus = new System.Windows.Forms.TextBox();
-            this.buttonClearClients = new System.Windows.Forms.Button();
+            this.buttonOpenLogFile = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.gbObjects = new iba.Utility.CollapsibleGroupBox();
             this.panelFooter = new System.Windows.Forms.Panel();
@@ -82,7 +85,11 @@
             this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
+            this.ColName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gbDiagnostics.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
             this.gbObjects.SuspendLayout();
             this.panelFooter.SuspendLayout();
@@ -110,75 +117,112 @@
             // 
             this.gbDiagnostics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbDiagnostics.Controls.Add(this.tbDiagTmp);
+            this.gbDiagnostics.Controls.Add(this.dgvSubscriptions);
             this.gbDiagnostics.Controls.Add(this.dgvClients);
             this.gbDiagnostics.Controls.Add(this.tbStatus);
-            this.gbDiagnostics.Controls.Add(this.buttonClearClients);
+            this.gbDiagnostics.Controls.Add(this.buttonOpenLogFile);
             this.gbDiagnostics.Controls.Add(this.label14);
+            this.gbDiagnostics.Controls.Add(this.label1);
             this.gbDiagnostics.Controls.Add(this.label15);
             this.gbDiagnostics.Location = new System.Drawing.Point(15, 754);
             this.gbDiagnostics.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Padding = new System.Windows.Forms.Padding(15, 3, 15, 3);
-            this.gbDiagnostics.Size = new System.Drawing.Size(690, 164);
+            this.gbDiagnostics.Size = new System.Drawing.Size(690, 338);
             this.gbDiagnostics.TabIndex = 4;
             this.gbDiagnostics.TabStop = false;
             this.gbDiagnostics.Text = "Diagnostics";
+            // 
+            // tbDiagTmp
+            // 
+            this.tbDiagTmp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDiagTmp.BackColor = System.Drawing.Color.MistyRose;
+            this.tbDiagTmp.Location = new System.Drawing.Point(18, 257);
+            this.tbDiagTmp.Multiline = true;
+            this.tbDiagTmp.Name = "tbDiagTmp";
+            this.tbDiagTmp.ReadOnly = true;
+            this.tbDiagTmp.Size = new System.Drawing.Size(654, 72);
+            this.tbDiagTmp.TabIndex = 4;
+            // 
+            // dgvSubscriptions
+            // 
+            this.dgvSubscriptions.AllowUserToAddRows = false;
+            this.dgvSubscriptions.AllowUserToDeleteRows = false;
+            this.dgvSubscriptions.AllowUserToResizeRows = false;
+            this.dgvSubscriptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSubscriptions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSubscriptions.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colSubscrId,
+            this.colSubscrMonitoredItemsCount,
+            this.colSubscrPublishingInterval,
+            this.colSubscrNextSeq});
+            this.dgvSubscriptions.Location = new System.Drawing.Point(18, 182);
+            this.dgvSubscriptions.Name = "dgvSubscriptions";
+            this.dgvSubscriptions.ReadOnly = true;
+            this.dgvSubscriptions.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
+            this.dgvSubscriptions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgvSubscriptions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSubscriptions.Size = new System.Drawing.Size(654, 69);
+            this.dgvSubscriptions.StandardTab = true;
+            this.dgvSubscriptions.TabIndex = 3;
+            // 
+            // colSubscrId
+            // 
+            this.colSubscrId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colSubscrId.HeaderText = "ID";
+            this.colSubscrId.MinimumWidth = 50;
+            this.colSubscrId.Name = "colSubscrId";
+            this.colSubscrId.ReadOnly = true;
+            // 
+            // colSubscrMonitoredItemsCount
+            // 
+            this.colSubscrMonitoredItemsCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colSubscrMonitoredItemsCount.HeaderText = "Monitored items count";
+            this.colSubscrMonitoredItemsCount.MinimumWidth = 50;
+            this.colSubscrMonitoredItemsCount.Name = "colSubscrMonitoredItemsCount";
+            this.colSubscrMonitoredItemsCount.ReadOnly = true;
+            // 
+            // colSubscrPublishingInterval
+            // 
+            this.colSubscrPublishingInterval.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colSubscrPublishingInterval.HeaderText = "Publishing interval";
+            this.colSubscrPublishingInterval.MinimumWidth = 50;
+            this.colSubscrPublishingInterval.Name = "colSubscrPublishingInterval";
+            this.colSubscrPublishingInterval.ReadOnly = true;
+            // 
+            // colSubscrNextSeq
+            // 
+            this.colSubscrNextSeq.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colSubscrNextSeq.HeaderText = "Next sequence number";
+            this.colSubscrNextSeq.MinimumWidth = 50;
+            this.colSubscrNextSeq.Name = "colSubscrNextSeq";
+            this.colSubscrNextSeq.ReadOnly = true;
             // 
             // dgvClients
             // 
             this.dgvClients.AllowUserToAddRows = false;
             this.dgvClients.AllowUserToDeleteRows = false;
             this.dgvClients.AllowUserToResizeRows = false;
-            this.dgvClients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvClients.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColAddress,
-            this.ColProtocol,
-            this.ColMsgCounter,
+            this.ColName,
+            this.ColId,
             this.ColLastMsg});
-            this.dgvClients.Location = new System.Drawing.Point(18, 74);
+            this.dgvClients.Location = new System.Drawing.Point(18, 58);
             this.dgvClients.Name = "dgvClients";
             this.dgvClients.ReadOnly = true;
             this.dgvClients.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
             this.dgvClients.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvClients.Size = new System.Drawing.Size(654, 84);
+            this.dgvClients.Size = new System.Drawing.Size(654, 105);
             this.dgvClients.StandardTab = true;
             this.dgvClients.TabIndex = 1;
-            // 
-            // ColAddress
-            // 
-            this.ColAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColAddress.HeaderText = "Address";
-            this.ColAddress.MinimumWidth = 50;
-            this.ColAddress.Name = "ColAddress";
-            this.ColAddress.ReadOnly = true;
-            // 
-            // ColProtocol
-            // 
-            this.ColProtocol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColProtocol.HeaderText = "Protocol";
-            this.ColProtocol.MinimumWidth = 50;
-            this.ColProtocol.Name = "ColProtocol";
-            this.ColProtocol.ReadOnly = true;
-            // 
-            // ColMsgCounter
-            // 
-            this.ColMsgCounter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColMsgCounter.HeaderText = "Message counter";
-            this.ColMsgCounter.MinimumWidth = 50;
-            this.ColMsgCounter.Name = "ColMsgCounter";
-            this.ColMsgCounter.ReadOnly = true;
-            // 
-            // ColLastMsg
-            // 
-            this.ColLastMsg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColLastMsg.HeaderText = "Last message";
-            this.ColLastMsg.MinimumWidth = 50;
-            this.ColLastMsg.Name = "ColLastMsg";
-            this.ColLastMsg.ReadOnly = true;
+            this.dgvClients.SelectionChanged += new System.EventHandler(this.dgvClients_SelectionChanged);
             // 
             // tbStatus
             // 
@@ -187,21 +231,20 @@
             this.tbStatus.Location = new System.Drawing.Point(88, 19);
             this.tbStatus.Name = "tbStatus";
             this.tbStatus.ReadOnly = true;
-            this.tbStatus.Size = new System.Drawing.Size(584, 20);
+            this.tbStatus.Size = new System.Drawing.Size(453, 20);
             this.tbStatus.TabIndex = 0;
             this.tbStatus.TabStop = false;
             // 
-            // buttonClearClients
+            // buttonOpenLogFile
             // 
-            this.buttonClearClients.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClearClients.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonClearClients.Location = new System.Drawing.Point(483, 45);
-            this.buttonClearClients.Name = "buttonClearClients";
-            this.buttonClearClients.Size = new System.Drawing.Size(189, 23);
-            this.buttonClearClients.TabIndex = 2;
-            this.buttonClearClients.Text = "Clear client list";
-            this.buttonClearClients.UseVisualStyleBackColor = true;
-            this.buttonClearClients.Click += new System.EventHandler(this.buttonClearClients_Click);
+            this.buttonOpenLogFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOpenLogFile.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonOpenLogFile.Location = new System.Drawing.Point(547, 18);
+            this.buttonOpenLogFile.Name = "buttonOpenLogFile";
+            this.buttonOpenLogFile.Size = new System.Drawing.Size(125, 23);
+            this.buttonOpenLogFile.TabIndex = 2;
+            this.buttonOpenLogFile.Text = "Open log file";
+            this.buttonOpenLogFile.UseVisualStyleBackColor = true;
             // 
             // label14
             // 
@@ -213,11 +256,21 @@
             this.label14.TabIndex = 0;
             this.label14.Text = "Status:";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label1.Location = new System.Drawing.Point(18, 166);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Subscriptions:";
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label15.Location = new System.Drawing.Point(18, 50);
+            this.label15.Location = new System.Drawing.Point(18, 42);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(138, 13);
             this.label15.TabIndex = 1;
@@ -272,7 +325,7 @@
             this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjDescription);
             this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjDescription);
             this.splitContainerObjectsFooter.Size = new System.Drawing.Size(669, 52);
-            this.splitContainerObjectsFooter.SplitterDistance = 245;
+            this.splitContainerObjectsFooter.SplitterDistance = 240;
             this.splitContainerObjectsFooter.TabIndex = 2;
             // 
             // labelObjType
@@ -293,7 +346,7 @@
             this.tbObjType.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.tbObjType.Name = "tbObjType";
             this.tbObjType.ReadOnly = true;
-            this.tbObjType.Size = new System.Drawing.Size(167, 20);
+            this.tbObjType.Size = new System.Drawing.Size(164, 20);
             this.tbObjType.TabIndex = 1;
             this.tbObjType.TabStop = false;
             // 
@@ -314,7 +367,7 @@
             this.tbObjValue.Location = new System.Drawing.Point(67, 3);
             this.tbObjValue.Name = "tbObjValue";
             this.tbObjValue.ReadOnly = true;
-            this.tbObjValue.Size = new System.Drawing.Size(167, 20);
+            this.tbObjValue.Size = new System.Drawing.Size(164, 20);
             this.tbObjValue.TabIndex = 1;
             this.tbObjValue.TabStop = false;
             // 
@@ -336,7 +389,7 @@
             this.tbObjDescription.Multiline = true;
             this.tbObjDescription.Name = "tbObjDescription";
             this.tbObjDescription.ReadOnly = true;
-            this.tbObjDescription.Size = new System.Drawing.Size(329, 46);
+            this.tbObjDescription.Size = new System.Drawing.Size(333, 46);
             this.tbObjDescription.TabIndex = 10;
             this.tbObjDescription.TabStop = false;
             // 
@@ -434,8 +487,8 @@
             // splitContainerSecurity.Panel2
             // 
             this.splitContainerSecurity.Panel2.Controls.Add(this.gbSecurity);
-            this.splitContainerSecurity.Size = new System.Drawing.Size(675, 104);
-            this.splitContainerSecurity.SplitterDistance = 330;
+            this.splitContainerSecurity.Size = new System.Drawing.Size(663, 104);
+            this.splitContainerSecurity.SplitterDistance = 317;
             this.splitContainerSecurity.TabIndex = 2;
             // 
             // gbLogon
@@ -449,7 +502,7 @@
             this.gbLogon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbLogon.Location = new System.Drawing.Point(0, 0);
             this.gbLogon.Name = "gbLogon";
-            this.gbLogon.Size = new System.Drawing.Size(330, 104);
+            this.gbLogon.Size = new System.Drawing.Size(317, 104);
             this.gbLogon.TabIndex = 0;
             this.gbLogon.TabStop = false;
             this.gbLogon.Text = "Logon policies";
@@ -526,7 +579,7 @@
             this.gbSecurity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbSecurity.Location = new System.Drawing.Point(0, 0);
             this.gbSecurity.Name = "gbSecurity";
-            this.gbSecurity.Size = new System.Drawing.Size(341, 104);
+            this.gbSecurity.Size = new System.Drawing.Size(342, 104);
             this.gbSecurity.TabIndex = 1;
             this.gbSecurity.TabStop = false;
             this.gbSecurity.Text = "Security policies";
@@ -601,7 +654,7 @@
             this.gbEndpoints.Controls.Add(this.buttonEndpointAdd);
             this.gbEndpoints.Location = new System.Drawing.Point(9, 152);
             this.gbEndpoints.Name = "gbEndpoints";
-            this.gbEndpoints.Size = new System.Drawing.Size(675, 154);
+            this.gbEndpoints.Size = new System.Drawing.Size(663, 154);
             this.gbEndpoints.TabIndex = 16;
             this.gbEndpoints.TabStop = false;
             this.gbEndpoints.Text = "Endpoints";
@@ -623,7 +676,7 @@
             this.dgvEndpoints.Name = "dgvEndpoints";
             this.dgvEndpoints.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
             this.dgvEndpoints.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvEndpoints.Size = new System.Drawing.Size(631, 129);
+            this.dgvEndpoints.Size = new System.Drawing.Size(619, 129);
             this.dgvEndpoints.StandardTab = true;
             this.dgvEndpoints.TabIndex = 15;
             this.dgvEndpoints.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.dgvEndpoints_CellParsing);
@@ -672,7 +725,7 @@
             this.buttonEndpointCopy.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonEndpointCopy.Image = global::iba.Properties.Resources.copy;
             this.buttonEndpointCopy.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointCopy.Location = new System.Drawing.Point(646, 48);
+            this.buttonEndpointCopy.Location = new System.Drawing.Point(634, 48);
             this.buttonEndpointCopy.Name = "buttonEndpointCopy";
             this.buttonEndpointCopy.Size = new System.Drawing.Size(23, 23);
             this.buttonEndpointCopy.TabIndex = 16;
@@ -686,7 +739,7 @@
             this.buttonEndpointDelete.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonEndpointDelete.Image = global::iba.Properties.Resources.img_error;
             this.buttonEndpointDelete.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointDelete.Location = new System.Drawing.Point(646, 125);
+            this.buttonEndpointDelete.Location = new System.Drawing.Point(634, 125);
             this.buttonEndpointDelete.Name = "buttonEndpointDelete";
             this.buttonEndpointDelete.Size = new System.Drawing.Size(23, 23);
             this.buttonEndpointDelete.TabIndex = 16;
@@ -700,7 +753,7 @@
             this.buttonEndpointAdd.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonEndpointAdd.Image = global::iba.Properties.Resources.plus;
             this.buttonEndpointAdd.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointAdd.Location = new System.Drawing.Point(646, 19);
+            this.buttonEndpointAdd.Location = new System.Drawing.Point(634, 19);
             this.buttonEndpointAdd.Name = "buttonEndpointAdd";
             this.buttonEndpointAdd.Size = new System.Drawing.Size(23, 23);
             this.buttonEndpointAdd.TabIndex = 6;
@@ -759,6 +812,33 @@
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
+            // ColName
+            // 
+            this.ColName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColName.FillWeight = 76.14214F;
+            this.ColName.HeaderText = "Name";
+            this.ColName.MinimumWidth = 50;
+            this.ColName.Name = "ColName";
+            this.ColName.ReadOnly = true;
+            // 
+            // ColId
+            // 
+            this.ColId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColId.FillWeight = 50F;
+            this.ColId.HeaderText = "ID";
+            this.ColId.MinimumWidth = 50;
+            this.ColId.Name = "ColId";
+            this.ColId.ReadOnly = true;
+            // 
+            // ColLastMsg
+            // 
+            this.ColLastMsg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColLastMsg.FillWeight = 76.14214F;
+            this.ColLastMsg.HeaderText = "Last message time";
+            this.ColLastMsg.MinimumWidth = 50;
+            this.ColLastMsg.Name = "ColLastMsg";
+            this.ColLastMsg.ReadOnly = true;
+            // 
             // OpcUaControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -769,10 +849,11 @@
             this.Controls.Add(this.gbConfiguration);
             this.MinimumSize = new System.Drawing.Size(720, 300);
             this.Name = "OpcUaControl";
-            this.Size = new System.Drawing.Size(720, 928);
+            this.Size = new System.Drawing.Size(720, 1345);
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
             this.gbDiagnostics.ResumeLayout(false);
             this.gbDiagnostics.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).EndInit();
             this.gbObjects.ResumeLayout(false);
             this.panelFooter.ResumeLayout(false);
@@ -814,12 +895,8 @@
         private System.Windows.Forms.Label label13;
         private Utility.CollapsibleGroupBox gbDiagnostics;
         private System.Windows.Forms.DataGridView dgvClients;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColAddress;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColProtocol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColMsgCounter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColLastMsg;
         private System.Windows.Forms.TextBox tbStatus;
-        private System.Windows.Forms.Button buttonClearClients;
+        private System.Windows.Forms.Button buttonOpenLogFile;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Timer timerRefreshStatus;
@@ -854,5 +931,15 @@
         private System.Windows.Forms.TextBox tbObjValue;
         private System.Windows.Forms.Label labelObjDescription;
         private System.Windows.Forms.TextBox tbObjDescription;
+        private System.Windows.Forms.DataGridView dgvSubscriptions;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSubscrId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSubscrMonitoredItemsCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSubscrPublishingInterval;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSubscrNextSeq;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbDiagTmp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColLastMsg;
     }
 }

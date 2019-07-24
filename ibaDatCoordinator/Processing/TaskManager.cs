@@ -8,6 +8,7 @@ using iba.Data;
 using iba.Utility;
 using iba.Plugins;
 using System.IO;
+using iba.ibaOPCServer;
 using iba.Logging;
 using IbaSnmpLib;
 
@@ -1081,18 +1082,20 @@ namespace iba.Processing
             }
         }
 
-        //public virtual List<IbaSnmpDiagClient> OpcUaGetClients()
-        //{
-        //    try
-        //    {
-        //        return SnmpWorker.IbaSnmp?.GetClients();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetClients)}. {ex.Message}");
-        //        return null;
-        //    }
-        //}
+        public virtual Tuple<List<IbaOpcUaDiagClient>, string > OpcUaGetDiagnostics()
+        {
+            try
+            {
+                var clients = OpcUaWorker.GetClients();
+                var diagnosticString = OpcUaWorker.GetDiagnosticString();
+                return new Tuple<List<IbaOpcUaDiagClient>, string>(clients, diagnosticString);
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetClients)}. {ex.Message}");
+                return null;
+            }
+        }
 
         //public virtual void SnmpClearClients()
         //{
@@ -1110,7 +1113,7 @@ namespace iba.Processing
 
 
         #endregion
-            
+
 
         #endregion
 

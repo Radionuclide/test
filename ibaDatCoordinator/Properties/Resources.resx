@@ -1525,10 +1525,10 @@ Do you wish to navigate to these files?</value>
     <value>Starting the OPC UA server failed with error: {0}</value>
   </data>
   <data name="opcUaStatusNotInit" xml:space="preserve">
-    <value>OPC UA server is not initialized.</value>
+    <value>OPC UA server is not initialized</value>
   </data>
-  <data name="opcUaStatusRunningOnPort" xml:space="preserve">
-    <value>OPC UA server running on port {0}</value>
+  <data name="opcUaStatusRunning" xml:space="preserve">
+    <value>OPC UA server running</value>
   </data>
   <data name="opcUaStatusRunningRestarted" xml:space="preserve">
     <value>OPC UA agent was successfully restarted. Current status: {0}</value>

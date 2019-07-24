@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -19,13 +20,32 @@ namespace iba.ibaOPCServer
         TrustAllPermanently
     }
 
+    [Serializable]
+    public class IbaOpcUaDiagClient
+    {
+        public string Name;
+        public string Id;
+        public DateTime LastMessageTime;
+        public List<IbaOpcUaDiagSubscription> Subscriptions;
+
+        [Serializable]
+        public class IbaOpcUaDiagSubscription
+        {
+            public uint Id;
+            public int MonitoredItemCount;
+            public double PublishingInterval;
+            public uint NextSequenceNumber;
+        }
+    }
+
+
+
     public class IbaOpcUaServer : StandardServer
     {
         public IbaUaNodeManager IbaUaNodeManager;
 
         public IbaOpcUaServer()
         {
-            ResetDiagnosticStrings();
         }
 
         #region Overridden Methods
@@ -434,11 +454,7 @@ namespace iba.ibaOPCServer
         public void ApplyConfiguration(IbaOpcUaUserAccount? anonymousUser, List<IbaOpcUaUserAccount> preconfiguredUsers,
             bool passwordEncryptionForTcpNoneEndpoint)
         {
-            // prepare endpoint strings for quick use
-            DiagnosticStrEndpoints = String.Join(", ", ServerInternal.EndpointAddresses);
-            DiagnosticStrEndpointTcp = GetEndpointAddress("opc.tcp");
-            // if there is something inside, let's delete last comma
-           
+         
             // user management
             {
 
@@ -472,138 +488,15 @@ namespace iba.ibaOPCServer
             }
         }
 
-        private string GetEndpointAddress(string value)
-        {
-            var uri = ServerInternal.EndpointAddresses.FirstOrDefault(
-                    a => a.Scheme.Equals(value, StringComparison.OrdinalIgnoreCase));
-            // get user accounts from file
-            if (uri != null)
-                return uri.AbsoluteUri;
-
-            return String.Empty;
-        }
-
-
-        #region Diagnostic strings
-
-        public string DiagnosticStrEndpoints { get; private set; }
-        public string DiagnosticStrEndpointTcp { get; private set; }
-        public string DiagnosticStrSessions { get; private set; }
-        public string DiagnosticStrSubscriptions { get; private set; }
-        public string DiagnosticStrVarTree { get; private set; }
-        public string DiagnosticStrMonitoredItems { get; private set; }
-
-        private void ResetDiagnosticStrings()
-        {
-            DiagnosticStrEndpoints = "";
-            DiagnosticStrEndpointTcp = "";
-            DiagnosticStrSessions = "";
-            DiagnosticStrSubscriptions = "";
-            DiagnosticStrVarTree = "";
-            DiagnosticStrMonitoredItems = "";
-        }
-
-
-        /// <summary>
-        /// todo. kls. delete or optimize in release version
-        /// </summary>
-        public string GetDiagnosticStringSubscriptions()
-        {
-            string s = "";
-            try
-            {
-              IList<Subscription> subs = ServerInternal.SubscriptionManager.GetSubscriptions();
-                if (subs == null || subs.Count == 0)
-                    return s;
-
-                s += string.Format("Count = {0}: ", subs.Count);
-
-                const int max = 20;
-                int current = 0;
-                foreach (var item in subs)
-                {
-                    if (item == null) continue;
-                    
-                        s += string.Format("[id={0}, mic={1}, pi={2}], ", item.Id, item.MonitoredItemCount, item.PublishingInterval);
-
-                    // stop processing if list is too big
-                    current++;
-                    if (current > max) break;
-                }
-                // remove last ", "
-                s = s.TrimEnd(' ', ',');
-                return s;
-            }
-            catch
-            {
-                return "error";
-            }
-        }
-
-        public IbaOpcUaUserAccount KlsGetUserForSession(NodeId sessionid)
-        {
-            IList<Session> sessions = ServerInternal.SessionManager.GetSessions();
-
-            if (sessions == null || sessions.Count == 0) return UserAccountAnonymous;
-            
-            for (int i = 0; i < sessions.Count; i++)
-            {
-                if (sessions[i].Id == sessionid)
-                {
-                    if (sessions[i].Identity.TokenType == UserTokenType.Anonymous) return UserAccountAnonymous;
-
-                    string un = sessions[i].Identity.DisplayName;
-                    return KlsUserAccountFindByName(un) ?? UserAccountAnonymous;
-                }
-            }
-            return UserAccountAnonymous;
-        }
-
-        private void UpdateDiagnosticStringSessions()
-        {
-            //List<Session> sessions = new List<Session>(ServerInternal.SessionManager.GetSessions());
-            IList<Session> sessions = ServerInternal.SessionManager.GetSessions();
-
-            if (sessions == null || sessions.Count == 0)
-            {
-                DiagnosticStrSessions = "<no sessions>";
-                return;
-            }
-            // count active sessions
-            int activeSessionsCount = 0;
-            for (int i = 0; i < sessions.Count; i++)
-                if (sessions[i].Activated) activeSessionsCount++;
-
-            // description overview
-            DiagnosticStrSessions = string.Format("Total = {0}; Active = {1}: ", sessions.Count, activeSessionsCount);
-
-            // description details
-            for (int i = 0; i < sessions.Count; i++)
-            {
-                Session s = sessions[i];
-                if (!s.Activated) continue;
-                DiagnosticStrSessions += string.Format("[{0} {1} {2}], ",
-                    sessions[i].SessionDiagnostics.SessionName,
-                    sessions[i].SessionDiagnostics.SessionId,
-                    sessions[i].Identity.DisplayName);
-            }
-            // remove trailing delimiter
-            DiagnosticStrSessions = DiagnosticStrSessions.TrimEnd(',', ' ', ':');
-        }
-
-
-        #endregion
-
         #region override by kolesnik
 
-        public override ResponseHeader CreateSession(RequestHeader requestHeader, ApplicationDescription clientDescription, string serverUri, string endpointUrl, string sessionName, byte[] clientNonce, byte[] clientCertificate, double requestedSessionTimeout, uint maxResponseMessageSize, out NodeId sessionId, out NodeId authenticationToken, out double revisedSessionTimeout, out byte[] serverNonce, out byte[] serverCertificate, out EndpointDescriptionCollection serverEndpoints, out SignedSoftwareCertificateCollection serverSoftwareCertificates, out SignatureData serverSignature, out uint maxRequestMessageSize)
-        {
-            ResponseHeader header =
-                base.CreateSession(requestHeader, clientDescription, serverUri, endpointUrl, sessionName, clientNonce, clientCertificate, requestedSessionTimeout, maxResponseMessageSize, out sessionId, out authenticationToken, out revisedSessionTimeout, out serverNonce, out serverCertificate, out serverEndpoints, out serverSoftwareCertificates, out serverSignature, out maxRequestMessageSize);
-
-            UpdateDiagnosticStringSessions();
-            return header;
-        }
+        //public override ResponseHeader CreateSession(RequestHeader requestHeader, ApplicationDescription clientDescription, string serverUri, string endpointUrl, string sessionName, byte[] clientNonce, byte[] clientCertificate, double requestedSessionTimeout, uint maxResponseMessageSize, out NodeId sessionId, out NodeId authenticationToken, out double revisedSessionTimeout, out byte[] serverNonce, out byte[] serverCertificate, out EndpointDescriptionCollection serverEndpoints, out SignedSoftwareCertificateCollection serverSoftwareCertificates, out SignatureData serverSignature, out uint maxRequestMessageSize)
+        //{
+        //    ResponseHeader header =
+        //        base.CreateSession(requestHeader, clientDescription, serverUri, endpointUrl, sessionName, clientNonce, clientCertificate, requestedSessionTimeout, maxResponseMessageSize, out sessionId, out authenticationToken, out revisedSessionTimeout, out serverNonce, out serverCertificate, out serverEndpoints, out serverSoftwareCertificates, out serverSignature, out maxRequestMessageSize);
+        //    UpdateDiagnosticStringSessions();
+        //    return header;
+        //}
 
         //public override ResponseHeader ActivateSession(RequestHeader requestHeader, SignatureData clientSignature,
         //    SignedSoftwareCertificateCollection clientSoftwareCertificates, StringCollection localeIds,
@@ -620,24 +513,25 @@ namespace iba.ibaOPCServer
         //    }
         //    catch
         //    {
-        //        ; // todo. kls. Handle closed section? Or ignore?
+        //        ; // ?? handle closed section? Or ignore?
         //        throw;
         //    }
         //}
 
-        public override ResponseHeader CloseSession(RequestHeader requestHeader, bool deleteSubscriptions)
-        {
-            ResponseHeader header =
-                base.CloseSession(requestHeader, deleteSubscriptions);
+        //public override ResponseHeader CloseSession(RequestHeader requestHeader, bool deleteSubscriptions)
+        //{
+        //    ResponseHeader header =
+        //        base.CloseSession(requestHeader, deleteSubscriptions);
 
-            UpdateDiagnosticStringSessions();
+        //    UpdateDiagnosticStringSessions();
 
-            return header;
-        }
+        //    return header;
+        //}
 
         #endregion
 
-
+            
+        // todo. kls. move
         public static string GetFQDN()
         {
             string domainName = IPGlobalProperties.GetIPGlobalProperties().DomainName;
@@ -652,5 +546,95 @@ namespace iba.ibaOPCServer
             }
             return hostName; // return the fully qualified name
         }
+
+        #region Diagnostics
+        
+        // todo. kls. remove
+        //public IbaOpcUaUserAccount KlsGetUserForSession(NodeId sessionid)
+        //{
+        //    IList<Session> sessions = ServerInternal.SessionManager.GetSessions();
+
+        //    if (sessions == null || sessions.Count == 0) return UserAccountAnonymous;
+
+        //    for (int i = 0; i < sessions.Count; i++)
+        //    {
+        //        if (sessions[i].Id == sessionid)
+        //        {
+        //            if (sessions[i].Identity.TokenType == UserTokenType.Anonymous) return UserAccountAnonymous;
+
+        //            string un = sessions[i].Identity.DisplayName;
+        //            return KlsUserAccountFindByName(un) ?? UserAccountAnonymous;
+        //        }
+        //    }
+        //    return UserAccountAnonymous;
+        //}
+
+        public List<IbaOpcUaDiagClient> GetClients()
+        {
+            try
+            {
+                var list = new List<IbaOpcUaDiagClient>();
+
+                IList<Session> sessions = ServerInternal.SessionManager.GetSessions();
+
+                if (sessions == null || sessions.Count == 0)
+                {
+                    return list;
+                }
+
+                // description details
+                foreach (var s in sessions)
+                {
+                    var client = new IbaOpcUaDiagClient
+                    {
+                        Name = s.SessionDiagnostics.SessionName,
+                        Id = s.SessionDiagnostics.SessionId.ToString(),
+                        LastMessageTime = s.SessionDiagnostics.ClientLastContactTime,
+                        Subscriptions = GetSubscriptions(s)
+                    };
+                    list.Add(client);
+                }
+
+                return list;
+            }
+            catch
+            {
+                // happens when server is stopped 
+                return null;
+            }
+        }
+
+        private List<IbaOpcUaDiagClient.IbaOpcUaDiagSubscription> GetSubscriptions(Session session)
+        {
+            try
+            {
+                var list = new List<IbaOpcUaDiagClient.IbaOpcUaDiagSubscription>();
+
+                IList<Subscription> subs = ServerInternal.SubscriptionManager.GetSubscriptions();
+                if (subs == null || subs.Count == 0)
+                    return list;
+
+                list.AddRange(from sub in subs
+                    where sub != null && sub.Session == session
+                    select new IbaOpcUaDiagClient.IbaOpcUaDiagSubscription
+                    {
+                        Id = sub.Id,
+                        MonitoredItemCount = sub.MonitoredItemCount,
+                        PublishingInterval = sub.PublishingInterval,
+                        NextSequenceNumber = sub.Diagnostics.NextSequenceNumber
+                    });
+
+                return list;
+            }
+            catch
+            {
+                Debug.Assert(false);
+            }
+            return null;
+        }
+
+
+        #endregion
+
     }
 }
