@@ -342,7 +342,10 @@ namespace iba.Processing
         }
 
 
-        #region SNMP and OPC UA interfaces
+        #region External monitoring - SNMP and OPC UA interfaces
+
+
+        #region External monitoring - Functionality common for SNMP and OPC UA
 
         /// <summary> 
         /// Is fired when there is a chance (yes, at least a chance) that external monitoring data structure (amount of jobs, tasks, etc) is changed. 
@@ -356,142 +359,11 @@ namespace iba.Processing
         /// </summary>
         public event EventHandler<EventArgs> ExtMonConfigurationChanged;
 
-        private SnmpWorker SnmpWorker { get; } = new SnmpWorker();
-
-        public void SnmpWorkerInit()
-        {
-            SnmpWorker.Init();
-        }
-
-        #region Functionality for GUI
-
-        #region Configuration
-
-        /// <summary> Gets/sets data of SnmpWorker. 
-        /// If data is set, then restart of snmp agent is performed if necessary. </summary>
-        public virtual SnmpData SnmpData
-        {
-            get => SnmpWorker?.SnmpData;
-            set
-            {
-                if (SnmpWorker != null)
-                {
-                    SnmpWorker.SnmpData = value;
-                }
-            }
-        }
-
-        #endregion
-
-
-        #region Objects
-
-        public virtual void SnmpRebuildObjectTree()
-        {
-            try
-            {
-                SnmpWorker.RebuildTree();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpRebuildObjectTree)}. {ex.Message}");
-            }
-        }
-
-        internal virtual Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> SnmpGetObjectTreeSnapShot()
-        {
-            try
-            {
-                return SnmpWorker.GetObjectTreeSnapShot();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetObjectTreeSnapShot)}. {ex.Message}");
-                return null;
-            }
-        }
-
-        internal virtual ExtMonData.GuiTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
-        {
-            try
-            {
-                // refresh value and get information
-                return SnmpWorker.GetTreeNodeTag(oid, true);
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetTreeNodeTag)}. {ex.Message}");
-                return null;
-            }
-        }
-
-        public virtual List<SnmpMibFileContainer> SnmpGenerateMibFiles()
-        {
-            try
-            {
-                return SnmpWorker.GenerateMibFiles();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGenerateMibFiles)}. {ex.Message}");
-                return null;
-            }
-        }
-
-        #endregion
-
-
-        #region Diagnostics
-
-        public virtual Tuple<ExtMonWorkerStatus, string> SnmpGetBriefStatus()
-        {
-            try
-            {
-                return new Tuple<ExtMonWorkerStatus, string>(SnmpWorker.Status, SnmpWorker.StatusString);
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetBriefStatus)}. {ex.Message}");
-                return null;
-            }
-        }
-
-        public virtual List<IbaSnmpDiagClient> SnmpGetClients()
-        {
-            try
-            {
-                return SnmpWorker.IbaSnmp?.GetClients();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetClients)}. {ex.Message}");
-                return null;
-            }
-        }
-
-        public virtual void SnmpClearClients()
-        {
-            try
-            {
-                SnmpWorker.IbaSnmp?.ClearClients();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpClearClients)}. {ex.Message}");
-            }
-        }
-
-        #endregion
-
-
-        #endregion
-
-
-        #region Internal Server functions
-
         /// <summary>  // todo. kls. remove tmp
         /// </summary>
         private uint _tmpTimer => 555000 + (uint)DateTime.Now.Second;
+
+
 
         internal bool ExtMonRefreshLicenseInfo(ExtMonData.LicenseInfo licenseInfo)
         {
@@ -992,9 +864,140 @@ namespace iba.Processing
         #endregion
 
 
+        #region External monitoring - SNMP
+
+        #region SNMP Configuration
+
+        private SnmpWorker SnmpWorker { get; } = new SnmpWorker();
+
+        public void SnmpWorkerInit()
+        {
+            SnmpWorker.Init();
+        }
+
+        /// <summary> Gets/sets data of SnmpWorker. 
+        /// If data is set, then restart of snmp agent is performed if necessary. </summary>
+        public virtual SnmpData SnmpData
+        {
+            get => SnmpWorker?.SnmpData;
+            set
+            {
+                if (SnmpWorker != null)
+                {
+                    SnmpWorker.SnmpData = value;
+                }
+            }
+        }
+
         #endregion
 
-        #region OPC UA interface 
+
+        #region SNMP Objects
+
+        public virtual void SnmpRebuildObjectTree()
+        {
+            try
+            {
+                SnmpWorker.RebuildTree();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpRebuildObjectTree)}. {ex.Message}");
+            }
+        }
+
+        internal virtual Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> SnmpGetObjectTreeSnapShot()
+        {
+            try
+            {
+                return SnmpWorker.GetObjectTreeSnapShot();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetObjectTreeSnapShot)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        internal virtual ExtMonData.GuiTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
+        {
+            try
+            {
+                // refresh value and get information
+                return SnmpWorker.GetTreeNodeTag(oid, true);
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetTreeNodeTag)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        public virtual List<SnmpMibFileContainer> SnmpGenerateMibFiles()
+        {
+            try
+            {
+                return SnmpWorker.GenerateMibFiles();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGenerateMibFiles)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        #endregion
+
+
+        #region SNMP Diagnostics
+
+        public virtual Tuple<ExtMonWorkerStatus, string> SnmpGetBriefStatus()
+        {
+            try
+            {
+                return new Tuple<ExtMonWorkerStatus, string>(SnmpWorker.Status, SnmpWorker.StatusString);
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetBriefStatus)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        public virtual List<IbaSnmpDiagClient> SnmpGetClients()
+        {
+            try
+            {
+                return SnmpWorker.IbaSnmp?.GetClients();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetClients)}. {ex.Message}");
+                return null;
+            }
+        }
+
+        public virtual void SnmpClearClients()
+        {
+            try
+            {
+                SnmpWorker.IbaSnmp?.ClearClients();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpClearClients)}. {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region External monitoring - OPC UA
+
+
+        #region OPC UA Configuration
 
         private OpcUaWorker OpcUaWorker { get; } = new OpcUaWorker();
 
@@ -1002,10 +1005,6 @@ namespace iba.Processing
         {
             OpcUaWorker.Init();
         }
-
-        #region OPC UA GUI
-
-        #region Configuration
 
         /// <summary> Gets/sets configuration data of <see cref="OpcUaWorker"/>. 
         /// If data is set, then restart of UA Server is performed if necessary. </summary>
@@ -1024,7 +1023,7 @@ namespace iba.Processing
         #endregion
 
 
-        #region Objects
+        #region OPC UA Objects
 
         public virtual void OpcUaRebuildObjectTree()
         {
@@ -1063,11 +1062,11 @@ namespace iba.Processing
                 return null;
             }
         }
-        
+
         #endregion
 
 
-        #region Diagnostics
+        #region OPC UA Diagnostics
 
         public virtual Tuple<ExtMonWorkerStatus, string> OpcUaGetBriefStatus()
         {
@@ -1082,32 +1081,21 @@ namespace iba.Processing
             }
         }
 
-        public virtual Tuple<List<IbaOpcUaDiagClient>, string > OpcUaGetDiagnostics()
+        public virtual Tuple<List<IbaOpcUaDiagClient>, string> OpcUaGetDiagnostics()
         {
             try
             {
                 var clients = OpcUaWorker.GetClients();
+                // todo. kls. delete before last beta
                 var diagnosticString = OpcUaWorker.GetDiagnosticString();
                 return new Tuple<List<IbaOpcUaDiagClient>, string>(clients, diagnosticString);
             }
             catch (Exception ex)
             {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpGetClients)}. {ex.Message}");
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(OpcUaGetDiagnostics)}. {ex.Message}");
                 return null;
             }
         }
-
-        //public virtual void SnmpClearClients()
-        //{
-        //    try
-        //    {
-        //        SnmpWorker.IbaSnmp?.ClearClients();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogData.Data.Logger.Log(Level.Exception, $"{nameof(SnmpClearClients)}. {ex.Message}");
-        //    }
-        //}
 
         #endregion
 
@@ -1639,8 +1627,10 @@ namespace iba.Processing
             }
         }
 
+        #region External monitoring - SNMP and OPC UA interfaces
 
-        #region SNMP interface
+
+        #region External monitoring - Functionality common for SNMP and OPC UA
 
         /// <summary> Calls <see cref="CommunicationObjectWrapper.HandleBrokenConnection(ex)"/> 
         /// for <see cref="Program.CommunicationObject"/>  if it is not null. </summary>
@@ -1649,7 +1639,13 @@ namespace iba.Processing
             Program.CommunicationObject?.HandleBrokenConnection(ex);
         }
 
-        #region Configuration
+        #endregion
+
+
+        #region External monitoring - SNMP
+
+
+        #region SNMP Configuration
 
         public override SnmpData SnmpData
         {
@@ -1682,7 +1678,7 @@ namespace iba.Processing
         #endregion
 
 
-        #region Objects
+        #region SNMP Objects
 
         public override void SnmpRebuildObjectTree()
         {
@@ -1736,11 +1732,10 @@ namespace iba.Processing
             }
         }
 
-
         #endregion
 
 
-        #region Diagnostics
+        #region SNMP Diagnostics
 
         public override Tuple<ExtMonWorkerStatus, string> SnmpGetBriefStatus()
         {
@@ -1754,7 +1749,7 @@ namespace iba.Processing
                 return Manager.SnmpGetBriefStatus();
             }
         }
-        
+
         public override List<IbaSnmpDiagClient> SnmpGetClients()
         {
             try
@@ -1782,6 +1777,124 @@ namespace iba.Processing
         }
 
         #endregion
+
+
+        #endregion
+
+
+        #region External monitoring - OPC UA
+
+
+        #region OPC UA Configuration
+
+        public override OpcUaData OpcUaData 
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.OpcUaData;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return Manager.OpcUaData;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.OpcUaData = value;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    Manager.OpcUaData = value;
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region OPC UA Objects
+
+        public override void OpcUaRebuildObjectTree()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.OpcUaRebuildObjectTree();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.OpcUaRebuildObjectTree();
+            }
+        }
+
+        internal override List<ExtMonData.GuiTreeNodeTag> OpcUaGetObjectTreeSnapShot()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.OpcUaGetObjectTreeSnapShot();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.OpcUaGetObjectTreeSnapShot();
+            }
+        }
+
+        internal override ExtMonData.GuiTreeNodeTag OpcUaGetTreeNodeTag(string id)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.OpcUaGetTreeNodeTag(id);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.OpcUaGetTreeNodeTag(id);
+            }
+        }
+
+        #endregion
+
+
+        #region OPC UA Diagnostics
+
+        public override Tuple<ExtMonWorkerStatus, string> OpcUaGetBriefStatus()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.OpcUaGetBriefStatus();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.OpcUaGetBriefStatus();
+            }
+        }
+
+        public override Tuple<List<IbaOpcUaDiagClient>, string> OpcUaGetDiagnostics()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.OpcUaGetDiagnostics();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.OpcUaGetDiagnostics();
+            }
+        }
+
+        #endregion
+
+
+        #endregion
+
 
         #endregion
 

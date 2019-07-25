@@ -411,11 +411,7 @@ namespace iba.ibaOPCServer
             // not found
             return null; 
         }
-        public void KlsUserAccountsReadFromFile()
-        {
-            // todo implement read from file or registry
-            UserAccounts.Clear();
-        }
+
         public void KlsUserAccountsCreateDummyUsers()
         {
             UserAccounts.Clear();
@@ -439,10 +435,6 @@ namespace iba.ibaOPCServer
             };
             admin.PermissionsEnableAll();
             UserAccounts.Add(admin);
-        }
-        public void KlsUserAccountsSaveToFile()
-        {
-            // todo implement
         }
 
         #endregion //UserAcccounts

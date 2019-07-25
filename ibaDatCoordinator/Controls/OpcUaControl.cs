@@ -285,10 +285,10 @@ namespace iba.Controls
             comboBoxSecurity256.Enabled = cbSecurity256.Checked;
         }
 
-       
+
         #region Endpoints
 
-        // todo. kls. delete
+        // todo. kls. delete before last beta
         private void buttonCopyToClipboard_Click(object sender, EventArgs e)
         {
             try
@@ -503,7 +503,7 @@ namespace iba.Controls
                     return;
                 }
 
-                // todo. kls. remove tmp
+                // todo. kls. delete before last beta
                 tbDiagTmp.Text = diagStr;
 
                 // update rows
@@ -735,7 +735,7 @@ namespace iba.Controls
         #endregion
 
 
-        // todo. kls. delete
+        // todo. kls. delete before last beta
         private void buttonSetTestCfg_Click(object sender, EventArgs e)
         {
             // copy default data to current data except enabled/disabled
@@ -763,13 +763,13 @@ namespace iba.Controls
             buttonCopyToClipboard_Click(null,null);
         }
 
-        // todo. kls. delete
+        // todo. kls. delete before last beta
         private void buttonRebuildTree_Click(object sender, EventArgs e)
         {
             TaskManager.Manager.OpcUaRebuildObjectTree();
         }
 
-        // todo. kls. delete
+        // todo. kls. delete before last beta
         private void buttonRefreshGuiTree_Click(object sender, EventArgs e)
         {
             RebuildObjectsTree();
