@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
 using iba.Data;
-using iba.ibaOPCServer;
 using Opc.Ua;
 
-namespace ibaOpcServer.IbaOpcUa
+namespace iba.Processing.IbaOpcUa
 {
     public class IbaOpcUaVariable : BaseDataVariableState
     {

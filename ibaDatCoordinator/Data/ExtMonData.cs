@@ -4,11 +4,10 @@ using System.Diagnostics;
 using System.Threading;
 using DevExpress.Utils;
 using DevExpress.XtraEditors.Controls;
-using iba.ibaOPCServer;
 using iba.Logging;
 using iba.Processing;
+using iba.Processing.IbaOpcUa;
 using iba.Utility;
-using ibaOpcServer.IbaOpcUa;
 using IbaSnmpLib;
 
 namespace iba.Data
@@ -513,7 +512,7 @@ namespace iba.Data
                         // calculate (and keep) it first request
                         _uaFullPath = Parent == null
                             ? UaBrowseName
-                            : IbaUaNodeManager.ComposeNodeId(Parent.UaFullPath, UaBrowseName);
+                            : IbaOpcUaNodeManager.ComposeNodeId(Parent.UaFullPath, UaBrowseName);
                     }
                     Debug.Assert(_uaFullPath != null);
                     Debug.Assert(_uaFullPath.Contains(UaBrowseName));

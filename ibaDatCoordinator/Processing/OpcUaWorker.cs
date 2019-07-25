@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using iba.Data;
-using iba.ibaOPCServer;
 using iba.Logging;
+using iba.Processing.IbaOpcUa;
 using iba.Properties;
-using ibaOpcServer.IbaOpcUa;
 using Opc.Ua;
 using Opc.Ua.Configuration;
 
@@ -118,8 +117,8 @@ namespace iba.Processing
 
         public IbaOpcUaServer IbaOpcUaServer { get; private set; }
 
-        /// <summary> A quick reference to <see cref="IbaOpcUaServer"/>.<see cref="IbaUaNodeManager"/> </summary>
-        private IbaUaNodeManager NodeManager => IbaOpcUaServer?.IbaUaNodeManager;
+        /// <summary> A quick reference to <see cref="IbaOpcUaServer"/>.<see cref="IbaOpcUaNodeManager"/> </summary>
+        private IbaOpcUaNodeManager NodeManager => IbaOpcUaServer?.IbaOpcUaNodeManager;
 
         private OpcUaData _opcUaData;
         public OpcUaData OpcUaData
@@ -314,7 +313,7 @@ namespace iba.Processing
         public bool RebuildTree()
         {
             var man = TaskManager.Manager;
-            if (man == null || IbaOpcUaServer?.IbaUaNodeManager == null)
+            if (man == null || IbaOpcUaServer?.IbaOpcUaNodeManager == null)
             {
                 return false; // rebuild failed
             }
@@ -419,7 +418,7 @@ namespace iba.Processing
             if (uaParentFolder == null)
                 uaParentFolder = NodeManager.FolderIbaRoot;
 
-            Debug.Assert(IbaUaNodeManager.IsValidBrowseName(xmFolderToCreate.UaBrowseName));
+            Debug.Assert(IbaOpcUaNodeManager.IsValidBrowseName(xmFolderToCreate.UaBrowseName));
 
             NodeState node = NodeManager.Find(xmFolderToCreate.UaFullPath);
 
@@ -461,7 +460,7 @@ namespace iba.Processing
 
         private IbaOpcUaVariable CreateOrUpdateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv)
         {
-            Debug.Assert(IbaUaNodeManager.IsValidBrowseName(xmv.UaBrowseName));
+            Debug.Assert(IbaOpcUaNodeManager.IsValidBrowseName(xmv.UaBrowseName));
 
             NodeState node = NodeManager.Find(xmv.UaFullPath);
 

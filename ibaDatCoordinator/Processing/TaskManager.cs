@@ -8,8 +8,8 @@ using iba.Data;
 using iba.Utility;
 using iba.Plugins;
 using System.IO;
-using iba.ibaOPCServer;
 using iba.Logging;
+using iba.Processing.IbaOpcUa;
 using IbaSnmpLib;
 
 namespace iba.Processing

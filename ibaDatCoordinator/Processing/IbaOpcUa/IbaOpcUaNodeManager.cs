@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using DevExpress.Utils;
 using iba.Data;
-using iba.Utility;
 using Opc.Ua;
 using Opc.Ua.Server;
-using ibaOpcServer.IbaOpcUa;
 
-
-namespace iba.ibaOPCServer
+namespace iba.Processing.IbaOpcUa
 {
     /// <summary>
     /// A node manager for a server that exposes several variables.
     /// </summary>
-    public class IbaUaNodeManager : CustomNodeManager2
+    public class IbaOpcUaNodeManager : CustomNodeManager2
     {
         public const string IbaDefaultNamespace = "http://iba-ag.com";
         
@@ -26,7 +21,7 @@ namespace iba.ibaOPCServer
         /// By OPC Foundation.
         /// Initializes the node manager.
         /// </summary>
-        public IbaUaNodeManager(IbaOpcUaServer ibaUaServer, IServerInternal server, ApplicationConfiguration configuration)
+        public IbaOpcUaNodeManager(IbaOpcUaServer ibaUaServer, IServerInternal server, ApplicationConfiguration configuration)
             : base(server, configuration, IbaDefaultNamespace)
         {
             _ibaUaServer = ibaUaServer;
@@ -477,7 +472,7 @@ namespace iba.ibaOPCServer
             FormatEnum(ref initialValue);
 
             // get uaType automatically from initial value
-            var uaType = IbaUaNodeManager.GetOpcUaType(initialValue);
+            var uaType = IbaOpcUaNodeManager.GetOpcUaType(initialValue);
             Debug.Assert(uaType != BuiltInType.Null);
 
             AssertNameCorrectnessAndUniqueness(parent, xmv.UaBrowseName);

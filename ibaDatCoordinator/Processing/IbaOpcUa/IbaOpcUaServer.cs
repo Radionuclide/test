@@ -8,8 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using Opc.Ua;
 using Opc.Ua.Server;
 
-// ReSharper disable once CheckNamespace
-namespace iba.ibaOPCServer
+namespace iba.Processing.IbaOpcUa
 {
     public enum IbaOpcUaServerCertificateTrustMode
     {
@@ -42,11 +41,7 @@ namespace iba.ibaOPCServer
 
     public class IbaOpcUaServer : StandardServer
     {
-        public IbaUaNodeManager IbaUaNodeManager;
-
-        public IbaOpcUaServer()
-        {
-        }
+        public IbaOpcUaNodeManager IbaOpcUaNodeManager;
 
         #region Overridden Methods
         /// <summary>
@@ -64,8 +59,8 @@ namespace iba.ibaOPCServer
             List<INodeManager> nodeManagers = new List<INodeManager>();
 
             // create the custom node managers.
-            IbaUaNodeManager = new IbaUaNodeManager(this, server, configuration);
-            nodeManagers.Add(IbaUaNodeManager);
+            IbaOpcUaNodeManager = new IbaOpcUaNodeManager(this, server, configuration);
+            nodeManagers.Add(IbaOpcUaNodeManager);
             
             // create master node manager.
             return new MasterNodeManager(server, configuration, null, nodeManagers.ToArray());

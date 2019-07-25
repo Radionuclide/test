@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
 using iba.Data;
-using iba.ibaOPCServer;
 using iba.Logging;
 using iba.Processing;
+using iba.Processing.IbaOpcUa;
 using iba.Properties;
 using iba.Utility;
 
@@ -632,7 +632,7 @@ namespace iba.Controls
                         continue;
                     }
 
-                    string parentId = IbaUaNodeManager.GetParentName(tag.OpcUaNodeId);
+                    string parentId = IbaOpcUaNodeManager.GetParentName(tag.OpcUaNodeId);
                     TreeNode parentGuiNode = string.IsNullOrWhiteSpace(parentId) ? 
                         null : FindSingleNodeById(parentId);
 
