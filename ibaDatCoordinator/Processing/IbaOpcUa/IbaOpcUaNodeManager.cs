@@ -8,40 +8,30 @@ using Opc.Ua.Server;
 
 namespace iba.Processing.IbaOpcUa
 {
-    /// <summary>
-    /// A node manager for a server that exposes several variables.
-    /// </summary>
     public class IbaOpcUaNodeManager : CustomNodeManager2
     {
         public const string IbaDefaultNamespace = "http://iba-ag.com";
-        
+
+        /// <summary> Root folder for all iba-specific data </summary>
+        public FolderState FolderIbaRoot { get; private set; }
+
+        public static readonly char NODE_ID_DELIMITER = '\\';
+        public static readonly char NODE_ID_DEFAULT_REPLACEMENT_CHARACTER = '_';
+
         #region Constructors
 
         /// <summary>
         /// By OPC Foundation.
         /// Initializes the node manager.
         /// </summary>
-        public IbaOpcUaNodeManager(IbaOpcUaServer ibaUaServer, IServerInternal server, ApplicationConfiguration configuration)
+        public IbaOpcUaNodeManager(IServerInternal server, ApplicationConfiguration configuration)
             : base(server, configuration, IbaDefaultNamespace)
         {
-            _ibaUaServer = ibaUaServer;
             SystemContext.NodeIdFactory = this;
         }
 
         #endregion
 
-        #region IDisposable Members
-        ///// <summary>
-        ///// An overrideable version of the Dispose.
-        ///// </summary>
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        // TBD
-        //    }
-        //}
-        #endregion
 
         #region INodeIdFactory Members
         
@@ -53,20 +43,21 @@ namespace iba.Processing.IbaOpcUa
         /// </summary>
         public override NodeId New(ISystemContext context, NodeState node)
         {
-            if (!(node is BaseInstanceState instance) || instance.Parent == null)
+            if (!(node is BaseInstanceState instance) || instance.Parent == null ||
+                instance.Parent.NodeId == null ||
+                !(instance.Parent.NodeId.Identifier is string strId))
                 return node.NodeId;
 
-            if (instance.Parent.NodeId.Identifier is string strId)
-            {
-                // Replaced underline (_) with our own NODE_ID_DELIMITER
-                return new NodeId(ComposeNodeId(strId, instance.SymbolicName), instance.Parent.NodeId.NamespaceIndex);
-                    
-                // todo. kls. check uniqueness here??
-            }
+            // Generates nodeIDs like 'abc\def\gh' 
+            var nodeId = new NodeId(ComposeNodeId(strId, instance.SymbolicName), instance.Parent.NodeId.NamespaceIndex);
 
-            return node.NodeId;
+            // paranoic uniqueness check
+            Debug.Assert(IsNodeIdUnique(nodeId.Identifier as string));
+
+            return nodeId;
         }
         #endregion
+
 
         #region INodeManager Members
 
@@ -179,24 +170,13 @@ namespace iba.Processing.IbaOpcUa
 
         #endregion
 
-        #region ibaDatCoordinator-Specific
 
-        public static readonly char NODE_ID_DELIMITER = '\\';
-        public static readonly char NODE_ID_DEFAULT_REPLACEMENT_CHARACTER = '_';
+        #region Adding, Deleting, Setting Value
 
         /// <summary> Composes string node id, using <see cref="NODE_ID_DELIMITER"/>. 
         /// E.g.: "abc\de" + "fgh" -> "abc\de\fgh" </summary>
-        public static string ComposeNodeId(string parentFullId, string nodeBrowseName) 
+        public static string ComposeNodeId(string parentFullId, string nodeBrowseName)
             => parentFullId + NODE_ID_DELIMITER + GetAdaptedBrowseName(nodeBrowseName);
-
-        private readonly IbaOpcUaServer _ibaUaServer;
-
-        /// <summary> Root folder for all iba-specific data </summary>
-        public FolderState FolderIbaRoot { get; private set; }
-
-       
-        public Dictionary<NodeId, MonitoredNode2> GetMonitoredNodes() =>
-            MonitoredNodes;
 
         /// <summary>
         /// 1. Recursively destroys the node a its children.
@@ -270,8 +250,6 @@ namespace iba.Processing.IbaOpcUa
             DeleteNodeRecursively(parentFolder, false);
         }
 
-
-        // todo. kls. move to elsewhere
         private static readonly Dictionary<Type, BuiltInType> _typeDict = new Dictionary<Type, BuiltInType>
         {
             {typeof(string), BuiltInType.String},
@@ -283,10 +261,8 @@ namespace iba.Processing.IbaOpcUa
             {typeof(double), BuiltInType.Double}
         };
 
-        public static BuiltInType GetOpcUaType(object value)
-        {
-            return _typeDict.TryGetValue(value.GetType(), out BuiltInType uaType) ? uaType : BuiltInType.Null;
-        }
+        public static BuiltInType GetOpcUaType(object value) =>
+            _typeDict.TryGetValue(value.GetType(), out BuiltInType uaType) ? uaType : BuiltInType.Null;
 
         /// <summary> Sets value, sets StatusCodes.Good, calls state-change handlers </summary>
         public void SetValueScalar(BaseDataVariableState varState, object value)
@@ -321,37 +297,10 @@ namespace iba.Processing.IbaOpcUa
         /// <param name="fullNodeId">For example, "Root.MyFolder.Var1"</param>
         private bool IsNodeIdUnique(string fullNodeId) => Find(fullNodeId) == null;
 
-        /// <summary>
-        /// Generates unique valid node name as close as possible to a given argument.
-        /// </summary>
-        private string GenerateUniqueNodeName(FolderState parent, string nodeName)
-        {
-            if (!IsValidBrowseName(nodeName))
-                nodeName = GetAdaptedBrowseName(nodeName);
-
-            Debug.Assert(!string.IsNullOrEmpty(nodeName));
-            
-            if (IsNodeIdUnique(parent, nodeName))
-                return nodeName; // ok, original name is unique
-
-            for (int i = 1; i < 1000; i++)
-            {
-                string nameCandidate = $"{nodeName}_{i}";
-                if (IsNodeIdUnique(parent, nameCandidate))
-                    return nameCandidate; // ok, suggested candidate is unique
-            }
-
-            // almost impossible 
-            throw new Exception($"Cannot generate a unique name based on {parent?.NodeId}.{nodeName}") ; 
-        }
-
+        
         /// <summary> Finds the node by its string Node ID in a current namespace </summary>
         /// <param name="fullNodeId">For example, "Root.MyFolder.Var1"</param>
         public NodeState Find(string fullNodeId) => Find(new NodeId(fullNodeId, NamespaceIndex));
-
-        public bool IsNodeIdUnique(FolderState parent, string nodeName) =>
-            // parent.FindChild() // todo. kls. use this instead of global search? (performance?)
-            IsNodeIdUnique(GetFullNodeId(parent, nodeName));
 
         /// <summary> It's not allowed that a browse name is null, is empty or contains dots ('.').
         /// Anything else is ok, including whitespaces, slashes, semicolons, etc. </summary>
@@ -360,11 +309,8 @@ namespace iba.Processing.IbaOpcUa
             return !string.IsNullOrEmpty(browseName) && !browseName.Contains(NODE_ID_DELIMITER);
         }
 
-        /// <summary>
-        /// // todo. kls. comment 
-        /// </summary>
-        /// <param name="browseName"></param>
-        /// <returns></returns>
+        /// <summary> Replaces <see cref="NODE_ID_DELIMITER"/> with a replacement character
+        /// to avoid hierarchial problems </summary>
         public static string GetAdaptedBrowseName(string browseName)
         {
             return string.IsNullOrWhiteSpace(browseName) ?
@@ -392,7 +338,7 @@ namespace iba.Processing.IbaOpcUa
             if (!IsValidBrowseName(nodeName))
                 throw new ArgumentException($"'{nodeName}' is not a valid browse name", nameof(nodeName));
 
-            return $"{parentStrId}{NODE_ID_DELIMITER}{nodeName}";
+            return ComposeNodeId(parentStrId, nodeName);
         }
 
         public static string GetParentName(string nodeId)
@@ -403,7 +349,6 @@ namespace iba.Processing.IbaOpcUa
             string parentId = nodeId.Substring(0, pos);
             Debug.Assert(!string.IsNullOrWhiteSpace(parentId));
             return parentId;
-
         }
 
         /// <summary>Checks if it is ok to create a node with such a name in a given folder.
@@ -477,8 +422,6 @@ namespace iba.Processing.IbaOpcUa
 
             AssertNameCorrectnessAndUniqueness(parent, xmv.UaBrowseName);
 
-            //string browseName = GenerateUniqueNodeName(parent, xmv.Caption); // todo. kls. remove or move to overridden function?
-
             IbaOpcUaVariable v = new IbaOpcUaVariable(parent, xmv);
 
             // create node for given instance
@@ -530,6 +473,20 @@ namespace iba.Processing.IbaOpcUa
             // do not set to good until we have some data
             v.StatusCode = StatusCodes.BadNoData;
         }
+
+
+        #endregion
+
+
+        #region Monitoring
+
+        public Dictionary<NodeId, MonitoredNode2> GetMonitoredNodes() =>
+            MonitoredNodes;
+
+        #endregion
+
+
+        #region Getting children lists
 
         public List<BaseInstanceState> GetChildren(FolderState folder)
         {

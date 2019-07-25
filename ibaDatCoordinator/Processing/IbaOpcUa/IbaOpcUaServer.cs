@@ -59,7 +59,7 @@ namespace iba.Processing.IbaOpcUa
             List<INodeManager> nodeManagers = new List<INodeManager>();
 
             // create the custom node managers.
-            IbaOpcUaNodeManager = new IbaOpcUaNodeManager(this, server, configuration);
+            IbaOpcUaNodeManager = new IbaOpcUaNodeManager(server, configuration);
             nodeManagers.Add(IbaOpcUaNodeManager);
             
             // create master node manager.
