@@ -480,8 +480,28 @@ namespace iba.Processing.IbaOpcUa
 
         #region Monitoring
 
+        public event EventHandler<EventArgs> MonitoredItemsChanged;
+
         public Dictionary<NodeId, MonitoredNode2> GetMonitoredNodes() =>
             MonitoredNodes;
+
+        protected override void OnMonitoredItemCreated(ServerSystemContext context, NodeHandle handle, MonitoredItem monitoredItem)
+        {
+            base.OnMonitoredItemCreated(context, handle, monitoredItem);
+            MonitoredItemsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected override void OnMonitoredItemDeleted(ServerSystemContext context, NodeHandle handle, MonitoredItem monitoredItem)
+        {
+            base.OnMonitoredItemDeleted(context, handle, monitoredItem);
+            MonitoredItemsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected override void OnMonitoredItemModified(ServerSystemContext context, NodeHandle handle, MonitoredItem monitoredItem)
+        {
+            base.OnMonitoredItemModified(context, handle, monitoredItem);
+            MonitoredItemsChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         #endregion
 

@@ -107,7 +107,6 @@ namespace iba.Processing
             }
         }
 
-
         #endregion
 
 
@@ -168,6 +167,10 @@ namespace iba.Processing
             IbaOpcUaServer.ApplyConfiguration(null, null, false);
 
             RebuildTree();
+
+            // handle resetting group list on every change of monitored items
+            NodeManager.MonitoredItemsChanged += (sender, args) 
+                => _monitoredGroups = null;
 
             // finally, set status
             Status = ExtMonWorkerStatus.Started;
@@ -663,6 +666,8 @@ namespace iba.Processing
             _monitoringTimer.Elapsed += OnMonitoringTimerTick;
         }
 
+        private HashSet<ExtMonData.ExtMonGroup> _monitoredGroups;
+
         private void OnMonitoringTimerTick(object sender, EventArgs args)
         {
             if (!OpcUaData.Enabled || NodeManager == null)
@@ -672,22 +677,14 @@ namespace iba.Processing
             {
                 try
                 {
-                    var monitoredNodes = NodeManager.GetMonitoredNodes();
+                    if (_monitoredGroups == null)
+                        PrepareMonitoredGroupsList();
 
-                    // prepare a set of groups to be refreshed
-                    var groups = new HashSet<ExtMonData.ExtMonGroup>();
-                    foreach (var kvp in monitoredNodes)
-                    {
-                        NodeState node = kvp.Value.Node;
-                        if (node is IbaOpcUaVariable iv && !iv.IsDeleted && iv.ExtMonVar?.Group != null)
-                        {
-                            groups.Add(iv.ExtMonVar.Group);
-                        }
-                    }
+                    if (_monitoredGroups == null)
+                        return;
 
-                    // todo. kls. rebuild monitoring groups only in On MonitoredItem add/remove handler
-                    // refresh all groups that have monitored items
-                    foreach (var group in groups)
+                    // refresh all groups that have items being monitored
+                    foreach (var group in _monitoredGroups)
                     {
                         RefreshGroup(group);
                     }
@@ -712,6 +709,34 @@ namespace iba.Processing
                         $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Error acquiring lock, {GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
+            }
+        }
+
+
+        private void PrepareMonitoredGroupsList()
+        {
+            try
+            {
+                _monitoredGroups = null;
+                var monitoredNodes = NodeManager.GetMonitoredNodes();
+
+                // prepare a set of groups to be refreshed
+                var newMonitoredGroupsList = new HashSet<ExtMonData.ExtMonGroup>();
+                foreach (var kvp in monitoredNodes)
+                {
+                    NodeState node = kvp.Value.Node;
+                    if (node is IbaOpcUaVariable iv && !iv.IsDeleted && iv.ExtMonVar?.Group != null)
+                    {
+                        newMonitoredGroupsList.Add(iv.ExtMonVar.Group);
+                    }
+                }
+
+                _monitoredGroups = newMonitoredGroupsList;
+            }
+            catch
+            {
+                /*should not happen*/
+                Debug.Assert(false);
             }
         }
 
@@ -864,20 +889,21 @@ namespace iba.Processing
                 string strMonNodes = "";
                 string strMonGroups = "";
 
-                var groups = new HashSet<ExtMonData.ExtMonGroup>(); // todo. kls. reuse groups field
                 foreach (var kvp in monitoredNodes)
                 {
                     NodeState node = kvp.Value.Node;
                     if (node is IbaOpcUaVariable iv && !iv.IsDeleted && iv.ExtMonVar?.Group != null)
                     {
-                        groups.Add(iv.ExtMonVar.Group);
                         strMonNodes += $@"{iv.ExtMonVar.Caption}, ";
                     }
                 }
 
-                foreach (var group in groups)
+                if (_monitoredGroups != null)
                 {
-                    strMonGroups += $@"{group.Caption}, ";
+                    foreach (var group in _monitoredGroups)
+                    {
+                        strMonGroups += $@"{group.Caption}, ";
+                    }
                 }
 
                 strMonNodes = strMonNodes.TrimEnd(' ', ',');
