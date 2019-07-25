@@ -145,6 +145,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading ibaAnalyzer....
+        /// </summary>
+        internal static string AnalyzerTree_Loading {
+            get {
+                return ResourceManager.GetString("AnalyzerTree_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown error occurred while loading ibaAnalyzer.
+        /// </summary>
+        internal static string AnalyzerTree_UnknownError {
+            get {
+                return ResourceManager.GetString("AnalyzerTree_UnknownError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
         internal static string Application {

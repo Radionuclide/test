@@ -49,16 +49,13 @@ namespace iba.Controls
 
             m_analyzerManager = new AnalyzerManager();
 
-            m_pulseEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager);
-            m_pulseEditor.Filter = AnalyzerChannelTree.ChannelTreeFilter.Digital | AnalyzerChannelTree.ChannelTreeFilter.Analog; //TODO remove analog when expression types are available
+            m_pulseEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog); //TODO remove analog when expression types are available
             m_pulseEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
 
-            m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager);
-            m_channelEditor.Filter = AnalyzerChannelTree.ChannelTreeFilter.Analog | AnalyzerChannelTree.ChannelTreeFilter.Digital;
+            m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog);
             m_channelEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
 
-            m_textEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager);
-            m_textEditor.Filter = AnalyzerChannelTree.ChannelTreeFilter.Text | AnalyzerChannelTree.ChannelTreeFilter.Analog; //TODO remove analog when expression types are available
+            m_textEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Text | ChannelTreeFilter.Analog); //TODO remove analog when expression types are available
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.CurrentFileExpression, Properties.Resources.HDEventTask_ChannelProcessedFile, Properties.Resources.img_file);
 
@@ -174,9 +171,9 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            m_pulseEditor.DisposeChannelTree();
-            m_channelEditor.DisposeChannelTree();
-            m_textEditor.DisposeChannelTree();
+            m_pulseEditor.ResetChannelTree();
+            m_channelEditor.ResetChannelTree();
+            m_textEditor.ResetChannelTree();
             m_analyzerManager.Dispose();
         }
 
