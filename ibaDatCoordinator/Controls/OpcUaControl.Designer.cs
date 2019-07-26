@@ -33,16 +33,16 @@
             this.gbCertificates = new iba.Utility.CollapsibleGroupBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.buttonCertAdd = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.buttonCertGenerate = new System.Windows.Forms.ToolStripButton();
+            this.buttonCertExport = new System.Windows.Forms.ToolStripButton();
+            this.buttonCertRemove = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.buttonCertTrust = new System.Windows.Forms.ToolStripButton();
+            this.buttonCertReject = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
+            this.buttonCertUser = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton8 = new System.Windows.Forms.ToolStripButton();
+            this.buttonCertServer = new System.Windows.Forms.ToolStripButton();
             this.dgvCertificates = new System.Windows.Forms.DataGridView();
             this.dgvCertCol1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvCertCol2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -106,6 +106,7 @@
             this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.gbCertificates.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCertificates)).BeginInit();
@@ -152,16 +153,16 @@
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buttonCertAdd,
-            this.toolStripButton2,
-            this.toolStripButton3,
-            this.toolStripButton4,
+            this.buttonCertGenerate,
+            this.buttonCertExport,
+            this.buttonCertRemove,
             this.toolStripSeparator1,
-            this.toolStripButton5,
-            this.toolStripButton6,
+            this.buttonCertTrust,
+            this.buttonCertReject,
             this.toolStripSeparator2,
-            this.toolStripButton7,
+            this.buttonCertUser,
             this.toolStripSeparator3,
-            this.toolStripButton8});
+            this.buttonCertServer});
             this.toolStrip1.Location = new System.Drawing.Point(3, 16);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -171,87 +172,95 @@
             // 
             // buttonCertAdd
             // 
-            this.buttonCertAdd.Image = global::iba.Properties.Resources.plus;
+            this.buttonCertAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertAdd.Image = global::iba.Properties.Resources.img_add;
             this.buttonCertAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonCertAdd.Name = "buttonCertAdd";
-            this.buttonCertAdd.Size = new System.Drawing.Size(49, 22);
+            this.buttonCertAdd.Size = new System.Drawing.Size(23, 22);
             this.buttonCertAdd.Text = "Add";
             this.buttonCertAdd.ToolTipText = "Add an existing certificate file";
             // 
-            // toolStripButton2
+            // buttonCertGenerate
             // 
-            this.toolStripButton2.Image = global::iba.Properties.Resources.NewDocument;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(74, 22);
-            this.toolStripButton2.Text = "Generate";
-            this.toolStripButton2.ToolTipText = "Generate a certificate";
+            this.buttonCertGenerate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertGenerate.Image = global::iba.Properties.Resources.img_cert;
+            this.buttonCertGenerate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertGenerate.Name = "buttonCertGenerate";
+            this.buttonCertGenerate.Size = new System.Drawing.Size(23, 22);
+            this.buttonCertGenerate.Text = "Generate";
+            this.buttonCertGenerate.ToolTipText = "Generate a certificate";
             // 
-            // toolStripButton3
+            // buttonCertExport
             // 
-            this.toolStripButton3.Image = global::iba.Properties.Resources.Speichern;
-            this.toolStripButton3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(60, 22);
-            this.toolStripButton3.Text = "Export";
-            this.toolStripButton3.ToolTipText = "Export the selected certificate to a file";
+            this.buttonCertExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertExport.Image = global::iba.Properties.Resources.img_export;
+            this.buttonCertExport.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonCertExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertExport.Name = "buttonCertExport";
+            this.buttonCertExport.Size = new System.Drawing.Size(23, 22);
+            this.buttonCertExport.Text = "Export";
+            this.buttonCertExport.ToolTipText = "Export the selected certificate to a file";
             // 
-            // toolStripButton4
+            // buttonCertRemove
             // 
-            this.toolStripButton4.Image = global::iba.Properties.Resources.minus;
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(70, 22);
-            this.toolStripButton4.Text = "Remove";
-            this.toolStripButton4.ToolTipText = "Remove the selected certificate";
+            this.buttonCertRemove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertRemove.Image = global::iba.Properties.Resources.remove;
+            this.buttonCertRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertRemove.Name = "buttonCertRemove";
+            this.buttonCertRemove.Size = new System.Drawing.Size(23, 22);
+            this.buttonCertRemove.Text = "Remove";
+            this.buttonCertRemove.ToolTipText = "Remove the selected certificate";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButton5
+            // buttonCertTrust
             // 
-            this.toolStripButton5.Image = global::iba.Properties.Resources.thumup;
-            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(53, 22);
-            this.toolStripButton5.Text = "Trust";
+            this.buttonCertTrust.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertTrust.Image = global::iba.Properties.Resources.img_shldgreen;
+            this.buttonCertTrust.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertTrust.Name = "buttonCertTrust";
+            this.buttonCertTrust.Size = new System.Drawing.Size(23, 22);
+            this.buttonCertTrust.Text = "Trust";
             // 
-            // toolStripButton6
+            // buttonCertReject
             // 
-            this.toolStripButton6.Image = global::iba.Properties.Resources.thumbdown;
-            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton6.Name = "toolStripButton6";
-            this.toolStripButton6.Size = new System.Drawing.Size(59, 22);
-            this.toolStripButton6.Text = "Reject";
+            this.buttonCertReject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertReject.Image = global::iba.Properties.Resources.img_shldred;
+            this.buttonCertReject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertReject.Name = "buttonCertReject";
+            this.buttonCertReject.Size = new System.Drawing.Size(23, 22);
+            this.buttonCertReject.Text = "Reject";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButton7
+            // buttonCertUser
             // 
-            this.toolStripButton7.Image = global::iba.Properties.Resources.Eye;
-            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton7.Name = "toolStripButton7";
-            this.toolStripButton7.Size = new System.Drawing.Size(50, 22);
-            this.toolStripButton7.Text = "User";
+            this.buttonCertUser.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertUser.Image = global::iba.Properties.Resources.img_dude;
+            this.buttonCertUser.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertUser.Name = "buttonCertUser";
+            this.buttonCertUser.Size = new System.Drawing.Size(23, 22);
+            this.buttonCertUser.Text = "User";
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButton8
+            // buttonCertServer
             // 
-            this.toolStripButton8.Image = global::iba.Properties.Resources.snmp_icon;
-            this.toolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton8.Name = "toolStripButton8";
-            this.toolStripButton8.Size = new System.Drawing.Size(59, 22);
-            this.toolStripButton8.Text = "Server";
+            this.buttonCertServer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertServer.Image = global::iba.Properties.Resources.img_opcuaserver_cert;
+            this.buttonCertServer.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertServer.Name = "buttonCertServer";
+            this.buttonCertServer.Size = new System.Drawing.Size(23, 22);
+            this.buttonCertServer.Text = "Server";
             // 
             // dgvCertificates
             // 
@@ -796,6 +805,7 @@
             this.gbSecurity.Controls.Add(this.comboBoxSecurity256);
             this.gbSecurity.Controls.Add(this.comboBoxSecurity128);
             this.gbSecurity.Controls.Add(this.cbSecurity256);
+            this.gbSecurity.Controls.Add(this.button1);
             this.gbSecurity.Controls.Add(this.cbSecurity128);
             this.gbSecurity.Controls.Add(this.cbSecurityNone);
             this.gbSecurity.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -959,7 +969,7 @@
             // 
             this.buttonEndpointDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEndpointDelete.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
-            this.buttonEndpointDelete.Image = global::iba.Properties.Resources.img_error;
+            this.buttonEndpointDelete.Image = global::iba.Properties.Resources.remove;
             this.buttonEndpointDelete.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.buttonEndpointDelete.Location = new System.Drawing.Point(634, 125);
             this.buttonEndpointDelete.Name = "buttonEndpointDelete";
@@ -973,7 +983,7 @@
             // 
             this.buttonEndpointAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEndpointAdd.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
-            this.buttonEndpointAdd.Image = global::iba.Properties.Resources.plus;
+            this.buttonEndpointAdd.Image = global::iba.Properties.Resources.img_add;
             this.buttonEndpointAdd.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.buttonEndpointAdd.Location = new System.Drawing.Point(634, 19);
             this.buttonEndpointAdd.Name = "buttonEndpointAdd";
@@ -1033,6 +1043,20 @@
             this.buttonConfigurationApply.Text = "Apply";
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
+            this.button1.Image = global::iba.Properties.Resources.remove;
+            this.button1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.button1.Location = new System.Drawing.Point(267, 47);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 23);
+            this.button1.TabIndex = 16;
+            this.button1.TabStop = false;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.buttonEndpointDelete_Click);
             // 
             // OpcUaControl
             // 
@@ -1145,20 +1169,21 @@
         private Utility.CollapsibleGroupBox gbCertificates;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton buttonCertAdd;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
-        private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.ToolStripButton buttonCertGenerate;
+        private System.Windows.Forms.ToolStripButton buttonCertExport;
+        private System.Windows.Forms.ToolStripButton buttonCertRemove;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButton5;
-        private System.Windows.Forms.ToolStripButton toolStripButton6;
+        private System.Windows.Forms.ToolStripButton buttonCertTrust;
+        private System.Windows.Forms.ToolStripButton buttonCertReject;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton toolStripButton7;
+        private System.Windows.Forms.ToolStripButton buttonCertUser;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton toolStripButton8;
+        private System.Windows.Forms.ToolStripButton buttonCertServer;
         private System.Windows.Forms.DataGridView dgvCertificates;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol4;
+        private System.Windows.Forms.Button button1;
     }
 }

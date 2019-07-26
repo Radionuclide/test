@@ -88,7 +88,7 @@ namespace iba
             m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.watchdog.Handle);
             // added by kolesnik - begin
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = iba.Properties.Resources.snmp_icon;
-            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.snmp_icon; // todo. kls. 
+            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.opcUaServer_icon; 
             // added by kolesnik - end
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
