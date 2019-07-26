@@ -703,7 +703,6 @@
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <None Include="Resources\opcUaServer_icon.png" />
-    <None Include="Resources\SignalTreeImageList.png" />
     <None Include="Resources\remove.png" />
     <None Include="Resources\img_shldred.png" />
     <None Include="Resources\img_shldgreen.png" />

@@ -106,7 +106,6 @@
             this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.gbCertificates.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCertificates)).BeginInit();
@@ -805,7 +804,6 @@
             this.gbSecurity.Controls.Add(this.comboBoxSecurity256);
             this.gbSecurity.Controls.Add(this.comboBoxSecurity128);
             this.gbSecurity.Controls.Add(this.cbSecurity256);
-            this.gbSecurity.Controls.Add(this.button1);
             this.gbSecurity.Controls.Add(this.cbSecurity128);
             this.gbSecurity.Controls.Add(this.cbSecurityNone);
             this.gbSecurity.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1044,20 +1042,6 @@
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
-            this.button1.Image = global::iba.Properties.Resources.remove;
-            this.button1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.button1.Location = new System.Drawing.Point(267, 47);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(23, 23);
-            this.button1.TabIndex = 16;
-            this.button1.TabStop = false;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.buttonEndpointDelete_Click);
-            // 
             // OpcUaControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1184,6 +1168,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol4;
-        private System.Windows.Forms.Button button1;
     }
 }

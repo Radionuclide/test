@@ -3530,16 +3530,6 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SignalTreeImageList {
-            get {
-                object obj = ResourceManager.GetObject("SignalTreeImageList", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap snmp_icon {
             get {
                 object obj = ResourceManager.GetObject("snmp_icon", resourceCulture);
