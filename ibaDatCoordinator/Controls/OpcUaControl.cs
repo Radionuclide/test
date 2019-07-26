@@ -35,6 +35,9 @@ namespace iba.Controls
             gbConfiguration.Init();
             _ceManager.AddElement(gbConfiguration);
 
+            gbCertificates.Init();
+            _ceManager.AddElement(gbCertificates);
+
             gbObjects.Init();
             _ceManager.AddElement(gbObjects);
 
@@ -131,6 +134,9 @@ namespace iba.Controls
 
 
         #region Configuration
+
+
+        #region Configuration - General
 
         private void buttonConfigurationApply_Click(object sender, EventArgs e)
         {
@@ -285,8 +291,10 @@ namespace iba.Controls
             comboBoxSecurity256.Enabled = cbSecurity256.Checked;
         }
 
+        #endregion
 
-        #region Endpoints
+
+        #region Configuration - Endpoints
 
         // todo. kls. delete before last beta
         private void buttonCopyToClipboard_Click(object sender, EventArgs e)
@@ -385,8 +393,8 @@ namespace iba.Controls
         {
             if (!(sender is DataGridView view))
                 return;
-            DataGridViewRow row = view.Rows[e.RowIndex];
-            DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            //DataGridViewRow row = view.Rows[e.RowIndex];
+            //DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
             e.ThrowException = false;
         }
@@ -459,6 +467,35 @@ namespace iba.Controls
 
         #endregion
 
+
+        #endregion
+
+
+        #region Certificates
+
+        public class IbaOpcUaCertificateTag
+        {
+            public string Name;
+            public bool IsTrusted;
+            public bool HasPrivateKey;
+            public bool IsUsedForServer;
+            public bool IsUsedForAuthentication;
+
+            public string Issuer;
+            public DateTime ExpirationDate;
+
+            /// <summary> Is used for tooltip </summary>
+            public string GetPropertyString()
+            {
+                string result = $@"{(IsTrusted ? "Trusted" : "Rejected")}; ";
+
+                if (HasPrivateKey) result += "Private key; ";
+                if (IsUsedForServer) result += "OPC UA Server certificate; ";
+                if (IsUsedForAuthentication) result += "Authentication; ";
+                result = result.TrimEnd(';', ' ');
+                return result;
+            }
+        }
 
         #endregion
 
@@ -735,6 +772,8 @@ namespace iba.Controls
         #endregion
 
 
+        #region Tmp and Debug
+
         // todo. kls. delete before last beta
         private void buttonSetTestCfg_Click(object sender, EventArgs e)
         {
@@ -774,5 +813,7 @@ namespace iba.Controls
         {
             RebuildObjectsTree();
         }
+
+        #endregion
     }
 }

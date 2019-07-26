@@ -30,6 +30,24 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
+            this.gbCertificates = new iba.Utility.CollapsibleGroupBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.buttonCertAdd = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton8 = new System.Windows.Forms.ToolStripButton();
+            this.dgvCertificates = new System.Windows.Forms.DataGridView();
+            this.dgvCertCol1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCertCol2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCertCol3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCertCol4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.tbDiagTmp = new System.Windows.Forms.TextBox();
             this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
@@ -38,6 +56,9 @@
             this.colSubscrPublishingInterval = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSubscrNextSeq = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvClients = new System.Windows.Forms.DataGridView();
+            this.ColName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.buttonOpenLogFile = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
@@ -85,9 +106,9 @@
             this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
-            this.ColName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gbCertificates.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCertificates)).BeginInit();
             this.gbDiagnostics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
@@ -113,6 +134,180 @@
             this.timerRefreshStatus.Interval = 1000;
             this.timerRefreshStatus.Tick += new System.EventHandler(this.timerRefreshStatus_Tick);
             // 
+            // gbCertificates
+            // 
+            this.gbCertificates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbCertificates.Controls.Add(this.toolStrip1);
+            this.gbCertificates.Controls.Add(this.dgvCertificates);
+            this.gbCertificates.Location = new System.Drawing.Point(15, 350);
+            this.gbCertificates.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
+            this.gbCertificates.Name = "gbCertificates";
+            this.gbCertificates.Size = new System.Drawing.Size(690, 176);
+            this.gbCertificates.TabIndex = 17;
+            this.gbCertificates.TabStop = false;
+            this.gbCertificates.Text = "Certificates";
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buttonCertAdd,
+            this.toolStripButton2,
+            this.toolStripButton3,
+            this.toolStripButton4,
+            this.toolStripSeparator1,
+            this.toolStripButton5,
+            this.toolStripButton6,
+            this.toolStripSeparator2,
+            this.toolStripButton7,
+            this.toolStripSeparator3,
+            this.toolStripButton8});
+            this.toolStrip1.Location = new System.Drawing.Point(3, 16);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip1.Size = new System.Drawing.Size(684, 25);
+            this.toolStrip1.TabIndex = 17;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // buttonCertAdd
+            // 
+            this.buttonCertAdd.Image = global::iba.Properties.Resources.plus;
+            this.buttonCertAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertAdd.Name = "buttonCertAdd";
+            this.buttonCertAdd.Size = new System.Drawing.Size(49, 22);
+            this.buttonCertAdd.Text = "Add";
+            this.buttonCertAdd.ToolTipText = "Add an existing certificate file";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.Image = global::iba.Properties.Resources.NewDocument;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(74, 22);
+            this.toolStripButton2.Text = "Generate";
+            this.toolStripButton2.ToolTipText = "Generate a certificate";
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.Image = global::iba.Properties.Resources.Speichern;
+            this.toolStripButton3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(60, 22);
+            this.toolStripButton3.Text = "Export";
+            this.toolStripButton3.ToolTipText = "Export the selected certificate to a file";
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.Image = global::iba.Properties.Resources.minus;
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(70, 22);
+            this.toolStripButton4.Text = "Remove";
+            this.toolStripButton4.ToolTipText = "Remove the selected certificate";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton5
+            // 
+            this.toolStripButton5.Image = global::iba.Properties.Resources.thumup;
+            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton5.Name = "toolStripButton5";
+            this.toolStripButton5.Size = new System.Drawing.Size(53, 22);
+            this.toolStripButton5.Text = "Trust";
+            // 
+            // toolStripButton6
+            // 
+            this.toolStripButton6.Image = global::iba.Properties.Resources.thumbdown;
+            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton6.Name = "toolStripButton6";
+            this.toolStripButton6.Size = new System.Drawing.Size(59, 22);
+            this.toolStripButton6.Text = "Reject";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton7
+            // 
+            this.toolStripButton7.Image = global::iba.Properties.Resources.Eye;
+            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton7.Name = "toolStripButton7";
+            this.toolStripButton7.Size = new System.Drawing.Size(50, 22);
+            this.toolStripButton7.Text = "User";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton8
+            // 
+            this.toolStripButton8.Image = global::iba.Properties.Resources.snmp_icon;
+            this.toolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton8.Name = "toolStripButton8";
+            this.toolStripButton8.Size = new System.Drawing.Size(59, 22);
+            this.toolStripButton8.Text = "Server";
+            // 
+            // dgvCertificates
+            // 
+            this.dgvCertificates.AllowUserToAddRows = false;
+            this.dgvCertificates.AllowUserToDeleteRows = false;
+            this.dgvCertificates.AllowUserToResizeRows = false;
+            this.dgvCertificates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvCertificates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCertificates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvCertCol1,
+            this.dgvCertCol2,
+            this.dgvCertCol3,
+            this.dgvCertCol4});
+            this.dgvCertificates.Location = new System.Drawing.Point(18, 44);
+            this.dgvCertificates.Name = "dgvCertificates";
+            this.dgvCertificates.ReadOnly = true;
+            this.dgvCertificates.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
+            this.dgvCertificates.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgvCertificates.Size = new System.Drawing.Size(654, 126);
+            this.dgvCertificates.StandardTab = true;
+            this.dgvCertificates.TabIndex = 15;
+            // 
+            // dgvCertCol1
+            // 
+            this.dgvCertCol1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvCertCol1.HeaderText = "Name";
+            this.dgvCertCol1.MinimumWidth = 50;
+            this.dgvCertCol1.Name = "dgvCertCol1";
+            this.dgvCertCol1.ReadOnly = true;
+            // 
+            // dgvCertCol2
+            // 
+            this.dgvCertCol2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvCertCol2.HeaderText = "Properties";
+            this.dgvCertCol2.MinimumWidth = 50;
+            this.dgvCertCol2.Name = "dgvCertCol2";
+            this.dgvCertCol2.ReadOnly = true;
+            // 
+            // dgvCertCol3
+            // 
+            this.dgvCertCol3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvCertCol3.HeaderText = "Issued By";
+            this.dgvCertCol3.MinimumWidth = 50;
+            this.dgvCertCol3.Name = "dgvCertCol3";
+            this.dgvCertCol3.ReadOnly = true;
+            // 
+            // dgvCertCol4
+            // 
+            this.dgvCertCol4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvCertCol4.HeaderText = "Expiration Date";
+            this.dgvCertCol4.MinimumWidth = 50;
+            this.dgvCertCol4.Name = "dgvCertCol4";
+            this.dgvCertCol4.ReadOnly = true;
+            // 
             // gbDiagnostics
             // 
             this.gbDiagnostics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -125,7 +320,7 @@
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label1);
             this.gbDiagnostics.Controls.Add(this.label15);
-            this.gbDiagnostics.Location = new System.Drawing.Point(15, 754);
+            this.gbDiagnostics.Location = new System.Drawing.Point(15, 936);
             this.gbDiagnostics.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Padding = new System.Windows.Forms.Padding(15, 3, 15, 3);
@@ -224,6 +419,33 @@
             this.dgvClients.TabIndex = 1;
             this.dgvClients.SelectionChanged += new System.EventHandler(this.dgvClients_SelectionChanged);
             // 
+            // ColName
+            // 
+            this.ColName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColName.FillWeight = 76.14214F;
+            this.ColName.HeaderText = "Name";
+            this.ColName.MinimumWidth = 50;
+            this.ColName.Name = "ColName";
+            this.ColName.ReadOnly = true;
+            // 
+            // ColId
+            // 
+            this.ColId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColId.FillWeight = 50F;
+            this.ColId.HeaderText = "ID";
+            this.ColId.MinimumWidth = 50;
+            this.ColId.Name = "ColId";
+            this.ColId.ReadOnly = true;
+            // 
+            // ColLastMsg
+            // 
+            this.ColLastMsg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColLastMsg.FillWeight = 76.14214F;
+            this.ColLastMsg.HeaderText = "Last message time";
+            this.ColLastMsg.MinimumWidth = 50;
+            this.ColLastMsg.Name = "ColLastMsg";
+            this.ColLastMsg.ReadOnly = true;
+            // 
             // tbStatus
             // 
             this.tbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -284,7 +506,7 @@
             this.gbObjects.Controls.Add(this.buttonRefreshGuiTree);
             this.gbObjects.Controls.Add(this.buttonRebuildTree);
             this.gbObjects.Controls.Add(this.tvObjects);
-            this.gbObjects.Location = new System.Drawing.Point(15, 350);
+            this.gbObjects.Location = new System.Drawing.Point(15, 532);
             this.gbObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbObjects.Name = "gbObjects";
             this.gbObjects.Size = new System.Drawing.Size(690, 398);
@@ -812,38 +1034,12 @@
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
-            // ColName
-            // 
-            this.ColName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColName.FillWeight = 76.14214F;
-            this.ColName.HeaderText = "Name";
-            this.ColName.MinimumWidth = 50;
-            this.ColName.Name = "ColName";
-            this.ColName.ReadOnly = true;
-            // 
-            // ColId
-            // 
-            this.ColId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColId.FillWeight = 50F;
-            this.ColId.HeaderText = "ID";
-            this.ColId.MinimumWidth = 50;
-            this.ColId.Name = "ColId";
-            this.ColId.ReadOnly = true;
-            // 
-            // ColLastMsg
-            // 
-            this.ColLastMsg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColLastMsg.FillWeight = 76.14214F;
-            this.ColLastMsg.HeaderText = "Last message time";
-            this.ColLastMsg.MinimumWidth = 50;
-            this.ColLastMsg.Name = "ColLastMsg";
-            this.ColLastMsg.ReadOnly = true;
-            // 
             // OpcUaControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.Controls.Add(this.gbCertificates);
             this.Controls.Add(this.gbDiagnostics);
             this.Controls.Add(this.gbObjects);
             this.Controls.Add(this.gbConfiguration);
@@ -851,6 +1047,11 @@
             this.Name = "OpcUaControl";
             this.Size = new System.Drawing.Size(720, 1345);
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
+            this.gbCertificates.ResumeLayout(false);
+            this.gbCertificates.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCertificates)).EndInit();
             this.gbDiagnostics.ResumeLayout(false);
             this.gbDiagnostics.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).EndInit();
@@ -941,5 +1142,23 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColId;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColLastMsg;
+        private Utility.CollapsibleGroupBox gbCertificates;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton buttonCertAdd;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolStripButton5;
+        private System.Windows.Forms.ToolStripButton toolStripButton6;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton toolStripButton7;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton toolStripButton8;
+        private System.Windows.Forms.DataGridView dgvCertificates;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol4;
     }
 }
