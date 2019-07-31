@@ -816,6 +816,42 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The download of file {0} was cancelled.
+        /// </summary>
+        internal static string Download_ErrorCancelled {
+            get {
+                return ResourceManager.GetString("Download_ErrorCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} could not be downloaded: not connected to a service.
+        /// </summary>
+        internal static string Download_ErrorDisconnected {
+            get {
+                return ResourceManager.GetString("Download_ErrorDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An exception occurred while downloading file {0}.
+        /// </summary>
+        internal static string Download_ErrorException {
+            get {
+                return ResourceManager.GetString("Download_ErrorException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} could not be downloaded for an unknown reason.
+        /// </summary>
+        internal static string Download_ErrorUnknown {
+            get {
+                return ResourceManager.GetString("Download_ErrorUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IbaAnalyzer exceeded the imposed memory limit.
         /// </summary>
         internal static string errAnalyzerMemory {
@@ -1092,6 +1128,51 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error while checking changes for file {0}: a connection to the service is required to check for file changes.
+        /// </summary>
+        internal static string FileChanged_ErrorDisconnected {
+            get {
+                return ResourceManager.GetString("FileChanged_ErrorDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while checking changes for file {0}: {1}.
+        /// </summary>
+        internal static string FileChanged_ErrorException {
+            get {
+                return ResourceManager.GetString("FileChanged_ErrorException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while checking changes for file {0}: file not found.
+        /// </summary>
+        internal static string FileChanged_ErrorNotFound {
+            get {
+                return ResourceManager.GetString("FileChanged_ErrorNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes were detected to one or more PDO files. In order to transfer these changes to the service, these files must be uploaded. This might automatically stop and start the corresponding job. Do you wish to upload these files?.
+        /// </summary>
+        internal static string FileChanged_Upload {
+            get {
+                return ResourceManager.GetString("FileChanged_Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No changes to the PDO file were detected.
+        /// </summary>
+        internal static string FileChanged_UploadNoChanges {
+            get {
+                return ResourceManager.GetString("FileChanged_UploadNoChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem monitoring .dat directory &apos;{0}&apos; : &quot;{1}&quot;.
         /// </summary>
         internal static string FileSystemWatcherProblem {
@@ -1188,6 +1269,24 @@ namespace iba.Properties {
         internal static string HDEventTask_ChannelUnassigned {
             get {
                 return ResourceManager.GetString("HDEventTask_ChannelUnassigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For a remote service, a connection is required to select a PDO file!.
+        /// </summary>
+        internal static string HDEventTask_PDOConnectionRequired {
+            get {
+                return ResourceManager.GetString("HDEventTask_PDOConnectionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaHD events were generated successfully.
+        /// </summary>
+        internal static string HDEventTask_TestSuccess {
+            get {
+                return ResourceManager.GetString("HDEventTask_TestSuccess", resourceCulture);
             }
         }
         
@@ -1405,6 +1504,16 @@ namespace iba.Properties {
         internal static System.Drawing.Bitmap img_file {
             get {
                 object obj = ResourceManager.GetObject("img_file", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_pdo_upload {
+            get {
+                object obj = ResourceManager.GetObject("img_pdo_upload", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1912,6 +2021,15 @@ namespace iba.Properties {
         internal static string logHDEventTaskConfigError {
             get {
                 return ResourceManager.GetString("logHDEventTaskConfigError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test DAT file could not be found.
+        /// </summary>
+        internal static string logHDEventTaskDATError {
+            get {
+                return ResourceManager.GetString("logHDEventTaskDATError", resourceCulture);
             }
         }
         
@@ -2965,6 +3083,15 @@ namespace iba.Properties {
         internal static string pauseTaskTitle {
             get {
                 return ResourceManager.GetString("pauseTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer PDO files (*.pdo)|*.pdo.
+        /// </summary>
+        internal static string PdoFileFilter {
+            get {
+                return ResourceManager.GetString("PdoFileFilter", resourceCulture);
             }
         }
         
@@ -4262,6 +4389,51 @@ namespace iba.Properties {
         internal static string UpdateHappened {
             get {
                 return ResourceManager.GetString("UpdateHappened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The upload of file {0} was cancelled.
+        /// </summary>
+        internal static string Upload_ErrorCancelled {
+            get {
+                return ResourceManager.GetString("Upload_ErrorCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} could not be uploaded: not connected to a service.
+        /// </summary>
+        internal static string Upload_ErrorDisconnected {
+            get {
+                return ResourceManager.GetString("Upload_ErrorDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An exception occurred while uploading file {0}.
+        /// </summary>
+        internal static string Upload_ErrorException {
+            get {
+                return ResourceManager.GetString("Upload_ErrorException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to upload file {0} because it could not be found.
+        /// </summary>
+        internal static string Upload_ErrorNotFound {
+            get {
+                return ResourceManager.GetString("Upload_ErrorNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} could not be uploaded for an unknown reason.
+        /// </summary>
+        internal static string Upload_ErrorUnknown {
+            get {
+                return ResourceManager.GetString("Upload_ErrorUnknown", resourceCulture);
             }
         }
         

@@ -167,6 +167,8 @@ namespace iba
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
             {
+                TryUploadChangedFiles();
+
                 //Program.CommunicationObject.Logging_Log(Environment.MachineName + ": Gui Stopped");
                 if (m_ef != null)
                     Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
@@ -1913,7 +1915,6 @@ namespace iba
                     return;
                 }
 
-
                 // To write to a file, create a StreamWriter object.
                 try
                 {
@@ -1928,6 +1929,7 @@ namespace iba
                     MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     LogData.Data.Logger.Log(Logging.Level.Debug, "Saving, serialization failed (step2):" + ex.ToString());
                 }
+
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     Program.CommunicationObject.SaveConfigurations();
             }
@@ -2319,6 +2321,7 @@ namespace iba
                 return;
             SaveRightPaneControl();
             if (!String.IsNullOrEmpty(m_filename)) saveToolStripMenuItem_Click(null, null);
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.SaveConfigurations();
 
@@ -2680,6 +2683,78 @@ namespace iba
             }
         }
 
+        private void TryUploadChangedFiles(ConfigurationData data)
+        {
+            if (!Program.ServiceIsLocal)
+            {
+                List<string> localFiles = new List<string>();
+                List<string> remoteFiles = new List<string>();
+                foreach (var task in data.Tasks)
+                {
+                    if (!(task is HDCreateEventTaskData createEventTask))
+                        continue;
+
+                    string localFile = Program.RemoteFileLoader.GetLocalPath(createEventTask.AnalysisFile);
+                    if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, createEventTask.AnalysisFile))
+                    {
+                        localFiles.Add(localFile);
+                        remoteFiles.Add(createEventTask.AnalysisFile);
+                    }
+                }
+
+                if (localFiles.Count > 0)
+                {
+                    if (MessageBox.Show(this, Properties.Resources.FileChanged_Upload, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        return;
+
+                    Cursor = Cursors.WaitCursor;
+
+                    bool bStarted = TaskManager.Manager.IsJobStarted(data.Guid);
+                    try
+                    {
+                        if (bStarted)
+                            TaskManager.Manager.StopAndWaitForConfiguration(data);
+
+                        if (!Program.RemoteFileLoader.UploadFiles(localFiles.ToArray(), remoteFiles.ToArray(), true, out Dictionary<string, string> errors))
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            foreach (var val in errors.Values)
+                                sb.AppendLine(val);
+
+                            throw new Exception(sb.ToString());
+                        }
+
+                        Cursor = Cursors.Default;
+                    }
+                    catch (Exception ex)
+                    {
+                        Cursor = Cursors.Default;
+                        MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if (bStarted)
+                                TaskManager.Manager.StartConfiguration(data);
+                        }
+                        catch
+                        { }
+                    }
+                }
+            }
+        }
+
+        private void TryUploadChangedFiles()
+        {
+            List<ConfigurationData> cfgs = TaskManager.Manager.Configurations;
+            if (cfgs != null)
+            {
+                foreach (var cfg in cfgs)
+                    TryUploadChangedFiles(cfg);
+            }
+        }
+
         private void AskToSaveConnection()
         {
             if (IsServerClientDifference() &&
@@ -2701,6 +2776,8 @@ namespace iba
                             {
                                 TaskManager.Manager.UpdateConfiguration(data);
                             }
+
+                            TryUploadChangedFiles(data);
                         }
                     }
                 }
@@ -2773,6 +2850,7 @@ namespace iba
                                     {
                                         if (data != null) data.ApplyToManager(TaskManager.Manager, Program.ClientName);
                                         ReplaceManagerFromTree(TaskManager.Manager);
+                                        TryUploadChangedFiles();
                                         TaskManager.Manager.StartAllEnabledGlobalCleanups();
                                         foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
                                         {

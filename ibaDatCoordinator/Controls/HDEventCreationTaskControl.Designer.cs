@@ -28,6 +28,7 @@
             this.m_rbTriggerBySignal = new System.Windows.Forms.RadioButton();
             this.m_rbTriggerPerFile = new System.Windows.Forms.RadioButton();
             this.gbDataSource = new iba.Utility.CollapsibleGroupBox();
+            this.m_btnUploadPDO = new System.Windows.Forms.Button();
             this.m_tbPwdDAT = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.m_btnOpenPDO = new System.Windows.Forms.Button();
@@ -44,6 +45,7 @@
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
+            this.m_btnTest = new System.Windows.Forms.Button();
             this.gbEvent.SuspendLayout();
             this.gbStoreSelection.SuspendLayout();
             this.gbTrigger.SuspendLayout();
@@ -66,6 +68,8 @@
             // m_ctrlEvent
             // 
             this.m_ctrlEvent.ChannelEditor = null;
+            this.m_ctrlEvent.DefaultChannelValue = "";
+            this.m_ctrlEvent.DefaultTextChannelValue = "";
             resources.ApplyResources(this.m_ctrlEvent, "m_ctrlEvent");
             this.m_ctrlEvent.Name = "m_ctrlEvent";
             this.m_ctrlEvent.TextChannelEditor = null;
@@ -153,6 +157,8 @@
             // gbDataSource
             // 
             resources.ApplyResources(this.gbDataSource, "gbDataSource");
+            this.gbDataSource.Controls.Add(this.m_btnTest);
+            this.gbDataSource.Controls.Add(this.m_btnUploadPDO);
             this.gbDataSource.Controls.Add(this.m_tbPwdDAT);
             this.gbDataSource.Controls.Add(this.label4);
             this.gbDataSource.Controls.Add(this.m_btnOpenPDO);
@@ -164,6 +170,14 @@
             this.gbDataSource.Controls.Add(this.label2);
             this.gbDataSource.Name = "gbDataSource";
             this.gbDataSource.TabStop = false;
+            // 
+            // m_btnUploadPDO
+            // 
+            resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+            this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
+            this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+            this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+            this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
             // 
             // m_tbPwdDAT
             // 
@@ -183,6 +197,7 @@
             this.m_btnOpenPDO.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
             this.m_btnOpenPDO.Name = "m_btnOpenPDO";
             this.m_btnOpenPDO.UseVisualStyleBackColor = true;
+            this.m_btnOpenPDO.Click += new System.EventHandler(this.m_btnOpenPDO_Click);
             // 
             // m_btnBrowseDAT
             // 
@@ -198,6 +213,7 @@
             this.m_btnBrowsePDO.Image = global::iba.Properties.Resources.open;
             this.m_btnBrowsePDO.Name = "m_btnBrowsePDO";
             this.m_btnBrowsePDO.UseVisualStyleBackColor = true;
+            this.m_btnBrowsePDO.Click += new System.EventHandler(this.m_btnBrowsePDO_Click);
             // 
             // m_tbDAT
             // 
@@ -295,6 +311,13 @@
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
+            // m_btnTest
+            // 
+            resources.ApplyResources(this.m_btnTest, "m_btnTest");
+            this.m_btnTest.Name = "m_btnTest";
+            this.m_btnTest.UseVisualStyleBackColor = true;
+            this.m_btnTest.Click += new System.EventHandler(this.m_btnTest_Click);
+            // 
             // HDEventCreationTaskControl
             // 
             resources.ApplyResources(this, "$this");
@@ -350,5 +373,7 @@
         private DevExpress.XtraGrid.GridControl m_grPulse;
         private DevExpress.XtraGrid.Views.Grid.GridView m_viewPulse;
         private DevExpress.XtraGrid.Columns.GridColumn m_colPulse;
+        private System.Windows.Forms.Button m_btnUploadPDO;
+        private System.Windows.Forms.Button m_btnTest;
     }
 }

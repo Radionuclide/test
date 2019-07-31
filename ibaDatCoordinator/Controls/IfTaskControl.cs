@@ -111,7 +111,7 @@ namespace iba.Controls
         private void m_browsePDOFileButton_Click(object sender, EventArgs e)
         {
             m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.Filter = "ibaAnalyzer PDO files (*.pdo)|*.pdo";
+            m_openFileDialog.Filter = Properties.Resources.PdoFileFilter;
             DialogResult result = m_openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
                 m_pdoFileTextBox.Text = m_openFileDialog.FileName;

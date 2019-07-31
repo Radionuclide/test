@@ -167,7 +167,7 @@ namespace iba.Remoting
                 completed.Reset();
 				using(FileStream file = File.Open(files[i], FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					FileUploader upload = new FileUploader(file, completed, this);
+					FileUploader upload = new FileUploader(file, fInfo[i].LastWriteTimeUtc, completed, this);
                     string[] destFileNames = new string[destPaths.Length];
                     for(int j=0;j<destPaths.Length;j++)
                         destFileNames[j] = Path.Combine(destPaths[j], Path.GetFileName(files[i]));
@@ -240,15 +240,21 @@ namespace iba.Remoting
         void ErrorOccurred(string errorMsg);
     }
 
-    internal class FileUploader : MarshalByRefObject, IFileDownload2
+    public interface IFileDownload3 : IFileDownload2
     {
-        public FileUploader(FileStream file, ManualResetEvent completedEvent, FilesUploaderForm form)
+        DateTime LastWriteTimeUTC { get; }
+    }
+
+    internal class FileUploader : MarshalByRefObject, IFileDownload3
+    {
+        public FileUploader(FileStream file, DateTime lastWriteTimeUTC, ManualResetEvent completedEvent, FilesUploaderForm form)
         {
             buffer = new byte[64*1024];
             this.file = file;
             this.form = form;
             this.completedEvent = completedEvent;
             errorMsg = null;
+            LastWriteTimeUTC = lastWriteTimeUTC;
         }
 
         protected FilesUploaderForm form;
@@ -299,6 +305,12 @@ namespace iba.Remoting
             this.errorMsg = errorMsg;
             Cancel();
         }
+
+        #endregion
+
+        #region IFileDownload3 Members
+
+        public DateTime LastWriteTimeUTC { get; private set; }
 
         #endregion
 

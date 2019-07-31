@@ -1571,4 +1571,61 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="AnalyzerTree_UnknownError" xml:space="preserve">
     <value>Unknown error occurred while loading ibaAnalyzer</value>
   </data>
+  <data name="Download_ErrorCancelled" xml:space="preserve">
+    <value>The download of file {0} was cancelled</value>
+  </data>
+  <data name="Download_ErrorDisconnected" xml:space="preserve">
+    <value>File {0} could not be downloaded: not connected to a service</value>
+  </data>
+  <data name="Download_ErrorException" xml:space="preserve">
+    <value>An exception occurred while downloading file {0}</value>
+  </data>
+  <data name="Download_ErrorUnknown" xml:space="preserve">
+    <value>File {0} could not be downloaded for an unknown reason</value>
+  </data>
+  <data name="HDEventTask_PDOConnectionRequired" xml:space="preserve">
+    <value>For a remote service, a connection is required to select a PDO file!</value>
+  </data>
+  <data name="PdoFileFilter" xml:space="preserve">
+    <value>ibaAnalyzer PDO files (*.pdo)|*.pdo</value>
+  </data>
+  <data name="Upload_ErrorCancelled" xml:space="preserve">
+    <value>The upload of file {0} was cancelled</value>
+  </data>
+  <data name="Upload_ErrorDisconnected" xml:space="preserve">
+    <value>File {0} could not be uploaded: not connected to a service</value>
+  </data>
+  <data name="Upload_ErrorException" xml:space="preserve">
+    <value>An exception occurred while uploading file {0}</value>
+  </data>
+  <data name="Upload_ErrorNotFound" xml:space="preserve">
+    <value>Unable to upload file {0} because it could not be found</value>
+  </data>
+  <data name="Upload_ErrorUnknown" xml:space="preserve">
+    <value>File {0} could not be uploaded for an unknown reason</value>
+  </data>
+  <data name="FileChanged_ErrorDisconnected" xml:space="preserve">
+    <value>Error while checking changes for file {0}: a connection to the service is required to check for file changes</value>
+  </data>
+  <data name="FileChanged_ErrorException" xml:space="preserve">
+    <value>Error while checking changes for file {0}: {1}</value>
+  </data>
+  <data name="FileChanged_ErrorNotFound" xml:space="preserve">
+    <value>Error while checking changes for file {0}: file not found</value>
+  </data>
+  <data name="FileChanged_Upload" xml:space="preserve">
+    <value>Changes were detected to one or more PDO files. In order to transfer these changes to the service, these files must be uploaded. This might automatically stop and start the corresponding job. Do you wish to upload these files?</value>
+  </data>
+  <data name="FileChanged_UploadNoChanges" xml:space="preserve">
+    <value>No changes to the PDO file were detected</value>
+  </data>
+  <data name="HDEventTask_TestSuccess" xml:space="preserve">
+    <value>ibaHD events were generated successfully</value>
+  </data>
+  <data name="img_pdo_upload" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_pdo_upload.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logHDEventTaskDATError" xml:space="preserve">
+    <value>Test DAT file could not be found</value>
+  </data>
 </root>

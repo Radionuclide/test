@@ -385,6 +385,24 @@ namespace iba
         {
             return PluginManager.Manager.HasPlugin(name);
         }
+
+        public ServerFileInfo[] GetFileInfos(string[] fileNames)
+        {
+            try
+            {
+                ServerFileInfo[] res = new ServerFileInfo[fileNames.Length];
+
+                for (int i = 0; i < fileNames.Length; i++)
+                    res[i] = File.Exists(fileNames[i]) ? new ServerFileInfo(fileNames[i]) : null;
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logging.ibaLogger.LogFormat(Logging.Level.Exception, "CommunicationObject GetFileInfos: {0}", ex.Message);
+                return new ServerFileInfo[0];
+            }
+        }
     }
 
     public class CommunicationObjectWrapper
@@ -792,6 +810,19 @@ namespace iba
                 HandleBrokenConnection(ex);
             }
             if (exfile != null) throw exfile;
+        }
+
+        public ServerFileInfo[] GetFileInfos(string[] fileNames)
+        {
+            try
+            {
+                return m_com.GetFileInfos(fileNames);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return new ServerFileInfo[0];
+            }
         }
 
     }

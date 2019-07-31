@@ -28,6 +28,7 @@ namespace iba.Controls
 
         bool bFilesOpened;
         public bool IsOpened => bFilesOpened;
+        DateTime m_dtLastWriteTime;
         string pdoFile, datFile, datFilePassword;
 
         public event Action SourceUpdated;
@@ -40,6 +41,7 @@ namespace iba.Controls
             Analyzer = null;
 
             bFilesOpened = false;
+            m_dtLastWriteTime = DateTime.MinValue.ToUniversalTime();
             pdoFile = datFile = datFilePassword = "";
         }
         #endregion
@@ -70,6 +72,8 @@ namespace iba.Controls
 
             lock (lockAnalyzer)
             {
+                bool bErrorFromAnalyzer = false;
+
                 try
                 {
                     if (Analyzer == null)
@@ -83,10 +87,24 @@ namespace iba.Controls
 
                         Analyzer = new IbaAnalyzer.IbaAnalysis(); //TODO eventually replace by NonInteractive when tree images are supported
                     }
-                    
+
+                    FileInfo info = new FileInfo(Program.RemoteFileLoader.GetLocalPath(pdoFile));
+                    if (!info.Exists  || info.LastWriteTimeUtc != m_dtLastWriteTime)
+                        UnsafeClose();
+
                     if (!bFilesOpened)
                     {
-                        Analyzer.OpenAnalysis(pdoFile);
+                        if (!Program.RemoteFileLoader.DownloadFile(pdoFile, out string localFile, out error))
+                            return false;
+
+                        info = new FileInfo(localFile);
+                        DateTime dtLastWriteTime = info.LastWriteTimeUtc;
+
+                        bErrorFromAnalyzer = true;
+
+                        Analyzer.OpenAnalysis(localFile);
+                        m_dtLastWriteTime = dtLastWriteTime;
+
                         if (!string.IsNullOrEmpty(datFile))
                         {
                             if (!string.IsNullOrEmpty(datFilePassword))
@@ -104,7 +122,8 @@ namespace iba.Controls
                 {
                     try
                     {
-                        error = Analyzer?.GetLastError();
+                        if (bErrorFromAnalyzer)
+                            error = Analyzer?.GetLastError();
                     }
                     catch
                     { }
@@ -132,6 +151,7 @@ namespace iba.Controls
             catch
             { }
 
+            m_dtLastWriteTime = DateTime.MinValue.ToUniversalTime();
             bFilesOpened = false;
         }
 

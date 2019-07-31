@@ -222,6 +222,7 @@
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\SnmpObjectsData.cs" />
+    <Compile Include="Processing\HDCreateEventTaskWorker.cs" />
     <Compile Include="Processing\HDEventMonitor.cs" />
     <Compile Include="Processing\ibaAnalyzerWrapper.cs" />
     <Compile Include="Processing\SnmpWorker.cs" />
@@ -238,6 +239,7 @@
     </Compile>
     <Compile Include="Remoting\ClientRemotingManager.cs" />
     <Compile Include="Remoting\FileDownloaderImpl.cs" />
+    <Compile Include="Remoting\RemoteFileLoader.cs" />
     <Compile Include="Remoting\FilesDownloaderForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -692,6 +694,7 @@
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <Content Include="Resources\img_file.png" />
+    <Content Include="Resources\img_pdo_upload.png" />
     <Content Include="Resources\img_warning.png" />
     <None Include="Resources\about_background.png" />
     <None Include="Resources\about80x80.png" />

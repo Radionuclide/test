@@ -11,9 +11,15 @@ namespace iba.Remoting
 {
     class FileDownloaderImpl
     {
-        public FileDownloaderImpl(FileStream file, Int64 fileSize, IFileDownload download)
+        public FileDownloaderImpl(string destPath, Int64 fileSize, IFileDownload download)
         {
-            this.file = file;
+            destPath = PdaServerFiles.NormalizePath(destPath);
+            String dir = Path.GetDirectoryName(destPath);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            this.file = File.Create(destPath);
+            this.origDestPath = destPath;
             this.fileSize = fileSize;
             this.download = download;
             this.copyPaths = null;
@@ -30,12 +36,14 @@ namespace iba.Remoting
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             this.file = File.Create(destPath);
+            this.origDestPath = destPath;
 
             StartThread();
         }
 
         private void DownloadFile()
         {
+            IFileDownload3 download3 = download as IFileDownload3;
             try
             {
                 int receivedSize = 0;
@@ -66,6 +74,9 @@ namespace iba.Remoting
                         FileStream copy = File.Create(destPath);
                         file.CopyTo(copy);
                         copy.Close();
+
+                        if (download3 != null)
+                            File.SetLastWriteTimeUtc(destPath, download3.LastWriteTimeUTC);
                     }
                 }
             }
@@ -88,6 +99,9 @@ namespace iba.Remoting
             {
                 file.Close();
             }
+
+            if (download3 != null)
+                File.SetLastWriteTimeUtc(origDestPath, download3.LastWriteTimeUTC);
         }
 
         private void StartThread()
@@ -98,6 +112,7 @@ namespace iba.Remoting
             thread.Start();
         }
 
+        private string origDestPath;
         private FileStream file;
         private IFileDownload download;
         Int64 fileSize;

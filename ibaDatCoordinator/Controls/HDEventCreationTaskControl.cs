@@ -7,6 +7,9 @@ using System;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Drawing;
 using System.IO;
+using iba.Processing;
+using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace iba.Controls
 {
@@ -33,14 +36,14 @@ namespace iba.Controls
         AnalyzerManager m_analyzerManager;
         RepositoryItemChannelTreeEdit m_pulseEditor, m_channelEditor, m_textEditor;
 
-        string m_datFilePath;
+        string m_pdoFilePath, m_datFilePath;
         #endregion
 
         public HDEventCreationTaskControl()
         {
             InitializeComponent();
 
-            m_datFilePath = "";
+            m_pdoFilePath = m_datFilePath = "";
 
             m_ctrlServer.SetServerFeatures(new List<ReaderFeature>(1) { ReaderFeature.ComputedValue }, new List<WriterFeature>(1) { WriterFeature.ComputedValue });
             m_ctrlServer.StoreFilter = new List<HdStoreType> { HdStoreType.Event };
@@ -120,10 +123,9 @@ namespace iba.Controls
         #region IPropertyPane
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal;
+
             //TODO disable controls, etc.
-            //TODO remote files??
-            //TODO editors
-            //TODO test button
 
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
@@ -131,7 +133,8 @@ namespace iba.Controls
             m_ctrlServer.LoadData(m_data.EventSettings.Server, m_data.EventSettings.ServerPort,
                 m_data.EventSettings.Username, m_data.EventSettings.Password, m_data.EventSettings.StoreName);
 
-            m_tbPDO.Text = m_data.AnalysisFile; //TODO
+            m_pdoFilePath = m_data.AnalysisFile;
+            m_tbPDO.Text = Path.GetFileName(m_data.AnalysisFile);
 
             m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
 
@@ -179,7 +182,7 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            m_data.AnalysisFile = m_tbPDO.Text;
+            m_data.AnalysisFile = m_pdoFilePath;
             m_data.DatFileHost = Environment.MachineName;
             m_data.DatFile = m_datFilePath;
             m_data.DatFilePassword = m_tbPwdDAT.Text;
@@ -206,14 +209,16 @@ namespace iba.Controls
             m_data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
             m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
 
-            //TODO other settings
-            //TODO remote stuff
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
+                UploadPdoFile(false);
+            }
         }
         #endregion
 
         void UpdateSources()
         {
-            //TODO pdo stuff
             m_analyzerManager.UpdateSource(m_data.AnalysisFile, m_datFilePath, m_tbPwdDAT.Text);
         }
 
@@ -240,6 +245,156 @@ namespace iba.Controls
 
             m_tbDAT.Text = Path.GetFileName(m_datFilePath);
             UpdateSources();
+        }
+
+        private void m_btnOpenPDO_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                object o = key.GetValue("");
+                string ibaAnalyzerExe = Path.GetFullPath(o.ToString());
+
+                if (!Utility.VersionCheck.CheckVersion(ibaAnalyzerExe, "7.1.0"))
+                {
+                    MessageBox.Show(this, string.Format(Properties.Resources.logAnalyzerVersionError, "7.1.0"), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (!Program.RemoteFileLoader.DownloadFile(m_pdoFilePath, out string localFile, out string error))
+                {
+                    MessageBox.Show(this, error, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                using (Process ibaProc = new Process())
+                {
+                    ibaProc.EnableRaisingEvents = false;
+                    ibaProc.StartInfo.FileName = ibaAnalyzerExe;
+                    ibaProc.StartInfo.Arguments = "\"" + m_pdoFilePath + "\"";
+                    ibaProc.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        void UploadPdoFile(bool messageOnNoChanges)
+        {
+            if (Disposing || IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                Invoke(new Action<bool>(UploadPdoFile), messageOnNoChanges);
+                return;
+            }
+
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+            {
+                string localFile = Program.RemoteFileLoader.GetLocalPath(m_pdoFilePath);
+                if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, m_pdoFilePath))
+                {
+                    if (MessageBox.Show(this, Properties.Resources.FileChanged_Upload, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        return;
+
+                    Cursor = Cursors.WaitCursor;
+
+                    try
+                    {
+                        bool bStarted = TaskManager.Manager.IsJobStarted(m_data.ParentConfigurationData.Guid);
+                        if (bStarted)
+                            TaskManager.Manager.StopAndWaitForConfiguration(m_data.ParentConfigurationData);
+
+                        if (!Program.RemoteFileLoader.UploadFile(localFile, m_pdoFilePath, true, out string error))
+                            throw new Exception(error);
+
+                        if (bStarted)
+                            TaskManager.Manager.StartConfiguration(m_data.ParentConfigurationData);
+
+                        Cursor = Cursors.Default;
+                    }
+                    catch (Exception ex)
+                    {
+                        Cursor = Cursors.Default;
+                        MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else if (messageOnNoChanges)
+                    MessageBox.Show(this, Properties.Resources.FileChanged_UploadNoChanges, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void m_btnUploadPDO_Click(object sender, EventArgs e)
+        {
+            UploadPdoFile(true);
+        }
+
+        private void m_btnTest_Click(object sender, EventArgs e)
+        {
+            SaveData();
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+
+                HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
+                EventWriterData eventData = worker.GenerateEvents(null, null);
+                worker.WriteEvents(eventData);
+
+                Cursor = Cursors.Default;
+                MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                Cursor = Cursors.Default;
+                MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void m_btnBrowsePDO_Click(object sender, EventArgs e)
+        {
+            DialogResult result = DialogResult.Abort;
+            string path = m_pdoFilePath;
+            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE && !Program.ServiceIsLocal)
+            {
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                {
+                    using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+                    {
+                        fd.FixedDrivesOnly = false;
+                        fd.ShowFiles = true;
+                        fd.SelectedPath = path;
+                        fd.Filter = Properties.Resources.PdoFileFilter;
+                        result = fd.ShowDialog(this);
+                        path = fd.SelectedPath;
+                    }
+                }
+                else
+                    MessageBox.Show(this, Properties.Resources.HDEventTask_PDOConnectionRequired, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                using (var dlg = new OpenFileDialog())
+                {
+                    dlg.CheckFileExists = true;
+                    dlg.FileName = "";
+                    dlg.Filter = Properties.Resources.PdoFileFilter;
+                    if (File.Exists(path))
+                        dlg.FileName = path;
+                    else if (Directory.Exists(path))
+                        dlg.InitialDirectory = path;
+                    result = dlg.ShowDialog(this);
+                    path = dlg.FileName;
+                }
+            }
+            if (result == DialogResult.OK)
+            {
+                m_pdoFilePath = path;
+                m_tbPDO.Text = Path.GetFileName(path);
+                UpdateSources();
+            }
         }
 
         private void m_rbTriggerBySignal_CheckedChanged(object sender, EventArgs e)

@@ -147,7 +147,7 @@ namespace iba.Controls
                     fd.FixedDrivesOnly = false;
                     fd.ShowFiles = true;
                     fd.SelectedPath = path;
-                    fd.Filter = "ibaAnalyzer PDO files (*.pdo)|*.pdo";
+                    fd.Filter = Properties.Resources.PdoFileFilter;
                     if (fd.ShowDialog(this) == DialogResult.OK)
                     {
                         m_pdoFileTextBox.Text = fd.SelectedPath;
@@ -156,7 +156,7 @@ namespace iba.Controls
             }
             else
             {
-                m_openFileDialog1.Filter = "ibaAnalyzer PDO files (*.pdo)|*.pdo";
+                m_openFileDialog1.Filter = Properties.Resources.PdoFileFilter;
                 if (System.IO.File.Exists(path))
                     m_openFileDialog1.FileName = path;
                 else if (System.IO.Directory.Exists(path))
