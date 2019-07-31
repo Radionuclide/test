@@ -45,13 +45,14 @@ namespace iba
         public static readonly int PAUSETASK_INDEX = 10;
         public static readonly int CLEANUPTASK_INDEX = 11;
         public static readonly int SPLITTERTASK_INDEX = 12;
+        public static readonly int HDEVENTTASK_INDEX = 13;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int NEWCONF_INDEX = 13;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 14;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 15;
-        public static readonly int NEW_EVENT_CONF_INDEX = 16;
-        public static readonly int CUSTOMTASK_INDEX = 17;
-        public static readonly int NR_TASKS = 9;
+        public static readonly int NEWCONF_INDEX = 14;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 15;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 16;
+        public static readonly int NEW_EVENT_CONF_INDEX = 17;
+        public static readonly int CUSTOMTASK_INDEX = 18;
+        public static readonly int NR_TASKS = 10;
 
         private QuitForm m_quitForm;
 
@@ -110,6 +111,7 @@ namespace iba
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.pausetask));
             confsImageList.Images.Add(iba.Properties.Resources.broom);
             confsImageList.Images.Add(iba.Properties.Resources.SplitDat);
+            confsImageList.Images.Add(iba.Properties.Resources.img_computed_values);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
@@ -165,6 +167,8 @@ namespace iba
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
             {
+                TryUploadChangedFiles();
+
                 //Program.CommunicationObject.Logging_Log(Environment.MachineName + ": Gui Stopped");
                 if (m_ef != null)
                     Program.CommunicationObject.Logging_clearEventForwarder(m_ef.Guid);
@@ -553,6 +557,11 @@ namespace iba
                     taskNode = new TreeNode(task.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, task as PauseTaskData);
                 }
+                else if (task is HDCreateEventTaskData)
+                {
+                    taskNode = new TreeNode(task.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
+                    taskNode.Tag = new HDCreateEventTaskTreeItemData(this, task as HDCreateEventTaskData);
+                }
                 else if(task.GetType() == typeof(TaskWithTargetDirData) || task.GetType() == typeof(CleanupTaskData))
                 {
                     taskNode = new TreeNode(task.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
@@ -812,6 +821,7 @@ namespace iba
                 case "SplitterTask":
                 case "CustomTaskUNC":
                 case "CustomTask":
+                case "HDCreateEventTask":
                 case "task":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
@@ -1129,6 +1139,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
+                else if (m_task_copy is HDCreateEventTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
+                    taskNode.Tag = new HDCreateEventTaskTreeItemData(this, m_task_copy as HDCreateEventTaskData);
+                }
                 else if(m_task_copy.GetType() == typeof(TaskWithTargetDirData))
                 {
                     taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
@@ -1215,6 +1230,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
                     taskNode.Tag = new PauseTaskTreeItemData(this, m_task_copy as PauseTaskData);
                 }
+                else if (m_task_copy is HDCreateEventTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
+                    taskNode.Tag = new HDCreateEventTaskTreeItemData(this, m_task_copy as HDCreateEventTaskData);
+                }
                 else if(m_task_copy.GetType() == typeof(TaskWithTargetDirData))
                 {
                     taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
@@ -1298,11 +1318,12 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.pausetask);
             menuImages.Images.Add(iba.Properties.Resources.broom);
             menuImages.Images.Add(iba.Properties.Resources.SplitDat);
+            menuImages.Images.Add(iba.Properties.Resources.img_computed_values);
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
                 menuImages.Images.Add(info.Icon);
 
             int customcount = PluginManager.Manager.PluginInfos.Count;
-            m_menuItems = new ToolStripMenuItem[15 + customcount];
+            m_menuItems = new ToolStripMenuItem[16 + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
             m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
             m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(iba.Properties.Resources.cutTitle, menuImages.Images[0], new EventHandler(OnCutMenuItem), Keys.X | Keys.Control);
@@ -1321,7 +1342,8 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewPauseTask] = new ToolStripMenuItem(iba.Properties.Resources.NewPauseTaskTitle, iba.Properties.Resources.pausetask, new EventHandler(OnNewPauseTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewCleanupTask] = new ToolStripMenuItem(iba.Properties.Resources.NewCleanupTaskTitle, iba.Properties.Resources.broom, new EventHandler(OnNewCleanupTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewSplitterTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSplitterTaskTitle, menuImages.Images[11], new EventHandler(OnNewSplitterTaskMenuItem));
-            
+            m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(iba.Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], new EventHandler(OnNewHDCreateEventTaskMenuItem));
+
             for (int i = 0; i < customcount; i++)
             {
                 string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, PluginManager.Manager.PluginInfos[i].Name);
@@ -1338,6 +1360,7 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewPauseTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewCleanupTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSplitterTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
             for (int i = 0; i < customcount; i++)
             {
                 m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[i + (int)MenuItemsEnum.NewCustomTask]);
@@ -1361,7 +1384,8 @@ namespace iba
             NewPauseTask = 12,
             NewCleanupTask = 13,
             NewSplitterTask = 14,
-            NewCustomTask = 15
+            NewHDCreateEventTask = 15,
+            NewCustomTask = 16
         }
 
         private string ibaAnalyzerExe;
@@ -1654,6 +1678,25 @@ namespace iba
             if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
         }
 
+        private void OnNewHDCreateEventTaskMenuItem(object sender, EventArgs e)
+        {
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
+            TreeNode node = mc.Tag as TreeNode;
+            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
+            HDCreateEventTaskData createEvent = new HDCreateEventTaskData(confData);
+            new SetNextName(createEvent);
+            confData.Tasks.Add(createEvent);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+            TreeNode newNode = new TreeNode(createEvent.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
+            newNode.Tag = new HDCreateEventTaskTreeItemData(this, createEvent);
+            node.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+        }
+
         private void OnNewSplitterTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
@@ -1872,7 +1915,6 @@ namespace iba
                     return;
                 }
 
-
                 // To write to a file, create a StreamWriter object.
                 try
                 {
@@ -1887,6 +1929,7 @@ namespace iba
                     MessageBox.Show(iba.Properties.Resources.SaveFileProblem + " " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     LogData.Data.Logger.Log(Logging.Level.Debug, "Saving, serialization failed (step2):" + ex.ToString());
                 }
+
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     Program.CommunicationObject.SaveConfigurations();
             }
@@ -2278,6 +2321,7 @@ namespace iba
                 return;
             SaveRightPaneControl();
             if (!String.IsNullOrEmpty(m_filename)) saveToolStripMenuItem_Click(null, null);
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.SaveConfigurations();
 
@@ -2639,6 +2683,78 @@ namespace iba
             }
         }
 
+        private void TryUploadChangedFiles(ConfigurationData data)
+        {
+            if (!Program.ServiceIsLocal)
+            {
+                List<string> localFiles = new List<string>();
+                List<string> remoteFiles = new List<string>();
+                foreach (var task in data.Tasks)
+                {
+                    if (!(task is HDCreateEventTaskData createEventTask))
+                        continue;
+
+                    string localFile = Program.RemoteFileLoader.GetLocalPath(createEventTask.AnalysisFile);
+                    if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, createEventTask.AnalysisFile))
+                    {
+                        localFiles.Add(localFile);
+                        remoteFiles.Add(createEventTask.AnalysisFile);
+                    }
+                }
+
+                if (localFiles.Count > 0)
+                {
+                    if (MessageBox.Show(this, Properties.Resources.FileChanged_Upload, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        return;
+
+                    Cursor = Cursors.WaitCursor;
+
+                    bool bStarted = TaskManager.Manager.IsJobStarted(data.Guid);
+                    try
+                    {
+                        if (bStarted)
+                            TaskManager.Manager.StopAndWaitForConfiguration(data);
+
+                        if (!Program.RemoteFileLoader.UploadFiles(localFiles.ToArray(), remoteFiles.ToArray(), true, out Dictionary<string, string> errors))
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            foreach (var val in errors.Values)
+                                sb.AppendLine(val);
+
+                            throw new Exception(sb.ToString());
+                        }
+
+                        Cursor = Cursors.Default;
+                    }
+                    catch (Exception ex)
+                    {
+                        Cursor = Cursors.Default;
+                        MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if (bStarted)
+                                TaskManager.Manager.StartConfiguration(data);
+                        }
+                        catch
+                        { }
+                    }
+                }
+            }
+        }
+
+        private void TryUploadChangedFiles()
+        {
+            List<ConfigurationData> cfgs = TaskManager.Manager.Configurations;
+            if (cfgs != null)
+            {
+                foreach (var cfg in cfgs)
+                    TryUploadChangedFiles(cfg);
+            }
+        }
+
         private void AskToSaveConnection()
         {
             if (IsServerClientDifference() &&
@@ -2660,6 +2776,8 @@ namespace iba
                             {
                                 TaskManager.Manager.UpdateConfiguration(data);
                             }
+
+                            TryUploadChangedFiles(data);
                         }
                     }
                 }
@@ -2732,6 +2850,7 @@ namespace iba
                                     {
                                         if (data != null) data.ApplyToManager(TaskManager.Manager, Program.ClientName);
                                         ReplaceManagerFromTree(TaskManager.Manager);
+                                        TryUploadChangedFiles();
                                         TaskManager.Manager.StartAllEnabledGlobalCleanups();
                                         foreach (ConfigurationData dat in TaskManager.Manager.Configurations)
                                         {

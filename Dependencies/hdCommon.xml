@@ -165,6 +165,11 @@
               Looks up a localized string similar to Advance cleanup time.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderComputedValue">
+            <summary>
+              Looks up a localized string similar to Read event based store computed value data.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderDiagnostic">
             <summary>
               Looks up a localized string similar to Read diagnostic data.
@@ -248,6 +253,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterAsync">
             <summary>
               Looks up a localized string similar to Apply write configuration asynchronously.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterComputedValue">
+            <summary>
+              Looks up a localized string similar to Write event based store computed value data.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEvent">
@@ -1123,6 +1133,16 @@
             <param name="texts">text values</param>
             <param name="blobs">blob values</param>
             <param name="stampUtc">time stamp</param>
+            <param name="inSlope">in slope active</param>
+            <param name="outSlope">out slope active</param>
+            <param name="iConfig">index of event in configuration</param>
+        </member>
+        <member name="M:iba.HD.Common.EventWriterItem.#ctor(System.Int32,System.Int64,System.Int64,System.Boolean,System.Boolean,System.Single[],System.String[],System.Byte[][])">
+            <param name="floats">float values</param>
+            <param name="texts">text values</param>
+            <param name="blobs">blob values</param>
+            <param name="stampUtc">time stamp</param>
+            <param name="stampUtc">duration in ticks</param>
             <param name="inSlope">in slope active</param>
             <param name="outSlope">out slope active</param>
             <param name="iConfig">index of event in configuration</param>

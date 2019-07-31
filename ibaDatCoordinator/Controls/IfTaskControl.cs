@@ -111,7 +111,7 @@ namespace iba.Controls
         private void m_browsePDOFileButton_Click(object sender, EventArgs e)
         {
             m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.Filter = "ibaAnalyzer PDO files (*.pdo)|*.pdo";
+            m_openFileDialog.Filter = Properties.Resources.PdoFileFilter;
             DialogResult result = m_openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
                 m_pdoFileTextBox.Text = m_openFileDialog.FileName;
@@ -151,7 +151,7 @@ namespace iba.Controls
                     fd.FixedDrivesOnly = false;
                     fd.ShowFiles = true;
                     fd.SelectedPath = path;
-                    fd.Filter = "iba dat files(*.dat) | *.dat";
+                    fd.Filter = Properties.Resources.DatFileFilter;
                     result = fd.ShowDialog(this);
                     path = fd.SelectedPath;
                 }
@@ -160,7 +160,7 @@ namespace iba.Controls
             {
                 m_openFileDialog.CheckFileExists = true;
                 m_openFileDialog.FileName = "";
-                m_openFileDialog.Filter = "iba dat files(*.dat) | *.dat";
+                m_openFileDialog.Filter = Properties.Resources.DatFileFilter;
                 if (System.IO.File.Exists(path))
                     m_openFileDialog.FileName = path;
                 else if (System.IO.Directory.Exists(path))

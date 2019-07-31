@@ -11,6 +11,10 @@ using iba.Plugins;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.ComponentModel;
+using iba.HD.Common;
+using iba.HD.Client.Interfaces;
+using iba.HD.Client;
+using Microsoft.Win32;
 
 namespace iba.Processing
 {
@@ -448,7 +452,7 @@ namespace iba.Processing
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData ||
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
                             || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
                             )
@@ -1936,7 +1940,7 @@ namespace iba.Processing
                     Log(Logging.Level.Exception, iba.Properties.Resources.InvalidDatFile, filename);
                     return DatFileStatus.State.INVALID_DATFILE;
                 }
-                catch (System.UnauthorizedAccessException ex)
+                catch (System.UnauthorizedAccessException)
                 {
                     if (String.IsNullOrEmpty(m_cd.FileEncryptionPassword))
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess6, filename);
@@ -2978,6 +2982,11 @@ namespace iba.Processing
                 }
                 else
                     CopyDatFile(DatFile, dat);
+            }
+            else if (task is HDCreateEventTaskData)
+            {
+                HDCreateEventTask(DatFile, task as HDCreateEventTaskData);
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
             }
             else if(task.GetType() == typeof(TaskWithTargetDirData))
             {
@@ -4528,6 +4537,93 @@ namespace iba.Processing
             lock (m_sd.DatFileStates)
             {
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+            }
+        }
+
+        private void HDCreateEventTask(string filename, HDCreateEventTaskData task)
+        {
+            HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(task);
+
+            // Generate events
+            EventWriterData eventData = null;
+            try
+            {
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                }
+                Log(Logging.Level.Info, iba.Properties.Resources.logHDEventTaskStarted, filename, task);
+
+                eventData = worker.GenerateEvents(m_ibaAnalyzer, filename);
+            }
+            catch (IbaAnalyzerExceedingTimeLimitException te)
+            {
+                Log(Logging.Level.Exception, te.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.TIMED_OUT;
+                }
+                RestartIbaAnalyzerAndOpenDatFile(filename);
+            }
+            catch (IbaAnalyzerExceedingMemoryLimitException me)
+            {
+                Log(Logging.Level.Exception, me.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.MEMORY_EXCEEDED;
+                }
+                RestartIbaAnalyzerAndOpenDatFile(filename);
+            }
+            catch (HDCreateEventException cee)
+            {
+                Log(Logging.Level.Exception, cee.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+            catch
+            {
+                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+            finally
+            {
+                if (m_ibaAnalyzer != null)
+                {
+                    try
+                    {
+                        m_ibaAnalyzer.CloseAnalysis();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                        RestartIbaAnalyzer();
+                    }
+                }
+            }
+
+            if (eventData == null)
+                return;
+
+            // Write events
+            try
+            {
+                worker.WriteEvents(eventData);
+
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                Log(Logging.Level.Info, iba.Properties.Resources.logHDEventTaskSuccess, filename, task);
+            }
+            catch(Exception ex)
+            {
+                Log(Logging.Level.Exception, ex.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
             }
         }
 

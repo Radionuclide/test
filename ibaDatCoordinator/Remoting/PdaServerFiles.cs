@@ -123,13 +123,8 @@ namespace iba.Remoting
         }
 
         public void UploadFile(string destPath, IFileDownload file, long fileSize)
-        {
-            destPath = NormalizePath(destPath);
-            String dir = Path.GetDirectoryName(destPath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-            FileStream stream = File.Create(destPath);
-            new FileDownloaderImpl(stream, fileSize, file);
+        {            
+            new FileDownloaderImpl(destPath, fileSize, file);
         }
 
         public void UploadFile(string[] destPathArray, IFileDownload file, long fileSize)

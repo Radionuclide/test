@@ -69,6 +69,7 @@ namespace iba.Controls
             this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
+            this.m_newHdCreateEventTaskButton = new System.Windows.Forms.ToolStripButton();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudNotifyTime)).BeginInit();
@@ -277,7 +278,8 @@ namespace iba.Controls
             this.m_newUpdateDataTaskButton,
             this.m_newPauseTaskButton,
             this.m_newCleanupTaskButton,
-            this.m_newSplitterTaskButton});
+            this.m_newSplitterTaskButton,
+            this.m_newHdCreateEventTaskButton});
             this.m_newTaskToolstrip.Name = "m_newTaskToolstrip";
             this.m_newTaskToolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -363,6 +365,13 @@ namespace iba.Controls
             this.m_nameTextBox.Name = "m_nameTextBox";
             this.m_nameTextBox.TextChanged += new System.EventHandler(this.m_nameTextBox_TextChanged);
             // 
+            // m_newHdCreateEventTaskButton
+            // 
+            resources.ApplyResources(this.m_newHdCreateEventTaskButton, "m_newHdCreateEventTaskButton");
+            this.m_newHdCreateEventTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newHdCreateEventTaskButton.Name = "m_newHdCreateEventTaskButton";
+            this.m_newHdCreateEventTaskButton.Click += new System.EventHandler(this.m_newHDCreateEventTaskButton_Click);
+            // 
             // ConfigurationControl
             // 
             resources.ApplyResources(this, "$this");
@@ -429,5 +438,6 @@ namespace iba.Controls
         private System.Windows.Forms.Panel m_sourcePanel;
         private System.Windows.Forms.ToolStripButton m_newCleanupTaskButton;
         private System.Windows.Forms.ToolStripButton m_newSplitterTaskButton;
+        private System.Windows.Forms.ToolStripButton m_newHdCreateEventTaskButton;
     }
 }

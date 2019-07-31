@@ -17,6 +17,7 @@ namespace iba
     static class Program
     {
         static public MainForm MainForm;
+        static public Remoting.RemoteFileLoader RemoteFileLoader;
 
         public enum ServiceEnum { CONNECTED, DISCONNECTED, NOSERVICE }
 
@@ -103,6 +104,9 @@ namespace iba
                 MainForm = new MainForm();
                 MainForm.WindowState = FormWindowState.Normal;
                 MainForm.ShowInTaskbar = true;
+
+                RemoteFileLoader = new Remoting.RemoteFileLoader();
+
                 Application.Run(MainForm);
             }
             catch(Exception ex)
@@ -110,6 +114,8 @@ namespace iba
                 //This shouldn't happen
                 MessageBox.Show(ex.ToString(), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            RemoteFileLoader?.Dispose();
 
             Data.LogData.StopLogger();
         }

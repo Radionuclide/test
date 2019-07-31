@@ -11,12 +11,24 @@ namespace iba.Utility
         {
             try
             {
-                string ver = FileVersionInfo.GetVersionInfo(file).FileVersion;
-                return (new Version(ver)) >= (new Version(version));
+                Version ver = GetVersion(file);
+                return ver != null && ver >= (new Version(version));
             }
             catch
             {
                 return false;
+            }
+        }
+
+        public static Version GetVersion(string file)
+        {
+            try
+            {
+                return new Version(FileVersionInfo.GetVersionInfo(file).FileVersion);
+            }
+            catch
+            {
+                return null;
             }
         }
     }
