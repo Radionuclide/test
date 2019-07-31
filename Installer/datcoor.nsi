@@ -7,8 +7,8 @@
 ;!define UNINSTALLER_ONLY use this to generate the uninstaller
 
 !ifndef PRODUCT_VERSION
-!define PRODUCT_VERSION "2.0.5"
-!define PRODUCT_FILE_VERSION "2.0.5.0"
+!define PRODUCT_VERSION "2.3.0"
+!define PRODUCT_FILE_VERSION "2.3.0.0"
 !endif
 
 !define PRODUCT_KEYWORDS "ibaDatCoordinator, data post processing"
