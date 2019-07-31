@@ -163,10 +163,7 @@ namespace iba.Remoting
 
                 FileInfo fileInfo = new FileInfo(localFile);
                 if (!fileInfo.Exists)
-                {
-                    Logging.ibaLogger.Log(Logging.Level.Exception, string.Format(Properties.Resources.FileChanged_ErrorNotFound, filename));
                     return false;
-                }
 
                 ServerFileInfo[] remoteInfos = Program.CommunicationObject.GetFileInfos(new string[1] { remoteFile });
                 if (remoteInfos != null && remoteInfos.Length > 0)

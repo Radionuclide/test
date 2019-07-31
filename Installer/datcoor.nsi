@@ -634,6 +634,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\InstallFiles\Protected\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\hdCommon.dll"
+  File "..\Dependencies\hdProtoBuf.dll"
   File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
   File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
   File "..\Dependencies\DevExpress.Data.v16.1.dll"

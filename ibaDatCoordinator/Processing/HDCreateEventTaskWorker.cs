@@ -370,7 +370,7 @@ namespace iba.Processing
                     if (summary.Errors != null && summary.Errors.Count > 0)
                     {
                         foreach (var err in summary.Errors)
-                            sb.Append(" ").Append(err).Append(",");
+                            sb.Append(" ").Append(err.Text).Append(",");
 
                         sb.Remove(sb.Length - 1, 1);
                     }
