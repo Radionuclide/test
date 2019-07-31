@@ -28,6 +28,7 @@
             this.m_rbTriggerBySignal = new System.Windows.Forms.RadioButton();
             this.m_rbTriggerPerFile = new System.Windows.Forms.RadioButton();
             this.gbDataSource = new iba.Utility.CollapsibleGroupBox();
+            this.m_btnTest = new System.Windows.Forms.Button();
             this.m_btnUploadPDO = new System.Windows.Forms.Button();
             this.m_tbPwdDAT = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -45,7 +46,6 @@
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
-            this.m_btnTest = new System.Windows.Forms.Button();
             this.gbEvent.SuspendLayout();
             this.gbStoreSelection.SuspendLayout();
             this.gbTrigger.SuspendLayout();
@@ -67,6 +67,7 @@
             // 
             // m_ctrlEvent
             // 
+            this.m_ctrlEvent.AllowNoStoreFilter = true;
             this.m_ctrlEvent.ChannelEditor = null;
             this.m_ctrlEvent.DefaultChannelValue = "";
             this.m_ctrlEvent.DefaultTextChannelValue = "";
@@ -170,6 +171,13 @@
             this.gbDataSource.Controls.Add(this.label2);
             this.gbDataSource.Name = "gbDataSource";
             this.gbDataSource.TabStop = false;
+            // 
+            // m_btnTest
+            // 
+            resources.ApplyResources(this.m_btnTest, "m_btnTest");
+            this.m_btnTest.Name = "m_btnTest";
+            this.m_btnTest.UseVisualStyleBackColor = true;
+            this.m_btnTest.Click += new System.EventHandler(this.m_btnTest_Click);
             // 
             // m_btnUploadPDO
             // 
@@ -310,13 +318,6 @@
             resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
-            // 
-            // m_btnTest
-            // 
-            resources.ApplyResources(this.m_btnTest, "m_btnTest");
-            this.m_btnTest.Name = "m_btnTest";
-            this.m_btnTest.UseVisualStyleBackColor = true;
-            this.m_btnTest.Click += new System.EventHandler(this.m_btnTest_Click);
             // 
             // HDEventCreationTaskControl
             // 

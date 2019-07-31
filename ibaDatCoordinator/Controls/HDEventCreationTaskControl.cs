@@ -65,6 +65,8 @@ namespace iba.Controls
             m_grPulse.RepositoryItems.Add(m_pulseEditor);
             m_colPulse.ColumnEdit = m_pulseEditor;
 
+            m_ctrlEvent.AllowNoStoreFilter = false;
+
             m_ctrlEvent.DefaultChannelValue = HDCreateEventTaskData.UnassignedExpression;
             m_ctrlEvent.DefaultTextChannelValue = HDCreateEventTaskData.UnassignedExpression;
 
@@ -124,8 +126,6 @@ namespace iba.Controls
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal;
-
-            //TODO disable controls, etc.
 
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
@@ -191,18 +191,32 @@ namespace iba.Controls
             m_data.PulseSignal = (m_grPulse.DataSource as List<PulseSignal>)[0].PulseID;
 
             HDCreateEventTaskData.EventData eventData = m_data.EventSettings;
-            eventData.Server = m_ctrlServer.Server;
-            eventData.ServerPort = m_ctrlServer.Port;
-            eventData.StoreName = m_ctrlServer.StoreName;
-            eventData.Username = m_ctrlServer.Username;
-            eventData.Password = m_ctrlServer.Password;
+            bool bSaveEventSettings = m_ctrlServer.Reader.IsConnected()
+                                        || m_ctrlServer.Server != eventData.Server
+                                        || m_ctrlServer.Port != eventData.ServerPort
+                                        || m_ctrlServer.StoreName != eventData.StoreName
+                                        || m_ctrlServer.Username != eventData.Username
+                                        || m_ctrlServer.Password != eventData.Password;
 
-            ControlEvent.EventSettings eventSettings = m_ctrlEvent.GetSettings();
-            eventData.ID = eventSettings.ID;
-            eventData.Name = eventSettings.Name;
-            eventData.NumericFields = new List<Tuple<string, string>>(eventSettings.FloatFields);
-            eventData.TextFields = new List<Tuple<string, string>>(eventSettings.TextFields);
-            eventData.BlobFields = new List<string>(eventSettings.BlobFields);
+            if (bSaveEventSettings)
+            {
+                eventData.Server = m_ctrlServer.Server;
+                eventData.ServerPort = m_ctrlServer.Port;
+                eventData.StoreName = m_ctrlServer.StoreName;
+                eventData.Username = m_ctrlServer.Username;
+                eventData.Password = m_ctrlServer.Password;
+
+                ControlEvent.EventSettings eventSettings = m_ctrlEvent.GetSettings();
+                eventData.ID = eventSettings.ID;
+                eventData.Name = eventSettings.Name;
+                eventData.NumericFields = new List<Tuple<string, string>>(eventSettings.FloatFields);
+                eventData.TextFields = new List<Tuple<string, string>>(eventSettings.TextFields);
+                eventData.BlobFields = new List<string>(eventSettings.BlobFields);
+            }
+            else
+            {
+                //Seems like the original HD server cannot be reached => don't store changes to prevent a configuration loss
+            }
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;
