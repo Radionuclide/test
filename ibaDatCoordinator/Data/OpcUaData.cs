@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 namespace iba.Data
 {
@@ -56,10 +57,13 @@ namespace iba.Data
             SignSignEncrypt,
         };
 
+        public bool IsAnonymousUserAllowed { get; set; }
+        public bool IsNamedUserAllowed { get; set; }
+        public bool IsCertifiedUserAllowed { get; set; }
+
         public string UserName { get; set; } = "Anonymous";
 
         public string Password { get; set; } = "";
-        public bool HasUserCertificate { get; set; }
 
         public bool HasSecurityNone { get; set; }
         public bool HasSecurityBasic128 { get; set; }
@@ -74,6 +78,34 @@ namespace iba.Data
 
         public List<OpcUaEndPoint> Endpoints = new List<OpcUaEndPoint>();
 
+
+        public class CertificateTag
+        {
+            public X509Certificate2 Certificate;
+            public string Name;
+            public bool IsTrusted;
+            public bool HasPrivateKey;
+            public bool IsUsedForServer;
+            public bool IsUsedForAuthentication;
+
+            public string Issuer;
+            public DateTime ExpirationDate;
+
+            /// <summary> Is used for tooltip </summary>
+            public string GetPropertyString()
+            {
+                string result = $@"{(IsTrusted ? "Trusted" : "Rejected")}; ";
+
+                if (HasPrivateKey) result += "Private key; ";
+                if (IsUsedForServer) result += "OPC UA Server certificate; ";
+                if (IsUsedForAuthentication) result += "Authentication; ";
+                result = result.TrimEnd(';', ' ');
+                return result;
+            }
+        }
+
+        public List<CertificateTag> Certificates = new List<CertificateTag>(); 
+        public int CertificateChangedMask; // todo. kls. 
 
         #endregion
 
@@ -111,10 +143,13 @@ namespace iba.Data
                 this.HasSecurityNone == other.HasSecurityNone &&
                 this.HasSecurityBasic128 == other.HasSecurityBasic128 &&
                 this.HasSecurityBasic256 == other.HasSecurityBasic256 &&
-                this.HasUserCertificate == other.HasUserCertificate &&
+                this.IsAnonymousUserAllowed == other.IsAnonymousUserAllowed &&
+                this.IsNamedUserAllowed == other.IsNamedUserAllowed &&
+                this.IsCertifiedUserAllowed == other.IsCertifiedUserAllowed &&
                 this.SecurityBasic128Level == other.SecurityBasic128Level &&
                 this.SecurityBasic256Level == other.SecurityBasic256Level &&
-                Endpoints.SequenceEqual(other.Endpoints); 
+                this.CertificateChangedMask == other.CertificateChangedMask && // todo. kls. compare certificate list?
+                this.Endpoints.SequenceEqual(other.Endpoints); 
         }
 
         public override int GetHashCode()

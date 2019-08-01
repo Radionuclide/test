@@ -125,85 +125,82 @@ namespace iba.Processing.IbaOpcUa
         /// </summary>
         private void SessionManager_ImpersonateUser(Session session, ImpersonateEventArgs args)
         {
-            // check for a user name token.
-            UserNameIdentityToken userNameToken = args.NewIdentity as UserNameIdentityToken;
-
-            if (userNameToken != null)
+            switch (args.NewIdentity)
             {
-                VerifyPassword(userNameToken.UserName, userNameToken.DecryptedPassword);
-                //todo
-                //args.Identity = new UserIdentity(userNameToken);
+                case AnonymousIdentityToken _:
+                    if (!HasAnonymousUser)
+                    {
+                        throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
+                            @"Anonymous user is not accepted");
+                    }
+                        return;
+                case UserNameIdentityToken userNameToken:
+                    VerifyNamedUser(userNameToken.UserName, userNameToken.DecryptedPassword);
+                    // todo. kls. use built-in functionality?
+                    var ide = args.Identity;
+                    //args.Identity = new UserIdentity(userNameToken);
+                    break;
+                case X509IdentityToken certToken:
+                    try
+                    {
+                        foreach (var certifiedUser in CertifiedUsers)
+                        {
+                            X509Certificate2 c = certToken.Certificate;
+                            var x = certToken.Certificate.PublicKey.EncodedKeyValue;
+                            var a1 = certToken.Certificate.Equals(certifiedUser);
+                            var a2 = certToken.Certificate.PublicKey.Equals(certifiedUser.PublicKey);
+                            //if (certToken.Certificate.PublicKey == certifiedUser)
+                            //{
+                            //        return;
+                            //}
+
+                        }
+                    }
+                    catch
+                    {
+                        // can happen (improbably) when collection is modified by another thread 
+                    }
+                    throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
+                        @"User CeAnonymous user is not accepted");
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        /// <summary>
-        /// Validates the password for a username token.
+        /// <summary> Verifies name and password for a username token.
+        /// Throws if name or password is invalid. Just returns if everything is ok.
         /// </summary>
-        private void VerifyPassword(string userName, string password)
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
+        private void VerifyNamedUser(string userName, string password)
         {
-            if (String.IsNullOrWhiteSpace(userName))
+            if (string.IsNullOrWhiteSpace(userName))
             {
                 // an empty username is not accepted.
                 throw ServiceResultException.Create(StatusCodes.BadIdentityTokenInvalid,
                     "Security token is not a valid username token. An empty username is not accepted.");
             }
 
-            if (String.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(password))
             {
                 // an empty password is not accepted.
                 throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected,
                     "Security token is not a valid username token. An empty password is not accepted.");
             }
 
-            TranslationInfo info;
-
-            // look for the username
-            IbaOpcUaUserAccount? acc = KlsUserAccountFindByName(userName);
-            
-            if (acc.HasValue && !string.IsNullOrWhiteSpace(acc.Value.UserName))
+            if (userName != NamedUserAccountName)
             {
-                // we've found the user
-                // check his psw
-                if (string.Compare(password, acc.Value.Password, StringComparison.Ordinal) == 0)
-                {
-                    // password is correct
-                    // user validated successfully
-                    return;
-                }
-
-                // if we are here, then user's password is incorrect
-
-                // construct translation object with default text.
-                info = new TranslationInfo(
-                    "InvalidPassword",
-                    "en-US",
-                    "Invalid password.",
-                    userName);
-
-                // create an exception with a vendor defined sub-code.
-                throw new ServiceResultException(new ServiceResult(
-                    StatusCodes.BadUserAccessDenied,
-                    "InvalidPassword",
-                    Configuration.ApplicationUri,
-                    new LocalizedText(info)));
-
+                throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
+                    $@"Invalid user name '{userName}'");
+            }
+            if (password != NamedUserAccountPassword)
+            {
+                throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
+                    $@"Invalid password for user '{userName}'");
             }
 
-            // if we are here, then no user was found with such a name
-
-            // construct translation object with default text.
-            info = new TranslationInfo(
-                "InvalidUsername",
-                "en-US",
-                "Invalid username.",
-                userName);
-
-            // create an exception with a vendor defined sub-code.
-            throw new ServiceResultException(new ServiceResult(
-                StatusCodes.BadUserAccessDenied,
-                "InvalidUsername",
-                Configuration.ApplicationUri,
-                new LocalizedText(info)));
+            // password is correct
+            // user validated successfully
+            return;
         }
 
         #endregion
@@ -212,62 +209,87 @@ namespace iba.Processing.IbaOpcUa
         #region Trust functionality
 
         private IbaOpcUaServerCertificateTrustMode _trustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
-        public delegate void TrustModeChangedHandler(IbaOpcUaServerCertificateTrustMode mode);
+        //public delegate void TrustModeChangedHandler(IbaOpcUaServerCertificateTrustMode mode);
 
-        public event TrustModeChangedHandler OnTrustModeChanged;
+        //public event TrustModeChangedHandler OnTrustModeChanged;
+
         public IbaOpcUaServerCertificateTrustMode TrustMode
         {
             set
             {
                 _trustMode = value;
-                TrustModeResetHandlers();
-                CertificateValidator cv = Configuration.CertificateValidator;
+                //TrustModeResetHandlers();
+                //CertificateValidator cv = Configuration.CertificateValidator;
 
-                switch (_trustMode)
-                {
-                    case IbaOpcUaServerCertificateTrustMode.DontTrust:
-                        // do not add any handler
-                        break;
-                    case IbaOpcUaServerCertificateTrustMode.TrustNextTemporarily:
-                        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustNextTmp;
-                        break;
-                    case IbaOpcUaServerCertificateTrustMode.TrustAllTemporarily:
-                        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustAllTmp;
-                        break;
-                    case IbaOpcUaServerCertificateTrustMode.TrustNextPermanently:
-                        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustNextPrm;
-                        break;
-                    case IbaOpcUaServerCertificateTrustMode.TrustAllPermanently:
-                        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustAllPrm;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-                OnTrustModeChanged(_trustMode);
+                //switch (_trustMode)
+                //{
+                //    case IbaOpcUaServerCertificateTrustMode.DontTrust:
+                //        // do not add any handler
+                //        break;
+                //    case IbaOpcUaServerCertificateTrustMode.TrustNextTemporarily:
+                //        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustNextTmp;
+                //        break;
+                //    case IbaOpcUaServerCertificateTrustMode.TrustAllTemporarily:
+                //        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustAllTmp;
+                //        break;
+                //    case IbaOpcUaServerCertificateTrustMode.TrustNextPermanently:
+                //        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustNextPrm;
+                //        break;
+                //    case IbaOpcUaServerCertificateTrustMode.TrustAllPermanently:
+                //        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustAllPrm;
+                //        break;
+                //    default:
+                //        throw new ArgumentOutOfRangeException();
+                //}
+                //OnTrustModeChanged?.Invoke(_trustMode);
             }
-            get { return _trustMode; }
+            get => _trustMode;
         }
 
-        private void TrustModeResetHandlers()
-        {
-            CertificateValidator cv = Configuration.CertificateValidator;
+        //private void TrustModeResetHandlers()
+        //{
+        //    CertificateValidator cv = Configuration.CertificateValidator;
 
-            cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustAllTmp;
-            cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustAllPrm;
-            cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustNextPrm;
-            cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustNextTmp;
+        //    cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustAllTmp;
+        //    cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustAllPrm;
+        //    cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustNextPrm;
+        //    cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustNextTmp;
+        //}
+
+        private void OnCertificateValidation(CertificateValidator validator,
+            CertificateValidationEventArgs e)
+        {
+            switch (TrustMode)
+            {
+                case IbaOpcUaServerCertificateTrustMode.DontTrust:
+                    break;
+                case IbaOpcUaServerCertificateTrustMode.TrustNextTemporarily:
+                    CertificateValidationTrustNextTmp(validator, e);
+                    break;
+                case IbaOpcUaServerCertificateTrustMode.TrustAllTemporarily:
+                    CertificateValidationTrustAllTmp(validator, e);
+                    break;
+                case IbaOpcUaServerCertificateTrustMode.TrustNextPermanently:
+                    CertificateValidationTrustNextPrm(validator, e);
+                    break;
+                case IbaOpcUaServerCertificateTrustMode.TrustAllPermanently:
+                    CertificateValidationTrustAllPrm(validator, e);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
 
-        private void KlsCertificateValidator_CertificateValidation_TrustNextTmp(CertificateValidator validator, CertificateValidationEventArgs e)
+        private void CertificateValidationTrustNextTmp(CertificateValidator validator, CertificateValidationEventArgs e)
         {
-            // trust temporarily
-            KlsCertificateValidator_CertificateValidation_TrustAllTmp(validator, e);
+            // execute "trust temporarily" once
+            CertificateValidationTrustAllTmp(validator, e);
 
             // reset mode to don't trust
             TrustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
         }
-        private void KlsCertificateValidator_CertificateValidation_TrustAllTmp(CertificateValidator validator, CertificateValidationEventArgs e)
+        private void CertificateValidationTrustAllTmp(CertificateValidator validator, CertificateValidationEventArgs e)
         {
             try
             {
@@ -282,23 +304,23 @@ namespace iba.Processing.IbaOpcUa
                 Utils.Trace(exception, "Error accepting certificate.");
             }
         }
-        private void KlsCertificateValidator_CertificateValidation_TrustNextPrm(CertificateValidator validator, CertificateValidationEventArgs e)
+        private void CertificateValidationTrustNextPrm(CertificateValidator validator, CertificateValidationEventArgs e)
         {
-            // trust permanently
-            KlsCertificateValidator_CertificateValidation_TrustAllPrm(validator, e);
+            // execute "trust permanently" once
+            CertificateValidationTrustAllPrm(validator, e);
 
             // reset mode to don't trust
             TrustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
         }
-        private void KlsCertificateValidator_CertificateValidation_TrustAllPrm(CertificateValidator validator, CertificateValidationEventArgs e)
+        private void CertificateValidationTrustAllPrm(CertificateValidator validator, CertificateValidationEventArgs e)
         {
             try
             {
                 if (e.Error != null && e.Error.Code == StatusCodes.BadCertificateUntrusted)
                 {
                     e.Accept = true;
-                    // add cert to permanent store
-                    KlsTrustCertificatePermanently(e.Certificate);
+                    // add cert to permanent trusted store
+                    SetCertificateTrust(e.Certificate, true);
                     Utils.Trace((int)Utils.TraceMasks.Security, "Automatically permanently accepted certificate: {0}", e.Certificate.Subject);
                 }
             }
@@ -307,15 +329,20 @@ namespace iba.Processing.IbaOpcUa
                 Utils.Trace(exception, "Error accepting certificate.");
             }
         }
-        /// <summary>
-        /// Saves the certificate in the trusted certificate directory.
-        /// </summary>
-        public void KlsTrustCertificatePermanently(X509Certificate2 certificate)
+
+        /// <summary> Saves the certificate to the trusted or rejected certificate
+        /// directory, depending on <see cref="isTrusted" argument/>. </summary>
+        public void SetCertificateTrust(X509Certificate2 certificate, bool isTrusted)
         {
             try
             {
-                // delete certificate from rejected
-                ICertificateStore store = Configuration.SecurityConfiguration.RejectedCertificateStore.OpenStore();
+                // small helper to get a store
+                ICertificateStore GetStore(bool bTrusted) => bTrusted ? 
+                    Configuration.SecurityConfiguration.TrustedPeerCertificates.OpenStore() :
+                    Configuration.SecurityConfiguration.RejectedCertificateStore.OpenStore();
+
+                // delete certificate from opposite store
+                ICertificateStore store = GetStore(!isTrusted);
                 try
                 {
                     store.Delete(certificate.Thumbprint);
@@ -325,8 +352,8 @@ namespace iba.Processing.IbaOpcUa
                     store.Close();
                 }
 
-                // add certificate to trusted
-                store = Configuration.SecurityConfiguration.TrustedPeerCertificates.OpenStore();
+                // add certificate to the needed store
+                store = GetStore(isTrusted);
                 try
                 {
                     store.Delete(certificate.Thumbprint);
@@ -342,6 +369,7 @@ namespace iba.Processing.IbaOpcUa
                 Utils.Trace(e, "Could not write certificate to directory: {0}", Configuration.SecurityConfiguration.TrustedPeerCertificates);
             }
         }
+
         #endregion //trust functionality
 
 
@@ -387,50 +415,44 @@ namespace iba.Processing.IbaOpcUa
             }
         }
 
+        public bool HasAnonymousUser { get; private set; }
+        public bool HasNamedUser { get; private set; }
+        public bool HasCertifiedUser { get; private set; }
+
         // list of specific user account (can be empty)
         // needed to be accessed by the form, so is public
-        public List<IbaOpcUaUserAccount> UserAccounts = new List<IbaOpcUaUserAccount>();
-        
-        // represents anonymous user, always exists
-        // needed to be accessed by the form, so is public
-        public IbaOpcUaUserAccount UserAccountAnonymous;
+        public string NamedUserAccountName;
+        public string NamedUserAccountPassword;
 
-        public IbaOpcUaUserAccount? KlsUserAccountFindByName(string username)
+        // todo. kls. 
+        public readonly HashSet<X509Certificate2> CertifiedUsers = new HashSet<X509Certificate2>();
+
+        public void SetUserAccountConfiguration(bool hasAnonymous, bool hasNamed, bool hasCertified, 
+            string name = null, string password = null, object certificate = null)
         {
-            foreach (var acc in UserAccounts)
+            HasAnonymousUser = hasAnonymous;
+
+            HasNamedUser = false;
+            HasCertifiedUser = false;
+            
+            if (hasNamed)
             {
-                if (string.Compare(username, acc.UserName, StringComparison.OrdinalIgnoreCase) == 0)
-                    return acc;
+                if (string.IsNullOrWhiteSpace(name))
+                    throw new ArgumentException("Name cannot be null or whitespace", nameof(name));
+                if (password == null)
+                    throw new ArgumentException("Password cannot be null", nameof(password));
+                NamedUserAccountName = name;
+                NamedUserAccountPassword = password;
+                HasNamedUser = true;
             }
 
-            // not found
-            return null; 
-        }
-
-        public void KlsUserAccountsCreateDummyUsers()
-        {
-            UserAccounts.Clear();
-            
-            // simple user - can read and browse
-            var user = new IbaOpcUaUserAccount
+            if (hasCertified)
             {
-                TokenType = UserTokenType.UserName,
-                UserName = "user1",
-                Password = "123"
-            };
-            user.PermissionsMakeDefault();
-            UserAccounts.Add(user);
-
-            // user that has all rights 
-            var admin = new IbaOpcUaUserAccount
-            {
-                TokenType = UserTokenType.UserName,
-                UserName = "admin",
-                Password = "admin"
-            };
-            admin.PermissionsEnableAll();
-            UserAccounts.Add(admin);
+                // todo. kls. check consistency
+                HasCertifiedUser = true;
+            }
         }
+        
 
         #endregion //UserAcccounts
 
@@ -438,41 +460,15 @@ namespace iba.Processing.IbaOpcUa
         /// <summary>
         /// // todo. kls. comment and rename
         /// </summary>
-        public void ApplyConfiguration(IbaOpcUaUserAccount? anonymousUser, List<IbaOpcUaUserAccount> preconfiguredUsers,
-            bool passwordEncryptionForTcpNoneEndpoint)
+        public void ApplyConfiguration(bool passwordEncryptionForTcpNoneEndpoint)
         {
-         
+
+            Configuration.CertificateValidator.CertificateValidation += OnCertificateValidation;
+
             // user management
-            {
+            // set password encryption override
+            PasswordEncryptionForTcpNoneEndpoint = passwordEncryptionForTcpNoneEndpoint;
 
-                // create anonymous user
-                UserAccountAnonymous.TokenType = UserTokenType.Anonymous;
-                UserAccountAnonymous.PermissionsMakeDefault();
-
-                // set his permissions from file if exist
-                if (anonymousUser.HasValue)
-                {
-                    UserAccountAnonymous.PermissionsMask = anonymousUser.Value.PermissionsMask;
-                }
-
-                // set password encryption override
-                PasswordEncryptionForTcpNoneEndpoint = passwordEncryptionForTcpNoneEndpoint;
-
-                // copy preconfigured users
-                if (preconfiguredUsers != null && preconfiguredUsers.Count != 0)
-                {
-                    UserAccounts.Clear();
-                    foreach (var acc in preconfiguredUsers)
-                    {
-                        // skip account if it is incomplete
-                        if (!acc.CheckIntegrity()) continue;
-                        // copy to server's accounts list
-                        UserAccounts.Add(acc);
-                    }
-                }
-                else
-                    KlsUserAccountsCreateDummyUsers();
-            }
         }
 
         #region override by kolesnik

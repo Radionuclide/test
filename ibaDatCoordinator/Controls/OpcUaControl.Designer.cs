@@ -83,9 +83,7 @@
             this.gbLogon = new System.Windows.Forms.GroupBox();
             this.cbLogonCertificate = new System.Windows.Forms.CheckBox();
             this.tbUserName = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.tbPassword = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.buttonShowPassword = new System.Windows.Forms.Button();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
             this.comboBoxSecurity256 = new System.Windows.Forms.ComboBox();
@@ -106,6 +104,9 @@
             this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
+            this.cbLogonUserName = new System.Windows.Forms.CheckBox();
+            this.cbLogonAnonymous = new System.Windows.Forms.CheckBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.gbCertificates.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCertificates)).BeginInit();
@@ -718,21 +719,21 @@
             // 
             this.splitContainerSecurity.Panel2.Controls.Add(this.gbSecurity);
             this.splitContainerSecurity.Size = new System.Drawing.Size(663, 104);
-            this.splitContainerSecurity.SplitterDistance = 317;
+            this.splitContainerSecurity.SplitterDistance = 390;
             this.splitContainerSecurity.TabIndex = 2;
             // 
             // gbLogon
             // 
+            this.gbLogon.Controls.Add(this.cbLogonAnonymous);
+            this.gbLogon.Controls.Add(this.cbLogonUserName);
             this.gbLogon.Controls.Add(this.cbLogonCertificate);
             this.gbLogon.Controls.Add(this.tbUserName);
-            this.gbLogon.Controls.Add(this.label11);
             this.gbLogon.Controls.Add(this.tbPassword);
-            this.gbLogon.Controls.Add(this.label13);
             this.gbLogon.Controls.Add(this.buttonShowPassword);
             this.gbLogon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbLogon.Location = new System.Drawing.Point(0, 0);
             this.gbLogon.Name = "gbLogon";
-            this.gbLogon.Size = new System.Drawing.Size(317, 104);
+            this.gbLogon.Size = new System.Drawing.Size(390, 104);
             this.gbLogon.TabIndex = 0;
             this.gbLogon.TabStop = false;
             this.gbLogon.Text = "Logon policies";
@@ -740,7 +741,7 @@
             // cbLogonCertificate
             // 
             this.cbLogonCertificate.AutoSize = true;
-            this.cbLogonCertificate.Location = new System.Drawing.Point(12, 71);
+            this.cbLogonCertificate.Location = new System.Drawing.Point(12, 75);
             this.cbLogonCertificate.Name = "cbLogonCertificate";
             this.cbLogonCertificate.Size = new System.Drawing.Size(73, 17);
             this.cbLogonCertificate.TabIndex = 7;
@@ -749,47 +750,27 @@
             // 
             // tbUserName
             // 
-            this.tbUserName.Location = new System.Drawing.Point(99, 19);
+            this.tbUserName.Location = new System.Drawing.Point(167, 46);
             this.tbUserName.Name = "tbUserName";
-            this.tbUserName.Size = new System.Drawing.Size(100, 20);
+            this.tbUserName.Size = new System.Drawing.Size(90, 20);
             this.tbUserName.TabIndex = 4;
             this.tbUserName.Text = "Anonymous";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label11.Location = new System.Drawing.Point(9, 22);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(61, 13);
-            this.label11.TabIndex = 0;
-            this.label11.Text = "User name:";
-            // 
             // tbPassword
             // 
-            this.tbPassword.Location = new System.Drawing.Point(99, 45);
+            this.tbPassword.Location = new System.Drawing.Point(263, 46);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(100, 20);
+            this.tbPassword.Size = new System.Drawing.Size(90, 20);
             this.tbPassword.TabIndex = 5;
             this.tbPassword.Text = "***";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label13.Location = new System.Drawing.Point(9, 48);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(56, 13);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Password:";
             // 
             // buttonShowPassword
             // 
             this.buttonShowPassword.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonShowPassword.Image = global::iba.Properties.Resources.Eye;
             this.buttonShowPassword.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonShowPassword.Location = new System.Drawing.Point(205, 43);
+            this.buttonShowPassword.Location = new System.Drawing.Point(359, 44);
             this.buttonShowPassword.Margin = new System.Windows.Forms.Padding(3, 3, 15, 3);
             this.buttonShowPassword.Name = "buttonShowPassword";
             this.buttonShowPassword.Size = new System.Drawing.Size(23, 23);
@@ -802,6 +783,7 @@
             // gbSecurity
             // 
             this.gbSecurity.Controls.Add(this.comboBoxSecurity256);
+            this.gbSecurity.Controls.Add(this.comboBox1);
             this.gbSecurity.Controls.Add(this.comboBoxSecurity128);
             this.gbSecurity.Controls.Add(this.cbSecurity256);
             this.gbSecurity.Controls.Add(this.cbSecurity128);
@@ -809,7 +791,7 @@
             this.gbSecurity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbSecurity.Location = new System.Drawing.Point(0, 0);
             this.gbSecurity.Name = "gbSecurity";
-            this.gbSecurity.Size = new System.Drawing.Size(342, 104);
+            this.gbSecurity.Size = new System.Drawing.Size(269, 104);
             this.gbSecurity.TabIndex = 1;
             this.gbSecurity.TabStop = false;
             this.gbSecurity.Text = "Security policies";
@@ -822,7 +804,7 @@
             "Sign",
             "Sign & Encrypt",
             "Sign + Sign & Encrypt"});
-            this.comboBoxSecurity256.Location = new System.Drawing.Point(115, 72);
+            this.comboBoxSecurity256.Location = new System.Drawing.Point(115, 73);
             this.comboBoxSecurity256.Name = "comboBoxSecurity256";
             this.comboBoxSecurity256.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSecurity256.TabIndex = 8;
@@ -835,7 +817,7 @@
             "Sign",
             "Sign & Encrypt",
             "Sign + Sign & Encrypt"});
-            this.comboBoxSecurity128.Location = new System.Drawing.Point(115, 45);
+            this.comboBoxSecurity128.Location = new System.Drawing.Point(115, 46);
             this.comboBoxSecurity128.Name = "comboBoxSecurity128";
             this.comboBoxSecurity128.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSecurity128.TabIndex = 8;
@@ -843,7 +825,7 @@
             // cbSecurity256
             // 
             this.cbSecurity256.AutoSize = true;
-            this.cbSecurity256.Location = new System.Drawing.Point(6, 74);
+            this.cbSecurity256.Location = new System.Drawing.Point(6, 75);
             this.cbSecurity256.Name = "cbSecurity256";
             this.cbSecurity256.Size = new System.Drawing.Size(70, 17);
             this.cbSecurity256.TabIndex = 7;
@@ -854,7 +836,7 @@
             // cbSecurity128
             // 
             this.cbSecurity128.AutoSize = true;
-            this.cbSecurity128.Location = new System.Drawing.Point(6, 47);
+            this.cbSecurity128.Location = new System.Drawing.Point(6, 48);
             this.cbSecurity128.Name = "cbSecurity128";
             this.cbSecurity128.Size = new System.Drawing.Size(101, 17);
             this.cbSecurity128.TabIndex = 7;
@@ -1042,6 +1024,40 @@
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
+            // cbLogonUserName
+            // 
+            this.cbLogonUserName.AutoSize = true;
+            this.cbLogonUserName.Location = new System.Drawing.Point(12, 48);
+            this.cbLogonUserName.Name = "cbLogonUserName";
+            this.cbLogonUserName.Size = new System.Drawing.Size(136, 17);
+            this.cbLogonUserName.TabIndex = 8;
+            this.cbLogonUserName.Text = "User name / password:";
+            this.cbLogonUserName.UseVisualStyleBackColor = true;
+            this.cbLogonUserName.CheckedChanged += new System.EventHandler(this.cbLogonUserName_CheckedChanged);
+            // 
+            // cbLogonAnonymous
+            // 
+            this.cbLogonAnonymous.AutoSize = true;
+            this.cbLogonAnonymous.Location = new System.Drawing.Point(12, 21);
+            this.cbLogonAnonymous.Name = "cbLogonAnonymous";
+            this.cbLogonAnonymous.Size = new System.Drawing.Size(81, 17);
+            this.cbLogonAnonymous.TabIndex = 8;
+            this.cbLogonAnonymous.Text = "Anonymous";
+            this.cbLogonAnonymous.UseVisualStyleBackColor = true;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Sign",
+            "Sign & Encrypt",
+            "Sign + Sign & Encrypt"});
+            this.comboBox1.Location = new System.Drawing.Point(115, 19);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 8;
+            // 
             // OpcUaControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1099,9 +1115,7 @@
         private System.Windows.Forms.Button buttonConfigurationApply;
         private System.Windows.Forms.Button buttonShowPassword;
         private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox tbUserName;
-        private System.Windows.Forms.Label label13;
         private Utility.CollapsibleGroupBox gbDiagnostics;
         private System.Windows.Forms.DataGridView dgvClients;
         private System.Windows.Forms.TextBox tbStatus;
@@ -1168,5 +1182,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol4;
+        private System.Windows.Forms.CheckBox cbLogonUserName;
+        private System.Windows.Forms.CheckBox cbLogonAnonymous;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

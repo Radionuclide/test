@@ -193,9 +193,11 @@ namespace iba.Controls
             _data.Enabled = cbEnabled.Checked;
 
             // logon
+            _data.IsAnonymousUserAllowed = cbLogonAnonymous.Checked;
+            _data.IsNamedUserAllowed = cbLogonUserName.Checked;
+            _data.IsCertifiedUserAllowed = cbLogonCertificate.Checked;
             _data.UserName = tbUserName.Text;
             _data.Password = tbPassword.Text;
-            _data.HasUserCertificate = cbLogonCertificate.Checked;
 
             // security policies
             _data.HasSecurityNone = cbSecurityNone.Checked;
@@ -225,9 +227,14 @@ namespace iba.Controls
             cbEnabled.Checked = data.Enabled;
 
             // logon
+            cbLogonAnonymous.Checked = data.IsAnonymousUserAllowed;
+            cbLogonUserName.Checked = data.IsNamedUserAllowed;
+            cbLogonCertificate.Checked = data.IsCertifiedUserAllowed;
             tbUserName.Text = data.UserName;
             tbPassword.Text = data.Password;
-            cbLogonCertificate.Checked = data.HasUserCertificate;
+
+            // disable/enable user name text boxes
+            cbLogonUserName_CheckedChanged(null, null);
 
             // security policies
             cbSecurityNone.Checked = data.HasSecurityNone;
@@ -473,29 +480,7 @@ namespace iba.Controls
 
         #region Certificates
 
-        public class IbaOpcUaCertificateTag
-        {
-            public string Name;
-            public bool IsTrusted;
-            public bool HasPrivateKey;
-            public bool IsUsedForServer;
-            public bool IsUsedForAuthentication;
-
-            public string Issuer;
-            public DateTime ExpirationDate;
-
-            /// <summary> Is used for tooltip </summary>
-            public string GetPropertyString()
-            {
-                string result = $@"{(IsTrusted ? "Trusted" : "Rejected")}; ";
-
-                if (HasPrivateKey) result += "Private key; ";
-                if (IsUsedForServer) result += "OPC UA Server certificate; ";
-                if (IsUsedForAuthentication) result += "Authentication; ";
-                result = result.TrimEnd(';', ' ');
-                return result;
-            }
-        }
+       
 
         #endregion
 
@@ -815,5 +800,11 @@ namespace iba.Controls
         }
 
         #endregion
+
+        private void cbLogonUserName_CheckedChanged(object sender, EventArgs e)
+        {
+            tbUserName.Enabled = tbPassword.Enabled = buttonShowPassword.Enabled =
+                cbLogonUserName.Checked;
+        }
     }
 }

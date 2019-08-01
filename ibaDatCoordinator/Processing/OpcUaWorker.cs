@@ -13,6 +13,10 @@ namespace iba.Processing
 {
     public class OpcUaWorker : IDisposable
     {
+        private const string _cfgXmlConfigFileName = "ibaDatCoordinatorOpcUaServerConfig.xml";
+        private const string _cfgConfigSectionName = "iba_ag.ibaDatCoordinatorOpcUaServer";
+        private const string _cfgLogFilePath = "%CommonApplicationData%\\iba\\ibaDatCoordinator\\Opc\\ibaDatCoordinatorOpcUaServer_log.txt"; // todo. kls. 
+
         #region Construction, Destruction, Init
 
         public OpcUaWorker()
@@ -40,18 +44,18 @@ namespace iba.Processing
                 IbaOpcUaServer = new IbaOpcUaServer();
 
                 _uaApplication.ApplicationType = ApplicationType.Server;
-                _uaApplication.ConfigSectionName = $"iba_ag.ibaDatCoordinatorUaServer";
+                _uaApplication.ConfigSectionName = _cfgConfigSectionName;
 
                 // ensure we have at least one endpoint
                 if (_opcUaData.Endpoints.Count == 0)
                     _opcUaData.Endpoints.Add(OpcUaData.DefaultEndPoint);
 
-                // load the application configuration.
-                _uaApplication.LoadApplicationConfiguration(false); // todo. kls. is done automatically on start (try to defer)
+                // load the application configuration !!!!!!!!!!!!!!!.
+                _uaApplication.LoadApplicationConfiguration(_cfgXmlConfigFileName, false); // todo. kls. is done automatically on start (try to defer)
+                
                 if (!string.IsNullOrEmpty(_uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
                 {
-                    _uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath =
-                        "c:\\Temp\\datCo_OpcUaServer_log.txt"; // todo. kls. 
+                    _uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = _cfgLogFilePath;
                     _uaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
                 }
 
@@ -164,7 +168,17 @@ namespace iba.Processing
             // start application and server
             _uaApplication.Start(IbaOpcUaServer);
 
-            IbaOpcUaServer.ApplyConfiguration(null, null, false);
+            IbaOpcUaServer.ApplyConfiguration( false);
+
+
+            IbaOpcUaServer.SetUserAccountConfiguration(
+                _opcUaData.IsAnonymousUserAllowed, _opcUaData.IsNamedUserAllowed, _opcUaData.IsCertifiedUserAllowed,
+                _opcUaData.UserName, _opcUaData.Password);
+
+
+            // todo. kls. 
+            IbaOpcUaServer.TrustMode = IbaOpcUaServerCertificateTrustMode.TrustAllPermanently;
+
 
             RebuildTree();
 
