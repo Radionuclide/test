@@ -4,9 +4,9 @@
   xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
   xmlns="http://opcfoundation.org/UA/SDK/Configuration.xsd"
 >
-  <ApplicationName>ibaLogic UA Server</ApplicationName>
-  <ApplicationUri>urn:localhost:ibaLogic:UA:Server</ApplicationUri>
-  <ProductUri>uri:iba-ag.com:ibaLogic:UA:Server</ProductUri>
+  <ApplicationName>ibaDatCoordinator UA Server</ApplicationName>
+  <ApplicationUri>urn:localhost:ibaDatCoordinator:UA:Server</ApplicationUri>
+  <ProductUri>uri:iba-ag.com:ibaDatCoordinator:UA:Server</ProductUri>
   <ApplicationType>Server_0</ApplicationType>
   
   <SecurityConfiguration>
@@ -14,26 +14,26 @@
     <!-- Where the application instance certificate is stored (MachineDefault) -->
     <ApplicationCertificate>
       <StoreType>Directory</StoreType>
-      <StorePath>%CommonApplicationData%\iba\ibaLogic5\Opc\UACertificates\Own</StorePath>
-      <SubjectName>ibaLogic UA Server</SubjectName>
+      <StorePath>%CommonApplicationData%\iba\ibaDatCoordinator\Opc\UACertificates\Own</StorePath>
+      <SubjectName>ibaDatCoordinator UA Server</SubjectName>
     </ApplicationCertificate>
 
     <!-- Where the trust list is stored (UA Applications) -->
     <TrustedPeerCertificates>
       <StoreType>Directory</StoreType>
-      <StorePath>%CommonApplicationData%\iba\ibaLogic5\Opc\UACertificates\Trusted</StorePath>
+      <StorePath>%CommonApplicationData%\iba\ibaDatCoordinator\Opc\UACertificates\Trusted</StorePath>
     </TrustedPeerCertificates>
 
     <!-- Where the issuer certificate are stored (certificate authorities) -->
     <TrustedIssuerCertificates>
       <StoreType>Directory</StoreType>
-      <StorePath>%CommonApplicationData%\iba\ibaLogic5\Opc\UACertificates\Certificate Authorities</StorePath>
+      <StorePath>%CommonApplicationData%\iba\ibaDatCoordinator\Opc\UACertificates\Certificate Authorities</StorePath>
     </TrustedIssuerCertificates>
 
     <!-- The directory used to store invalid certficates for later review by the administrator. -->
     <RejectedCertificateStore>
       <StoreType>Directory</StoreType>
-      <StorePath>%CommonApplicationData%\iba\ibaLogic5\Opc\UACertificates\Rejected</StorePath>
+      <StorePath>%CommonApplicationData%\iba\ibaDatCoordinator\Opc\UACertificates\Rejected</StorePath>
     </RejectedCertificateStore>
   </SecurityConfiguration>
   
@@ -50,8 +50,8 @@
   </TransportQuotas>
   <ServerConfiguration>
     <BaseAddresses>
-      <ua:String>opc.tcp://localhost:21060/ibaLogicUAServer</ua:String>
-      <ua:String>http://localhost:21061/ibaLogicUAServer</ua:String>
+      <ua:String>opc.tcp://localhost:21060/ibaDatCoordinator</ua:String>
+      <ua:String>http://localhost:21061/ibaDatCoordinator</ua:String>
     </BaseAddresses>
     <SecurityPolicies>
       <ServerSecurityPolicy>
@@ -115,7 +115,7 @@
       </SamplingRateGroup>
     </AvailableSamplingRates>
     <MaxRegistrationInterval>30000</MaxRegistrationInterval>
-    <NodeManagerSaveFile>ibaLogic.UA.Server.nodes.xml</NodeManagerSaveFile>
+    <NodeManagerSaveFile>ibaDatCoordinator.UA.Server.nodes.xml</NodeManagerSaveFile>
   </ServerConfiguration>
 
   <Extensions>
@@ -126,7 +126,7 @@
   </Extensions>
 
   <TraceConfiguration>
-    <OutputFilePath>Logs\ibaLogic.UA.Server.log.txt</OutputFilePath>
+    <OutputFilePath>Logs\ibaDatCoordinator.UA.Server.log.txt</OutputFilePath>
     <DeleteOnLoad>true</DeleteOnLoad>
     <!-- Show Only Errors -->
     <!-- <TraceMasks>1</TraceMasks> -->

@@ -789,7 +789,7 @@
     <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"
 move "$(TargetDir)hd_plugin.dll" "$(TargetDir)Plugins"
 copy "$(SolutionDir)Dependencies\PowerCollections.dll" "$(TargetDir)"
-
+copy "$(SolutionDir)Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
