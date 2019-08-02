@@ -679,7 +679,7 @@ namespace iba.Processing
 
         #region Tree Snapshot for GUI and MIB generation
 
-        internal Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
+        public Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
         {
             try
             {
@@ -741,7 +741,7 @@ namespace iba.Processing
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(IbaSnmpOid oid, bool bUpdate = false)
+        public ExtMonData.GuiTreeNodeTag GetTreeNodeTag(IbaSnmpOid oid, bool bUpdate = false)
         {
             try
             {

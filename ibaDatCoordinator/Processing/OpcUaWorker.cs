@@ -1010,7 +1010,7 @@ namespace iba.Processing
 
         private void OnMonitoringTimerTick(object sender, EventArgs args)
         {
-            if (!OpcUaData.Enabled || NodeManager == null)
+            if (!IsInitialized || !OpcUaData.Enabled || NodeManager == null)
                 return;
 
             if (Monitor.TryEnter(LockObject, LockTimeout))
@@ -1087,7 +1087,7 @@ namespace iba.Processing
 
         #region Tree Snapshot for GUI
 
-        internal List<ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
+        public List<ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
         {
             AssertInitialized();
 
@@ -1125,7 +1125,7 @@ namespace iba.Processing
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(ExtMonData.ExtMonNode node)
+        public ExtMonData.GuiTreeNodeTag GetTreeNodeTag(ExtMonData.ExtMonNode node)
         {
             try
             {
@@ -1178,7 +1178,7 @@ namespace iba.Processing
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string nodeId)
+        public ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string nodeId)
         {
             AssertInitialized();
 

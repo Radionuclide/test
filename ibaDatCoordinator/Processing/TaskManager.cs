@@ -365,7 +365,7 @@ namespace iba.Processing
 
 
 
-        internal bool ExtMonRefreshLicenseInfo(ExtMonData.LicenseInfo licenseInfo)
+        public bool ExtMonRefreshLicenseInfo(ExtMonData.LicenseInfo licenseInfo)
         {
             licenseInfo.Reset();
 
@@ -397,7 +397,7 @@ namespace iba.Processing
             return true;
         }
 
-        internal bool ExtMonRefreshGlobalCleanupDriveInfo(ExtMonData.GlobalCleanupDriveInfo driveInfo)
+        public bool ExtMonRefreshGlobalCleanupDriveInfo(ExtMonData.GlobalCleanupDriveInfo driveInfo)
         {
             // reset values for the case of an update error
             driveInfo.Reset();
@@ -459,7 +459,7 @@ namespace iba.Processing
             driveInfo.PutTimeStamp();
         }
 
-        internal bool ExtMonRefreshJobInfo(ExtMonData.JobInfoBase jobInfo)
+        public bool ExtMonRefreshJobInfo(ExtMonData.JobInfoBase jobInfo)
         {
             jobInfo.Reset();
 
@@ -803,7 +803,7 @@ namespace iba.Processing
 
         /// <summary> Rebuilds <see cref="ExtMonData"/> instance. </summary>
         /// <returns> true on success and false on error </returns>
-        internal bool ExtMonRebuildObjectsData()
+        public bool ExtMonRebuildObjectsData()
         {
             var od = ExtMonData.Instance;
             try
@@ -906,7 +906,7 @@ namespace iba.Processing
             }
         }
 
-        internal virtual Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> SnmpGetObjectTreeSnapShot()
+        public virtual Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> SnmpGetObjectTreeSnapShot()
         {
             try
             {
@@ -919,7 +919,7 @@ namespace iba.Processing
             }
         }
 
-        internal virtual ExtMonData.GuiTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
+        public virtual ExtMonData.GuiTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
         {
             try
             {
@@ -1050,7 +1050,7 @@ namespace iba.Processing
             }
         }
 
-        internal virtual List<ExtMonData.GuiTreeNodeTag> OpcUaGetObjectTreeSnapShot()
+        public virtual List<ExtMonData.GuiTreeNodeTag> OpcUaGetObjectTreeSnapShot()
         {
             try
             {
@@ -1063,7 +1063,7 @@ namespace iba.Processing
             }
         }
 
-        internal virtual ExtMonData.GuiTreeNodeTag OpcUaGetTreeNodeTag(string id)
+        public virtual ExtMonData.GuiTreeNodeTag OpcUaGetTreeNodeTag(string id)
         {
             try
             {
@@ -1706,7 +1706,7 @@ namespace iba.Processing
             }
         }
 
-        internal override Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> SnmpGetObjectTreeSnapShot()
+        public override Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> SnmpGetObjectTreeSnapShot()
         {
             try
             {
@@ -1719,7 +1719,7 @@ namespace iba.Processing
             }
         }
 
-        internal override ExtMonData.GuiTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
+        public override ExtMonData.GuiTreeNodeTag SnmpGetTreeNodeTag(IbaSnmpOid oid)
         {
             try
             {
@@ -1859,7 +1859,7 @@ namespace iba.Processing
             }
         }
 
-        internal override List<ExtMonData.GuiTreeNodeTag> OpcUaGetObjectTreeSnapShot()
+        public override List<ExtMonData.GuiTreeNodeTag> OpcUaGetObjectTreeSnapShot()
         {
             try
             {
@@ -1872,7 +1872,7 @@ namespace iba.Processing
             }
         }
 
-        internal override ExtMonData.GuiTreeNodeTag OpcUaGetTreeNodeTag(string id)
+        public override ExtMonData.GuiTreeNodeTag OpcUaGetTreeNodeTag(string id)
         {
             try
             {
