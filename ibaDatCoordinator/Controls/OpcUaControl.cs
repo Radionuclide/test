@@ -388,7 +388,7 @@ namespace iba.Controls
             if (certTag == null)
                 return;
 
-            // todo. kls. localize?
+            // todo. kls. low. localize?
             if (MessageBox.Show(
                     "Are you sure you want to delete the certificate permanently?", "",
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
@@ -798,7 +798,7 @@ namespace iba.Controls
 
                 if (objSnapshot == null)
                 {
-                    Debug.Assert(false); // should not happen
+                    // can happen if OpcUaWorker is not initialized
                     return;
                 }
 

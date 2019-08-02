@@ -416,10 +416,7 @@ namespace iba.Processing.IbaOpcUa
         #endregion //UserAcccounts
 
 
-        /// <summary>
-        /// // todo. kls. comment and rename
-        /// </summary>
-        public void ApplyConfiguration(bool passwordEncryptionForTcpNoneEndpoint)
+        public void ApplySecurityConfiguration(bool passwordEncryptionForTcpNoneEndpoint)
         {
 
             Configuration.CertificateValidator.CertificateValidation += OnCertificateValidation;
@@ -473,7 +470,7 @@ namespace iba.Processing.IbaOpcUa
         #endregion
 
             
-        // todo. kls. move
+        // todo. kls. remove
         public static string GetFQDN()
         {
             string domainName = IPGlobalProperties.GetIPGlobalProperties().DomainName;
@@ -491,7 +488,7 @@ namespace iba.Processing.IbaOpcUa
 
         #region Diagnostics
         
-        // todo. kls. remove
+        // todo. kls. low - remove or show current user (and identity type) in diagnostics 
         //public IbaOpcUaUserAccount KlsGetUserForSession(NodeId sessionid)
         //{
         //    IList<Session> sessions = ServerInternal.SessionManager.GetSessions();

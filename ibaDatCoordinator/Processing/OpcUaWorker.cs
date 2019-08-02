@@ -16,7 +16,7 @@ namespace iba.Processing
     {
         private const string _cfgXmlConfigFileName = "ibaDatCoordinatorOpcUaServerConfig.xml";
         private const string _cfgConfigSectionName = "iba_ag.ibaDatCoordinatorOpcUaServer";
-        private const string _cfgLogFilePath = "%CommonApplicationData%\\iba\\ibaDatCoordinator\\Opc\\ibaDatCoordinatorOpcUaServer_log.txt"; // todo. kls. 
+        private const string _cfgUaTraceFilePath = "%CommonApplicationData%\\iba\\ibaDatCoordinator\\Opc\\ibaDatCoordinatorOpcUaServer_log.txt"; // todo. kls. 
 
         #region Construction, Destruction, Init
 
@@ -27,13 +27,12 @@ namespace iba.Processing
             _opcUaData = OpcUaData.DefaultData;
         }
 
-        public void Dispose()
-        {
-        }
+        public bool IsInitialized =>
+            UaApplication != null && UaAppConfiguration != null && IbaOpcUaServer != null;
 
         public void Init()
         {
-            if (UaApplication != null) //todo
+            if (IsInitialized) 
             {
                 // disable double initialization
                 return;
@@ -47,51 +46,36 @@ namespace iba.Processing
                 UaApplication.ApplicationType = ApplicationType.Server;
                 UaApplication.ConfigSectionName = _cfgConfigSectionName;
 
-                // ensure we have at least one endpoint
-                if (_opcUaData.Endpoints.Count == 0)
-                    _opcUaData.Endpoints.Add(OpcUaData.DefaultEndPoint);
 
-                // load the application configuration !!!!!!!!!!!!!!!.
-                var applicationConfiguration = 
-                    UaApplication.LoadApplicationConfiguration(_cfgXmlConfigFileName, false); // todo. kls. is done automatically on start (try to defer)
+                // todo. kls. remove tmp
+                LogData.Data.Logger.Log(Level.Info,
+                    $"{nameof(OpcUaWorker)}.{nameof(Init)}. Loading configuration: {_cfgXmlConfigFileName}.");
+
+
+                // load the application configuration;
+                // do it now (not waiting for automatic loading or restart) for the following reasons:
+                //  * to get the cfg file from the overridden path;
+                //  * and to be able to configure application while server is yet offline;
+                UaApplication.LoadApplicationConfiguration(_cfgXmlConfigFileName, false);
                 
-                if (!string.IsNullOrEmpty(UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
+                if (UaAppConfiguration == null)
                 {
-                    UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = _cfgLogFilePath;
-                    UaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
+                    // config file is critical; we cannot continue
+                    UnInit();
+                    throw new Exception($@"Cannot load OPC UA configuration file '{_cfgXmlConfigFileName}'");
                 }
 
-                // todo. kls. 
-                String sysName = IbaOpcUaServer.GetFQDN();
-
-                //if ((_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Count == 0) ||
-                //    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
-                //        "opc.tcp://" + sysName + ":21060") ||
-                //    !_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses[0].StartsWith(
-                //        "http://" + sysName + ":21061"))
+                // ua trace file
+                if (!string.IsNullOrEmpty(UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
                 {
-                    // todo. kls. default EP?
-
-                    //string base1 = "opc.tcp://" + sysName + $":21060/{_ibaDatCoordinatorUaServerStr}";
-                    ////string base2 = "http://" + sysName + $":21061/{_ibaDatCoordinatorUaServerStr}";
-                    UaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-                    UaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(OpcUaData.DefaultEndPoint
-                        .Uri);
-                    //_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(Base2);
+                    UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = _cfgUaTraceFilePath;
+                    UaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
                 }
 
                 // check the application certificate.
                 UaApplication.CheckApplicationInstanceCertificate(false, 0);
 
-                //start the server
-                //if (Environment.UserInteractive)
-                //    _uaApplication.Start(IbaOpcUaServer);
-                //else
-                // // todo. kls. - test launch as service
-                //    _uaApplication.StartAsService(IbaOpcUaServer);
-                //_uaServer.OnTrustModeChanged += trustModeChangedHandler; // todo. kls. 
-
-                // change status from initial (errored) to stopped to have proper
+                // change status from initial (errored) to stopped
                 Status = ExtMonWorkerStatus.Stopped;
 
                 // start server (if it is enabled), update status, write to log
@@ -106,10 +90,42 @@ namespace iba.Processing
                 // turn on monitoring timer
                 InitializeMonitoringTimer();
             }
-            catch
+            catch (Exception ex)
             {
-                ;
-                throw;
+                try
+                {
+                    LogData.Data.Logger.Log(Level.Exception,
+                        $"{nameof(OpcUaWorker)}.{nameof(Init)}. Cannot initialize instance: {ex.Message}.");
+                }
+                catch { /* logging is not critical */ }
+            }
+        }
+
+        /// <summary> Doesn't throw exceptions. Uninitializes worker; stops server if applicable. </summary>
+        public void UnInit()
+        {
+            try
+            {
+                IbaOpcUaServer?.Stop();
+            }
+            catch { /**/}
+            UaApplication = null;
+            IbaOpcUaServer = null;
+        }
+
+        public void Dispose()
+        {
+            UnInit();
+        }
+
+        private void AssertInitialized()
+        {
+            // if one of these is null we cannot do anything
+            // ReSharper disable once InvertIf
+            if (!IsInitialized)
+            {
+                UnInit();
+                throw new InvalidOperationException($@"{nameof(OpcUaWorker)} is not initialized.");
             }
         }
 
@@ -172,7 +188,7 @@ namespace iba.Processing
             // start application and server
             UaApplication.Start(IbaOpcUaServer);
             
-            IbaOpcUaServer.ApplyConfiguration( false);
+            IbaOpcUaServer.ApplySecurityConfiguration( false);
 
 
             IbaOpcUaServer.SetUserAccountConfiguration(
@@ -180,7 +196,7 @@ namespace iba.Processing
                 _opcUaData.UserName, _opcUaData.Password);
 
 
-            // todo. kls. 
+            // todo. kls. !!! remove tmp test
             IbaOpcUaServer.TrustMode = IbaOpcUaServerCertificateTrustMode.TrustAllPermanently;
 
 
@@ -340,6 +356,8 @@ namespace iba.Processing
 
         public List<OpcUaData.CertificateTag> HandleCertificate(string command, OpcUaData.CertificateTag certTag = null)
         {
+            AssertInitialized();
+
             switch (command)
             {
                 case "sync":
@@ -640,8 +658,9 @@ namespace iba.Processing
         public bool RebuildTree()
         {
             var man = TaskManager.Manager;
-            if (man == null || IbaOpcUaServer?.IbaOpcUaNodeManager == null)
+            if (man == null || UaAppConfiguration == null || IbaOpcUaServer?.IbaOpcUaNodeManager == null)
             {
+                // don't throw here, just return
                 return false; // rebuild failed
             }
 
@@ -728,9 +747,6 @@ namespace iba.Processing
             }
             catch
             {
-                ;// todo. kls. 
-                ;
-                //Debug.Assert(false); // should not happen
                 // go on with other items 
                 // even if current one has failed 
             }
@@ -1073,6 +1089,8 @@ namespace iba.Processing
 
         internal List<ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
         {
+            AssertInitialized();
+
             try
             {
                 // check tree structure before taking a snapshot
@@ -1162,6 +1180,8 @@ namespace iba.Processing
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
         internal ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string nodeId)
         {
+            AssertInitialized();
+
             try
             {
                 if (string.IsNullOrWhiteSpace(nodeId))

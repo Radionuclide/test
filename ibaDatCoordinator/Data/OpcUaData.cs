@@ -12,10 +12,6 @@ namespace iba.Data
     [Serializable]
     public class OpcUaData : ICloneable
     {
-        public OpcUaData()
-        {
-        }
-
         public bool Enabled { get; set; }
 
 
@@ -39,7 +35,6 @@ namespace iba.Data
 
             public int Port;
 
-            /// <summary> If <see cref="Hostname"/> is not null or whitespace, then <see cref="Address"/> is ignored. </summary>
             public string Hostname;
 
             public string Uri => GetUriStringForEndpoint(this);
@@ -86,7 +81,7 @@ namespace iba.Data
         public class CertificateTag
         {
             [XmlIgnore]
-            public X509Certificate2 Certificate; // todo. kls. !!! remove
+            public X509Certificate2 Certificate;
 
             public string Thumbprint;
             public string Name;
@@ -130,18 +125,44 @@ namespace iba.Data
                 HasPrivateKey = Certificate.HasPrivateKey;
             }
 
-            //public void ResetFields()
-            //{
-            //    Thumbprint = "";
-            //    Name = "";
-            //    Issuer = "";
-            //    ExpirationDate = "";
+            public override bool Equals(object obj)
+            {
+                var other = obj as CertificateTag;
+                if (other == null)
+                {
+                    return false;
+                }
 
-            //    IsTrusted = false;
-            //    HasPrivateKey = false;
-            //    IsUsedForServer = false;
-            //    IsUsedForAuthentication = false;
-            //}
+                // ReSharper disable ArrangeThisQualifier
+                return
+                    this.Thumbprint == other.Thumbprint &&
+                    this.Name == other.Name &&
+                    this.Issuer == other.Issuer &&
+                    this.ExpirationDate == other.ExpirationDate &&
+                    this.IsTrusted == other.IsTrusted &&
+                    this.HasPrivateKey == other.HasPrivateKey &&
+                    this.IsUsedForServer == other.IsUsedForServer &&
+                    this.IsUsedForAuthentication == other.IsUsedForAuthentication;
+                // ReSharper restore ArrangeThisQualifier
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    // ReSharper disable NonReadonlyMemberInGetHashCode
+                    var hashCode = (Thumbprint != null ? Thumbprint.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ (Issuer != null ? Issuer.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ (ExpirationDate != null ? ExpirationDate.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ IsTrusted.GetHashCode();
+                    hashCode = (hashCode * 397) ^ HasPrivateKey.GetHashCode();
+                    hashCode = (hashCode * 397) ^ IsUsedForServer.GetHashCode();
+                    hashCode = (hashCode * 397) ^ IsUsedForAuthentication.GetHashCode();
+                    return hashCode;
+                    // ReSharper restore NonReadonlyMemberInGetHashCode
+                }
+            }
         }
 
         public List<CertificateTag> Certificates = new List<CertificateTag>();
@@ -201,9 +222,9 @@ namespace iba.Data
             cert.IsUsedForServer = true;
         }
 
-        public void SetServerFlag(string sn)
+        public void SetServerFlag(string thumbprint)
         {
-            CertificateTag certTag = GetCertificate(sn);
+            CertificateTag certTag = GetCertificate(thumbprint);
             if (certTag == null)
             {
                 Debug.Assert(false); // not found
@@ -211,8 +232,6 @@ namespace iba.Data
             }
             SetServerFlag(certTag);
         }
-
-        public int CertificateChangedMask; // todo. kls. 
 
         #endregion
         
@@ -245,6 +264,7 @@ namespace iba.Data
                 return false;
             }
 
+            // ReSharper disable ArrangeThisQualifier
             return
                 this.Enabled == other.Enabled &&
                 this.UserName == other.UserName &&
@@ -257,8 +277,9 @@ namespace iba.Data
                 this.IsCertifiedUserAllowed == other.IsCertifiedUserAllowed &&
                 this.SecurityBasic128Level == other.SecurityBasic128Level &&
                 this.SecurityBasic256Level == other.SecurityBasic256Level &&
-                this.CertificateChangedMask == other.CertificateChangedMask && // todo. kls. compare certificate list?
-                this.Endpoints.SequenceEqual(other.Endpoints); 
+                this.Endpoints.SequenceEqual(other.Endpoints) &&
+                this.Certificates.SequenceEqual(other.Certificates);
+            // ReSharper restore ArrangeThisQualifier
         }
 
         public override int GetHashCode()

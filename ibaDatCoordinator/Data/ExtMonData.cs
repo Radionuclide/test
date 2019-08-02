@@ -431,9 +431,9 @@ namespace iba.Data
         {
             public readonly ExtMonFolder Parent;
 
-            public string Caption; // todo. kls. try make readonly 
-            public string Description; // todo. kls. try make readonly 
-            
+            public string Caption; // todo. kls. low. try make readonly 
+            public string Description; // todo. kls. low. try make readonly 
+
             /// <summary> Least significant (rightmost) subId of SNMP OID for corresponding object </summary>
             public readonly uint SnmpLeastId;
 
@@ -978,7 +978,7 @@ namespace iba.Data
 
                 // create variables and add them to collection
 
-                // todo. kls. Do description change on Task rename (this was NOT implemented in original version also) 
+                // todo. kls. low. Do description change on Task rename (this was NOT implemented in original version also) 
                 TaskName = AddChildVariable<string>(
                     @"Task name", @"Name",
                     @"The name of the task as it appears in GUI.",
@@ -1145,10 +1145,10 @@ namespace iba.Data
                 Caption = $@"Job '{jobName}'";
                 // SnmpFullMibName = ""; // is set in derived classes
                 // Description = ""; // is set in derived classes
-                
+
                 // create folders and add them to collection
 
-                // todo. kls. Do description change on Job rename (this was NOT implemented in original version also) 
+                // todo. kls. low. Do description change on Job rename (this was NOT implemented in original version also) 
                 FolderGeneral = AddChildFolder(
                     @"General", @"General",
                     $@"General properties of job '{jobName}'.",
