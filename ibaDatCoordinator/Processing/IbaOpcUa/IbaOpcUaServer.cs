@@ -128,32 +128,38 @@ namespace iba.Processing.IbaOpcUa
             switch (args.NewIdentity)
             {
                 case AnonymousIdentityToken _:
-                    if (!HasAnonymousUser)
+                    if (!IsAnonymousUserAllowed)
                     {
                         throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
-                            @"Anonymous user is not accepted");
+                            @"Anonymous users are not accepted");
                     }
-                        return;
+                    // grant access
+                    return;
+
                 case UserNameIdentityToken userNameToken:
+                    if (!IsNamedUserAllowed)
+                    {
+                        throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
+                            @"Named users are not accepted");
+                    }
                     VerifyNamedUser(userNameToken.UserName, userNameToken.DecryptedPassword);
-                    // todo. kls. use built-in functionality?
-                    var ide = args.Identity;
-                    //args.Identity = new UserIdentity(userNameToken);
                     break;
+
                 case X509IdentityToken certToken:
+                    if (!IsCertifiedUserAllowed)
+                    {
+                        throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
+                            @"Certificate-users are not accepted");
+                    }
+
                     try
                     {
-                        foreach (var certifiedUser in CertifiedUsers)
+                        // certToken.Certificate is always null, so let's compare certificates by raw data
+                        foreach (var user in CertifiedUsers)
                         {
-                            X509Certificate2 c = certToken.Certificate;
-                            var x = certToken.Certificate.PublicKey.EncodedKeyValue;
-                            var a1 = certToken.Certificate.Equals(certifiedUser);
-                            var a2 = certToken.Certificate.PublicKey.Equals(certifiedUser.PublicKey);
-                            //if (certToken.Certificate.PublicKey == certifiedUser)
-                            //{
-                            //        return;
-                            //}
-
+                            if (user.RawData.SequenceEqual(certToken.CertificateData))
+                                // grant access
+                                return;
                         }
                     }
                     catch
@@ -161,7 +167,7 @@ namespace iba.Processing.IbaOpcUa
                         // can happen (improbably) when collection is modified by another thread 
                     }
                     throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
-                        @"User CeAnonymous user is not accepted");
+                        $@"User certificate {certToken.Certificate.Thumbprint} is not accepted");
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -180,7 +186,7 @@ namespace iba.Processing.IbaOpcUa
                     "Security token is not a valid username token. An empty username is not accepted.");
             }
 
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrEmpty(password))
             {
                 // an empty password is not accepted.
                 throw ServiceResultException.Create(StatusCodes.BadIdentityTokenRejected,
@@ -198,9 +204,7 @@ namespace iba.Processing.IbaOpcUa
                     $@"Invalid password for user '{userName}'");
             }
 
-            // password is correct
-            // user validated successfully
-            return;
+            // password is correct, user validated successfully - just return
         }
 
         #endregion
@@ -320,53 +324,13 @@ namespace iba.Processing.IbaOpcUa
                 {
                     e.Accept = true;
                     // add cert to permanent trusted store
-                    SetCertificateTrust(e.Certificate, true);
+                    //SetCertificateTrust(e.Certificate, true);
                     Utils.Trace((int)Utils.TraceMasks.Security, "Automatically permanently accepted certificate: {0}", e.Certificate.Subject);
                 }
             }
             catch (Exception exception)
             {
                 Utils.Trace(exception, "Error accepting certificate.");
-            }
-        }
-
-        /// <summary> Saves the certificate to the trusted or rejected certificate
-        /// directory, depending on <see cref="isTrusted" argument/>. </summary>
-        public void SetCertificateTrust(X509Certificate2 certificate, bool isTrusted)
-        {
-            try
-            {
-                // small helper to get a store
-                ICertificateStore GetStore(bool bTrusted) => bTrusted ? 
-                    Configuration.SecurityConfiguration.TrustedPeerCertificates.OpenStore() :
-                    Configuration.SecurityConfiguration.RejectedCertificateStore.OpenStore();
-
-                // delete certificate from opposite store
-                ICertificateStore store = GetStore(!isTrusted);
-                try
-                {
-                    store.Delete(certificate.Thumbprint);
-                }
-                finally
-                {
-                    store.Close();
-                }
-
-                // add certificate to the needed store
-                store = GetStore(isTrusted);
-                try
-                {
-                    store.Delete(certificate.Thumbprint);
-                    store.Add(certificate);
-                }
-                finally
-                {
-                    store.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                Utils.Trace(e, "Could not write certificate to directory: {0}", Configuration.SecurityConfiguration.TrustedPeerCertificates);
             }
         }
 
@@ -415,41 +379,36 @@ namespace iba.Processing.IbaOpcUa
             }
         }
 
-        public bool HasAnonymousUser { get; private set; }
-        public bool HasNamedUser { get; private set; }
-        public bool HasCertifiedUser { get; private set; }
+        public bool IsAnonymousUserAllowed { get; private set; }
+        public bool IsNamedUserAllowed { get; private set; }
+        public bool IsCertifiedUserAllowed { get; private set; }
 
         // list of specific user account (can be empty)
         // needed to be accessed by the form, so is public
         public string NamedUserAccountName;
         public string NamedUserAccountPassword;
 
-        // todo. kls. 
         public readonly HashSet<X509Certificate2> CertifiedUsers = new HashSet<X509Certificate2>();
 
         public void SetUserAccountConfiguration(bool hasAnonymous, bool hasNamed, bool hasCertified, 
-            string name = null, string password = null, object certificate = null)
+            string name = null, string password = null)
         {
-            HasAnonymousUser = hasAnonymous;
+            IsAnonymousUserAllowed = hasAnonymous;
+            IsCertifiedUserAllowed = hasCertified;
 
-            HasNamedUser = false;
-            HasCertifiedUser = false;
+            IsNamedUserAllowed = false;
             
+            // ReSharper disable once InvertIf
             if (hasNamed)
             {
                 if (string.IsNullOrWhiteSpace(name))
                     throw new ArgumentException("Name cannot be null or whitespace", nameof(name));
+                // ReSharper disable once JoinNullCheckWithUsage
                 if (password == null)
                     throw new ArgumentException("Password cannot be null", nameof(password));
                 NamedUserAccountName = name;
                 NamedUserAccountPassword = password;
-                HasNamedUser = true;
-            }
-
-            if (hasCertified)
-            {
-                // todo. kls. check consistency
-                HasCertifiedUser = true;
+                IsNamedUserAllowed = true;
             }
         }
         

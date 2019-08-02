@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Serialization;
 
 namespace iba.Data
 {
@@ -78,19 +80,25 @@ namespace iba.Data
 
         public List<OpcUaEndPoint> Endpoints = new List<OpcUaEndPoint>();
 
-
+        #region Certificates
+        
+        [Serializable]
         public class CertificateTag
         {
-            public X509Certificate2 Certificate;
+            [XmlIgnore]
+            public X509Certificate2 Certificate; // todo. kls. !!! remove
+
+            public string Thumbprint;
             public string Name;
+            public string Issuer;
+            public string ExpirationDate;
+
             public bool IsTrusted;
             public bool HasPrivateKey;
             public bool IsUsedForServer;
             public bool IsUsedForAuthentication;
 
-            public string Issuer;
-            public DateTime ExpirationDate;
-
+            
             /// <summary> Is used for tooltip </summary>
             public string GetPropertyString()
             {
@@ -102,11 +110,112 @@ namespace iba.Data
                 result = result.TrimEnd(';', ' ');
                 return result;
             }
+
+            public void FillTextFieldsFromCertificate()
+            {
+                Thumbprint = "";
+                Name = "";
+                Issuer = "";
+                ExpirationDate = "";
+                HasPrivateKey = false;
+
+                if (Certificate == null)
+                    return;
+
+                Thumbprint = Certificate.Thumbprint;
+                Name = !string.IsNullOrWhiteSpace(Certificate.FriendlyName) ?
+                    Certificate.FriendlyName : Certificate.Subject;
+                Issuer = Certificate.Issuer;
+                ExpirationDate = Certificate.GetExpirationDateString();
+                HasPrivateKey = Certificate.HasPrivateKey;
+            }
+
+            //public void ResetFields()
+            //{
+            //    Thumbprint = "";
+            //    Name = "";
+            //    Issuer = "";
+            //    ExpirationDate = "";
+
+            //    IsTrusted = false;
+            //    HasPrivateKey = false;
+            //    IsUsedForServer = false;
+            //    IsUsedForAuthentication = false;
+            //}
         }
 
-        public List<CertificateTag> Certificates = new List<CertificateTag>(); 
+        public List<CertificateTag> Certificates = new List<CertificateTag>();
+
+        public CertificateTag GetCertificate(string thumbprint)
+        {
+            if (string.IsNullOrWhiteSpace(thumbprint))
+                return null;
+
+            foreach (var certTag in Certificates)
+            {
+                if (certTag.Thumbprint == thumbprint)
+                    return certTag;
+            }
+            return null;
+        }
+
+        public CertificateTag AddCertificate(X509Certificate2 cert)
+        {
+            var certTag = new CertificateTag
+            {
+                Certificate = cert,
+                Thumbprint = cert.Thumbprint
+            };
+            return AddCertificate(certTag);
+        }
+        public CertificateTag AddCertificate(CertificateTag certTag)
+        {
+            Debug.Assert(certTag != null);
+            // ensure sn consistency
+            Debug.Assert(certTag.Certificate == null || certTag.Certificate.Thumbprint == certTag.Thumbprint);
+            // ensure sn is not empty
+            Debug.Assert(!string.IsNullOrWhiteSpace(certTag.Thumbprint));
+
+            if (GetCertificate(certTag.Thumbprint) != null)
+            {
+                // cannot add a certificate, because such sn already present in collection
+                Debug.Assert(false);
+                return null;
+            }
+
+            if (certTag.Certificate != null)
+                certTag.FillTextFieldsFromCertificate();
+
+            Certificates.Add(certTag);
+            return certTag;
+        }
+
+        public void SetServerFlag(CertificateTag cert)
+        {
+            // server flag con only be single
+            // reset other flags
+            foreach (var certTag in Certificates)
+            {
+                certTag.IsUsedForServer = false;
+            }
+            cert.IsUsedForServer = true;
+        }
+
+        public void SetServerFlag(string sn)
+        {
+            CertificateTag certTag = GetCertificate(sn);
+            if (certTag == null)
+            {
+                Debug.Assert(false); // not found
+                return;
+            }
+            SetServerFlag(certTag);
+        }
+
         public int CertificateChangedMask; // todo. kls. 
 
+        #endregion
+        
         #endregion
 
         /// <summary> Creates a deep copy </summary>

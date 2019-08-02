@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using iba.Data;
 using iba.Logging;
@@ -32,7 +33,7 @@ namespace iba.Processing
 
         public void Init()
         {
-            if (_uaApplication != null) //todo
+            if (UaApplication != null) //todo
             {
                 // disable double initialization
                 return;
@@ -40,23 +41,24 @@ namespace iba.Processing
 
             try
             {
-                _uaApplication = new ApplicationInstance();
+                UaApplication = new ApplicationInstance();
                 IbaOpcUaServer = new IbaOpcUaServer();
 
-                _uaApplication.ApplicationType = ApplicationType.Server;
-                _uaApplication.ConfigSectionName = _cfgConfigSectionName;
+                UaApplication.ApplicationType = ApplicationType.Server;
+                UaApplication.ConfigSectionName = _cfgConfigSectionName;
 
                 // ensure we have at least one endpoint
                 if (_opcUaData.Endpoints.Count == 0)
                     _opcUaData.Endpoints.Add(OpcUaData.DefaultEndPoint);
 
                 // load the application configuration !!!!!!!!!!!!!!!.
-                _uaApplication.LoadApplicationConfiguration(_cfgXmlConfigFileName, false); // todo. kls. is done automatically on start (try to defer)
+                var applicationConfiguration = 
+                    UaApplication.LoadApplicationConfiguration(_cfgXmlConfigFileName, false); // todo. kls. is done automatically on start (try to defer)
                 
-                if (!string.IsNullOrEmpty(_uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
+                if (!string.IsNullOrEmpty(UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
                 {
-                    _uaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = _cfgLogFilePath;
-                    _uaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
+                    UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = _cfgLogFilePath;
+                    UaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
                 }
 
                 // todo. kls. 
@@ -72,14 +74,14 @@ namespace iba.Processing
 
                     //string base1 = "opc.tcp://" + sysName + $":21060/{_ibaDatCoordinatorUaServerStr}";
                     ////string base2 = "http://" + sysName + $":21061/{_ibaDatCoordinatorUaServerStr}";
-                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-                    _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(OpcUaData.DefaultEndPoint
+                    UaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
+                    UaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(OpcUaData.DefaultEndPoint
                         .Uri);
                     //_uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(Base2);
                 }
 
                 // check the application certificate.
-                _uaApplication.CheckApplicationInstanceCertificate(false, 0);
+                UaApplication.CheckApplicationInstanceCertificate(false, 0);
 
                 //start the server
                 //if (Environment.UserInteractive)
@@ -116,9 +118,11 @@ namespace iba.Processing
 
         #region Configuration of UA server
 
-        private ApplicationInstance _uaApplication;
+        private ApplicationInstance UaApplication { get; set; }
 
-        public IbaOpcUaServer IbaOpcUaServer { get; private set; }
+        private ApplicationConfiguration UaAppConfiguration => UaApplication?.ApplicationConfiguration;
+
+        private IbaOpcUaServer IbaOpcUaServer { get; set; }
 
         /// <summary> A quick reference to <see cref="IbaOpcUaServer"/>.<see cref="IbaOpcUaNodeManager"/> </summary>
         private IbaOpcUaNodeManager NodeManager => IbaOpcUaServer?.IbaOpcUaNodeManager;
@@ -163,11 +167,11 @@ namespace iba.Processing
 
         private void StartServer()
         {
-            ApplyConfiguration2(); // todo. kls. test - can be set before or after server start
+            ApplyApplicationConfiguration();
 
             // start application and server
-            _uaApplication.Start(IbaOpcUaServer);
-
+            UaApplication.Start(IbaOpcUaServer);
+            
             IbaOpcUaServer.ApplyConfiguration( false);
 
 
@@ -207,7 +211,7 @@ namespace iba.Processing
             NodeManager?.DeleteNodeRecursively(NodeManager.FolderIbaRoot, true);
 
             // stop application and server
-            _uaApplication.Stop();
+            UaApplication.Stop();
         }
 
         public void RestartServer()
@@ -257,23 +261,329 @@ namespace iba.Processing
             }
         }
 
-        private void ApplyConfiguration2()
+        private void ApplyApplicationConfiguration()
         {
-            Debug.Assert(_uaApplication != null);
+            Debug.Assert(UaApplication != null);
             Debug.Assert(IbaOpcUaServer != null);
             Debug.Assert(OpcUaData != null);
 
-            _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
-
-            // todo. kls. remove tst
-            //if (_opcUaData.Endpoints.Count > 1)
-            //    _opcUaData.Endpoints.RemoveAt(1);
-            //if (_opcUaData.Endpoints.Count > 1)
-            //    _opcUaData.Endpoints.RemoveAt(1);
-
+            // set endpoints
+            UaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Clear();
             foreach (var ep in _opcUaData.Endpoints)
-                _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
+                UaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
+
+            if (_opcUaData.Endpoints.Count <1)
+                throw new InvalidOperationException("At least one endpoint should be configured");
+
+            if (!_opcUaData.IsAnonymousUserAllowed &&
+                !_opcUaData.IsNamedUserAllowed &&
+                !_opcUaData.IsCertifiedUserAllowed)
+            {
+                throw new InvalidOperationException("At least one logon policy should be enabled");
+            }
+            
+            // synchronize between files and _opcUaData.Certificates
+            SynchronizeCertificates();
+
+            // todo. kls. check own certificate here
+
+            // create list of allowed user certificates
+            IbaOpcUaServer.CertifiedUsers.Clear();
+            foreach (var certTag in _opcUaData.Certificates)
+            {
+                if (!certTag.IsUsedForAuthentication || !certTag.IsTrusted)
+                    continue;
+                Debug.Assert(certTag.Certificate != null);
+                IbaOpcUaServer.CertifiedUsers.Add(certTag.Certificate);
+            }
         }
+
+
+        #region Certificates
+
+        private CertificateTrustList TrustedCertStore => UaAppConfiguration?.SecurityConfiguration?.TrustedPeerCertificates;
+        private CertificateStoreIdentifier RejectedCertStore => UaAppConfiguration?.SecurityConfiguration?.RejectedCertificateStore;
+        private CertificateIdentifier OwnCertStore => UaAppConfiguration?.SecurityConfiguration?.ApplicationCertificate;
+
+        public void SynchronizeCertificates()
+        {
+            // check id uniqueness
+            var ids = new HashSet<string>();
+            for (var i = _opcUaData.Certificates.Count - 1; i >= 0; i--)
+            {
+                var thumbprint = _opcUaData.Certificates[i].Thumbprint;
+                if (string.IsNullOrWhiteSpace(thumbprint) || ids.Contains(thumbprint))
+                {
+                    // should not happen
+                    _opcUaData.Certificates.RemoveAt(i); // remove duplicate
+                    //Debug.Assert(false);
+                }
+                ids.Add(thumbprint);
+            }
+
+            // remove non-existent (probably they were deleted by hand)
+            for (var i = 0; i < _opcUaData.Certificates.Count; i++)
+            {
+                var certTag = _opcUaData.Certificates[i];
+                var cert = GetCertificate(certTag.Thumbprint);
+
+                if (cert == null)
+                {
+                    // not found;
+                    // remove it from our list
+                   _opcUaData.Certificates.RemoveAt(i);
+                }
+            }
+
+            LoadCertificatesFromDisk();
+        }
+
+        public List<OpcUaData.CertificateTag> HandleCertificate(string command, OpcUaData.CertificateTag certTag = null)
+        {
+            switch (command)
+            {
+                case "sync":
+                    // arg is ignored
+                    Debug.Assert(certTag == null);
+                    SynchronizeCertificates();
+                    break;
+
+                case "add":
+                    // todo. kls. 
+                    break;
+
+                case "remove":
+                    Debug.Assert(!string.IsNullOrWhiteSpace(certTag?.Thumbprint));
+                    RemoveCertificateFromAllStores(certTag?.Thumbprint);
+                    SynchronizeCertificates();
+                    break;
+
+                case "trust":
+                    Debug.Assert(!string.IsNullOrWhiteSpace(certTag?.Thumbprint));
+                    SetCertificateTrust(certTag?.Thumbprint, true);
+                    SynchronizeCertificates();
+                    break;
+
+                case "reject":
+                    Debug.Assert(!string.IsNullOrWhiteSpace(certTag?.Thumbprint));
+                    SetCertificateTrust(certTag?.Thumbprint, false);
+                    SynchronizeCertificates();
+                    break;
+
+                case "asUser":
+                    Debug.Assert(!string.IsNullOrWhiteSpace(certTag?.Thumbprint));
+                    var localCertTag = _opcUaData.GetCertificate(certTag?.Thumbprint);
+                    if (localCertTag != null)
+                        localCertTag.IsUsedForAuthentication = !localCertTag.IsUsedForAuthentication;
+                    break;
+
+                case "asServer":
+                    Debug.Assert(!string.IsNullOrWhiteSpace(certTag?.Thumbprint));
+                    // todo. kls. 
+                    // check private key
+                    UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = certTag.Certificate;
+                    //SetApplicationCertificate(certTag?.Thumbprint, false);
+                    SynchronizeCertificates();
+                    break;
+
+                default:
+                    throw new NotSupportedException($@"{nameof(HandleCertificate)}. Command {command} is not supported");
+            }
+
+            return new List<OpcUaData.CertificateTag>(_opcUaData.Certificates);
+        }
+
+        // todo. kls.  todo move??
+        private void LoadCertificatesFromDisk()
+        {
+            var own = GetOwnCertificates();
+
+            if (own.Count > 1)
+            {
+                ;
+            }
+            // normally should be only one in 'own' collection
+            Debug.Assert(own.Count <= 1);
+
+            foreach (var cert in GetTrustedCertificates())
+            {
+                // check if already present in collection or add it
+                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
+
+                if (certTag == null)
+                {
+                    certTag = _opcUaData.AddCertificate(cert);
+                }
+
+                // bind and update text fields
+                certTag.Certificate = cert;
+                certTag.FillTextFieldsFromCertificate();
+
+                // mark as trusted
+                certTag.IsTrusted = true;
+            }
+
+            foreach (var cert in GetRejectedCertificates())
+            {
+                // check if already present in collection or add it
+                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
+
+                if (certTag == null)
+                {
+                    certTag = _opcUaData.AddCertificate(cert);
+                }
+
+                // bind and update text fields
+                certTag.Certificate = cert;
+                certTag.FillTextFieldsFromCertificate();
+
+                // mark as trusted
+                certTag.IsTrusted = false;
+            }
+
+            foreach (var cert in own)
+            {
+                // check if already present in collection or add it
+                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
+
+                if (certTag == null)
+                {
+                    certTag = _opcUaData.AddCertificate(cert);
+                }
+
+                // bind and update text fields
+                certTag.Certificate = cert;
+                certTag.IsTrusted = true;
+                certTag.FillTextFieldsFromCertificate();
+
+                // mark as server one
+                _opcUaData.SetServerFlag(certTag);
+            }
+        }
+
+
+        /// <summary> Removes the certificate from all stores (own, rejected, trusted) </summary>
+        private void RemoveCertificateFromAllStores(string thumbprint)
+        {
+            Debug.Assert(UaAppConfiguration != null);
+
+            ICertificateStore store = OwnCertStore.OpenStore();
+            try
+            {
+                store.Delete(thumbprint);
+            }
+            finally
+            {
+                store.Close();
+            }
+
+            RemoveCertificateFromTrustedAndRejected(thumbprint);
+        }
+
+        private void RemoveCertificateFromTrustedAndRejected(string thumbprint)
+        {
+            Debug.Assert(UaAppConfiguration != null);
+
+            ICertificateStore store = TrustedCertStore.OpenStore();
+            try
+            {
+                store.Delete(thumbprint);
+            }
+            finally
+            {
+                store.Close();
+            }
+
+            store = RejectedCertStore.OpenStore();
+            try
+            {
+                store.Delete(thumbprint);
+            }
+            finally
+            {
+                store.Close();
+            }
+        }
+
+        private void SetCertificateTrust(string thumbprint, bool isTrusted)
+        {
+            var cert = GetCertificate(thumbprint);
+            if (cert != null)
+            {
+                SetCertificateTrust(cert, isTrusted);
+            }
+            else
+            {
+                throw new KeyNotFoundException();
+            }
+        }
+
+        /// <summary> Saves the certificate to the trusted or rejected certificate
+        /// directory, depending on <see cref="isTrusted"/> argument. </summary>
+        private void SetCertificateTrust(X509Certificate2 certificate, bool isTrusted)
+        {
+            Debug.Assert(UaAppConfiguration != null);
+
+            // remove certificate from both stores
+            RemoveCertificateFromTrustedAndRejected(certificate.Thumbprint);
+
+            // add certificate to the needed store
+            ICertificateStore store = 
+                isTrusted ? TrustedCertStore.OpenStore() : RejectedCertStore.OpenStore();
+            try
+            {
+                store.Add(certificate);
+            }
+            finally
+            {
+                store.Close();
+            }
+        }
+
+        private static List<X509Certificate2> GetCertificates(ICertificateStore store)
+        {
+            var list = new List<X509Certificate2>();
+            try
+            {
+                foreach (var cert in store.Enumerate())
+                {
+                    list.Add(cert);
+                }
+            }
+            finally
+            {
+                store.Close();
+            }
+            return list;
+        }
+
+        private List<X509Certificate2> GetOwnCertificates() => GetCertificates(OwnCertStore.OpenStore());
+
+        private List<X509Certificate2> GetTrustedCertificates() => GetCertificates(TrustedCertStore.OpenStore());
+
+        private List<X509Certificate2> GetRejectedCertificates() => GetCertificates(RejectedCertStore.OpenStore());
+
+        private List<X509Certificate2> GetAllCertificates()
+        {
+            var list = new List<X509Certificate2>();
+            list.AddRange(GetOwnCertificates());
+            list.AddRange(GetTrustedCertificates());
+            list.AddRange(GetRejectedCertificates());
+            return list;
+        }
+
+        public X509Certificate2 GetCertificate(string thumbprint)
+        {
+            foreach (var cert in GetAllCertificates())
+            {
+                if (cert.Thumbprint == thumbprint)
+                    return cert;
+            }
+
+            return null;
+        }
+
+        #endregion
 
         #endregion
 
@@ -891,7 +1201,7 @@ namespace iba.Processing
                     return null;
 
                 string strEndpoints = "";
-                foreach (string adr in _uaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses)
+                foreach (string adr in UaApplication.ApplicationConfiguration.ServerConfiguration.BaseAddresses)
                 {
                     strEndpoints += adr + ", ";
                 }

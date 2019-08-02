@@ -44,6 +44,7 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.buttonCertServer = new System.Windows.Forms.ToolStripButton();
             this.dgvCertificates = new System.Windows.Forms.DataGridView();
+            this.ColumnTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvCertCol1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvCertCol2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvCertCol3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -81,12 +82,15 @@
             this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
             this.splitContainerSecurity = new System.Windows.Forms.SplitContainer();
             this.gbLogon = new System.Windows.Forms.GroupBox();
+            this.cbLogonAnonymous = new System.Windows.Forms.CheckBox();
+            this.cbLogonUserName = new System.Windows.Forms.CheckBox();
             this.cbLogonCertificate = new System.Windows.Forms.CheckBox();
             this.tbUserName = new System.Windows.Forms.TextBox();
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.buttonShowPassword = new System.Windows.Forms.Button();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
             this.comboBoxSecurity256 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBoxSecurity128 = new System.Windows.Forms.ComboBox();
             this.cbSecurity256 = new System.Windows.Forms.CheckBox();
             this.cbSecurity128 = new System.Windows.Forms.CheckBox();
@@ -104,9 +108,6 @@
             this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
-            this.cbLogonUserName = new System.Windows.Forms.CheckBox();
-            this.cbLogonAnonymous = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.gbCertificates.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCertificates)).BeginInit();
@@ -179,6 +180,7 @@
             this.buttonCertAdd.Size = new System.Drawing.Size(23, 22);
             this.buttonCertAdd.Text = "Add";
             this.buttonCertAdd.ToolTipText = "Add an existing certificate file";
+            this.buttonCertAdd.Click += new System.EventHandler(this.buttonCertAdd_Click);
             // 
             // buttonCertGenerate
             // 
@@ -189,6 +191,7 @@
             this.buttonCertGenerate.Size = new System.Drawing.Size(23, 22);
             this.buttonCertGenerate.Text = "Generate";
             this.buttonCertGenerate.ToolTipText = "Generate a certificate";
+            this.buttonCertGenerate.Click += new System.EventHandler(this.buttonCertGenerate_Click);
             // 
             // buttonCertExport
             // 
@@ -200,6 +203,7 @@
             this.buttonCertExport.Size = new System.Drawing.Size(23, 22);
             this.buttonCertExport.Text = "Export";
             this.buttonCertExport.ToolTipText = "Export the selected certificate to a file";
+            this.buttonCertExport.Click += new System.EventHandler(this.buttonCertExport_Click);
             // 
             // buttonCertRemove
             // 
@@ -210,6 +214,7 @@
             this.buttonCertRemove.Size = new System.Drawing.Size(23, 22);
             this.buttonCertRemove.Text = "Remove";
             this.buttonCertRemove.ToolTipText = "Remove the selected certificate";
+            this.buttonCertRemove.Click += new System.EventHandler(this.buttonCertRemove_Click);
             // 
             // toolStripSeparator1
             // 
@@ -224,6 +229,7 @@
             this.buttonCertTrust.Name = "buttonCertTrust";
             this.buttonCertTrust.Size = new System.Drawing.Size(23, 22);
             this.buttonCertTrust.Text = "Trust";
+            this.buttonCertTrust.Click += new System.EventHandler(this.buttonCertTrust_Click);
             // 
             // buttonCertReject
             // 
@@ -233,6 +239,7 @@
             this.buttonCertReject.Name = "buttonCertReject";
             this.buttonCertReject.Size = new System.Drawing.Size(23, 22);
             this.buttonCertReject.Text = "Reject";
+            this.buttonCertReject.Click += new System.EventHandler(this.buttonCertReject_Click);
             // 
             // toolStripSeparator2
             // 
@@ -247,6 +254,7 @@
             this.buttonCertUser.Name = "buttonCertUser";
             this.buttonCertUser.Size = new System.Drawing.Size(23, 22);
             this.buttonCertUser.Text = "User";
+            this.buttonCertUser.Click += new System.EventHandler(this.buttonCertUser_Click);
             // 
             // toolStripSeparator3
             // 
@@ -261,6 +269,7 @@
             this.buttonCertServer.Name = "buttonCertServer";
             this.buttonCertServer.Size = new System.Drawing.Size(23, 22);
             this.buttonCertServer.Text = "Server";
+            this.buttonCertServer.Click += new System.EventHandler(this.buttonCertServer_Click);
             // 
             // dgvCertificates
             // 
@@ -272,18 +281,29 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCertificates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCertificates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnTag,
             this.dgvCertCol1,
             this.dgvCertCol2,
             this.dgvCertCol3,
             this.dgvCertCol4});
             this.dgvCertificates.Location = new System.Drawing.Point(18, 44);
+            this.dgvCertificates.MultiSelect = false;
             this.dgvCertificates.Name = "dgvCertificates";
             this.dgvCertificates.ReadOnly = true;
             this.dgvCertificates.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
             this.dgvCertificates.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgvCertificates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCertificates.Size = new System.Drawing.Size(654, 126);
             this.dgvCertificates.StandardTab = true;
             this.dgvCertificates.TabIndex = 15;
+            this.dgvCertificates.SelectionChanged += new System.EventHandler(this.dgvCertificates_SelectionChanged);
+            // 
+            // ColumnTag
+            // 
+            this.ColumnTag.HeaderText = "ColumnTag";
+            this.ColumnTag.Name = "ColumnTag";
+            this.ColumnTag.ReadOnly = true;
+            this.ColumnTag.Visible = false;
             // 
             // dgvCertCol1
             // 
@@ -738,6 +758,27 @@
             this.gbLogon.TabStop = false;
             this.gbLogon.Text = "Logon policies";
             // 
+            // cbLogonAnonymous
+            // 
+            this.cbLogonAnonymous.AutoSize = true;
+            this.cbLogonAnonymous.Location = new System.Drawing.Point(12, 21);
+            this.cbLogonAnonymous.Name = "cbLogonAnonymous";
+            this.cbLogonAnonymous.Size = new System.Drawing.Size(81, 17);
+            this.cbLogonAnonymous.TabIndex = 8;
+            this.cbLogonAnonymous.Text = "Anonymous";
+            this.cbLogonAnonymous.UseVisualStyleBackColor = true;
+            // 
+            // cbLogonUserName
+            // 
+            this.cbLogonUserName.AutoSize = true;
+            this.cbLogonUserName.Location = new System.Drawing.Point(12, 48);
+            this.cbLogonUserName.Name = "cbLogonUserName";
+            this.cbLogonUserName.Size = new System.Drawing.Size(136, 17);
+            this.cbLogonUserName.TabIndex = 8;
+            this.cbLogonUserName.Text = "User name / password:";
+            this.cbLogonUserName.UseVisualStyleBackColor = true;
+            this.cbLogonUserName.CheckedChanged += new System.EventHandler(this.cbLogonUserName_CheckedChanged);
+            // 
             // cbLogonCertificate
             // 
             this.cbLogonCertificate.AutoSize = true;
@@ -808,6 +849,19 @@
             this.comboBoxSecurity256.Name = "comboBoxSecurity256";
             this.comboBoxSecurity256.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSecurity256.TabIndex = 8;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Sign",
+            "Sign & Encrypt",
+            "Sign + Sign & Encrypt"});
+            this.comboBox1.Location = new System.Drawing.Point(115, 19);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 8;
             // 
             // comboBoxSecurity128
             // 
@@ -1024,40 +1078,6 @@
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
-            // cbLogonUserName
-            // 
-            this.cbLogonUserName.AutoSize = true;
-            this.cbLogonUserName.Location = new System.Drawing.Point(12, 48);
-            this.cbLogonUserName.Name = "cbLogonUserName";
-            this.cbLogonUserName.Size = new System.Drawing.Size(136, 17);
-            this.cbLogonUserName.TabIndex = 8;
-            this.cbLogonUserName.Text = "User name / password:";
-            this.cbLogonUserName.UseVisualStyleBackColor = true;
-            this.cbLogonUserName.CheckedChanged += new System.EventHandler(this.cbLogonUserName_CheckedChanged);
-            // 
-            // cbLogonAnonymous
-            // 
-            this.cbLogonAnonymous.AutoSize = true;
-            this.cbLogonAnonymous.Location = new System.Drawing.Point(12, 21);
-            this.cbLogonAnonymous.Name = "cbLogonAnonymous";
-            this.cbLogonAnonymous.Size = new System.Drawing.Size(81, 17);
-            this.cbLogonAnonymous.TabIndex = 8;
-            this.cbLogonAnonymous.Text = "Anonymous";
-            this.cbLogonAnonymous.UseVisualStyleBackColor = true;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Sign",
-            "Sign & Encrypt",
-            "Sign + Sign & Encrypt"});
-            this.comboBox1.Location = new System.Drawing.Point(115, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 8;
-            // 
             // OpcUaControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1178,12 +1198,13 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton buttonCertServer;
         private System.Windows.Forms.DataGridView dgvCertificates;
+        private System.Windows.Forms.CheckBox cbLogonUserName;
+        private System.Windows.Forms.CheckBox cbLogonAnonymous;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTag;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol4;
-        private System.Windows.Forms.CheckBox cbLogonUserName;
-        private System.Windows.Forms.CheckBox cbLogonAnonymous;
-        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

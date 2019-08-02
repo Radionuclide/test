@@ -214,35 +214,35 @@ namespace iba.Controls
                 OpcUaData.OpcUaEndPoint ep = RowToEndpoint(dgvEndpoints.Rows[i]);
                 _data.Endpoints.Add(ep);
             }
+
+            // certificates
+            _data.Certificates.Clear();
+            for (int i = 0; i < dgvCertificates.RowCount; i++)
+            {
+                OpcUaData.CertificateTag certTag = RowToCertificate(dgvCertificates.Rows[i]);
+                _data.AddCertificate(certTag);
+            }
         }
 
-        private void ConfigurationFromDataToControls(OpcUaData data = null)
+        private void ConfigurationFromDataToControls()
         {
-            if (data == null)
-            {
-                data = _data;
-            }
-
             // general
-            cbEnabled.Checked = data.Enabled;
+            cbEnabled.Checked = _data.Enabled;
 
             // logon
-            cbLogonAnonymous.Checked = data.IsAnonymousUserAllowed;
-            cbLogonUserName.Checked = data.IsNamedUserAllowed;
-            cbLogonCertificate.Checked = data.IsCertifiedUserAllowed;
-            tbUserName.Text = data.UserName;
-            tbPassword.Text = data.Password;
-
-            // disable/enable user name text boxes
-            cbLogonUserName_CheckedChanged(null, null);
+            cbLogonAnonymous.Checked = _data.IsAnonymousUserAllowed;
+            cbLogonUserName.Checked = _data.IsNamedUserAllowed;
+            cbLogonCertificate.Checked = _data.IsCertifiedUserAllowed;
+            tbUserName.Text = _data.UserName;
+            tbPassword.Text = _data.Password;
 
             // security policies
-            cbSecurityNone.Checked = data.HasSecurityNone;
-            cbSecurity128.Checked = data.HasSecurityBasic128;
-            cbSecurity256.Checked = data.HasSecurityBasic256;
+            cbSecurityNone.Checked = _data.HasSecurityNone;
+            cbSecurity128.Checked = _data.HasSecurityBasic128;
+            cbSecurity256.Checked = _data.HasSecurityBasic256;
 
-            comboBoxSecurity128.SelectedIndex = (int)data.SecurityBasic128Level;
-            comboBoxSecurity256.SelectedIndex = (int)data.SecurityBasic256Level;
+            comboBoxSecurity128.SelectedIndex = (int)_data.SecurityBasic128Level;
+            comboBoxSecurity256.SelectedIndex = (int)_data.SecurityBasic256Level;
 
             // endpoints
             dgvEndpoints.Rows.Clear();
@@ -252,9 +252,17 @@ namespace iba.Controls
                     dgvEndpoints.Rows.Add(EndpointToRow(ep));
             }
 
-            // show/hide elements
+            // disable/enable elements
+            cbLogonUserName_CheckedChanged(null, null);
             cbSecurity128_CheckedChanged(null, null);
             cbSecurity256_CheckedChanged(null, null);
+            dgvCertificates_SelectionChanged(null, null);
+
+            // synchronize with OpcUaWorker
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("sync");
+
+            // copy to controls
+            RefreshCertificatesTable(certs);
         }
 
         /// <summary>
@@ -296,6 +304,160 @@ namespace iba.Controls
         private void cbSecurity256_CheckedChanged(object sender, EventArgs e)
         {
             comboBoxSecurity256.Enabled = cbSecurity256.Checked;
+        }
+
+        private void cbLogonUserName_CheckedChanged(object sender, EventArgs e)
+        {
+            tbUserName.Enabled = tbPassword.Enabled = buttonShowPassword.Enabled =
+                cbLogonUserName.Checked;
+        }
+        #endregion
+
+        #region Configuration - Certificates
+
+        private void RefreshCertificatesTable(List<OpcUaData.CertificateTag> certs)
+        {
+            if (certs == null)
+            {
+                dgvCertificates.Rows.Clear();
+                return;
+            }
+
+            dgvCertificates.RowCount = certs.Count;
+            for (var i = 0; i < certs.Count; i++)
+            {
+                SetCertificateRow(dgvCertificates.Rows[i], certs[i]);
+            }
+        }
+
+        private static OpcUaData.CertificateTag RowToCertificate(DataGridViewRow row)
+        {
+            try
+            {
+                Debug.Assert(row.Cells.Count == 5);
+                OpcUaData.CertificateTag certTag = row.Cells[0].Value as OpcUaData.CertificateTag;
+
+                return certTag;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        //private static object[] CertificateToRow(OpcUaData.CertificateTag certTag)
+        //{
+        //    return new object[]
+        //    {
+        //        certTag, /*hidden column*/
+        //        certTag.Name, certTag.GetPropertyString(), certTag.Issuer, certTag.ExpirationDate
+        //    };
+        //}
+
+        private static void SetCertificateRow(DataGridViewRow row, OpcUaData.CertificateTag certTag)
+        {
+            Debug.Assert(row.Cells.Count == 5);
+
+            row.Cells[0].Value = certTag; /*hidden column*/
+            row.Cells[1].Value = certTag.Name;
+            row.Cells[2].Value = certTag.GetPropertyString();
+            row.Cells[3].Value = certTag.Issuer;
+            row.Cells[4].Value = certTag.ExpirationDate;
+        }
+
+        private void buttonCertAdd_Click(object sender, EventArgs e)
+        {
+            TaskManager.Manager.OpcUaHandleCertificate("add", null);
+        }
+
+        private void buttonCertGenerate_Click(object sender, EventArgs e)
+        {
+            TaskManager.Manager.OpcUaHandleCertificate("generate", null);
+        }
+
+        private void buttonCertExport_Click(object sender, EventArgs e)
+        {
+            var certTag = GetSelectedCertificate();
+            if (certTag == null)
+                return;
+        }
+
+        private void buttonCertRemove_Click(object sender, EventArgs e)
+        {
+            var certTag = GetSelectedCertificate();
+            if (certTag == null)
+                return;
+
+            // todo. kls. localize?
+            if (MessageBox.Show(
+                    "Are you sure you want to delete the certificate permanently?", "",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                return;
+
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("remove", certTag);
+            RefreshCertificatesTable(certs);
+        }
+
+        private void buttonCertTrust_Click(object sender, EventArgs e)
+        {
+            var certTag = GetSelectedCertificate();
+            if (certTag == null)
+                return;
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("trust", certTag);
+            RefreshCertificatesTable(certs);
+        }
+
+        private void buttonCertReject_Click(object sender, EventArgs e)
+        {
+            var certTag = GetSelectedCertificate();
+            if (certTag == null)
+                return;
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("reject", certTag);
+            RefreshCertificatesTable(certs);
+        }
+
+        private void buttonCertUser_Click(object sender, EventArgs e)
+        {
+            var certTag = GetSelectedCertificate();
+            if (certTag == null)
+                return;
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("asUser", certTag);
+            RefreshCertificatesTable(certs);
+        }
+
+        private void buttonCertServer_Click(object sender, EventArgs e)
+        {
+            var certTag = GetSelectedCertificate();
+            if (certTag == null)
+                return;
+
+            if (!certTag.HasPrivateKey)
+            {
+                MessageBox.Show(
+                    "The selected certificate does not contain a private key", "", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("asServer", certTag);
+            RefreshCertificatesTable(certs);
+        }
+
+        private OpcUaData.CertificateTag GetSelectedCertificate()
+        {
+            if (dgvCertificates.Rows.Count < 1 || dgvCertificates.SelectedRows.Count < 1)
+                return null;
+
+            var row = dgvCertificates.SelectedRows[0];
+            return RowToCertificate(row);
+        }
+
+        private void dgvCertificates_SelectionChanged(object sender, EventArgs e)
+        {
+            buttonCertExport.Enabled = buttonCertRemove.Enabled =
+                buttonCertTrust.Enabled = buttonCertReject.Enabled =
+                    buttonCertUser.Enabled = buttonCertServer.Enabled =
+                        dgvCertificates.SelectedRows.Count > 0;
         }
 
         #endregion
@@ -478,11 +640,6 @@ namespace iba.Controls
         #endregion
 
 
-        #region Certificates
-
-       
-
-        #endregion
 
 
         #region Diagnostics
@@ -799,12 +956,8 @@ namespace iba.Controls
             RebuildObjectsTree();
         }
 
+
         #endregion
 
-        private void cbLogonUserName_CheckedChanged(object sender, EventArgs e)
-        {
-            tbUserName.Enabled = tbPassword.Enabled = buttonShowPassword.Enabled =
-                cbLogonUserName.Checked;
-        }
     }
 }
