@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using System.Windows.Forms;
 using iba.Data;
 using iba.Logging;
 using iba.Processing.IbaOpcUa;
@@ -46,26 +48,32 @@ namespace iba.Processing
                 UaApplication.ApplicationType = ApplicationType.Server;
                 UaApplication.ConfigSectionName = _cfgConfigSectionName;
 
-
-                // todo. kls. remove tmp
-                LogData.Data.Logger.Log(Level.Info,
-                    $"{nameof(OpcUaWorker)}.{nameof(Init)}. Loading configuration: {_cfgXmlConfigFileName}.");
-
-
                 // load the application configuration;
                 // do it now (not waiting for automatic loading or restart) for the following reasons:
                 //  * to get the cfg file from the overridden path;
                 //  * and to be able to configure application while server is yet offline;
-                UaApplication.LoadApplicationConfiguration(_cfgXmlConfigFileName, false);
-                
-                if (UaAppConfiguration == null)
+
+                var cfgWithPath = Path.Combine(Application.StartupPath, _cfgXmlConfigFileName);
+                if (!File.Exists(cfgWithPath))
                 {
                     // config file is critical; we cannot continue
                     UnInit();
-                    throw new Exception($@"Cannot load OPC UA configuration file '{_cfgXmlConfigFileName}'");
+                    throw new Exception($@"Cannot locate OPC UA configuration file: '{cfgWithPath}'");
+                }
+                try
+                {
+                    UaApplication.LoadApplicationConfiguration(cfgWithPath, true);
+                    if (UaAppConfiguration == null)
+                        throw new Exception();
+                }
+                catch
+                {
+                    // config file is critical; we cannot continue
+                    UnInit();
+                    throw new Exception($@"Cannot load OPC UA configuration file '{cfgWithPath}'");
                 }
 
-                // ua trace file
+                // OPC UA trace file
                 if (!string.IsNullOrEmpty(UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
                 {
                     UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = _cfgUaTraceFilePath;
