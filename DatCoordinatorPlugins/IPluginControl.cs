@@ -16,12 +16,6 @@ namespace iba.Plugins
         void LeaveCleanup();
     }
 
-    public interface ICommonTaskControl
-    {
-        Guid ParentConfigurationGuid();
-        int TaskIndex();
-    }
-
     /// <summary>
     /// Interface specifying an appropriate GUI for a plugin in the case of an UNC plugin
     /// </summary>

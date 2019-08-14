@@ -60,15 +60,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatcoHost.cs" />
-    <Compile Include="DatCoPlugin.cs" />
-    <Compile Include="ConfigurationData.cs" />
+    <Compile Include="ICommonTaskControl.cs" />
+    <Compile Include="IDatCoHost.cs" />
+    <Compile Include="IDatCoPlugin.cs" />
+    <Compile Include="IJobData.cs" />
     <Compile Include="IIbaAnalyzerMonitor.cs" />
     <Compile Include="MonitorData.cs" />
-    <Compile Include="PluginControl.cs" />
-    <Compile Include="PluginTaskData.cs" />
+    <Compile Include="IPluginControl.cs" />
+    <Compile Include="IPluginTaskData.cs" />
     <Compile Include="PluginTaskInfo.cs" />
-    <Compile Include="PluginTaskWorker.cs" />
+    <Compile Include="IPluginTaskWorker.cs" />
+    <Compile Include="PluginTaskWorkerStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
