@@ -2757,7 +2757,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to momentarely no access to .dat  file....
+        ///   Looks up a localized string similar to momentarily no access to .dat  file....
         /// </summary>
         internal static string Noaccess {
             get {

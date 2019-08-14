@@ -281,7 +281,7 @@
     <value>ibaDatCoordinator notification</value>
   </data>
   <data name="Noaccess" xml:space="preserve">
-    <value>momentarely no access to .dat  file...</value>
+    <value>momentarily no access to .dat  file...</value>
   </data>
   <data name="logServiceStopped" xml:space="preserve">
     <value>ibaDatCoordinator service stopped</value>
