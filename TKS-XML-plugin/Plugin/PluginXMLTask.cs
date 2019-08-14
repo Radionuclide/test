@@ -120,8 +120,7 @@ namespace iba.TKS_XML_Plugin
             set { _xsiSchemaLocation = value; }
         }
 
-        private string _xsdLocation = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                                                             @"iba\ibaDatCoordinator\TKS-XmlExport\Messreihe.xsd");
+        private string _xsdLocation = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"iba\ibaDatCoordinator\TKS-XmlExport\Messreihe.xsd");
         public string XsdLocation
         {
             get { return _xsdLocation; }

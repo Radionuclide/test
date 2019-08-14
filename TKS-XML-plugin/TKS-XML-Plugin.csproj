@@ -68,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="XMLExtract\EnumGenericWithXmlAttribute.cs" />
-    <Compile Include="Plugin\PluginCollection.cs" />
+    <Compile Include="Plugin\PluginXML.cs" />
     <Compile Include="Plugin\PluginXMLControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

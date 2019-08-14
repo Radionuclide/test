@@ -35,7 +35,7 @@ namespace iba.TKS_XML_Plugin
                 m_dataToApply = null;
             }
             m_error = m_extractor.ExtractToXml(datFile, output, m_data);
-            return string.IsNullOrEmpty(m_error);
+            return String.IsNullOrEmpty(m_error);
         }
 
         #endregion

@@ -5,7 +5,7 @@ using iba.Plugins;
 
 namespace iba.TKS_XML_Plugin
 {
-    class PluginCollection : IDatCoPlugin
+    class PluginXML : IDatCoPlugin
     {
         #region IDatCoPlugin Members
 
@@ -21,18 +21,7 @@ namespace iba.TKS_XML_Plugin
             return new PluginTaskInfo[] { m_info };
         }
 
-        IDatCoHost m_host;
-        public IDatCoHost DatCoordinatorHost
-        {
-            get
-            {
-                return m_host;
-            }
-            set
-            {
-                m_host = value;
-            }
-        }
+        public IDatCoHost DatCoordinatorHost { get; set; }
 
         public IPluginTaskData CreateTask(string taskname, IJobData parentjob)
         {
