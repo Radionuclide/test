@@ -1,4 +1,6 @@
 ﻿
+using iba.Plugins;
+
 namespace XmlExtract
 {
     using System;
@@ -14,8 +16,9 @@ namespace XmlExtract
     public class DatExtractor : IDisposable
     {
         private StringBuilder _error;
-        private IbaFileReader _reader;
-        private ResolveEinheit _resolveEinheit;
+        private readonly IbaFileReader _reader;
+        private readonly ResolveEinheit _resolveEinheit;
+        private readonly string _pass;
 
         /// <summary>
         /// Initializes a new instance of the DatExtractor class.
@@ -26,11 +29,17 @@ namespace XmlExtract
             _resolveEinheit = new ResolveEinheit();
         }
 
+        public DatExtractor(IJobData jobData)
+            :this()
+        {
+            _pass = jobData?.FileEncryptionPassword ?? String.Empty;
+        }
+
         public string ExtractToXml(string datfile, string xmlfile, IExtractorData data)
         {
             _error = new StringBuilder();
 
-            _reader.Open(datfile);
+            _reader.Open(datfile, _pass);
 
             _resolveEinheit.Open(data.XsdLocation);
             if (!String.IsNullOrEmpty(_resolveEinheit.Error))
@@ -51,7 +60,7 @@ namespace XmlExtract
                 ser.Serialize(stream, met);
             }
 
-            return string.Empty;
+            return String.Empty;
 
         }
 
@@ -81,7 +90,6 @@ namespace XmlExtract
 
             foreach (IbaChannelReader channel in reader.Channels)
             {
-
                 var signalId = channel.ResolveSignalId(data.IdField);
                 if (signalId.Contains("__IE__") || signalId.Contains("__SE__"))
                 {

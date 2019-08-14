@@ -43,16 +43,14 @@ namespace iba.TKS_XML_Plugin
         private PluginXMLControl m_control;
         public IPluginControl GetControl()
         {
-            if (m_control == null) m_control = new PluginXMLControl();
-            return m_control;
+            return m_control ?? (m_control = new PluginXMLControl());
         }
 
         [NonSerialized]
         private PluginXMLWorker m_worker;
         public IPluginTaskWorker GetWorker()
         {
-            if (m_worker == null) m_worker = new PluginXMLWorker(this);
-            return m_worker;
+            return m_worker ?? (m_worker = new PluginXMLWorker(this, m_parentJob));
         }
 
         public void SetWorker(IPluginTaskWorker worker)
@@ -89,6 +87,8 @@ namespace iba.TKS_XML_Plugin
         }
 
         #endregion
+
+
 
         // IExtractorData Members
         private XmlExtract.StandortType _standOrt = XmlExtract.StandortType.DU;
@@ -133,7 +133,7 @@ namespace iba.TKS_XML_Plugin
 
         public object Clone()
         {
-            PluginXMLTask xt = new PluginXMLTask(m_nameInfo, m_datcoHost, null);
+            PluginXMLTask xt = new PluginXMLTask(m_nameInfo, m_datcoHost, m_parentJob);
             xt.StandOrt = StandOrt;
             xt.IdField = IdField;
             xt.AndererStandort = AndererStandort;

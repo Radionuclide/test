@@ -10,13 +10,15 @@ namespace iba.TKS_XML_Plugin
         private PluginXMLTask m_data;
         private PluginXMLTask m_dataToApply;
         private bool m_started;
+        private IJobData m_jobData;
         private XmlExtract.DatExtractor m_extractor;
-        public PluginXMLWorker(PluginXMLTask data)
+        public PluginXMLWorker(PluginXMLTask data, IJobData jobData)
         {
             m_data = data;
             m_dataToApply = null;
             m_error = "";
             m_started = false;
+            m_jobData = jobData;
         }
 
         #region IPluginTaskWorkerUNC Members
@@ -42,7 +44,7 @@ namespace iba.TKS_XML_Plugin
 
         public bool OnStart()
         {
-            m_extractor = new XmlExtract.DatExtractor();
+            m_extractor = new XmlExtract.DatExtractor(m_jobData);
             m_started = true;
             return true;
         }

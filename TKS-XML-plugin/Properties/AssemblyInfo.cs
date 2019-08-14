@@ -32,7 +32,14 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.0.0")]
-[assembly: AssemblyInformationalVersion("2.1.0")]
+[assembly: AssemblyVersion(AsmInfo.Version + ".0")]
+[assembly: AssemblyInformationalVersion(AsmInfo.Version + AsmInfo.BetaTag)]
 
 [assembly: InternalsVisibleTo("ibaXmlExtract.Tests")]
+
+// ReSharper disable once CheckNamespace
+internal static class AsmInfo
+{
+    internal const string Version = "2.2.0";
+    internal const string BetaTag = ""; // use with leading space
+}
