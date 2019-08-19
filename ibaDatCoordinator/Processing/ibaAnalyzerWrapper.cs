@@ -43,30 +43,6 @@ namespace iba.Processing
             }
         }
 
-        public int SignalTreeImageCount
-        {
-            get
-            {
-                try
-                {
-                    return analyzer.SignalTreeImageCount;
-                }
-                catch //might be incompatible version;
-                {
-                    return -1;
-                }
-            }
-            set
-            {
-                try
-                {
-                    analyzer.SignalTreeImageCount = value;
-                }
-                catch //might be incompatible version;
-                { }
-            }
-        }
-
         public void AddLogical(string name, string expression, int XType)
         {
             analyzer.AddLogical(name, expression, XType);
@@ -353,14 +329,12 @@ namespace iba.Processing
 
         public int GetZoomAreaBegin(int XType)
         {
-            return 0;
-           // return analyzer.GetZoomAreaBegin(XType);
+           return analyzer.GetZoomAreaBegin(XType);
         }
 
         public int GetZoomAreaEnd(int XType)
         {
-            return 0;
-            // return analyzer.GetZoomAreaEnd(XType);
+            return analyzer.GetZoomAreaEnd(XType);
         }
 
         public void SetFilePassword(string filename, string password )
@@ -390,89 +364,42 @@ namespace iba.Processing
 
         }
 
-        public void EvaluateToArray(string expression, int XType, out double pTimebase, out double xoffset, out object pData)
-        {
-            try
-            {
-                analyzer.EvaluateToArray(expression, XType, out pTimebase, out xoffset, out pData);
-            }
-            catch //might be incompatible version;
-            {
-                pTimebase = xoffset = 0.0;
-                pData = null;
-            }
-        }
+		public void EvaluateToArray(string expression, int XType, out double pTimebase, out double xoffset, out object pData)
+		{
+			analyzer.EvaluateToArray(expression, XType, out pTimebase, out xoffset, out pData);
+		}
 
-        public uint GetMarkerColor(int index)
-        {
-            try
-            {
-                return analyzer.GetMarkerColor(index);
-            }
-            catch //might be incompatible version;
-            {
-                return 0;
-            }
-        }
+		public uint GetMarkerColor(int index)
+		{
+			return analyzer.GetMarkerColor(index);
+		}
 
-        public void UpdateOverlay()
-        {
-            try
-            {
-                analyzer.UpdateOverlay();
-            }
-            catch //might be incompatible version;
-            {
+		public void UpdateOverlay()
+		{
+			analyzer.UpdateOverlay();
+		}
 
-            }
-        }
+		public dynamic GetSignalTree(int filter)
+		{
+			return analyzer.GetSignalTree(filter);
+		}
 
-        public dynamic GetSignalTree(int filter)
-        {
-            try
-            {
-                return analyzer.GetSignalTree(filter);
-            }
-            catch //might be incompatible version;
-            {
-                return null;
-            }
-        }
+		public void SignalTreeImageData(int index, out object pData)
+		{
+			analyzer.SignalTreeImageData(index, out pData);
+		}
 
-        public void SignalTreeImageData(int index, out object pData)
-        {
-            try
-            {
-                analyzer.SignalTreeImageData(index, out pData);
-            }
-            catch //might be incompatible version;
-            {
-                pData = null;
-            }
-        }
+		public int SignalTreeImageCount
+		{ get => analyzer.SignalTreeImageCount; set => throw new NotImplementedException(); }
 
-        public void EvaluateToStringArray(string expression, int XType, out object pTimeStamps, out object pStrings)
-        {
-            try
-            {
-                analyzer.EvaluateToStringArray(expression, XType, out pTimeStamps, out pStrings);
-            }
-            catch //might be incompatible version;
-            {
-                pTimeStamps = pStrings = null;
-            }
-        }
+		public void EvaluateToStringArray(string expression, int XType, out object pTimeStamps, out object pStrings)
+		{
+			analyzer.EvaluateToStringArray(expression, XType, out pTimeStamps, out pStrings);
+		}
 
-        public void EvaluateToNEArray(string expression, int XType, out object pTimeStamps, out object pValues)
-        {
-            try
-            {
-                analyzer.EvaluateToNEArray(expression, XType, out pTimeStamps, out pValues);
-            }
-            catch //might be incompatible version;
-            {
-                pTimeStamps = pValues = null;
-            }
-        }
-    }
+		public void EvaluateToNEArray(string expression, int XType, out object pTimeStamps, out object pValues)
+		{
+			analyzer.EvaluateToNEArray(expression, XType, out pTimeStamps, out pValues);
+		}
+	}
 }

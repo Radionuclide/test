@@ -851,7 +851,7 @@ namespace iba.Controls
 
                 foreach (var store in m_hdReader.Stores)
                 {
-                    if (store.IsEnabled() && store.Type == HdStoreType.Time && !store.Id.StoreName.Contains("<DIAGNOSTIC>"))
+                    if (store.IsEnabled() && (store.Type == HdStoreType.Time || store.Type == HdStoreType.Event) && !store.Id.StoreName.Contains("<DIAGNOSTIC>"))
                         m_lvStores.Items.Add(store.Id.StoreName, HdTreeNodes.GetImageIndex(store.Type, store.IsBackup(), store.IsEnabled()));
                 }
 

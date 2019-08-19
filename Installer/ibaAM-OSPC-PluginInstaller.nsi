@@ -5,8 +5,8 @@
                                                                     ;e.g. "ibaDatCoordinator-ArcelorMittal-OSPC-PluginInstaller_vX.Y.Z.exe"
 !define PRODUCT_SHORTNAME "AM-OSPC" ;(optional) will result in "ibaDatCoordinator-${PRODUCT_SHORTNAME}-PluginInstaller_vX.Y.Z.exe"
                                     ;e.g. "ibaDatCoordinator-AM-OSPC-PluginInstaller_vX.Y.Z.exe"
-!define PRODUCT_VERSION "2.0.4"
-!define PRODUCT_FILE_VERSION "2.0.4.0"
+!define PRODUCT_VERSION "2.1.1"
+!define PRODUCT_FILE_VERSION "2.1.1.0"
 
 ;!define PRODUCT_PUBLISHER "iba AG"                     ;(optional) default to "iba AG"
 ;!define PRODUCT_WEB_SITE "http://www.iba-ag.com"       ;(optional) default to "http://www.iba-ag.com"

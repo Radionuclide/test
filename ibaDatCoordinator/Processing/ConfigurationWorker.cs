@@ -1572,14 +1572,14 @@ namespace iba.Processing
         {   //returns true if processed flag is found or this is not an ibaFile
             //in both cases the file can be ignored for further processing
             FileStream fs;
-            try
-            {
-                fs = new FileStream(DatFile, FileMode.Open, FileAccess.Read, FileShare.Read);
-            }
-            catch
-            {
-                return false; //can't open it, let UpdateFiles handle this case
-            }
+			try
+			{
+				fs = new FileStream(DatFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+			}
+			catch
+			{
+				return false; //can't open it, let UpdateFiles handle this case
+			}
             
             Byte [] myBytes = new Byte[4];
             try
@@ -1589,7 +1589,7 @@ namespace iba.Processing
                 string str = enc.GetString(myBytes);
                 if (str != "PDA1" && str != "PDA2" && str != "PDA3" && str != "QDR1")
                     return true;
-                if (str != "PDA3")
+                if (str == "PDA3")
                     return false; //don't test further for 3, header is different...
                 fs.Read(myBytes, 0, 4);
                 fs.Read(myBytes, 0, 4);
@@ -1922,16 +1922,20 @@ namespace iba.Processing
                         {
                             lock (m_candidateNewFiles)
                             {
-                                if (m_candidateNewFiles.Find(delegate(Pair<string,DateTime> arg) { return arg.First==filename; })==null)
-                                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+								if (m_candidateNewFiles.Find(delegate (Pair<string, DateTime> arg) { return arg.First == filename; }) == null)
+								{
+									Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+									Log(Logging.Level.Warning, "Exception at location 4");
+								}
                             }
                         }
                         else
                             Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+						Log(Logging.Level.Warning, "Exception at location 3: " + ex.ToString(), filename);
+						Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     }
                     return DatFileStatus.State.NO_ACCESS; //no access, try again next time
                 }
@@ -1948,10 +1952,10 @@ namespace iba.Processing
                         Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess7, filename);
                     return DatFileStatus.State.NO_ACCESS;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.ToString(), filename);
-                    //Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
+                    Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.ToString(), filename);
+                    Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
                     Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     return DatFileStatus.State.NO_ACCESS; //no access, try again next time
                 }
@@ -2172,7 +2176,7 @@ namespace iba.Processing
             }
             catch(Exception generalException) //general exception that may have happened
             {
-                Log(Logging.Level.Debug, "General exception happened while investigating .dat file readyness: " + generalException.ToString(), filename);
+                Log(Logging.Level.Warning, "General exception happened while investigating .dat file readyness: " + generalException.ToString(), filename);
                 Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                 return DatFileStatus.State.COMPLETED_FAILURE;
             }
@@ -2352,9 +2356,9 @@ namespace iba.Processing
                         return DatFileStatus.State.NO_ACCESS;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //Log(Logging.Level.Warning, "Exception at location 1: " + ex.ToString(), filename);
+                    Log(Logging.Level.Warning, "Exception at location 1: " + ex.ToString(), filename);
                     Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     return DatFileStatus.State.NO_ACCESS;
                 }
@@ -2382,9 +2386,9 @@ namespace iba.Processing
                     return DatFileStatus.State.NO_ACCESS;
                 }
             }
-            catch (Exception) //general exception that may have happened
+            catch (Exception ex2) //general exception that may have happened
             {
-                //Log(Logging.Level.Warning, "Exception at location 2: " + ex2.ToString(), filename);
+                Log(Logging.Level.Warning, "Exception at location 2: " + ex2.ToString(), filename);
                 Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                 return DatFileStatus.State.COMPLETED_FAILURE;
             }
