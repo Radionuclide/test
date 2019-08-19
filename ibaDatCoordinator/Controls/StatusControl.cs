@@ -305,8 +305,6 @@ namespace iba.Controls
                             bitmap = m_splitIcons[value];
                         else if (task is HDCreateEventTaskData)
                             bitmap = m_hdCreateEventIcons[value];
-                        else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc
-                            bitmap = m_cleanupIcons[value];
                         else if (task is ICustomTaskData)
                         {
                             ICustomTaskData cust = (ICustomTaskData)task;
@@ -314,8 +312,10 @@ namespace iba.Controls
                             int index = PluginManager.Manager.PluginInfos.FindIndex(delegate (PluginTaskInfo ii) { return ii.Name == name; });
                             bitmap = m_customtaskIcons[index][value];
                         }
+						else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc
+							bitmap = m_cleanupIcons[value];
 
-                        text = m_taskTexts[value];
+						text = m_taskTexts[value];
                         DataGridViewImageCell cell = m_gridView.Rows[count].Cells[i + 2] as DataGridViewImageCell;
                         blank[i + 2] = false;
                         if ((cell.Value as Bitmap) != bitmap)
