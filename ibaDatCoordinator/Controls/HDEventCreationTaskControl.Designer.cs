@@ -84,6 +84,8 @@
             // 
             // m_ctrlServer
             // 
+            this.m_ctrlServer.AllowBackups = false;
+            this.m_ctrlServer.AllowDatFiles = false;
             resources.ApplyResources(this.m_ctrlServer, "m_ctrlServer");
             this.m_ctrlServer.Name = "m_ctrlServer";
             // 
