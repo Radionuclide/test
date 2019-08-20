@@ -606,6 +606,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .dat File Triggered Job.
+        /// </summary>
+        internal static string DatTriggeredJobsNodeParent {
+            get {
+                return ResourceManager.GetString("DatTriggeredJobsNodeParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete  the Script options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteBatchfileQuestion {
@@ -3865,15 +3874,6 @@ namespace iba.Properties {
         internal static string StandaloneText {
             get {
                 return ResourceManager.GetString("StandaloneText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Standard Jobs.
-        /// </summary>
-        internal static string StandardJobsNodeParent {
-            get {
-                return ResourceManager.GetString("StandardJobsNodeParent", resourceCulture);
             }
         }
         

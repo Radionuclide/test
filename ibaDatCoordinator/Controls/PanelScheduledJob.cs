@@ -105,12 +105,17 @@ namespace iba.Controls
         private DailyTriggerSettingsControl m_daySettingsCtrl;
         private MonthlyTriggerSettingsControl m_monthSettingsCtrl;
 
-        #region Dispose
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+		public void SetWeekDays()
+		{
+			m_weekSettingsCtrl.SetWeekDays();
+		}
+
+		#region Dispose
+		/// <summary> 
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

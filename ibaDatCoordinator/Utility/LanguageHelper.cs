@@ -45,7 +45,7 @@ namespace iba.Utility
                     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo(SelectedLanguage);
                     System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
                     System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = culture; //Also set the default culture for any new thread!
-                    SelectedLanguage = culture.Name;
+					SelectedLanguage = culture.Name;
                 }
                 catch (Exception)
                 {

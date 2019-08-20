@@ -1102,8 +1102,8 @@
   <data name="ScheduledJobsNodeParent" xml:space="preserve">
     <value>Scheduled Jobs</value>
   </data>
-  <data name="StandardJobsNodeParent" xml:space="preserve">
-    <value>Standard Jobs</value>
+  <data name="DatTriggeredJobsNodeParent" xml:space="preserve">
+    <value>.dat File Triggered Job</value>
   </data>
   <data name="Indefinite" xml:space="preserve">
     <value>Indefinite</value>

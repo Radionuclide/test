@@ -166,7 +166,14 @@ namespace iba.Controls
             CueProvider.SetCue(m_tbSender,@"ibaDatCoordinator <noreply@iba-ag.com>");
         }
 
-        private int m_taskCount;
+		public void UpdateLanguage()
+		{
+			if (m_panelScheduledJob != null)
+				m_panelScheduledJob.SetWeekDays();
+		}
+			
+
+		private int m_taskCount;
 
         private CollapsibleElementManager m_ceManager;
 
