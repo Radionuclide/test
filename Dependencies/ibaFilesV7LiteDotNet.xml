@@ -4,6 +4,74 @@
         "ibaFilesLiteDotNet"
     </assembly>
     <members>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaImageList.GetImage">
+            <summary>
+Get the bitmap containing all images required for a channel tree.
+</summary>
+            <returns>The stream containing the image. Use this with Image.FromStream() to create the image.</returns>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaImageList.TransparentColorB">
+            <summary>
+The B(lue) component of the transparent color.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaImageList.TransparentColorG">
+            <summary>
+The G(reen) component of the transparent color.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaImageList.TransparentColorR">
+            <summary>
+The R(ed) component of the transparent color.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaImageList.TransparentColorA">
+            <summary>
+The A (opacity) component of the transparent color.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaImageList.ColorDepth">
+            <summary>
+The color depth in bits of the image.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaImageList.ImageHeight">
+            <summary>
+The height in pixels of a single image of the image list.
+</summary>
+        </member>
+        <member name="F:iba.ibaFilesLiteDotNet.IbaImageList.ImageWidth">
+            <summary>
+The width in pixels of a single image in the image list.
+</summary>
+        </member>
+        <member name="T:iba.ibaFilesLiteDotNet.IbaImageList">
+            <summary>
+Class that provides all information to create an image list for a channel tree.
+</summary>
+            <example>
+This sample shows how to create a Windows Forms image list using this class.
+<code>
+using System.Drawing;
+using System.Windows.Forms;
+using iba.ibaFilesLiteDotNet;
+
+class Test
+{
+	public ImageList CreateChannelTreeImageList()
+	{
+		ImageList list = new ImageList();
+		list.ColorDepth = (ColorDepth)IbaImageList.ColorDepth;
+		list.ImageSize = new Size(IbaImageList.ImageWidth, IbaImageList.ImageHeight);
+		list.TransparentColor = Color.FromArgb(IbaImageList.TransparentColorA, IbaImageList.TransparentColorR,
+			IbaImageList.TransparentColorG, IbaImageList.TransparentColorB);
+		Image image = Image.FromStream(IbaImageList.GetImage());
+		list.Images.AddStrip(image);
+		return list;
+	}
+}
+</code></example>
+        </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaHDChannelReader.Parent">
             <inheritdoc />
         </member>
@@ -665,6 +733,31 @@ Time based HD-store.
         <member name="F:iba.ibaFilesLiteDotNet.IbaHDStoreType.All">
             <summary>
 All types of HD-store.
+</summary>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaQDRMeasuringLocation.Modules">
+            <summary>
+Gets a list of all available modules, represented as instances of <see cref="T:iba.ibaFilesLiteDotNet.IbaModuleReader" />, that belong to the measuring location. The list is read-only.
+</summary>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaQDRMeasuringLocation.IconIndex">
+            <summary>
+Gets the index of the measuring location icon in imagelists (System.Windows.Forms.ImageList) used in iba products.
+</summary>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaQDRMeasuringLocation.Name">
+            <summary>
+Gets the measuring location's name
+</summary>
+        </member>
+        <member name="P:iba.ibaFilesLiteDotNet.IbaQDRMeasuringLocation.Id">
+            <summary>
+Gets the measuring location's id.
+</summary>
+        </member>
+        <member name="T:iba.ibaFilesLiteDotNet.IbaQDRMeasuringLocation">
+            <summary>
+Class that corresponds with a measuring location in a QDR .dat file.
 </summary>
         </member>
         <member name="F:iba.ibaFilesLiteDotNet.IbaShortFileInfo.PasswordProtected">
@@ -1944,7 +2037,7 @@ If you connected to data through an HD-server, the collection is read-only.
         </member>
         <member name="T:iba.ibaFilesLiteDotNet.IbaModuleReader">
             <summary>
-Summary for IbaModuleReader
+Class that allows access to a module's info fields and channels.
 </summary>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.ReadShortFileInfo(System.String)">
@@ -1963,6 +2056,14 @@ Retrieves information about all embedded files in the .dat file.
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.GetVersion">
             <inheritdoc />
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileReader.GetMeasuringLocations(iba.ibaFilesLiteDotNet.XBaseType)">
+            <summary>
+Creates a list of measuring locations contained in this QDR .dat file.
+</summary>
+            <param name="xType">The xType of the channels in the measuring locations. This is only relevant for QDR v6 files. In QDR v7 files there are no separate signals for length and time.</param>
+            <returns>If this is a QDR .dat file then a list containing information about the measuring locations is returned. If this is not a QDR .dat file then <see langword="null" /> is returned.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown if currently no file is open.</exception>
         </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaFileReader.Modules">
             <inheritdoc />
