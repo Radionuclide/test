@@ -1628,4 +1628,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="logHDEventTaskDATError" xml:space="preserve">
     <value>Test DAT file could not be found</value>
   </data>
+  <data name="HdqFileFilter" xml:space="preserve">
+    <value>iba HDQ files (*.hdq)|*.hdq</value>
+  </data>
 </root>
