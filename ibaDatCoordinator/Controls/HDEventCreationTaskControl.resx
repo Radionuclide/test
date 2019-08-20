@@ -289,13 +289,13 @@
     <value>6, 42</value>
   </data>
   <data name="m_rbTriggerBySignal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 17</value>
+    <value>302, 17</value>
   </data>
   <data name="m_rbTriggerBySignal.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_rbTriggerBySignal.Text" xml:space="preserve">
-    <value>Generate an event occurrence for every signal pulse:</value>
+    <value>Generate an event occurrence for every rectangular pulse:</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerBySignal.Name" xml:space="preserve">
     <value>m_rbTriggerBySignal</value>
@@ -370,7 +370,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>363, 49</value>
+    <value>415, 49</value>
   </data>
   <data name="m_btnTest.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
@@ -403,7 +403,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnUploadPDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>393, 19</value>
+    <value>445, 19</value>
   </data>
   <data name="m_btnUploadPDO.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
@@ -427,7 +427,7 @@
     <value>1</value>
   </data>
   <data name="m_tbPwdDAT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>126, 82</value>
+    <value>178, 82</value>
   </data>
   <data name="m_tbPwdDAT.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 20</value>
@@ -454,13 +454,13 @@
     <value>6, 85</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 13</value>
+    <value>142, 13</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>DAT file password:</value>
+    <value>DAT file password (optional):</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -478,7 +478,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnOpenPDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>363, 19</value>
+    <value>415, 19</value>
   </data>
   <data name="m_btnOpenPDO.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
@@ -505,7 +505,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnBrowseDAT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>333, 49</value>
+    <value>385, 49</value>
   </data>
   <data name="m_btnBrowseDAT.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
@@ -532,7 +532,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnBrowsePDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>333, 19</value>
+    <value>385, 19</value>
   </data>
   <data name="m_btnBrowsePDO.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
@@ -559,7 +559,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbDAT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>126, 52</value>
+    <value>178, 52</value>
   </data>
   <data name="m_tbDAT.Size" type="System.Drawing.Size, System.Drawing">
     <value>201, 20</value>
@@ -583,7 +583,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbPDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>126, 22</value>
+    <value>178, 22</value>
   </data>
   <data name="m_tbPDO.Size" type="System.Drawing.Size, System.Drawing">
     <value>201, 20</value>
@@ -610,13 +610,13 @@
     <value>6, 55</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
+    <value>94, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>DAT file:</value>
+    <value>DAT file (optional):</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
