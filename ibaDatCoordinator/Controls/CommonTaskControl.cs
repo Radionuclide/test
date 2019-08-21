@@ -101,7 +101,7 @@ namespace iba.Controls
                 m_rbSucces.Enabled = m_rbFailure.Enabled = m_rb1stFailure.Enabled = true;
                 m_rbSucces.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES;
                 m_rbFailure.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_FAILURE;
-                m_rb1stFailure.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE;
+                m_rb1stFailure.Checked = m_data.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE_DAT;
             }
             else
             {
@@ -114,8 +114,9 @@ namespace iba.Controls
             m_rbNotAlways.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE;
             m_rbNotSuccess.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES;
             m_rbNotFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE;
-            m_rbNot1stFailure.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE;
-            m_rbNotDisabled.Checked = m_data.WhenToNotify == TaskData.WhenToDo.DISABLED;
+            m_rbNot1stFailureFile.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE_DAT;
+			m_rbNot1stFailureTask.Checked = m_data.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE_TASK;
+			m_rbNotDisabled.Checked = m_data.WhenToNotify == TaskData.WhenToDo.DISABLED;
 
             m_cbResourceCritical.Checked = m_data.ResourceIntensive;
 
@@ -135,7 +136,7 @@ namespace iba.Controls
             else if (m_rbFailure.Checked)
                 m_data.WhenToExecute = TaskData.WhenToDo.AFTER_FAILURE;
             else if (m_rb1stFailure.Checked)
-                m_data.WhenToExecute = TaskData.WhenToDo.AFTER_1st_FAILURE;
+                m_data.WhenToExecute = TaskData.WhenToDo.AFTER_1st_FAILURE_DAT;
             else
                 m_data.WhenToExecute = TaskData.WhenToDo.DISABLED;
 
@@ -145,10 +146,12 @@ namespace iba.Controls
                 m_data.WhenToNotify = TaskData.WhenToDo.AFTER_SUCCES;
             else if (m_rbNotFailure.Checked)
                 m_data.WhenToNotify = TaskData.WhenToDo.AFTER_FAILURE;
-            else if (m_rbNot1stFailure.Checked)
-                m_data.WhenToNotify = TaskData.WhenToDo.AFTER_1st_FAILURE;
-            else
-                m_data.WhenToNotify = TaskData.WhenToDo.DISABLED;
+            else if (m_rbNot1stFailureFile.Checked)
+                m_data.WhenToNotify = TaskData.WhenToDo.AFTER_1st_FAILURE_DAT;
+			else if (m_rbNot1stFailureTask.Checked)
+				m_data.WhenToNotify = TaskData.WhenToDo.AFTER_1st_FAILURE_TASK;
+			else
+				m_data.WhenToNotify = TaskData.WhenToDo.DISABLED;
 
             m_data.Name = m_nameTextBox.Text;
 

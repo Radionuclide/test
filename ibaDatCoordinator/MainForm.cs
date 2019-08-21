@@ -590,8 +590,9 @@ namespace iba
                     case TaskData.WhenToDo.AFTER_FAILURE:
                         taskNode.StateImageIndex = 1;
                         break;
-                    case TaskData.WhenToDo.AFTER_1st_FAILURE:
-                        taskNode.StateImageIndex = 2;
+                    case TaskData.WhenToDo.AFTER_1st_FAILURE_DAT:
+					case TaskData.WhenToDo.AFTER_1st_FAILURE_TASK:
+						taskNode.StateImageIndex = 2;
                         break;
                     default:
                         taskNode.StateImageIndex = -1;
@@ -1166,8 +1167,9 @@ namespace iba
                 MainForm.strikeOutNodeText(taskNode, !m_task_copy.Enabled);
                 switch (m_task_copy.WhenToExecute)
                 {
-                    case TaskData.WhenToDo.AFTER_1st_FAILURE:
-                        taskNode.StateImageIndex = 2;
+                    case TaskData.WhenToDo.AFTER_1st_FAILURE_DAT:
+					case TaskData.WhenToDo.AFTER_1st_FAILURE_TASK:
+						taskNode.StateImageIndex = 2;
                         break;
                     case TaskData.WhenToDo.AFTER_FAILURE:
                         taskNode.StateImageIndex = 1;
@@ -1258,8 +1260,9 @@ namespace iba
                 MainForm.strikeOutNodeText(taskNode, !m_task_copy.Enabled);
                 switch (m_task_copy.WhenToExecute)
                 {
-                    case TaskData.WhenToDo.AFTER_1st_FAILURE:
-                        taskNode.StateImageIndex = 2;
+                    case TaskData.WhenToDo.AFTER_1st_FAILURE_TASK:
+					case TaskData.WhenToDo.AFTER_1st_FAILURE_DAT:
+						taskNode.StateImageIndex = 2;
                         break;
                     case TaskData.WhenToDo.AFTER_FAILURE:
                         taskNode.StateImageIndex = 1;

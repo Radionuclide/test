@@ -2417,7 +2417,7 @@ namespace iba.Processing
                         return DatFileStatus.IsError(m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]])
                             || (m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FALSE
                                 && !completed);
-                    else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE)
+                    else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE_DAT)
                         return !completed
                             && (DatFileStatus.IsError(m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]])
                             || m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FALSE);
@@ -2873,15 +2873,30 @@ namespace iba.Processing
             // added by kolesnik - begin
             DateTime processingStarted = DateTime.Now;
             uint memoryUsed = 0;
-            // added by kolesnik - end
+			// added by kolesnik - end
 
-            lock (m_sd.DatFileStates)
-            {
-                failedOnce = m_sd.DatFileStates.ContainsKey(DatFile)
-                    && m_sd.DatFileStates[DatFile].States.ContainsKey(task)
-                    && DatFileStatus.IsError(m_sd.DatFileStates[DatFile].States[task])
-                    && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.NO_ACCESS; //all errors except no access
-            }
+			lock (m_sd.DatFileStates)
+			{
+				if (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE_TASK)
+				{
+					failedOnce = false;
+					foreach (var it in m_sd.DatFileStates.Values)
+					{
+						if (it.States.ContainsKey(task)
+						&& DatFileStatus.IsError(it.States[task])
+						&& it.States[task] != DatFileStatus.State.NO_ACCESS)
+							failedOnce = true;
+						break;
+					}
+				}
+				else
+				{
+					failedOnce = m_sd.DatFileStates.ContainsKey(DatFile)
+						&& m_sd.DatFileStates[DatFile].States.ContainsKey(task)
+						&& DatFileStatus.IsError(m_sd.DatFileStates[DatFile].States[task])
+						&& m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.NO_ACCESS; //all errors except no access
+				}
+			}
             bool continueProcessing = true;
             if (task is ReportData)
             {
@@ -3123,7 +3138,9 @@ namespace iba.Processing
                                 && m_sd.DatFileStates[DatFile].States[task] != DatFileStatus.State.TRIED_TOO_MANY_TIMES))
                             || m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_FALSE)
                         && (task.WhenToNotify == TaskData.WhenToDo.AFTER_FAILURE || task.WhenToNotify == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE
-                            || (task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE && !failedOnce)))
+                            || ((task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE_DAT
+								||task.WhenToNotify == TaskData.WhenToDo.AFTER_1st_FAILURE_TASK )
+							&& !failedOnce)))
                 {
                     lock (m_notifier)
                     {

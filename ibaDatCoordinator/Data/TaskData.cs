@@ -20,8 +20,9 @@ namespace iba.Data
             AFTER_SUCCES = 0,
             AFTER_FAILURE = 1,
             AFTER_SUCCES_OR_FAILURE = 2,
-            AFTER_1st_FAILURE = 3,
-            DISABLED = 4
+            AFTER_1st_FAILURE_DAT = 3,
+			AFTER_1st_FAILURE_TASK = 4,
+			DISABLED = 5
         }
 
         protected WhenToDo m_wtodo;
