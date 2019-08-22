@@ -280,7 +280,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -808,9 +808,6 @@ filename without extension</value>
   <data name="m_executeGroupBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 197</value>
   </data>
-  <data name="m_executeGroupBox.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 229</value>
-  </data>
   <data name="m_executeGroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 229</value>
   </data>
@@ -824,7 +821,7 @@ filename without extension</value>
     <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_executeGroupBox.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=1.23.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_executeGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -835,8 +832,14 @@ filename without extension</value>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>58</value>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 440</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 440</value>
