@@ -294,7 +294,7 @@ namespace iba.Processing
                 throw new InvalidOperationException("OPC UA Server has no configured certificate");
             if (!serverCert.IsTrusted)
                 throw new InvalidOperationException("The configured OPC UA Server certificate is not trusted");
-            
+
             // create list of allowed user certificates
             IbaOpcUaServer.CertifiedUsers.Clear();
             foreach (var certTag in _opcUaData.Certificates)
@@ -431,11 +431,7 @@ namespace iba.Processing
 
                 case "asServer":
                     _opcUaData.CertificateChangesCounter++; // mark that cert cfg is changed
-                    if (certTag == null || !certTag.HasPrivateKey)
-                        break; // selected certificate does not contain a private key
-                    UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate =
-                        certTag.Certificate;
-                    _opcUaData.SetServerCertificateFlag(certTag);
+                    SetServerCertificate(certTag?.Thumbprint);
                     break;
 
                 default:
@@ -537,6 +533,14 @@ namespace iba.Processing
 
             foreach (var cert in own)
             {
+                if (!cert.HasPrivateKey)
+                {
+                    // should not happen
+                    // skip certs that do not have private keys
+                    // because they cannot serve as our own certificate
+                    continue;
+                }
+
                 // check if already present in collection or add it
                 var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
 
@@ -547,6 +551,7 @@ namespace iba.Processing
 
                 // bind cert
                 certTag.Certificate = cert;
+                certTag.HasPrivateKey = cert.HasPrivateKey;
                 Debug.Assert(cert.Thumbprint == certTag.Thumbprint);
             }
         }
@@ -689,6 +694,24 @@ namespace iba.Processing
                 return null;
             }
         }
+
+        private void SetServerCertificate(string thumbprint)
+        {
+            if (string.IsNullOrWhiteSpace(thumbprint))
+                return;
+
+            foreach (var cert in GetOwnCertificates())
+            {
+                // ReSharper disable once InvertIf
+                if (cert.Thumbprint == thumbprint && cert.HasPrivateKey)
+                {
+                    UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = cert;
+                    _opcUaData.SetServerCertificateFlag(cert.Thumbprint);
+                    return;
+                }
+            }
+        }
+        
 
         private static List<X509Certificate2> GetCertificates(ICertificateStore store)
         {

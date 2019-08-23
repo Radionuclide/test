@@ -160,6 +160,11 @@ namespace iba.Data
             [XmlIgnore]
             public X509Certificate2 Certificate;
 
+            public bool IsTrusted;
+            public bool IsUsedForServer;
+            public bool IsUsedForAuthentication;
+            public bool HasPrivateKey;
+
             private string _thumbprint;
             public string Thumbprint
             {
@@ -193,16 +198,9 @@ namespace iba.Data
                 Certificate.FriendlyName : Certificate.Subject;
 
             public string Issuer => Certificate?.Issuer;
+
             public string ExpirationDate => Certificate?.GetExpirationDateString();
-
-            public bool IsTrusted;
-            public bool HasPrivateKey => Certificate?.HasPrivateKey ?? false;
-
-            public bool IsUsedForServer;
-            public bool IsUsedForAuthentication;
-
-
-
+            
             /// <summary> Is used for tooltip </summary>
             public string GetPropertyString()
             {
