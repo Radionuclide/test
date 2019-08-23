@@ -359,12 +359,6 @@ namespace iba.Processing
         /// </summary>
         public event EventHandler<EventArgs> ExtMonConfigurationChanged;
 
-        /// <summary>  // todo. kls. remove tmp
-        /// </summary>
-        private uint _tmpTimer => 555000 + (uint)DateTime.Now.Second;
-
-
-
         public bool ExtMonRefreshLicenseInfo(ExtMonData.LicenseInfo licenseInfo)
         {
             licenseInfo.Reset();
@@ -385,9 +379,6 @@ namespace iba.Processing
                     licenseInfo.Customer.Value = info.Customer;
                     licenseInfo.TimeLimit.Value = info.TimeLimit;
                     licenseInfo.DemoTimeLimit.Value = info.DemoTimeLimit;
-
-                    // todo. kls. remove tmp override!!!
-                    licenseInfo.DemoTimeLimit.Value = (int)_tmpTimer;
                 }
 
                 licenseInfo.PutTimeStamp();
@@ -451,10 +442,6 @@ namespace iba.Processing
             driveInfo.MinFreeSpaceInPercent.Value = (uint)gcData.PercentageFree; 
 
             driveInfo.RescanTime.Value = (uint)gcData.RescanTime;
-
-            // todo. kls. remove tmp override!!!
-            driveInfo.RescanTime.Value = (uint)_tmpTimer;
-
 
             driveInfo.PutTimeStamp();
         }
@@ -632,10 +619,6 @@ namespace iba.Processing
                     ExtMonData.JobStatus.Stopped);
 
             ji.TodoCount.Value = (uint)s.ReadFiles.Count;
-
-            // todo. kls. remove tmp override!!!
-            ji.TodoCount.Value = (uint)_tmpTimer;
-
             ji.DoneCount.Value = (uint)s.ProcessedFiles.Count;
             ji.FailedCount.Value = (uint)s.CountErrors();
 
@@ -795,9 +778,6 @@ namespace iba.Processing
                 {
                     taskInfo.DeleteCleanupInfo();
                 }
-
-                // todo. kls. remove tmp override!!!
-                taskInfo.MemoryUsedForLastExecutionInMb.Value = (uint)_tmpTimer;
             }
         }
 
