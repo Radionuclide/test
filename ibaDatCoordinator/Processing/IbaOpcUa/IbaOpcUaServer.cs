@@ -10,15 +10,6 @@ using Opc.Ua.Server;
 
 namespace iba.Processing.IbaOpcUa
 {
-    public enum IbaOpcUaServerCertificateTrustMode
-    {
-        DontTrust,
-        TrustNextTemporarily,
-        TrustAllTemporarily,
-        TrustNextPermanently,
-        TrustAllPermanently
-    }
-
     [Serializable]
     public class IbaOpcUaDiagClient
     {
@@ -110,9 +101,7 @@ namespace iba.Processing.IbaOpcUa
             return resourceManager;
         }
 
-        /// <summary>
-        /// Called after the server has been started.
-        /// </summary>
+        /// <summary> Called after the server has been started. </summary>
         protected override void OnServerStarted(IServerInternal server)
         {
             base.OnServerStarted(server);
@@ -120,38 +109,20 @@ namespace iba.Processing.IbaOpcUa
             server.SessionManager.ImpersonateUser += SessionManager_ImpersonateUser;
         }
 
-        /// <summary>
-        /// Called when a client tries to change its user identity.
-        /// </summary>
+        /// <summary>  Called when a client tries to change its user identity. </summary>
         private void SessionManager_ImpersonateUser(Session session, ImpersonateEventArgs args)
         {
             switch (args.NewIdentity)
             {
                 case AnonymousIdentityToken _:
-                    if (!IsAnonymousUserAllowed)
-                    {
-                        throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
-                            @"Anonymous users are not accepted");
-                    }
-                    // grant access
+                    // no additional checks, just grant access
                     return;
 
                 case UserNameIdentityToken userNameToken:
-                    if (!IsNamedUserAllowed)
-                    {
-                        throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
-                            @"Named users are not accepted");
-                    }
                     VerifyNamedUser(userNameToken.UserName, userNameToken.DecryptedPassword);
                     break;
 
                 case X509IdentityToken certToken:
-                    if (!IsCertifiedUserAllowed)
-                    {
-                        throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
-                            @"Certificate-users are not accepted");
-                    }
-
                     try
                     {
                         // certToken.Certificate is always null, so let's compare certificates by raw data
@@ -210,281 +181,27 @@ namespace iba.Processing.IbaOpcUa
         #endregion
 
 
-        #region Trust functionality
-
-        private IbaOpcUaServerCertificateTrustMode _trustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
-        //public delegate void TrustModeChangedHandler(IbaOpcUaServerCertificateTrustMode mode);
-
-        //public event TrustModeChangedHandler OnTrustModeChanged;
-
-        public IbaOpcUaServerCertificateTrustMode TrustMode
-        {
-            set
-            {
-                _trustMode = value;
-                //TrustModeResetHandlers();
-                //CertificateValidator cv = Configuration.CertificateValidator;
-
-                //switch (_trustMode)
-                //{
-                //    case IbaOpcUaServerCertificateTrustMode.DontTrust:
-                //        // do not add any handler
-                //        break;
-                //    case IbaOpcUaServerCertificateTrustMode.TrustNextTemporarily:
-                //        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustNextTmp;
-                //        break;
-                //    case IbaOpcUaServerCertificateTrustMode.TrustAllTemporarily:
-                //        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustAllTmp;
-                //        break;
-                //    case IbaOpcUaServerCertificateTrustMode.TrustNextPermanently:
-                //        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustNextPrm;
-                //        break;
-                //    case IbaOpcUaServerCertificateTrustMode.TrustAllPermanently:
-                //        cv.CertificateValidation += KlsCertificateValidator_CertificateValidation_TrustAllPrm;
-                //        break;
-                //    default:
-                //        throw new ArgumentOutOfRangeException();
-                //}
-                //OnTrustModeChanged?.Invoke(_trustMode);
-            }
-            get => _trustMode;
-        }
-
-        //private void TrustModeResetHandlers()
-        //{
-        //    CertificateValidator cv = Configuration.CertificateValidator;
-
-        //    cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustAllTmp;
-        //    cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustAllPrm;
-        //    cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustNextPrm;
-        //    cv.CertificateValidation -= KlsCertificateValidator_CertificateValidation_TrustNextTmp;
-        //}
-
-        private void OnCertificateValidation(CertificateValidator validator,
-            CertificateValidationEventArgs e)
-        {
-            switch (TrustMode)
-            {
-                case IbaOpcUaServerCertificateTrustMode.DontTrust:
-                    break;
-                case IbaOpcUaServerCertificateTrustMode.TrustNextTemporarily:
-                    CertificateValidationTrustNextTmp(validator, e);
-                    break;
-                case IbaOpcUaServerCertificateTrustMode.TrustAllTemporarily:
-                    CertificateValidationTrustAllTmp(validator, e);
-                    break;
-                case IbaOpcUaServerCertificateTrustMode.TrustNextPermanently:
-                    CertificateValidationTrustNextPrm(validator, e);
-                    break;
-                case IbaOpcUaServerCertificateTrustMode.TrustAllPermanently:
-                    CertificateValidationTrustAllPrm(validator, e);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-
-        private void CertificateValidationTrustNextTmp(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
-            // execute "trust temporarily" once
-            CertificateValidationTrustAllTmp(validator, e);
-
-            // reset mode to don't trust
-            TrustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
-        }
-        private void CertificateValidationTrustAllTmp(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
-            try
-            {
-                if (e.Error != null && e.Error.Code == StatusCodes.BadCertificateUntrusted)
-                {
-                    e.Accept = true;
-                    Utils.Trace((int)Utils.TraceMasks.Security, "Automatically temporarily accepted certificate: {0}", e.Certificate.Subject);
-                }
-            }
-            catch (Exception exception)
-            {
-                Utils.Trace(exception, "Error accepting certificate.");
-            }
-        }
-        private void CertificateValidationTrustNextPrm(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
-            // execute "trust permanently" once
-            CertificateValidationTrustAllPrm(validator, e);
-
-            // reset mode to don't trust
-            TrustMode = IbaOpcUaServerCertificateTrustMode.DontTrust;
-        }
-        private void CertificateValidationTrustAllPrm(CertificateValidator validator, CertificateValidationEventArgs e)
-        {
-            try
-            {
-                if (e.Error != null && e.Error.Code == StatusCodes.BadCertificateUntrusted)
-                {
-                    e.Accept = true;
-                    // add cert to permanent trusted store
-                    //SetCertificateTrust(e.Certificate, true);
-                    Utils.Trace((int)Utils.TraceMasks.Security, "Automatically permanently accepted certificate: {0}", e.Certificate.Subject);
-                }
-            }
-            catch (Exception exception)
-            {
-                Utils.Trace(exception, "Error accepting certificate.");
-            }
-        }
-
-        #endregion //trust functionality
-
-
         #region UserAcccounts
 
-        /// <summary>
-        /// Whether password encryption is enabled. This applies only to the token type "UserName" of tcp endpoint with Security=None
-        /// </summary>
-        private bool _passwordEncryptionForTcpNoneEndpoint = true;
-
-        /// <summary>
-        /// Whether password encryption is enabled. This applies only to the token type "UserName" of tcp endpoint with Security=None
-        /// </summary>
-        public bool PasswordEncryptionForTcpNoneEndpoint
-        {
-            get { return _passwordEncryptionForTcpNoneEndpoint; }
-            set
-            {
-                _passwordEncryptionForTcpNoneEndpoint = value;
-
-                EndpointDescription description = null;
-                // find endpointdescription without security
-                foreach (var endpointDescription in Endpoints)
-                {
-                    if (endpointDescription.SecurityMode == MessageSecurityMode.None &&
-                        endpointDescription.EndpointUrl.ToLower().Contains("opc.tcp://"))
-                    {
-                        description = endpointDescription;
-                        break;
-                    }
-                }
-                if (description == null) throw new Exception("Endpoint with Security=None not found");
-              
-                // find token policy for UserName token type
-                foreach (UserTokenPolicy policy in description.UserIdentityTokens)
-                {
-                    if (!policy.PolicyId.ToUpper().Contains("1")) continue;
-
-                    policy.SecurityPolicyUri = _passwordEncryptionForTcpNoneEndpoint
-                        ? SecurityPolicies.Basic256
-                        : SecurityPolicies.None;
-                }
-            }
-        }
-
-        public bool IsAnonymousUserAllowed { get; private set; }
-        public bool IsNamedUserAllowed { get; private set; }
-        public bool IsCertifiedUserAllowed { get; private set; }
-
-        // list of specific user account (can be empty)
-        // needed to be accessed by the form, so is public
-        public string NamedUserAccountName;
-        public string NamedUserAccountPassword;
+        public string NamedUserAccountName { get; private set; }
+        public string NamedUserAccountPassword { get; private set; }
 
         public readonly HashSet<X509Certificate2> CertifiedUsers = new HashSet<X509Certificate2>();
 
-        public void SetUserAccountConfiguration(bool hasAnonymous, bool hasNamed, bool hasCertified, 
-            string name = null, string password = null)
+        public void SetUserAccountConfiguration(string name = null, string password = null)
         {
-            IsAnonymousUserAllowed = hasAnonymous;
-            IsCertifiedUserAllowed = hasCertified;
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("User Name cannot be null or whitespace", nameof(name));
 
-            IsNamedUserAllowed = false;
-            
-            // ReSharper disable once InvertIf
-            if (hasNamed)
-            {
-                if (string.IsNullOrWhiteSpace(name))
-                    throw new ArgumentException("Name cannot be null or whitespace", nameof(name));
-                // ReSharper disable once JoinNullCheckWithUsage
-                if (password == null)
-                    throw new ArgumentException("Password cannot be null", nameof(password));
-                NamedUserAccountName = name;
-                NamedUserAccountPassword = password;
-                IsNamedUserAllowed = true;
-            }
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("User Password cannot be null", nameof(password));
+
+            NamedUserAccountName = name;
+            NamedUserAccountPassword = password;
         }
-        
 
         #endregion //UserAcccounts
 
-
-        public void ApplySecurityConfiguration(bool passwordEncryptionForTcpNoneEndpoint)
-        {
-
-            Configuration.CertificateValidator.CertificateValidation += OnCertificateValidation;
-
-            // user management
-            // set password encryption override
-            PasswordEncryptionForTcpNoneEndpoint = passwordEncryptionForTcpNoneEndpoint;
-
-        }
-
-        #region override by kolesnik
-
-        //public override ResponseHeader CreateSession(RequestHeader requestHeader, ApplicationDescription clientDescription, string serverUri, string endpointUrl, string sessionName, byte[] clientNonce, byte[] clientCertificate, double requestedSessionTimeout, uint maxResponseMessageSize, out NodeId sessionId, out NodeId authenticationToken, out double revisedSessionTimeout, out byte[] serverNonce, out byte[] serverCertificate, out EndpointDescriptionCollection serverEndpoints, out SignedSoftwareCertificateCollection serverSoftwareCertificates, out SignatureData serverSignature, out uint maxRequestMessageSize)
-        //{
-        //    ResponseHeader header =
-        //        base.CreateSession(requestHeader, clientDescription, serverUri, endpointUrl, sessionName, clientNonce, clientCertificate, requestedSessionTimeout, maxResponseMessageSize, out sessionId, out authenticationToken, out revisedSessionTimeout, out serverNonce, out serverCertificate, out serverEndpoints, out serverSoftwareCertificates, out serverSignature, out maxRequestMessageSize);
-        //    UpdateDiagnosticStringSessions();
-        //    return header;
-        //}
-
-        //public override ResponseHeader ActivateSession(RequestHeader requestHeader, SignatureData clientSignature,
-        //    SignedSoftwareCertificateCollection clientSoftwareCertificates, StringCollection localeIds,
-        //    ExtensionObject userIdentityToken, SignatureData userTokenSignature, out byte[] serverNonce,
-        //    out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos)
-        //{
-        //    try
-        //    {
-        //        var responseHeader = base.ActivateSession(requestHeader, clientSignature, clientSoftwareCertificates,
-        //            localeIds, userIdentityToken, userTokenSignature, out serverNonce, out results, out diagnosticInfos);
-
-        //        UpdateDiagnosticStringSessions();
-        //        return responseHeader;
-        //    }
-        //    catch
-        //    {
-        //        ; // ?? handle closed section? Or ignore?
-        //        throw;
-        //    }
-        //}
-
-        //public override ResponseHeader CloseSession(RequestHeader requestHeader, bool deleteSubscriptions)
-        //{
-        //    ResponseHeader header =
-        //        base.CloseSession(requestHeader, deleteSubscriptions);
-
-        //    UpdateDiagnosticStringSessions();
-
-        //    return header;
-        //}
-
-        #endregion
-
-            
-        // todo. kls. remove
-        public static string GetFQDN()
-        {
-            string domainName = IPGlobalProperties.GetIPGlobalProperties().DomainName;
-            string hostName = Dns.GetHostName();
-            if (!string.IsNullOrEmpty(domainName))
-            {
-                domainName = "." + domainName;
-                if (!hostName.EndsWith(domainName)) // if hostname does not already include domain name
-                {
-                    hostName += domainName; // add the domain name part
-                }
-            }
-            return hostName; // return the fully qualified name
-        }
 
         #region Diagnostics
         

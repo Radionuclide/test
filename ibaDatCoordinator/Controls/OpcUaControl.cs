@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Logging;
@@ -143,7 +145,7 @@ namespace iba.Controls
             try
             {
                 ConfigurationFromControlsToData();
-                // set data to manager and restart snmp agent if necessary
+                // set data to manager and restart server if necessary
                 TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
                 // rebuild GUI tree
@@ -204,8 +206,8 @@ namespace iba.Controls
             _data.HasSecurityBasic128 = cbSecurity128.Checked;
             _data.HasSecurityBasic256 = cbSecurity256.Checked;
 
-            _data.SecurityBasic128Level = (OpcUaData.OpcUaSecurityLevel)comboBoxSecurity128.SelectedIndex;
-            _data.SecurityBasic256Level = (OpcUaData.OpcUaSecurityLevel)comboBoxSecurity256.SelectedIndex;
+            _data.SecurityBasic128Mode = (OpcUaData.OpcUaSecurityMode)comboBoxSecurity128.SelectedIndex;
+            _data.SecurityBasic256Mode = (OpcUaData.OpcUaSecurityMode)comboBoxSecurity256.SelectedIndex;
 
             // endpoints
             _data.Endpoints.Clear();
@@ -241,8 +243,8 @@ namespace iba.Controls
             cbSecurity128.Checked = _data.HasSecurityBasic128;
             cbSecurity256.Checked = _data.HasSecurityBasic256;
 
-            comboBoxSecurity128.SelectedIndex = (int)_data.SecurityBasic128Level;
-            comboBoxSecurity256.SelectedIndex = (int)_data.SecurityBasic256Level;
+            comboBoxSecurity128.SelectedIndex = (int)_data.SecurityBasic128Mode;
+            comboBoxSecurity256.SelectedIndex = (int)_data.SecurityBasic256Mode;
 
             // endpoints
             dgvEndpoints.Rows.Clear();
@@ -367,19 +369,92 @@ namespace iba.Controls
 
         private void buttonCertAdd_Click(object sender, EventArgs e)
         {
-            TaskManager.Manager.OpcUaHandleCertificate("add", null);
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var cert = new X509Certificate2();
+            cert.Import(openFileDialog.FileName);
+            OpcUaData.CertificateTag certTag = new OpcUaData.CertificateTag
+            {
+                Certificate = cert
+            };
+
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("add", certTag);
+            RefreshCertificatesTable(certs);
         }
 
         private void buttonCertGenerate_Click(object sender, EventArgs e)
         {
-            TaskManager.Manager.OpcUaHandleCertificate("generate", null);
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var certTag = new OpcUaData.CertificateTag();
+
+            // todo. kls. Create a form to request cert parameters like in PDA
+            // Name, Uri, Lifetime, Algorithm
+
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("generate", certTag);
+
+            RefreshCertificatesTable(certs);
+
+            // todo. kls. localize?
+            if (MessageBox.Show(
+                    "Do you want to use the generated certificate as OPC UA Server certificate", 
+                    "Generate certificate",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                dgvCertificates.ClearSelection();
+                dgvCertificates.Rows[dgvCertificates.RowCount - 1].Selected = true;
+                buttonCertServer_Click(null, null);
+            }
+
         }
 
         private void buttonCertExport_Click(object sender, EventArgs e)
         {
             var certTag = GetSelectedCertificate();
-            if (certTag == null)
+            if (certTag?.Certificate == null)
                 return;
+
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var fileName = saveFileDialog.FileName;
+            var ext = Path.GetExtension(fileName);
+
+            ext = string.IsNullOrWhiteSpace(ext) ? null : ext.ToLower();
+
+            try
+            {
+                X509ContentType contentType;
+                switch (ext)
+                {
+                    case ".der":
+                    case ".cer":
+                        // der and cer are actually the same
+                        contentType = X509ContentType.Cert;
+                        break;
+                    case ".pfx":
+                        contentType = X509ContentType.Pfx;
+                        break;
+                    default:
+                        throw new Exception("Unsupported destination certificate format");
+                }
+
+                using (var file = File.Create(fileName))
+                {
+                    var bytes = certTag.Certificate.Export(contentType);
+                    file.Write(bytes, 0, bytes.Length);
+                }
+
+                // todo. kls. localize?
+                MessageBox.Show("Successfully exported certificate", "Export certificate", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch
+            {
+                // todo. kls. localize?
+                MessageBox.Show("Error exporting certificate", "Export certificate",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private void buttonCertRemove_Click(object sender, EventArgs e)
@@ -433,6 +508,7 @@ namespace iba.Controls
 
             if (!certTag.HasPrivateKey)
             {
+                // todo. kls. low. localize?
                 MessageBox.Show(
                     "The selected certificate does not contain a private key", "", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -915,34 +991,6 @@ namespace iba.Controls
 
 
         #region Tmp and Debug
-
-        // todo. kls. delete before last beta
-        private void buttonSetTestCfg_Click(object sender, EventArgs e)
-        {
-            // copy default data to current data except enabled/disabled
-            _data = (new OpcUaData()).Clone() as OpcUaData;
-            Debug.Assert(_data != null);
-            if (_data == null)
-                return;
-
-            _data.Enabled = true;
-
-            _data.UserName = "Anonymous2";
-            _data.Password = "123456";
-
-            _data.HasSecurityBasic128 = true;
-            _data.SecurityBasic128Level = OpcUaData.OpcUaSecurityLevel.SignSignEncrypt;
-
-            OpcUaData.OpcUaEndPoint ep = new OpcUaData.OpcUaEndPoint("LsWork", 21060);
-            _data.Endpoints.Clear();
-            _data.Endpoints.Add(ep);
-            _data.Endpoints.Add(OpcUaData.DefaultEndPoint);
-
-
-            ConfigurationFromDataToControls();
-
-            buttonCopyToClipboard_Click(null,null);
-        }
 
         // todo. kls. delete before last beta
         private void buttonRebuildTree_Click(object sender, EventArgs e)

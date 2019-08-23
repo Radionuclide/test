@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.gbCertificates = new iba.Utility.CollapsibleGroupBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.buttonCertAdd = new System.Windows.Forms.ToolStripButton();
@@ -90,7 +92,6 @@
             this.buttonShowPassword = new System.Windows.Forms.Button();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
             this.comboBoxSecurity256 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBoxSecurity128 = new System.Windows.Forms.ComboBox();
             this.cbSecurity256 = new System.Windows.Forms.CheckBox();
             this.cbSecurity128 = new System.Windows.Forms.CheckBox();
@@ -100,12 +101,10 @@
             this.dgvColumnHost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColumnPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvColumnUri = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buttonCopyToClipboard = new System.Windows.Forms.Button();
             this.buttonEndpointCopy = new System.Windows.Forms.Button();
             this.buttonEndpointDelete = new System.Windows.Forms.Button();
             this.buttonEndpointAdd = new System.Windows.Forms.Button();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
-            this.buttonTestCfg = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.gbCertificates.SuspendLayout();
@@ -135,6 +134,16 @@
             // 
             this.timerRefreshStatus.Interval = 1000;
             this.timerRefreshStatus.Tick += new System.EventHandler(this.timerRefreshStatus_Tick);
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "DER encoded certificates|*.der|Certificates|*.cer|Personal Information Exchange f" +
+    "iles|*.pfx|All files|*.*";
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "DER encoded certificates|*.der|Certificates|*.cer|Personal Information Exchange f" +
+    "iles|*.pfx|All files|*.*";
             // 
             // gbCertificates
             // 
@@ -676,6 +685,7 @@
             this.buttonRefreshGuiTree.TabIndex = 12;
             this.buttonRefreshGuiTree.Text = "Force Refresh GUI";
             this.buttonRefreshGuiTree.UseVisualStyleBackColor = false;
+            this.buttonRefreshGuiTree.Visible = false;
             this.buttonRefreshGuiTree.Click += new System.EventHandler(this.buttonRefreshGuiTree_Click);
             // 
             // buttonRebuildTree
@@ -689,6 +699,7 @@
             this.buttonRebuildTree.TabIndex = 12;
             this.buttonRebuildTree.Text = "Force Rebuild Tree";
             this.buttonRebuildTree.UseVisualStyleBackColor = false;
+            this.buttonRebuildTree.Visible = false;
             this.buttonRebuildTree.Click += new System.EventHandler(this.buttonRebuildTree_Click);
             // 
             // tvObjects
@@ -711,7 +722,6 @@
             this.gbConfiguration.Controls.Add(this.splitContainerSecurity);
             this.gbConfiguration.Controls.Add(this.gbEndpoints);
             this.gbConfiguration.Controls.Add(this.cbEnabled);
-            this.gbConfiguration.Controls.Add(this.buttonTestCfg);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationReset);
             this.gbConfiguration.Controls.Add(this.buttonConfigurationApply);
             this.gbConfiguration.Location = new System.Drawing.Point(15, 3);
@@ -824,7 +834,6 @@
             // gbSecurity
             // 
             this.gbSecurity.Controls.Add(this.comboBoxSecurity256);
-            this.gbSecurity.Controls.Add(this.comboBox1);
             this.gbSecurity.Controls.Add(this.comboBoxSecurity128);
             this.gbSecurity.Controls.Add(this.cbSecurity256);
             this.gbSecurity.Controls.Add(this.cbSecurity128);
@@ -849,19 +858,6 @@
             this.comboBoxSecurity256.Name = "comboBoxSecurity256";
             this.comboBoxSecurity256.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSecurity256.TabIndex = 8;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Sign",
-            "Sign & Encrypt",
-            "Sign + Sign & Encrypt"});
-            this.comboBox1.Location = new System.Drawing.Point(115, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 8;
             // 
             // comboBoxSecurity128
             // 
@@ -914,7 +910,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbEndpoints.Controls.Add(this.dgvEndpoints);
-            this.gbEndpoints.Controls.Add(this.buttonCopyToClipboard);
             this.gbEndpoints.Controls.Add(this.buttonEndpointCopy);
             this.gbEndpoints.Controls.Add(this.buttonEndpointDelete);
             this.gbEndpoints.Controls.Add(this.buttonEndpointAdd);
@@ -971,20 +966,6 @@
             this.dgvColumnUri.Name = "dgvColumnUri";
             this.dgvColumnUri.ReadOnly = true;
             // 
-            // buttonCopyToClipboard
-            // 
-            this.buttonCopyToClipboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCopyToClipboard.BackColor = System.Drawing.Color.Linen;
-            this.buttonCopyToClipboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCopyToClipboard.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonCopyToClipboard.Location = new System.Drawing.Point(64, -1);
-            this.buttonCopyToClipboard.Name = "buttonCopyToClipboard";
-            this.buttonCopyToClipboard.Size = new System.Drawing.Size(92, 19);
-            this.buttonCopyToClipboard.TabIndex = 14;
-            this.buttonCopyToClipboard.Text = "Copy to clipboard";
-            this.buttonCopyToClipboard.UseVisualStyleBackColor = false;
-            this.buttonCopyToClipboard.Click += new System.EventHandler(this.buttonCopyToClipboard_Click);
-            // 
             // buttonEndpointCopy
             // 
             this.buttonEndpointCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1039,19 +1020,6 @@
             this.cbEnabled.TabIndex = 0;
             this.cbEnabled.Text = "Enabled";
             this.cbEnabled.UseVisualStyleBackColor = true;
-            // 
-            // buttonTestCfg
-            // 
-            this.buttonTestCfg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonTestCfg.BackColor = System.Drawing.Color.Linen;
-            this.buttonTestCfg.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonTestCfg.Location = new System.Drawing.Point(417, 312);
-            this.buttonTestCfg.Name = "buttonTestCfg";
-            this.buttonTestCfg.Size = new System.Drawing.Size(75, 23);
-            this.buttonTestCfg.TabIndex = 12;
-            this.buttonTestCfg.Text = "Set Test Cfg";
-            this.buttonTestCfg.UseVisualStyleBackColor = false;
-            this.buttonTestCfg.Click += new System.EventHandler(this.buttonSetTestCfg_Click);
             // 
             // buttonConfigurationReset
             // 
@@ -1143,7 +1111,6 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Timer timerRefreshStatus;
-        private System.Windows.Forms.Button buttonCopyToClipboard;
         private System.Windows.Forms.GroupBox gbEndpoints;
         private System.Windows.Forms.Button buttonEndpointCopy;
         private System.Windows.Forms.Button buttonEndpointDelete;
@@ -1161,7 +1128,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnHost;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnPort;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnUri;
-        private System.Windows.Forms.Button buttonTestCfg;
         private System.Windows.Forms.Button buttonRebuildTree;
         private System.Windows.Forms.Button buttonRefreshGuiTree;
         private System.Windows.Forms.Label labelObjNodeId;
@@ -1200,11 +1166,12 @@
         private System.Windows.Forms.DataGridView dgvCertificates;
         private System.Windows.Forms.CheckBox cbLogonUserName;
         private System.Windows.Forms.CheckBox cbLogonAnonymous;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTag;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol4;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
