@@ -443,7 +443,7 @@ namespace iba.Processing
 
             return new List<OpcUaData.CertificateTag>(_opcUaData.Certificates);
         }
-        
+
         public void SynchronizeCertificates()
         {
             // check id uniqueness
@@ -472,23 +472,36 @@ namespace iba.Processing
                 {
                     // not found;
                     // remove it from our list
-                   _opcUaData.Certificates.RemoveAt(i);
+                    _opcUaData.Certificates.RemoveAt(i);
                 }
             }
 
             LoadCertificatesFromDisk();
 
             // set server cert
-            foreach (var certTag in _opcUaData.Certificates)
+            var serverCertTag = _opcUaData.GetServerCertificate(); // check if one is set in _opcUaData
+            if (serverCertTag != null)
             {
-                // ReSharper disable once InvertIf
-                if (certTag.IsUsedForServer && certTag.Certificate != null && certTag.Certificate.HasPrivateKey)
+                // reset the flag temporarily (for reliability; it will be set later in SetServerCertificate function) 
+                serverCertTag.IsUsedForServer = false; 
+                // set server certificate
+                SetServerCertificate(serverCertTag.Thumbprint);
+            }
+            else
+            {
+                // select any of our own
+                // this is needed to ensure server will run out of the box
+                // when nothing special was yet configured by the user
+                foreach (var certTag in _opcUaData.Certificates)
                 {
-                    UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = certTag.Certificate;
-                    break;
+                    // ReSharper disable once InvertIf
+                    if (certTag.IsTrusted && certTag.Certificate != null && certTag.Certificate.HasPrivateKey)
+                    {
+                        SetServerCertificate(certTag.Thumbprint);
+                        break;
+                    }
                 }
             }
-
         }
 
         private void LoadCertificatesFromDisk()

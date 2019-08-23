@@ -326,7 +326,8 @@ namespace iba.Data
         {
             foreach (var certTag in Certificates)
             {
-                if (certTag.IsUsedForServer) return certTag;
+                if (certTag.IsUsedForServer && certTag.HasPrivateKey)
+                    return certTag;
             }
             return null;
         }
