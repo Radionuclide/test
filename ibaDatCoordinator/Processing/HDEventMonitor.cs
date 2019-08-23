@@ -52,7 +52,6 @@ namespace iba.Processing
             m_hdReader.ShowConnectionError = false;
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             m_hdReader.Advance += OnHdAdvance;
-            m_hdReader.SignalsUpdated += OnHdSignalsUpdated;
 
             m_liveData = new Dictionary<string, LiveStoreData>();
 
@@ -110,7 +109,6 @@ namespace iba.Processing
             if (m_hdReader != null)
             {
                 m_hdReader.Advance -= OnHdAdvance;
-                m_hdReader.SignalsUpdated -= OnHdSignalsUpdated;
 
                 foreach (LiveStoreData storeData in m_liveData.Values)
                 {
@@ -322,22 +320,6 @@ namespace iba.Processing
             {
                 if (m_liveData.TryGetValue(storeNames[i], out storeData))
                     storeData.AdvanceTime = stamps[i];
-            }
-        }
-
-        void OnHdSignalsUpdated()
-        {
-            Dictionary<string, LiveStoreData> lLiveData = m_liveData;
-            foreach (var storeData in lLiveData.Values)
-            {
-                if (storeData.RequestId >= 0)
-                {
-                    m_hdReader?.EventManager.CancelRequest(storeData.RequestId);
-                    storeData.RequestId = -1;
-                }
-
-                storeData.ReceiveTime = DateTime.MinValue.Ticks;
-                storeData.AdvanceTime = DateTime.MaxValue.Ticks;
             }
         }
         #endregion
