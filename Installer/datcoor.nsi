@@ -414,6 +414,11 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
+  ;OPC UA
+  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
+  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -497,6 +502,11 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
+  ;OPC UA
+  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
+  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"  
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -629,7 +639,12 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
-;HD-stuff
+  ;OPC UA
+  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
+  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" 
+  ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
@@ -879,7 +894,11 @@ Function un.UninstallTasks
   Delete "$INSTDIR\PowerCollections.dll"
   Delete "$INSTDIR\GenuineChannels.dll"
 
-  Delete "$INSTDIR\ibaSnmpLib.dll"  
+  Delete "$INSTDIR\ibaSnmpLib.dll"
+  Delete "$INSTDIR\Opc.Ua.Configuration.dll"
+  Delete "$INSTDIR\Opc.Ua.Core.dll"
+  Delete "$INSTDIR\Opc.Ua.Server.dll"
+  Delete "$INSTDIR\ibaDatCoordinatorOpcUaServerConfig.xml"
 
   Delete "$INSTDIR\DevExpress.XtraEditors.v16.1.dll"
   Delete "$INSTDIR\DevExpress.XtraGrid.v16.1.dll"
