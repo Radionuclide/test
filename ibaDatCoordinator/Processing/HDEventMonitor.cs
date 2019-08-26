@@ -296,13 +296,7 @@ namespace iba.Processing
                     m_startTimeTicks = lowestReceiveTime;
 
                 m_liveData.Clear();
-                if (UpdateLiveSubsets())
-                {
-                    lock (m_matchedEventsLock)
-                    {
-                        m_dictMatchedEvents.Clear();
-                    }
-                }
+                UpdateLiveSubsets();
 
                 string error = lHdReader.ConnectionError;
                 if (!string.IsNullOrWhiteSpace(error))
