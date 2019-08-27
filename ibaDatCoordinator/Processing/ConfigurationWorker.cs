@@ -2885,8 +2885,10 @@ namespace iba.Processing
 						if (it.States.ContainsKey(task)
 						&& DatFileStatus.IsError(it.States[task])
 						&& it.States[task] != DatFileStatus.State.NO_ACCESS)
+						{
 							failedOnce = true;
-						break;
+							break;
+						}
 					}
 				}
 				else
