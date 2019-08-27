@@ -62,20 +62,20 @@ namespace iba.Data
             Basic256,
         };
 
-        public bool IsAnonymousUserAllowed { get; set; }
-        public bool IsNamedUserAllowed { get; set; }
-        public bool IsCertifiedUserAllowed { get; set; }
+        public bool IsAnonymousUserAllowed { get; set; } = true;
+        public bool IsNamedUserAllowed { get; set; } = true;
+        public bool IsCertifiedUserAllowed { get; set; } = true;
 
-        public string UserName { get; set; } = "Anonymous";
+        public string UserName { get; set; } = "User1";
 
-        public string Password { get; set; } = "";
+        public string Password { get; set; } = "123";
 
-        public bool HasSecurityNone { get; set; }
-        public bool HasSecurityBasic128 { get; set; }
-        public bool HasSecurityBasic256 { get; set; }
+        public bool HasSecurityNone { get; set; } = true;
+        public bool HasSecurityBasic128 { get; set; } = true;
+        public bool HasSecurityBasic256 { get; set; } = true;
 
-        public OpcUaSecurityMode SecurityBasic128Mode { get; set; }
-        public OpcUaSecurityMode SecurityBasic256Mode { get; set; }
+        public OpcUaSecurityMode SecurityBasic128Mode { get; set; } = OpcUaSecurityMode.SignEncrypt;
+        public OpcUaSecurityMode SecurityBasic256Mode { get; set; } = OpcUaSecurityMode.SignEncrypt;
 
         public static List<ServerSecurityPolicy> CreateSecurityPolicies(OpcUaSecurityAlgorithm alg, OpcUaSecurityMode mode)
         {

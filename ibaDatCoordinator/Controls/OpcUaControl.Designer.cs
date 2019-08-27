@@ -805,7 +805,6 @@
             this.tbUserName.Name = "tbUserName";
             this.tbUserName.Size = new System.Drawing.Size(90, 20);
             this.tbUserName.TabIndex = 4;
-            this.tbUserName.Text = "Anonymous";
             // 
             // tbPassword
             // 
@@ -814,7 +813,6 @@
             this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(90, 20);
             this.tbPassword.TabIndex = 5;
-            this.tbPassword.Text = "***";
             // 
             // buttonShowPassword
             // 
@@ -1011,8 +1009,6 @@
             // cbEnabled
             // 
             this.cbEnabled.AutoSize = true;
-            this.cbEnabled.Checked = true;
-            this.cbEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbEnabled.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.cbEnabled.Location = new System.Drawing.Point(9, 19);
             this.cbEnabled.Name = "cbEnabled";
