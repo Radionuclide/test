@@ -209,7 +209,10 @@ namespace iba.Controls
                 ControlEvent.EventSettings eventSettings = m_ctrlEvent.GetSettings();
                 eventData.ID = eventSettings.ID;
                 eventData.Name = eventSettings.Name;
-                eventData.NumericFields = new List<Tuple<string, string>>(eventSettings.FloatFields);
+                List<Tuple<string, string>> numFields = new List<Tuple<string, string>>();
+                foreach (var field in eventSettings.FloatFields)
+                    numFields.Add(Tuple.Create(field.Item1, field.Item2));
+                eventData.NumericFields = numFields;
                 eventData.TextFields = new List<Tuple<string, string>>(eventSettings.TextFields);
                 eventData.BlobFields = new List<string>(eventSettings.BlobFields);
             }

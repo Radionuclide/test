@@ -81,7 +81,7 @@ namespace iba.Processing
             return true;
         }
 
-        EventWriterItem GenerateEvent(HDCreateEventTaskData task, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<List<string>, List<double>>> textValues, double from = double.NaN, double to = double.NaN) //TODO add text coll args
+        EventWriterItem GenerateEvent(HDCreateEventTaskData task, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<List<string>, List<double>>> textValues, double from = double.NaN, double to = double.NaN)
         {
             bool bUseSinglePoint = !double.IsNaN(from) && from == to;
             bool bUseRange = !double.IsNaN(from) && !bUseSinglePoint;
