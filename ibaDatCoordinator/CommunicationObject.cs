@@ -210,7 +210,7 @@ namespace iba
                 }
             }
             catch (Exception ex)
-            {
+            { 
                 myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
             }
             finally

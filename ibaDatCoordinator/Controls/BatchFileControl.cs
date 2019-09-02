@@ -128,7 +128,10 @@ namespace iba.Controls
                 m_textEditor.SetHighlighting("VBNET");
                 m_textEditor.Invalidate();
             }
-            m_bChanged = false;
+
+			m_nudTime.Value = (int)m_data.TimeOut.TotalMinutes;
+
+			m_bChanged = false;
             m_saveButton.Enabled = false;
 
             m_rbClientSide.Checked = m_data.TestOnClientSide;
@@ -149,7 +152,16 @@ namespace iba.Controls
             m_data.TestDatFile = m_datFileTextBox.Text;
             m_data.WhatFile = m_rbDatFile.Checked ? BatchFileData.WhatFileEnum.DATFILE : BatchFileData.WhatFileEnum.PREVOUTPUT;
             m_data.TestOnClientSide = m_rbClientSide.Checked;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+			try
+			{
+				m_data.TimeOut = TimeSpan.FromMinutes((int)m_nudTime.Value);
+			}
+			catch
+			{
+				m_data.TimeOut = TimeSpan.FromMinutes(15);
+			}
+
+			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
 
