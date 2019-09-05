@@ -243,7 +243,10 @@ namespace iba.Controls
             }
         }
 
-        public void LeaveCleanup() {}
+        public void LeaveCleanup()
+        {
+            m_hdReader.Disconnect();
+        }
 
         private void m_cbRetry_CheckedChanged(object sender, EventArgs e)
         {

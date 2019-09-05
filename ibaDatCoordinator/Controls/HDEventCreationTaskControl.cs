@@ -178,6 +178,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
+            m_ctrlServer.Reader.Disconnect();
             m_pulseEditor.ResetChannelTree();
             m_channelEditor.ResetChannelTree();
             m_textEditor.ResetChannelTree();
