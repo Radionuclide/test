@@ -1631,4 +1631,13 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="HdqFileFilter" xml:space="preserve">
     <value>iba HDQ files (*.hdq)|*.hdq</value>
   </data>
+  <data name="HDEventTask_ToolTip_OpenPDO" xml:space="preserve">
+    <value>Open the PDO file with ibaAnalyzer</value>
+  </data>
+  <data name="HDEventTask_ToolTip_Test" xml:space="preserve">
+    <value>Test the event generation (this requires a DAT file)</value>
+  </data>
+  <data name="HDEventTask_ToolTip_UploadPDO" xml:space="preserve">
+    <value>Upload a PDO file to the server</value>
+  </data>
 </root>

@@ -15,6 +15,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HDEventCreationTaskControl));
             this.gbEvent = new iba.Utility.CollapsibleGroupBox();
             this.m_ctrlEvent = new iba.HD.Client.ControlEvent();
@@ -46,6 +47,7 @@
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbEvent.SuspendLayout();
             this.gbStoreSelection.SuspendLayout();
             this.gbTrigger.SuspendLayout();
@@ -378,5 +380,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn m_colPulse;
         private System.Windows.Forms.Button m_btnUploadPDO;
         private System.Windows.Forms.Button m_btnTest;
+        private System.Windows.Forms.ToolTip m_toolTip;
     }
 }

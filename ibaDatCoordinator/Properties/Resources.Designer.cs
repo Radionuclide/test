@@ -1300,6 +1300,33 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open the PDO file with ibaAnalyzer.
+        /// </summary>
+        internal static string HDEventTask_ToolTip_OpenPDO {
+            get {
+                return ResourceManager.GetString("HDEventTask_ToolTip_OpenPDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test the event generation (this requires a DAT file).
+        /// </summary>
+        internal static string HDEventTask_ToolTip_Test {
+            get {
+                return ResourceManager.GetString("HDEventTask_ToolTip_Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload a PDO file to the server.
+        /// </summary>
+        internal static string HDEventTask_ToolTip_UploadPDO {
+            get {
+                return ResourceManager.GetString("HDEventTask_ToolTip_UploadPDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generate ibaHD event.
         /// </summary>
         internal static string HDEventTaskTitle {

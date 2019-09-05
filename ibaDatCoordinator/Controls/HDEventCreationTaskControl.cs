@@ -72,6 +72,10 @@ namespace iba.Controls
 
             m_ctrlEvent.ChannelEditor = m_channelEditor;
             m_ctrlEvent.TextChannelEditor = m_textEditor;
+
+            m_toolTip.SetToolTip(m_btnOpenPDO, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
+            m_toolTip.SetToolTip(m_btnUploadPDO, Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_btnTest, Properties.Resources.HDEventTask_ToolTip_Test);
         }
 
         #region Dispose
@@ -134,7 +138,7 @@ namespace iba.Controls
                 m_data.EventSettings.Username, m_data.EventSettings.Password, m_data.EventSettings.StoreName);
 
             m_pdoFilePath = m_data.AnalysisFile;
-            m_tbPDO.Text = Path.GetFileName(m_data.AnalysisFile);
+            m_tbPDO.Text = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? m_data.AnalysisFile : Path.GetFileName(m_data.AnalysisFile);
 
             m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
 
@@ -147,7 +151,7 @@ namespace iba.Controls
             else
             {
                 m_datFilePath = m_data.DatFile;
-                m_tbDAT.Text = Path.GetFileName(m_datFilePath);
+                m_tbDAT.Text = m_datFilePath;
                 m_tbPwdDAT.Text = "";
             }
 
@@ -248,9 +252,12 @@ namespace iba.Controls
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                string dir = string.IsNullOrEmpty(m_datFilePath) ? m_datFilePath : Path.GetFullPath(m_datFilePath);
+                string dir = string.IsNullOrEmpty(m_datFilePath) ? m_datFilePath : Path.GetDirectoryName(m_datFilePath);
                 if (!string.IsNullOrEmpty(dir))
                     dlg.InitialDirectory = dir;
+
+                if (File.Exists(m_datFilePath))
+                    dlg.FileName = Path.GetFileName(m_datFilePath);
 
                 dlg.Filter = Properties.Resources.DatFileFilter;
 
@@ -260,7 +267,7 @@ namespace iba.Controls
                 m_datFilePath = dlg.FileName;
             }
 
-            m_tbDAT.Text = Path.GetFileName(m_datFilePath);
+            m_tbDAT.Text = m_datFilePath;
             UpdateSources();
         }
 
@@ -372,6 +379,7 @@ namespace iba.Controls
 
         private void m_btnBrowsePDO_Click(object sender, EventArgs e)
         {
+            bool bLocal = false;
             DialogResult result = DialogResult.Abort;
             string path = m_pdoFilePath;
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE && !Program.ServiceIsLocal)
@@ -393,15 +401,20 @@ namespace iba.Controls
             }
             else
             {
+                bLocal = true;
                 using (var dlg = new OpenFileDialog())
                 {
                     dlg.CheckFileExists = true;
                     dlg.FileName = "";
                     dlg.Filter = Properties.Resources.PdoFileFilter;
                     if (File.Exists(path))
-                        dlg.FileName = path;
-                    else if (Directory.Exists(path))
-                        dlg.InitialDirectory = path;
+                        dlg.FileName = Path.GetFileName(path);
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        string dir = Path.GetDirectoryName(path);
+                        if (Directory.Exists(dir))
+                            dlg.InitialDirectory = dir;
+                    }
                     result = dlg.ShowDialog(this);
                     path = dlg.FileName;
                 }
@@ -409,7 +422,7 @@ namespace iba.Controls
             if (result == DialogResult.OK)
             {
                 m_pdoFilePath = path;
-                m_tbPDO.Text = Path.GetFileName(path);
+                m_tbPDO.Text = bLocal ? path : Path.GetFileName(path);
                 UpdateSources();
             }
         }
