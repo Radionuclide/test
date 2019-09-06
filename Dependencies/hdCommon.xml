@@ -1142,7 +1142,7 @@
             <param name="texts">text values</param>
             <param name="blobs">blob values</param>
             <param name="stampUtc">time stamp</param>
-            <param name="stampUtc">duration in ticks</param>
+            <param name="duration">duration in ticks</param>
             <param name="inSlope">in slope active</param>
             <param name="outSlope">out slope active</param>
             <param name="iConfig">index of event in configuration</param>
