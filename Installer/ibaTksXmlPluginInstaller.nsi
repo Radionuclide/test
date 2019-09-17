@@ -6,6 +6,9 @@
 !define PRODUCT_VERSION "2.2.0"
 !define PRODUCT_FILE_VERSION "2.2.0.0"
 
+!define DATCO_MIN 2020000
+!define DATCO_MIN_STR "2.2.0"
+
 !include "PluginInstaller.nsh"
 
 Function CopyFiles
