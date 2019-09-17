@@ -1,9 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
 namespace XmlExtract
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     internal class Info
     {
         public string TKSIdent { get; set; }

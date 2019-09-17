@@ -1,8 +1,8 @@
-﻿namespace XmlExtract
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace XmlExtract
+{
 
     static class Enum<T> where T : struct, IConvertible
     {

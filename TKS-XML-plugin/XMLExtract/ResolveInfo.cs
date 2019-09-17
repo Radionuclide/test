@@ -1,15 +1,14 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Globalization;
+
+using iba.TKS_XML_Plugin.Properties;
+using iba.ibaFilesLiteDotNet;
+
 
 namespace XmlExtract
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Globalization;
-
-    using iba.TKS_XML_Plugin.Properties;
-    using iba.ibaFilesLiteDotNet;
-
 
     internal class ResolveInfo
     {

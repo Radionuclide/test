@@ -1,9 +1,8 @@
-﻿namespace XmlExtract
+﻿using System;
+using System.Collections.Generic;
+
+namespace XmlExtract
 {
-    using System;
-    using System.Collections.Generic;
-
-
     static class EnumWithXmlAttribute<T> where T : struct, IConvertible
     {
         private static readonly Dictionary<string, T> SensitiveXmlNames = new Dictionary<string, T>();

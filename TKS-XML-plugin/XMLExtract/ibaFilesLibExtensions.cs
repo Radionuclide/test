@@ -1,10 +1,8 @@
-﻿namespace XmlExtract
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using iba.ibaFilesLiteDotNet;
+﻿using System;
+using iba.ibaFilesLiteDotNet;
 
+namespace XmlExtract
+{
 
     internal static class ibaFilesLibExtensions
     {

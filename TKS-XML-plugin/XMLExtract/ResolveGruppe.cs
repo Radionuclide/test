@@ -1,13 +1,11 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace XmlExtract
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Diagnostics;
-    using System.Text.RegularExpressions;
-
     internal class ResolveGruppe
     {
         //private static List<string> _suffixList = new List<string>() { "__IR__S", "__GR__S" };
