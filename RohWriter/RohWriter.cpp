@@ -10,20 +10,21 @@
 #include "windows.h"
 
 using namespace System;
-using namespace ibaFilesLiteLib;
+using namespace iba::ibaFilesLiteDotNet;
 using namespace msclr::interop;
 
-namespace iba {
+namespace iba
+{
 	int RohWriter::Write(RohWriterInput^ input, String^ datname, String^ Rohfile)
 	{
 		errorDataLineInput = nullptr;
 		errorChannelLineInput = nullptr;
 		errorMessage = nullptr;
-		IbaFile^ ibaFile;
+		IbaFileReader^ ibaFile;
 		//second, initialize ibaFiles
 		try
 		{
-			ibaFile = gcnew IbaFileClass();
+			ibaFile = gcnew IbaFileReader();
 		}
 		catch (Exception^ ex)
 		{
@@ -63,11 +64,11 @@ namespace iba {
 			//get infofields, get vectors
 			try
 			{
-				for (int i = 0; true; i++)
+				for each (auto kvp in ibaFile->InfoFields)
 				{
-					String^ name;
-					String^ value;
-					ibaFile->QueryInfoByIndex(i,name, value);
+					String^ name = kvp.Key;
+					String^ value = kvp.Value;
+
 					if (String::IsNullOrEmpty(name) && String::IsNullOrEmpty(value)) break; //no more infofields
 					if (name->StartsWith("Vector_name_",StringComparison::InvariantCultureIgnoreCase))
 					{
@@ -91,11 +92,11 @@ namespace iba {
 							it = requiredInfoFields.find(shortername);
 							if (it == requiredInfoFields.end()) continue;
 							String^ longername = shortername + "_i1";
-							if (ibaFile->IsInfoPresent(longername) != 0)
+							if (ibaFile->InfoFields->ContainsKey(longername))
 							{
 								unsigned int low = 0, high = 0;
 								UInt32::TryParse(value,low);
-								UInt32::TryParse(ibaFile->QueryInfoByName(longername),high);
+								UInt32::TryParse(ibaFile->InfoFields[longername],high);
 								requiredInfoFields.erase(it);
 								value = ((int)(low + (high << 16))).ToString(System::Globalization::CultureInfo::InvariantCulture);
 								infoFieldsCopy.insert(cliext::pair<String^,String^>(shortername,value));
@@ -128,30 +129,28 @@ namespace iba {
 
 			try //iterate over channels
 			{
-				IbaEnumChannelReader^ enumerator = dynamic_cast<IbaEnumChannelReader^>(ibaFile->EnumChannels());
-				while (!enumerator->IsAtEnd())
+				for each(auto channel in ibaFile->Channels)
 				{
-					IbaChannelReader^ reader = dynamic_cast<IbaChannelReader^>(enumerator->Next());
-					String^ name = reader->QueryInfoByName("name");
+					String^ name = channel->Name;
 					if (!String::IsNullOrEmpty(name))
 					{
 						cliext::set<String^>::iterator it = requiredChannels.find(name);
 						if (it != requiredChannels.end())
 						{
 							requiredChannels.erase(it);
-							channelsCopy.insert(cliext::pair<String^, IbaChannelReader^>(name,reader));
+							channelsCopy.insert(cliext::pair<String^,IbaChannelReader^>(name,channel));
 						}
 
 						it = requiredInfoFields.find(name);
 						if (it != requiredInfoFields.end())
 						{
 							requiredInfoFields.erase(it);
-							channelsForInfo.insert(cliext::pair<String^, IbaChannelReader^>(name,reader));
+							channelsForInfo.insert(cliext::pair<String^, IbaChannelReader^>(name, channel));
 						}
 					}
-					String^ vecInfo = reader->QueryInfoByName("vector");
-					if (!String::IsNullOrEmpty(vecInfo))
+					if (ibaFile->InfoFields->ContainsKey("vector"))
 					{
+						String^ vecInfo = ibaFile->InfoFields["vector"];
 						int vectorNr,rowNr;
 						int pos = vecInfo->IndexOf(".");
 						if (pos > 0 && Int32::TryParse(vecInfo->Substring(0,pos),vectorNr) && Int32::TryParse(vecInfo->Substring(pos+1),rowNr))
@@ -160,7 +159,7 @@ namespace iba {
 							{
 								vectorChannelsCopy[vectorNr] = gcnew cliext::map<int,IbaChannelReader^>();
 							}
-							vectorChannelsCopy[vectorNr][rowNr] = reader;
+							vectorChannelsCopy[vectorNr][rowNr] = channel;
 						}
 					}
 				}
@@ -171,7 +170,7 @@ namespace iba {
 				return 5;
 			}	
 
-			for (cliext::map<int,cliext::map<int,IbaChannelReader^>^ >::iterator it = vectorChannelsCopy.begin(); it != vectorChannelsCopy.end(); it++)
+			for (auto it = vectorChannelsCopy.begin(); it != vectorChannelsCopy.end(); it++)
 			{
 				if (it->second->size() == it->second->rbegin()->first+1) requiredVectors.erase(it->first);
 			}
@@ -231,7 +230,7 @@ namespace iba {
 			{
 				char buf[256];
 				WriteString("Ver 1.00 \n");
-				const char* StartTimeStr = context.marshal_as<const char*>(ibaFile->QueryInfoByName("starttime"));
+				const char* StartTimeStr = context.marshal_as<const char*>(ibaFile->InfoFields["starttime"]);
 				strncpy(buf,StartTimeStr,17); //only up to minutes and extra ":"
 				buf[17] = '\n';
 				buf[18]= 0;
@@ -277,10 +276,7 @@ namespace iba {
 						{
 							float timebase, offset;
 							Object^ obj;
-							if (channelsForInfo[line->ibaName]->IsDefaultTimebased())
-								channelsForInfo[line->ibaName]->QueryTimebasedData(timebase,offset,obj);
-							else
-								channelsForInfo[line->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							channelsForInfo[line->ibaName]->QueryData(timebase,offset,obj);
 							if (obj == nullptr) throw gcnew Exception("failed to query");
 							WriteMultiDataLine(line,dynamic_cast<array<float>^>(obj),context);
 						}
@@ -324,10 +320,7 @@ namespace iba {
 						{
 							float timebase, offset;
 							Object^ obj;
-							if (channelsForInfo[line->ibaName]->IsDefaultTimebased())
-								channelsForInfo[line->ibaName]->QueryTimebasedData(timebase,offset,obj);
-							else
-								channelsForInfo[line->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							channelsForInfo[line->ibaName]->QueryData(timebase,offset,obj);
 							if (obj == nullptr) throw gcnew Exception("failed to query");
 							WriteMultiDataLine(line,dynamic_cast<array<float>^>(obj),context);
 						}
@@ -363,10 +356,7 @@ namespace iba {
 						{
 							float timebase, offset;
 							Object^ obj;
-							if (channelsForInfo[line->ibaName]->IsDefaultTimebased())
-								channelsForInfo[line->ibaName]->QueryTimebasedData(timebase,offset,obj);
-							else
-								channelsForInfo[line->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							channelsForInfo[line->ibaName]->QueryData(timebase,offset,obj);
 							if (obj == nullptr) throw gcnew Exception("failed to query");
 							WriteMultiDataLine(line,dynamic_cast<array<float>^>(obj),context);
 						}
@@ -440,10 +430,7 @@ namespace iba {
 						array<array<float>^>^ twoDArray = gcnew array<array<float>^>(TheVector->size());
 						try
 						{
-							if (TheVector[0]->IsDefaultTimebased())
-								TheVector[0]->QueryTimebasedData(timebase,offset,obj);
-							else
-								TheVector[0]->QueryLengthbasedData(timebase,offset,obj);
+							TheVector[0]->QueryData(timebase,offset,obj);
 							if (obj == nullptr) throw gcnew Exception("failed to query");
 						}
 						catch (Exception^) //not succesfull in obtaining data
@@ -463,16 +450,13 @@ namespace iba {
 						size = floatArray->Length;
 						if (size > (int) maxSamples) maxSamples = size;
 						twoDArray[0] = floatArray;
-						cliext::map<int,IbaChannelReader^>::iterator it = TheVector->begin();
+						cliext::map<int, IbaChannelReader^>::iterator it = TheVector->begin();
 						it++;
 						for (int dim=1; it != TheVector->end(); it++,dim++)
 						{
 							try
 							{
-								if (it->second->IsDefaultTimebased())
-									it->second->QueryTimebasedData(timebase,offset,obj);
-								else
-									it->second->QueryLengthbasedData(timebase,offset,obj);
+								it->second->QueryData(timebase,offset,obj);
 								if (obj == nullptr) throw gcnew Exception("failed to query");
 							}
 							catch (Exception^)
@@ -497,10 +481,7 @@ namespace iba {
 					{
 						try
 						{
-							if (channelsCopy[channel->ibaName]->IsDefaultTimebased())
-								channelsCopy[channel->ibaName]->QueryTimebasedData(timebase,offset,obj);
-							else
-								channelsCopy[channel->ibaName]->QueryLengthbasedData(timebase,offset,obj);
+							channelsCopy[channel->ibaName]->QueryData(timebase,offset,obj);
 							if (obj == nullptr) throw gcnew Exception("failed to query");
 						}
 						catch (Exception^)

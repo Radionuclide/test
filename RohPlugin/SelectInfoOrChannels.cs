@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Linq;
-using ibaFilesLiteLib;
+using iba.ibaFilesLiteDotNet;
 
 namespace Alunorf_roh_plugin
 {
@@ -43,18 +43,17 @@ namespace Alunorf_roh_plugin
             base.OnLoad(e);
             try
             {
-                IbaFileReader ibaFile = new IbaFileClass();
+                IbaFileReader ibaFile = new IbaFileReader();
                 ibaFile.Open(m_datFile);
                 SortedDictionary<int, ExtraData> vectorExtraDatas = new SortedDictionary<int, ExtraData>();
 
                 if (m_selectChannels)
                 {
                     m_cbMultiValuedFields.Visible = false;
-                    for (int i = 0; true; i++) //get the vectors
+                    foreach (var kvp in ibaFile.InfoFields) //get the vectors
                     {
-                        String name;
-                        String value;
-                        ibaFile.QueryInfoByIndex(i, out name, out value);
+                        String name = kvp.Key;
+                        String value = kvp.Value;
                         if (String.IsNullOrEmpty(name) && String.IsNullOrEmpty(value)) break; //no more infofields
                         if (name.StartsWith("Vector_name_", StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -76,14 +75,12 @@ namespace Alunorf_roh_plugin
                         }
                     }
                     //iterate over channels
-                    IbaEnumChannelReader enumerator = ibaFile.EnumChannels() as IbaEnumChannelReader;
-			        while (enumerator.IsAtEnd()==0)
+			        foreach (var reader in ibaFile.Channels)
 			        {
-				        IbaChannelReader reader = enumerator.Next() as IbaChannelReader;
-                        string name = reader.QueryInfoByName("name");
-                        string vector = reader.QueryInfoByName("vector");
-                        if (!String.IsNullOrEmpty(vector))
-                        {
+                        string name = reader.Name;
+						if (reader.InfoFields.ContainsKey("vector"))
+						{
+							string vector = reader.InfoFields["vector"];
 					        int pos = vector.IndexOf(".");
                             int vecIndex;
                             if (pos > 0 && Int32.TryParse(vector.Substring(0, pos), out vecIndex))
@@ -92,10 +89,10 @@ namespace Alunorf_roh_plugin
                                 {
                                     ExtraData ed = vectorExtraDatas[vecIndex];
                                     ed.dt = "F";
-                                    string description = reader.QueryInfoByName("$PDA_comment1");
+									string description = reader.Comment1;
                                     if (!string.IsNullOrEmpty(description))
                                         ed.description = description.Length > 30 ? description.Substring(0, 30) : description;
-                                    string kurz = reader.QueryInfoByName("$PDA_comment2");
+									string kurz = reader.Comment2;
                                     if (!string.IsNullOrEmpty(kurz))
                                     {
                                         ed.kurz = kurz.Length > 8 ? kurz.Substring(0, 8) : kurz;
@@ -105,7 +102,7 @@ namespace Alunorf_roh_plugin
                                 }
                             }
                         }
-                        else if (reader.QueryInfoByName("hidden")!="1")
+                        else if (!reader.InfoFields.ContainsKey("hidden") || reader.InfoFields["hidden"]!="1")
                         {
                             if (String.IsNullOrEmpty(name)) continue;
                             if (AdditionalInfos.ContainsKey(name))
@@ -115,15 +112,15 @@ namespace Alunorf_roh_plugin
                                 continue;
                             }
                             ExtraData ed = new ExtraData();
-                            ed.unit = reader.QueryInfoByName("unit");
+                            ed.unit = reader.Unit;
                             ed.dt = "F";
-                            string description = reader.QueryInfoByName("$PDA_comment1");
+							string description = reader.Comment1;
                             if (!string.IsNullOrEmpty(description))
                                 ed.description = description.Length > 30 ? description.Substring(0, 30) : description;
                             else if (String.IsNullOrEmpty(name)) continue;
                             else
                                 ed.description = name.Length > 30 ? name.Substring(0, 30) : name;
-                            string kurz = reader.QueryInfoByName("$PDA_comment2");
+							string kurz = reader.Comment2;
                             if (!string.IsNullOrEmpty(kurz))
                             {
                                 ed.kurz = kurz.Length > 8 ? kurz.Substring(0, 8) : kurz;
@@ -140,20 +137,18 @@ namespace Alunorf_roh_plugin
                 else
                 {
                     m_cbMultiValuedFields.Visible = true;
-                    for (int i = 0; true; i++)
+                    foreach(var kvp in ibaFile.InfoFields)
 			        {
-				        String name;
-				        String value;
-				        ibaFile.QueryInfoByIndex(i, out name, out value);
-				        if (String.IsNullOrEmpty(name) && String.IsNullOrEmpty(value)) break; //no more infofields
+				        String name = kvp.Key;
+				        String value = kvp.Value;
                         if (name.EndsWith("_i0")) //parse ints that are written as two int16s
                         {
-                            if (ibaFile.IsInfoPresent(name.Substring(0, name.Length - 1)+"1") != 0)
+                            if (ibaFile.InfoFields.ContainsKey(name.Substring(0, name.Length - 1)+"1"))
                             {
                                 name = name.Substring(0, name.Length - 3);
                             }
                         }
-                        else if (name.EndsWith("_i1") && ibaFile.IsInfoPresent(name.Substring(0, name.Length - 1)+"0") != 0)
+                        else if (name.EndsWith("_i1") && ibaFile.InfoFields.ContainsKey(name.Substring(0, name.Length - 1)+"0"))
                             continue;
                         if (AdditionalInfos.ContainsKey(name))
                         {
@@ -180,15 +175,15 @@ namespace Alunorf_roh_plugin
 			        }
 
                      //iterate over channels
-                    IbaEnumChannelReader enumerator = ibaFile.EnumChannels() as IbaEnumChannelReader;
-			        while (enumerator.IsAtEnd()==0)
+			        foreach (var reader in ibaFile.Channels)
 			        {
-				        IbaChannelReader reader = enumerator.Next() as IbaChannelReader;
-                        string name = reader.QueryInfoByName("name");
-                        string vector = reader.QueryInfoByName("vector");
+                        string name = reader.Name;
+						if (!reader.InfoFields.ContainsKey("vector"))
+							continue;
+                        string vector = reader.InfoFields["vector"];
                         if (!String.IsNullOrEmpty(vector)) continue;
-                        else if (reader.QueryInfoByName("hidden")!="1")
-                        {
+						else if (!reader.InfoFields.ContainsKey("hidden") || reader.InfoFields["hidden"] != "1")
+						{
                             if (String.IsNullOrEmpty(name)) continue;
                             if (AdditionalInfos.ContainsKey(name)) //no warning this time just ignore
                             {
@@ -197,15 +192,15 @@ namespace Alunorf_roh_plugin
                                 continue;
                             }
                             ExtraData ed = new ExtraData();
-                            ed.unit = reader.QueryInfoByName("unit");
+							ed.unit = reader.Unit;
                             ed.dt = "F";
-                            string description = reader.QueryInfoByName("$PDA_comment1");
+							string description = reader.Comment1;
                             if (!string.IsNullOrEmpty(description))
                                 ed.description = description.Length > 30 ? description.Substring(0, 30) : description;
                             else if (String.IsNullOrEmpty(name)) continue;
                             else
                                 ed.description = name.Length > 30 ? name.Substring(0, 30) : name;
-                            string kurz = reader.QueryInfoByName("$PDA_comment2");
+                            string kurz = reader.Comment2;
                             if (!string.IsNullOrEmpty(kurz))
                             {
                                 ed.kurz = kurz.Length > 8 ? kurz.Substring(0, 8) : kurz;

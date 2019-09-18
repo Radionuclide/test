@@ -131,4 +131,4 @@ namespace iba {
 			RohWriterChannelLineInput^ errorChannelLineInput;
 			String^ errorMessage;
 	};
-};
+}
