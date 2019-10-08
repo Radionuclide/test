@@ -81,7 +81,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Job.
+        ///   Looks up a localized string similar to Add .dat-File Triggered Job.
         /// </summary>
         internal static string addConfigurationText {
             get {
@@ -606,7 +606,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .dat File Triggered Job.
+        ///   Looks up a localized string similar to .dat-File Triggered Jobs.
         /// </summary>
         internal static string DatTriggeredJobsNodeParent {
             get {

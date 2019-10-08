@@ -186,7 +186,10 @@ namespace iba.Processing
             }
         }
 
-        private void Run()
+
+
+
+		private void Run()
         {
             Byte[] buffer = new Byte[65536];
             bool bConnected = false;

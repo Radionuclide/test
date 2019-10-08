@@ -148,9 +148,9 @@ namespace iba
 							channelsForInfo.insert(cliext::pair<String^, IbaChannelReader^>(name, channel));
 						}
 					}
-					if (ibaFile->InfoFields->ContainsKey("vector"))
+					if (channel->InfoFields->ContainsKey("vector"))
 					{
-						String^ vecInfo = ibaFile->InfoFields["vector"];
+						String^ vecInfo = channel->InfoFields["vector"];
 						int vectorNr,rowNr;
 						int pos = vecInfo->IndexOf(".");
 						if (pos > 0 && Int32::TryParse(vecInfo->Substring(0,pos),vectorNr) && Int32::TryParse(vecInfo->Substring(pos+1),rowNr))

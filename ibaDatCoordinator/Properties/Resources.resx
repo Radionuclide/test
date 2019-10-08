@@ -257,7 +257,7 @@
     <value>no ibaAnalyzer registered</value>
   </data>
   <data name="addConfigurationText" xml:space="preserve">
-    <value>Add Job</value>
+    <value>Add .dat-File Triggered Job</value>
   </data>
   <data name="connectionLost" xml:space="preserve">
     <value>The connection to the ibaDatCoordinator service was lost, ibaDatCoordinator will now continue in offline mode. We recommend you save any changes and restart the service and ibaDatCoordinator.</value>
@@ -1103,7 +1103,7 @@
     <value>Scheduled Jobs</value>
   </data>
   <data name="DatTriggeredJobsNodeParent" xml:space="preserve">
-    <value>.dat File Triggered Job</value>
+    <value>.dat-File Triggered Jobs</value>
   </data>
   <data name="Indefinite" xml:space="preserve">
     <value>Indefinite</value>
