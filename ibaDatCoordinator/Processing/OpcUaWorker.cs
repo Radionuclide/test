@@ -387,50 +387,51 @@ namespace iba.Processing
         public List<OpcUaData.CertificateTag> HandleCertificate(string command, OpcUaData.CertificateTag certTag = null)
         {
             AssertInitialized();
+            
+            // indicate that certificates were changed somehow
+            _opcUaData.CertificateChangesCounter++; 
+
             switch (command)
             {
                 case "sync":
                     // for sync command the arg is ignored
                     Debug.Assert(certTag == null);
+
+                    // undo increment; sync is not a change actually
+                    _opcUaData.CertificateChangesCounter--;
+
                     // no additional action is needed;
                     // sync will be performed below
                     break;
                 case "generate":
                     // arg should be empty
                     Debug.Assert(certTag?.Certificate == null);
-                    _opcUaData.CertificateChangesCounter++; // mark that cert cfg is changed
                     GenerateNewCertificate();
                     break;
 
                 case "add":
-                    _opcUaData.CertificateChangesCounter++; // mark that cert cfg is changed
                     AddExistingCertificate(certTag?.Certificate);
                     break;
 
                 case "remove":
-                    _opcUaData.CertificateChangesCounter++; // mark that cert cfg is changed
                     RemoveCertificateFromAllStores(certTag?.Thumbprint);
                     break;
 
                 case "trust":
-                    _opcUaData.CertificateChangesCounter++; // mark that cert cfg is changed
                     SetCertificateTrust(certTag?.Thumbprint, true);
                     break;
 
                 case "reject":
-                    _opcUaData.CertificateChangesCounter++; // mark that cert cfg is changed
                     SetCertificateTrust(certTag?.Thumbprint, false);
                     break;
 
                 case "asUser":
-                    _opcUaData.CertificateChangesCounter++; // mark that cert cfg is changed
                     var localCertTag = _opcUaData.GetCertificate(certTag?.Thumbprint);
                     if (localCertTag != null)
                         localCertTag.IsUsedForAuthentication = !localCertTag.IsUsedForAuthentication;
                     break;
 
                 case "asServer":
-                    _opcUaData.CertificateChangesCounter++; // mark that cert cfg is changed
                     SetServerCertificate(certTag?.Thumbprint);
                     break;
 

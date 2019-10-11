@@ -205,7 +205,7 @@ namespace iba.Processing.IbaOpcUa
 
         #region Diagnostics
         
-        // todo. kls. low - remove or show current user (and identity type) in diagnostics 
+        // todo. kls. low priority - remove this or show current user (and identity type) in diagnostics 
         //public IbaOpcUaUserAccount KlsGetUserForSession(NodeId sessionid)
         //{
         //    IList<Session> sessions = ServerInternal.SessionManager.GetSessions();

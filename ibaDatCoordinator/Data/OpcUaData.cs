@@ -224,33 +224,23 @@ namespace iba.Data
                 // ReSharper disable ArrangeThisQualifier
                 return
                     this.Thumbprint == other.Thumbprint &&
-                    this.Name == other.Name &&
-                    this.Issuer == other.Issuer &&
-                    this.ExpirationDate == other.ExpirationDate &&
-                    this.IsTrusted == other.IsTrusted &&
+
+                    /* these items are not needed to be compared
+                       because thumbprint includes them indirectly:
+                    // this.Name == other.Name && 
+                    // this.Issuer == other.Issuer && // not needed; thumbprint cmp is sufficient
+                    // this.ExpirationDate == other.ExpirationDate && // not needed; thumbprint cmp is sufficient
+                    */
+
+                    /* our app-specific flags (that not contained to Thumbprint) should also be compared: */
                     this.HasPrivateKey == other.HasPrivateKey &&
+                    this.IsTrusted == other.IsTrusted && 
                     this.IsUsedForServer == other.IsUsedForServer &&
                     this.IsUsedForAuthentication == other.IsUsedForAuthentication;
                 // ReSharper restore ArrangeThisQualifier
             }
 
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    // ReSharper disable NonReadonlyMemberInGetHashCode
-                    var hashCode = (Thumbprint != null ? Thumbprint.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (Issuer != null ? Issuer.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (ExpirationDate != null ? ExpirationDate.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ IsTrusted.GetHashCode();
-                    hashCode = (hashCode * 397) ^ HasPrivateKey.GetHashCode();
-                    hashCode = (hashCode * 397) ^ IsUsedForServer.GetHashCode();
-                    hashCode = (hashCode * 397) ^ IsUsedForAuthentication.GetHashCode();
-                    return hashCode;
-                    // ReSharper restore NonReadonlyMemberInGetHashCode
-                }
-            }
+            public override int GetHashCode() => Thumbprint?.GetHashCode() ?? 0;
         }
 
         public List<CertificateTag> Certificates = new List<CertificateTag>();
@@ -258,8 +248,10 @@ namespace iba.Data
         /// <summary>
         /// Indicates how many changes were made in certificate configuration.
         /// This is used to tell whether we should Restart server or not.
+        /// (Certificates are not fully stored in OpcUaData (only some attributes are stored);
+        /// therefore they need a special handling).
         /// </summary>
-        public int CertificateChangesCounter; // todo. kls. maybe use more straightforward approach?
+        public int CertificateChangesCounter;
 
         public CertificateTag GetCertificate(string thumbprint)
         {
