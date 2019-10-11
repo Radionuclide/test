@@ -319,6 +319,7 @@ namespace iba.Controls
 
         private void RefreshCertificatesTable(List<OpcUaData.CertificateTag> certs)
         {
+            _lastCertTableUpdateStamp = DateTime.Now;
             if (certs == null)
             {
                 dgvCertificates.Rows.Clear();
@@ -830,18 +831,33 @@ namespace iba.Controls
             }
         }
 
-
+        private DateTime _lastCertTableUpdateStamp = DateTime.MinValue;
         private void timerRefreshStatus_Tick(object sender, EventArgs e)
         {
             bool isConnectedOrLocal = IsConnectedOrLocal;
 
             buttonConfigurationReset.Enabled = buttonConfigurationApply.Enabled =
-                gbObjects.Enabled = gbDiagnostics.Enabled = isConnectedOrLocal;
+                gbObjects.Enabled = gbDiagnostics.Enabled = gbCertificates.Enabled = isConnectedOrLocal;
 
             if (isConnectedOrLocal)
             {
                 RefreshBriefStatus();
                 RefreshClientsTable();
+
+                // Re-read certificates.
+                // if a new client tries to connect to our server
+                // OPC UA SDK automatically adds its certificate to "rejected" store.
+                // It is known on the level of the Server,
+                // but in is not known on the level of the control.
+                // Control should be informed somehow to reflect changes in the table here.
+                // I use a timer here, because it is much simpler and more reliable than informing client via event.
+                // This Timer is active ONLY if the OPC UA pane is visible, so it doesn't have any computational impact most of time.
+                if (DateTime.Now - _lastCertTableUpdateStamp > TimeSpan.FromSeconds(3) /*not more often than once per 3 sec*/)
+                {
+                    var certs = TaskManager.Manager.OpcUaHandleCertificate("sync");
+                    RefreshCertificatesTable(certs);
+                }
+
             }
             else
             {
