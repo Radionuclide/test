@@ -858,6 +858,8 @@ namespace iba.Controls
                     RefreshCertificatesTable(certs);
                 }
 
+                // update currently selected node information in object tree
+                UpdateObjectTreeNodeDescription();
             }
             else
             {
@@ -950,6 +952,31 @@ namespace iba.Controls
         /// <summary> The most recent node that was selected by the user </summary>
         private string _recentId;
 
+        private void UpdateObjectTreeNodeDescription(string id = null)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                id = _recentId;
+
+            if (string.IsNullOrWhiteSpace(id))
+                return;
+
+            // try to refresh node's tag
+            try
+            {
+                ExtMonData.GuiTreeNodeTag tag = TaskManager.Manager.OpcUaGetTreeNodeTag(id);
+                tbObjValue.Text = tag.Value;
+                tbObjType.Text = tag.Type;
+                tbObjNodeId.Text = tag.OpcUaNodeId;
+                tbObjDescription.Text = tag.Description;
+            }
+            catch
+            {
+                // reset value that we know that something is wrong
+                tbObjValue.Text = "";
+                tbObjType.Text = "";
+            }
+
+        }
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (!IsConnectedOrLocal)
@@ -976,22 +1003,7 @@ namespace iba.Controls
                     return;
                 }
 
-                // try to refresh node's tag
-                try
-                {
-                    tag = TaskManager.Manager.OpcUaGetTreeNodeTag(tag.OpcUaNodeId);
-                }
-                catch
-                {
-                    // reset value that we know that something is wrong
-                    tag.Value = String.Empty;
-                    tag.Type = String.Empty;
-                }
-
-                tbObjValue.Text = tag.Value;
-                tbObjType.Text = tag.Type;
-                tbObjNodeId.Text = tag.OpcUaNodeId;
-                tbObjDescription.Text = tag.Description;
+                UpdateObjectTreeNodeDescription(tag.OpcUaNodeId);
 
                 // remember recently selected node
                 _recentId = tag.OpcUaNodeId;
@@ -1022,6 +1034,5 @@ namespace iba.Controls
 
 
         #endregion
-
     }
 }
