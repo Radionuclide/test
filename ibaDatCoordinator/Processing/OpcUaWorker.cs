@@ -611,6 +611,9 @@ namespace iba.Processing
             {
                 store.Close();
             }
+
+            // Update Certificate validator; otherwise it still can keep deleted certs in his cache
+            UaApplication.ApplicationConfiguration.CertificateValidator.Update(UaAppConfiguration);
         }
 
         private void SetCertificateTrust(string thumbprint, bool isTrusted)
@@ -643,7 +646,11 @@ namespace iba.Processing
             {
                 store.Add(certificate);
             }
-            catch { /* sometimes happen for some imported certificates */ }
+            catch
+            {
+                // sometimes happen for some imported certificates,
+                // though certificate is actually added normally
+            }
             finally
             {
                 store.Close();
