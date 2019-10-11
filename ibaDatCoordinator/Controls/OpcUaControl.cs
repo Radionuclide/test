@@ -46,9 +46,6 @@ namespace iba.Controls
             gbDiagnostics.Init();
             _ceManager.AddElement(gbDiagnostics);
 
-            // bind password text boxes to their show/hide buttons
-            buttonShowPassword.Tag = tbPassword;
-
             ImageList pdaList = new ImageList
             {
                 ImageSize = new Size(16, 16),
@@ -205,9 +202,11 @@ namespace iba.Controls
             _data.HasSecurityNone = cbSecurityNone.Checked;
             _data.HasSecurityBasic128 = cbSecurity128.Checked;
             _data.HasSecurityBasic256 = cbSecurity256.Checked;
+            _data.HasSecurityBasic256Sha256 = cbSecurity256Sha256.Checked;
 
             _data.SecurityBasic128Mode = (OpcUaData.OpcUaSecurityMode)comboBoxSecurity128.SelectedIndex;
             _data.SecurityBasic256Mode = (OpcUaData.OpcUaSecurityMode)comboBoxSecurity256.SelectedIndex;
+            _data.SecurityBasic256Sha256Mode = (OpcUaData.OpcUaSecurityMode)comboBoxSecurity256Sha256.SelectedIndex;
 
             // endpoints
             _data.Endpoints.Clear();
@@ -242,9 +241,11 @@ namespace iba.Controls
             cbSecurityNone.Checked = _data.HasSecurityNone;
             cbSecurity128.Checked = _data.HasSecurityBasic128;
             cbSecurity256.Checked = _data.HasSecurityBasic256;
+            cbSecurity256Sha256.Checked = _data.HasSecurityBasic256Sha256;
 
             comboBoxSecurity128.SelectedIndex = (int)_data.SecurityBasic128Mode;
             comboBoxSecurity256.SelectedIndex = (int)_data.SecurityBasic256Mode;
+            comboBoxSecurity256Sha256.SelectedIndex = (int)_data.SecurityBasic256Sha256Mode;
 
             // endpoints
             dgvEndpoints.Rows.Clear();
@@ -267,37 +268,6 @@ namespace iba.Controls
             RefreshCertificatesTable(certs);
         }
 
-        /// <summary>
-        /// Shows password in a bound TextBox. 
-        /// Before using, first connect your Button and TextBox like:
-        /// "showHideButton.Tag = TextBoxToBeControlled"
-        /// </summary>
-        private void handler_ShowPassword(object sender, MouseEventArgs e)
-        {
-            TextBox tb = (sender as Button)?.Tag as TextBox;
-            if (tb == null)
-            {
-                return;
-            }
-            tb.PasswordChar = '\0';
-        }
-
-
-        /// <summary>
-        /// Hides password in a bound TextBox. 
-        /// Before using, first connect your Button and TextBox like:
-        /// "showHideButton.Tag = TextBoxToBeControlled"
-        /// </summary>
-        private void handler_HidePassword(object sender, MouseEventArgs e)
-        {
-            TextBox tb = (sender as Button)?.Tag as TextBox;
-            if (tb == null)
-            {
-                return;
-            }
-            tb.PasswordChar = '*';
-        }
-
         private void cbSecurity128_CheckedChanged(object sender, EventArgs e)
         {
             comboBoxSecurity128.Enabled = cbSecurity128.Checked;
@@ -307,11 +277,14 @@ namespace iba.Controls
         {
             comboBoxSecurity256.Enabled = cbSecurity256.Checked;
         }
+        private void cbSecurity256Sha256_CheckedChanged(object sender, EventArgs e)
+        {
+            comboBoxSecurity256Sha256.Enabled = cbSecurity256Sha256.Checked;
+        }
 
         private void cbLogonUserName_CheckedChanged(object sender, EventArgs e)
         {
-            tbUserName.Enabled = tbPassword.Enabled = buttonShowPassword.Enabled =
-                cbLogonUserName.Checked;
+            tbUserName.Enabled = tbPassword.Enabled = cbLogonUserName.Checked;
         }
         #endregion
 
@@ -1034,5 +1007,6 @@ namespace iba.Controls
 
 
         #endregion
+    
     }
 }

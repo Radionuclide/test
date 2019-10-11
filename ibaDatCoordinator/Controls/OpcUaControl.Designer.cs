@@ -84,15 +84,17 @@
             this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
             this.splitContainerSecurity = new System.Windows.Forms.SplitContainer();
             this.gbLogon = new System.Windows.Forms.GroupBox();
+            this.labelPassword = new System.Windows.Forms.Label();
             this.cbLogonAnonymous = new System.Windows.Forms.CheckBox();
             this.cbLogonUserName = new System.Windows.Forms.CheckBox();
             this.cbLogonCertificate = new System.Windows.Forms.CheckBox();
             this.tbUserName = new System.Windows.Forms.TextBox();
             this.tbPassword = new System.Windows.Forms.TextBox();
-            this.buttonShowPassword = new System.Windows.Forms.Button();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
+            this.comboBoxSecurity256Sha256 = new System.Windows.Forms.ComboBox();
             this.comboBoxSecurity256 = new System.Windows.Forms.ComboBox();
             this.comboBoxSecurity128 = new System.Windows.Forms.ComboBox();
+            this.cbSecurity256Sha256 = new System.Windows.Forms.CheckBox();
             this.cbSecurity256 = new System.Windows.Forms.CheckBox();
             this.cbSecurity128 = new System.Windows.Forms.CheckBox();
             this.cbSecurityNone = new System.Windows.Forms.CheckBox();
@@ -151,7 +153,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbCertificates.Controls.Add(this.toolStrip1);
             this.gbCertificates.Controls.Add(this.dgvCertificates);
-            this.gbCertificates.Location = new System.Drawing.Point(15, 350);
+            this.gbCertificates.Location = new System.Drawing.Point(15, 394);
             this.gbCertificates.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbCertificates.Name = "gbCertificates";
             this.gbCertificates.Size = new System.Drawing.Size(690, 176);
@@ -358,7 +360,7 @@
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label1);
             this.gbDiagnostics.Controls.Add(this.label15);
-            this.gbDiagnostics.Location = new System.Drawing.Point(15, 936);
+            this.gbDiagnostics.Location = new System.Drawing.Point(15, 980);
             this.gbDiagnostics.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Padding = new System.Windows.Forms.Padding(15, 3, 15, 3);
@@ -544,7 +546,7 @@
             this.gbObjects.Controls.Add(this.buttonRefreshGuiTree);
             this.gbObjects.Controls.Add(this.buttonRebuildTree);
             this.gbObjects.Controls.Add(this.tvObjects);
-            this.gbObjects.Location = new System.Drawing.Point(15, 532);
+            this.gbObjects.Location = new System.Drawing.Point(15, 576);
             this.gbObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbObjects.Name = "gbObjects";
             this.gbObjects.Size = new System.Drawing.Size(690, 398);
@@ -727,7 +729,7 @@
             this.gbConfiguration.Location = new System.Drawing.Point(15, 3);
             this.gbConfiguration.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbConfiguration.Name = "gbConfiguration";
-            this.gbConfiguration.Size = new System.Drawing.Size(690, 341);
+            this.gbConfiguration.Size = new System.Drawing.Size(690, 385);
             this.gbConfiguration.TabIndex = 2;
             this.gbConfiguration.TabStop = false;
             this.gbConfiguration.Text = "Configuration";
@@ -748,25 +750,34 @@
             // splitContainerSecurity.Panel2
             // 
             this.splitContainerSecurity.Panel2.Controls.Add(this.gbSecurity);
-            this.splitContainerSecurity.Size = new System.Drawing.Size(663, 104);
+            this.splitContainerSecurity.Size = new System.Drawing.Size(663, 130);
             this.splitContainerSecurity.SplitterDistance = 390;
             this.splitContainerSecurity.TabIndex = 2;
             // 
             // gbLogon
             // 
+            this.gbLogon.Controls.Add(this.labelPassword);
             this.gbLogon.Controls.Add(this.cbLogonAnonymous);
             this.gbLogon.Controls.Add(this.cbLogonUserName);
             this.gbLogon.Controls.Add(this.cbLogonCertificate);
             this.gbLogon.Controls.Add(this.tbUserName);
             this.gbLogon.Controls.Add(this.tbPassword);
-            this.gbLogon.Controls.Add(this.buttonShowPassword);
             this.gbLogon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbLogon.Location = new System.Drawing.Point(0, 0);
             this.gbLogon.Name = "gbLogon";
-            this.gbLogon.Size = new System.Drawing.Size(390, 104);
+            this.gbLogon.Size = new System.Drawing.Size(390, 130);
             this.gbLogon.TabIndex = 0;
             this.gbLogon.TabStop = false;
             this.gbLogon.Text = "Logon policies";
+            // 
+            // labelPassword
+            // 
+            this.labelPassword.AutoSize = true;
+            this.labelPassword.Location = new System.Drawing.Point(29, 75);
+            this.labelPassword.Name = "labelPassword";
+            this.labelPassword.Size = new System.Drawing.Size(56, 13);
+            this.labelPassword.TabIndex = 9;
+            this.labelPassword.Text = "Password:";
             // 
             // cbLogonAnonymous
             // 
@@ -783,16 +794,16 @@
             this.cbLogonUserName.AutoSize = true;
             this.cbLogonUserName.Location = new System.Drawing.Point(12, 48);
             this.cbLogonUserName.Name = "cbLogonUserName";
-            this.cbLogonUserName.Size = new System.Drawing.Size(136, 17);
+            this.cbLogonUserName.Size = new System.Drawing.Size(80, 17);
             this.cbLogonUserName.TabIndex = 8;
-            this.cbLogonUserName.Text = "User name / password:";
+            this.cbLogonUserName.Text = "User name:";
             this.cbLogonUserName.UseVisualStyleBackColor = true;
             this.cbLogonUserName.CheckedChanged += new System.EventHandler(this.cbLogonUserName_CheckedChanged);
             // 
             // cbLogonCertificate
             // 
             this.cbLogonCertificate.AutoSize = true;
-            this.cbLogonCertificate.Location = new System.Drawing.Point(12, 75);
+            this.cbLogonCertificate.Location = new System.Drawing.Point(12, 102);
             this.cbLogonCertificate.Name = "cbLogonCertificate";
             this.cbLogonCertificate.Size = new System.Drawing.Size(73, 17);
             this.cbLogonCertificate.TabIndex = 7;
@@ -801,48 +812,52 @@
             // 
             // tbUserName
             // 
-            this.tbUserName.Location = new System.Drawing.Point(167, 46);
+            this.tbUserName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbUserName.Location = new System.Drawing.Point(122, 46);
             this.tbUserName.Name = "tbUserName";
-            this.tbUserName.Size = new System.Drawing.Size(90, 20);
+            this.tbUserName.Size = new System.Drawing.Size(262, 20);
             this.tbUserName.TabIndex = 4;
             // 
             // tbPassword
             // 
-            this.tbPassword.Location = new System.Drawing.Point(263, 46);
+            this.tbPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPassword.Location = new System.Drawing.Point(122, 72);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(90, 20);
+            this.tbPassword.Size = new System.Drawing.Size(262, 20);
             this.tbPassword.TabIndex = 5;
-            // 
-            // buttonShowPassword
-            // 
-            this.buttonShowPassword.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
-            this.buttonShowPassword.Image = global::iba.Properties.Resources.Eye;
-            this.buttonShowPassword.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonShowPassword.Location = new System.Drawing.Point(359, 44);
-            this.buttonShowPassword.Margin = new System.Windows.Forms.Padding(3, 3, 15, 3);
-            this.buttonShowPassword.Name = "buttonShowPassword";
-            this.buttonShowPassword.Size = new System.Drawing.Size(23, 23);
-            this.buttonShowPassword.TabIndex = 6;
-            this.buttonShowPassword.TabStop = false;
-            this.buttonShowPassword.UseVisualStyleBackColor = true;
-            this.buttonShowPassword.MouseDown += new System.Windows.Forms.MouseEventHandler(this.handler_ShowPassword);
-            this.buttonShowPassword.MouseUp += new System.Windows.Forms.MouseEventHandler(this.handler_HidePassword);
             // 
             // gbSecurity
             // 
+            this.gbSecurity.Controls.Add(this.comboBoxSecurity256Sha256);
             this.gbSecurity.Controls.Add(this.comboBoxSecurity256);
             this.gbSecurity.Controls.Add(this.comboBoxSecurity128);
+            this.gbSecurity.Controls.Add(this.cbSecurity256Sha256);
             this.gbSecurity.Controls.Add(this.cbSecurity256);
             this.gbSecurity.Controls.Add(this.cbSecurity128);
             this.gbSecurity.Controls.Add(this.cbSecurityNone);
             this.gbSecurity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbSecurity.Location = new System.Drawing.Point(0, 0);
             this.gbSecurity.Name = "gbSecurity";
-            this.gbSecurity.Size = new System.Drawing.Size(269, 104);
+            this.gbSecurity.Size = new System.Drawing.Size(269, 130);
             this.gbSecurity.TabIndex = 1;
             this.gbSecurity.TabStop = false;
             this.gbSecurity.Text = "Security policies";
+            // 
+            // comboBoxSecurity256Sha256
+            // 
+            this.comboBoxSecurity256Sha256.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSecurity256Sha256.FormattingEnabled = true;
+            this.comboBoxSecurity256Sha256.Items.AddRange(new object[] {
+            "Sign",
+            "Sign & Encrypt",
+            "Sign + Sign & Encrypt"});
+            this.comboBoxSecurity256Sha256.Location = new System.Drawing.Point(115, 100);
+            this.comboBoxSecurity256Sha256.Name = "comboBoxSecurity256Sha256";
+            this.comboBoxSecurity256Sha256.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxSecurity256Sha256.TabIndex = 8;
             // 
             // comboBoxSecurity256
             // 
@@ -869,6 +884,17 @@
             this.comboBoxSecurity128.Name = "comboBoxSecurity128";
             this.comboBoxSecurity128.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSecurity128.TabIndex = 8;
+            // 
+            // cbSecurity256Sha256
+            // 
+            this.cbSecurity256Sha256.AutoSize = true;
+            this.cbSecurity256Sha256.Location = new System.Drawing.Point(6, 102);
+            this.cbSecurity256Sha256.Name = "cbSecurity256Sha256";
+            this.cbSecurity256Sha256.Size = new System.Drawing.Size(107, 17);
+            this.cbSecurity256Sha256.TabIndex = 7;
+            this.cbSecurity256Sha256.Text = "Basic256Sha256";
+            this.cbSecurity256Sha256.UseVisualStyleBackColor = true;
+            this.cbSecurity256Sha256.CheckedChanged += new System.EventHandler(this.cbSecurity256Sha256_CheckedChanged);
             // 
             // cbSecurity256
             // 
@@ -911,9 +937,9 @@
             this.gbEndpoints.Controls.Add(this.buttonEndpointCopy);
             this.gbEndpoints.Controls.Add(this.buttonEndpointDelete);
             this.gbEndpoints.Controls.Add(this.buttonEndpointAdd);
-            this.gbEndpoints.Location = new System.Drawing.Point(9, 152);
+            this.gbEndpoints.Location = new System.Drawing.Point(9, 178);
             this.gbEndpoints.Name = "gbEndpoints";
-            this.gbEndpoints.Size = new System.Drawing.Size(663, 154);
+            this.gbEndpoints.Size = new System.Drawing.Size(663, 172);
             this.gbEndpoints.TabIndex = 16;
             this.gbEndpoints.TabStop = false;
             this.gbEndpoints.Text = "Endpoints";
@@ -935,7 +961,7 @@
             this.dgvEndpoints.Name = "dgvEndpoints";
             this.dgvEndpoints.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
             this.dgvEndpoints.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvEndpoints.Size = new System.Drawing.Size(619, 129);
+            this.dgvEndpoints.Size = new System.Drawing.Size(619, 147);
             this.dgvEndpoints.StandardTab = true;
             this.dgvEndpoints.TabIndex = 15;
             this.dgvEndpoints.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.dgvEndpoints_CellParsing);
@@ -984,7 +1010,7 @@
             this.buttonEndpointDelete.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonEndpointDelete.Image = global::iba.Properties.Resources.remove;
             this.buttonEndpointDelete.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointDelete.Location = new System.Drawing.Point(634, 125);
+            this.buttonEndpointDelete.Location = new System.Drawing.Point(634, 143);
             this.buttonEndpointDelete.Name = "buttonEndpointDelete";
             this.buttonEndpointDelete.Size = new System.Drawing.Size(23, 23);
             this.buttonEndpointDelete.TabIndex = 16;
@@ -1021,7 +1047,7 @@
             // 
             this.buttonConfigurationReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonConfigurationReset.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonConfigurationReset.Location = new System.Drawing.Point(516, 312);
+            this.buttonConfigurationReset.Location = new System.Drawing.Point(516, 356);
             this.buttonConfigurationReset.Name = "buttonConfigurationReset";
             this.buttonConfigurationReset.Size = new System.Drawing.Size(75, 23);
             this.buttonConfigurationReset.TabIndex = 12;
@@ -1033,7 +1059,7 @@
             // 
             this.buttonConfigurationApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonConfigurationApply.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonConfigurationApply.Location = new System.Drawing.Point(597, 312);
+            this.buttonConfigurationApply.Location = new System.Drawing.Point(597, 356);
             this.buttonConfigurationApply.Margin = new System.Windows.Forms.Padding(3, 3, 15, 3);
             this.buttonConfigurationApply.Name = "buttonConfigurationApply";
             this.buttonConfigurationApply.Size = new System.Drawing.Size(75, 23);
@@ -1097,7 +1123,6 @@
         private System.Windows.Forms.CheckBox cbEnabled;
         private System.Windows.Forms.Button buttonConfigurationReset;
         private System.Windows.Forms.Button buttonConfigurationApply;
-        private System.Windows.Forms.Button buttonShowPassword;
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.TextBox tbUserName;
         private Utility.CollapsibleGroupBox gbDiagnostics;
@@ -1169,5 +1194,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol4;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ComboBox comboBoxSecurity256Sha256;
+        private System.Windows.Forms.CheckBox cbSecurity256Sha256;
+        private System.Windows.Forms.Label labelPassword;
     }
 }

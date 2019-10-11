@@ -342,6 +342,12 @@ namespace iba.Processing
                     OpcUaData.OpcUaSecurityAlgorithm.Basic256, _opcUaData.SecurityBasic256Mode));
             }
 
+            if (_opcUaData.HasSecurityBasic256Sha256)
+            {
+                policies.AddRange(OpcUaData.CreateSecurityPolicies(
+                    OpcUaData.OpcUaSecurityAlgorithm.Basic256Sha256, _opcUaData.SecurityBasic256Sha256Mode));
+            }
+
             if (policies.Count < 1)
                 throw new InvalidOperationException("At least one security policy should be enabled");
         }

@@ -60,22 +60,25 @@ namespace iba.Data
             None = 0,
             Basic128Rsa15,
             Basic256,
+            Basic256Sha256,
         };
 
-        public bool IsAnonymousUserAllowed { get; set; } = true;
-        public bool IsNamedUserAllowed { get; set; } = true;
-        public bool IsCertifiedUserAllowed { get; set; } = true;
+        public bool IsAnonymousUserAllowed { get; set; } = false;
+        public bool IsNamedUserAllowed { get; set; } = true; // only this is enabled by default
+        public bool IsCertifiedUserAllowed { get; set; } = false;
 
         public string UserName { get; set; } = "User1";
 
-        public string Password { get; set; } = "123";
+        public string Password { get; set; } = "User1";
 
-        public bool HasSecurityNone { get; set; } = true;
-        public bool HasSecurityBasic128 { get; set; } = true;
-        public bool HasSecurityBasic256 { get; set; } = true;
+        public bool HasSecurityNone { get; set; } = false; 
+        public bool HasSecurityBasic128 { get; set; } = false;
+        public bool HasSecurityBasic256 { get; set; } = false; 
+        public bool HasSecurityBasic256Sha256 { get; set; } = true; // only this is enabled by default
 
         public OpcUaSecurityMode SecurityBasic128Mode { get; set; } = OpcUaSecurityMode.SignEncrypt;
         public OpcUaSecurityMode SecurityBasic256Mode { get; set; } = OpcUaSecurityMode.SignEncrypt;
+        public OpcUaSecurityMode SecurityBasic256Sha256Mode { get; set; } = OpcUaSecurityMode.SignEncrypt; // only this is enabled by default
 
         public static List<ServerSecurityPolicy> CreateSecurityPolicies(OpcUaSecurityAlgorithm alg, OpcUaSecurityMode mode)
         {
@@ -117,6 +120,10 @@ namespace iba.Data
 
                 case OpcUaSecurityAlgorithm.Basic256:
                     policy.SecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256";
+                    break;
+
+                case OpcUaSecurityAlgorithm.Basic256Sha256:
+                    policy.SecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256";
                     break;
 
                 default:
@@ -363,11 +370,13 @@ namespace iba.Data
                 this.HasSecurityNone == other.HasSecurityNone &&
                 this.HasSecurityBasic128 == other.HasSecurityBasic128 &&
                 this.HasSecurityBasic256 == other.HasSecurityBasic256 &&
+                this.HasSecurityBasic256Sha256 == other.HasSecurityBasic256Sha256 &&
                 this.IsAnonymousUserAllowed == other.IsAnonymousUserAllowed &&
                 this.IsNamedUserAllowed == other.IsNamedUserAllowed &&
                 this.IsCertifiedUserAllowed == other.IsCertifiedUserAllowed &&
                 this.SecurityBasic128Mode == other.SecurityBasic128Mode &&
                 this.SecurityBasic256Mode == other.SecurityBasic256Mode &&
+                this.SecurityBasic256Sha256Mode == other.SecurityBasic256Sha256Mode &&
                 this.CertificateChangesCounter == other.CertificateChangesCounter &&
                 this.Endpoints.SequenceEqual(other.Endpoints) &&
                 this.Certificates.SequenceEqual(other.Certificates);
