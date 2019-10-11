@@ -836,6 +836,9 @@ namespace iba.Processing
             {
                 try
                 {
+                    // reset currently monitored items to ensure they don't cache any outdated items
+                    _monitoredGroups = null;
+
                     if (!ExtMonInstance.IsStructureValid)
                     {
                         // ExtMonData structure is invalid;

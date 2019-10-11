@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using DevExpress.Utils;
-using DevExpress.XtraEditors.Controls;
+//using DevExpress.Utils;
+//using DevExpress.XtraEditors.Controls;
 using iba.Logging;
 using iba.Processing;
 using iba.Processing.IbaOpcUa;
