@@ -927,11 +927,17 @@ namespace iba.Controls
 
         private void UpdateObjectTreeNodeDescription(string id = null)
         {
+            // if no argument then try to use the recent one
             if (string.IsNullOrWhiteSpace(id))
+            {
                 id = _recentId;
+            }
 
+            // if there is no recent one, then return and do nothing
             if (string.IsNullOrWhiteSpace(id))
+            {
                 return;
+            }
 
             // try to refresh node's tag
             try
@@ -945,11 +951,12 @@ namespace iba.Controls
             catch
             {
                 // reset value that we know that something is wrong
-                tbObjValue.Text = "";
-                tbObjType.Text = "";
+                tbObjValue.Text = String.Empty;
+                tbObjType.Text = String.Empty;
             }
 
         }
+
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (!IsConnectedOrLocal)

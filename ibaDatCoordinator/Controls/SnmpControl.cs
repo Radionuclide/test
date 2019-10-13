@@ -347,6 +347,9 @@ namespace iba.Controls
             {
                 RefreshBriefStatus();
                 RefreshClientsTable();
+
+                // update currently selected node information in object tree
+                UpdateObjectTreeNodeDescription();
             }
             else
             {
@@ -527,6 +530,38 @@ namespace iba.Controls
         
         /// <summary> The most recent node that was selected by the user </summary>
         private IbaSnmpOid _recentOid;
+        
+        private void UpdateObjectTreeNodeDescription(IbaSnmpOid oid = null)
+        {
+            // if no argument then try to use the recent one
+            if (oid == null)
+            {
+                oid = _recentOid;
+            }
+
+            // if there is no recent one, then return and do nothing
+            if (oid == null)
+            {
+                return;
+            }
+
+            // try to refresh node's tag
+            try
+            {
+                var tag = TaskManager.Manager.SnmpGetTreeNodeTag(oid);
+                tbObjOid.Text = tag.SnmpOid?.ToString();
+                tbObjValue.Text = tag.Value;
+                tbObjType.Text = tag.Type;
+                tbObjMibName.Text = tag.SnmpMibName;
+                tbObjMibDescription.Text = tag.Description;
+            }
+            catch
+            {
+                // reset value that we know that something is wrong
+                tbObjValue.Text = String.Empty;
+                tbObjType.Text = String.Empty;
+            }
+        }
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -555,23 +590,7 @@ namespace iba.Controls
                     return;
                 }
 
-                // try to refresh node's tag
-                try
-                {
-                    tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.SnmpOid);
-                }
-                catch
-                {
-                    // reset value that we know that something is wrong
-                    tag.Value = String.Empty;
-                    tag.Type = String.Empty;
-                }
-
-                tbObjOid.Text = tag.SnmpOid?.ToString();
-                tbObjValue.Text = tag.Value;
-                tbObjType.Text = tag.Type;
-                tbObjMibName.Text = tag.SnmpMibName;
-                tbObjMibDescription.Text = tag.Description;
+                UpdateObjectTreeNodeDescription(tag.SnmpOid);
 
                 // remember recently selected node
                 _recentOid = tag.SnmpOid;
