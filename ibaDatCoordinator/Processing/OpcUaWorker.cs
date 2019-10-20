@@ -479,7 +479,18 @@ namespace iba.Processing
                         $@"{nameof(HandleCertificate)}. Command {command} is not supported");
             }
 
-            SynchronizeCertificates();
+            // todo. kls. 
+            System.Diagnostics.Stopwatch sw = new Stopwatch();
+            sw.Start();
+            // todo. kls. performance test
+            for (int jj = 0; jj < 1; jj++)
+            {
+                SynchronizeCertificates();
+            }
+            sw.Stop();
+            Debug.WriteLine("-------------------------------------------------------------------");
+            Debug.WriteLine($@"Duration = {sw.ElapsedMilliseconds / 1000.0:F2} sec");
+            Debug.WriteLine("-------------------------------------------------------------------");
 
             return new List<OpcUaData.CertificateTag>(_opcUaData.Certificates);
         }
