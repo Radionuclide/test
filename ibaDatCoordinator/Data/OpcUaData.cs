@@ -189,7 +189,6 @@ namespace iba.Data
                     }
 
                     return _thumbprint;
-                    
                 }
                 set
                 {
@@ -197,27 +196,6 @@ namespace iba.Data
                     // check consistency
                     Debug.Assert(Certificate == null || Certificate?.Thumbprint == _thumbprint);
                 }
-            }
-
-            public string Name => Certificate == null ?
-                null :
-                !string.IsNullOrWhiteSpace(Certificate.FriendlyName) ?
-                Certificate.FriendlyName : Certificate.Subject;
-
-            public string Issuer => Certificate?.Issuer;
-
-            public string ExpirationDate => Certificate?.GetExpirationDateString();
-            
-            /// <summary> Is used for tooltip </summary>
-            public string GetPropertyString()
-            {
-                string result = $@"{(IsTrusted ? "Trusted" : "Rejected")}; ";
-
-                if (HasPrivateKey) result += "Private key; ";
-                if (IsUsedForServer) result += "OPC UA Server certificate; ";
-                if (IsUsedForAuthentication) result += "Authentication; ";
-                result = result.TrimEnd(';', ' ');
-                return result;
             }
 
             public override bool Equals(object obj)

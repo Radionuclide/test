@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
+using DevExpress.Utils;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
 using iba.Data;
 using iba.Logging;
 using iba.Processing;
@@ -22,10 +26,18 @@ namespace iba.Controls
         public OpcUaControl()
         {
             InitializeComponent();
+
+            // Load images for certificate properties
+            imgTrusted = Resources.img_shldgreen;
+            imgRejected = Resources.img_shldred;
+            imgKey = Resources.img_key;
+            imgUaServer = Resources.opcUaServer_icon;
+            imgDude = Resources.img_dude;
         }
 
         private const int ImageIndexFolder = 0;
         private const int ImageIndexLeaf = 1;
+
 
         private CollapsibleElementManager _ceManager;
 
@@ -63,12 +75,20 @@ namespace iba.Controls
             tvObjects.ImageList = tvObjectsImageList;
             tvObjects.ImageIndex = ImageIndexFolder;
 
+            // show default cert columns
+            miColumnReset_Click(null, null);
+
+            // prevent Columns submenu from closing on item click
+            miColumns.DropDown.Closing +=
+                (o, args) => args.Cancel = (args.CloseReason == ToolStripDropDownCloseReason.ItemClicked);
+
+            // todo. kls. remove!
             // set up DataGridView
             dgvColumnHost.ValueType = typeof(string);
             dgvColumnPort.ValueType = typeof(int);
             dgvColumnUri.ValueType = typeof(string);
         }
-
+        
         #endregion
 
 
@@ -218,10 +238,9 @@ namespace iba.Controls
 
             // certificates
             _data.Certificates.Clear();
-            for (int i = 0; i < dgvCertificates.RowCount; i++)
+            if (CertificatesDataSource != null)
             {
-                OpcUaData.CertificateTag certTag = RowToCertificate(dgvCertificates.Rows[i]);
-                _data.AddCertificate(certTag);
+                _data.Certificates.AddRange(CertificatesDataSource);
             }
         }
 
@@ -288,58 +307,37 @@ namespace iba.Controls
         }
         #endregion
 
+
         #region Configuration - Certificates
+
+        private readonly Image imgTrusted;
+        private readonly Image imgRejected;
+        private readonly Image imgKey;
+        private readonly Image imgUaServer;
+        private readonly Image imgDude;
+        private readonly StringFormat textAlign = new StringFormat {Alignment = StringAlignment.Center};
+        private const int imgDimension = 16;
+        private const int imgGapPix = 4;
+
+        private int toolTipLastRowHandle = -1;
+        /// <summary> Stores cached info about currently pointed item; is needed to decrease computational load. </summary>
+        private ToolTipControlInfo lastTooltip;
 
         private void RefreshCertificatesTable(List<OpcUaData.CertificateTag> certs)
         {
             _lastCertTableUpdateStamp = DateTime.Now;
-            if (certs == null)
-            {
-                dgvCertificates.Rows.Clear();
-                return;
-            }
 
-            dgvCertificates.RowCount = certs.Count;
-            for (var i = 0; i < certs.Count; i++)
-            {
-                SetCertificateRow(dgvCertificates.Rows[i], certs[i]);
-            }
+            // remember selected line
+            var selectedLine = SelectedCertificate;
+
+            CertificatesDataSource = certs;
+
+            // restore selected line if possible
+            SelectedCertificate = selectedLine;
         }
 
-        private static OpcUaData.CertificateTag RowToCertificate(DataGridViewRow row)
-        {
-            try
-            {
-                Debug.Assert(row.Cells.Count == 5);
-                OpcUaData.CertificateTag certTag = row.Cells[0].Value as OpcUaData.CertificateTag;
 
-                return certTag;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        //private static object[] CertificateToRow(OpcUaData.CertificateTag certTag)
-        //{
-        //    return new object[]
-        //    {
-        //        certTag, /*hidden column*/
-        //        certTag.Name, certTag.GetPropertyString(), certTag.Issuer, certTag.ExpirationDate
-        //    };
-        //}
-
-        private static void SetCertificateRow(DataGridViewRow row, OpcUaData.CertificateTag certTag)
-        {
-            Debug.Assert(row.Cells.Count == 5);
-
-            row.Cells[0].Value = certTag; /*hidden column*/
-            row.Cells[1].Value = certTag.Name;
-            row.Cells[2].Value = certTag.GetPropertyString();
-            row.Cells[3].Value = certTag.Issuer;
-            row.Cells[4].Value = certTag.ExpirationDate;
-        }
+        #region cert buttons
 
         private void buttonCertAdd_Click(object sender, EventArgs e)
         {
@@ -375,16 +373,16 @@ namespace iba.Controls
                     "Generate certificate",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                dgvCertificates.ClearSelection();
-                dgvCertificates.Rows[dgvCertificates.RowCount - 1].Selected = true;
+                // get last row
+                var lastRowHandle = gridViewCerts.GetRowHandle(certs.Count - 1);
+                SelectedCertificate = (gridViewCerts.GetRow(lastRowHandle) as OpcUaData.CertificateTag);
                 buttonCertServer_Click(null, null);
             }
-
         }
 
         private void buttonCertExport_Click(object sender, EventArgs e)
         {
-            var certTag = GetSelectedCertificate();
+            var certTag = SelectedCertificate;
             if (certTag?.Certificate == null)
                 return;
 
@@ -433,7 +431,7 @@ namespace iba.Controls
 
         private void buttonCertRemove_Click(object sender, EventArgs e)
         {
-            var certTag = GetSelectedCertificate();
+            var certTag = SelectedCertificate;
             if (certTag == null)
                 return;
 
@@ -449,7 +447,7 @@ namespace iba.Controls
 
         private void buttonCertTrust_Click(object sender, EventArgs e)
         {
-            var certTag = GetSelectedCertificate();
+            var certTag = SelectedCertificate;
             if (certTag == null)
                 return;
             var certs = TaskManager.Manager.OpcUaHandleCertificate("trust", certTag);
@@ -458,7 +456,7 @@ namespace iba.Controls
 
         private void buttonCertReject_Click(object sender, EventArgs e)
         {
-            var certTag = GetSelectedCertificate();
+            var certTag = SelectedCertificate;
             if (certTag == null)
                 return;
             var certs = TaskManager.Manager.OpcUaHandleCertificate("reject", certTag);
@@ -467,7 +465,7 @@ namespace iba.Controls
 
         private void buttonCertUser_Click(object sender, EventArgs e)
         {
-            var certTag = GetSelectedCertificate();
+            var certTag = SelectedCertificate;
             if (certTag == null)
                 return;
             var certs = TaskManager.Manager.OpcUaHandleCertificate("asUser", certTag);
@@ -476,7 +474,7 @@ namespace iba.Controls
 
         private void buttonCertServer_Click(object sender, EventArgs e)
         {
-            var certTag = GetSelectedCertificate();
+            var certTag = SelectedCertificate;
             if (certTag == null)
                 return;
 
@@ -493,22 +491,416 @@ namespace iba.Controls
             RefreshCertificatesTable(certs);
         }
 
-        private OpcUaData.CertificateTag GetSelectedCertificate()
-        {
-            if (dgvCertificates.Rows.Count < 1 || dgvCertificates.SelectedRows.Count < 1)
-                return null;
+        #endregion
 
-            var row = dgvCertificates.SelectedRows[0];
-            return RowToCertificate(row);
+        /// <summary> Typed wrapper of <see cref="gridControlCerts"/> DataSource </summary>
+        private List<OpcUaData.CertificateTag> CertificatesDataSource
+        {
+            get => gridControlCerts.DataSource as List<OpcUaData.CertificateTag>;
+            set
+            {
+                gridControlCerts.DataSource = value;
+                gridControlCerts.RefreshDataSource(); // todo. kls. 
+                toolTipLastRowHandle = -1;
+            }
         }
+
+        public OpcUaData.CertificateTag SelectedCertificate
+        {
+            get
+            {
+                // Get selected row
+                int[] rowInd = gridViewCerts.GetSelectedRows();
+                if ((rowInd != null) && (rowInd.Length > 0) && (rowInd[0] != -1))
+                    return gridViewCerts.GetRow(rowInd[0]) as OpcUaData.CertificateTag;
+
+                return null;
+            }
+            set
+            {
+                gridViewCerts.FocusedRowHandle = -1;
+                if (value == null || CertificatesDataSource == null)
+                    return;
+
+                gridViewCerts.FocusedRowHandle = CertificatesDataSource.FindIndex(el => el.Thumbprint == value.Thumbprint);
+            }
+        }
+
 
         private void dgvCertificates_SelectionChanged(object sender, EventArgs e)
         {
-            buttonCertExport.Enabled = buttonCertRemove.Enabled =
-                buttonCertTrust.Enabled = buttonCertReject.Enabled =
-                    buttonCertUser.Enabled = buttonCertServer.Enabled =
-                        dgvCertificates.SelectedRows.Count > 0;
+            // todo. kls. 
+            //buttonCertExport.Enabled = buttonCertRemove.Enabled =
+            //    buttonCertTrust.Enabled = buttonCertReject.Enabled =
+            //        buttonCertUser.Enabled = buttonCertServer.Enabled =
+            //            dgvCertificates.SelectedRows.Count > 0;
         }
+
+        private void gridViewCerts_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            if (!(sender is GridView view))
+                return;
+
+            if (!(view.GetRow(e.RowHandle) is OpcUaData.CertificateTag certTag))
+                return;
+
+            X509Certificate2 cert = certTag.Certificate;
+            if (cert == null)
+                return;
+
+            // highlight current server certificate with blue
+            var foreColor = certTag.IsUsedForServer ? Color.Blue : SystemColors.WindowText;
+            e.Appearance.ForeColor = foreColor;
+
+            e.Appearance.TextOptions.HAlignment = HorzAlignment.Center;
+
+            if (e.Column == colCertName)
+            {
+                e.DisplayText = GetCertificateAttribute(cert.Subject, "CN=");
+            }
+            else if (e.Column == colCertOrganization)
+            {
+                e.DisplayText = GetCertificateAttribute(cert.Subject, "O=");
+            }
+            else if (e.Column == colCertLocality)
+            {
+                e.DisplayText = GetCertificateAttribute(cert.Subject, "L=");
+            }
+            else if (e.Column == colCertState)
+            {
+                e.DisplayText = GetCertificateAttribute(cert.Subject, "S=");
+            }
+            else if (e.Column == colCertCountry)
+            {
+                e.DisplayText = GetCertificateAttribute(cert.Subject, "C=");
+            }
+            else if (e.Column == colCertIssuedBy)
+            {
+                e.DisplayText = GetCertificateAttribute(cert.Issuer, "CN=");
+            }
+            else if (e.Column == colCertIssuingDate)
+            {
+                e.DisplayText = cert.NotBefore.ToString();
+            }
+            else if (e.Column == colCertExpirationDate)
+            {
+                e.DisplayText = cert.NotAfter.ToString();
+            }
+            else if (e.Column == colCertAlgorithm)
+            {
+                e.DisplayText = cert.SignatureAlgorithm.FriendlyName;
+            }
+            else if (e.Column == colCertThumbprint)
+            {
+                e.DisplayText = certTag.Thumbprint;
+            }
+            else if (e.Column == colCertProperties)
+            {
+                int actIcons = 1;
+                int maxIcons = Math.Min((e.Bounds.Width + imgGapPix) / (imgDimension + imgGapPix), 5);  // 5 is maximum number of icons we want to display
+
+                if (certTag.HasPrivateKey)
+                    actIcons++;
+
+                if (certTag.IsUsedForServer)
+                    actIcons++;
+
+                if (certTag.IsUsedForAuthentication)
+                    actIcons++;
+
+                int totalWidth = maxIcons * imgDimension + (maxIcons - 1) * imgGapPix;
+
+                Point corner = new Point(e.Bounds.X + e.Bounds.Width / 2, e.Bounds.Y);
+
+                if (actIcons > maxIcons)
+                {
+                    e.Graphics.DrawString("...", e.Appearance.Font, SystemBrushes.ActiveCaptionText, corner, textAlign);
+                }
+                else
+                {
+                    corner.Offset(-totalWidth / 2, 0);
+
+                    float heightFactor = Math.Min((float)e.Bounds.Height / (float)imgDimension, 1.0F);
+                    int newHeight = (int)Math.Floor(imgDimension * heightFactor);
+                    int newWidth = (int)Math.Floor(imgDimension * heightFactor);
+
+                    //int xIndex = 0;
+                    //e.Graphics.DrawImage(certTag.IsTrusted ? imgTrusted : imgRejected, corner.X + (imgDimension + imgGapPix) * xIndex, corner.Y, newHeight, newWidth);
+                    //xIndex++;
+
+                    // ReSharper disable once UseObjectOrCollectionInitializer
+                    List<Image> imgToDraw = new List<Image>();
+
+                    imgToDraw.Add(certTag.IsTrusted ? imgTrusted : imgRejected);
+                    imgToDraw.Add(certTag.HasPrivateKey ? imgKey: null);
+                    imgToDraw.Add(certTag.IsUsedForServer ? imgUaServer: null);
+                    imgToDraw.Add(certTag.IsUsedForAuthentication ? imgDude: null);
+
+                    for (int i = 0; i < imgToDraw.Count; i++)
+                    {
+                        var img = imgToDraw[i];
+                        if (imgToDraw[i] == null)
+                            continue;
+                        
+                        e.Graphics.DrawImage(img, 
+                            corner.X + (imgDimension + imgGapPix) * i, corner.Y,
+                            newHeight, newWidth);
+                    }
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private static string GetCertificateAttribute(string subject, string attribute)
+        {
+            int lenAtt = attribute.Length;
+
+            int idxAtt = subject.IndexOf(attribute);
+            if (idxAtt == -1)
+            {
+                return "";
+            }
+            else
+            {
+                int idxCom = subject.IndexOf(',', idxAtt);
+                if (idxCom != -1)
+                    return subject.Substring(idxAtt + lenAtt, idxCom - idxAtt - lenAtt);
+                else
+                    return subject.Substring(idxAtt + lenAtt);
+            }
+        }
+
+        private void toolTipController_GetActiveObjectInfo(object sender, ToolTipControllerGetActiveObjectInfoEventArgs e)
+        {
+            if (e.SelectedControl != gridControlCerts)
+                return;
+
+            GridView view = gridControlCerts.GetViewAt(e.ControlMousePosition) as GridView;
+            if (view == null)
+                return;
+
+            DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitInfo hitInfo = view.CalcHitInfo(e.ControlMousePosition);
+            if (hitInfo.InRowCell && hitInfo.Column == colCertProperties)
+            {
+                // check if user points to something different (not the previously pointed item)
+                if (toolTipLastRowHandle != hitInfo.RowHandle)
+                {
+                    // remember recent item
+                    toolTipLastRowHandle = hitInfo.RowHandle;
+
+                    // and generate a new tooltip
+                    string ttInfo = null;
+
+                    if (view.GetRow(toolTipLastRowHandle) is OpcUaData.CertificateTag cert)
+                    {
+                        // todo. kls. localize
+                        ttInfo = cert.IsTrusted ? "Trusted" : "Rejected";//Properties.Resources.CertificateIsTrusted : Properties.Resources.CertificateIsRejected;
+
+                        if (cert.HasPrivateKey)
+                            ttInfo += $"; {"Private key"}";//string.Concat(ttInfo, "; ", Properties.Resources.CertificateHasPrivateKey);
+
+                        if (cert.IsUsedForServer)
+                            ttInfo += $"; {"OPC UA Server certificate"}";//string.Concat(ttInfo, "; ", Properties.Resources.CertificateHasPrivateKey);
+
+                        if (cert.IsUsedForAuthentication)
+                            ttInfo += $"; {"Authentication"}";//string.Concat(ttInfo, "; ", Properties.Resources.CertificateHasPrivateKey);
+                    }
+
+                    lastTooltip = string.IsNullOrEmpty(ttInfo) ? null :
+                        new ToolTipControlInfo(hitInfo.HitTest.ToString() + hitInfo.RowHandle.ToString(), ttInfo);
+                }
+
+                if (lastTooltip != null)
+                    e.Info = lastTooltip;
+            }
+        }
+
+
+
+        #region Cert context menu
+
+        private void gridViewCerts_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
+        {
+            // let all dataRow-specific commands be unavailable by default
+            miCertDelimiter1.Visible = miCertDelimiter2.Visible =
+                miCertCopyAsText.Visible = miCertExport.Visible =
+                miCertRemove.Visible = miCertToggleUserAuthentication.Visible =
+                miCertTrust.Visible = miCertReject.Visible = miCertUseAsServerCert.Visible = false;
+
+            // columns submenu - visible/checked consistency
+            miColumnName.Checked = colCertName.Visible;
+            miColumnProperties.Checked = colCertProperties.Visible;
+            miColumnOrganization.Checked = colCertOrganization.Visible;
+            miColumnLocality.Checked = colCertLocality.Visible;
+            miColumnState.Checked = colCertState.Visible;
+            miColumnCountry.Checked = colCertCountry.Visible;
+            miColumnIssuedBy.Checked = colCertIssuedBy.Visible;
+            miColumnIssuingDate.Checked = colCertIssuingDate.Visible;
+            miColumnExpirationDate.Checked = colCertExpirationDate.Visible;
+            miColumnAlgorithm.Checked = colCertAlgorithm.Visible;
+            miColumnThumbprint.Checked = colCertThumbprint.Visible;
+
+            if (!(gridControlCerts.GetViewAt(e.Point) is GridView view))
+                return;
+
+            var hitInfo = e.HitInfo;
+
+            if (hitInfo.InRowCell && view.GetRow(hitInfo.RowHandle) is OpcUaData.CertificateTag certTag)
+            {
+                // unconditional commands for any cert
+                miCertDelimiter1.Visible = miCertDelimiter2.Visible =
+                    miCertCopyAsText.Visible = miCertExport.Visible =
+                    miCertRemove.Visible = miCertToggleUserAuthentication.Visible = true;
+
+                // conditional commands
+                miCertTrust.Visible = !certTag.IsTrusted;
+                miCertReject.Visible = certTag.IsTrusted;
+                miCertUseAsServerCert.Visible = certTag.HasPrivateKey && !certTag.IsUsedForAuthentication;
+            }
+        }
+
+        private void miCertCopyAsText_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var certTag = SelectedCertificate;
+                var cert = certTag?.Certificate;
+                if (cert == null)
+                    return;
+
+                string str = "";
+
+                str += $"Name = {GetCertificateAttribute(cert.Issuer, "CN=")}\r\n";
+                str += $"Name = {GetCertificateAttribute(cert.IssuerName.ToString(), "CN=")}\r\n";
+
+                str += $"Organization = {GetCertificateAttribute(cert.Subject, "CN=")}\r\n";
+                str += $"Locality = {GetCertificateAttribute(cert.Subject, "L=")}\r\n";
+                str += $"State = {GetCertificateAttribute(cert.Subject, "S=")}\r\n";
+                str += $"Country = {GetCertificateAttribute(cert.Subject, "C=")}\r\n";
+                str += $"Issued By = {GetCertificateAttribute(cert.Issuer, "CN=")}\r\n";
+                str += $"Issuing Date = {cert.NotBefore}\r\n";
+                str += $"Expiration Date = {cert.NotAfter}\r\n";
+                str += $"Algorithm = {cert.SignatureAlgorithm.FriendlyName}\r\n";
+                str += $"Thumbprint = {certTag.Thumbprint}\r\n";
+                
+                //str += $"Properties = {GetCertificateAttribute(cert.Subject, "CN=")}\r\n";
+
+
+                Clipboard.Clear();
+                Clipboard.SetText(str);
+            }
+            catch { /*non critical*/ }
+        }
+
+
+        #region Cert context menu - Grid Columns visibility
+
+        private void miColumnName_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertName;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnProperties_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertProperties;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnOrganization_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertOrganization;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnLocality_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertLocality;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnState_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertState;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnCountry_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertCountry;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnIssuedBy_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertIssuedBy;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnIssuedDate_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertIssuingDate;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnAlgorithm_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertAlgorithm;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnThumbprint_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertThumbprint;
+            col.Visible = mi.Checked;
+        }
+
+        private void miColumnReset_Click(object sender, EventArgs e)
+        {
+            // visible by default
+            colCertName.Visible = true;
+            colCertProperties.Visible = true;
+            colCertIssuedBy.Visible = true;
+            colCertExpirationDate.Visible = true;
+
+            // visible by default
+            colCertOrganization.Visible = false;
+            colCertLocality.Visible = false;
+            colCertState.Visible = false;
+            colCertCountry.Visible = false;
+            colCertIssuingDate.Visible = false;
+            colCertAlgorithm.Visible = false;
+            colCertThumbprint.Visible = false;
+
+            contextMenuCerts.Close();
+        }
+
+        #endregion
+
+
+        #endregion
+
 
         #endregion
 
@@ -689,9 +1081,7 @@ namespace iba.Controls
 
         #endregion
 
-
-
-
+        
         #region Diagnostics
 
         private List<IbaOpcUaDiagClient> _diagClients;
@@ -1013,7 +1403,11 @@ namespace iba.Controls
         }
 
 
+
+
+
+
         #endregion
-    
+        
     }
 }

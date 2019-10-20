@@ -434,7 +434,7 @@ namespace iba.Processing
                 case "asUser":
                     var localCertTag = _opcUaData.GetCertificate(certTag?.Thumbprint);
                     if (localCertTag != null)
-                        localCertTag.IsUsedForAuthentication = !localCertTag.IsUsedForAuthentication;
+                        localCertTag.IsUsedForAuthentication ^= true; // toggle
                     break;
 
                 case "asServer":
@@ -742,19 +742,19 @@ namespace iba.Processing
 
         private static List<X509Certificate2> GetCertificates(ICertificateStore store)
         {
-            var list = new List<X509Certificate2>();
             try
             {
+                var list = new List<X509Certificate2>();
                 foreach (var cert in store.Enumerate())
                 {
                     list.Add(cert);
                 }
+                return list;
             }
             finally
             {
                 store.Close();
             }
-            return list;
         }
 
         private List<X509Certificate2> GetOwnCertificates() => GetCertificates(OwnCertStore.OpenStore());

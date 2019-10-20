@@ -33,6 +33,44 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.gbCertificates = new iba.Utility.CollapsibleGroupBox();
+            this.gridControlCerts = new DevExpress.XtraGrid.GridControl();
+            this.contextMenuCerts = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miColumns = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnName = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnOrganization = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnLocality = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnState = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnCountry = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnIssuedBy = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnIssuingDate = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnExpirationDate = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnAlgorithm = new System.Windows.Forms.ToolStripMenuItem();
+            this.miColumnThumbprint = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miColumnReset = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCertDelimiter1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miCertReject = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCertTrust = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCertToggleUserAuthentication = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCertUseAsServerCert = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCertDelimiter2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miCertCopyAsText = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCertExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCertRemove = new System.Windows.Forms.ToolStripMenuItem();
+            this.gridViewCerts = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.colCertName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertProperties = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertOrganization = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertLocality = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertState = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertCountry = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertIssuedBy = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertIssuingDate = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertExpirationDate = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertAlgorithm = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCertThumbprint = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.buttonCertAdd = new System.Windows.Forms.ToolStripButton();
             this.buttonCertGenerate = new System.Windows.Forms.ToolStripButton();
@@ -45,12 +83,6 @@
             this.buttonCertUser = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.buttonCertServer = new System.Windows.Forms.ToolStripButton();
-            this.dgvCertificates = new System.Windows.Forms.DataGridView();
-            this.ColumnTag = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCertCol1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCertCol2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCertCol3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCertCol4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.tbDiagTmp = new System.Windows.Forms.TextBox();
             this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
@@ -110,8 +142,10 @@
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.gbCertificates.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).BeginInit();
+            this.contextMenuCerts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewCerts)).BeginInit();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCertificates)).BeginInit();
             this.gbDiagnostics.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
@@ -151,15 +185,359 @@
             // 
             this.gbCertificates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbCertificates.Controls.Add(this.gridControlCerts);
             this.gbCertificates.Controls.Add(this.toolStrip1);
-            this.gbCertificates.Controls.Add(this.dgvCertificates);
             this.gbCertificates.Location = new System.Drawing.Point(15, 394);
             this.gbCertificates.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbCertificates.Name = "gbCertificates";
-            this.gbCertificates.Size = new System.Drawing.Size(690, 176);
+            this.gbCertificates.Size = new System.Drawing.Size(690, 201);
             this.gbCertificates.TabIndex = 17;
             this.gbCertificates.TabStop = false;
             this.gbCertificates.Text = "Certificates";
+            // 
+            // gridControlCerts
+            // 
+            this.gridControlCerts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gridControlCerts.ContextMenuStrip = this.contextMenuCerts;
+            this.gridControlCerts.Location = new System.Drawing.Point(18, 44);
+            this.gridControlCerts.MainView = this.gridViewCerts;
+            this.gridControlCerts.Name = "gridControlCerts";
+            this.gridControlCerts.Size = new System.Drawing.Size(654, 151);
+            this.gridControlCerts.TabIndex = 18;
+            this.gridControlCerts.ToolTipController = this.toolTipController;
+            this.gridControlCerts.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewCerts});
+            // 
+            // contextMenuCerts
+            // 
+            this.contextMenuCerts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miColumns,
+            this.miCertDelimiter1,
+            this.miCertReject,
+            this.miCertTrust,
+            this.miCertToggleUserAuthentication,
+            this.miCertUseAsServerCert,
+            this.miCertDelimiter2,
+            this.miCertCopyAsText,
+            this.miCertExport,
+            this.miCertRemove});
+            this.contextMenuCerts.Name = "contextMenuCerts";
+            this.contextMenuCerts.Size = new System.Drawing.Size(265, 246);
+            // 
+            // miColumns
+            // 
+            this.miColumns.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miColumnName,
+            this.miColumnProperties,
+            this.miColumnOrganization,
+            this.miColumnLocality,
+            this.miColumnState,
+            this.miColumnCountry,
+            this.miColumnIssuedBy,
+            this.miColumnIssuingDate,
+            this.miColumnExpirationDate,
+            this.miColumnAlgorithm,
+            this.miColumnThumbprint,
+            this.toolStripMenuItem1,
+            this.miColumnReset});
+            this.miColumns.Name = "miColumns";
+            this.miColumns.Size = new System.Drawing.Size(264, 26);
+            this.miColumns.Text = "Columns";
+            // 
+            // miColumnName
+            // 
+            this.miColumnName.CheckOnClick = true;
+            this.miColumnName.Name = "miColumnName";
+            this.miColumnName.Size = new System.Drawing.Size(185, 26);
+            this.miColumnName.Text = "Name";
+            this.miColumnName.Click += new System.EventHandler(this.miColumnName_Click);
+            // 
+            // miColumnProperties
+            // 
+            this.miColumnProperties.CheckOnClick = true;
+            this.miColumnProperties.Name = "miColumnProperties";
+            this.miColumnProperties.Size = new System.Drawing.Size(185, 26);
+            this.miColumnProperties.Text = "Properties";
+            this.miColumnProperties.Click += new System.EventHandler(this.miColumnProperties_Click);
+            // 
+            // miColumnOrganization
+            // 
+            this.miColumnOrganization.CheckOnClick = true;
+            this.miColumnOrganization.Name = "miColumnOrganization";
+            this.miColumnOrganization.Size = new System.Drawing.Size(185, 26);
+            this.miColumnOrganization.Text = "Organization";
+            this.miColumnOrganization.Click += new System.EventHandler(this.miColumnOrganization_Click);
+            // 
+            // miColumnLocality
+            // 
+            this.miColumnLocality.CheckOnClick = true;
+            this.miColumnLocality.Name = "miColumnLocality";
+            this.miColumnLocality.Size = new System.Drawing.Size(185, 26);
+            this.miColumnLocality.Text = "Locality";
+            this.miColumnLocality.Click += new System.EventHandler(this.miColumnLocality_Click);
+            // 
+            // miColumnState
+            // 
+            this.miColumnState.CheckOnClick = true;
+            this.miColumnState.Name = "miColumnState";
+            this.miColumnState.Size = new System.Drawing.Size(185, 26);
+            this.miColumnState.Text = "State";
+            this.miColumnState.Click += new System.EventHandler(this.miColumnState_Click);
+            // 
+            // miColumnCountry
+            // 
+            this.miColumnCountry.CheckOnClick = true;
+            this.miColumnCountry.Name = "miColumnCountry";
+            this.miColumnCountry.Size = new System.Drawing.Size(185, 26);
+            this.miColumnCountry.Text = "Country";
+            this.miColumnCountry.Click += new System.EventHandler(this.miColumnCountry_Click);
+            // 
+            // miColumnIssuedBy
+            // 
+            this.miColumnIssuedBy.CheckOnClick = true;
+            this.miColumnIssuedBy.Name = "miColumnIssuedBy";
+            this.miColumnIssuedBy.Size = new System.Drawing.Size(185, 26);
+            this.miColumnIssuedBy.Text = "Issued By";
+            this.miColumnIssuedBy.Click += new System.EventHandler(this.miColumnIssuedBy_Click);
+            // 
+            // miColumnIssuingDate
+            // 
+            this.miColumnIssuingDate.CheckOnClick = true;
+            this.miColumnIssuingDate.Name = "miColumnIssuingDate";
+            this.miColumnIssuingDate.Size = new System.Drawing.Size(185, 26);
+            this.miColumnIssuingDate.Text = "Issued Date";
+            this.miColumnIssuingDate.Click += new System.EventHandler(this.miColumnIssuedDate_Click);
+            // 
+            // miColumnExpirationDate
+            // 
+            this.miColumnExpirationDate.Name = "miColumnExpirationDate";
+            this.miColumnExpirationDate.Size = new System.Drawing.Size(185, 26);
+            this.miColumnExpirationDate.Text = "Expiration Date";
+            // 
+            // miColumnAlgorithm
+            // 
+            this.miColumnAlgorithm.CheckOnClick = true;
+            this.miColumnAlgorithm.Name = "miColumnAlgorithm";
+            this.miColumnAlgorithm.Size = new System.Drawing.Size(185, 26);
+            this.miColumnAlgorithm.Text = "Algorithm";
+            this.miColumnAlgorithm.Click += new System.EventHandler(this.miColumnAlgorithm_Click);
+            // 
+            // miColumnThumbprint
+            // 
+            this.miColumnThumbprint.CheckOnClick = true;
+            this.miColumnThumbprint.Name = "miColumnThumbprint";
+            this.miColumnThumbprint.Size = new System.Drawing.Size(185, 26);
+            this.miColumnThumbprint.Text = "Thumbprint";
+            this.miColumnThumbprint.Click += new System.EventHandler(this.miColumnThumbprint_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(182, 6);
+            // 
+            // miColumnReset
+            // 
+            this.miColumnReset.Name = "miColumnReset";
+            this.miColumnReset.Size = new System.Drawing.Size(185, 26);
+            this.miColumnReset.Text = "Reset";
+            this.miColumnReset.Click += new System.EventHandler(this.miColumnReset_Click);
+            // 
+            // miCertDelimiter1
+            // 
+            this.miCertDelimiter1.Name = "miCertDelimiter1";
+            this.miCertDelimiter1.Size = new System.Drawing.Size(261, 6);
+            // 
+            // miCertReject
+            // 
+            this.miCertReject.Image = global::iba.Properties.Resources.img_shldred;
+            this.miCertReject.Name = "miCertReject";
+            this.miCertReject.Size = new System.Drawing.Size(264, 26);
+            this.miCertReject.Text = "Reject";
+            this.miCertReject.Click += new System.EventHandler(this.buttonCertReject_Click);
+            // 
+            // miCertTrust
+            // 
+            this.miCertTrust.Image = global::iba.Properties.Resources.img_shldgreen;
+            this.miCertTrust.Name = "miCertTrust";
+            this.miCertTrust.Size = new System.Drawing.Size(264, 26);
+            this.miCertTrust.Text = "Trust";
+            this.miCertTrust.Click += new System.EventHandler(this.buttonCertTrust_Click);
+            // 
+            // miCertToggleUserAuthentication
+            // 
+            this.miCertToggleUserAuthentication.Image = global::iba.Properties.Resources.img_dude;
+            this.miCertToggleUserAuthentication.Name = "miCertToggleUserAuthentication";
+            this.miCertToggleUserAuthentication.Size = new System.Drawing.Size(264, 26);
+            this.miCertToggleUserAuthentication.Text = "Toggle user authentication";
+            this.miCertToggleUserAuthentication.Click += new System.EventHandler(this.buttonCertUser_Click);
+            // 
+            // miCertUseAsServerCert
+            // 
+            this.miCertUseAsServerCert.Image = global::iba.Properties.Resources.opcUaServer_icon;
+            this.miCertUseAsServerCert.Name = "miCertUseAsServerCert";
+            this.miCertUseAsServerCert.Size = new System.Drawing.Size(264, 26);
+            this.miCertUseAsServerCert.Text = "Use as server certificate";
+            this.miCertUseAsServerCert.Click += new System.EventHandler(this.buttonCertServer_Click);
+            // 
+            // miCertDelimiter2
+            // 
+            this.miCertDelimiter2.Name = "miCertDelimiter2";
+            this.miCertDelimiter2.Size = new System.Drawing.Size(261, 6);
+            // 
+            // miCertCopyAsText
+            // 
+            this.miCertCopyAsText.Image = global::iba.Properties.Resources.copy;
+            this.miCertCopyAsText.Name = "miCertCopyAsText";
+            this.miCertCopyAsText.Size = new System.Drawing.Size(264, 26);
+            this.miCertCopyAsText.Text = "Copy as text";
+            this.miCertCopyAsText.Click += new System.EventHandler(this.miCertCopyAsText_Click);
+            // 
+            // miCertExport
+            // 
+            this.miCertExport.Image = global::iba.Properties.Resources.img_export;
+            this.miCertExport.Name = "miCertExport";
+            this.miCertExport.Size = new System.Drawing.Size(264, 26);
+            this.miCertExport.Text = "Export";
+            this.miCertExport.Click += new System.EventHandler(this.buttonCertExport_Click);
+            // 
+            // miCertRemove
+            // 
+            this.miCertRemove.Image = global::iba.Properties.Resources.remove;
+            this.miCertRemove.Name = "miCertRemove";
+            this.miCertRemove.Size = new System.Drawing.Size(264, 26);
+            this.miCertRemove.Text = "Remove";
+            this.miCertRemove.Click += new System.EventHandler(this.buttonCertRemove_Click);
+            // 
+            // gridViewCerts
+            // 
+            this.gridViewCerts.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colCertName,
+            this.colCertProperties,
+            this.colCertOrganization,
+            this.colCertLocality,
+            this.colCertState,
+            this.colCertCountry,
+            this.colCertIssuedBy,
+            this.colCertIssuingDate,
+            this.colCertExpirationDate,
+            this.colCertAlgorithm,
+            this.colCertThumbprint});
+            this.gridViewCerts.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewCerts.GridControl = this.gridControlCerts;
+            this.gridViewCerts.Name = "gridViewCerts";
+            this.gridViewCerts.OptionsBehavior.Editable = false;
+            this.gridViewCerts.OptionsBehavior.KeepGroupExpandedOnSorting = false;
+            this.gridViewCerts.OptionsBehavior.ReadOnly = true;
+            this.gridViewCerts.OptionsCustomization.AllowColumnMoving = false;
+            this.gridViewCerts.OptionsCustomization.AllowFilter = false;
+            this.gridViewCerts.OptionsCustomization.AllowGroup = false;
+            this.gridViewCerts.OptionsCustomization.AllowSort = false;
+            this.gridViewCerts.OptionsDetail.AllowZoomDetail = false;
+            this.gridViewCerts.OptionsDetail.EnableMasterViewMode = false;
+            this.gridViewCerts.OptionsDetail.ShowDetailTabs = false;
+            this.gridViewCerts.OptionsDetail.SmartDetailExpand = false;
+            this.gridViewCerts.OptionsFilter.AllowColumnMRUFilterList = false;
+            this.gridViewCerts.OptionsFilter.AllowFilterEditor = false;
+            this.gridViewCerts.OptionsFilter.AllowMRUFilterList = false;
+            this.gridViewCerts.OptionsHint.ShowCellHints = false;
+            this.gridViewCerts.OptionsHint.ShowColumnHeaderHints = false;
+            this.gridViewCerts.OptionsMenu.EnableColumnMenu = false;
+            this.gridViewCerts.OptionsMenu.EnableFooterMenu = false;
+            this.gridViewCerts.OptionsMenu.EnableGroupPanelMenu = false;
+            this.gridViewCerts.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewCerts.OptionsSelection.EnableAppearanceFocusedRow = false;
+            this.gridViewCerts.OptionsSelection.EnableAppearanceHideSelection = false;
+            this.gridViewCerts.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+            this.gridViewCerts.OptionsView.ShowGroupExpandCollapseButtons = false;
+            this.gridViewCerts.OptionsView.ShowGroupPanel = false;
+            this.gridViewCerts.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridViewCerts_CustomDrawCell);
+            this.gridViewCerts.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.gridViewCerts_PopupMenuShowing);
+            // 
+            // colCertName
+            // 
+            this.colCertName.Caption = "Name";
+            this.colCertName.Name = "colCertName";
+            this.colCertName.Visible = true;
+            this.colCertName.VisibleIndex = 0;
+            // 
+            // colCertProperties
+            // 
+            this.colCertProperties.Caption = "Properties";
+            this.colCertProperties.Name = "colCertProperties";
+            this.colCertProperties.Visible = true;
+            this.colCertProperties.VisibleIndex = 1;
+            // 
+            // colCertOrganization
+            // 
+            this.colCertOrganization.Caption = "Organization";
+            this.colCertOrganization.Name = "colCertOrganization";
+            this.colCertOrganization.Visible = true;
+            this.colCertOrganization.VisibleIndex = 2;
+            // 
+            // colCertLocality
+            // 
+            this.colCertLocality.Caption = "Locality";
+            this.colCertLocality.Name = "colCertLocality";
+            this.colCertLocality.Visible = true;
+            this.colCertLocality.VisibleIndex = 3;
+            // 
+            // colCertState
+            // 
+            this.colCertState.Caption = "State";
+            this.colCertState.Name = "colCertState";
+            this.colCertState.Visible = true;
+            this.colCertState.VisibleIndex = 4;
+            // 
+            // colCertCountry
+            // 
+            this.colCertCountry.Caption = "Country";
+            this.colCertCountry.Name = "colCertCountry";
+            this.colCertCountry.Visible = true;
+            this.colCertCountry.VisibleIndex = 5;
+            // 
+            // colCertIssuedBy
+            // 
+            this.colCertIssuedBy.Caption = "Issued By";
+            this.colCertIssuedBy.Name = "colCertIssuedBy";
+            this.colCertIssuedBy.Visible = true;
+            this.colCertIssuedBy.VisibleIndex = 6;
+            // 
+            // colCertIssuingDate
+            // 
+            this.colCertIssuingDate.Caption = "Issuing Date";
+            this.colCertIssuingDate.Name = "colCertIssuingDate";
+            this.colCertIssuingDate.Visible = true;
+            this.colCertIssuingDate.VisibleIndex = 7;
+            // 
+            // colCertExpirationDate
+            // 
+            this.colCertExpirationDate.Caption = "Expiration Date";
+            this.colCertExpirationDate.Name = "colCertExpirationDate";
+            this.colCertExpirationDate.Visible = true;
+            this.colCertExpirationDate.VisibleIndex = 8;
+            // 
+            // colCertAlgorithm
+            // 
+            this.colCertAlgorithm.Caption = "Algorithm";
+            this.colCertAlgorithm.Name = "colCertAlgorithm";
+            this.colCertAlgorithm.Visible = true;
+            this.colCertAlgorithm.VisibleIndex = 9;
+            // 
+            // colCertThumbprint
+            // 
+            this.colCertThumbprint.Caption = "Thumbprint";
+            this.colCertThumbprint.Name = "colCertThumbprint";
+            this.colCertThumbprint.Visible = true;
+            this.colCertThumbprint.VisibleIndex = 10;
+            // 
+            // toolTipController
+            // 
+            this.toolTipController.InitialDelay = 1;
+            this.toolTipController.ReshowDelay = 1;
+            this.toolTipController.ToolTipType = DevExpress.Utils.ToolTipType.Standard;
+            this.toolTipController.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController_GetActiveObjectInfo);
             // 
             // toolStrip1
             // 
@@ -239,7 +617,7 @@
             this.buttonCertTrust.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonCertTrust.Name = "buttonCertTrust";
             this.buttonCertTrust.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertTrust.Text = "Trust";
+            this.buttonCertTrust.Text = "Trust the selected certificate";
             this.buttonCertTrust.Click += new System.EventHandler(this.buttonCertTrust_Click);
             // 
             // buttonCertReject
@@ -249,7 +627,7 @@
             this.buttonCertReject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonCertReject.Name = "buttonCertReject";
             this.buttonCertReject.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertReject.Text = "Reject";
+            this.buttonCertReject.Text = "Reject the selected certificate";
             this.buttonCertReject.Click += new System.EventHandler(this.buttonCertReject_Click);
             // 
             // toolStripSeparator2
@@ -264,7 +642,7 @@
             this.buttonCertUser.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonCertUser.Name = "buttonCertUser";
             this.buttonCertUser.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertUser.Text = "User";
+            this.buttonCertUser.Text = "Toggles whether the selected certificate can be used for the user authentication";
             this.buttonCertUser.Click += new System.EventHandler(this.buttonCertUser_Click);
             // 
             // toolStripSeparator3
@@ -279,74 +657,8 @@
             this.buttonCertServer.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonCertServer.Name = "buttonCertServer";
             this.buttonCertServer.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertServer.Text = "Server";
+            this.buttonCertServer.Text = "Use the selected certificate as OPC UA server certificate";
             this.buttonCertServer.Click += new System.EventHandler(this.buttonCertServer_Click);
-            // 
-            // dgvCertificates
-            // 
-            this.dgvCertificates.AllowUserToAddRows = false;
-            this.dgvCertificates.AllowUserToDeleteRows = false;
-            this.dgvCertificates.AllowUserToResizeRows = false;
-            this.dgvCertificates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvCertificates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCertificates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnTag,
-            this.dgvCertCol1,
-            this.dgvCertCol2,
-            this.dgvCertCol3,
-            this.dgvCertCol4});
-            this.dgvCertificates.Location = new System.Drawing.Point(18, 44);
-            this.dgvCertificates.MultiSelect = false;
-            this.dgvCertificates.Name = "dgvCertificates";
-            this.dgvCertificates.ReadOnly = true;
-            this.dgvCertificates.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
-            this.dgvCertificates.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvCertificates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCertificates.Size = new System.Drawing.Size(654, 126);
-            this.dgvCertificates.StandardTab = true;
-            this.dgvCertificates.TabIndex = 15;
-            this.dgvCertificates.SelectionChanged += new System.EventHandler(this.dgvCertificates_SelectionChanged);
-            // 
-            // ColumnTag
-            // 
-            this.ColumnTag.HeaderText = "ColumnTag";
-            this.ColumnTag.Name = "ColumnTag";
-            this.ColumnTag.ReadOnly = true;
-            this.ColumnTag.Visible = false;
-            // 
-            // dgvCertCol1
-            // 
-            this.dgvCertCol1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvCertCol1.HeaderText = "Name";
-            this.dgvCertCol1.MinimumWidth = 50;
-            this.dgvCertCol1.Name = "dgvCertCol1";
-            this.dgvCertCol1.ReadOnly = true;
-            // 
-            // dgvCertCol2
-            // 
-            this.dgvCertCol2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvCertCol2.HeaderText = "Properties";
-            this.dgvCertCol2.MinimumWidth = 50;
-            this.dgvCertCol2.Name = "dgvCertCol2";
-            this.dgvCertCol2.ReadOnly = true;
-            // 
-            // dgvCertCol3
-            // 
-            this.dgvCertCol3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvCertCol3.HeaderText = "Issued By";
-            this.dgvCertCol3.MinimumWidth = 50;
-            this.dgvCertCol3.Name = "dgvCertCol3";
-            this.dgvCertCol3.ReadOnly = true;
-            // 
-            // dgvCertCol4
-            // 
-            this.dgvCertCol4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvCertCol4.HeaderText = "Expiration Date";
-            this.dgvCertCol4.MinimumWidth = 50;
-            this.dgvCertCol4.Name = "dgvCertCol4";
-            this.dgvCertCol4.ReadOnly = true;
             // 
             // gbDiagnostics
             // 
@@ -360,7 +672,7 @@
             this.gbDiagnostics.Controls.Add(this.label14);
             this.gbDiagnostics.Controls.Add(this.label1);
             this.gbDiagnostics.Controls.Add(this.label15);
-            this.gbDiagnostics.Location = new System.Drawing.Point(15, 980);
+            this.gbDiagnostics.Location = new System.Drawing.Point(15, 1006);
             this.gbDiagnostics.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Padding = new System.Windows.Forms.Padding(15, 3, 15, 3);
@@ -546,7 +858,7 @@
             this.gbObjects.Controls.Add(this.buttonRefreshGuiTree);
             this.gbObjects.Controls.Add(this.buttonRebuildTree);
             this.gbObjects.Controls.Add(this.tvObjects);
-            this.gbObjects.Location = new System.Drawing.Point(15, 576);
+            this.gbObjects.Location = new System.Drawing.Point(15, 602);
             this.gbObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.gbObjects.Name = "gbObjects";
             this.gbObjects.Size = new System.Drawing.Size(690, 398);
@@ -1083,9 +1395,11 @@
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
             this.gbCertificates.ResumeLayout(false);
             this.gbCertificates.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).EndInit();
+            this.contextMenuCerts.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewCerts)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCertificates)).EndInit();
             this.gbDiagnostics.ResumeLayout(false);
             this.gbDiagnostics.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).EndInit();
@@ -1184,18 +1498,50 @@
         private System.Windows.Forms.ToolStripButton buttonCertUser;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton buttonCertServer;
-        private System.Windows.Forms.DataGridView dgvCertificates;
         private System.Windows.Forms.CheckBox cbLogonUserName;
         private System.Windows.Forms.CheckBox cbLogonAnonymous;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTag;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCertCol4;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.ComboBox comboBoxSecurity256Sha256;
         private System.Windows.Forms.CheckBox cbSecurity256Sha256;
         private System.Windows.Forms.Label labelPassword;
+        private DevExpress.XtraGrid.GridControl gridControlCerts;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewCerts;
+        private System.Windows.Forms.ContextMenuStrip contextMenuCerts;
+        private DevExpress.Utils.ToolTipController toolTipController;
+        private System.Windows.Forms.ToolStripMenuItem miColumns;
+        private System.Windows.Forms.ToolStripMenuItem miColumnName;
+        private System.Windows.Forms.ToolStripMenuItem miColumnProperties;
+        private System.Windows.Forms.ToolStripMenuItem miColumnOrganization;
+        private System.Windows.Forms.ToolStripMenuItem miColumnLocality;
+        private System.Windows.Forms.ToolStripMenuItem miColumnState;
+        private System.Windows.Forms.ToolStripMenuItem miColumnCountry;
+        private System.Windows.Forms.ToolStripMenuItem miColumnIssuedBy;
+        private System.Windows.Forms.ToolStripMenuItem miColumnIssuingDate;
+        private System.Windows.Forms.ToolStripMenuItem miColumnAlgorithm;
+        private System.Windows.Forms.ToolStripMenuItem miColumnThumbprint;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem miColumnReset;
+        private System.Windows.Forms.ToolStripSeparator miCertDelimiter1;
+        private System.Windows.Forms.ToolStripMenuItem miCertReject;
+        private System.Windows.Forms.ToolStripMenuItem miCertTrust;
+        private System.Windows.Forms.ToolStripMenuItem miCertToggleUserAuthentication;
+        private System.Windows.Forms.ToolStripMenuItem miCertUseAsServerCert;
+        private System.Windows.Forms.ToolStripSeparator miCertDelimiter2;
+        private System.Windows.Forms.ToolStripMenuItem miCertCopyAsText;
+        private System.Windows.Forms.ToolStripMenuItem miCertExport;
+        private System.Windows.Forms.ToolStripMenuItem miCertRemove;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertName;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertProperties;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertOrganization;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertLocality;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertState;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertCountry;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertIssuedBy;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertIssuingDate;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertAlgorithm;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertThumbprint;
+        private System.Windows.Forms.ToolStripMenuItem miColumnExpirationDate;
+        private DevExpress.XtraGrid.Columns.GridColumn colCertExpirationDate;
     }
 }
