@@ -619,10 +619,6 @@ namespace iba.Processing
                     ExtMonData.JobStatus.Stopped);
 
             ji.TodoCount.Value = (uint)s.ReadFiles.Count;
-#if DEBUG
-            // todo. kls. remove temporary override before release
-            ji.TodoCount.Value = (uint)(555000 + DateTime.Now.Second);
-#endif
             ji.DoneCount.Value = (uint)s.ProcessedFiles.Count;
             ji.FailedCount.Value = (uint)s.CountErrors();
 
