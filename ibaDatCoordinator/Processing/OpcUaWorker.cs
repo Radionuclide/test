@@ -397,7 +397,7 @@ namespace iba.Processing
         /// <summary> Indicates how many incoming connections were cancelled because of untrusted certificates.
         /// Change of this value may indicate that some new certificate has appeared in Rejected store.
         /// This may be helpful for optimizing certificate list refreshing. </summary>
-        public int RejectedCertificatesCounter { get; private set; } = 0;
+        public int RejectedCertificatesCounter { get; private set; }
         private int _lastSyncRejectedCertificatesCounter = -1;
 
         private CertificateTrustList TrustedCertStore => UaAppConfiguration?.SecurityConfiguration?.TrustedPeerCertificates;
@@ -826,15 +826,6 @@ namespace iba.Processing
         private List<X509Certificate2> GetTrustedCertificates() => GetCertificates(TrustedCertStore.OpenStore());
 
         private List<X509Certificate2> GetRejectedCertificates() => GetCertificates(RejectedCertStore.OpenStore());
-
-        private List<X509Certificate2> GetAllCertificates()
-        {
-            var list = new List<X509Certificate2>();
-            list.AddRange(GetOwnCertificates());
-            list.AddRange(GetTrustedCertificates());
-            list.AddRange(GetRejectedCertificates());
-            return list;
-        }
 
         // todo. kls. low priority - optimize lookup using hash 
         public X509Certificate2 GetCertificate(string thumbprint)

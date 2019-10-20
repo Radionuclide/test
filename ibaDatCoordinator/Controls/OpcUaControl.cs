@@ -618,11 +618,11 @@ namespace iba.Controls
             }
             else if (e.Column == colCertIssuingDate)
             {
-                e.DisplayText = cert.NotBefore.ToString();
+                e.DisplayText = cert.NotBefore.ToString(CultureInfo.CurrentCulture);
             }
             else if (e.Column == colCertExpirationDate)
             {
-                e.DisplayText = cert.NotAfter.ToString();
+                e.DisplayText = cert.NotAfter.ToString(CultureInfo.CurrentCulture);
             }
             else if (e.Column == colCertAlgorithm)
             {
@@ -660,7 +660,7 @@ namespace iba.Controls
                 {
                     corner.Offset(-totalWidth / 2, 0);
 
-                    float heightFactor = Math.Min((float)e.Bounds.Height / (float)ImgDimension, 1.0F);
+                    float heightFactor = Math.Min(e.Bounds.Height / (float)ImgDimension, 1.0F);
                     int newHeight = (int)Math.Floor(ImgDimension * heightFactor);
                     int newWidth = (int)Math.Floor(ImgDimension * heightFactor);
 
@@ -696,7 +696,7 @@ namespace iba.Controls
         {
             int lenAtt = attribute.Length;
 
-            int idxAtt = subject.IndexOf(attribute);
+            int idxAtt = subject.IndexOf(attribute, StringComparison.Ordinal);
             if (idxAtt == -1)
             {
                 return "";
