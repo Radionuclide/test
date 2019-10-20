@@ -98,6 +98,14 @@ namespace iba.Processing
 
                 // turn on monitoring timer
                 InitializeMonitoringTimer();
+
+                IbaOpcUaServer.SessionsStatusChanged += (sender, args) =>
+                    /* reset monitored groups on any change of sessions status */
+                    _monitoredGroups = null;
+
+                IbaOpcUaServer.ClientCertificateRejected += (sender, args) =>
+                    /* GUI will utilize this value to know whether it makes sense to refresh certificate list */
+                    RejectedCertificatesCounter++;
             }
             catch (Exception ex)
             {
@@ -386,20 +394,26 @@ namespace iba.Processing
 
         #region Certificates
 
+        /// <summary> Indicates how many incoming connections were cancelled because of untrusted certificates.
+        /// Change of this value may indicate that some new certificate has appeared in Rejected store.
+        /// This may be helpful for optimizing certificate list refreshing. </summary>
+        public int RejectedCertificatesCounter { get; private set; } = 0;
+        private int _lastSyncRejectedCertificatesCounter = -1;
+
         private CertificateTrustList TrustedCertStore => UaAppConfiguration?.SecurityConfiguration?.TrustedPeerCertificates;
         private CertificateStoreIdentifier RejectedCertStore => UaAppConfiguration?.SecurityConfiguration?.RejectedCertificateStore;
         private CertificateIdentifier OwnCertStore => UaAppConfiguration?.SecurityConfiguration?.ApplicationCertificate;
-
+        
         public List<OpcUaData.CertificateTag> HandleCertificate(string command, OpcUaData.CertificateTag certTag = null)
         {
             AssertInitialized();
-            
+
             // indicate that certificates were changed somehow
             _opcUaData.CertificateChangesCounter++; 
 
             switch (command)
             {
-                case "sync":
+                case "forceSync": /*unconditionally sync list with stores*/
                     // for sync command the arg is ignored
                     Debug.Assert(certTag == null);
 
@@ -407,6 +421,25 @@ namespace iba.Processing
                     _opcUaData.CertificateChangesCounter--;
 
                     // no additional action is needed;
+                    // sync will be performed below
+                    break;
+
+                case "sync": /* sync if there's a change in Rejected certificates */
+                    // for sync command the arg is ignored
+                    Debug.Assert(certTag == null);
+
+                    // undo increment; sync is not a change actually
+                    _opcUaData.CertificateChangesCounter--;
+
+                    if (_lastSyncRejectedCertificatesCounter == RejectedCertificatesCounter)
+                    {
+                        // no changes; do nothing
+                        return null;
+                    }
+
+                    // keep recent value
+                    _lastSyncRejectedCertificatesCounter = RejectedCertificatesCounter;
+                    
                     // sync will be performed below
                     break;
                 case "generate":
@@ -773,7 +806,17 @@ namespace iba.Processing
 
         public X509Certificate2 GetCertificate(string thumbprint)
         {
-            return GetCertificate(thumbprint, GetAllCertificates());
+            // look in own store
+            X509Certificate2 cert = GetCertificate(thumbprint, GetOwnCertificates());
+            if (cert != null)
+                return cert;
+            // look in trusted store
+            cert = GetCertificate(thumbprint, GetTrustedCertificates());
+            if (cert != null)
+                return cert;
+            // look in rejected store
+            cert = GetCertificate(thumbprint, GetRejectedCertificates());
+            return cert;
         }
 
         public X509Certificate2 GetCertificate(string thumbprint, List<X509Certificate2> certs)

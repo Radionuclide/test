@@ -107,6 +107,42 @@ namespace iba.Processing.IbaOpcUa
             base.OnServerStarted(server);
             // request notifications when the user identity is changed. all valid users are accepted by default.
             server.SessionManager.ImpersonateUser += SessionManager_ImpersonateUser;
+
+            server.SessionManager.SessionActivated += SessionManager_SessionChanged; 
+            server.SessionManager.SessionClosing += SessionManager_SessionChanged;
+            server.SessionManager.SessionCreated += SessionManager_SessionChanged;
+
+            CertificateValidator.CertificateValidation += CertificateValidator_CertificateValidation;
+        }
+
+        /// <summary> Occurs if there was a change of any kind (activated, closed, etc) in server sessions.
+        /// This event can be helpful to double-check current monitored items. </summary>
+        public event EventHandler<EventArgs> SessionsStatusChanged;
+
+        /// <summary> Occurs if some incoming client's certificate was rejected.
+        /// Newly rejected certificate can automatically appear in Rejected store.
+        /// So, this event can be helpful if one needs to track certificate changes. </summary>
+        public event EventHandler<EventArgs> ClientCertificateRejected;
+
+        private void CertificateValidator_CertificateValidation(CertificateValidator sender, CertificateValidationEventArgs e)
+        {
+            if (e.Error.StatusCode == StatusCodes.BadCertificateUntrusted)
+            {
+                try
+                {
+                    ClientCertificateRejected?.Invoke(this, EventArgs.Empty);
+                }
+                catch { /* not critical */ }
+            }
+        }
+
+        private void SessionManager_SessionChanged(Session session, SessionEventReason reason)
+        {
+            try
+            {
+                SessionsStatusChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch { /* not critical */ }
         }
 
         /// <summary>  Called when a client tries to change its user identity. </summary>

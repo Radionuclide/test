@@ -83,6 +83,8 @@
             this.buttonCertUser = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.buttonCertServer = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.buttonCertRefresh = new System.Windows.Forms.ToolStripButton();
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.tbDiagTmp = new System.Windows.Forms.TextBox();
             this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
@@ -224,7 +226,7 @@
             this.miCertExport,
             this.miCertRemove});
             this.contextMenuCerts.Name = "contextMenuCerts";
-            this.contextMenuCerts.Size = new System.Drawing.Size(265, 246);
+            this.contextMenuCerts.Size = new System.Drawing.Size(265, 224);
             // 
             // miColumns
             // 
@@ -391,7 +393,7 @@
             this.miCertCopyAsText.Image = global::iba.Properties.Resources.copy;
             this.miCertCopyAsText.Name = "miCertCopyAsText";
             this.miCertCopyAsText.Size = new System.Drawing.Size(264, 26);
-            this.miCertCopyAsText.Text = "Copy as text";
+            this.miCertCopyAsText.Text = "Copy to clipboard as text";
             this.miCertCopyAsText.Click += new System.EventHandler(this.miCertCopyAsText_Click);
             // 
             // miCertExport
@@ -552,7 +554,9 @@
             this.toolStripSeparator2,
             this.buttonCertUser,
             this.toolStripSeparator3,
-            this.buttonCertServer});
+            this.buttonCertServer,
+            this.toolStripSeparator4,
+            this.buttonCertRefresh});
             this.toolStrip1.Location = new System.Drawing.Point(3, 16);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -659,6 +663,21 @@
             this.buttonCertServer.Size = new System.Drawing.Size(23, 22);
             this.buttonCertServer.Text = "Use the selected certificate as OPC UA server certificate";
             this.buttonCertServer.Click += new System.EventHandler(this.buttonCertServer_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // buttonCertRefresh
+            // 
+            this.buttonCertRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonCertRefresh.Image = global::iba.Properties.Resources.Aktualisieren;
+            this.buttonCertRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonCertRefresh.Name = "buttonCertRefresh";
+            this.buttonCertRefresh.Size = new System.Drawing.Size(23, 22);
+            this.buttonCertRefresh.Text = "Refresh the table";
+            this.buttonCertRefresh.Click += new System.EventHandler(this.buttonCertRefresh_Click);
             // 
             // gbDiagnostics
             // 
@@ -1543,5 +1562,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn colCertThumbprint;
         private System.Windows.Forms.ToolStripMenuItem miColumnExpirationDate;
         private DevExpress.XtraGrid.Columns.GridColumn colCertExpirationDate;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton buttonCertRefresh;
     }
 }

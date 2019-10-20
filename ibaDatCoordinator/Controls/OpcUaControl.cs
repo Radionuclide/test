@@ -82,8 +82,7 @@ namespace iba.Controls
             miColumns.DropDown.Closing +=
                 (o, args) => args.Cancel = (args.CloseReason == ToolStripDropDownCloseReason.ItemClicked);
 
-            // todo. kls. remove!
-            // set up DataGridView
+            // set up Endpoints DataGridView
             dgvColumnHost.ValueType = typeof(string);
             dgvColumnPort.ValueType = typeof(int);
             dgvColumnUri.ValueType = typeof(string);
@@ -278,10 +277,9 @@ namespace iba.Controls
             cbLogonUserName_CheckedChanged(null, null);
             cbSecurity128_CheckedChanged(null, null);
             cbSecurity256_CheckedChanged(null, null);
-            dgvCertificates_SelectionChanged(null, null);
 
             // synchronize with OpcUaWorker
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("sync");
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("forceSync");
 
             // copy to controls
             RefreshCertificatesTable(certs);
@@ -316,8 +314,8 @@ namespace iba.Controls
         private readonly Image imgUaServer;
         private readonly Image imgDude;
         private readonly StringFormat textAlign = new StringFormat {Alignment = StringAlignment.Center};
-        private const int imgDimension = 16;
-        private const int imgGapPix = 4;
+        private const int ImgDimension = 16;
+        private const int ImgGapPix = 4;
 
         private int toolTipLastRowHandle = -1;
         /// <summary> Stores cached info about currently pointed item; is needed to decrease computational load. </summary>
@@ -327,15 +325,15 @@ namespace iba.Controls
         {
             _lastCertTableUpdateStamp = DateTime.Now;
 
-            // remember selected line
+            // remember selected line and scroll position
             var selectedLine = SelectedCertificate;
-            var scroll1 = gridViewCerts.TopRowIndex;
+            var scrollPosition = gridViewCerts.TopRowIndex;
 
             CertificatesDataSource = certs;
 
-            // restore selected line if possible
+            // restore selected line and scroll position
             SelectedCertificate = selectedLine;
-            gridViewCerts.TopRowIndex = scroll1;
+            gridViewCerts.TopRowIndex = scrollPosition;
         }
 
 
@@ -493,6 +491,12 @@ namespace iba.Controls
             RefreshCertificatesTable(certs);
         }
 
+        private void buttonCertRefresh_Click(object sender, EventArgs e)
+        {
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("forceSync", null);
+            RefreshCertificatesTable(certs);
+        }
+
         #endregion
 
         /// <summary> Typed wrapper of <see cref="gridControlCerts"/> DataSource </summary>
@@ -502,7 +506,7 @@ namespace iba.Controls
             set
             {
                 gridControlCerts.DataSource = value;
-                gridControlCerts.RefreshDataSource(); // todo. kls. 
+                gridControlCerts.RefreshDataSource();
                 toolTipLastRowHandle = -1;
             }
         }
@@ -526,16 +530,6 @@ namespace iba.Controls
 
                 gridViewCerts.FocusedRowHandle = CertificatesDataSource.FindIndex(el => el.Thumbprint == value.Thumbprint);
             }
-        }
-
-
-        private void dgvCertificates_SelectionChanged(object sender, EventArgs e)
-        {
-            // todo. kls. 
-            //buttonCertExport.Enabled = buttonCertRemove.Enabled =
-            //    buttonCertTrust.Enabled = buttonCertReject.Enabled =
-            //        buttonCertUser.Enabled = buttonCertServer.Enabled =
-            //            dgvCertificates.SelectedRows.Count > 0;
         }
 
         private void gridViewCerts_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
@@ -599,7 +593,7 @@ namespace iba.Controls
             else if (e.Column == colCertProperties)
             {
                 int actIcons = 1;
-                int maxIcons = (e.Bounds.Width + imgGapPix) / (imgDimension + imgGapPix);
+                int maxIcons = (e.Bounds.Width + ImgGapPix) / (ImgDimension + ImgGapPix);
                 // 4 is maximum number of icons we want to display (Tr/Rej, Key, Auth, Srv)
                 maxIcons = Math.Min(maxIcons, 4);
 
@@ -612,7 +606,7 @@ namespace iba.Controls
                 if (certTag.IsUsedForAuthentication)
                     actIcons = 4;
 
-                int totalWidth = maxIcons * imgDimension + (maxIcons - 1) * imgGapPix;
+                int totalWidth = maxIcons * ImgDimension + (maxIcons - 1) * ImgGapPix;
 
                 Point corner = new Point(e.Bounds.X + e.Bounds.Width / 2, e.Bounds.Y);
 
@@ -624,9 +618,9 @@ namespace iba.Controls
                 {
                     corner.Offset(-totalWidth / 2, 0);
 
-                    float heightFactor = Math.Min((float)e.Bounds.Height / (float)imgDimension, 1.0F);
-                    int newHeight = (int)Math.Floor(imgDimension * heightFactor);
-                    int newWidth = (int)Math.Floor(imgDimension * heightFactor);
+                    float heightFactor = Math.Min((float)e.Bounds.Height / (float)ImgDimension, 1.0F);
+                    int newHeight = (int)Math.Floor(ImgDimension * heightFactor);
+                    int newWidth = (int)Math.Floor(ImgDimension * heightFactor);
 
                     //int xIndex = 0;
                     //e.Graphics.DrawImage(certTag.IsTrusted ? imgTrusted : imgRejected, corner.X + (imgDimension + imgGapPix) * xIndex, corner.Y, newHeight, newWidth);
@@ -647,7 +641,7 @@ namespace iba.Controls
                             continue;
                         
                         e.Graphics.DrawImage(img, 
-                            corner.X + (imgDimension + imgGapPix) * i, corner.Y,
+                            corner.X + (ImgDimension + ImgGapPix) * i, corner.Y,
                             newHeight, newWidth);
                     }
                 }
@@ -1217,7 +1211,8 @@ namespace iba.Controls
                 if (DateTime.Now - _lastCertTableUpdateStamp > TimeSpan.FromSeconds(3) /*not more often than once per 3 sec*/)
                 {
                     var certs = TaskManager.Manager.OpcUaHandleCertificate("sync");
-                    RefreshCertificatesTable(certs);
+                    if (certs != null)
+                        RefreshCertificatesTable(certs);
                 }
 
                 // update currently selected node information in object tree
@@ -1407,6 +1402,7 @@ namespace iba.Controls
 
 
         #endregion
-        
+
+   
     }
 }
