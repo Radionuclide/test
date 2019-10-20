@@ -466,24 +466,88 @@ namespace iba.Processing
                 ids.Add(thumbprint);
             }
 
+            var trustedCerts = GetTrustedCertificates();
+            var rejectedCerts = GetRejectedCertificates();
+            var ownCerts = GetOwnCertificates();
+            var allCerts = new List<X509Certificate2>();
+            allCerts.AddRange(trustedCerts);
+            allCerts.AddRange(rejectedCerts);
+            allCerts.AddRange(ownCerts);
+
             // remove non-existent (probably they were deleted by hand)
-            for (var i = 0; i < _opcUaData.Certificates.Count; i++)
+            for (var i = _opcUaData.Certificates.Count - 1; i >= 0; i--)
             {
                 var certTag = _opcUaData.Certificates[i];
-
                 Debug.Assert(certTag?.Thumbprint != null);
-
-                var cert = GetCertificate(certTag.Thumbprint);
+                var cert = GetCertificate(certTag.Thumbprint, allCerts); // find in any store by thumbprint
 
                 if (cert == null)
                 {
-                    // not found;
+                    // not found in stores;
                     // remove it from our list
                     _opcUaData.Certificates.RemoveAt(i);
                 }
             }
 
-            LoadCertificatesFromDisk();
+            // Add possible missing certificates from Trusted store
+            foreach (var cert in trustedCerts)
+            {
+                // check if already present in collection or add it
+                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
+
+                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+                if (certTag == null)
+                    certTag = _opcUaData.AddCertificate(cert);
+
+                // bind cert
+                certTag.Certificate = cert;
+                Debug.Assert(cert.Thumbprint == certTag.Thumbprint);
+
+                // mark as trusted
+                certTag.IsTrusted = true;
+            }
+
+            // Add possible missing certificates from Rejected store
+            foreach (var cert in GetRejectedCertificates())
+            {
+                // check if already present in collection or add it
+                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
+
+                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+                if (certTag == null)
+                    certTag = _opcUaData.AddCertificate(cert);
+
+                // bind cert
+                certTag.Certificate = cert;
+                Debug.Assert(cert.Thumbprint == certTag.Thumbprint);
+
+                // mark as rejected
+                certTag.IsTrusted = false;
+            }
+
+            // Add possible missing certificates from Own store
+            foreach (var cert in ownCerts)
+            {
+                if (!cert.HasPrivateKey)
+                {
+                    // should not happen
+                    // skip certs that do not have private keys
+                    // because they cannot serve as our own certificate
+                    continue;
+                }
+
+                // check if already present in collection or add it
+                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
+
+                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+                if (certTag == null)
+                    certTag = _opcUaData.AddCertificate(cert);
+
+                // bind cert
+                certTag.Certificate = cert;
+                certTag.HasPrivateKey = cert.HasPrivateKey;
+                Debug.Assert(cert.Thumbprint == certTag.Thumbprint);
+            }
 
             // set server cert
             var serverCertTag = _opcUaData.GetServerCertificate(); // check if one is set in _opcUaData
@@ -510,72 +574,7 @@ namespace iba.Processing
                 }
             }
         }
-
-        private void LoadCertificatesFromDisk()
-        {
-            foreach (var cert in GetTrustedCertificates())
-            {
-                // check if already present in collection or add it
-                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
-
-                if (certTag == null)
-                {
-                    certTag = _opcUaData.AddCertificate(cert);
-                }
-
-                // bind cert
-                certTag.Certificate = cert;
-                Debug.Assert(cert.Thumbprint == certTag.Thumbprint);
-
-                // mark as trusted
-                certTag.IsTrusted = true;
-            }
-
-            foreach (var cert in GetRejectedCertificates())
-            {
-                // check if already present in collection or add it
-                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
-
-                if (certTag == null)
-                {
-                    certTag = _opcUaData.AddCertificate(cert);
-                }
-
-                // bind cert
-                certTag.Certificate = cert;
-                Debug.Assert(cert.Thumbprint == certTag.Thumbprint);
-
-                // mark as rejected
-                certTag.IsTrusted = false;
-            }
-
-            var own = GetOwnCertificates();
-
-            foreach (var cert in own)
-            {
-                if (!cert.HasPrivateKey)
-                {
-                    // should not happen
-                    // skip certs that do not have private keys
-                    // because they cannot serve as our own certificate
-                    continue;
-                }
-
-                // check if already present in collection or add it
-                var certTag = _opcUaData.GetCertificate(cert.Thumbprint);
-
-                if (certTag == null)
-                {
-                    certTag = _opcUaData.AddCertificate(cert);
-                }
-
-                // bind cert
-                certTag.Certificate = cert;
-                certTag.HasPrivateKey = cert.HasPrivateKey;
-                Debug.Assert(cert.Thumbprint == certTag.Thumbprint);
-            }
-        }
-
+        
         /// <summary> Removes the certificate from all stores (own, rejected, trusted) </summary>
         private void RemoveCertificateFromAllStores(string thumbprint)
         {
@@ -774,12 +773,16 @@ namespace iba.Processing
 
         public X509Certificate2 GetCertificate(string thumbprint)
         {
-            foreach (var cert in GetAllCertificates())
+            return GetCertificate(thumbprint, GetAllCertificates());
+        }
+
+        public X509Certificate2 GetCertificate(string thumbprint, List<X509Certificate2> certs)
+        {
+            foreach (var cert in certs)
             {
                 if (cert.Thumbprint == thumbprint)
                     return cert;
             }
-
             return null;
         }
 
