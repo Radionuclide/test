@@ -172,6 +172,12 @@
     <Compile Include="Controls\ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.Designer.cs">
+      <DependentUpon>OpcUaCertificateEnterPasswordForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\OpcUaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -500,6 +506,10 @@
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
+    <EmbeddedResource Include="Controls\OpcUaCertificateEnterPasswordForm.resx">
+      <DependentUpon>OpcUaCertificateEnterPasswordForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\OpcUaControl.resx">
       <DependentUpon>OpcUaControl.cs</DependentUpon>
     </EmbeddedResource>

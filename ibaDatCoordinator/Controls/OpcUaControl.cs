@@ -345,11 +345,36 @@ namespace iba.Controls
                 return;
 
             var cert = new X509Certificate2();
-            cert.Import(openFileDialog.FileName);
-            OpcUaData.CertificateTag certTag = new OpcUaData.CertificateTag
+            try
             {
-                Certificate = cert
-            };
+                cert.Import(openFileDialog.FileName);
+            }
+            catch 
+            {
+                // try again with a password
+                using (OpcUaCertificateEnterPasswordForm passForm = new OpcUaCertificateEnterPasswordForm())
+                {
+                    if (passForm.ShowDialog(this) != DialogResult.OK)
+                        return;
+
+                    try
+                    {
+                        cert = new X509Certificate2();
+                        cert.Import(openFileDialog.FileName, passForm.Password, X509KeyStorageFlags.DefaultKeySet);
+                    }
+                    catch (Exception ex)
+                    {
+                        // todo. kls. localize - AddCertificateFailed/AddCertificateCaption
+                        MessageBox.Show(this,
+                            string.Format("Failed to add certificate: {0}", ex.Message), "Add certificate",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+
+            }
+
+            OpcUaData.CertificateTag certTag = new OpcUaData.CertificateTag { Certificate = cert };
 
             var certs = TaskManager.Manager.OpcUaHandleCertificate("add", certTag);
             RefreshCertificatesTable(certs);
