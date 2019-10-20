@@ -4,7 +4,7 @@
   xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
   xmlns="http://opcfoundation.org/UA/SDK/Configuration.xsd"
 >
-  <ApplicationName>ibaDatCoordinator UA Server</ApplicationName>
+  <ApplicationName>ibaDatCoordinator OPC UA Server</ApplicationName>
   <ApplicationUri>urn:localhost:ibaDatCoordinator:UA:Server</ApplicationUri>
   <ProductUri>uri:iba-ag.com:ibaDatCoordinator:UA:Server</ProductUri>
   <ApplicationType>Server_0</ApplicationType>
@@ -15,7 +15,7 @@
     <ApplicationCertificate>
       <StoreType>Directory</StoreType>
       <StorePath>%CommonApplicationData%\iba\ibaDatCoordinator\Opc\UACertificates\Own</StorePath>
-      <SubjectName>ibaDatCoordinator UA Server</SubjectName>
+      <SubjectName>ibaDatCoordinator OPC UA Server</SubjectName>
     </ApplicationCertificate>
 
     <!-- Where the trust list is stored (UA Applications) -->
