@@ -329,11 +329,13 @@ namespace iba.Controls
 
             // remember selected line
             var selectedLine = SelectedCertificate;
+            var scroll1 = gridViewCerts.TopRowIndex;
 
             CertificatesDataSource = certs;
 
             // restore selected line if possible
             SelectedCertificate = selectedLine;
+            gridViewCerts.TopRowIndex = scroll1;
         }
 
 
@@ -597,16 +599,18 @@ namespace iba.Controls
             else if (e.Column == colCertProperties)
             {
                 int actIcons = 1;
-                int maxIcons = Math.Min((e.Bounds.Width + imgGapPix) / (imgDimension + imgGapPix), 5);  // 5 is maximum number of icons we want to display
+                int maxIcons = (e.Bounds.Width + imgGapPix) / (imgDimension + imgGapPix);
+                // 4 is maximum number of icons we want to display (Tr/Rej, Key, Auth, Srv)
+                maxIcons = Math.Min(maxIcons, 4);
 
                 if (certTag.HasPrivateKey)
-                    actIcons++;
+                    actIcons = 2;
 
                 if (certTag.IsUsedForServer)
-                    actIcons++;
+                    actIcons = 3;
 
                 if (certTag.IsUsedForAuthentication)
-                    actIcons++;
+                    actIcons = 4;
 
                 int totalWidth = maxIcons * imgDimension + (maxIcons - 1) * imgGapPix;
 
@@ -769,11 +773,9 @@ namespace iba.Controls
                 if (cert == null)
                     return;
 
+                // todo. kls. localize?
                 string str = "";
-
-                str += $"Name = {GetCertificateAttribute(cert.Issuer, "CN=")}\r\n";
-                str += $"Name = {GetCertificateAttribute(cert.IssuerName.ToString(), "CN=")}\r\n";
-
+                str += $"Name = {GetCertificateAttribute(cert.Subject, "CN=")}\r\n";
                 str += $"Organization = {GetCertificateAttribute(cert.Subject, "CN=")}\r\n";
                 str += $"Locality = {GetCertificateAttribute(cert.Subject, "L=")}\r\n";
                 str += $"State = {GetCertificateAttribute(cert.Subject, "S=")}\r\n";
@@ -784,9 +786,6 @@ namespace iba.Controls
                 str += $"Algorithm = {cert.SignatureAlgorithm.FriendlyName}\r\n";
                 str += $"Thumbprint = {certTag.Thumbprint}\r\n";
                 
-                //str += $"Properties = {GetCertificateAttribute(cert.Subject, "CN=")}\r\n";
-
-
                 Clipboard.Clear();
                 Clipboard.SetText(str);
             }
