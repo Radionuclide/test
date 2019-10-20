@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace iba.Controls
 {
+    /// <summary> (copied from ibaPda project) </summary>
     public partial class OpcUaCertificateEnterPasswordForm : Form
     {
         public OpcUaCertificateEnterPasswordForm()

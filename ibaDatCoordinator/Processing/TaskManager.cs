@@ -845,6 +845,12 @@ namespace iba.Processing
             }
         }
 
+        /// <summary> Gets Server host name (can be different from client's one if is run in c/s mode) </summary>
+        public virtual string GetServerHostName()
+        {
+            return System.Net.Dns.GetHostName();
+        }
+
         #endregion
 
 
@@ -1004,11 +1010,11 @@ namespace iba.Processing
             }
         }
 
-        public virtual List<OpcUaData.CertificateTag> OpcUaHandleCertificate(string command, OpcUaData.CertificateTag certTag = null)
+        public virtual List<OpcUaData.CertificateTag> OpcUaHandleCertificate(string command, object args = null)
         {
             try
             {
-                return OpcUaWorker.HandleCertificate(command, certTag);
+                return OpcUaWorker.HandleCertificate(command, args);
             }
             catch (Exception ex)
             {
@@ -1636,6 +1642,19 @@ namespace iba.Processing
             Program.CommunicationObject?.HandleBrokenConnection(ex);
         }
 
+        public override string GetServerHostName()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.GetServerHostName();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.GetServerHostName();
+            }
+        }
+
         #endregion
 
 
@@ -1812,16 +1831,16 @@ namespace iba.Processing
             }
         }
 
-        public override List<OpcUaData.CertificateTag> OpcUaHandleCertificate(string command, OpcUaData.CertificateTag certTag = null)
+        public override List<OpcUaData.CertificateTag> OpcUaHandleCertificate(string command, object args = null)
         {
             try
             {
-                return Program.CommunicationObject.Manager.OpcUaHandleCertificate(command, certTag);
+                return Program.CommunicationObject.Manager.OpcUaHandleCertificate(command, args);
             }
             catch (Exception ex)
             {
                 HandleBrokenConnection(ex);
-                return Manager.OpcUaHandleCertificate(command, certTag);
+                return Manager.OpcUaHandleCertificate(command, args);
             }
         }
 

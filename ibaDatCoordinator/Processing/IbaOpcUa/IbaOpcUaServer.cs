@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
 using System.Security.Cryptography.X509Certificates;
 using Opc.Ua;
 using Opc.Ua.Server;
@@ -27,8 +25,6 @@ namespace iba.Processing.IbaOpcUa
             public uint NextSequenceNumber;
         }
     }
-
-
 
     public class IbaOpcUaServer : StandardServer
     {

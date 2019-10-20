@@ -374,21 +374,38 @@ namespace iba.Controls
 
             }
 
-            OpcUaData.CertificateTag certTag = new OpcUaData.CertificateTag { Certificate = cert };
-
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("add", certTag);
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("add", cert);
             RefreshCertificatesTable(certs);
         }
 
         private void buttonCertGenerate_Click(object sender, EventArgs e)
         {
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            var certTag = new OpcUaData.CertificateTag();
+            OpcUaData.CGenerateCertificateArgs certArgs = new OpcUaData.CGenerateCertificateArgs
+            {
+                ApplicationName = $"ibaDatCoordinator OPC UA Server@{TaskManager.Manager.GetServerHostName()}",
+                UseSha256 = false
+            };
 
-            // todo. kls. Create a form to request cert parameters like in PDA
-            // Name, Uri, Lifetime, Algorithm
+            using (OpcUaCertificateGenerateForm genForm = new OpcUaCertificateGenerateForm())
+            {
+                genForm.LoadDataSource(certArgs);
 
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("generate", certTag);
+                if (genForm.ShowDialog() != DialogResult.OK)
+                    return;
+
+                genForm.ApplySettings(certArgs);
+            }
+            
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("generate", certArgs);
+
+            if (certs == null)
+            {
+                // todo. kls. localize
+                MessageBox.Show(this,
+                    "Failed to generate the certificate", "Generate certificate",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             RefreshCertificatesTable(certs);
 
@@ -466,7 +483,7 @@ namespace iba.Controls
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
 
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("remove", certTag);
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("remove", certTag.Thumbprint);
             RefreshCertificatesTable(certs);
         }
 
@@ -475,7 +492,7 @@ namespace iba.Controls
             var certTag = SelectedCertificate;
             if (certTag == null)
                 return;
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("trust", certTag);
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("trust", certTag.Thumbprint);
             RefreshCertificatesTable(certs);
         }
 
@@ -484,7 +501,7 @@ namespace iba.Controls
             var certTag = SelectedCertificate;
             if (certTag == null)
                 return;
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("reject", certTag);
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("reject", certTag.Thumbprint);
             RefreshCertificatesTable(certs);
         }
 
@@ -493,7 +510,7 @@ namespace iba.Controls
             var certTag = SelectedCertificate;
             if (certTag == null)
                 return;
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("asUser", certTag);
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("asUser", certTag.Thumbprint);
             RefreshCertificatesTable(certs);
         }
 
@@ -512,13 +529,13 @@ namespace iba.Controls
                 return;
             }
 
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("asServer", certTag);
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("asServer", certTag.Thumbprint);
             RefreshCertificatesTable(certs);
         }
 
         private void buttonCertRefresh_Click(object sender, EventArgs e)
         {
-            var certs = TaskManager.Manager.OpcUaHandleCertificate("forceSync", null);
+            var certs = TaskManager.Manager.OpcUaHandleCertificate("forceSync");
             RefreshCertificatesTable(certs);
         }
 

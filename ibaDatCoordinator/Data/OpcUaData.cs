@@ -230,6 +230,33 @@ namespace iba.Data
 
         public List<CertificateTag> Certificates = new List<CertificateTag>();
 
+        /// <summary> (copied from ibaPda project) </summary>
+        public class CGenerateCertificateArgs
+        {
+            public CGenerateCertificateArgs()
+            {
+                ApplicationName = "";
+                ApplicationUri = "";
+                Lifetime = 120;
+                UseSha256 = true;
+                KeySize = 2048;
+            }
+            public CGenerateCertificateArgs(string appName, string appUri, int lifeTimeMonths, bool bUseSha256, int keySize)
+            {
+                ApplicationName = appName;
+                ApplicationUri = appUri;
+                Lifetime = lifeTimeMonths;
+                UseSha256 = bUseSha256;
+                KeySize = keySize;
+            }
+
+            public string ApplicationName;
+            public string ApplicationUri;
+            public int Lifetime;
+            public bool UseSha256;
+            public int KeySize; // in bytes
+        }
+
         /// <summary>
         /// Indicates how many changes were made in certificate configuration.
         /// This is used to tell whether we should Restart server or not.

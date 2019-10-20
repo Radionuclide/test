@@ -298,10 +298,10 @@ namespace iba.Processing
             
             // check own server certificate
             var serverCert = _opcUaData.GetServerCertificate();
-            if (serverCert == null)
-                throw new InvalidOperationException("OPC UA Server has no configured certificate");
+            if (serverCert == null)  
+                throw new InvalidOperationException("OPC UA Server has no configured certificate"); // todo. kls. localize
             if (!serverCert.IsTrusted)
-                throw new InvalidOperationException("The configured OPC UA Server certificate is not trusted");
+                throw new InvalidOperationException("The configured OPC UA Server certificate is not trusted"); // todo. kls. localize
 
             // create list of allowed user certificates
             IbaOpcUaServer.CertifiedUsers.Clear();
@@ -404,18 +404,21 @@ namespace iba.Processing
         private CertificateStoreIdentifier RejectedCertStore => UaAppConfiguration?.SecurityConfiguration?.RejectedCertificateStore;
         private CertificateIdentifier OwnCertStore => UaAppConfiguration?.SecurityConfiguration?.ApplicationCertificate;
         
-        public List<OpcUaData.CertificateTag> HandleCertificate(string command, OpcUaData.CertificateTag certTag = null)
+        public List<OpcUaData.CertificateTag> HandleCertificate(string command, object args = null)
         {
             AssertInitialized();
 
             // indicate that certificates were changed somehow
-            _opcUaData.CertificateChangesCounter++; 
+            // (it is applicable to all cases except "sync" and "forceSync")
+            _opcUaData.CertificateChangesCounter++;
+
+            string thumbprintArg = args as string; // is used in several cases
 
             switch (command)
             {
                 case "forceSync": /*unconditionally sync list with stores*/
                     // for sync command the arg is ignored
-                    Debug.Assert(certTag == null);
+                    Debug.Assert(args == null);
 
                     // undo increment; sync is not a change actually
                     _opcUaData.CertificateChangesCounter--;
@@ -424,9 +427,9 @@ namespace iba.Processing
                     // sync will be performed below
                     break;
 
-                case "sync": /* sync if there's a change in Rejected certificates */
+                case "sync": /* sync if there's a change in counter of Rejected certificates */
                     // for sync command the arg is ignored
-                    Debug.Assert(certTag == null);
+                    Debug.Assert(args == null);
 
                     // undo increment; sync is not a change actually
                     _opcUaData.CertificateChangesCounter--;
@@ -442,36 +445,71 @@ namespace iba.Processing
                     
                     // sync will be performed below
                     break;
+
                 case "generate":
-                    // arg should be empty
-                    Debug.Assert(certTag?.Certificate == null);
-                    GenerateNewCertificate();
+                    if (!(args is OpcUaData.CGenerateCertificateArgs genArgs))
+                    {
+                        Debug.Assert(false);
+                        return null;
+                    }
+                    if (GenerateNewCertificate(genArgs) == null)
+                        return null;
                     break;
 
                 case "add":
-                    AddExistingCertificate(certTag?.Certificate);
+                    if (!(args is X509Certificate2 certArg))
+                    {
+                        Debug.Assert(false);
+                        return null;
+                    }
+                    AddExistingCertificate(certArg);
                     break;
 
                 case "remove":
-                    RemoveCertificateFromAllStores(certTag?.Thumbprint);
+                    if (thumbprintArg == null)
+                    {
+                        Debug.Assert(false);
+                        return null;
+                    }
+                    RemoveCertificateFromAllStores(thumbprintArg);
                     break;
 
                 case "trust":
-                    SetCertificateTrust(certTag?.Thumbprint, true);
+                    if (thumbprintArg == null)
+                    {
+                        Debug.Assert(false);
+                        return null;
+                    }
+                    SetCertificateTrust(thumbprintArg, true);
                     break;
 
                 case "reject":
-                    SetCertificateTrust(certTag?.Thumbprint, false);
+                    if (thumbprintArg == null)
+                    {
+                        Debug.Assert(false);
+                        return null;
+                    }
+                    SetCertificateTrust(thumbprintArg, false);
                     break;
 
                 case "asUser":
-                    var localCertTag = _opcUaData.GetCertificate(certTag?.Thumbprint);
+                    if (thumbprintArg == null)
+                    {
+                        Debug.Assert(false);
+                        return null;
+                    }
+                    var localCertTag = _opcUaData.GetCertificate(thumbprintArg);
                     if (localCertTag != null)
                         localCertTag.IsUsedForAuthentication ^= true; // toggle
                     break;
 
                 case "asServer":
-                    SetServerCertificate(certTag?.Thumbprint);
+                    if (thumbprintArg == null)
+                    {
+                        Debug.Assert(false);
+                        return null;
+                    }
+                    SetServerCertificate(thumbprintArg);
                     break;
 
                 default:
@@ -479,19 +517,7 @@ namespace iba.Processing
                         $@"{nameof(HandleCertificate)}. Command {command} is not supported");
             }
 
-            // todo. kls. 
-            System.Diagnostics.Stopwatch sw = new Stopwatch();
-            sw.Start();
-            // todo. kls. performance test
-            for (int jj = 0; jj < 1; jj++)
-            {
-                SynchronizeCertificates();
-            }
-            sw.Stop();
-            Debug.WriteLine("-------------------------------------------------------------------");
-            Debug.WriteLine($@"Duration = {sw.ElapsedMilliseconds / 1000.0:F2} sec");
-            Debug.WriteLine("-------------------------------------------------------------------");
-
+            SynchronizeCertificates();
             return new List<OpcUaData.CertificateTag>(_opcUaData.Certificates);
         }
 
@@ -604,17 +630,16 @@ namespace iba.Processing
             }
             else
             {
-                // select any of our own
+                // try to select the one that was generated by default (may happen on the first launch)
                 // this is needed to ensure server will run out of the box
                 // when nothing special was yet configured by the user
-                foreach (var certTag in _opcUaData.Certificates)
+
+                var currentConfigCertThumbprint = UaAppConfiguration.SecurityConfiguration?.ApplicationCertificate?.Thumbprint;
+                // check if it exists and is present our list
+                // (this is not always true, because SecurityConfiguration.ApplicationCertificate can contain cached data)
+                if (currentConfigCertThumbprint != null && GetCertificate(currentConfigCertThumbprint, ownCerts) != null)
                 {
-                    // ReSharper disable once InvertIf
-                    if (certTag.IsTrusted && certTag.Certificate != null && certTag.Certificate.HasPrivateKey)
-                    {
-                        SetServerCertificate(certTag.Thumbprint);
-                        break;
-                    }
+                    _opcUaData.SetServerCertificateFlag(currentConfigCertThumbprint);
                 }
             }
         }
@@ -634,7 +659,7 @@ namespace iba.Processing
                 store.Close();
             }
 
-            RemoveCertificateFromTrustedAndRejected(thumbprint);
+            RemoveCertificateFromTrustedAndRejected(thumbprint);           
         }
 
         private void RemoveCertificateFromTrustedAndRejected(string thumbprint)
@@ -714,7 +739,6 @@ namespace iba.Processing
                 ICertificateStore store = OwnCertStore.OpenStore();
                 try
                 {
-                    
                     store.Add(certificate);
                 }
                 catch
@@ -734,7 +758,7 @@ namespace iba.Processing
             }
         }
 
-        private X509Certificate2 GenerateNewCertificate()
+        private X509Certificate2 GenerateNewCertificate(OpcUaData.CGenerateCertificateArgs genArgs)
         {
             try
             {
@@ -744,17 +768,14 @@ namespace iba.Processing
 
                 CertificateIdentifier certId = UaAppConfiguration.SecurityConfiguration.ApplicationCertificate;
 
-                // todo. kls. remove temporary numbering
-                var rnd = new Random();
-                var tmpRndStr = $@" #{rnd.Next(100, 1000)}";
-
                 var cert = Opc.Ua.CertificateFactory.CreateCertificate(
                     certId.StoreType, certId.StorePath,
-                    UaAppConfiguration.ApplicationUri, UaAppConfiguration.ApplicationName + tmpRndStr,
+                    genArgs.ApplicationUri, genArgs.ApplicationName,
                     null,
-                    serverDomainNames, 256, 120);
+                    serverDomainNames, (ushort)genArgs.KeySize, (ushort)genArgs.Lifetime);
 
-                // certificate is automatically added to the own store
+                // certificate is automatically added to the own store;
+                // copy it to the trusted store also
                 SetCertificateTrust(cert, true);
 
                 return cert;
@@ -815,6 +836,7 @@ namespace iba.Processing
             return list;
         }
 
+        // todo. kls. low priority - optimize lookup using hash 
         public X509Certificate2 GetCertificate(string thumbprint)
         {
             // look in own store
