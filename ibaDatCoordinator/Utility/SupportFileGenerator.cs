@@ -47,9 +47,9 @@ namespace iba.Utility
                     GetServerZipFile(serverFile);
                     host = Program.ServiceHost;
                     generated = File.Exists(serverFile);
-                }
+				}
 
-                if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+				if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
                     return;
                 else
                     using (WaitCursor wait = new WaitCursor())
@@ -127,7 +127,7 @@ namespace iba.Utility
                 sb.AppendLine(DatCoVersion.GetVersion());
             }
             catch
-            { }
+            {}
 
             try
             {
@@ -137,7 +137,7 @@ namespace iba.Utility
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
             }
             catch
-            { }
+            {}
 
             try
             {
@@ -149,7 +149,7 @@ namespace iba.Utility
                 myIbaFile.Dispose(); 
             }
             catch
-            { }
+            {}
 
 
             try
@@ -157,8 +157,7 @@ namespace iba.Utility
                 GetDongleInfo(sb);
             }
             catch
-            {
-            }
+            {}
 
             try
             {
@@ -170,8 +169,7 @@ namespace iba.Utility
                 File.Delete(infoFile);
             }
             catch
-            {
-            }
+            {}
         }
 
         private void GenerateClientZipFile(string target)
@@ -202,11 +200,11 @@ namespace iba.Utility
                     else
                         File.Delete(outFile);
                 }
-                catch
-                {
-                }
+				catch
+				{
+				}
 
-                try
+				try
                 {
                     //logfiles, local
                     string logdir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -306,29 +304,32 @@ namespace iba.Utility
 
         private void GetServerZipFile(string target)
         {
-            //if (Program.ServiceIsLocal)
-            //{
-            //    using (WaitCursor wait = new WaitCursor())
-            //    {
-            //        GenerateServerZipFile(target);
-            //    }
-            //    return;
-            //}
-            //else
-            //{
-                ServerFileInfo inf;
+			//if (Program.ServiceIsLocal)
+			//{
+			//	using (WaitCursor wait = new WaitCursor())
+			//	{
+			//		GenerateServerZipFile(target);
+			//	}
+			//	return;
+			//}
+			//else
+			//{
+				ServerFileInfo inf;
                 using (WaitCursor wait = new WaitCursor())
                 {
                     inf = Program.CommunicationObject.GenerateSupportZipFile();
-                    if (inf == null) return;
+					if (inf == null)
+					{
+						return;
+					};
                 }
                 using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(new ServerFileInfo[] {inf}, target, Program.CommunicationObject.GetServerSideFileHandler(), true))
                 {
                     downloadForm.ShowDialog(parent);
                 }
-                Program.CommunicationObject.DeleteFile(inf.LocalFileName);
-            //}
-        }
+				Program.CommunicationObject.DeleteFile(inf.LocalFileName);
+			//}
+		}
 
         public static void GenerateServerZipFile(string target)
         {
@@ -412,24 +413,23 @@ namespace iba.Utility
             {
             }
 
-            try
-            {
-                var myList = TaskManager.Manager.AdditionalFileNames(); 
-                foreach(var p in myList)
-                {
-                    zip.BeginUpdate();
-                    zip.Add(p.Key, p.Value);
-                    zip.CommitUpdate();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
+                var myList = TaskManager.Manager.AdditionalFileNames();
+				foreach (var p in myList)
+				{
+					try
+					{
+						zip.BeginUpdate();
+						zip.Add(p.Key, p.Value);
+						zip.CommitUpdate();
+					}
+					catch
+					//catch (Exception ex)
+					{
+						//MessageBox.Show(ex.Message);
+					}
+				}
             zip.Close();
             zip = null;
         }
-
     }
 }
