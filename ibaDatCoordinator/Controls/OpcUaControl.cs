@@ -903,6 +903,14 @@ namespace iba.Controls
             col.Visible = mi.Checked;
         }
 
+        private void miColumnExpirationDate_Click(object sender, EventArgs e)
+        {
+            if (!(sender is ToolStripMenuItem mi))
+                return;
+            GridColumn col = colCertExpirationDate;
+            col.Visible = mi.Checked;
+        }
+
         private void miColumnAlgorithm_Click(object sender, EventArgs e)
         {
             if (!(sender is ToolStripMenuItem mi))
@@ -973,11 +981,13 @@ namespace iba.Controls
 
             private OpcUaControl parentControl;
 
-            private void Edit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+            private void Edit_ButtonClick(object sender, ButtonPressedEventArgs e)
             {
                 DevExpress.XtraEditors.ButtonEdit btnEdit = sender as DevExpress.XtraEditors.ButtonEdit;
+                if (btnEdit == null)
+                    return;
                 Control parent = btnEdit.Parent;
-                while (parent.Parent != null)
+                while (parent?.Parent != null)
                     parent = parent.Parent;
 
                 // todo. kls. 
@@ -991,8 +1001,7 @@ namespace iba.Controls
 
                 using (OpcUaEndpointSelectionForm selForm = new OpcUaEndpointSelectionForm(null))
                 {
-                    OpcUaData.OpcUaEndPoint curEp = GridView.GetRow(GridView.FocusedRowHandle) as OpcUaData.OpcUaEndPoint;
-                    if (curEp == null)
+                    if (!(GridView.GetRow(GridView.FocusedRowHandle) is OpcUaData.OpcUaEndPoint curEp))
                         return;
 
                     // Save current value
@@ -1369,5 +1378,6 @@ namespace iba.Controls
 
 
         #endregion
+
     }
 }

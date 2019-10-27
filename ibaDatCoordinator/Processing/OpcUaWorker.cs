@@ -64,7 +64,7 @@ namespace iba.Processing
                 }
                 try
                 {
-                    UaApplication.LoadApplicationConfiguration(cfgWithPath, true);
+                    UaApplication.LoadApplicationConfiguration(cfgWithPath, true).Wait();
                     if (UaAppConfiguration == null)
                         throw new Exception();
                 }
@@ -83,7 +83,7 @@ namespace iba.Processing
                 }
 
                 // check the application certificate.
-                UaApplication.CheckApplicationInstanceCertificate(false, 0);
+                UaApplication.CheckApplicationInstanceCertificate(false, 0).Wait();
 
                 // change status from initial (errored) to stopped
                 Status = ExtMonWorkerStatus.Stopped;
@@ -204,8 +204,8 @@ namespace iba.Processing
             ApplyApplicationConfiguration();
 
             // start server
-            UaApplication.Start(IbaOpcUaServer);
-
+            UaApplication.Start(IbaOpcUaServer).Wait();
+            
             RebuildTree();
 
             // handle resetting group list on every change of monitored items
@@ -1175,8 +1175,8 @@ namespace iba.Processing
                             break;
                         default:
                             // should not happen
-                            Debug.Assert(false);
                             bSuccess = false;
+                            Debug.Assert(false);
                             break;
                     }
 
@@ -1226,9 +1226,9 @@ namespace iba.Processing
         {
             if (!(node is IbaOpcUaVariable iv)) //we handle only iba variables here 
             {
-                Debug.Assert(false); // should not happen
                 value = null;
                 statusCode = StatusCodes.Bad;
+                Debug.Assert(false); // should not happen
                 return ServiceResult.Good; // statusCode is bad; serviceResult is good
             }
 

@@ -30,6 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpcUaControl));
+            this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
+            this.labelObjType = new System.Windows.Forms.Label();
+            this.tbObjType = new System.Windows.Forms.TextBox();
+            this.labelObjValue = new System.Windows.Forms.Label();
+            this.tbObjValue = new System.Windows.Forms.TextBox();
+            this.labelObjDescription = new System.Windows.Forms.Label();
+            this.tbObjDescription = new System.Windows.Forms.TextBox();
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -93,13 +100,6 @@
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.gbObjects = new iba.Utility.CollapsibleGroupBox();
             this.panelFooter = new System.Windows.Forms.Panel();
-            this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
-            this.labelObjType = new System.Windows.Forms.Label();
-            this.tbObjType = new System.Windows.Forms.TextBox();
-            this.labelObjValue = new System.Windows.Forms.Label();
-            this.tbObjValue = new System.Windows.Forms.TextBox();
-            this.labelObjDescription = new System.Windows.Forms.Label();
-            this.tbObjDescription = new System.Windows.Forms.TextBox();
             this.labelObjNodeId = new System.Windows.Forms.Label();
             this.tbObjNodeId = new System.Windows.Forms.TextBox();
             this.buttonRefreshGuiTree = new System.Windows.Forms.Button();
@@ -160,6 +160,10 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.gbDebug = new System.Windows.Forms.GroupBox();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
+            this.splitContainerObjectsFooter.Panel1.SuspendLayout();
+            this.splitContainerObjectsFooter.Panel2.SuspendLayout();
+            this.splitContainerObjectsFooter.SuspendLayout();
             this.gbCertificates.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).BeginInit();
@@ -168,10 +172,6 @@
             this.toolStrip1.SuspendLayout();
             this.gbObjects.SuspendLayout();
             this.panelFooter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
-            this.splitContainerObjectsFooter.Panel1.SuspendLayout();
-            this.splitContainerObjectsFooter.Panel2.SuspendLayout();
-            this.splitContainerObjectsFooter.SuspendLayout();
             this.gbConfiguration.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gbSecurity.SuspendLayout();
@@ -193,6 +193,60 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSessions)).BeginInit();
             this.gbDebug.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // splitContainerObjectsFooter
+            // 
+            resources.ApplyResources(this.splitContainerObjectsFooter, "splitContainerObjectsFooter");
+            this.splitContainerObjectsFooter.Name = "splitContainerObjectsFooter";
+            // 
+            // splitContainerObjectsFooter.Panel1
+            // 
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjType);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjType);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjValue);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjValue);
+            resources.ApplyResources(this.splitContainerObjectsFooter.Panel1, "splitContainerObjectsFooter.Panel1");
+            // 
+            // splitContainerObjectsFooter.Panel2
+            // 
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjDescription);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjDescription);
+            // 
+            // labelObjType
+            // 
+            resources.ApplyResources(this.labelObjType, "labelObjType");
+            this.labelObjType.Name = "labelObjType";
+            // 
+            // tbObjType
+            // 
+            resources.ApplyResources(this.tbObjType, "tbObjType");
+            this.tbObjType.Name = "tbObjType";
+            this.tbObjType.ReadOnly = true;
+            this.tbObjType.TabStop = false;
+            // 
+            // labelObjValue
+            // 
+            resources.ApplyResources(this.labelObjValue, "labelObjValue");
+            this.labelObjValue.Name = "labelObjValue";
+            // 
+            // tbObjValue
+            // 
+            resources.ApplyResources(this.tbObjValue, "tbObjValue");
+            this.tbObjValue.Name = "tbObjValue";
+            this.tbObjValue.ReadOnly = true;
+            this.tbObjValue.TabStop = false;
+            // 
+            // labelObjDescription
+            // 
+            resources.ApplyResources(this.labelObjDescription, "labelObjDescription");
+            this.labelObjDescription.Name = "labelObjDescription";
+            // 
+            // tbObjDescription
+            // 
+            resources.ApplyResources(this.tbObjDescription, "tbObjDescription");
+            this.tbObjDescription.Name = "tbObjDescription";
+            this.tbObjDescription.ReadOnly = true;
+            this.tbObjDescription.TabStop = false;
             // 
             // timerRefreshStatus
             // 
@@ -332,8 +386,10 @@
             // 
             // miColumnExpirationDate
             // 
+            this.miColumnExpirationDate.CheckOnClick = true;
             this.miColumnExpirationDate.Name = "miColumnExpirationDate";
             resources.ApplyResources(this.miColumnExpirationDate, "miColumnExpirationDate");
+            this.miColumnExpirationDate.Click += new System.EventHandler(this.miColumnExpirationDate_Click);
             // 
             // miColumnAlgorithm
             // 
@@ -439,7 +495,6 @@
             this.gridViewCerts.OptionsBehavior.Editable = false;
             this.gridViewCerts.OptionsBehavior.KeepGroupExpandedOnSorting = false;
             this.gridViewCerts.OptionsBehavior.ReadOnly = true;
-            this.gridViewCerts.OptionsCustomization.AllowColumnMoving = false;
             this.gridViewCerts.OptionsCustomization.AllowFilter = false;
             this.gridViewCerts.OptionsCustomization.AllowGroup = false;
             this.gridViewCerts.OptionsCustomization.AllowSort = false;
@@ -675,60 +730,6 @@
             this.panelFooter.Controls.Add(this.labelObjNodeId);
             this.panelFooter.Controls.Add(this.tbObjNodeId);
             this.panelFooter.Name = "panelFooter";
-            // 
-            // splitContainerObjectsFooter
-            // 
-            resources.ApplyResources(this.splitContainerObjectsFooter, "splitContainerObjectsFooter");
-            this.splitContainerObjectsFooter.Name = "splitContainerObjectsFooter";
-            // 
-            // splitContainerObjectsFooter.Panel1
-            // 
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjType);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjType);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjValue);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjValue);
-            resources.ApplyResources(this.splitContainerObjectsFooter.Panel1, "splitContainerObjectsFooter.Panel1");
-            // 
-            // splitContainerObjectsFooter.Panel2
-            // 
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjDescription);
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjDescription);
-            // 
-            // labelObjType
-            // 
-            resources.ApplyResources(this.labelObjType, "labelObjType");
-            this.labelObjType.Name = "labelObjType";
-            // 
-            // tbObjType
-            // 
-            resources.ApplyResources(this.tbObjType, "tbObjType");
-            this.tbObjType.Name = "tbObjType";
-            this.tbObjType.ReadOnly = true;
-            this.tbObjType.TabStop = false;
-            // 
-            // labelObjValue
-            // 
-            resources.ApplyResources(this.labelObjValue, "labelObjValue");
-            this.labelObjValue.Name = "labelObjValue";
-            // 
-            // tbObjValue
-            // 
-            resources.ApplyResources(this.tbObjValue, "tbObjValue");
-            this.tbObjValue.Name = "tbObjValue";
-            this.tbObjValue.ReadOnly = true;
-            this.tbObjValue.TabStop = false;
-            // 
-            // labelObjDescription
-            // 
-            resources.ApplyResources(this.labelObjDescription, "labelObjDescription");
-            this.labelObjDescription.Name = "labelObjDescription";
-            // 
-            // tbObjDescription
-            // 
-            resources.ApplyResources(this.tbObjDescription, "tbObjDescription");
-            this.tbObjDescription.Name = "tbObjDescription";
-            this.tbObjDescription.ReadOnly = true;
-            this.tbObjDescription.TabStop = false;
             // 
             // labelObjNodeId
             // 
@@ -1048,7 +1049,7 @@
             this.tabControl1.MediaPlayerDockSides = false;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.OfficeDockSides = false;
-            this.tabControl1.SelectedIndex = 3;
+            this.tabControl1.SelectedIndex = 1;
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
@@ -1069,6 +1070,7 @@
             this.tabConfiguration.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabConfiguration.Name = "tabConfiguration";
             this.tabConfiguration.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.Selected = false;
             this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1081,7 +1083,6 @@
             resources.ApplyResources(this.tabCertificates, "tabCertificates");
             this.tabCertificates.Name = "tabCertificates";
             this.tabCertificates.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabCertificates.Selected = false;
             this.tabCertificates.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1135,6 +1136,7 @@
             resources.ApplyResources(this.tabDiag, "tabDiag");
             this.tabDiag.Name = "tabDiag";
             this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.Selected = false;
             this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1322,6 +1324,12 @@
             this.Controls.Add(this.gbDebug);
             this.Name = "OpcUaControl";
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
+            this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
+            this.splitContainerObjectsFooter.Panel1.PerformLayout();
+            this.splitContainerObjectsFooter.Panel2.ResumeLayout(false);
+            this.splitContainerObjectsFooter.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
+            this.splitContainerObjectsFooter.ResumeLayout(false);
             this.gbCertificates.ResumeLayout(false);
             this.gbCertificates.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -1333,12 +1341,6 @@
             this.gbObjects.ResumeLayout(false);
             this.panelFooter.ResumeLayout(false);
             this.panelFooter.PerformLayout();
-            this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
-            this.splitContainerObjectsFooter.Panel1.PerformLayout();
-            this.splitContainerObjectsFooter.Panel2.ResumeLayout(false);
-            this.splitContainerObjectsFooter.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
-            this.splitContainerObjectsFooter.ResumeLayout(false);
             this.gbConfiguration.ResumeLayout(false);
             this.gbConfiguration.PerformLayout();
             this.panel1.ResumeLayout(false);
