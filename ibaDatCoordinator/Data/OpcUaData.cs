@@ -104,7 +104,6 @@ namespace iba.Data
             {
                 SecurityMode = MessageSecurityMode.None,
                 SecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None",
-                SecurityLevel = 0
             };
 
             switch (alg)
@@ -133,13 +132,11 @@ namespace iba.Data
             switch (mode)
             {
                 case OpcUaSecurityMode.Sign:
-                    policy.SecurityLevel = 2;
                     policy.SecurityMode = MessageSecurityMode.Sign;
                     return policy;
 
                 case OpcUaSecurityMode.SignEncrypt:
                     policy.SecurityMode = MessageSecurityMode.SignAndEncrypt;
-                    policy.SecurityLevel = 3;
                     return policy;
 
                 case OpcUaSecurityMode.SignPlusSignEncrypt:

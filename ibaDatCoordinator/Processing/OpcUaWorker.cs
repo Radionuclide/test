@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Logging;
@@ -645,31 +646,31 @@ namespace iba.Processing
         }
         
         /// <summary> Removes the certificate from all stores (own, rejected, trusted) </summary>
-        private void RemoveCertificateFromAllStores(string thumbprint)
+        private async void RemoveCertificateFromAllStores(string thumbprint)
         {
             Debug.Assert(UaAppConfiguration != null);
 
             ICertificateStore store = OwnCertStore.OpenStore();
             try
             {
-                store.Delete(thumbprint);
+                await store.Delete(thumbprint);
             }
             finally
             {
                 store.Close();
             }
 
-            RemoveCertificateFromTrustedAndRejected(thumbprint);           
+            await RemoveCertificateFromTrustedAndRejected(thumbprint);           
         }
 
-        private void RemoveCertificateFromTrustedAndRejected(string thumbprint)
+        private async Task RemoveCertificateFromTrustedAndRejected(string thumbprint)
         {
             Debug.Assert(UaAppConfiguration != null);
 
             ICertificateStore store = TrustedCertStore.OpenStore();
             try
             {
-                store.Delete(thumbprint);
+                await store.Delete(thumbprint);
             }
             finally
             {
@@ -679,7 +680,7 @@ namespace iba.Processing
             store = RejectedCertStore.OpenStore();
             try
             {
-                store.Delete(thumbprint);
+                await store.Delete(thumbprint);
             }
             finally
             {
@@ -687,7 +688,7 @@ namespace iba.Processing
             }
 
             // Update Certificate validator; otherwise it still can keep deleted certs in his cache
-            UaApplication.ApplicationConfiguration.CertificateValidator.Update(UaAppConfiguration);
+            await UaApplication.ApplicationConfiguration.CertificateValidator.Update(UaAppConfiguration);
         }
 
         private void SetCertificateTrust(string thumbprint, bool isTrusted)
@@ -710,7 +711,8 @@ namespace iba.Processing
             Debug.Assert(UaAppConfiguration != null);
 
             // remove certificate from both stores
-            RemoveCertificateFromTrustedAndRejected(certificate.Thumbprint);
+            // todo. kls. better async support?
+            RemoveCertificateFromTrustedAndRejected(certificate.Thumbprint).Wait();
 
             // add certificate to the needed store
             ICertificateStore store =
@@ -718,7 +720,9 @@ namespace iba.Processing
 
             try
             {
-                store.Add(certificate);
+                certificate.PrivateKey = null; // add to the trusted/rejected store without a private part
+                // todo. kls. better async support?
+                store.Add(certificate).Wait();
             }
             catch
             {
@@ -739,7 +743,8 @@ namespace iba.Processing
                 ICertificateStore store = OwnCertStore.OpenStore();
                 try
                 {
-                    store.Add(certificate);
+                    // todo. kls. better async support?
+                    store.Add(certificate).Wait();
                 }
                 catch
                 {
@@ -768,11 +773,19 @@ namespace iba.Processing
 
                 CertificateIdentifier certId = UaAppConfiguration.SecurityConfiguration.ApplicationCertificate;
 
-                var cert = Opc.Ua.CertificateFactory.CreateCertificate(
-                    certId.StoreType, certId.StorePath,
+                // SHA-2 has 224+ bits (SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/256 и SHA-512/224)
+                // we want to have 256 bits for SHA-2 in our case;
+                // SHA-1 has 160 bits;
+                // see CertificateFactory.GetRSAHashAlgorithm() for details
+                ushort hashSizeInBits = (ushort) (genArgs.UseSha256 ? 256 /*SHA-2-256*/ : 160 /*SHA-1-160*/);
+
+                var cert = CertificateFactory.CreateCertificate(
+                    certId.StoreType, certId.StorePath, null, 
                     genArgs.ApplicationUri, genArgs.ApplicationName,
-                    null,
-                    serverDomainNames, (ushort)genArgs.KeySize, (ushort)genArgs.Lifetime);
+                    genArgs.ApplicationName,
+                    serverDomainNames, (ushort)genArgs.KeySize, 
+                    DateTime.Now, (ushort)genArgs.Lifetime,
+                    hashSizeInBits);
 
                 // certificate is automatically added to the own store;
                 // copy it to the trusted store also
@@ -809,7 +822,10 @@ namespace iba.Processing
             try
             {
                 var list = new List<X509Certificate2>();
-                foreach (var cert in store.Enumerate())
+                var enumTask = store.Enumerate();
+                // todo. kls. better async support?
+                enumTask.Wait();
+                foreach (var cert in enumTask.Result)
                 {
                     list.Add(cert);
                 }
