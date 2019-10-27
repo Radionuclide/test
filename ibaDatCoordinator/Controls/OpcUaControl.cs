@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -8,6 +9,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using DevExpress.Utils;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
 using iba.Data;
@@ -33,11 +35,27 @@ namespace iba.Controls
             imgKey = Resources.img_key;
             imgUaServer = Resources.opcUaServer_icon;
             imgDude = Resources.img_dude;
+
+            // set up endpoints grid
+            gridCtrlEndpoints.DataSource = _endpoints;
+            var hostnameEditor = new HostnameEditor(this) {GridView = gridViewEndpoints};
+            DevExpress.XtraEditors.Repository.RepositoryItem item = hostnameEditor.Editor;
+            item.Name = "HostnameEditor";
+            item.AllowFocused = false;
+            item.AutoHeight = false;
+            item.BorderStyle = BorderStyles.NoBorder;
+            gridCtrlEndpoints.RepositoryItems.Add(item);
+            colHostname.ColumnEdit = item;
+
+#if DEBUG
+            gbDebug.Visible = true;
+#endif
         }
 
         private const int ImageIndexFolder = 0;
         private const int ImageIndexLeaf = 1;
 
+        private readonly BindingList<OpcUaData.OpcUaEndPoint> _endpoints = new BindingList<OpcUaData.OpcUaEndPoint>(); // todo. kls. rename
 
         private CollapsibleElementManager _ceManager;
 
@@ -81,11 +99,6 @@ namespace iba.Controls
             // prevent Columns submenu from closing on item click
             miColumns.DropDown.Closing +=
                 (o, args) => args.Cancel = (args.CloseReason == ToolStripDropDownCloseReason.ItemClicked);
-
-            // set up Endpoints DataGridView
-            dgvColumnHost.ValueType = typeof(string);
-            dgvColumnPort.ValueType = typeof(int);
-            dgvColumnUri.ValueType = typeof(string);
         }
         
         #endregion
@@ -229,11 +242,8 @@ namespace iba.Controls
 
             // endpoints
             _data.Endpoints.Clear();
-            for (int i = 0; i < dgvEndpoints.RowCount; i++)
-            {
-                OpcUaData.OpcUaEndPoint ep = RowToEndpoint(dgvEndpoints.Rows[i]);
-                _data.Endpoints.Add(ep);
-            }
+            foreach (var ep in _endpoints)
+                _data.Endpoints.Add(new OpcUaData.OpcUaEndPoint(ep));
 
             // certificates
             _data.Certificates.Clear();
@@ -266,12 +276,10 @@ namespace iba.Controls
             comboBoxSecurity256Sha256.SelectedIndex = (int)_data.SecurityBasic256Sha256Mode;
 
             // endpoints
-            dgvEndpoints.Rows.Clear();
-            if (_data.Endpoints != null)
-            {
-                foreach (var ep in _data.Endpoints)
-                    dgvEndpoints.Rows.Add(EndpointToRow(ep));
-            }
+            _endpoints.Clear();
+            foreach (var ep in _data.Endpoints)
+                _endpoints.Add(new OpcUaData.OpcUaEndPoint(ep));
+            ApplyEndpointsButtonsEnabling();
 
             // disable/enable elements
             cbLogonUserName_CheckedChanged(null, null);
@@ -942,27 +950,66 @@ namespace iba.Controls
 
         #region Configuration - Endpoints
 
-        // todo. kls. delete before last beta
-        private void buttonCopyToClipboard_Click(object sender, EventArgs e)
+        private class HostnameEditor
         {
-            try
+            public DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Editor { get; }
+
+            public GridView GridView;
+
+            public HostnameEditor(OpcUaControl parentControl)
             {
-                Clipboard.Clear();
-                Clipboard.SetText("Hello");
+                this.parentControl = parentControl;
 
-                if (dgvEndpoints.RowCount < 1)
-                    return;
+                Editor = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+                Editor.Name = "HostnameEditor";
+                Editor.Buttons.Clear();
+                //var btn = new EditorButton(ButtonPredefines.Ellipsis);
+                Editor.ButtonsStyle = BorderStyles.Simple;
+                Editor.ButtonsStyle = BorderStyles.UltraFlat;
+                Editor.Buttons.Add(new EditorButton(ButtonPredefines.Ellipsis));
 
-                string uri = dgvEndpoints.Rows[0].Cells[2].Value as string;
-                if (string.IsNullOrWhiteSpace
-                    (uri))
-                    MessageBox.Show("err");
-                else
-                    Clipboard.SetText(uri);
+                Editor.ButtonClick += Edit_ButtonClick;
             }
-            catch
+
+            private OpcUaControl parentControl;
+
+            private void Edit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
             {
-                MessageBox.Show("Clipboard err");
+                DevExpress.XtraEditors.ButtonEdit btnEdit = sender as DevExpress.XtraEditors.ButtonEdit;
+                Control parent = btnEdit.Parent;
+                while (parent.Parent != null)
+                    parent = parent.Parent;
+
+                // todo. kls. 
+                //if (parentControl.NetworkConfiguration == null)
+                //{
+                //    MessageBox.Show(parent, "GetNetwConfigError", "OpcUaServer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //    return;
+                //}
+
+                //using (OpcUAServerEndpointSelectionForm selForm = new OpcUAServerEndpointSelectionForm(parentControl.NetworkConfiguration))
+
+                using (OpcUaEndpointSelectionForm selForm = new OpcUaEndpointSelectionForm(null))
+                {
+                    OpcUaData.OpcUaEndPoint curEp = GridView.GetRow(GridView.FocusedRowHandle) as OpcUaData.OpcUaEndPoint;
+                    if (curEp == null)
+                        return;
+
+                    // Save current value
+                    curEp.Hostname = btnEdit.Text;
+
+                    // todo. kls.
+                    selForm.IpAddress = curEp.Hostname;
+                    if (DialogResult.OK == selForm.ShowDialog(parent))
+                    {
+                        btnEdit.EditValue = selForm.IpAddress;
+                        btnEdit.SelectAll();
+
+                        curEp.Hostname = selForm.IpAddress;
+
+                        GridView.CloseEditor();
+                    }
+                }
             }
         }
 
@@ -970,145 +1017,42 @@ namespace iba.Controls
         {
             var dep = OpcUaData.DefaultEndPoint;
 
-            dgvEndpoints.Rows.Add(dep.Hostname, dep.Port, dep.Uri);
-        }
+            _endpoints.Add(dep);
+            gridViewEndpoints.FocusedRowHandle = _endpoints.Count - 1;
+            gridViewEndpoints.FocusedColumn = colHostname;
+            gridViewEndpoints.ShowEditor();
 
-        private void dgvEndpoints_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
-        {
-            if (!(sender is DataGridView view))
-                return;
-            DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
-
-            string val = cell.EditedFormattedValue as string;
-            if (val is null)
-                return;
-
-            switch (e.ColumnIndex)
-            {
-                case 0: // host
-
-                    break;
-                case 1: // port
-                    if (int.TryParse(val, out int intVal))
-                    {
-                        if (intVal < 0) intVal = 0;
-                        if (intVal > 65535) intVal = 65535;
-                        e.Value = intVal;
-                    }
-                    else
-                        e.Value = 0;
-                    e.ParsingApplied = true;
-                    break;
-            }
-        }
-
-        private static OpcUaData.OpcUaEndPoint RowToEndpoint(DataGridViewRow row)
-        {
-            try
-            {
-                string hostVal = row.Cells[0].Value as string;
-                int port = (int)row.Cells[1].Value;
-
-                if (string.IsNullOrWhiteSpace(hostVal))
-                    return OpcUaData.DefaultEndPoint;
-
-                var ep = IPAddress.TryParse(hostVal, out IPAddress address) ?
-                    new OpcUaData.OpcUaEndPoint(address, port) :
-                    new OpcUaData.OpcUaEndPoint(hostVal /*treat it as hostname*/, port);
-
-                return ep;
-            }
-            catch
-            {
-                return OpcUaData.DefaultEndPoint;
-            }
-        }
-
-        private static object[] EndpointToRow(OpcUaData.OpcUaEndPoint ep)
-        {
-            return new object[] { ep.Hostname, ep.Port, ep.Uri };
-        }
-
-        private void UpdateRowUri(DataGridViewRow row)
-        {
-            OpcUaData.OpcUaEndPoint ep = RowToEndpoint(row);
-            row.Cells[2].Value = ep.Uri;
-        }
-
-        private void dgvEndpoints_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
-            if (!(sender is DataGridView view))
-                return;
-            //DataGridViewRow row = view.Rows[e.RowIndex];
-            //DataGridViewCell cell = view.Rows[e.RowIndex].Cells[e.ColumnIndex];
-
-            e.ThrowException = false;
-        }
-
-        private void dgvEndpoints_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (!(sender is DataGridView view))
-                return;
-            if (e.RowIndex < 0)
-                return;
-
-            // update URI only if host or port is changed
-            if (e.ColumnIndex < 0 || e.ColumnIndex > 1)
-                return;
-
-            DataGridViewRow row = view.Rows[e.RowIndex];
-            UpdateRowUri(row);
-        }
-
-        /// <summary> Gets a list of selected cells,
-        /// including the case when no entire string is selected but only one cell </summary>
-        /// <returns></returns>
-        private List<DataGridViewRow> GetSelectedRowsIncludingSingleCell()
-        {
-            List<DataGridViewRow> rows = new List<DataGridViewRow>();
-
-            if (dgvEndpoints.RowCount < 1)
-            {
-                // table is empty, nothing to copy
-                return rows;
-            }
-
-            if (dgvEndpoints.SelectedRows.Count < 1)
-            {
-                // no rows selected, but probably at least one cell is selected
-                DataGridViewSelectedCellCollection sc = dgvEndpoints.SelectedCells;
-
-                int rowToProcess = sc.Count > 0
-                    ? sc[0].RowIndex /*process the cell's row*/
-                    : dgvEndpoints.RowCount - 1 /*process last row*/;
-
-                rows.Add(dgvEndpoints.Rows[rowToProcess]);
-            }
-            else
-            {
-                for (int i = dgvEndpoints.SelectedRows.Count - 1; i >= 0; i--)
-                    rows.Add(dgvEndpoints.SelectedRows[i]);
-            }
-            return rows;
+            ApplyEndpointsButtonsEnabling();
         }
 
         private void buttonEndpointCopy_Click(object sender, EventArgs e)
         {
-            // copy selected rows
-            foreach (var row in GetSelectedRowsIncludingSingleCell())
+            if ((gridViewEndpoints.FocusedRowHandle >= 0) &&
+                (gridViewEndpoints.FocusedRowHandle < _endpoints.Count) &&
+                gridViewEndpoints.GetRow(gridViewEndpoints.FocusedRowHandle) is OpcUaData.OpcUaEndPoint selEp)
             {
-                OpcUaData.OpcUaEndPoint ep = RowToEndpoint(row);
-                dgvEndpoints.Rows.Add(EndpointToRow(ep));
+                _endpoints.Add(new OpcUaData.OpcUaEndPoint(selEp));
+                gridViewEndpoints.FocusedRowHandle = _endpoints.Count - 1;
+                gridViewEndpoints.FocusedColumn = colHostname;
+                gridViewEndpoints.ShowEditor();
+
+                ApplyEndpointsButtonsEnabling();
             }
         }
 
-        private void buttonEndpointDelete_Click(object sender, EventArgs e)
+        private void buttonEndpointRemove_Click(object sender, EventArgs e)
         {
-            // delete selected rows
-            foreach (var row in GetSelectedRowsIncludingSingleCell())
+            if ((gridViewEndpoints.FocusedRowHandle >= 0) && (gridViewEndpoints.FocusedRowHandle < _endpoints.Count))
             {
-                dgvEndpoints.Rows.Remove(row);
+                _endpoints.RemoveAt(gridViewEndpoints.FocusedRowHandle);
+                ApplyEndpointsButtonsEnabling();
             }
+        }
+
+        private void ApplyEndpointsButtonsEnabling()
+        {
+            buttonEndpointCopy.Enabled =
+                buttonEndpointRemove.Enabled = (gridViewEndpoints.FocusedRowHandle >= 0) && (_endpoints.Count > 0);
         }
 
         #endregion
@@ -1141,31 +1085,33 @@ namespace iba.Controls
         {
             try
             {
-                // clear diagnostics
-                dgvSubscriptions.Rows.Clear();
+                // remember selected line and scroll position
+                var selectedLines = gridViewSessions.GetSelectedRows();
+                int scrollPosition = gridViewSessions.TopRowIndex;
+
+                // clear old diagnostics
+                gridCtrlSessions.DataSource = null;
+                gridCtrlSubscriptions.DataSource = null;
                 tbDiagTmp.Text = "";
 
-                // show new data
+                // get and show new data
                 var diag = TaskManager.Manager.OpcUaGetDiagnostics();
                 _diagClients = diag.Item1;
                 var diagStr = diag.Item2;
 
+                gridCtrlSessions.DataSource = _diagClients;
+
                 // can happen when suddenly disconnected
                 if (_diagClients == null)
-                {
-                    dgvClients.Rows.Clear();
                     return;
-                }
-
+                
                 // todo. kls. delete before last beta
                 tbDiagTmp.Text = diagStr;
-
-                // update rows
-                dgvClients.RowCount = _diagClients.Count;
-                for (var index = 0; index < _diagClients.Count; index++)
-                {
-                    UpdateClientRow(index, _diagClients[index]);
-                }
+                
+                // restore selected line and scroll position
+                if (selectedLines.Length > 0)
+                    gridViewSessions.FocusedRowHandle = selectedLines[0];
+                gridViewSessions.TopRowIndex = scrollPosition;
 
                 RefreshSubscriptionsTable();
             }
@@ -1174,59 +1120,32 @@ namespace iba.Controls
                 LogData.Data.Logger.Log(Level.Exception, $"{nameof(RefreshClientsTable)}. {ex.Message}");
             }
         }
-
-        private void UpdateClientRow(int index, IbaOpcUaDiagClient client)
+        
+        private void RefreshSubscriptionsTable()
         {
-            var cells = dgvClients.Rows[index].Cells;
-            cells[0].Value = client.Name;
-            cells[1].Value = client.Id;
-            cells[2].Value = client.LastMessageTime;
+            // clear list
+            gridCtrlSubscriptions.DataSource = null;
+
+            if (_diagClients == null)
+                return;
+            
+            // get selected session row
+            var selectedLines = gridViewSessions.GetSelectedRows();
+            int ind = selectedLines.Length > 0 ? selectedLines[0] : -1;
+
+            // show selected session details
+            if (ind >= 0 && ind < _diagClients.Count)
+                gridCtrlSubscriptions.DataSource = _diagClients[ind].Subscriptions;
         }
 
-        private void dgvClients_SelectionChanged(object sender, EventArgs e)
+        private void gridViewSessions_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
             RefreshSubscriptionsTable();
         }
 
-        private void RefreshSubscriptionsTable()
+        private void gridViewSessions_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
         {
-            // clear list
-            dgvSubscriptions.Rows.Clear();
 
-            if (_diagClients == null || dgvClients.RowCount == 0)
-                return;
-
-            // show for selected or first row
-            DataGridViewRow row = dgvClients.SelectedRows.Count == 0 ? dgvClients.Rows[0] : dgvClients.SelectedRows[0];
-
-            // get id
-            if (!(row.Cells[1].Value is string idStr))
-                return;
-
-            foreach (var client in _diagClients)
-            {
-                if (client.Id != idStr)
-                    continue;
-                RefreshSubscriptionsTable(client);
-                return;
-            }
-        }
-
-        private void RefreshSubscriptionsTable(IbaOpcUaDiagClient client)
-        {
-            // clear list
-            dgvSubscriptions.Rows.Clear();
-
-            // can happen when suddenly disconnected
-            if (client?.Subscriptions == null)
-            {
-                return;
-            }
-
-            foreach (var sub in client.Subscriptions)
-            {
-                dgvSubscriptions.Rows.Add(sub.Id, sub.MonitoredItemCount, sub.PublishingInterval, sub.NextSequenceNumber);
-            }
         }
 
         private DateTime _lastCertTableUpdateStamp = DateTime.MinValue;
@@ -1270,12 +1189,17 @@ namespace iba.Controls
         private static bool IsConnectedOrLocal =>
             Program.RunsWithService == Program.ServiceEnum.NOSERVICE ||
             Program.RunsWithService == Program.ServiceEnum.CONNECTED;
-        
+
+        private void btOpenLogFile_Click(object sender, EventArgs e)
+        {
+            //IOConfiguratorDlg.Instance.OpenLogFile("%serverpath%log", "OpcUAServerLog.txt");
+        }
+
         #endregion
 
 
         #region Objects
-        
+
         public void RebuildObjectsTree()
         {
             if (!IsConnectedOrLocal)
@@ -1443,8 +1367,7 @@ namespace iba.Controls
 
 
 
-        #endregion
 
-   
+        #endregion
     }
 }

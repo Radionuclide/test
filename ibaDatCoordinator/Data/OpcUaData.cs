@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
@@ -19,28 +20,58 @@ namespace iba.Data
         #region Connection settings
 
         [Serializable]
-        public struct OpcUaEndPoint
+        public class OpcUaEndPoint
         {
             public OpcUaEndPoint(int port)
             {
                 Hostname = IPAddress.None.ToString();
                 Port = port;
             }
+            public OpcUaEndPoint() : this(0)
+            {
+            }
             public OpcUaEndPoint(string hostname, int port) : this(port)
             {
                 Hostname = hostname;
             }
-            public OpcUaEndPoint(IPAddress address, int port) : this(address.ToString(), port)
+            public OpcUaEndPoint(OpcUaEndPoint ep) : this(ep.Hostname, ep.Port)
             {
             }
 
-            public int Port;
+            public int Port { get; set; }
 
-            public string Hostname;
+            public string Hostname { get; set; }
+
+            public static OpcUaEndPoint ParseUri(string strUri)
+            {
+                return System.Uri.TryCreate(strUri, UriKind.Absolute, out Uri uri)
+                    ? new OpcUaEndPoint(uri.Host, uri.Port)
+                    : DefaultEndPoint;
+            }
 
             public string Uri => GetUriStringForEndpoint(this);
+            
             public static string GetUriStringForEndpoint(OpcUaEndPoint ep) => GetUriStringForEndpoint(ep.Hostname, ep.Port);
             public static string GetUriStringForEndpoint(string addressOrHostName, int port) => $@"opc.tcp://{addressOrHostName}:{port}";
+
+            public override bool Equals(object obj)
+            {
+                if (!(obj is OpcUaEndPoint other))
+                {
+                    return false;
+                }
+                return Port == other.Port && string.Equals(Hostname, other.Hostname);
+            }
+            
+            [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (Port * 397) ^ (Hostname != null ? Hostname.GetHashCode() : 0);
+                }
+            }
+
             public override string ToString()
             {
                 return Uri;
@@ -56,7 +87,6 @@ namespace iba.Data
         }
         public enum OpcUaSecurityAlgorithm
         {
-            Unknown = -1,
             None = 0,
             Basic128Rsa15,
             Basic256,
@@ -151,7 +181,7 @@ namespace iba.Data
         }
 
         public static int DefaultPort { get; } = 48080;
-        public static string DefaultHostname = "localhost";
+        public static string DefaultHostname => Dns.GetHostName();
         public static OpcUaEndPoint DefaultEndPoint => new OpcUaEndPoint(DefaultHostname, DefaultPort);
 
         public List<OpcUaEndPoint> Endpoints = new List<OpcUaEndPoint>();
@@ -341,7 +371,11 @@ namespace iba.Data
         public object Clone()
         {
             OpcUaData newObj = (OpcUaData)MemberwiseClone();
-            newObj.Endpoints = new List<OpcUaEndPoint>(Endpoints);
+            newObj.Endpoints = new List<OpcUaEndPoint>();
+            foreach (var ep in Endpoints)
+            {
+                newObj.Endpoints.Add(new OpcUaEndPoint(ep));
+            }
             return newObj;
         }
 
@@ -358,8 +392,7 @@ namespace iba.Data
 
         public override bool Equals(object obj)
         {
-            var other = obj as OpcUaData;
-            if (other == null)
+            if (!(obj is OpcUaData other))
             {
                 return false;
             }
@@ -394,7 +427,7 @@ namespace iba.Data
 
         public override string ToString()
         {
-            var epString = Endpoints?.Count == 1 ? Endpoints[0].Uri : $"{Endpoints?.Count}";
+            string epString = Endpoints?.Count == 1 ? Endpoints[0].Uri : $"{Endpoints?.Count}";
 
             return $"{Enabled}, EP:[{epString}]";
         }

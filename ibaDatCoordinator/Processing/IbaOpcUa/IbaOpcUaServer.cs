@@ -11,18 +11,35 @@ namespace iba.Processing.IbaOpcUa
     [Serializable]
     public class IbaOpcUaDiagClient
     {
-        public string Name;
-        public string Id;
-        public DateTime LastMessageTime;
+        public string Name { get; set; }
+
+        public string Id { get; set; }
+
+        public DateTime LastMessageTime { get; set; }
+
+        // ReSharper disable once UnusedMember.Global
+        /// <summary> Is used in grid data binding </summary>
+        public string LastMessageTimeString
+        {
+            get
+            {
+                DateTime localTime = LastMessageTime.ToLocalTime();
+                string localTimeStr = localTime.ToLongTimeString();
+                return (DateTime.Now - LastMessageTime) < TimeSpan.FromHours(24)
+                    ? localTimeStr
+                    : $@"{localTime.ToShortDateString()} {localTimeStr}";
+            }
+        }
+
         public List<IbaOpcUaDiagSubscription> Subscriptions;
 
         [Serializable]
         public class IbaOpcUaDiagSubscription
         {
-            public uint Id;
-            public int MonitoredItemCount;
-            public double PublishingInterval;
-            public uint NextSequenceNumber;
+            public uint Id { get; set; }
+            public int MonitoredItemCount { get; set; }
+            public double PublishingInterval { get; set; }
+            public uint NextSequenceNumber { get; set; }
         }
     }
 
@@ -61,14 +78,16 @@ namespace iba.Processing.IbaOpcUa
         /// </remarks>
         protected override ServerProperties LoadServerProperties()
         {
-            ServerProperties properties = new ServerProperties();
+            ServerProperties properties = new ServerProperties
+            {
+                ManufacturerName = "iba-ag.com",
+                ProductName = "ibaDatCoordinatorUaServer",
+                ProductUri = "http://iba-ag.com",
+                SoftwareVersion = Utils.GetAssemblySoftwareVersion(),
+                BuildNumber = Utils.GetAssemblyBuildNumber(),
+                BuildDate = Utils.GetAssemblyTimestamp()
+            };
 
-            properties.ManufacturerName = "iba-ag.com";
-            properties.ProductName = "ibaDatCoordinatorUaServer";
-            properties.ProductUri       = "http://iba-ag.com";
-            properties.SoftwareVersion  = Utils.GetAssemblySoftwareVersion();
-            properties.BuildNumber      = Utils.GetAssemblyBuildNumber();
-            properties.BuildDate        = Utils.GetAssemblyTimestamp();
 
             // TBD - All applications have software certificates that need to added to the properties.
 
@@ -86,11 +105,9 @@ namespace iba.Processing.IbaOpcUa
 
             foreach (System.Reflection.FieldInfo field in fields)
             {
-                uint? id = field.GetValue(typeof(StatusCodes)) as uint?;
-
-                if (id != null)
+                if (field.GetValue(typeof(StatusCodes)) is uint id)
                 {
-                    resourceManager.Add(id.Value, "en-US", field.Name);
+                    resourceManager.Add(id, "en-US", field.Name);
                 }
             }
 

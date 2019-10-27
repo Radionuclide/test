@@ -192,6 +192,12 @@
     <Compile Include="Controls\OpcUaControl.Designer.cs">
       <DependentUpon>OpcUaControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OpcUaEndpointSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaEndpointSelectionForm.Designer.cs">
+      <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PanelEventJob.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -523,6 +529,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\OpcUaControl.resx">
       <DependentUpon>OpcUaControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaEndpointSelectionForm.resx">
+      <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelEventJob.resx">
       <DependentUpon>PanelEventJob.cs</DependentUpon>

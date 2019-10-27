@@ -29,10 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpcUaControl));
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.gbCertificates = new iba.Utility.CollapsibleGroupBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonConfigurationApply2 = new System.Windows.Forms.Button();
             this.gridControlCerts = new DevExpress.XtraGrid.GridControl();
             this.contextMenuCerts = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miColumns = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,20 +90,7 @@
             this.buttonCertRefresh = new System.Windows.Forms.ToolStripButton();
             this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.tbDiagTmp = new System.Windows.Forms.TextBox();
-            this.dgvSubscriptions = new System.Windows.Forms.DataGridView();
-            this.colSubscrId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSubscrMonitoredItemsCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSubscrPublishingInterval = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSubscrNextSeq = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvClients = new System.Windows.Forms.DataGridView();
-            this.ColName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbStatus = new System.Windows.Forms.TextBox();
-            this.buttonOpenLogFile = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
             this.gbObjects = new iba.Utility.CollapsibleGroupBox();
             this.panelFooter = new System.Windows.Forms.Panel();
             this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
@@ -116,14 +106,9 @@
             this.buttonRebuildTree = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
             this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
-            this.splitContainerSecurity = new System.Windows.Forms.SplitContainer();
-            this.gbLogon = new System.Windows.Forms.GroupBox();
-            this.labelPassword = new System.Windows.Forms.Label();
-            this.cbLogonAnonymous = new System.Windows.Forms.CheckBox();
-            this.cbLogonUserName = new System.Windows.Forms.CheckBox();
-            this.cbLogonCertificate = new System.Windows.Forms.CheckBox();
-            this.tbUserName = new System.Windows.Forms.TextBox();
-            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonConfigurationReset = new System.Windows.Forms.Button();
+            this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
             this.comboBoxSecurity256Sha256 = new System.Windows.Forms.ComboBox();
             this.comboBoxSecurity256 = new System.Windows.Forms.ComboBox();
@@ -132,25 +117,55 @@
             this.cbSecurity256 = new System.Windows.Forms.CheckBox();
             this.cbSecurity128 = new System.Windows.Forms.CheckBox();
             this.cbSecurityNone = new System.Windows.Forms.CheckBox();
+            this.gbLogon = new System.Windows.Forms.GroupBox();
+            this.labelPassword = new System.Windows.Forms.Label();
+            this.cbLogonAnonymous = new System.Windows.Forms.CheckBox();
+            this.cbLogonUserName = new System.Windows.Forms.CheckBox();
+            this.cbLogonCertificate = new System.Windows.Forms.CheckBox();
+            this.tbUserName = new System.Windows.Forms.TextBox();
+            this.tbPassword = new System.Windows.Forms.TextBox();
             this.gbEndpoints = new System.Windows.Forms.GroupBox();
-            this.dgvEndpoints = new System.Windows.Forms.DataGridView();
-            this.dgvColumnHost = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColumnPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColumnUri = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gridCtrlEndpoints = new DevExpress.XtraGrid.GridControl();
+            this.gridViewEndpoints = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.colHostname = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemTextEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            this.colPort = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemSpinEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.colURI = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.buttonEndpointRemove = new System.Windows.Forms.Button();
             this.buttonEndpointCopy = new System.Windows.Forms.Button();
-            this.buttonEndpointDelete = new System.Windows.Forms.Button();
             this.buttonEndpointAdd = new System.Windows.Forms.Button();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
-            this.buttonConfigurationReset = new System.Windows.Forms.Button();
-            this.buttonConfigurationApply = new System.Windows.Forms.Button();
+            this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
+            this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.tabCertificates = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.tabTags = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.gbTagSettings = new System.Windows.Forms.GroupBox();
+            this.cmbEnumMode = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.btOpenLogFile = new System.Windows.Forms.Button();
+            this.gridCtrlSubscriptions = new DevExpress.XtraGrid.GridControl();
+            this.gridViewSubscriptions = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSubscrMonItemCount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSubscrPublInterval = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSubscrNextSeqNr = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.label3 = new System.Windows.Forms.Label();
+            this.gridCtrlSessions = new DevExpress.XtraGrid.GridControl();
+            this.gridViewSessions = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.colSessionName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSessionID = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colSessionLastMsgTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.gbDebug = new System.Windows.Forms.GroupBox();
             this.gbCertificates.SuspendLayout();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).BeginInit();
             this.contextMenuCerts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewCerts)).BeginInit();
             this.toolStrip1.SuspendLayout();
-            this.gbDiagnostics.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
             this.gbObjects.SuspendLayout();
             this.panelFooter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
@@ -158,14 +173,25 @@
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
             this.splitContainerObjectsFooter.SuspendLayout();
             this.gbConfiguration.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerSecurity)).BeginInit();
-            this.splitContainerSecurity.Panel1.SuspendLayout();
-            this.splitContainerSecurity.Panel2.SuspendLayout();
-            this.splitContainerSecurity.SuspendLayout();
-            this.gbLogon.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.gbSecurity.SuspendLayout();
+            this.gbLogon.SuspendLayout();
             this.gbEndpoints.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvEndpoints)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridCtrlEndpoints)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewEndpoints)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.tabConfiguration.SuspendLayout();
+            this.tabCertificates.SuspendLayout();
+            this.tabTags.SuspendLayout();
+            this.gbTagSettings.SuspendLayout();
+            this.tabDiag.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridCtrlSubscriptions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSubscriptions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridCtrlSessions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSessions)).BeginInit();
+            this.gbDebug.SuspendLayout();
             this.SuspendLayout();
             // 
             // timerRefreshStatus
@@ -175,39 +201,40 @@
             // 
             // openFileDialog
             // 
-            this.openFileDialog.Filter = "DER encoded certificates|*.der|Certificates|*.cer|Personal Information Exchange f" +
-    "iles|*.pfx|All files|*.*";
+            resources.ApplyResources(this.openFileDialog, "openFileDialog");
             // 
             // saveFileDialog
             // 
-            this.saveFileDialog.Filter = "DER encoded certificates|*.der|Certificates|*.cer|Personal Information Exchange f" +
-    "iles|*.pfx|All files|*.*";
+            resources.ApplyResources(this.saveFileDialog, "saveFileDialog");
             // 
             // gbCertificates
             // 
-            this.gbCertificates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbCertificates.Controls.Add(this.panel2);
             this.gbCertificates.Controls.Add(this.gridControlCerts);
             this.gbCertificates.Controls.Add(this.toolStrip1);
-            this.gbCertificates.Location = new System.Drawing.Point(15, 394);
-            this.gbCertificates.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
+            resources.ApplyResources(this.gbCertificates, "gbCertificates");
             this.gbCertificates.Name = "gbCertificates";
-            this.gbCertificates.Size = new System.Drawing.Size(690, 201);
-            this.gbCertificates.TabIndex = 17;
             this.gbCertificates.TabStop = false;
-            this.gbCertificates.Text = "Certificates";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.buttonConfigurationApply2);
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
+            // 
+            // buttonConfigurationApply2
+            // 
+            resources.ApplyResources(this.buttonConfigurationApply2, "buttonConfigurationApply2");
+            this.buttonConfigurationApply2.Name = "buttonConfigurationApply2";
+            this.buttonConfigurationApply2.UseVisualStyleBackColor = true;
+            this.buttonConfigurationApply2.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
             // gridControlCerts
             // 
-            this.gridControlCerts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.gridControlCerts, "gridControlCerts");
             this.gridControlCerts.ContextMenuStrip = this.contextMenuCerts;
-            this.gridControlCerts.Location = new System.Drawing.Point(18, 44);
             this.gridControlCerts.MainView = this.gridViewCerts;
             this.gridControlCerts.Name = "gridControlCerts";
-            this.gridControlCerts.Size = new System.Drawing.Size(654, 151);
-            this.gridControlCerts.TabIndex = 18;
             this.gridControlCerts.ToolTipController = this.toolTipController;
             this.gridControlCerts.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewCerts});
@@ -226,7 +253,7 @@
             this.miCertExport,
             this.miCertRemove});
             this.contextMenuCerts.Name = "contextMenuCerts";
-            this.contextMenuCerts.Size = new System.Drawing.Size(265, 224);
+            resources.ApplyResources(this.contextMenuCerts, "contextMenuCerts");
             // 
             // miColumns
             // 
@@ -245,171 +272,151 @@
             this.toolStripMenuItem1,
             this.miColumnReset});
             this.miColumns.Name = "miColumns";
-            this.miColumns.Size = new System.Drawing.Size(264, 26);
-            this.miColumns.Text = "Columns";
+            resources.ApplyResources(this.miColumns, "miColumns");
             // 
             // miColumnName
             // 
             this.miColumnName.CheckOnClick = true;
             this.miColumnName.Name = "miColumnName";
-            this.miColumnName.Size = new System.Drawing.Size(185, 26);
-            this.miColumnName.Text = "Name";
+            resources.ApplyResources(this.miColumnName, "miColumnName");
             this.miColumnName.Click += new System.EventHandler(this.miColumnName_Click);
             // 
             // miColumnProperties
             // 
             this.miColumnProperties.CheckOnClick = true;
             this.miColumnProperties.Name = "miColumnProperties";
-            this.miColumnProperties.Size = new System.Drawing.Size(185, 26);
-            this.miColumnProperties.Text = "Properties";
+            resources.ApplyResources(this.miColumnProperties, "miColumnProperties");
             this.miColumnProperties.Click += new System.EventHandler(this.miColumnProperties_Click);
             // 
             // miColumnOrganization
             // 
             this.miColumnOrganization.CheckOnClick = true;
             this.miColumnOrganization.Name = "miColumnOrganization";
-            this.miColumnOrganization.Size = new System.Drawing.Size(185, 26);
-            this.miColumnOrganization.Text = "Organization";
+            resources.ApplyResources(this.miColumnOrganization, "miColumnOrganization");
             this.miColumnOrganization.Click += new System.EventHandler(this.miColumnOrganization_Click);
             // 
             // miColumnLocality
             // 
             this.miColumnLocality.CheckOnClick = true;
             this.miColumnLocality.Name = "miColumnLocality";
-            this.miColumnLocality.Size = new System.Drawing.Size(185, 26);
-            this.miColumnLocality.Text = "Locality";
+            resources.ApplyResources(this.miColumnLocality, "miColumnLocality");
             this.miColumnLocality.Click += new System.EventHandler(this.miColumnLocality_Click);
             // 
             // miColumnState
             // 
             this.miColumnState.CheckOnClick = true;
             this.miColumnState.Name = "miColumnState";
-            this.miColumnState.Size = new System.Drawing.Size(185, 26);
-            this.miColumnState.Text = "State";
+            resources.ApplyResources(this.miColumnState, "miColumnState");
             this.miColumnState.Click += new System.EventHandler(this.miColumnState_Click);
             // 
             // miColumnCountry
             // 
             this.miColumnCountry.CheckOnClick = true;
             this.miColumnCountry.Name = "miColumnCountry";
-            this.miColumnCountry.Size = new System.Drawing.Size(185, 26);
-            this.miColumnCountry.Text = "Country";
+            resources.ApplyResources(this.miColumnCountry, "miColumnCountry");
             this.miColumnCountry.Click += new System.EventHandler(this.miColumnCountry_Click);
             // 
             // miColumnIssuedBy
             // 
             this.miColumnIssuedBy.CheckOnClick = true;
             this.miColumnIssuedBy.Name = "miColumnIssuedBy";
-            this.miColumnIssuedBy.Size = new System.Drawing.Size(185, 26);
-            this.miColumnIssuedBy.Text = "Issued By";
+            resources.ApplyResources(this.miColumnIssuedBy, "miColumnIssuedBy");
             this.miColumnIssuedBy.Click += new System.EventHandler(this.miColumnIssuedBy_Click);
             // 
             // miColumnIssuingDate
             // 
             this.miColumnIssuingDate.CheckOnClick = true;
             this.miColumnIssuingDate.Name = "miColumnIssuingDate";
-            this.miColumnIssuingDate.Size = new System.Drawing.Size(185, 26);
-            this.miColumnIssuingDate.Text = "Issued Date";
+            resources.ApplyResources(this.miColumnIssuingDate, "miColumnIssuingDate");
             this.miColumnIssuingDate.Click += new System.EventHandler(this.miColumnIssuedDate_Click);
             // 
             // miColumnExpirationDate
             // 
             this.miColumnExpirationDate.Name = "miColumnExpirationDate";
-            this.miColumnExpirationDate.Size = new System.Drawing.Size(185, 26);
-            this.miColumnExpirationDate.Text = "Expiration Date";
+            resources.ApplyResources(this.miColumnExpirationDate, "miColumnExpirationDate");
             // 
             // miColumnAlgorithm
             // 
             this.miColumnAlgorithm.CheckOnClick = true;
             this.miColumnAlgorithm.Name = "miColumnAlgorithm";
-            this.miColumnAlgorithm.Size = new System.Drawing.Size(185, 26);
-            this.miColumnAlgorithm.Text = "Algorithm";
+            resources.ApplyResources(this.miColumnAlgorithm, "miColumnAlgorithm");
             this.miColumnAlgorithm.Click += new System.EventHandler(this.miColumnAlgorithm_Click);
             // 
             // miColumnThumbprint
             // 
             this.miColumnThumbprint.CheckOnClick = true;
             this.miColumnThumbprint.Name = "miColumnThumbprint";
-            this.miColumnThumbprint.Size = new System.Drawing.Size(185, 26);
-            this.miColumnThumbprint.Text = "Thumbprint";
+            resources.ApplyResources(this.miColumnThumbprint, "miColumnThumbprint");
             this.miColumnThumbprint.Click += new System.EventHandler(this.miColumnThumbprint_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(182, 6);
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             // 
             // miColumnReset
             // 
             this.miColumnReset.Name = "miColumnReset";
-            this.miColumnReset.Size = new System.Drawing.Size(185, 26);
-            this.miColumnReset.Text = "Reset";
+            resources.ApplyResources(this.miColumnReset, "miColumnReset");
             this.miColumnReset.Click += new System.EventHandler(this.miColumnReset_Click);
             // 
             // miCertDelimiter1
             // 
             this.miCertDelimiter1.Name = "miCertDelimiter1";
-            this.miCertDelimiter1.Size = new System.Drawing.Size(261, 6);
+            resources.ApplyResources(this.miCertDelimiter1, "miCertDelimiter1");
             // 
             // miCertReject
             // 
             this.miCertReject.Image = global::iba.Properties.Resources.img_shldred;
             this.miCertReject.Name = "miCertReject";
-            this.miCertReject.Size = new System.Drawing.Size(264, 26);
-            this.miCertReject.Text = "Reject";
+            resources.ApplyResources(this.miCertReject, "miCertReject");
             this.miCertReject.Click += new System.EventHandler(this.buttonCertReject_Click);
             // 
             // miCertTrust
             // 
             this.miCertTrust.Image = global::iba.Properties.Resources.img_shldgreen;
             this.miCertTrust.Name = "miCertTrust";
-            this.miCertTrust.Size = new System.Drawing.Size(264, 26);
-            this.miCertTrust.Text = "Trust";
+            resources.ApplyResources(this.miCertTrust, "miCertTrust");
             this.miCertTrust.Click += new System.EventHandler(this.buttonCertTrust_Click);
             // 
             // miCertToggleUserAuthentication
             // 
             this.miCertToggleUserAuthentication.Image = global::iba.Properties.Resources.img_dude;
             this.miCertToggleUserAuthentication.Name = "miCertToggleUserAuthentication";
-            this.miCertToggleUserAuthentication.Size = new System.Drawing.Size(264, 26);
-            this.miCertToggleUserAuthentication.Text = "Toggle user authentication";
+            resources.ApplyResources(this.miCertToggleUserAuthentication, "miCertToggleUserAuthentication");
             this.miCertToggleUserAuthentication.Click += new System.EventHandler(this.buttonCertUser_Click);
             // 
             // miCertUseAsServerCert
             // 
             this.miCertUseAsServerCert.Image = global::iba.Properties.Resources.opcUaServer_icon;
             this.miCertUseAsServerCert.Name = "miCertUseAsServerCert";
-            this.miCertUseAsServerCert.Size = new System.Drawing.Size(264, 26);
-            this.miCertUseAsServerCert.Text = "Use as server certificate";
+            resources.ApplyResources(this.miCertUseAsServerCert, "miCertUseAsServerCert");
             this.miCertUseAsServerCert.Click += new System.EventHandler(this.buttonCertServer_Click);
             // 
             // miCertDelimiter2
             // 
             this.miCertDelimiter2.Name = "miCertDelimiter2";
-            this.miCertDelimiter2.Size = new System.Drawing.Size(261, 6);
+            resources.ApplyResources(this.miCertDelimiter2, "miCertDelimiter2");
             // 
             // miCertCopyAsText
             // 
             this.miCertCopyAsText.Image = global::iba.Properties.Resources.copy;
             this.miCertCopyAsText.Name = "miCertCopyAsText";
-            this.miCertCopyAsText.Size = new System.Drawing.Size(264, 26);
-            this.miCertCopyAsText.Text = "Copy to clipboard as text";
+            resources.ApplyResources(this.miCertCopyAsText, "miCertCopyAsText");
             this.miCertCopyAsText.Click += new System.EventHandler(this.miCertCopyAsText_Click);
             // 
             // miCertExport
             // 
             this.miCertExport.Image = global::iba.Properties.Resources.img_export;
             this.miCertExport.Name = "miCertExport";
-            this.miCertExport.Size = new System.Drawing.Size(264, 26);
-            this.miCertExport.Text = "Export";
+            resources.ApplyResources(this.miCertExport, "miCertExport");
             this.miCertExport.Click += new System.EventHandler(this.buttonCertExport_Click);
             // 
             // miCertRemove
             // 
             this.miCertRemove.Image = global::iba.Properties.Resources.remove;
             this.miCertRemove.Name = "miCertRemove";
-            this.miCertRemove.Size = new System.Drawing.Size(264, 26);
-            this.miCertRemove.Text = "Remove";
+            resources.ApplyResources(this.miCertRemove, "miCertRemove");
             this.miCertRemove.Click += new System.EventHandler(this.buttonCertRemove_Click);
             // 
             // gridViewCerts
@@ -459,80 +466,58 @@
             // 
             // colCertName
             // 
-            this.colCertName.Caption = "Name";
+            resources.ApplyResources(this.colCertName, "colCertName");
             this.colCertName.Name = "colCertName";
-            this.colCertName.Visible = true;
-            this.colCertName.VisibleIndex = 0;
             // 
             // colCertProperties
             // 
-            this.colCertProperties.Caption = "Properties";
+            resources.ApplyResources(this.colCertProperties, "colCertProperties");
             this.colCertProperties.Name = "colCertProperties";
-            this.colCertProperties.Visible = true;
-            this.colCertProperties.VisibleIndex = 1;
             // 
             // colCertOrganization
             // 
-            this.colCertOrganization.Caption = "Organization";
+            resources.ApplyResources(this.colCertOrganization, "colCertOrganization");
             this.colCertOrganization.Name = "colCertOrganization";
-            this.colCertOrganization.Visible = true;
-            this.colCertOrganization.VisibleIndex = 2;
             // 
             // colCertLocality
             // 
-            this.colCertLocality.Caption = "Locality";
+            resources.ApplyResources(this.colCertLocality, "colCertLocality");
             this.colCertLocality.Name = "colCertLocality";
-            this.colCertLocality.Visible = true;
-            this.colCertLocality.VisibleIndex = 3;
             // 
             // colCertState
             // 
-            this.colCertState.Caption = "State";
+            resources.ApplyResources(this.colCertState, "colCertState");
             this.colCertState.Name = "colCertState";
-            this.colCertState.Visible = true;
-            this.colCertState.VisibleIndex = 4;
             // 
             // colCertCountry
             // 
-            this.colCertCountry.Caption = "Country";
+            resources.ApplyResources(this.colCertCountry, "colCertCountry");
             this.colCertCountry.Name = "colCertCountry";
-            this.colCertCountry.Visible = true;
-            this.colCertCountry.VisibleIndex = 5;
             // 
             // colCertIssuedBy
             // 
-            this.colCertIssuedBy.Caption = "Issued By";
+            resources.ApplyResources(this.colCertIssuedBy, "colCertIssuedBy");
             this.colCertIssuedBy.Name = "colCertIssuedBy";
-            this.colCertIssuedBy.Visible = true;
-            this.colCertIssuedBy.VisibleIndex = 6;
             // 
             // colCertIssuingDate
             // 
-            this.colCertIssuingDate.Caption = "Issuing Date";
+            resources.ApplyResources(this.colCertIssuingDate, "colCertIssuingDate");
             this.colCertIssuingDate.Name = "colCertIssuingDate";
-            this.colCertIssuingDate.Visible = true;
-            this.colCertIssuingDate.VisibleIndex = 7;
             // 
             // colCertExpirationDate
             // 
-            this.colCertExpirationDate.Caption = "Expiration Date";
+            resources.ApplyResources(this.colCertExpirationDate, "colCertExpirationDate");
             this.colCertExpirationDate.Name = "colCertExpirationDate";
-            this.colCertExpirationDate.Visible = true;
-            this.colCertExpirationDate.VisibleIndex = 8;
             // 
             // colCertAlgorithm
             // 
-            this.colCertAlgorithm.Caption = "Algorithm";
+            resources.ApplyResources(this.colCertAlgorithm, "colCertAlgorithm");
             this.colCertAlgorithm.Name = "colCertAlgorithm";
-            this.colCertAlgorithm.Visible = true;
-            this.colCertAlgorithm.VisibleIndex = 9;
             // 
             // colCertThumbprint
             // 
-            this.colCertThumbprint.Caption = "Thumbprint";
+            resources.ApplyResources(this.colCertThumbprint, "colCertThumbprint");
             this.colCertThumbprint.Name = "colCertThumbprint";
-            this.colCertThumbprint.Visible = true;
-            this.colCertThumbprint.VisibleIndex = 10;
             // 
             // toolTipController
             // 
@@ -557,352 +542,143 @@
             this.buttonCertServer,
             this.toolStripSeparator4,
             this.buttonCertRefresh});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 16);
+            resources.ApplyResources(this.toolStrip1, "toolStrip1");
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(684, 25);
-            this.toolStrip1.TabIndex = 17;
-            this.toolStrip1.Text = "toolStrip1";
             // 
             // buttonCertAdd
             // 
             this.buttonCertAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertAdd.Image = global::iba.Properties.Resources.img_add;
-            this.buttonCertAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertAdd, "buttonCertAdd");
             this.buttonCertAdd.Name = "buttonCertAdd";
-            this.buttonCertAdd.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertAdd.Text = "Add";
-            this.buttonCertAdd.ToolTipText = "Add an existing certificate file";
             this.buttonCertAdd.Click += new System.EventHandler(this.buttonCertAdd_Click);
             // 
             // buttonCertGenerate
             // 
             this.buttonCertGenerate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertGenerate.Image = global::iba.Properties.Resources.img_cert;
-            this.buttonCertGenerate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertGenerate, "buttonCertGenerate");
             this.buttonCertGenerate.Name = "buttonCertGenerate";
-            this.buttonCertGenerate.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertGenerate.Text = "Generate";
-            this.buttonCertGenerate.ToolTipText = "Generate a certificate";
             this.buttonCertGenerate.Click += new System.EventHandler(this.buttonCertGenerate_Click);
             // 
             // buttonCertExport
             // 
             this.buttonCertExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertExport.Image = global::iba.Properties.Resources.img_export;
-            this.buttonCertExport.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonCertExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertExport, "buttonCertExport");
             this.buttonCertExport.Name = "buttonCertExport";
-            this.buttonCertExport.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertExport.Text = "Export";
-            this.buttonCertExport.ToolTipText = "Export the selected certificate to a file";
             this.buttonCertExport.Click += new System.EventHandler(this.buttonCertExport_Click);
             // 
             // buttonCertRemove
             // 
             this.buttonCertRemove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertRemove.Image = global::iba.Properties.Resources.remove;
-            this.buttonCertRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertRemove, "buttonCertRemove");
             this.buttonCertRemove.Name = "buttonCertRemove";
-            this.buttonCertRemove.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertRemove.Text = "Remove";
-            this.buttonCertRemove.ToolTipText = "Remove the selected certificate";
             this.buttonCertRemove.Click += new System.EventHandler(this.buttonCertRemove_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // buttonCertTrust
             // 
             this.buttonCertTrust.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertTrust.Image = global::iba.Properties.Resources.img_shldgreen;
-            this.buttonCertTrust.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertTrust, "buttonCertTrust");
             this.buttonCertTrust.Name = "buttonCertTrust";
-            this.buttonCertTrust.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertTrust.Text = "Trust the selected certificate";
             this.buttonCertTrust.Click += new System.EventHandler(this.buttonCertTrust_Click);
             // 
             // buttonCertReject
             // 
             this.buttonCertReject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertReject.Image = global::iba.Properties.Resources.img_shldred;
-            this.buttonCertReject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertReject, "buttonCertReject");
             this.buttonCertReject.Name = "buttonCertReject";
-            this.buttonCertReject.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertReject.Text = "Reject the selected certificate";
             this.buttonCertReject.Click += new System.EventHandler(this.buttonCertReject_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
             // buttonCertUser
             // 
             this.buttonCertUser.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertUser.Image = global::iba.Properties.Resources.img_dude;
-            this.buttonCertUser.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertUser, "buttonCertUser");
             this.buttonCertUser.Name = "buttonCertUser";
-            this.buttonCertUser.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertUser.Text = "Toggles whether the selected certificate can be used for the user authentication";
             this.buttonCertUser.Click += new System.EventHandler(this.buttonCertUser_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             // 
             // buttonCertServer
             // 
             this.buttonCertServer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertServer.Image = global::iba.Properties.Resources.img_opcuaserver_cert;
-            this.buttonCertServer.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertServer, "buttonCertServer");
             this.buttonCertServer.Name = "buttonCertServer";
-            this.buttonCertServer.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertServer.Text = "Use the selected certificate as OPC UA server certificate";
             this.buttonCertServer.Click += new System.EventHandler(this.buttonCertServer_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
             // 
             // buttonCertRefresh
             // 
             this.buttonCertRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.buttonCertRefresh.Image = global::iba.Properties.Resources.Aktualisieren;
-            this.buttonCertRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            resources.ApplyResources(this.buttonCertRefresh, "buttonCertRefresh");
             this.buttonCertRefresh.Name = "buttonCertRefresh";
-            this.buttonCertRefresh.Size = new System.Drawing.Size(23, 22);
-            this.buttonCertRefresh.Text = "Refresh the table";
             this.buttonCertRefresh.Click += new System.EventHandler(this.buttonCertRefresh_Click);
             // 
             // gbDiagnostics
             // 
-            this.gbDiagnostics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbDiagnostics.Controls.Add(this.tbDiagTmp);
-            this.gbDiagnostics.Controls.Add(this.dgvSubscriptions);
-            this.gbDiagnostics.Controls.Add(this.dgvClients);
-            this.gbDiagnostics.Controls.Add(this.tbStatus);
-            this.gbDiagnostics.Controls.Add(this.buttonOpenLogFile);
-            this.gbDiagnostics.Controls.Add(this.label14);
-            this.gbDiagnostics.Controls.Add(this.label1);
-            this.gbDiagnostics.Controls.Add(this.label15);
-            this.gbDiagnostics.Location = new System.Drawing.Point(15, 1006);
-            this.gbDiagnostics.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
+            resources.ApplyResources(this.gbDiagnostics, "gbDiagnostics");
             this.gbDiagnostics.Name = "gbDiagnostics";
-            this.gbDiagnostics.Padding = new System.Windows.Forms.Padding(15, 3, 15, 3);
-            this.gbDiagnostics.Size = new System.Drawing.Size(690, 338);
-            this.gbDiagnostics.TabIndex = 4;
             this.gbDiagnostics.TabStop = false;
-            this.gbDiagnostics.Text = "Diagnostics";
             // 
             // tbDiagTmp
             // 
-            this.tbDiagTmp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbDiagTmp.BackColor = System.Drawing.Color.MistyRose;
-            this.tbDiagTmp.Location = new System.Drawing.Point(18, 257);
-            this.tbDiagTmp.Multiline = true;
+            resources.ApplyResources(this.tbDiagTmp, "tbDiagTmp");
             this.tbDiagTmp.Name = "tbDiagTmp";
             this.tbDiagTmp.ReadOnly = true;
-            this.tbDiagTmp.Size = new System.Drawing.Size(654, 72);
-            this.tbDiagTmp.TabIndex = 4;
-            // 
-            // dgvSubscriptions
-            // 
-            this.dgvSubscriptions.AllowUserToAddRows = false;
-            this.dgvSubscriptions.AllowUserToDeleteRows = false;
-            this.dgvSubscriptions.AllowUserToResizeRows = false;
-            this.dgvSubscriptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvSubscriptions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSubscriptions.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colSubscrId,
-            this.colSubscrMonitoredItemsCount,
-            this.colSubscrPublishingInterval,
-            this.colSubscrNextSeq});
-            this.dgvSubscriptions.Location = new System.Drawing.Point(18, 182);
-            this.dgvSubscriptions.Name = "dgvSubscriptions";
-            this.dgvSubscriptions.ReadOnly = true;
-            this.dgvSubscriptions.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
-            this.dgvSubscriptions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvSubscriptions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSubscriptions.Size = new System.Drawing.Size(654, 69);
-            this.dgvSubscriptions.StandardTab = true;
-            this.dgvSubscriptions.TabIndex = 3;
-            // 
-            // colSubscrId
-            // 
-            this.colSubscrId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSubscrId.HeaderText = "ID";
-            this.colSubscrId.MinimumWidth = 50;
-            this.colSubscrId.Name = "colSubscrId";
-            this.colSubscrId.ReadOnly = true;
-            // 
-            // colSubscrMonitoredItemsCount
-            // 
-            this.colSubscrMonitoredItemsCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSubscrMonitoredItemsCount.HeaderText = "Monitored items count";
-            this.colSubscrMonitoredItemsCount.MinimumWidth = 50;
-            this.colSubscrMonitoredItemsCount.Name = "colSubscrMonitoredItemsCount";
-            this.colSubscrMonitoredItemsCount.ReadOnly = true;
-            // 
-            // colSubscrPublishingInterval
-            // 
-            this.colSubscrPublishingInterval.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSubscrPublishingInterval.HeaderText = "Publishing interval";
-            this.colSubscrPublishingInterval.MinimumWidth = 50;
-            this.colSubscrPublishingInterval.Name = "colSubscrPublishingInterval";
-            this.colSubscrPublishingInterval.ReadOnly = true;
-            // 
-            // colSubscrNextSeq
-            // 
-            this.colSubscrNextSeq.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSubscrNextSeq.HeaderText = "Next sequence number";
-            this.colSubscrNextSeq.MinimumWidth = 50;
-            this.colSubscrNextSeq.Name = "colSubscrNextSeq";
-            this.colSubscrNextSeq.ReadOnly = true;
-            // 
-            // dgvClients
-            // 
-            this.dgvClients.AllowUserToAddRows = false;
-            this.dgvClients.AllowUserToDeleteRows = false;
-            this.dgvClients.AllowUserToResizeRows = false;
-            this.dgvClients.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColName,
-            this.ColId,
-            this.ColLastMsg});
-            this.dgvClients.Location = new System.Drawing.Point(18, 58);
-            this.dgvClients.Name = "dgvClients";
-            this.dgvClients.ReadOnly = true;
-            this.dgvClients.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
-            this.dgvClients.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvClients.Size = new System.Drawing.Size(654, 105);
-            this.dgvClients.StandardTab = true;
-            this.dgvClients.TabIndex = 1;
-            this.dgvClients.SelectionChanged += new System.EventHandler(this.dgvClients_SelectionChanged);
-            // 
-            // ColName
-            // 
-            this.ColName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColName.FillWeight = 76.14214F;
-            this.ColName.HeaderText = "Name";
-            this.ColName.MinimumWidth = 50;
-            this.ColName.Name = "ColName";
-            this.ColName.ReadOnly = true;
-            // 
-            // ColId
-            // 
-            this.ColId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColId.FillWeight = 50F;
-            this.ColId.HeaderText = "ID";
-            this.ColId.MinimumWidth = 50;
-            this.ColId.Name = "ColId";
-            this.ColId.ReadOnly = true;
-            // 
-            // ColLastMsg
-            // 
-            this.ColLastMsg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColLastMsg.FillWeight = 76.14214F;
-            this.ColLastMsg.HeaderText = "Last message time";
-            this.ColLastMsg.MinimumWidth = 50;
-            this.ColLastMsg.Name = "ColLastMsg";
-            this.ColLastMsg.ReadOnly = true;
             // 
             // tbStatus
             // 
-            this.tbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbStatus.Location = new System.Drawing.Point(88, 19);
+            resources.ApplyResources(this.tbStatus, "tbStatus");
             this.tbStatus.Name = "tbStatus";
             this.tbStatus.ReadOnly = true;
-            this.tbStatus.Size = new System.Drawing.Size(453, 20);
-            this.tbStatus.TabIndex = 0;
             this.tbStatus.TabStop = false;
-            // 
-            // buttonOpenLogFile
-            // 
-            this.buttonOpenLogFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOpenLogFile.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonOpenLogFile.Location = new System.Drawing.Point(547, 18);
-            this.buttonOpenLogFile.Name = "buttonOpenLogFile";
-            this.buttonOpenLogFile.Size = new System.Drawing.Size(125, 23);
-            this.buttonOpenLogFile.TabIndex = 2;
-            this.buttonOpenLogFile.Text = "Open log file";
-            this.buttonOpenLogFile.UseVisualStyleBackColor = true;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label14.Location = new System.Drawing.Point(18, 22);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(40, 13);
-            this.label14.TabIndex = 0;
-            this.label14.Text = "Status:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(18, 166);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Subscriptions:";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label15.Location = new System.Drawing.Point(18, 42);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(138, 13);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "Connected OPC UA clients:";
             // 
             // gbObjects
             // 
-            this.gbObjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbObjects.Controls.Add(this.panelFooter);
             this.gbObjects.Controls.Add(this.buttonRefreshGuiTree);
             this.gbObjects.Controls.Add(this.buttonRebuildTree);
             this.gbObjects.Controls.Add(this.tvObjects);
-            this.gbObjects.Location = new System.Drawing.Point(15, 602);
-            this.gbObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
+            resources.ApplyResources(this.gbObjects, "gbObjects");
             this.gbObjects.Name = "gbObjects";
-            this.gbObjects.Size = new System.Drawing.Size(690, 398);
-            this.gbObjects.TabIndex = 3;
             this.gbObjects.TabStop = false;
-            this.gbObjects.Text = "Objects";
             // 
             // panelFooter
             // 
-            this.panelFooter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.panelFooter, "panelFooter");
             this.panelFooter.Controls.Add(this.splitContainerObjectsFooter);
             this.panelFooter.Controls.Add(this.labelObjNodeId);
             this.panelFooter.Controls.Add(this.tbObjNodeId);
-            this.panelFooter.Location = new System.Drawing.Point(15, 311);
             this.panelFooter.Name = "panelFooter";
-            this.panelFooter.Size = new System.Drawing.Size(669, 81);
-            this.panelFooter.TabIndex = 13;
             // 
             // splitContainerObjectsFooter
             // 
-            this.splitContainerObjectsFooter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainerObjectsFooter.IsSplitterFixed = true;
-            this.splitContainerObjectsFooter.Location = new System.Drawing.Point(0, 26);
+            resources.ApplyResources(this.splitContainerObjectsFooter, "splitContainerObjectsFooter");
             this.splitContainerObjectsFooter.Name = "splitContainerObjectsFooter";
             // 
             // splitContainerObjectsFooter.Panel1
@@ -911,257 +687,119 @@
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjType);
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjValue);
             this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjValue);
-            this.splitContainerObjectsFooter.Panel1.Margin = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            resources.ApplyResources(this.splitContainerObjectsFooter.Panel1, "splitContainerObjectsFooter.Panel1");
             // 
             // splitContainerObjectsFooter.Panel2
             // 
             this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjDescription);
             this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjDescription);
-            this.splitContainerObjectsFooter.Size = new System.Drawing.Size(669, 52);
-            this.splitContainerObjectsFooter.SplitterDistance = 240;
-            this.splitContainerObjectsFooter.TabIndex = 2;
             // 
             // labelObjType
             // 
-            this.labelObjType.AutoSize = true;
-            this.labelObjType.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelObjType.Location = new System.Drawing.Point(3, 32);
+            resources.ApplyResources(this.labelObjType, "labelObjType");
             this.labelObjType.Name = "labelObjType";
-            this.labelObjType.Size = new System.Drawing.Size(34, 13);
-            this.labelObjType.TabIndex = 9;
-            this.labelObjType.Text = "Type:";
             // 
             // tbObjType
             // 
-            this.tbObjType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjType.Location = new System.Drawing.Point(67, 29);
-            this.tbObjType.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
+            resources.ApplyResources(this.tbObjType, "tbObjType");
             this.tbObjType.Name = "tbObjType";
             this.tbObjType.ReadOnly = true;
-            this.tbObjType.Size = new System.Drawing.Size(164, 20);
-            this.tbObjType.TabIndex = 1;
             this.tbObjType.TabStop = false;
             // 
             // labelObjValue
             // 
-            this.labelObjValue.AutoSize = true;
-            this.labelObjValue.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelObjValue.Location = new System.Drawing.Point(3, 6);
+            resources.ApplyResources(this.labelObjValue, "labelObjValue");
             this.labelObjValue.Name = "labelObjValue";
-            this.labelObjValue.Size = new System.Drawing.Size(37, 13);
-            this.labelObjValue.TabIndex = 9;
-            this.labelObjValue.Text = "Value:";
             // 
             // tbObjValue
             // 
-            this.tbObjValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjValue.Location = new System.Drawing.Point(67, 3);
+            resources.ApplyResources(this.tbObjValue, "tbObjValue");
             this.tbObjValue.Name = "tbObjValue";
             this.tbObjValue.ReadOnly = true;
-            this.tbObjValue.Size = new System.Drawing.Size(164, 20);
-            this.tbObjValue.TabIndex = 1;
             this.tbObjValue.TabStop = false;
             // 
             // labelObjDescription
             // 
-            this.labelObjDescription.AutoSize = true;
-            this.labelObjDescription.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelObjDescription.Location = new System.Drawing.Point(3, 6);
+            resources.ApplyResources(this.labelObjDescription, "labelObjDescription");
             this.labelObjDescription.Name = "labelObjDescription";
-            this.labelObjDescription.Size = new System.Drawing.Size(63, 13);
-            this.labelObjDescription.TabIndex = 12;
-            this.labelObjDescription.Text = "Description:";
             // 
             // tbObjDescription
             // 
-            this.tbObjDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjDescription.Location = new System.Drawing.Point(79, 3);
-            this.tbObjDescription.Multiline = true;
+            resources.ApplyResources(this.tbObjDescription, "tbObjDescription");
             this.tbObjDescription.Name = "tbObjDescription";
             this.tbObjDescription.ReadOnly = true;
-            this.tbObjDescription.Size = new System.Drawing.Size(333, 46);
-            this.tbObjDescription.TabIndex = 10;
             this.tbObjDescription.TabStop = false;
             // 
             // labelObjNodeId
             // 
-            this.labelObjNodeId.AutoSize = true;
-            this.labelObjNodeId.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelObjNodeId.Location = new System.Drawing.Point(3, 6);
+            resources.ApplyResources(this.labelObjNodeId, "labelObjNodeId");
             this.labelObjNodeId.Name = "labelObjNodeId";
-            this.labelObjNodeId.Size = new System.Drawing.Size(50, 13);
-            this.labelObjNodeId.TabIndex = 13;
-            this.labelObjNodeId.Text = "Node ID:";
             // 
             // tbObjNodeId
             // 
-            this.tbObjNodeId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObjNodeId.Location = new System.Drawing.Point(67, 3);
+            resources.ApplyResources(this.tbObjNodeId, "tbObjNodeId");
             this.tbObjNodeId.Name = "tbObjNodeId";
             this.tbObjNodeId.ReadOnly = true;
-            this.tbObjNodeId.Size = new System.Drawing.Size(590, 20);
-            this.tbObjNodeId.TabIndex = 11;
             this.tbObjNodeId.TabStop = false;
             // 
             // buttonRefreshGuiTree
             // 
             this.buttonRefreshGuiTree.BackColor = System.Drawing.Color.Linen;
-            this.buttonRefreshGuiTree.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonRefreshGuiTree.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonRefreshGuiTree.Location = new System.Drawing.Point(171, -1);
+            resources.ApplyResources(this.buttonRefreshGuiTree, "buttonRefreshGuiTree");
             this.buttonRefreshGuiTree.Name = "buttonRefreshGuiTree";
-            this.buttonRefreshGuiTree.Size = new System.Drawing.Size(92, 19);
-            this.buttonRefreshGuiTree.TabIndex = 12;
-            this.buttonRefreshGuiTree.Text = "Force Refresh GUI";
             this.buttonRefreshGuiTree.UseVisualStyleBackColor = false;
-            this.buttonRefreshGuiTree.Visible = false;
             this.buttonRefreshGuiTree.Click += new System.EventHandler(this.buttonRefreshGuiTree_Click);
             // 
             // buttonRebuildTree
             // 
             this.buttonRebuildTree.BackColor = System.Drawing.Color.Linen;
-            this.buttonRebuildTree.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonRebuildTree.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonRebuildTree.Location = new System.Drawing.Point(73, -1);
+            resources.ApplyResources(this.buttonRebuildTree, "buttonRebuildTree");
             this.buttonRebuildTree.Name = "buttonRebuildTree";
-            this.buttonRebuildTree.Size = new System.Drawing.Size(92, 19);
-            this.buttonRebuildTree.TabIndex = 12;
-            this.buttonRebuildTree.Text = "Force Rebuild Tree";
             this.buttonRebuildTree.UseVisualStyleBackColor = false;
-            this.buttonRebuildTree.Visible = false;
             this.buttonRebuildTree.Click += new System.EventHandler(this.buttonRebuildTree_Click);
             // 
             // tvObjects
             // 
-            this.tvObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            resources.ApplyResources(this.tvObjects, "tvObjects");
             this.tvObjects.HideSelection = false;
-            this.tvObjects.Location = new System.Drawing.Point(18, 19);
-            this.tvObjects.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
             this.tvObjects.Name = "tvObjects";
-            this.tvObjects.Size = new System.Drawing.Size(654, 286);
-            this.tvObjects.TabIndex = 0;
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
             // 
             // gbConfiguration
             // 
-            this.gbConfiguration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbConfiguration.Controls.Add(this.splitContainerSecurity);
+            this.gbConfiguration.Controls.Add(this.panel1);
+            this.gbConfiguration.Controls.Add(this.gbSecurity);
+            this.gbConfiguration.Controls.Add(this.gbLogon);
             this.gbConfiguration.Controls.Add(this.gbEndpoints);
             this.gbConfiguration.Controls.Add(this.cbEnabled);
-            this.gbConfiguration.Controls.Add(this.buttonConfigurationReset);
-            this.gbConfiguration.Controls.Add(this.buttonConfigurationApply);
-            this.gbConfiguration.Location = new System.Drawing.Point(15, 3);
-            this.gbConfiguration.Margin = new System.Windows.Forms.Padding(15, 3, 15, 3);
+            resources.ApplyResources(this.gbConfiguration, "gbConfiguration");
             this.gbConfiguration.Name = "gbConfiguration";
-            this.gbConfiguration.Size = new System.Drawing.Size(690, 385);
-            this.gbConfiguration.TabIndex = 2;
             this.gbConfiguration.TabStop = false;
-            this.gbConfiguration.Text = "Configuration";
             // 
-            // splitContainerSecurity
+            // panel1
             // 
-            this.splitContainerSecurity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainerSecurity.IsSplitterFixed = true;
-            this.splitContainerSecurity.Location = new System.Drawing.Point(9, 42);
-            this.splitContainerSecurity.Name = "splitContainerSecurity";
+            this.panel1.Controls.Add(this.buttonConfigurationReset);
+            this.panel1.Controls.Add(this.buttonConfigurationApply);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
             // 
-            // splitContainerSecurity.Panel1
+            // buttonConfigurationReset
             // 
-            this.splitContainerSecurity.Panel1.Controls.Add(this.gbLogon);
-            this.splitContainerSecurity.Panel1.Margin = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            resources.ApplyResources(this.buttonConfigurationReset, "buttonConfigurationReset");
+            this.buttonConfigurationReset.Name = "buttonConfigurationReset";
+            this.buttonConfigurationReset.UseVisualStyleBackColor = true;
+            this.buttonConfigurationReset.Click += new System.EventHandler(this.buttonConfigurationReset_Click);
             // 
-            // splitContainerSecurity.Panel2
+            // buttonConfigurationApply
             // 
-            this.splitContainerSecurity.Panel2.Controls.Add(this.gbSecurity);
-            this.splitContainerSecurity.Size = new System.Drawing.Size(663, 130);
-            this.splitContainerSecurity.SplitterDistance = 390;
-            this.splitContainerSecurity.TabIndex = 2;
-            // 
-            // gbLogon
-            // 
-            this.gbLogon.Controls.Add(this.labelPassword);
-            this.gbLogon.Controls.Add(this.cbLogonAnonymous);
-            this.gbLogon.Controls.Add(this.cbLogonUserName);
-            this.gbLogon.Controls.Add(this.cbLogonCertificate);
-            this.gbLogon.Controls.Add(this.tbUserName);
-            this.gbLogon.Controls.Add(this.tbPassword);
-            this.gbLogon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbLogon.Location = new System.Drawing.Point(0, 0);
-            this.gbLogon.Name = "gbLogon";
-            this.gbLogon.Size = new System.Drawing.Size(390, 130);
-            this.gbLogon.TabIndex = 0;
-            this.gbLogon.TabStop = false;
-            this.gbLogon.Text = "Logon policies";
-            // 
-            // labelPassword
-            // 
-            this.labelPassword.AutoSize = true;
-            this.labelPassword.Location = new System.Drawing.Point(29, 75);
-            this.labelPassword.Name = "labelPassword";
-            this.labelPassword.Size = new System.Drawing.Size(56, 13);
-            this.labelPassword.TabIndex = 9;
-            this.labelPassword.Text = "Password:";
-            // 
-            // cbLogonAnonymous
-            // 
-            this.cbLogonAnonymous.AutoSize = true;
-            this.cbLogonAnonymous.Location = new System.Drawing.Point(12, 21);
-            this.cbLogonAnonymous.Name = "cbLogonAnonymous";
-            this.cbLogonAnonymous.Size = new System.Drawing.Size(81, 17);
-            this.cbLogonAnonymous.TabIndex = 8;
-            this.cbLogonAnonymous.Text = "Anonymous";
-            this.cbLogonAnonymous.UseVisualStyleBackColor = true;
-            // 
-            // cbLogonUserName
-            // 
-            this.cbLogonUserName.AutoSize = true;
-            this.cbLogonUserName.Location = new System.Drawing.Point(12, 48);
-            this.cbLogonUserName.Name = "cbLogonUserName";
-            this.cbLogonUserName.Size = new System.Drawing.Size(80, 17);
-            this.cbLogonUserName.TabIndex = 8;
-            this.cbLogonUserName.Text = "User name:";
-            this.cbLogonUserName.UseVisualStyleBackColor = true;
-            this.cbLogonUserName.CheckedChanged += new System.EventHandler(this.cbLogonUserName_CheckedChanged);
-            // 
-            // cbLogonCertificate
-            // 
-            this.cbLogonCertificate.AutoSize = true;
-            this.cbLogonCertificate.Location = new System.Drawing.Point(12, 102);
-            this.cbLogonCertificate.Name = "cbLogonCertificate";
-            this.cbLogonCertificate.Size = new System.Drawing.Size(73, 17);
-            this.cbLogonCertificate.TabIndex = 7;
-            this.cbLogonCertificate.Text = "Certificate";
-            this.cbLogonCertificate.UseVisualStyleBackColor = true;
-            // 
-            // tbUserName
-            // 
-            this.tbUserName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbUserName.Location = new System.Drawing.Point(122, 46);
-            this.tbUserName.Name = "tbUserName";
-            this.tbUserName.Size = new System.Drawing.Size(262, 20);
-            this.tbUserName.TabIndex = 4;
-            // 
-            // tbPassword
-            // 
-            this.tbPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPassword.Location = new System.Drawing.Point(122, 72);
-            this.tbPassword.Name = "tbPassword";
-            this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(262, 20);
-            this.tbPassword.TabIndex = 5;
+            resources.ApplyResources(this.buttonConfigurationApply, "buttonConfigurationApply");
+            this.buttonConfigurationApply.Name = "buttonConfigurationApply";
+            this.buttonConfigurationApply.UseVisualStyleBackColor = true;
+            this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
             // gbSecurity
             // 
+            resources.ApplyResources(this.gbSecurity, "gbSecurity");
             this.gbSecurity.Controls.Add(this.comboBoxSecurity256Sha256);
             this.gbSecurity.Controls.Add(this.comboBoxSecurity256);
             this.gbSecurity.Controls.Add(this.comboBoxSecurity128);
@@ -1169,260 +807,529 @@
             this.gbSecurity.Controls.Add(this.cbSecurity256);
             this.gbSecurity.Controls.Add(this.cbSecurity128);
             this.gbSecurity.Controls.Add(this.cbSecurityNone);
-            this.gbSecurity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbSecurity.Location = new System.Drawing.Point(0, 0);
             this.gbSecurity.Name = "gbSecurity";
-            this.gbSecurity.Size = new System.Drawing.Size(269, 130);
-            this.gbSecurity.TabIndex = 1;
             this.gbSecurity.TabStop = false;
-            this.gbSecurity.Text = "Security policies";
             // 
             // comboBoxSecurity256Sha256
             // 
             this.comboBoxSecurity256Sha256.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSecurity256Sha256.FormattingEnabled = true;
             this.comboBoxSecurity256Sha256.Items.AddRange(new object[] {
-            "Sign",
-            "Sign & Encrypt",
-            "Sign + Sign & Encrypt"});
-            this.comboBoxSecurity256Sha256.Location = new System.Drawing.Point(115, 100);
+            resources.GetString("comboBoxSecurity256Sha256.Items"),
+            resources.GetString("comboBoxSecurity256Sha256.Items1"),
+            resources.GetString("comboBoxSecurity256Sha256.Items2")});
+            resources.ApplyResources(this.comboBoxSecurity256Sha256, "comboBoxSecurity256Sha256");
             this.comboBoxSecurity256Sha256.Name = "comboBoxSecurity256Sha256";
-            this.comboBoxSecurity256Sha256.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxSecurity256Sha256.TabIndex = 8;
             // 
             // comboBoxSecurity256
             // 
             this.comboBoxSecurity256.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSecurity256.FormattingEnabled = true;
             this.comboBoxSecurity256.Items.AddRange(new object[] {
-            "Sign",
-            "Sign & Encrypt",
-            "Sign + Sign & Encrypt"});
-            this.comboBoxSecurity256.Location = new System.Drawing.Point(115, 73);
+            resources.GetString("comboBoxSecurity256.Items"),
+            resources.GetString("comboBoxSecurity256.Items1"),
+            resources.GetString("comboBoxSecurity256.Items2")});
+            resources.ApplyResources(this.comboBoxSecurity256, "comboBoxSecurity256");
             this.comboBoxSecurity256.Name = "comboBoxSecurity256";
-            this.comboBoxSecurity256.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxSecurity256.TabIndex = 8;
             // 
             // comboBoxSecurity128
             // 
             this.comboBoxSecurity128.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSecurity128.FormattingEnabled = true;
             this.comboBoxSecurity128.Items.AddRange(new object[] {
-            "Sign",
-            "Sign & Encrypt",
-            "Sign + Sign & Encrypt"});
-            this.comboBoxSecurity128.Location = new System.Drawing.Point(115, 46);
+            resources.GetString("comboBoxSecurity128.Items"),
+            resources.GetString("comboBoxSecurity128.Items1"),
+            resources.GetString("comboBoxSecurity128.Items2")});
+            resources.ApplyResources(this.comboBoxSecurity128, "comboBoxSecurity128");
             this.comboBoxSecurity128.Name = "comboBoxSecurity128";
-            this.comboBoxSecurity128.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxSecurity128.TabIndex = 8;
             // 
             // cbSecurity256Sha256
             // 
-            this.cbSecurity256Sha256.AutoSize = true;
-            this.cbSecurity256Sha256.Location = new System.Drawing.Point(6, 102);
+            resources.ApplyResources(this.cbSecurity256Sha256, "cbSecurity256Sha256");
             this.cbSecurity256Sha256.Name = "cbSecurity256Sha256";
-            this.cbSecurity256Sha256.Size = new System.Drawing.Size(107, 17);
-            this.cbSecurity256Sha256.TabIndex = 7;
-            this.cbSecurity256Sha256.Text = "Basic256Sha256";
             this.cbSecurity256Sha256.UseVisualStyleBackColor = true;
             this.cbSecurity256Sha256.CheckedChanged += new System.EventHandler(this.cbSecurity256Sha256_CheckedChanged);
             // 
             // cbSecurity256
             // 
-            this.cbSecurity256.AutoSize = true;
-            this.cbSecurity256.Location = new System.Drawing.Point(6, 75);
+            resources.ApplyResources(this.cbSecurity256, "cbSecurity256");
             this.cbSecurity256.Name = "cbSecurity256";
-            this.cbSecurity256.Size = new System.Drawing.Size(70, 17);
-            this.cbSecurity256.TabIndex = 7;
-            this.cbSecurity256.Text = "Basic256";
             this.cbSecurity256.UseVisualStyleBackColor = true;
             this.cbSecurity256.CheckedChanged += new System.EventHandler(this.cbSecurity256_CheckedChanged);
             // 
             // cbSecurity128
             // 
-            this.cbSecurity128.AutoSize = true;
-            this.cbSecurity128.Location = new System.Drawing.Point(6, 48);
+            resources.ApplyResources(this.cbSecurity128, "cbSecurity128");
             this.cbSecurity128.Name = "cbSecurity128";
-            this.cbSecurity128.Size = new System.Drawing.Size(101, 17);
-            this.cbSecurity128.TabIndex = 7;
-            this.cbSecurity128.Text = "Basic128Rsa15";
             this.cbSecurity128.UseVisualStyleBackColor = true;
             this.cbSecurity128.CheckedChanged += new System.EventHandler(this.cbSecurity128_CheckedChanged);
             // 
             // cbSecurityNone
             // 
-            this.cbSecurityNone.AutoSize = true;
-            this.cbSecurityNone.Location = new System.Drawing.Point(6, 21);
+            resources.ApplyResources(this.cbSecurityNone, "cbSecurityNone");
             this.cbSecurityNone.Name = "cbSecurityNone";
-            this.cbSecurityNone.Size = new System.Drawing.Size(52, 17);
-            this.cbSecurityNone.TabIndex = 7;
-            this.cbSecurityNone.Text = "None";
             this.cbSecurityNone.UseVisualStyleBackColor = true;
+            // 
+            // gbLogon
+            // 
+            resources.ApplyResources(this.gbLogon, "gbLogon");
+            this.gbLogon.Controls.Add(this.labelPassword);
+            this.gbLogon.Controls.Add(this.cbLogonAnonymous);
+            this.gbLogon.Controls.Add(this.cbLogonUserName);
+            this.gbLogon.Controls.Add(this.cbLogonCertificate);
+            this.gbLogon.Controls.Add(this.tbUserName);
+            this.gbLogon.Controls.Add(this.tbPassword);
+            this.gbLogon.Name = "gbLogon";
+            this.gbLogon.TabStop = false;
+            // 
+            // labelPassword
+            // 
+            resources.ApplyResources(this.labelPassword, "labelPassword");
+            this.labelPassword.Name = "labelPassword";
+            // 
+            // cbLogonAnonymous
+            // 
+            resources.ApplyResources(this.cbLogonAnonymous, "cbLogonAnonymous");
+            this.cbLogonAnonymous.Name = "cbLogonAnonymous";
+            this.cbLogonAnonymous.UseVisualStyleBackColor = true;
+            // 
+            // cbLogonUserName
+            // 
+            resources.ApplyResources(this.cbLogonUserName, "cbLogonUserName");
+            this.cbLogonUserName.Name = "cbLogonUserName";
+            this.cbLogonUserName.UseVisualStyleBackColor = true;
+            this.cbLogonUserName.CheckedChanged += new System.EventHandler(this.cbLogonUserName_CheckedChanged);
+            // 
+            // cbLogonCertificate
+            // 
+            resources.ApplyResources(this.cbLogonCertificate, "cbLogonCertificate");
+            this.cbLogonCertificate.Name = "cbLogonCertificate";
+            this.cbLogonCertificate.UseVisualStyleBackColor = true;
+            // 
+            // tbUserName
+            // 
+            resources.ApplyResources(this.tbUserName, "tbUserName");
+            this.tbUserName.Name = "tbUserName";
+            // 
+            // tbPassword
+            // 
+            resources.ApplyResources(this.tbPassword, "tbPassword");
+            this.tbPassword.Name = "tbPassword";
             // 
             // gbEndpoints
             // 
-            this.gbEndpoints.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbEndpoints.Controls.Add(this.dgvEndpoints);
+            resources.ApplyResources(this.gbEndpoints, "gbEndpoints");
+            this.gbEndpoints.Controls.Add(this.gridCtrlEndpoints);
+            this.gbEndpoints.Controls.Add(this.buttonEndpointRemove);
             this.gbEndpoints.Controls.Add(this.buttonEndpointCopy);
-            this.gbEndpoints.Controls.Add(this.buttonEndpointDelete);
             this.gbEndpoints.Controls.Add(this.buttonEndpointAdd);
-            this.gbEndpoints.Location = new System.Drawing.Point(9, 178);
             this.gbEndpoints.Name = "gbEndpoints";
-            this.gbEndpoints.Size = new System.Drawing.Size(663, 172);
-            this.gbEndpoints.TabIndex = 16;
             this.gbEndpoints.TabStop = false;
-            this.gbEndpoints.Text = "Endpoints";
             // 
-            // dgvEndpoints
+            // gridCtrlEndpoints
             // 
-            this.dgvEndpoints.AllowUserToAddRows = false;
-            this.dgvEndpoints.AllowUserToDeleteRows = false;
-            this.dgvEndpoints.AllowUserToResizeRows = false;
-            this.dgvEndpoints.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvEndpoints.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvEndpoints.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgvColumnHost,
-            this.dgvColumnPort,
-            this.dgvColumnUri});
-            this.dgvEndpoints.Location = new System.Drawing.Point(9, 19);
-            this.dgvEndpoints.Name = "dgvEndpoints";
-            this.dgvEndpoints.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
-            this.dgvEndpoints.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvEndpoints.Size = new System.Drawing.Size(619, 147);
-            this.dgvEndpoints.StandardTab = true;
-            this.dgvEndpoints.TabIndex = 15;
-            this.dgvEndpoints.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.dgvEndpoints_CellParsing);
-            this.dgvEndpoints.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEndpoints_CellValueChanged);
-            this.dgvEndpoints.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvEndpoints_DataError);
+            resources.ApplyResources(this.gridCtrlEndpoints, "gridCtrlEndpoints");
+            this.gridCtrlEndpoints.MainView = this.gridViewEndpoints;
+            this.gridCtrlEndpoints.Name = "gridCtrlEndpoints";
+            this.gridCtrlEndpoints.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemTextEdit1,
+            this.repositoryItemSpinEdit1});
+            this.gridCtrlEndpoints.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewEndpoints});
             // 
-            // dgvColumnHost
+            // gridViewEndpoints
             // 
-            this.dgvColumnHost.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvColumnHost.HeaderText = "IP address/hostname";
-            this.dgvColumnHost.MinimumWidth = 50;
-            this.dgvColumnHost.Name = "dgvColumnHost";
+            this.gridViewEndpoints.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colHostname,
+            this.colPort,
+            this.colURI});
+            this.gridViewEndpoints.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
+            this.gridViewEndpoints.GridControl = this.gridCtrlEndpoints;
+            resources.ApplyResources(this.gridViewEndpoints, "gridViewEndpoints");
+            this.gridViewEndpoints.Name = "gridViewEndpoints";
+            this.gridViewEndpoints.OptionsBehavior.AutoSelectAllInEditor = false;
+            this.gridViewEndpoints.OptionsBehavior.KeepGroupExpandedOnSorting = false;
+            this.gridViewEndpoints.OptionsCustomization.AllowColumnMoving = false;
+            this.gridViewEndpoints.OptionsCustomization.AllowFilter = false;
+            this.gridViewEndpoints.OptionsCustomization.AllowSort = false;
+            this.gridViewEndpoints.OptionsMenu.EnableColumnMenu = false;
+            this.gridViewEndpoints.OptionsMenu.EnableFooterMenu = false;
+            this.gridViewEndpoints.OptionsMenu.EnableGroupPanelMenu = false;
+            this.gridViewEndpoints.OptionsNavigation.AutoMoveRowFocus = false;
+            this.gridViewEndpoints.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewEndpoints.OptionsSelection.EnableAppearanceFocusedRow = false;
+            this.gridViewEndpoints.OptionsSelection.EnableAppearanceHideSelection = false;
+            this.gridViewEndpoints.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+            this.gridViewEndpoints.OptionsView.ShowGroupPanel = false;
             // 
-            // dgvColumnPort
+            // colHostname
             // 
-            this.dgvColumnPort.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvColumnPort.HeaderText = "Port";
-            this.dgvColumnPort.MinimumWidth = 50;
-            this.dgvColumnPort.Name = "dgvColumnPort";
+            resources.ApplyResources(this.colHostname, "colHostname");
+            this.colHostname.ColumnEdit = this.repositoryItemTextEdit1;
+            this.colHostname.FieldName = "Hostname";
+            this.colHostname.Name = "colHostname";
             // 
-            // dgvColumnUri
+            // repositoryItemTextEdit1
             // 
-            this.dgvColumnUri.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvColumnUri.HeaderText = "URI";
-            this.dgvColumnUri.MinimumWidth = 50;
-            this.dgvColumnUri.Name = "dgvColumnUri";
-            this.dgvColumnUri.ReadOnly = true;
+            this.repositoryItemTextEdit1.Name = "repositoryItemTextEdit1";
+            // 
+            // colPort
+            // 
+            resources.ApplyResources(this.colPort, "colPort");
+            this.colPort.ColumnEdit = this.repositoryItemSpinEdit1;
+            this.colPort.FieldName = "Port";
+            this.colPort.Name = "colPort";
+            // 
+            // repositoryItemSpinEdit1
+            // 
+            resources.ApplyResources(this.repositoryItemSpinEdit1, "repositoryItemSpinEdit1");
+            this.repositoryItemSpinEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("repositoryItemSpinEdit1.Buttons"))))});
+            this.repositoryItemSpinEdit1.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
+            this.repositoryItemSpinEdit1.IsFloatValue = false;
+            this.repositoryItemSpinEdit1.Mask.EditMask = resources.GetString("repositoryItemSpinEdit1.Mask.EditMask");
+            this.repositoryItemSpinEdit1.MaxValue = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.repositoryItemSpinEdit1.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.repositoryItemSpinEdit1.Name = "repositoryItemSpinEdit1";
+            // 
+            // colURI
+            // 
+            resources.ApplyResources(this.colURI, "colURI");
+            this.colURI.ColumnEdit = this.repositoryItemTextEdit1;
+            this.colURI.FieldName = "Uri";
+            this.colURI.Name = "colURI";
+            this.colURI.OptionsColumn.ReadOnly = true;
+            // 
+            // buttonEndpointRemove
+            // 
+            resources.ApplyResources(this.buttonEndpointRemove, "buttonEndpointRemove");
+            this.buttonEndpointRemove.Image = global::iba.Properties.Resources.remove;
+            this.buttonEndpointRemove.Name = "buttonEndpointRemove";
+            this.buttonEndpointRemove.TabStop = false;
+            this.buttonEndpointRemove.UseVisualStyleBackColor = true;
+            this.buttonEndpointRemove.Click += new System.EventHandler(this.buttonEndpointRemove_Click);
             // 
             // buttonEndpointCopy
             // 
-            this.buttonEndpointCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEndpointCopy.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
+            resources.ApplyResources(this.buttonEndpointCopy, "buttonEndpointCopy");
             this.buttonEndpointCopy.Image = global::iba.Properties.Resources.copy;
-            this.buttonEndpointCopy.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointCopy.Location = new System.Drawing.Point(634, 48);
             this.buttonEndpointCopy.Name = "buttonEndpointCopy";
-            this.buttonEndpointCopy.Size = new System.Drawing.Size(23, 23);
-            this.buttonEndpointCopy.TabIndex = 16;
             this.buttonEndpointCopy.TabStop = false;
             this.buttonEndpointCopy.UseVisualStyleBackColor = true;
             this.buttonEndpointCopy.Click += new System.EventHandler(this.buttonEndpointCopy_Click);
             // 
-            // buttonEndpointDelete
-            // 
-            this.buttonEndpointDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEndpointDelete.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
-            this.buttonEndpointDelete.Image = global::iba.Properties.Resources.remove;
-            this.buttonEndpointDelete.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointDelete.Location = new System.Drawing.Point(634, 143);
-            this.buttonEndpointDelete.Name = "buttonEndpointDelete";
-            this.buttonEndpointDelete.Size = new System.Drawing.Size(23, 23);
-            this.buttonEndpointDelete.TabIndex = 16;
-            this.buttonEndpointDelete.TabStop = false;
-            this.buttonEndpointDelete.UseVisualStyleBackColor = true;
-            this.buttonEndpointDelete.Click += new System.EventHandler(this.buttonEndpointDelete_Click);
-            // 
             // buttonEndpointAdd
             // 
-            this.buttonEndpointAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonEndpointAdd.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
+            resources.ApplyResources(this.buttonEndpointAdd, "buttonEndpointAdd");
             this.buttonEndpointAdd.Image = global::iba.Properties.Resources.img_add;
-            this.buttonEndpointAdd.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointAdd.Location = new System.Drawing.Point(634, 19);
             this.buttonEndpointAdd.Name = "buttonEndpointAdd";
-            this.buttonEndpointAdd.Size = new System.Drawing.Size(23, 23);
-            this.buttonEndpointAdd.TabIndex = 6;
             this.buttonEndpointAdd.TabStop = false;
             this.buttonEndpointAdd.UseVisualStyleBackColor = true;
             this.buttonEndpointAdd.Click += new System.EventHandler(this.buttonEndpointAdd_Click);
             // 
             // cbEnabled
             // 
-            this.cbEnabled.AutoSize = true;
-            this.cbEnabled.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbEnabled.Location = new System.Drawing.Point(9, 19);
+            resources.ApplyResources(this.cbEnabled, "cbEnabled");
             this.cbEnabled.Name = "cbEnabled";
-            this.cbEnabled.Size = new System.Drawing.Size(65, 17);
-            this.cbEnabled.TabIndex = 0;
-            this.cbEnabled.Text = "Enabled";
             this.cbEnabled.UseVisualStyleBackColor = true;
             // 
-            // buttonConfigurationReset
+            // tabControl1
             // 
-            this.buttonConfigurationReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationReset.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonConfigurationReset.Location = new System.Drawing.Point(516, 356);
-            this.buttonConfigurationReset.Name = "buttonConfigurationReset";
-            this.buttonConfigurationReset.Size = new System.Drawing.Size(75, 23);
-            this.buttonConfigurationReset.TabIndex = 12;
-            this.buttonConfigurationReset.Text = "Reset";
-            this.buttonConfigurationReset.UseVisualStyleBackColor = true;
-            this.buttonConfigurationReset.Click += new System.EventHandler(this.buttonConfigurationReset_Click);
+            this.tabControl1.Appearance = Crownwood.DotNetMagic.Controls.VisualAppearance.MultiDocument;
+            resources.ApplyResources(this.tabControl1, "tabControl1");
+            this.tabControl1.MediaPlayerDockSides = false;
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.OfficeDockSides = false;
+            this.tabControl1.SelectedIndex = 3;
+            this.tabControl1.ShowArrows = false;
+            this.tabControl1.ShowClose = false;
+            this.tabControl1.ShowDropSelect = false;
+            this.tabControl1.Style = Crownwood.DotNetMagic.Common.VisualStyle.IDE2005;
+            this.tabControl1.TabPages.AddRange(new Crownwood.DotNetMagic.Controls.TabPage[] {
+            this.tabConfiguration,
+            this.tabCertificates,
+            this.tabTags,
+            this.tabDiag});
+            this.tabControl1.TextTips = true;
             // 
-            // buttonConfigurationApply
+            // tabConfiguration
             // 
-            this.buttonConfigurationApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonConfigurationApply.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonConfigurationApply.Location = new System.Drawing.Point(597, 356);
-            this.buttonConfigurationApply.Margin = new System.Windows.Forms.Padding(3, 3, 15, 3);
-            this.buttonConfigurationApply.Name = "buttonConfigurationApply";
-            this.buttonConfigurationApply.Size = new System.Drawing.Size(75, 23);
-            this.buttonConfigurationApply.TabIndex = 13;
-            this.buttonConfigurationApply.Text = "Apply";
-            this.buttonConfigurationApply.UseVisualStyleBackColor = true;
-            this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
+            resources.ApplyResources(this.tabConfiguration, "tabConfiguration");
+            this.tabConfiguration.Controls.Add(this.gbConfiguration);
+            this.tabConfiguration.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.InactiveTextColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.Name = "tabConfiguration";
+            this.tabConfiguration.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // tabCertificates
+            // 
+            this.tabCertificates.Controls.Add(this.gbCertificates);
+            this.tabCertificates.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabCertificates.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabCertificates.InactiveTextColor = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.tabCertificates, "tabCertificates");
+            this.tabCertificates.Name = "tabCertificates";
+            this.tabCertificates.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabCertificates.Selected = false;
+            this.tabCertificates.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabCertificates.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // tabTags
+            // 
+            this.tabTags.Controls.Add(this.gbObjects);
+            this.tabTags.Controls.Add(this.gbTagSettings);
+            this.tabTags.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabTags.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabTags.InactiveTextColor = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.tabTags, "tabTags");
+            this.tabTags.Name = "tabTags";
+            this.tabTags.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabTags.Selected = false;
+            this.tabTags.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabTags.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // gbTagSettings
+            // 
+            this.gbTagSettings.Controls.Add(this.cmbEnumMode);
+            this.gbTagSettings.Controls.Add(this.label2);
+            resources.ApplyResources(this.gbTagSettings, "gbTagSettings");
+            this.gbTagSettings.Name = "gbTagSettings";
+            this.gbTagSettings.TabStop = false;
+            // 
+            // cmbEnumMode
+            // 
+            this.cmbEnumMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEnumMode.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbEnumMode, "cmbEnumMode");
+            this.cmbEnumMode.Name = "cmbEnumMode";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // tabDiag
+            // 
+            this.tabDiag.Controls.Add(this.gbDiagnostics);
+            this.tabDiag.Controls.Add(this.btOpenLogFile);
+            this.tabDiag.Controls.Add(this.gridCtrlSubscriptions);
+            this.tabDiag.Controls.Add(this.label3);
+            this.tabDiag.Controls.Add(this.tbStatus);
+            this.tabDiag.Controls.Add(this.gridCtrlSessions);
+            this.tabDiag.Controls.Add(this.label12);
+            this.tabDiag.Controls.Add(this.label10);
+            this.tabDiag.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.tabDiag, "tabDiag");
+            this.tabDiag.Name = "tabDiag";
+            this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // btOpenLogFile
+            // 
+            resources.ApplyResources(this.btOpenLogFile, "btOpenLogFile");
+            this.btOpenLogFile.Name = "btOpenLogFile";
+            this.btOpenLogFile.UseVisualStyleBackColor = true;
+            this.btOpenLogFile.Click += new System.EventHandler(this.btOpenLogFile_Click);
+            // 
+            // gridCtrlSubscriptions
+            // 
+            resources.ApplyResources(this.gridCtrlSubscriptions, "gridCtrlSubscriptions");
+            this.gridCtrlSubscriptions.MainView = this.gridViewSubscriptions;
+            this.gridCtrlSubscriptions.Name = "gridCtrlSubscriptions";
+            this.gridCtrlSubscriptions.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewSubscriptions});
+            // 
+            // gridViewSubscriptions
+            // 
+            this.gridViewSubscriptions.Appearance.Row.Options.UseTextOptions = true;
+            this.gridViewSubscriptions.Appearance.Row.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridViewSubscriptions.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn1,
+            this.colSubscrMonItemCount,
+            this.colSubscrPublInterval,
+            this.colSubscrNextSeqNr});
+            this.gridViewSubscriptions.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
+            this.gridViewSubscriptions.GridControl = this.gridCtrlSubscriptions;
+            this.gridViewSubscriptions.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
+            this.gridViewSubscriptions.Name = "gridViewSubscriptions";
+            this.gridViewSubscriptions.OptionsBehavior.AutoPopulateColumns = false;
+            this.gridViewSubscriptions.OptionsBehavior.AutoSelectAllInEditor = false;
+            this.gridViewSubscriptions.OptionsBehavior.AutoUpdateTotalSummary = false;
+            this.gridViewSubscriptions.OptionsBehavior.Editable = false;
+            this.gridViewSubscriptions.OptionsBehavior.KeepGroupExpandedOnSorting = false;
+            this.gridViewSubscriptions.OptionsCustomization.AllowFilter = false;
+            this.gridViewSubscriptions.OptionsCustomization.AllowGroup = false;
+            this.gridViewSubscriptions.OptionsCustomization.AllowSort = false;
+            this.gridViewSubscriptions.OptionsDetail.AllowZoomDetail = false;
+            this.gridViewSubscriptions.OptionsDetail.EnableMasterViewMode = false;
+            this.gridViewSubscriptions.OptionsMenu.EnableColumnMenu = false;
+            this.gridViewSubscriptions.OptionsMenu.EnableFooterMenu = false;
+            this.gridViewSubscriptions.OptionsMenu.EnableGroupPanelMenu = false;
+            this.gridViewSubscriptions.OptionsNavigation.AutoMoveRowFocus = false;
+            this.gridViewSubscriptions.OptionsNavigation.UseTabKey = false;
+            this.gridViewSubscriptions.OptionsPrint.AutoWidth = false;
+            this.gridViewSubscriptions.OptionsPrint.ExpandAllGroups = false;
+            this.gridViewSubscriptions.OptionsPrint.PrintFooter = false;
+            this.gridViewSubscriptions.OptionsPrint.PrintGroupFooter = false;
+            this.gridViewSubscriptions.OptionsPrint.PrintHeader = false;
+            this.gridViewSubscriptions.OptionsPrint.PrintHorzLines = false;
+            this.gridViewSubscriptions.OptionsPrint.PrintVertLines = false;
+            this.gridViewSubscriptions.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewSubscriptions.OptionsSelection.EnableAppearanceFocusedRow = false;
+            this.gridViewSubscriptions.OptionsSelection.EnableAppearanceHideSelection = false;
+            this.gridViewSubscriptions.OptionsView.ShowDetailButtons = false;
+            this.gridViewSubscriptions.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+            this.gridViewSubscriptions.OptionsView.ShowGroupPanel = false;
+            this.gridViewSubscriptions.ScrollStyle = DevExpress.XtraGrid.Views.Grid.ScrollStyleFlags.LiveVertScroll;
+            // 
+            // gridColumn1
+            // 
+            resources.ApplyResources(this.gridColumn1, "gridColumn1");
+            this.gridColumn1.FieldName = "Id";
+            this.gridColumn1.Name = "gridColumn1";
+            // 
+            // colSubscrMonItemCount
+            // 
+            resources.ApplyResources(this.colSubscrMonItemCount, "colSubscrMonItemCount");
+            this.colSubscrMonItemCount.FieldName = "MonitoredItemCount";
+            this.colSubscrMonItemCount.Name = "colSubscrMonItemCount";
+            // 
+            // colSubscrPublInterval
+            // 
+            resources.ApplyResources(this.colSubscrPublInterval, "colSubscrPublInterval");
+            this.colSubscrPublInterval.DisplayFormat.FormatString = "{0} ms";
+            this.colSubscrPublInterval.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.colSubscrPublInterval.FieldName = "PublishingInterval";
+            this.colSubscrPublInterval.Name = "colSubscrPublInterval";
+            // 
+            // colSubscrNextSeqNr
+            // 
+            resources.ApplyResources(this.colSubscrNextSeqNr, "colSubscrNextSeqNr");
+            this.colSubscrNextSeqNr.FieldName = "NextSequenceNumber";
+            this.colSubscrNextSeqNr.Name = "colSubscrNextSeqNr";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // gridCtrlSessions
+            // 
+            resources.ApplyResources(this.gridCtrlSessions, "gridCtrlSessions");
+            this.gridCtrlSessions.MainView = this.gridViewSessions;
+            this.gridCtrlSessions.Name = "gridCtrlSessions";
+            this.gridCtrlSessions.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewSessions});
+            // 
+            // gridViewSessions
+            // 
+            this.gridViewSessions.Appearance.Row.Options.UseTextOptions = true;
+            this.gridViewSessions.Appearance.Row.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridViewSessions.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colSessionName,
+            this.colSessionID,
+            this.colSessionLastMsgTime});
+            this.gridViewSessions.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
+            this.gridViewSessions.GridControl = this.gridCtrlSessions;
+            this.gridViewSessions.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
+            this.gridViewSessions.Name = "gridViewSessions";
+            this.gridViewSessions.OptionsBehavior.AutoPopulateColumns = false;
+            this.gridViewSessions.OptionsBehavior.AutoSelectAllInEditor = false;
+            this.gridViewSessions.OptionsBehavior.AutoUpdateTotalSummary = false;
+            this.gridViewSessions.OptionsBehavior.Editable = false;
+            this.gridViewSessions.OptionsBehavior.KeepGroupExpandedOnSorting = false;
+            this.gridViewSessions.OptionsCustomization.AllowFilter = false;
+            this.gridViewSessions.OptionsCustomization.AllowGroup = false;
+            this.gridViewSessions.OptionsCustomization.AllowSort = false;
+            this.gridViewSessions.OptionsDetail.AllowZoomDetail = false;
+            this.gridViewSessions.OptionsDetail.EnableMasterViewMode = false;
+            this.gridViewSessions.OptionsMenu.EnableColumnMenu = false;
+            this.gridViewSessions.OptionsMenu.EnableFooterMenu = false;
+            this.gridViewSessions.OptionsMenu.EnableGroupPanelMenu = false;
+            this.gridViewSessions.OptionsNavigation.AutoMoveRowFocus = false;
+            this.gridViewSessions.OptionsNavigation.UseTabKey = false;
+            this.gridViewSessions.OptionsPrint.AutoWidth = false;
+            this.gridViewSessions.OptionsPrint.ExpandAllGroups = false;
+            this.gridViewSessions.OptionsPrint.PrintFooter = false;
+            this.gridViewSessions.OptionsPrint.PrintGroupFooter = false;
+            this.gridViewSessions.OptionsPrint.PrintHeader = false;
+            this.gridViewSessions.OptionsPrint.PrintHorzLines = false;
+            this.gridViewSessions.OptionsPrint.PrintVertLines = false;
+            this.gridViewSessions.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewSessions.OptionsSelection.EnableAppearanceFocusedRow = false;
+            this.gridViewSessions.OptionsSelection.EnableAppearanceHideSelection = false;
+            this.gridViewSessions.OptionsView.ShowDetailButtons = false;
+            this.gridViewSessions.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+            this.gridViewSessions.OptionsView.ShowGroupPanel = false;
+            this.gridViewSessions.ScrollStyle = DevExpress.XtraGrid.Views.Grid.ScrollStyleFlags.LiveVertScroll;
+            this.gridViewSessions.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridViewSessions_CustomDrawCell);
+            this.gridViewSessions.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewSessions_FocusedRowChanged);
+            // 
+            // colSessionName
+            // 
+            resources.ApplyResources(this.colSessionName, "colSessionName");
+            this.colSessionName.FieldName = "Name";
+            this.colSessionName.Name = "colSessionName";
+            // 
+            // colSessionID
+            // 
+            resources.ApplyResources(this.colSessionID, "colSessionID");
+            this.colSessionID.FieldName = "Id";
+            this.colSessionID.Name = "colSessionID";
+            // 
+            // colSessionLastMsgTime
+            // 
+            resources.ApplyResources(this.colSessionLastMsgTime, "colSessionLastMsgTime");
+            this.colSessionLastMsgTime.FieldName = "LastMessageTimeString";
+            this.colSessionLastMsgTime.Name = "colSessionLastMsgTime";
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
+            // gbDebug
+            // 
+            this.gbDebug.Controls.Add(this.tbDiagTmp);
+            resources.ApplyResources(this.gbDebug, "gbDebug");
+            this.gbDebug.Name = "gbDebug";
+            this.gbDebug.TabStop = false;
             // 
             // OpcUaControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.Controls.Add(this.gbCertificates);
-            this.Controls.Add(this.gbDiagnostics);
-            this.Controls.Add(this.gbObjects);
-            this.Controls.Add(this.gbConfiguration);
-            this.MinimumSize = new System.Drawing.Size(720, 300);
+            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.gbDebug);
             this.Name = "OpcUaControl";
-            this.Size = new System.Drawing.Size(720, 1345);
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
             this.gbCertificates.ResumeLayout(false);
             this.gbCertificates.PerformLayout();
+            this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).EndInit();
             this.contextMenuCerts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridViewCerts)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.gbDiagnostics.ResumeLayout(false);
-            this.gbDiagnostics.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSubscriptions)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).EndInit();
             this.gbObjects.ResumeLayout(false);
             this.panelFooter.ResumeLayout(false);
             this.panelFooter.PerformLayout();
@@ -1434,16 +1341,30 @@
             this.splitContainerObjectsFooter.ResumeLayout(false);
             this.gbConfiguration.ResumeLayout(false);
             this.gbConfiguration.PerformLayout();
-            this.splitContainerSecurity.Panel1.ResumeLayout(false);
-            this.splitContainerSecurity.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerSecurity)).EndInit();
-            this.splitContainerSecurity.ResumeLayout(false);
-            this.gbLogon.ResumeLayout(false);
-            this.gbLogon.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.gbSecurity.ResumeLayout(false);
             this.gbSecurity.PerformLayout();
+            this.gbLogon.ResumeLayout(false);
+            this.gbLogon.PerformLayout();
             this.gbEndpoints.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvEndpoints)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridCtrlEndpoints)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewEndpoints)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.tabConfiguration.ResumeLayout(false);
+            this.tabCertificates.ResumeLayout(false);
+            this.tabTags.ResumeLayout(false);
+            this.gbTagSettings.ResumeLayout(false);
+            this.gbTagSettings.PerformLayout();
+            this.tabDiag.ResumeLayout(false);
+            this.tabDiag.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridCtrlSubscriptions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSubscriptions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridCtrlSessions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSessions)).EndInit();
+            this.gbDebug.ResumeLayout(false);
+            this.gbDebug.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1459,18 +1380,11 @@
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.TextBox tbUserName;
         private Utility.CollapsibleGroupBox gbDiagnostics;
-        private System.Windows.Forms.DataGridView dgvClients;
         private System.Windows.Forms.TextBox tbStatus;
-        private System.Windows.Forms.Button buttonOpenLogFile;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Timer timerRefreshStatus;
-        private System.Windows.Forms.GroupBox gbEndpoints;
         private System.Windows.Forms.Button buttonEndpointCopy;
-        private System.Windows.Forms.Button buttonEndpointDelete;
-        private System.Windows.Forms.DataGridView dgvEndpoints;
+        private System.Windows.Forms.Button buttonEndpointRemove;
         private System.Windows.Forms.Button buttonEndpointAdd;
-        private System.Windows.Forms.SplitContainer splitContainerSecurity;
         private System.Windows.Forms.GroupBox gbLogon;
         private System.Windows.Forms.CheckBox cbLogonCertificate;
         private System.Windows.Forms.GroupBox gbSecurity;
@@ -1479,9 +1393,6 @@
         private System.Windows.Forms.CheckBox cbSecurity128;
         private System.Windows.Forms.CheckBox cbSecurityNone;
         private System.Windows.Forms.ComboBox comboBoxSecurity256;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnHost;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnPort;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnUri;
         private System.Windows.Forms.Button buttonRebuildTree;
         private System.Windows.Forms.Button buttonRefreshGuiTree;
         private System.Windows.Forms.Label labelObjNodeId;
@@ -1494,16 +1405,7 @@
         private System.Windows.Forms.TextBox tbObjValue;
         private System.Windows.Forms.Label labelObjDescription;
         private System.Windows.Forms.TextBox tbObjDescription;
-        private System.Windows.Forms.DataGridView dgvSubscriptions;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSubscrId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSubscrMonitoredItemsCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSubscrPublishingInterval;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSubscrNextSeq;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbDiagTmp;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColLastMsg;
         private Utility.CollapsibleGroupBox gbCertificates;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton buttonCertAdd;
@@ -1564,5 +1466,40 @@
         private DevExpress.XtraGrid.Columns.GridColumn colCertExpirationDate;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton buttonCertRefresh;
+        private Crownwood.DotNetMagic.Controls.TabControl tabControl1;
+        private Crownwood.DotNetMagic.Controls.TabPage tabConfiguration;
+        private System.Windows.Forms.GroupBox gbEndpoints;
+        protected DevExpress.XtraGrid.GridControl gridCtrlEndpoints;
+        protected DevExpress.XtraGrid.Views.Grid.GridView gridViewEndpoints;
+        private DevExpress.XtraGrid.Columns.GridColumn colHostname;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
+        private DevExpress.XtraGrid.Columns.GridColumn colPort;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
+        private DevExpress.XtraGrid.Columns.GridColumn colURI;
+        private Crownwood.DotNetMagic.Controls.TabPage tabCertificates;
+        private Crownwood.DotNetMagic.Controls.TabPage tabTags;
+        private System.Windows.Forms.GroupBox gbTagSettings;
+        private System.Windows.Forms.ComboBox cmbEnumMode;
+        private System.Windows.Forms.Label label2;
+        private Crownwood.DotNetMagic.Controls.TabPage tabDiag;
+        private System.Windows.Forms.Button btOpenLogFile;
+        protected DevExpress.XtraGrid.Views.Grid.GridView gridViewSubscriptions;
+        protected DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        protected DevExpress.XtraGrid.Columns.GridColumn colSubscrMonItemCount;
+        protected DevExpress.XtraGrid.Columns.GridColumn colSubscrPublInterval;
+        protected DevExpress.XtraGrid.Columns.GridColumn colSubscrNextSeqNr;
+        private System.Windows.Forms.Label label3;
+        protected DevExpress.XtraGrid.GridControl gridCtrlSessions;
+        protected DevExpress.XtraGrid.Views.Grid.GridView gridViewSessions;
+        protected DevExpress.XtraGrid.Columns.GridColumn colSessionName;
+        protected DevExpress.XtraGrid.Columns.GridColumn colSessionID;
+        protected DevExpress.XtraGrid.Columns.GridColumn colSessionLastMsgTime;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox gbDebug;
+        private System.Windows.Forms.Button buttonConfigurationApply2;
+        private DevExpress.XtraGrid.GridControl gridCtrlSubscriptions;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel1;
     }
 }
