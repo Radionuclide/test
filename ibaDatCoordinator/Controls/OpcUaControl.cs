@@ -990,16 +990,15 @@ namespace iba.Controls
                 while (parent?.Parent != null)
                     parent = parent.Parent;
 
-                // todo. kls. 
-                //if (parentControl.NetworkConfiguration == null)
-                //{
-                //    MessageBox.Show(parent, "GetNetwConfigError", "OpcUaServer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    return;
-                //}
+                var netwConf = TaskManager.Manager.OpcUaGetNetworkConfiguration();
+                if (netwConf == null)
+                {
+                    // todo. kls. localize
+                    MessageBox.Show(parent, "Error trying to get network configuration", "OpcUaServer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-                //using (OpcUAServerEndpointSelectionForm selForm = new OpcUAServerEndpointSelectionForm(parentControl.NetworkConfiguration))
-
-                using (OpcUaEndpointSelectionForm selForm = new OpcUaEndpointSelectionForm(null))
+                using (OpcUaEndpointSelectionForm selForm = new OpcUaEndpointSelectionForm(netwConf))
                 {
                     if (!(GridView.GetRow(GridView.FocusedRowHandle) is OpcUaData.OpcUaEndPoint curEp))
                         return;
@@ -1007,7 +1006,6 @@ namespace iba.Controls
                     // Save current value
                     curEp.Hostname = btnEdit.Text;
 
-                    // todo. kls.
                     selForm.IpAddress = curEp.Hostname;
                     if (DialogResult.OK == selForm.ShowDialog(parent))
                     {

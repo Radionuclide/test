@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
 using Opc.Ua;
@@ -185,6 +187,65 @@ namespace iba.Data
         public static OpcUaEndPoint DefaultEndPoint => new OpcUaEndPoint(DefaultHostname, DefaultPort);
 
         public List<OpcUaEndPoint> Endpoints = new List<OpcUaEndPoint>();
+
+        [Serializable]
+        public class NetworkConfiguration
+        {
+            public void Initialize()
+            {
+                Hostname = IPGlobalProperties.GetIPGlobalProperties().HostName;
+
+                // add existing Network Interfaces
+                NetworkInterface[] allNis = NetworkInterface.GetAllNetworkInterfaces();
+
+                Adapters = new List<NetworkAdapter>();
+
+                foreach (NetworkInterface ni in allNis)
+                {
+                    if (ni.NetworkInterfaceType == NetworkInterfaceType.Loopback ||
+                        ni.NetworkInterfaceType == NetworkInterfaceType.Tunnel)
+                        continue;
+
+                    var adapter = new NetworkAdapter { NetworkInterface = ni };
+                    foreach (var address in GetV4IpAddressesOfNetworkInterface(ni))
+                    {
+                        adapter.Addresses.Add(address.ToString());
+                    }
+
+                    // don't add adapters without addresses
+                    if (adapter.Addresses.Count > 0)
+                        Adapters.Add(adapter);
+                }
+            }
+
+            public string Hostname;
+
+            public List<NetworkAdapter> Adapters = new List<NetworkAdapter>();
+
+
+            public static List<IPAddress> GetV4IpAddressesOfNetworkInterface(NetworkInterface ni)
+            {
+                var list = new List<IPAddress>();
+                if (ni == null)
+                    return list;
+
+                foreach (UnicastIPAddressInformation ipInfo in ni.GetIPProperties().UnicastAddresses)
+                {
+                    if (ipInfo.Address.AddressFamily == AddressFamily.InterNetwork)
+                        list.Add(ipInfo.Address);
+                }
+                return list;
+            }
+
+            [Serializable]
+            public class NetworkAdapter
+            {
+                public NetworkInterface NetworkInterface;
+                public List<string> Addresses = new List<string>();
+                public string Name => NetworkInterface?.Name;
+            }
+        }
+
 
         #region Certificates
 

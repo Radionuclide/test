@@ -31,14 +31,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpcUaEndpointSelectionForm));
             this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
+            this.ipAddressSelect1 = new iba.Controls.OpcUaIpAddressSelect();
             this.SuspendLayout();
             // 
             // btOk
             // 
             resources.ApplyResources(this.btOk, "btOk");
+            this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btOk.Name = "btOk";
             this.btOk.UseVisualStyleBackColor = true;
-            this.btOk.Click += new System.EventHandler(this.OnOK);
             // 
             // btCancel
             // 
@@ -46,19 +47,26 @@
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btCancel.Name = "btCancel";
             this.btCancel.UseVisualStyleBackColor = true;
-            this.btCancel.Click += new System.EventHandler(this.OnCancel);
             // 
-            // OpcUAServerEndpointSelectionForm
+            // ipAddressSelect1
+            // 
+            resources.ApplyResources(this.ipAddressSelect1, "ipAddressSelect1");
+            this.ipAddressSelect1.IpAddress = "";
+            this.ipAddressSelect1.Name = "ipAddressSelect1";
+            this.ipAddressSelect1.NetworkConfig = null;
+            // 
+            // OpcUaEndpointSelectionForm
             // 
             this.AcceptButton = this.btOk;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
+            this.Controls.Add(this.ipAddressSelect1);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOk);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "OpcUAServerEndpointSelectionForm";
+            this.Name = "OpcUaEndpointSelectionForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.ResumeLayout(false);
@@ -68,5 +76,6 @@
         #endregion
         private System.Windows.Forms.Button btOk;
         private System.Windows.Forms.Button btCancel;
-    }
+		private OpcUaIpAddressSelect ipAddressSelect1;
+	}
 }

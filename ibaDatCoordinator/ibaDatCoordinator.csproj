@@ -174,6 +174,12 @@
     <Compile Include="Controls\ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\OpcUaIpAddressSelect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaIpAddressSelect.Designer.cs">
+      <DependentUpon>OpcUaIpAddressSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -532,6 +538,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\OpcUaEndpointSelectionForm.resx">
       <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelEventJob.resx">
       <DependentUpon>PanelEventJob.cs</DependentUpon>

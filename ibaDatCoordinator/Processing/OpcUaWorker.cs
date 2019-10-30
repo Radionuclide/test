@@ -392,6 +392,12 @@ namespace iba.Processing
             }
         }
 
+        public virtual OpcUaData.NetworkConfiguration GetNetworkConfiguration()
+        {
+            OpcUaData.NetworkConfiguration cfg = new OpcUaData.NetworkConfiguration();
+            cfg.Initialize();
+            return cfg;
+        }
 
         #region Certificates
 
@@ -1478,6 +1484,7 @@ namespace iba.Processing
         }
 
         #endregion
+
 
         #region Diagnostics
 

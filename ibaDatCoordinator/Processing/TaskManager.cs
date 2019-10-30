@@ -1019,6 +1019,19 @@ namespace iba.Processing
             }
         }
 
+        public virtual OpcUaData.NetworkConfiguration OpcUaGetNetworkConfiguration()
+        {
+            try
+            {
+                return OpcUaWorker.GetNetworkConfiguration();
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception, $"{nameof(OpcUaGetNetworkConfiguration)}. {ex.Message}");
+                return null;
+            }
+        }
+
         #endregion
 
 
@@ -1837,6 +1850,19 @@ namespace iba.Processing
             {
                 HandleBrokenConnection(ex);
                 return Manager.OpcUaHandleCertificate(command, args);
+            }
+        }
+
+        public override OpcUaData.NetworkConfiguration OpcUaGetNetworkConfiguration()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.OpcUaGetNetworkConfiguration();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.OpcUaGetNetworkConfiguration();
             }
         }
 
