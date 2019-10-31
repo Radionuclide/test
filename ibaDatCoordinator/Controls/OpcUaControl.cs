@@ -391,7 +391,7 @@ namespace iba.Controls
             OpcUaData.CGenerateCertificateArgs certArgs = new OpcUaData.CGenerateCertificateArgs
             {
                 ApplicationName = $"ibaDatCoordinator OPC UA Server@{TaskManager.Manager.GetServerHostName()}",
-                UseSha256 = false
+                UseSha256 = true
             };
 
             using (OpcUaCertificateGenerateForm genForm = new OpcUaCertificateGenerateForm())
@@ -1180,7 +1180,13 @@ namespace iba.Controls
                 {
                     var certs = TaskManager.Manager.OpcUaHandleCertificate("sync");
                     if (certs != null)
-                        RefreshCertificatesTable(certs);
+                    {
+                        try
+                        {
+                            RefreshCertificatesTable(certs);
+                        }
+                        catch { /* not critical; can happen if UaWorker is not initialized */}
+                    }
                 }
 
                 // update currently selected node information in object tree

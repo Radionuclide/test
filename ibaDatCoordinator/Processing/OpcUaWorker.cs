@@ -417,7 +417,8 @@ namespace iba.Processing
         
         public List<OpcUaData.CertificateTag> HandleCertificate(string command, object args = null)
         {
-            AssertInitialized();
+            if (!IsInitialized)
+                return null;
 
             // indicate that certificates were changed somehow
             // (it is applicable to all cases except "sync" and "forceSync")
@@ -1370,7 +1371,8 @@ namespace iba.Processing
 
         public List<ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
         {
-            AssertInitialized();
+            if (!IsInitialized)
+                return null;
 
             try
             {
@@ -1461,7 +1463,8 @@ namespace iba.Processing
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
         public ExtMonData.GuiTreeNodeTag GetTreeNodeTag(string nodeId)
         {
-            AssertInitialized();
+            if (!IsInitialized)
+                return null;
 
             try
             {
