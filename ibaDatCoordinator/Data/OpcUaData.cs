@@ -206,7 +206,7 @@ namespace iba.Data
                         ni.NetworkInterfaceType == NetworkInterfaceType.Tunnel)
                         continue;
 
-                    var adapter = new NetworkAdapter { NetworkInterface = ni };
+                    var adapter = new NetworkAdapter { Name = ni.Name };
                     foreach (var address in GetV4IpAddressesOfNetworkInterface(ni))
                     {
                         adapter.Addresses.Add(address.ToString());
@@ -240,9 +240,8 @@ namespace iba.Data
             [Serializable]
             public class NetworkAdapter
             {
-                public NetworkInterface NetworkInterface;
                 public List<string> Addresses = new List<string>();
-                public string Name => NetworkInterface?.Name;
+                public string Name { get; set; }
             }
         }
 
@@ -319,6 +318,7 @@ namespace iba.Data
         public List<CertificateTag> Certificates = new List<CertificateTag>();
 
         /// <summary> (copied from ibaPda project) </summary>
+        [Serializable]
         public class CGenerateCertificateArgs
         {
             public CGenerateCertificateArgs()

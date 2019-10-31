@@ -71,7 +71,7 @@ namespace iba.Controls
                         if (itfIt.All)
                             continue;
 
-                        // Check if this adapter contains our IP address and 
+                        // Check if this adapter contains our IP address and try to select it
                         foreach (string addr in itfIt.Adapter.Addresses)
                         {
                             if (string.Compare(addr ?? "", newIp, StringComparison.OrdinalIgnoreCase) == 0)
