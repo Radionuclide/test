@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Windows.Forms;
 using iba.Data;
 
 namespace iba.Controls
 {
+    // imported from PDA with some changes
     public partial class OpcUaIpAddressSelect : UserControl
     {
         public OpcUaIpAddressSelect()
@@ -55,7 +52,7 @@ namespace iba.Controls
 
                 string newIp = value;
 
-                // Try to set comboboxes accordingly
+                // Try to set comboBoxes accordingly
                 if (string.Compare(newIp, _networkConfig.Hostname, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     foreach (InterfaceItem itfIt in cbItfs.Items)
