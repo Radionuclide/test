@@ -82,8 +82,12 @@ namespace iba.Processing
                     UaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
                 }
 
-                // check the application certificate.
-                UaApplication.CheckApplicationInstanceCertificate(false, 0).Wait();
+                try
+                {
+                    // check the application certificate.
+                    UaApplication.CheckApplicationInstanceCertificate(false, 0).Wait();
+                }
+                catch { /* not critical; can be set up later */ }
 
                 // change status from initial (errored) to stopped
                 Status = ExtMonWorkerStatus.Stopped;
@@ -790,7 +794,7 @@ namespace iba.Processing
                     genArgs.ApplicationUri, genArgs.ApplicationName,
                     genArgs.ApplicationName,
                     serverDomainNames, (ushort)genArgs.KeySize, 
-                    DateTime.Now, (ushort)genArgs.Lifetime,
+                    DateTime.Now.ToUniversalTime(), (ushort)genArgs.Lifetime,
                     hashSizeInBits);
 
                 // certificate is automatically added to the own store;
