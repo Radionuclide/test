@@ -419,6 +419,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
   File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
+  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
   File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
@@ -508,6 +509,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
   File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
+  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
   File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"  
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
@@ -646,6 +648,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
   File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
+  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
   File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" 
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
@@ -902,6 +905,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Opc.Ua.Core.dll"
   Delete "$INSTDIR\Opc.Ua.Server.dll"
   Delete "$INSTDIR\BouncyCastle.Crypto.dll"
+  Delete "$INSTDIR\Newtonsoft.Json.dll"
   Delete "$INSTDIR\ibaDatCoordinatorOpcUaServerConfig.xml"
 
   Delete "$INSTDIR\DevExpress.XtraEditors.v16.1.dll"
