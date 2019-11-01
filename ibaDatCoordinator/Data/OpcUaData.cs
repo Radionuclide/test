@@ -135,26 +135,26 @@ namespace iba.Data
             var policy = new ServerSecurityPolicy
             {
                 SecurityMode = MessageSecurityMode.None,
-                SecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None",
+                SecurityPolicyUri = SecurityPolicies.None,
             };
 
             switch (alg)
             {
                 case OpcUaSecurityAlgorithm.None:
-                    policy.SecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
+                    policy.SecurityPolicyUri = SecurityPolicies.None;
                     // for none there's nothing more to configure
                     return policy;
 
                 case OpcUaSecurityAlgorithm.Basic128Rsa15:
-                    policy.SecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15";
+                    policy.SecurityPolicyUri = SecurityPolicies.Basic128Rsa15;
                     break;
 
                 case OpcUaSecurityAlgorithm.Basic256:
-                    policy.SecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256";
+                    policy.SecurityPolicyUri = SecurityPolicies.Basic256;
                     break;
 
                 case OpcUaSecurityAlgorithm.Basic256Sha256:
-                    policy.SecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256";
+                    policy.SecurityPolicyUri = SecurityPolicies.Basic256Sha256;
                     break;
 
                 default:
