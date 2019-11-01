@@ -281,8 +281,13 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
+                string message = ex.Message;
+                if (ex is AggregateException && ex.InnerException != null)
+                {
+                    message = ex.InnerException.Message;
+                }
                 Status = ExtMonWorkerStatus.Errored;
-                StatusString = String.Format(Resources.opcUaStatusError, ex.Message);
+                StatusString = String.Format(Resources.opcUaStatusError, message);
                 if (LogData.Data.Logger.IsOpen) LogData.Data.Logger.Log(Level.Exception, StatusString);
             }
         }
