@@ -292,12 +292,17 @@ namespace iba.Processing
             Debug.Assert(UaApplication != null);
             Debug.Assert(IbaOpcUaServer != null);
             Debug.Assert(OpcUaData != null);
-
-
+            
             ApplyEndpoints();
             ApplySecurityPolicies();
             ApplyUserPolicies();
 
+            // apply additional settings - allow old SHA-1 singed certificates with short keys
+            // Delete following lines for better security
+            UaAppConfiguration.SecurityConfiguration.RejectSHA1SignedCertificates = false; // default is true
+            UaAppConfiguration.SecurityConfiguration.MinimumCertificateKeySize = 1024; // default is 2048
+            UaAppConfiguration.Validate(ApplicationType.Server).Wait();
+            
             // synchronize between files and _opcUaData.Certificates
             SynchronizeCertificates();
             
