@@ -285,6 +285,7 @@ namespace iba.Controls
             cbLogonUserName_CheckedChanged(null, null);
             cbSecurity128_CheckedChanged(null, null);
             cbSecurity256_CheckedChanged(null, null);
+            cbSecurity256Sha256_CheckedChanged(null, null);
 
             // synchronize with OpcUaWorker
             var certs = TaskManager.Manager.OpcUaHandleCertificate("forceSync");
@@ -1079,6 +1080,9 @@ namespace iba.Controls
                 var status = TaskManager.Manager.OpcUaGetBriefStatus();
                 tbStatus.Text = status.Item2;
                 tbStatus.BackColor = SnmpControl.StatusToColor(status.Item1);
+#if DEBUG
+         tbDiagTmp.BackColor = SnmpControl.StatusToColor(status.Item1);
+#endif
             }
             catch (Exception ex)
             {
