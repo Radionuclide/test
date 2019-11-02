@@ -292,6 +292,7 @@ namespace iba.Data
 
         #endregion
 
+
         #region AddNewXxx() and auxiliary
 
         public GlobalCleanupDriveInfo AddNewGlobalCleanup(string driveName)
@@ -414,11 +415,29 @@ namespace iba.Data
             return true;
         }
 
-        #endregion
+
+        /// <summary> For a given enum type Creates a string like "0=Disabled, 1=Started, 2=Stopped" </summary>
+        public static string GetEnumTextDescription(Type t)
+        {
+            string str = "";
+            if (!t.IsEnum)
+                return str;
+
+            var values = t.GetEnumValues();
+            for (int i = 0; i < values.Length; i++)
+            {
+                object val = values.GetValue(i);
+                str += $"{(int)val} = {val}, ";
+            }
+
+            return str.TrimEnd(',', ' ');
+        }
         
         #endregion
 
-        
+        #endregion
+
+
 
         #region Nested classes
 
@@ -599,7 +618,7 @@ namespace iba.Data
         {
             /// <summary>
             /// Try avoid writing this collection directly or be careful with parent-child consistency.
-            /// Use <see cref="AddChildFolder"/> or <see cref="AddChildVariable"/> if possible.
+            /// Use <see cref="AddChildFolder"/> or <see cref="AddChildVariable{T}"/> if possible.
             /// </summary>
             public readonly List<ExtMonNode> Children = new List<ExtMonNode>();
 
@@ -1072,6 +1091,8 @@ namespace iba.Data
                 LimitChoice = AddChildVariable<TaskWithTargetDirData.OutputLimitChoiceEnum>(
                         @"Limit choice", @"LimitChoice",
                         @"Option selected as limit for the disk space usage. " +
+                        /* we don't use {GetEnumTextDescription(typeof(TaskWithTargetDirData.OutputLimitChoiceEnum))}
+                         here because this enum's values are are not self-explanatory */
                         @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
                         SNMP_AUTO_LEAST_ID);
                 Debug.Assert(LimitChoice.SnmpLeastId == 1); // ensure id has an expected value
@@ -1112,7 +1133,7 @@ namespace iba.Data
         public enum JobStatus
         {
             Disabled = 0,
-            Started = 1,
+            Started = 1, 
             Stopped = 2
         }
 
@@ -1168,10 +1189,10 @@ namespace iba.Data
                     @"The name of the job as it appears in GUI.",
                     SNMP_AUTO_LEAST_ID);
                 Debug.Assert(JobName.SnmpLeastId == 1); // ensure id has an expected value
-
+                
                 Status = FolderGeneral.AddChildVariable<JobStatus>(
                     @"Status", @"Status",
-                    @"Current status of the job (0=disabled, 1=started, 2=stopped).",
+                    $@"Current status of the job ({GetEnumTextDescription(typeof(JobStatus))}).",
                     SNMP_AUTO_LEAST_ID);
 
                 TodoCount = FolderGeneral.AddChildVariable<uint>(
@@ -1192,7 +1213,7 @@ namespace iba.Data
 
                 PrivateReset();
             }
-
+            
             /// <summary> Resets everything except tasks </summary>
             private void PrivateReset()
             {

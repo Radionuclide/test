@@ -105,7 +105,6 @@ namespace iba.Processing
                 // start server (if it is enabled), update status, write to log
                 RestartServer();
 
-                // todo. kls. 
                 RegisterEnums();
 
                 // subscribe to tree structure changes 
@@ -150,6 +149,7 @@ namespace iba.Processing
             UnInit();
         }
 
+        // ReSharper disable once UnusedMember.Local - reserved for the future
         private void AssertInitialized()
         {
             // if one of these is null we cannot do anything
@@ -922,12 +922,15 @@ namespace iba.Processing
 
         #region Register enums
 
-        // todo. kls. use or delete?
-        private string _enumJobStatus;
-        private string _enumCleanupType;
-
         private void RegisterEnums()
         {
+            // In OPC UA there is a special support for enums.
+            // (search for EnumValueType in "OPC UA Part 8 - DataAccess 1.03 Specification.pdf"
+            // and "OPC UA Part 3 - Address Space Model 1.03 Specification.pdf")
+            // Every user-defined enum should be declared by creating special nodes.
+            // OPC UA Client then can read enum description nodes to interpret enum variables.
+            // It can be implemented here if requested by customers.
+
             //_enumJobStatus = IbaOpcUaServer.RegisterEnumDataType(
             //    "JobStatus", "Current status of the job (started, stopped or disabled)",
             //    new Dictionary<int, string>
@@ -1106,6 +1109,7 @@ namespace iba.Processing
         }
 
 
+        // ReSharper disable once UnusedMethodReturnValue.Local - reserved for the future
         private IbaOpcUaVariable CreateOrUpdateOpcUaValue(FolderState uaParentFolder, ExtMonData.ExtMonVariableBase xmv)
         {
             Debug.Assert(IbaOpcUaNodeManager.IsValidBrowseName(xmv.UaBrowseName));
@@ -1256,6 +1260,7 @@ namespace iba.Processing
 
         private ServiceResult OnReadProductSpecificValue(ISystemContext context,
             NodeState node, NumericRange indexRange, QualifiedName dataEncoding,
+            // ReSharper disable once RedundantAssignment
             ref object value, ref StatusCode statusCode, ref DateTime timestamp)
         {
             if (!(node is IbaOpcUaVariable iv)) //we handle only iba variables here 
@@ -1465,7 +1470,8 @@ namespace iba.Processing
                     try
                     {
                         RefreshGroup(xmv.Group);
-                        tag.Value = $@"{xmv.ObjValue}";
+                        object val = xmv.ObjValue;
+                        tag.Value = type.IsEnum ? $"{(int)val} ({val})" : $"{val}";
                     }
                     catch
                     {

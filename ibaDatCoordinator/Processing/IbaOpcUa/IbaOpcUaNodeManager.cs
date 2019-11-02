@@ -392,16 +392,15 @@ namespace iba.Processing.IbaOpcUa
             return folder;
         }
 
-        /// <summary> Converts enum value to formatted string.
-        /// // todo. kls. proper enum handling? </summary>
-        public static string FormatEnum(object enumValue)
+        /// <summary> Converts enum value to integer. </summary>
+        public static object FormatEnum(object enumValue)
         {
             Debug.Assert(enumValue.GetType().IsEnum);
-            return $@"{(int)enumValue} ({enumValue})";
-        }        
-        
-        /// <summary> Formats value if it is enum. Other values stay unchanged.
-        /// // todo. kls. proper enum handling? </summary>
+            //return $@"{(int)enumValue} ({enumValue})";
+            return (int)enumValue;
+        }
+
+        /// <summary> Formats value if it is enum. Other values stay unchanged. </summary>
         public static void FormatEnum(ref object enumValue)
         {
             if (enumValue.GetType().IsEnum)
