@@ -171,6 +171,7 @@ namespace iba.Controls
 
         private void buttonConfigurationApply_Click(object sender, EventArgs e)
         {
+            ConfigurationApplyButtonsEnabled = false; // indicate long action 
             try
             {
                 ConfigurationFromControlsToData();
@@ -185,11 +186,12 @@ namespace iba.Controls
                 LogData.Data.Logger.Log(Level.Exception,
                     $@"{nameof(OpcUaControl)}.{nameof(buttonConfigurationApply_Click)}. {ex.Message}");
             }
+            ConfigurationApplyButtonsEnabled = true; // indicate long action is finished
         }
 
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
         {
-                if (MessageBox.Show(this,
+            if (MessageBox.Show(this,
                     Resources.snmpQuestionReset, /*snmp string here is ok for opc ua also*/
                     Resources.snmpQuestionResetTitle, /*snmp string here is ok for opc ua also*/
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
@@ -197,6 +199,8 @@ namespace iba.Controls
                 return;
             }
 
+            ConfigurationApplyButtonsEnabled = false; // indicate long action
+            
             // copy default data to current data except enabled/disabled
             bool bOriginalEnabledState = _data.Enabled;
             _data = OpcUaData.DefaultData;
@@ -216,6 +220,13 @@ namespace iba.Controls
                 LogData.Data.Logger.Log(Level.Exception,
                     $@"{nameof(OpcUaControl)}.{nameof(buttonConfigurationReset_Click)}. {ex.Message}");
             }
+            ConfigurationApplyButtonsEnabled = true; // indicate long action is finished
+        }
+
+        private bool ConfigurationApplyButtonsEnabled
+        {
+            set => buttonConfigurationApply.Enabled =
+                buttonConfigurationApply2.Enabled = buttonConfigurationReset.Enabled = value;
         }
 
         private void ConfigurationFromControlsToData()
