@@ -1170,8 +1170,8 @@ namespace iba.Data
                 Debug.Assert(JobName.SnmpLeastId == 1); // ensure id has an expected value
 
                 Status = FolderGeneral.AddChildVariable<JobStatus>(
-                    @"Status", @"Status", 
-                    @"Current status of the job (1=started, 2=stopped or 3=disabled).",
+                    @"Status", @"Status",
+                    @"Current status of the job (0=disabled, 1=started, 2=stopped).",
                     SNMP_AUTO_LEAST_ID);
 
                 TodoCount = FolderGeneral.AddChildVariable<uint>(
