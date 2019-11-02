@@ -18,9 +18,19 @@ namespace iba.Processing
 {
     public class OpcUaWorker : IDisposable
     {
-        private const string _cfgXmlConfigFileName = "ibaDatCoordinatorOpcUaServerConfig.xml";
-        private const string _cfgConfigSectionName = "iba_ag.ibaDatCoordinatorOpcUaServer";
-        private const string _cfgUaTraceFilePath = "%CommonApplicationData%\\iba\\ibaDatCoordinator\\Opc\\ibaDatCoordinatorOpcUaServer_log.txt"; // todo. kls. 
+        private static string CfgXmlConfigFileName { get; } = "ibaDatCoordinatorOpcUaServerConfig.xml";
+        private static string CfgConfigSectionName { get; } = "iba_ag.ibaDatCoordinatorOpcUaServer";
+        public static string CfgUaTraceFilePath { get; } =
+            "%CommonApplicationData%\\iba\\ibaDatCoordinator\\ibaDatCoordinatorLog_OpcUa.txt";
+        public static string OpcUaServerString { get; } = "OPC UA Server";
+
+        /// <summary>
+        /// If set to true, this will allow clients with
+        /// SHA-1-signed certificates and with 1024-bytes-long key certificates
+        /// to be connected. (it is not recommended by OPC UA foundation)
+        /// </summary>
+        public static bool CfgAllowSha1Certificates{ get; } = true;
+
 
         #region Construction, Destruction, Init
 
@@ -48,14 +58,14 @@ namespace iba.Processing
                 IbaOpcUaServer = new IbaOpcUaServer();
 
                 UaApplication.ApplicationType = ApplicationType.Server;
-                UaApplication.ConfigSectionName = _cfgConfigSectionName;
+                UaApplication.ConfigSectionName = CfgConfigSectionName;
 
                 // load the application configuration;
                 // do it now (not waiting for automatic loading or restart) for the following reasons:
                 //  * to get the cfg file from the overridden path;
                 //  * and to be able to configure application while server is yet offline;
 
-                var cfgWithPath = Path.Combine(Application.StartupPath, _cfgXmlConfigFileName);
+                var cfgWithPath = Path.Combine(Application.StartupPath, CfgXmlConfigFileName);
                 if (!File.Exists(cfgWithPath))
                 {
                     // config file is critical; we cannot continue
@@ -78,7 +88,7 @@ namespace iba.Processing
                 // OPC UA trace file
                 if (!string.IsNullOrEmpty(UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
                 {
-                    UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = _cfgUaTraceFilePath;
+                    UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = CfgUaTraceFilePath;
                     UaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
                 }
 
@@ -303,9 +313,11 @@ namespace iba.Processing
             ApplyUserPolicies();
 
             // apply additional settings - allow old SHA-1 singed certificates with short keys
-            // Delete following lines for better security
-            UaAppConfiguration.SecurityConfiguration.RejectSHA1SignedCertificates = false; // default is true
-            UaAppConfiguration.SecurityConfiguration.MinimumCertificateKeySize = 1024; // default is 2048
+            if (CfgAllowSha1Certificates)
+            {
+                UaAppConfiguration.SecurityConfiguration.RejectSHA1SignedCertificates = false; // default is true
+                UaAppConfiguration.SecurityConfiguration.MinimumCertificateKeySize = 1024; // default is 2048
+            }
             UaAppConfiguration.Validate(ApplicationType.Server).Wait();
             
             // synchronize between files and _opcUaData.Certificates
@@ -410,6 +422,7 @@ namespace iba.Processing
         {
             OpcUaData.NetworkConfiguration cfg = new OpcUaData.NetworkConfiguration();
             cfg.Initialize();
+            cfg.UaTraceFilePath = Utils.ReplaceSpecialFolderNames(CfgUaTraceFilePath);
             return cfg;
         }
 

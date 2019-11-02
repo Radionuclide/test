@@ -1209,7 +1209,32 @@ namespace iba.Controls
 
         private void btOpenLogFile_Click(object sender, EventArgs e)
         {
-            //IOConfiguratorDlg.Instance.OpenLogFile("%serverpath%log", "OpcUAServerLog.txt");
+            var networkCfg = TaskManager.Manager.OpcUaGetNetworkConfiguration();
+            if (networkCfg == null || string.IsNullOrWhiteSpace(networkCfg.Hostname) ||
+                string.IsNullOrWhiteSpace(networkCfg.UaTraceFilePath))
+            {
+                // should not happen (localization is not needed)
+                MessageBox.Show("Cannot get network configuration from server", 
+                    OpcUaWorker.OpcUaServerString, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE ||
+                (string.Compare(networkCfg.Hostname, Dns.GetHostName(), StringComparison.OrdinalIgnoreCase) == 0))
+            {
+                // is standalone or client is running on the same machine as server
+                Process.Start($"\"{networkCfg.UaTraceFilePath}\"");
+            }
+            else
+            {
+                // client is running on a different machine
+                // todo. kls. localize
+                MessageBox.Show(
+                    string.Format("File is located on remote machine '{0}' at path \"{1}\"",
+                        networkCfg.Hostname, networkCfg.UaTraceFilePath),
+                    OpcUaWorker.OpcUaServerString,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         #endregion

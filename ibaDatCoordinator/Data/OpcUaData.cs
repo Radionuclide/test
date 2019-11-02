@@ -191,6 +191,8 @@ namespace iba.Data
         [Serializable]
         public class NetworkConfiguration
         {
+            /// <summary> Fills <see cref="Hostname"/> and <see cref="Adapters"/> fields with
+            /// information of current machine </summary>
             public void Initialize()
             {
                 Hostname = IPGlobalProperties.GetIPGlobalProperties().HostName;
@@ -222,6 +224,11 @@ namespace iba.Data
 
             public List<NetworkAdapter> Adapters = new List<NetworkAdapter>();
 
+            /// <summary> The filed is present in this class because
+            /// trace file path should be calculated on the server side,
+            /// because special folders as %CommonApplicationData%
+            /// can be resolved differently on different machines </summary>
+            public string UaTraceFilePath;
 
             public static List<IPAddress> GetV4IpAddressesOfNetworkInterface(NetworkInterface ni)
             {
