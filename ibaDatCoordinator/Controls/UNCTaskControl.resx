@@ -166,13 +166,13 @@
     <value>3, 1</value>
   </data>
   <data name="m_rbInfofieldForDir.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 17</value>
+    <value>216, 17</value>
   </data>
   <data name="m_rbInfofieldForDir.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_rbInfofieldForDir.Text" xml:space="preserve">
-    <value>Use infofield for subdirectory:</value>
+    <value>Use infofield/expression for subdirectory:</value>
   </data>
   <data name="&gt;&gt;m_rbInfofieldForDir.Name" xml:space="preserve">
     <value>m_rbInfofieldForDir</value>
@@ -328,10 +328,10 @@
     <value>6</value>
   </data>
   <data name="m_tbInfoFieldDir.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, 0</value>
+    <value>234, 0</value>
   </data>
   <data name="m_tbInfoFieldDir.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 20</value>
+    <value>193, 20</value>
   </data>
   <data name="m_tbInfoFieldDir.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1492,13 +1492,13 @@
     <value>0, 1</value>
   </data>
   <data name="m_cbUseInfofieldForName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 17</value>
+    <value>235, 17</value>
   </data>
   <data name="m_cbUseInfofieldForName.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_cbUseInfofieldForName.Text" xml:space="preserve">
-    <value>Use infofield for output file name:</value>
+    <value>Use infofield/expression for output file name:</value>
   </data>
   <data name="&gt;&gt;m_cbUseInfofieldForName.Name" xml:space="preserve">
     <value>m_cbUseInfofieldForName</value>
@@ -1513,10 +1513,10 @@
     <value>6</value>
   </data>
   <data name="m_tbInfoField.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, 1</value>
+    <value>241, 1</value>
   </data>
   <data name="m_tbInfoField.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 20</value>
+    <value>186, 20</value>
   </data>
   <data name="m_tbInfoField.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>

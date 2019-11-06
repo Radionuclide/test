@@ -977,7 +977,7 @@
     <value>..\Resources\undoconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="WarningInfofieldFailed" xml:space="preserve">
-    <value>Failed to obtain infofield '{0}' from the .dat file. The .dat file filename will be used as output filename.</value>
+    <value>Failed to obtain infofield or expression '{0}' from the .dat file. The .dat file filename will be used as output filename.</value>
   </data>
   <data name="SameConfCaption" xml:space="preserve">
     <value>Undo configuration</value>
@@ -992,7 +992,7 @@
     <value>The specified export file type ({0}) does not match the type specified in the analysis ({1}), the file type in the analysis will be used.</value>
   </data>
   <data name="WarningInfofieldDirFailed" xml:space="preserve">
-    <value>Failed to obtain infofield '{0}' from the .dat file. The file will be placed in the 'unresolved' subdirectory.</value>
+    <value>Failed to obtain infofield or expression '{0}' from the .dat file. The file will be placed in the 'unresolved' subdirectory.</value>
   </data>
   <data name="logCleanupTallyingErrorDir" xml:space="preserve">
     <value>While tallying the files for cleanup, iterating over the folders caused the following error:</value>
@@ -1401,10 +1401,10 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>The new language setting will only work after ibaDatCoordinator is restarted. Do you wish to restart it now?</value>
   </data>
   <data name="WarningInfofieldDirFailed2" xml:space="preserve">
-    <value>Failed to obtain infofield '{0}' from the event. The file will be placed in the 'unresolved' subdirectory.</value>
+    <value>Failed to obtain infofield or expression '{0}' from the event. The file will be placed in the 'unresolved' subdirectory.</value>
   </data>
   <data name="WarningInfofieldFailed2" xml:space="preserve">
-    <value>Failed to obtain infofield '{0}' from the event. The standard name will be used as output filename.</value>
+    <value>Failed to obtain infofield or expression '{0}' from the event. The standard name will be used as output filename.</value>
   </data>
   <data name="TasksCountExceeded" xml:space="preserve">
     <value>Cannot add the requested task, the maximum amount of tasks for this job has been reached.</value>

@@ -1879,10 +1879,14 @@ namespace iba.Processing
                     {
                         lock (m_candidateNewFiles)
                         {
-                            if (m_candidateNewFiles.Find(delegate(Pair<string,DateTime> arg) { return arg.First==filename; })==null)
-                                Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
-                            //else silent error because the file is already being monitored.
-                        }
+							if (m_candidateNewFiles.Find(delegate (Pair<string, DateTime> arg) { return arg.First == filename; }) == null)
+							{
+								Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
+								DateTime now = DateTime.Now;
+								m_candidateNewFiles.Add(new Pair<string, DateTime>(filename, now));
+							}
+							//else silent error because the file is already being monitored.
+						}
                         return DatFileStatus.State.NO_ACCESS;
                     }
                 }
@@ -1925,7 +1929,7 @@ namespace iba.Processing
 								if (m_candidateNewFiles.Find(delegate (Pair<string, DateTime> arg) { return arg.First == filename; }) == null)
 								{
 									Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
-									Log(Logging.Level.Warning, "Exception at location 4");
+									//Log(Logging.Level.Warning, "Exception at location 4");
 								}
                             }
                         }
@@ -1934,7 +1938,7 @@ namespace iba.Processing
                     }
                     catch (Exception ex)
                     {
-						Log(Logging.Level.Warning, "Exception at location 3: " + ex.ToString(), filename);
+						//Log(Logging.Level.Warning, "Exception at location 3: " + ex.ToString(), filename);
 						Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     }
                     return DatFileStatus.State.NO_ACCESS; //no access, try again next time
@@ -3359,7 +3363,12 @@ namespace iba.Processing
                         iniParser.Read();
                         var Section = iniParser.Sections["HDQ file"];
                         outputfile = Section[task.InfoFieldForOutputFile];
-                        if (task.InfoFieldForOutputFileLength == 0)
+						if (String.IsNullOrEmpty(outputfile))
+						{ //try expression
+							outputfile = EvaluateTextExpression(task.InfoFieldForOutputFile);
+						}
+
+						if (task.InfoFieldForOutputFileLength == 0)
                         {
                             if (task.InfoFieldForOutputFileStart != 0)
                             {
@@ -3389,7 +3398,11 @@ namespace iba.Processing
                     {
                         ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
                         outputfile = ibaDatFile.InfoFields[task.InfoFieldForOutputFile];
-                        if (task.InfoFieldForOutputFileLength == 0)
+						if (String.IsNullOrEmpty(outputfile))
+						{ //try expression
+							outputfile = EvaluateTextExpression(task.InfoFieldForOutputFile);
+						}
+						if (task.InfoFieldForOutputFileLength == 0)
                         {
                             if (task.InfoFieldForOutputFileStart != 0)
                             {
@@ -3456,11 +3469,28 @@ namespace iba.Processing
             return task.GetSubDir(dt);
         }
 
-        private String InfoFieldBasedSubFolder(TaskDataUNC task, String filename)
+		private string EvaluateTextExpression(String arg)
+		{
+			object oStamps = null;
+			object oValues = null;
+			m_ibaAnalyzer.EvaluateToStringArray(arg, 0, out oStamps, out oValues);
+
+			string[] values = oValues as string[];
+			foreach (string str in values)
+			{
+				if (!string.IsNullOrEmpty(str))
+				{
+					return str;
+				}
+			}
+			return "";
+		}
+
+		private String InfoFieldBasedSubFolder(TaskDataUNC task, String filename)
         {
             string Subdir = "";
             if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
-            {
+            { //no expressions to test
                 try
                 {
                     IniParser iniParser = new IniParser(filename);
@@ -3529,7 +3559,36 @@ namespace iba.Processing
                 Subdir = CPathCleaner.CleanDirectory(Subdir);
                 return Subdir;
             }
-            Subdir = "unresolved";
+			//second attempt, try evaluating as expression;
+			try
+			{
+				Subdir = EvaluateTextExpression(task.InfoFieldForSubdir);
+				if (task.InfoFieldForSubdirLength == 0)
+				{
+					if (task.InfoFieldForSubdirStart != 0)
+					{
+						Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
+					}
+				}
+				else
+					Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+				if (task.InfoFieldForSubdirRemoveBlanksAll)
+					Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
+				else if (task.InfoFieldForSubdirRemoveBlanksEnd)
+					Subdir = Subdir.TrimEnd(null);
+			}
+			catch
+			{
+				Subdir = "";
+			}
+
+			if (!string.IsNullOrEmpty(Subdir))
+			{
+				Subdir = CPathCleaner.CleanDirectory(Subdir);
+				return Subdir;
+			}
+
+			Subdir = "unresolved";
             //warn that we failed getting the infofield
             string message = string.Format(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event ? iba.Properties.Resources.WarningInfofieldDirFailed2:iba.Properties.Resources.WarningInfofieldDirFailed, task.InfoFieldForSubdir);
             Log(iba.Logging.Level.Warning, message, filename, task);
@@ -3621,8 +3680,6 @@ namespace iba.Processing
                     }
                     return;
                 }
-
-
 
                 if (task.Extension == "html" || task.Extension == "htm" || doImageDir)
                 {
