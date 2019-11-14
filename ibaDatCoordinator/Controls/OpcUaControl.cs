@@ -195,6 +195,10 @@ namespace iba.Controls
             bool bOriginalEnabledState = _data.Enabled;
             _data = OpcUaData.DefaultData;
             _data.Enabled = bOriginalEnabledState;
+            
+            // show default data in controls
+            ConfigurationFromDataToControls();
+            tabConfiguration.Update();
 
             // apply new configuration - do the same like for usual apply
             buttonConfigurationApply_Click(null, null);
