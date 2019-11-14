@@ -151,6 +151,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.gbDebug = new System.Windows.Forms.GroupBox();
+            this.gbStatus = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
@@ -178,6 +179,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridCtrlSessions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSessions)).BeginInit();
             this.gbDebug.SuspendLayout();
+            this.gbStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainerObjectsFooter
@@ -985,7 +987,7 @@
             this.tabControl1.MediaPlayerDockSides = false;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.OfficeDockSides = false;
-            this.tabControl1.SelectedIndex = 2;
+            this.tabControl1.SelectedIndex = 3;
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
@@ -1024,6 +1026,7 @@
             this.tabCertificates.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabCertificates.Name = "tabCertificates";
             this.tabCertificates.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabCertificates.Selected = false;
             this.tabCertificates.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1039,6 +1042,7 @@
             this.tabTags.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabTags.Name = "tabTags";
             this.tabTags.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabTags.Selected = false;
             this.tabTags.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabTags.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1048,16 +1052,13 @@
             this.tabDiag.Controls.Add(this.btOpenLogFile);
             this.tabDiag.Controls.Add(this.gridCtrlSubscriptions);
             this.tabDiag.Controls.Add(this.label3);
-            this.tabDiag.Controls.Add(this.tbStatus);
             this.tabDiag.Controls.Add(this.gridCtrlSessions);
             this.tabDiag.Controls.Add(this.label12);
-            this.tabDiag.Controls.Add(this.label10);
             this.tabDiag.InactiveBackColor = System.Drawing.Color.Empty;
             this.tabDiag.InactiveTextBackColor = System.Drawing.Color.Empty;
             this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabDiag.Name = "tabDiag";
             this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabDiag.Selected = false;
             this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1237,12 +1238,21 @@
             this.gbDebug.Name = "gbDebug";
             this.gbDebug.TabStop = false;
             // 
+            // gbStatus
+            // 
+            this.gbStatus.Controls.Add(this.label10);
+            this.gbStatus.Controls.Add(this.tbStatus);
+            resources.ApplyResources(this.gbStatus, "gbStatus");
+            this.gbStatus.Name = "gbStatus";
+            this.gbStatus.TabStop = false;
+            // 
             // OpcUaControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.gbDebug);
             this.Controls.Add(this.panelFooterWithButtons);
+            this.Controls.Add(this.gbStatus);
+            this.Controls.Add(this.gbDebug);
             this.Name = "OpcUaControl";
             resources.ApplyResources(this, "$this");
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
@@ -1283,6 +1293,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSessions)).EndInit();
             this.gbDebug.ResumeLayout(false);
             this.gbDebug.PerformLayout();
+            this.gbStatus.ResumeLayout(false);
+            this.gbStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1409,5 +1421,6 @@
         private System.Windows.Forms.Panel panelFooterWithButtons;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
+        private System.Windows.Forms.GroupBox gbStatus;
     }
 }

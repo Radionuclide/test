@@ -159,22 +159,26 @@ namespace iba.Controls
 
         private void buttonConfigurationApply_Click(object sender, EventArgs e)
         {
-            ConfigurationApplyButtonsEnabled = false; // indicate long action 
+            LongActionInProgress = true; // indicate long action is started
+
             try
             {
-                ConfigurationFromControlsToData();
-                // set data to manager and restart server if necessary
-                TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
+                using (new WaitCursor())
+                {
+                    ConfigurationFromControlsToData();
+                    // set data to manager and restart server if necessary
+                    TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
 
-                // rebuild GUI tree
-                RebuildObjectsTree();
+                    // rebuild GUI tree
+                    RebuildObjectsTree();
+                }
             }
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Exception,
                     $@"{nameof(OpcUaControl)}.{nameof(buttonConfigurationApply_Click)}. {ex.Message}");
             }
-            ConfigurationApplyButtonsEnabled = true; // indicate long action is finished
+            LongActionInProgress = false; // indicate long action is finished
         }
 
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
@@ -187,33 +191,33 @@ namespace iba.Controls
                 return;
             }
 
-            ConfigurationApplyButtonsEnabled = false; // indicate long action
-            
             // copy default data to current data except enabled/disabled
             bool bOriginalEnabledState = _data.Enabled;
             _data = OpcUaData.DefaultData;
             _data.Enabled = bOriginalEnabledState;
 
-            try
-            {
-                ConfigurationFromDataToControls();
-                // set data to manager and restart UA server if necessary
-                TaskManager.Manager.OpcUaData = _data.Clone() as OpcUaData;
-
-                // rebuild GUI tree
-                RebuildObjectsTree();
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception,
-                    $@"{nameof(OpcUaControl)}.{nameof(buttonConfigurationReset_Click)}. {ex.Message}");
-            }
-            ConfigurationApplyButtonsEnabled = true; // indicate long action is finished
+            // apply new configuration - do the same like for usual apply
+            buttonConfigurationApply_Click(null, null);
         }
 
-        private bool ConfigurationApplyButtonsEnabled
+        private bool LongActionInProgress
         {
-            set => buttonConfigurationApply.Enabled = buttonConfigurationReset.Enabled = value;
+            set
+            {
+                tbStatus.Enabled = buttonConfigurationApply.Enabled = buttonConfigurationReset.Enabled = !value;
+                if (value)
+                {
+                    // gray-out status line before long action to indicate that we are busy
+                    tbStatus.Text = "";
+                    tbStatus.BackColor = BackColor;
+                    tbStatus.Update();
+                }
+                else
+                {
+                    // refresh status line and other things after long action
+                    timerRefreshStatus_Tick(null, null);
+                }
+            }
         }
 
         private void ConfigurationFromControlsToData()

@@ -745,7 +745,7 @@ namespace iba.Processing
             Debug.Assert(UaAppConfiguration != null);
 
             // remove certificate from both stores
-            // todo. kls. better async support?
+            // todo. kls. low priority - better async support?
             RemoveCertificateFromTrustedAndRejected(certificate.Thumbprint).Wait();
 
             // add certificate to the needed store
@@ -755,7 +755,7 @@ namespace iba.Processing
             try
             {
                 certificate.PrivateKey = null; // add to the trusted/rejected store without a private part
-                // todo. kls. better async support?
+                // todo. kls. low priority - better async support?
                 store.Add(certificate).Wait();
             }
             catch
@@ -777,7 +777,7 @@ namespace iba.Processing
                 ICertificateStore store = OwnCertStore.OpenStore();
                 try
                 {
-                    // todo. kls. better async support?
+                    // todo. kls. low priority - better async support?
                     store.Add(certificate).Wait();
                 }
                 catch
@@ -857,7 +857,7 @@ namespace iba.Processing
             {
                 var list = new List<X509Certificate2>();
                 var enumTask = store.Enumerate();
-                // todo. kls. better async support?
+                // todo. kls. low priority - better async support?
                 enumTask.Wait();
                 foreach (var cert in enumTask.Result)
                 {
@@ -1260,8 +1260,10 @@ namespace iba.Processing
 
         private ServiceResult OnReadProductSpecificValue(ISystemContext context,
             NodeState node, NumericRange indexRange, QualifiedName dataEncoding,
-            // ReSharper disable once RedundantAssignment
-            ref object value, ref StatusCode statusCode, ref DateTime timestamp)
+            // ReSharper disable RedundantAssignment
+            ref object value, 
+            ref StatusCode statusCode, ref DateTime timestamp)
+            // ReSharper restore RedundantAssignment
         {
             if (!(node is IbaOpcUaVariable iv)) //we handle only iba variables here 
             {
