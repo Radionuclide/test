@@ -1149,8 +1149,6 @@ namespace iba.Data
             /// <summary> Oid 2 - Contains tasks (one subfolder per each task) </summary> 
             public ExtMonFolder FolderTasks;
 
-            /// <summary> Oid 99 </summary>
-            public readonly ExtMonVariable<int> Lifebeat;
             /// <summary> Oid General.1 </summary> 
             public readonly ExtMonVariable<string> JobName;
             /// <summary> Oid General.2 </summary>
@@ -1161,6 +1159,11 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> DoneCount;
             /// <summary> Oid General.5 </summary>
             public readonly ExtMonVariable<uint> FailedCount;
+            
+            /// <summary> Oid General.(max+1) (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>) </summary>
+            public ExtMonVariable<int> UpTime;
+            /// <summary> Oid General.32767 (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>)</summary>
+            public ExtMonVariable<int> Lifebeat;
 
             protected JobInfoBase(ExtMonFolder parent, uint snmpLeastId, string jobName) 
                 : base(parent, snmpLeastId)
@@ -1183,13 +1186,6 @@ namespace iba.Data
                     $@"Information about all tasks of the job '{jobName}'.",
                     SNMP_AUTO_LEAST_ID);
                 Debug.Assert(FolderTasks.SnmpLeastId == 2); // ensure id has an expected value
-
-                Lifebeat = AddChildVariable<int>(
-                    @"Lifebeat", @"Lifebeat",
-                    @"A special value that should be continuously changing if the job is running." +
-                    @" Is equal to time in seconds elapsed since the job start" +
-                    @" (and -1 if the job is stopped or disabled).",
-                    99 /*put it to the end, reserving place for other values*/); 
 
                 // create variables and add them to collection
 
@@ -1222,7 +1218,27 @@ namespace iba.Data
 
                 PrivateReset();
             }
-            
+
+            /// <summary>
+            /// Adds variables that are common for all job types but are located at the end of the list
+            /// (after child-specialized variables).
+            /// </summary>
+            protected void AddBaseExtraVariablesToTheEnd()
+            {
+                UpTime = FolderGeneral.AddChildVariable<int>(
+                    @"Up time", @"UpTime",
+                    @"A special value that should be continuously changing if the job is running." +
+                    @" Is equal to time in seconds elapsed since the job start" +
+                    @" (and -1 if the job is stopped or disabled).",
+                    SNMP_AUTO_LEAST_ID);
+
+                Lifebeat = FolderGeneral.AddChildVariable<int>(
+                    @"Lifebeat", @"Lifebeat",
+                    @"A special value that should be continuously changing, " +
+                    @"indicating that is everything is ok with connection, processing, etc.",
+                    32767 /*put it to the end, reserving place for other values*/);
+            }
+
             /// <summary> Resets everything except tasks </summary>
             private void PrivateReset()
             {
@@ -1376,6 +1392,8 @@ namespace iba.Data
                 LastProcessingFinishTimeStamp.UaBrowseName = @"FinishStamp";
                 Debug.Assert(LastProcessingFinishTimeStamp.SnmpLeastId == 3); // ensure id has an expected value
 
+                AddBaseExtraVariablesToTheEnd();
+
                 PrivateReset();
             }
 
@@ -1445,6 +1463,8 @@ namespace iba.Data
                         SNMP_AUTO_LEAST_ID);
                 Debug.Assert(TimestampNextExecution.SnmpLeastId == 9); // ensure id has an expected value
 
+                AddBaseExtraVariablesToTheEnd();
+
                 PrivateReset();
             }
 
@@ -1484,6 +1504,8 @@ namespace iba.Data
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
                         SNMP_AUTO_LEAST_ID);
                 Debug.Assert(TimestampLastExecution.SnmpLeastId == 6); // ensure id has an expected value
+
+                AddBaseExtraVariablesToTheEnd();
 
                 PrivateReset();
             }
@@ -1539,6 +1561,8 @@ namespace iba.Data
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
                         SNMP_AUTO_LEAST_ID);
                 Debug.Assert(TimestampLastExecution.SnmpLeastId == 8); // ensure id has an expected value
+
+                AddBaseExtraVariablesToTheEnd();
 
                 PrivateReset();
             }

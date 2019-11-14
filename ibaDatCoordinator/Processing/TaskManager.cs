@@ -622,9 +622,17 @@ namespace iba.Processing
             ji.DoneCount.Value = (uint)s.ProcessedFiles.Count;
             ji.FailedCount.Value = (uint)s.CountErrors();
 
-            ji.Lifebeat.Value = (ji.Status.Value == ExtMonData.JobStatus.Started)
-                ? (int) (DateTime.Now - worker.TimestampJobStarted).TotalSeconds
+
+            ji.UpTime.Value = (ji.Status.Value == ExtMonData.JobStatus.Started)
+                ? (int)(DateTime.Now - worker.TimestampJobStarted).TotalSeconds
                 : -1;
+
+            // value like xxSss,
+            // where xx is a 2-digit job hash
+            // where S is a job status (0, 1 or 2)
+            // and ss - seconds within current minute
+            int hash = Math.Abs(cfg.Guid.GetHashCode()) % 90 + 10; // [10..99] i.e. a 2-digit hash
+            ji.Lifebeat.Value = hash * 1000 + (int)(ji.Status.Value) * 100 + DateTime.Now.Second;
 
             ExtMonRefreshTasks(ji, worker, s);
         }
