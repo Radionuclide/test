@@ -57,25 +57,8 @@ namespace iba.Controls
 
         private readonly BindingList<OpcUaData.OpcUaEndPoint> _endpoints = new BindingList<OpcUaData.OpcUaEndPoint>(); // todo. kls. rename
 
-        private CollapsibleElementManager _ceManager;
-
         private void OpcUaControl_Load(object sender, EventArgs e)
         {
-            // initialize collapsible group boxes
-            _ceManager = new CollapsibleElementManager(this);
-
-            gbConfiguration.Init();
-            _ceManager.AddElement(gbConfiguration);
-
-            gbCertificates.Init();
-            _ceManager.AddElement(gbCertificates);
-
-            gbObjects.Init();
-            _ceManager.AddElement(gbObjects);
-
-            gbDiagnostics.Init();
-            _ceManager.AddElement(gbDiagnostics);
-
             ImageList pdaList = new ImageList
             {
                 ImageSize = new Size(16, 16),
@@ -1176,7 +1159,7 @@ namespace iba.Controls
             bool isConnectedOrLocal = IsConnectedOrLocal;
 
             buttonConfigurationReset.Enabled = buttonConfigurationApply.Enabled =
-                gbObjects.Enabled = gbDiagnostics.Enabled = gbCertificates.Enabled = isConnectedOrLocal;
+                tabTags.Enabled = tabDiag.Enabled = tabCertificates.Enabled = isConnectedOrLocal;
 
             if (isConnectedOrLocal)
             {

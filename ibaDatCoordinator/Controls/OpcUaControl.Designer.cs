@@ -40,8 +40,7 @@
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.gbCertificates = new iba.Utility.CollapsibleGroupBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.panelCertificatesFooter = new System.Windows.Forms.Panel();
             this.buttonConfigurationApply2 = new System.Windows.Forms.Button();
             this.gridControlCerts = new DevExpress.XtraGrid.GridControl();
             this.contextMenuCerts = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -95,18 +94,15 @@
             this.buttonCertServer = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.buttonCertRefresh = new System.Windows.Forms.ToolStripButton();
-            this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
             this.tbDiagTmp = new System.Windows.Forms.TextBox();
             this.tbStatus = new System.Windows.Forms.TextBox();
-            this.gbObjects = new iba.Utility.CollapsibleGroupBox();
-            this.panelFooter = new System.Windows.Forms.Panel();
+            this.panelTagsFooter = new System.Windows.Forms.Panel();
             this.labelObjNodeId = new System.Windows.Forms.Label();
             this.tbObjNodeId = new System.Windows.Forms.TextBox();
             this.buttonRefreshGuiTree = new System.Windows.Forms.Button();
             this.buttonRebuildTree = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
-            this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelConfigurationFooter = new System.Windows.Forms.Panel();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
@@ -140,9 +136,6 @@
             this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
             this.tabCertificates = new Crownwood.DotNetMagic.Controls.TabPage();
             this.tabTags = new Crownwood.DotNetMagic.Controls.TabPage();
-            this.gbTagSettings = new System.Windows.Forms.GroupBox();
-            this.cmbEnumMode = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
             this.btOpenLogFile = new System.Windows.Forms.Button();
             this.gridCtrlSubscriptions = new DevExpress.XtraGrid.GridControl();
@@ -164,16 +157,13 @@
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
             this.splitContainerObjectsFooter.SuspendLayout();
-            this.gbCertificates.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.panelCertificatesFooter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).BeginInit();
             this.contextMenuCerts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewCerts)).BeginInit();
             this.toolStrip1.SuspendLayout();
-            this.gbObjects.SuspendLayout();
-            this.panelFooter.SuspendLayout();
-            this.gbConfiguration.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.panelTagsFooter.SuspendLayout();
+            this.panelConfigurationFooter.SuspendLayout();
             this.gbSecurity.SuspendLayout();
             this.gbLogon.SuspendLayout();
             this.gbEndpoints.SuspendLayout();
@@ -185,7 +175,6 @@
             this.tabConfiguration.SuspendLayout();
             this.tabCertificates.SuspendLayout();
             this.tabTags.SuspendLayout();
-            this.gbTagSettings.SuspendLayout();
             this.tabDiag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridCtrlSubscriptions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSubscriptions)).BeginInit();
@@ -261,20 +250,11 @@
             // 
             resources.ApplyResources(this.saveFileDialog, "saveFileDialog");
             // 
-            // gbCertificates
+            // panelCertificatesFooter
             // 
-            this.gbCertificates.Controls.Add(this.panel2);
-            this.gbCertificates.Controls.Add(this.gridControlCerts);
-            this.gbCertificates.Controls.Add(this.toolStrip1);
-            resources.ApplyResources(this.gbCertificates, "gbCertificates");
-            this.gbCertificates.Name = "gbCertificates";
-            this.gbCertificates.TabStop = false;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.buttonConfigurationApply2);
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Name = "panel2";
+            this.panelCertificatesFooter.Controls.Add(this.buttonConfigurationApply2);
+            resources.ApplyResources(this.panelCertificatesFooter, "panelCertificatesFooter");
+            this.panelCertificatesFooter.Name = "panelCertificatesFooter";
             // 
             // buttonConfigurationApply2
             // 
@@ -693,12 +673,6 @@
             this.buttonCertRefresh.Name = "buttonCertRefresh";
             this.buttonCertRefresh.Click += new System.EventHandler(this.buttonCertRefresh_Click);
             // 
-            // gbDiagnostics
-            // 
-            resources.ApplyResources(this.gbDiagnostics, "gbDiagnostics");
-            this.gbDiagnostics.Name = "gbDiagnostics";
-            this.gbDiagnostics.TabStop = false;
-            // 
             // tbDiagTmp
             // 
             this.tbDiagTmp.BackColor = System.Drawing.Color.MistyRose;
@@ -713,23 +687,13 @@
             this.tbStatus.ReadOnly = true;
             this.tbStatus.TabStop = false;
             // 
-            // gbObjects
+            // panelTagsFooter
             // 
-            this.gbObjects.Controls.Add(this.panelFooter);
-            this.gbObjects.Controls.Add(this.buttonRefreshGuiTree);
-            this.gbObjects.Controls.Add(this.buttonRebuildTree);
-            this.gbObjects.Controls.Add(this.tvObjects);
-            resources.ApplyResources(this.gbObjects, "gbObjects");
-            this.gbObjects.Name = "gbObjects";
-            this.gbObjects.TabStop = false;
-            // 
-            // panelFooter
-            // 
-            resources.ApplyResources(this.panelFooter, "panelFooter");
-            this.panelFooter.Controls.Add(this.splitContainerObjectsFooter);
-            this.panelFooter.Controls.Add(this.labelObjNodeId);
-            this.panelFooter.Controls.Add(this.tbObjNodeId);
-            this.panelFooter.Name = "panelFooter";
+            this.panelTagsFooter.Controls.Add(this.splitContainerObjectsFooter);
+            this.panelTagsFooter.Controls.Add(this.labelObjNodeId);
+            this.panelTagsFooter.Controls.Add(this.tbObjNodeId);
+            resources.ApplyResources(this.panelTagsFooter, "panelTagsFooter");
+            this.panelTagsFooter.Name = "panelTagsFooter";
             // 
             // labelObjNodeId
             // 
@@ -745,8 +709,8 @@
             // 
             // buttonRefreshGuiTree
             // 
-            this.buttonRefreshGuiTree.BackColor = System.Drawing.Color.Linen;
             resources.ApplyResources(this.buttonRefreshGuiTree, "buttonRefreshGuiTree");
+            this.buttonRefreshGuiTree.BackColor = System.Drawing.Color.Linen;
             this.buttonRefreshGuiTree.Name = "buttonRefreshGuiTree";
             this.buttonRefreshGuiTree.UseVisualStyleBackColor = false;
             this.buttonRefreshGuiTree.Click += new System.EventHandler(this.buttonRefreshGuiTree_Click);
@@ -766,23 +730,12 @@
             this.tvObjects.Name = "tvObjects";
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
             // 
-            // gbConfiguration
+            // panelConfigurationFooter
             // 
-            this.gbConfiguration.Controls.Add(this.panel1);
-            this.gbConfiguration.Controls.Add(this.gbSecurity);
-            this.gbConfiguration.Controls.Add(this.gbLogon);
-            this.gbConfiguration.Controls.Add(this.gbEndpoints);
-            this.gbConfiguration.Controls.Add(this.cbEnabled);
-            resources.ApplyResources(this.gbConfiguration, "gbConfiguration");
-            this.gbConfiguration.Name = "gbConfiguration";
-            this.gbConfiguration.TabStop = false;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.buttonConfigurationReset);
-            this.panel1.Controls.Add(this.buttonConfigurationApply);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
+            this.panelConfigurationFooter.Controls.Add(this.buttonConfigurationReset);
+            this.panelConfigurationFooter.Controls.Add(this.buttonConfigurationApply);
+            resources.ApplyResources(this.panelConfigurationFooter, "panelConfigurationFooter");
+            this.panelConfigurationFooter.Name = "panelConfigurationFooter";
             // 
             // buttonConfigurationReset
             // 
@@ -1044,12 +997,13 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.AllowDragReorder = false;
             this.tabControl1.Appearance = Crownwood.DotNetMagic.Controls.VisualAppearance.MultiDocument;
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.MediaPlayerDockSides = false;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.OfficeDockSides = false;
-            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.SelectedIndex = 2;
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
@@ -1064,18 +1018,25 @@
             // tabConfiguration
             // 
             resources.ApplyResources(this.tabConfiguration, "tabConfiguration");
-            this.tabConfiguration.Controls.Add(this.gbConfiguration);
+            this.tabConfiguration.Controls.Add(this.panelConfigurationFooter);
+            this.tabConfiguration.Controls.Add(this.gbEndpoints);
+            this.tabConfiguration.Controls.Add(this.gbSecurity);
+            this.tabConfiguration.Controls.Add(this.cbEnabled);
+            this.tabConfiguration.Controls.Add(this.gbLogon);
             this.tabConfiguration.InactiveBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.InactiveTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabConfiguration.Name = "tabConfiguration";
             this.tabConfiguration.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.Selected = false;
             this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
             // 
             // tabCertificates
             // 
-            this.tabCertificates.Controls.Add(this.gbCertificates);
+            this.tabCertificates.Controls.Add(this.gridControlCerts);
+            this.tabCertificates.Controls.Add(this.toolStrip1);
+            this.tabCertificates.Controls.Add(this.panelCertificatesFooter);
             this.tabCertificates.InactiveBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.InactiveTextBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.InactiveTextColor = System.Drawing.Color.Empty;
@@ -1088,41 +1049,21 @@
             // 
             // tabTags
             // 
-            this.tabTags.Controls.Add(this.gbObjects);
-            this.tabTags.Controls.Add(this.gbTagSettings);
+            this.tabTags.Controls.Add(this.panelTagsFooter);
+            this.tabTags.Controls.Add(this.buttonRefreshGuiTree);
+            this.tabTags.Controls.Add(this.buttonRebuildTree);
+            this.tabTags.Controls.Add(this.tvObjects);
             this.tabTags.InactiveBackColor = System.Drawing.Color.Empty;
             this.tabTags.InactiveTextBackColor = System.Drawing.Color.Empty;
             this.tabTags.InactiveTextColor = System.Drawing.Color.Empty;
             resources.ApplyResources(this.tabTags, "tabTags");
             this.tabTags.Name = "tabTags";
             this.tabTags.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabTags.Selected = false;
             this.tabTags.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabTags.SelectTextColor = System.Drawing.Color.Empty;
             // 
-            // gbTagSettings
-            // 
-            this.gbTagSettings.Controls.Add(this.cmbEnumMode);
-            this.gbTagSettings.Controls.Add(this.label2);
-            resources.ApplyResources(this.gbTagSettings, "gbTagSettings");
-            this.gbTagSettings.Name = "gbTagSettings";
-            this.gbTagSettings.TabStop = false;
-            // 
-            // cmbEnumMode
-            // 
-            this.cmbEnumMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEnumMode.FormattingEnabled = true;
-            resources.ApplyResources(this.cmbEnumMode, "cmbEnumMode");
-            this.cmbEnumMode.Name = "cmbEnumMode";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
             // tabDiag
             // 
-            this.tabDiag.Controls.Add(this.gbDiagnostics);
             this.tabDiag.Controls.Add(this.btOpenLogFile);
             this.tabDiag.Controls.Add(this.gridCtrlSubscriptions);
             this.tabDiag.Controls.Add(this.label3);
@@ -1330,20 +1271,15 @@
             this.splitContainerObjectsFooter.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
             this.splitContainerObjectsFooter.ResumeLayout(false);
-            this.gbCertificates.ResumeLayout(false);
-            this.gbCertificates.PerformLayout();
-            this.panel2.ResumeLayout(false);
+            this.panelCertificatesFooter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).EndInit();
             this.contextMenuCerts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridViewCerts)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.gbObjects.ResumeLayout(false);
-            this.panelFooter.ResumeLayout(false);
-            this.panelFooter.PerformLayout();
-            this.gbConfiguration.ResumeLayout(false);
-            this.gbConfiguration.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.panelTagsFooter.ResumeLayout(false);
+            this.panelTagsFooter.PerformLayout();
+            this.panelConfigurationFooter.ResumeLayout(false);
             this.gbSecurity.ResumeLayout(false);
             this.gbSecurity.PerformLayout();
             this.gbLogon.ResumeLayout(false);
@@ -1355,10 +1291,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabConfiguration.ResumeLayout(false);
+            this.tabConfiguration.PerformLayout();
             this.tabCertificates.ResumeLayout(false);
+            this.tabCertificates.PerformLayout();
             this.tabTags.ResumeLayout(false);
-            this.gbTagSettings.ResumeLayout(false);
-            this.gbTagSettings.PerformLayout();
             this.tabDiag.ResumeLayout(false);
             this.tabDiag.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridCtrlSubscriptions)).EndInit();
@@ -1372,16 +1308,12 @@
         }
 
         #endregion
-
-        private Utility.CollapsibleGroupBox gbObjects;
         private System.Windows.Forms.TreeView tvObjects;
-        private Utility.CollapsibleGroupBox gbConfiguration;
         private System.Windows.Forms.CheckBox cbEnabled;
         private System.Windows.Forms.Button buttonConfigurationReset;
         private System.Windows.Forms.Button buttonConfigurationApply;
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.TextBox tbUserName;
-        private Utility.CollapsibleGroupBox gbDiagnostics;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Timer timerRefreshStatus;
         private System.Windows.Forms.Button buttonEndpointCopy;
@@ -1399,7 +1331,7 @@
         private System.Windows.Forms.Button buttonRefreshGuiTree;
         private System.Windows.Forms.Label labelObjNodeId;
         private System.Windows.Forms.TextBox tbObjNodeId;
-        private System.Windows.Forms.Panel panelFooter;
+        private System.Windows.Forms.Panel panelTagsFooter;
         private System.Windows.Forms.SplitContainer splitContainerObjectsFooter;
         private System.Windows.Forms.Label labelObjType;
         private System.Windows.Forms.TextBox tbObjType;
@@ -1408,7 +1340,6 @@
         private System.Windows.Forms.Label labelObjDescription;
         private System.Windows.Forms.TextBox tbObjDescription;
         private System.Windows.Forms.TextBox tbDiagTmp;
-        private Utility.CollapsibleGroupBox gbCertificates;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton buttonCertAdd;
         private System.Windows.Forms.ToolStripButton buttonCertGenerate;
@@ -1480,9 +1411,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn colURI;
         private Crownwood.DotNetMagic.Controls.TabPage tabCertificates;
         private Crownwood.DotNetMagic.Controls.TabPage tabTags;
-        private System.Windows.Forms.GroupBox gbTagSettings;
-        private System.Windows.Forms.ComboBox cmbEnumMode;
-        private System.Windows.Forms.Label label2;
         private Crownwood.DotNetMagic.Controls.TabPage tabDiag;
         private System.Windows.Forms.Button btOpenLogFile;
         protected DevExpress.XtraGrid.Views.Grid.GridView gridViewSubscriptions;
@@ -1501,7 +1429,7 @@
         private System.Windows.Forms.GroupBox gbDebug;
         private System.Windows.Forms.Button buttonConfigurationApply2;
         private DevExpress.XtraGrid.GridControl gridCtrlSubscriptions;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelCertificatesFooter;
+        private System.Windows.Forms.Panel panelConfigurationFooter;
     }
 }
