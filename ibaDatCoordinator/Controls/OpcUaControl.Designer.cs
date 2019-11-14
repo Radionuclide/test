@@ -42,8 +42,6 @@
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.panelCertificatesFooter = new System.Windows.Forms.Panel();
-            this.buttonConfigurationApply2 = new System.Windows.Forms.Button();
             this.gridControlCerts = new DevExpress.XtraGrid.GridControl();
             this.contextMenuCerts = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miColumns = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,7 +102,7 @@
             this.buttonRefreshGuiTree = new System.Windows.Forms.Button();
             this.buttonRebuildTree = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
-            this.panelConfigurationFooter = new System.Windows.Forms.Panel();
+            this.panelFooterWithButtons = new System.Windows.Forms.Panel();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
@@ -159,13 +157,12 @@
             this.splitContainerObjectsFooter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
-            this.panelCertificatesFooter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).BeginInit();
             this.contextMenuCerts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewCerts)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panelTagsFooter.SuspendLayout();
-            this.panelConfigurationFooter.SuspendLayout();
+            this.panelFooterWithButtons.SuspendLayout();
             this.gbSecurity.SuspendLayout();
             this.gbLogon.SuspendLayout();
             this.gbEndpoints.SuspendLayout();
@@ -274,19 +271,6 @@
             // saveFileDialog
             // 
             resources.ApplyResources(this.saveFileDialog, "saveFileDialog");
-            // 
-            // panelCertificatesFooter
-            // 
-            this.panelCertificatesFooter.Controls.Add(this.buttonConfigurationApply2);
-            resources.ApplyResources(this.panelCertificatesFooter, "panelCertificatesFooter");
-            this.panelCertificatesFooter.Name = "panelCertificatesFooter";
-            // 
-            // buttonConfigurationApply2
-            // 
-            resources.ApplyResources(this.buttonConfigurationApply2, "buttonConfigurationApply2");
-            this.buttonConfigurationApply2.Name = "buttonConfigurationApply2";
-            this.buttonConfigurationApply2.UseVisualStyleBackColor = true;
-            this.buttonConfigurationApply2.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
             // gridControlCerts
             // 
@@ -755,12 +739,12 @@
             this.tvObjects.Name = "tvObjects";
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
             // 
-            // panelConfigurationFooter
+            // panelFooterWithButtons
             // 
-            this.panelConfigurationFooter.Controls.Add(this.buttonConfigurationReset);
-            this.panelConfigurationFooter.Controls.Add(this.buttonConfigurationApply);
-            resources.ApplyResources(this.panelConfigurationFooter, "panelConfigurationFooter");
-            this.panelConfigurationFooter.Name = "panelConfigurationFooter";
+            this.panelFooterWithButtons.Controls.Add(this.buttonConfigurationReset);
+            this.panelFooterWithButtons.Controls.Add(this.buttonConfigurationApply);
+            resources.ApplyResources(this.panelFooterWithButtons, "panelFooterWithButtons");
+            this.panelFooterWithButtons.Name = "panelFooterWithButtons";
             // 
             // buttonConfigurationReset
             // 
@@ -1012,11 +996,11 @@
             this.tabTags,
             this.tabDiag});
             this.tabControl1.TextTips = true;
+            this.tabControl1.SelectionChanged += new Crownwood.DotNetMagic.Controls.SelectTabHandler(this.tabControl1_SelectionChanged);
             // 
             // tabConfiguration
             // 
             resources.ApplyResources(this.tabConfiguration, "tabConfiguration");
-            this.tabConfiguration.Controls.Add(this.panelConfigurationFooter);
             this.tabConfiguration.Controls.Add(this.gbEndpoints);
             this.tabConfiguration.Controls.Add(this.gbSecurity);
             this.tabConfiguration.Controls.Add(this.cbEnabled);
@@ -1035,13 +1019,11 @@
             resources.ApplyResources(this.tabCertificates, "tabCertificates");
             this.tabCertificates.Controls.Add(this.gridControlCerts);
             this.tabCertificates.Controls.Add(this.toolStrip1);
-            this.tabCertificates.Controls.Add(this.panelCertificatesFooter);
             this.tabCertificates.InactiveBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.InactiveTextBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabCertificates.Name = "tabCertificates";
             this.tabCertificates.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabCertificates.Selected = false;
             this.tabCertificates.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1260,8 +1242,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.gbDebug);
-            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.panelFooterWithButtons);
             this.Name = "OpcUaControl";
+            resources.ApplyResources(this, "$this");
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.PerformLayout();
@@ -1271,7 +1254,6 @@
             this.splitContainerObjectsFooter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
-            this.panelCertificatesFooter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).EndInit();
             this.contextMenuCerts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridViewCerts)).EndInit();
@@ -1279,7 +1261,7 @@
             this.toolStrip1.PerformLayout();
             this.panelTagsFooter.ResumeLayout(false);
             this.panelTagsFooter.PerformLayout();
-            this.panelConfigurationFooter.ResumeLayout(false);
+            this.panelFooterWithButtons.ResumeLayout(false);
             this.gbSecurity.ResumeLayout(false);
             this.gbSecurity.PerformLayout();
             this.gbLogon.ResumeLayout(false);
@@ -1423,10 +1405,8 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox gbDebug;
-        private System.Windows.Forms.Button buttonConfigurationApply2;
         private DevExpress.XtraGrid.GridControl gridCtrlSubscriptions;
-        private System.Windows.Forms.Panel panelCertificatesFooter;
-        private System.Windows.Forms.Panel panelConfigurationFooter;
+        private System.Windows.Forms.Panel panelFooterWithButtons;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
     }

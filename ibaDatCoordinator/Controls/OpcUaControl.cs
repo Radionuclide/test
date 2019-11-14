@@ -38,7 +38,7 @@ namespace iba.Controls
 
             // set up endpoints grid
             gridCtrlEndpoints.DataSource = _endpoints;
-            var hostnameEditor = new HostnameEditor(this) {GridView = gridViewEndpoints};
+            var hostnameEditor = new HostnameEditor {GridView = gridViewEndpoints};
             DevExpress.XtraEditors.Repository.RepositoryItem item = hostnameEditor.Editor;
             item.Name = "HostnameEditor";
             item.AllowFocused = false;
@@ -55,7 +55,7 @@ namespace iba.Controls
         private const int ImageIndexFolder = 0;
         private const int ImageIndexLeaf = 1;
 
-        private readonly BindingList<OpcUaData.OpcUaEndPoint> _endpoints = new BindingList<OpcUaData.OpcUaEndPoint>(); // todo. kls. rename
+        private readonly BindingList<OpcUaData.OpcUaEndPoint> _endpoints = new BindingList<OpcUaData.OpcUaEndPoint>();
 
         private void OpcUaControl_Load(object sender, EventArgs e)
         {
@@ -147,10 +147,15 @@ namespace iba.Controls
         #endregion
 
 
-        #region Configuration
-
-
         #region Configuration - General
+
+        private void tabControl1_SelectionChanged(Crownwood.DotNetMagic.Controls.TabControl sender, Crownwood.DotNetMagic.Controls.TabPage oldPage, Crownwood.DotNetMagic.Controls.TabPage newPage)
+        {
+            // show panel with Apply and Reset buttons only for Cfg and Cert tabs
+            panelFooterWithButtons.Visible = (tabConfiguration.Selected || tabCertificates.Selected);
+            // show Reset only for Cfg tab
+            buttonConfigurationReset.Visible = tabConfiguration.Selected;
+        }
 
         private void buttonConfigurationApply_Click(object sender, EventArgs e)
         {
@@ -208,8 +213,7 @@ namespace iba.Controls
 
         private bool ConfigurationApplyButtonsEnabled
         {
-            set => buttonConfigurationApply.Enabled =
-                buttonConfigurationApply2.Enabled = buttonConfigurationReset.Enabled = value;
+            set => buttonConfigurationApply.Enabled = buttonConfigurationReset.Enabled = value;
         }
 
         private void ConfigurationFromControlsToData()
@@ -297,6 +301,7 @@ namespace iba.Controls
         {
             comboBoxSecurity256.Enabled = cbSecurity256.Checked;
         }
+
         private void cbSecurity256Sha256_CheckedChanged(object sender, EventArgs e)
         {
             comboBoxSecurity256Sha256.Enabled = cbSecurity256Sha256.Checked;
@@ -306,6 +311,110 @@ namespace iba.Controls
         {
             tbUserName.Enabled = tbPassword.Enabled = cbLogonUserName.Checked;
         }
+        
+        
+        #endregion
+
+
+        #region Configuration - Endpoints
+
+        private class HostnameEditor
+        {
+            public DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Editor { get; }
+
+            public GridView GridView;
+
+            public HostnameEditor()
+            {
+                Editor = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit { Name = "HostnameEditor" };
+                Editor.Buttons.Clear();
+                Editor.ButtonsStyle = BorderStyles.UltraFlat;
+                Editor.Buttons.Add(new EditorButton(ButtonPredefines.Ellipsis));
+
+                Editor.ButtonClick += Edit_ButtonClick;
+            }
+
+            private void Edit_ButtonClick(object sender, ButtonPressedEventArgs e)
+            {
+                DevExpress.XtraEditors.ButtonEdit btnEdit = sender as DevExpress.XtraEditors.ButtonEdit;
+                if (btnEdit == null)
+                    return;
+                Control parent = btnEdit.Parent;
+                while (parent?.Parent != null)
+                    parent = parent.Parent;
+
+                var netwConf = TaskManager.Manager.OpcUaGetNetworkConfiguration();
+                if (netwConf == null)
+                {
+                    // todo. kls. localize
+                    MessageBox.Show(parent, "Error trying to get network configuration", "OpcUaServer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                using (OpcUaEndpointSelectionForm selForm = new OpcUaEndpointSelectionForm(netwConf))
+                {
+                    if (!(GridView.GetRow(GridView.FocusedRowHandle) is OpcUaData.OpcUaEndPoint curEp))
+                        return;
+
+                    // Save current value
+                    curEp.Hostname = btnEdit.Text;
+
+                    selForm.IpAddress = curEp.Hostname;
+                    if (DialogResult.OK == selForm.ShowDialog(parent))
+                    {
+                        btnEdit.EditValue = selForm.IpAddress;
+                        btnEdit.SelectAll();
+
+                        curEp.Hostname = selForm.IpAddress;
+
+                        GridView.CloseEditor();
+                    }
+                }
+            }
+        }
+
+        private void buttonEndpointAdd_Click(object sender, EventArgs e)
+        {
+            var dep = OpcUaData.DefaultEndPoint;
+
+            _endpoints.Add(dep);
+            gridViewEndpoints.FocusedRowHandle = _endpoints.Count - 1;
+            gridViewEndpoints.FocusedColumn = colHostname;
+            gridViewEndpoints.ShowEditor();
+
+            ApplyEndpointsButtonsEnabling();
+        }
+
+        private void buttonEndpointCopy_Click(object sender, EventArgs e)
+        {
+            if ((gridViewEndpoints.FocusedRowHandle >= 0) &&
+                (gridViewEndpoints.FocusedRowHandle < _endpoints.Count) &&
+                gridViewEndpoints.GetRow(gridViewEndpoints.FocusedRowHandle) is OpcUaData.OpcUaEndPoint selEp)
+            {
+                _endpoints.Add(new OpcUaData.OpcUaEndPoint(selEp));
+                gridViewEndpoints.FocusedRowHandle = _endpoints.Count - 1;
+                gridViewEndpoints.FocusedColumn = colHostname;
+                gridViewEndpoints.ShowEditor();
+
+                ApplyEndpointsButtonsEnabling();
+            }
+        }
+
+        private void buttonEndpointRemove_Click(object sender, EventArgs e)
+        {
+            if ((gridViewEndpoints.FocusedRowHandle >= 0) && (gridViewEndpoints.FocusedRowHandle < _endpoints.Count))
+            {
+                _endpoints.RemoveAt(gridViewEndpoints.FocusedRowHandle);
+                ApplyEndpointsButtonsEnabling();
+            }
+        }
+
+        private void ApplyEndpointsButtonsEnabling()
+        {
+            buttonEndpointCopy.Enabled =
+                buttonEndpointRemove.Enabled = (gridViewEndpoints.FocusedRowHandle >= 0) && (_endpoints.Count > 0);
+        }
+
         #endregion
 
 
@@ -316,7 +425,7 @@ namespace iba.Controls
         private readonly Image imgKey;
         private readonly Image imgUaServer;
         private readonly Image imgDude;
-        private readonly StringFormat textAlign = new StringFormat {Alignment = StringAlignment.Center};
+        private readonly StringFormat textAlign = new StringFormat { Alignment = StringAlignment.Center };
         private const int ImgDimension = 16;
         private const int ImgGapPix = 4;
 
@@ -352,7 +461,7 @@ namespace iba.Controls
             {
                 cert.Import(openFileDialog.FileName);
             }
-            catch 
+            catch
             {
                 // try again with a password
                 using (OpcUaCertificateEnterPasswordForm passForm = new OpcUaCertificateEnterPasswordForm())
@@ -398,7 +507,7 @@ namespace iba.Controls
 
                 genForm.ApplySettings(certArgs);
             }
-            
+
             var certs = TaskManager.Manager.OpcUaHandleCertificate("generate", certArgs);
 
             if (certs == null)
@@ -414,7 +523,7 @@ namespace iba.Controls
 
             // todo. kls. localize?
             if (MessageBox.Show(
-                    "Do you want to use the generated certificate as OPC UA Server certificate", 
+                    "Do you want to use the generated certificate as OPC UA Server certificate",
                     "Generate certificate",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
@@ -463,7 +572,7 @@ namespace iba.Controls
                 }
 
                 // todo. kls. localize?
-                MessageBox.Show("Successfully exported certificate", "Export certificate", 
+                MessageBox.Show("Successfully exported certificate", "Export certificate",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch
@@ -527,7 +636,7 @@ namespace iba.Controls
             {
                 // todo. kls. low. localize?
                 MessageBox.Show(
-                    "The selected certificate does not contain a private key", "", 
+                    "The selected certificate does not contain a private key", "",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -675,17 +784,17 @@ namespace iba.Controls
                     List<Image> imgToDraw = new List<Image>();
 
                     imgToDraw.Add(certTag.IsTrusted ? imgTrusted : imgRejected);
-                    imgToDraw.Add(certTag.HasPrivateKey ? imgKey: null);
-                    imgToDraw.Add(certTag.IsUsedForServer ? imgUaServer: null);
-                    imgToDraw.Add(certTag.IsUsedForAuthentication ? imgDude: null);
+                    imgToDraw.Add(certTag.HasPrivateKey ? imgKey : null);
+                    imgToDraw.Add(certTag.IsUsedForServer ? imgUaServer : null);
+                    imgToDraw.Add(certTag.IsUsedForAuthentication ? imgDude : null);
 
                     for (int i = 0; i < imgToDraw.Count; i++)
                     {
                         var img = imgToDraw[i];
                         if (imgToDraw[i] == null)
                             continue;
-                        
-                        e.Graphics.DrawImage(img, 
+
+                        e.Graphics.DrawImage(img,
                             corner.X + (ImgDimension + ImgGapPix) * i, corner.Y,
                             newHeight, newWidth);
                     }
@@ -824,7 +933,7 @@ namespace iba.Controls
                 str += $"Expiration Date = {cert.NotAfter}\r\n";
                 str += $"Algorithm = {cert.SignatureAlgorithm.FriendlyName}\r\n";
                 str += $"Thumbprint = {certTag.Thumbprint}\r\n";
-                
+
                 Clipboard.Clear();
                 Clipboard.SetText(str);
             }
@@ -951,118 +1060,6 @@ namespace iba.Controls
         #endregion
 
 
-        #region Configuration - Endpoints
-
-        private class HostnameEditor
-        {
-            public DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Editor { get; }
-
-            public GridView GridView;
-
-            public HostnameEditor(OpcUaControl parentControl)
-            {
-                this.parentControl = parentControl;
-
-                Editor = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-                Editor.Name = "HostnameEditor";
-                Editor.Buttons.Clear();
-                //var btn = new EditorButton(ButtonPredefines.Ellipsis);
-                Editor.ButtonsStyle = BorderStyles.Simple;
-                Editor.ButtonsStyle = BorderStyles.UltraFlat;
-                Editor.Buttons.Add(new EditorButton(ButtonPredefines.Ellipsis));
-
-                Editor.ButtonClick += Edit_ButtonClick;
-            }
-
-            private OpcUaControl parentControl;
-
-            private void Edit_ButtonClick(object sender, ButtonPressedEventArgs e)
-            {
-                DevExpress.XtraEditors.ButtonEdit btnEdit = sender as DevExpress.XtraEditors.ButtonEdit;
-                if (btnEdit == null)
-                    return;
-                Control parent = btnEdit.Parent;
-                while (parent?.Parent != null)
-                    parent = parent.Parent;
-
-                var netwConf = TaskManager.Manager.OpcUaGetNetworkConfiguration();
-                if (netwConf == null)
-                {
-                    // todo. kls. localize
-                    MessageBox.Show(parent, "Error trying to get network configuration", "OpcUaServer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                using (OpcUaEndpointSelectionForm selForm = new OpcUaEndpointSelectionForm(netwConf))
-                {
-                    if (!(GridView.GetRow(GridView.FocusedRowHandle) is OpcUaData.OpcUaEndPoint curEp))
-                        return;
-
-                    // Save current value
-                    curEp.Hostname = btnEdit.Text;
-
-                    selForm.IpAddress = curEp.Hostname;
-                    if (DialogResult.OK == selForm.ShowDialog(parent))
-                    {
-                        btnEdit.EditValue = selForm.IpAddress;
-                        btnEdit.SelectAll();
-
-                        curEp.Hostname = selForm.IpAddress;
-
-                        GridView.CloseEditor();
-                    }
-                }
-            }
-        }
-
-        private void buttonEndpointAdd_Click(object sender, EventArgs e)
-        {
-            var dep = OpcUaData.DefaultEndPoint;
-
-            _endpoints.Add(dep);
-            gridViewEndpoints.FocusedRowHandle = _endpoints.Count - 1;
-            gridViewEndpoints.FocusedColumn = colHostname;
-            gridViewEndpoints.ShowEditor();
-
-            ApplyEndpointsButtonsEnabling();
-        }
-
-        private void buttonEndpointCopy_Click(object sender, EventArgs e)
-        {
-            if ((gridViewEndpoints.FocusedRowHandle >= 0) &&
-                (gridViewEndpoints.FocusedRowHandle < _endpoints.Count) &&
-                gridViewEndpoints.GetRow(gridViewEndpoints.FocusedRowHandle) is OpcUaData.OpcUaEndPoint selEp)
-            {
-                _endpoints.Add(new OpcUaData.OpcUaEndPoint(selEp));
-                gridViewEndpoints.FocusedRowHandle = _endpoints.Count - 1;
-                gridViewEndpoints.FocusedColumn = colHostname;
-                gridViewEndpoints.ShowEditor();
-
-                ApplyEndpointsButtonsEnabling();
-            }
-        }
-
-        private void buttonEndpointRemove_Click(object sender, EventArgs e)
-        {
-            if ((gridViewEndpoints.FocusedRowHandle >= 0) && (gridViewEndpoints.FocusedRowHandle < _endpoints.Count))
-            {
-                _endpoints.RemoveAt(gridViewEndpoints.FocusedRowHandle);
-                ApplyEndpointsButtonsEnabling();
-            }
-        }
-
-        private void ApplyEndpointsButtonsEnabling()
-        {
-            buttonEndpointCopy.Enabled =
-                buttonEndpointRemove.Enabled = (gridViewEndpoints.FocusedRowHandle >= 0) && (_endpoints.Count > 0);
-        }
-
-        #endregion
-
-
-        #endregion
-
-        
         #region Diagnostics
 
         private List<IbaOpcUaDiagClient> _diagClients;
@@ -1110,7 +1107,6 @@ namespace iba.Controls
                 if (_diagClients == null)
                     return;
                 
-                // todo. kls. delete before last beta
                 tbDiagTmp.Text = diagStr;
                 
                 // restore selected line and scroll position
@@ -1406,13 +1402,7 @@ namespace iba.Controls
         {
             RebuildObjectsTree();
         }
-
-
-
-
-
-
-
+        
         #endregion
 
     }
