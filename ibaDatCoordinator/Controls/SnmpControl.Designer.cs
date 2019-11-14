@@ -50,7 +50,6 @@
             this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.buttonClearClients = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.buttonCreateMibFiles = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
@@ -78,12 +77,13 @@
             this.panelFooter = new System.Windows.Forms.Panel();
             this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
             this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.gbGeneral = new System.Windows.Forms.GroupBox();
+            this.gbV2Security = new System.Windows.Forms.GroupBox();
+            this.gbV3Security = new System.Windows.Forms.GroupBox();
+            this.gbDateFormat = new System.Windows.Forms.GroupBox();
             this.tabObjects = new Crownwood.DotNetMagic.Controls.TabPage();
             this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
-            this.gbDateFormat = new System.Windows.Forms.GroupBox();
-            this.gbV3Security = new System.Windows.Forms.GroupBox();
-            this.gbV2Security = new System.Windows.Forms.GroupBox();
-            this.gbGeneral = new System.Windows.Forms.GroupBox();
+            this.gbStatus = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
@@ -93,12 +93,13 @@
             this.panelFooter.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabConfiguration.SuspendLayout();
+            this.gbGeneral.SuspendLayout();
+            this.gbV2Security.SuspendLayout();
+            this.gbV3Security.SuspendLayout();
+            this.gbDateFormat.SuspendLayout();
             this.tabObjects.SuspendLayout();
             this.tabDiag.SuspendLayout();
-            this.gbDateFormat.SuspendLayout();
-            this.gbV3Security.SuspendLayout();
-            this.gbV2Security.SuspendLayout();
-            this.gbGeneral.SuspendLayout();
+            this.gbStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainerObjectsFooter
@@ -248,11 +249,6 @@
             this.buttonClearClients.Name = "buttonClearClients";
             this.buttonClearClients.UseVisualStyleBackColor = true;
             this.buttonClearClients.Click += new System.EventHandler(this.buttonClearClients_Click);
-            // 
-            // label14
-            // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
             // 
             // label15
             // 
@@ -455,44 +451,22 @@
             this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
             // 
-            // tabObjects
+            // gbGeneral
             // 
-            resources.ApplyResources(this.tabObjects, "tabObjects");
-            this.tabObjects.Controls.Add(this.splitContainerObjectsFooter);
-            this.tabObjects.Controls.Add(this.buttonCreateMibFiles);
-            this.tabObjects.Controls.Add(this.tvObjects);
-            this.tabObjects.InactiveBackColor = System.Drawing.Color.Empty;
-            this.tabObjects.InactiveTextBackColor = System.Drawing.Color.Empty;
-            this.tabObjects.InactiveTextColor = System.Drawing.Color.Empty;
-            this.tabObjects.Name = "tabObjects";
-            this.tabObjects.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabObjects.Selected = false;
-            this.tabObjects.SelectTextBackColor = System.Drawing.Color.Empty;
-            this.tabObjects.SelectTextColor = System.Drawing.Color.Empty;
+            resources.ApplyResources(this.gbGeneral, "gbGeneral");
+            this.gbGeneral.Controls.Add(this.cbEnabled);
+            this.gbGeneral.Controls.Add(this.label5);
+            this.gbGeneral.Controls.Add(this.numPort);
+            this.gbGeneral.Name = "gbGeneral";
+            this.gbGeneral.TabStop = false;
             // 
-            // tabDiag
+            // gbV2Security
             // 
-            resources.ApplyResources(this.tabDiag, "tabDiag");
-            this.tabDiag.Controls.Add(this.label15);
-            this.tabDiag.Controls.Add(this.tbStatus);
-            this.tabDiag.Controls.Add(this.dgvClients);
-            this.tabDiag.Controls.Add(this.buttonClearClients);
-            this.tabDiag.Controls.Add(this.label14);
-            this.tabDiag.InactiveBackColor = System.Drawing.Color.Empty;
-            this.tabDiag.InactiveTextBackColor = System.Drawing.Color.Empty;
-            this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
-            this.tabDiag.Name = "tabDiag";
-            this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
-            this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
-            // 
-            // gbDateFormat
-            // 
-            resources.ApplyResources(this.gbDateFormat, "gbDateFormat");
-            this.gbDateFormat.Controls.Add(this.rbDateTimeTc);
-            this.gbDateFormat.Controls.Add(this.rbDateTimeStr);
-            this.gbDateFormat.Name = "gbDateFormat";
-            this.gbDateFormat.TabStop = false;
+            resources.ApplyResources(this.gbV2Security, "gbV2Security");
+            this.gbV2Security.Controls.Add(this.tbCommunity);
+            this.gbV2Security.Controls.Add(this.label7);
+            this.gbV2Security.Name = "gbV2Security";
+            this.gbV2Security.TabStop = false;
             // 
             // gbV3Security
             // 
@@ -512,22 +486,49 @@
             this.gbV3Security.Name = "gbV3Security";
             this.gbV3Security.TabStop = false;
             // 
-            // gbV2Security
+            // gbDateFormat
             // 
-            resources.ApplyResources(this.gbV2Security, "gbV2Security");
-            this.gbV2Security.Controls.Add(this.tbCommunity);
-            this.gbV2Security.Controls.Add(this.label7);
-            this.gbV2Security.Name = "gbV2Security";
-            this.gbV2Security.TabStop = false;
+            resources.ApplyResources(this.gbDateFormat, "gbDateFormat");
+            this.gbDateFormat.Controls.Add(this.rbDateTimeTc);
+            this.gbDateFormat.Controls.Add(this.rbDateTimeStr);
+            this.gbDateFormat.Name = "gbDateFormat";
+            this.gbDateFormat.TabStop = false;
             // 
-            // gbGeneral
+            // tabObjects
             // 
-            resources.ApplyResources(this.gbGeneral, "gbGeneral");
-            this.gbGeneral.Controls.Add(this.cbEnabled);
-            this.gbGeneral.Controls.Add(this.label5);
-            this.gbGeneral.Controls.Add(this.numPort);
-            this.gbGeneral.Name = "gbGeneral";
-            this.gbGeneral.TabStop = false;
+            resources.ApplyResources(this.tabObjects, "tabObjects");
+            this.tabObjects.Controls.Add(this.splitContainerObjectsFooter);
+            this.tabObjects.Controls.Add(this.buttonCreateMibFiles);
+            this.tabObjects.Controls.Add(this.tvObjects);
+            this.tabObjects.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabObjects.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabObjects.InactiveTextColor = System.Drawing.Color.Empty;
+            this.tabObjects.Name = "tabObjects";
+            this.tabObjects.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabObjects.Selected = false;
+            this.tabObjects.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabObjects.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // tabDiag
+            // 
+            resources.ApplyResources(this.tabDiag, "tabDiag");
+            this.tabDiag.Controls.Add(this.label15);
+            this.tabDiag.Controls.Add(this.dgvClients);
+            this.tabDiag.Controls.Add(this.buttonClearClients);
+            this.tabDiag.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
+            this.tabDiag.Name = "tabDiag";
+            this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // gbStatus
+            // 
+            this.gbStatus.Controls.Add(this.tbStatus);
+            resources.ApplyResources(this.gbStatus, "gbStatus");
+            this.gbStatus.Name = "gbStatus";
+            this.gbStatus.TabStop = false;
             // 
             // SnmpControl
             // 
@@ -535,6 +536,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panelFooter);
+            this.Controls.Add(this.gbStatus);
             this.Name = "SnmpControl";
             this.Load += new System.EventHandler(this.SnmpControl_Load);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
@@ -548,17 +550,19 @@
             this.panelFooter.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabConfiguration.ResumeLayout(false);
+            this.gbGeneral.ResumeLayout(false);
+            this.gbGeneral.PerformLayout();
+            this.gbV2Security.ResumeLayout(false);
+            this.gbV2Security.PerformLayout();
+            this.gbV3Security.ResumeLayout(false);
+            this.gbV3Security.PerformLayout();
+            this.gbDateFormat.ResumeLayout(false);
+            this.gbDateFormat.PerformLayout();
             this.tabObjects.ResumeLayout(false);
             this.tabDiag.ResumeLayout(false);
             this.tabDiag.PerformLayout();
-            this.gbDateFormat.ResumeLayout(false);
-            this.gbDateFormat.PerformLayout();
-            this.gbV3Security.ResumeLayout(false);
-            this.gbV3Security.PerformLayout();
-            this.gbV2Security.ResumeLayout(false);
-            this.gbV2Security.PerformLayout();
-            this.gbGeneral.ResumeLayout(false);
-            this.gbGeneral.PerformLayout();
+            this.gbStatus.ResumeLayout(false);
+            this.gbStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -584,7 +588,6 @@
         private System.Windows.Forms.NumericUpDown numPort;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Button buttonClearClients;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button buttonCreateMibFiles;
         private System.Windows.Forms.TreeView tvObjects;
@@ -618,5 +621,6 @@
         private System.Windows.Forms.GroupBox gbV2Security;
         private System.Windows.Forms.GroupBox gbV3Security;
         private System.Windows.Forms.GroupBox gbDateFormat;
+        private System.Windows.Forms.GroupBox gbStatus;
     }
 }

@@ -824,7 +824,7 @@
     <value>gbStatus</value>
   </data>
   <data name="&gt;&gt;tbStatus.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="labelObjNodeId.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1082,7 +1082,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panelFooterWithButtons.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="gbSecurity.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1709,7 +1709,7 @@
     <value>Fill</value>
   </data>
   <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 138</value>
+    <value>0, 50</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
     <value>720, 472</value>
@@ -1829,13 +1829,13 @@
     <value>NoControl</value>
   </data>
   <data name="btOpenLogFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>524, 8</value>
+    <value>537, 8</value>
   </data>
   <data name="btOpenLogFile.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 8, 3, 3</value>
   </data>
   <data name="btOpenLogFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 23</value>
+    <value>178, 23</value>
   </data>
   <data name="btOpenLogFile.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2089,44 +2089,11 @@
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 22</value>
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 13</value>
-  </data>
-  <data name="label10.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>Status:</value>
-  </data>
-  <data name="label10.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>gbStatus</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="gbDebug.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+    <value>Bottom</value>
   </data>
   <data name="gbDebug.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 522</value>
   </data>
   <data name="gbDebug.Size" type="System.Drawing.Size, System.Drawing">
     <value>720, 88</value>
@@ -2150,13 +2117,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gbDebug.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="gbStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
   <data name="gbStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 88</value>
+    <value>0, 0</value>
   </data>
   <data name="gbStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>720, 50</value>

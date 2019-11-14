@@ -49,6 +49,7 @@ namespace iba.Controls
 
 #if DEBUG
             gbDebug.Visible = true;
+            gbDebug.Dock = DockStyle.Top;
 #endif
         }
 

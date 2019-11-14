@@ -127,7 +127,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="splitContainerObjectsFooter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 396</value>
+    <value>0, 346</value>
   </data>
   <data name="tbObjOid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -464,13 +464,13 @@ Description:</value>
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="dgvClients.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 63</value>
+    <value>5, 37</value>
   </data>
   <data name="dgvClients.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
   <data name="dgvClients.Size" type="System.Drawing.Size, System.Drawing">
-    <value>710, 416</value>
+    <value>710, 392</value>
   </data>
   <data name="dgvClients.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -485,7 +485,7 @@ Description:</value>
     <value>tabDiag</value>
   </data>
   <data name="&gt;&gt;dgvClients.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="ColAddress.HeaderText" xml:space="preserve">
     <value>Address</value>
@@ -515,13 +515,10 @@ Description:</value>
     <value>Top, Left, Right</value>
   </data>
   <data name="tbStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>76, 8</value>
-  </data>
-  <data name="tbStatus.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 8, 3, 3</value>
+    <value>6, 19</value>
   </data>
   <data name="tbStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>640, 20</value>
+    <value>708, 20</value>
   </data>
   <data name="tbStatus.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -533,10 +530,10 @@ Description:</value>
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbStatus.Parent" xml:space="preserve">
-    <value>tabDiag</value>
+    <value>gbStatus</value>
   </data>
   <data name="&gt;&gt;tbStatus.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="buttonClearClients.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -545,7 +542,10 @@ Description:</value>
     <value>NoControl</value>
   </data>
   <data name="buttonClearClients.Location" type="System.Drawing.Point, System.Drawing">
-    <value>537, 34</value>
+    <value>537, 8</value>
+  </data>
+  <data name="buttonClearClients.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 8, 3, 3</value>
   </data>
   <data name="buttonClearClients.Size" type="System.Drawing.Size, System.Drawing">
     <value>178, 23</value>
@@ -566,37 +566,7 @@ Description:</value>
     <value>tabDiag</value>
   </data>
   <data name="&gt;&gt;buttonClearClients.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="label14.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 11</value>
-  </data>
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 13</value>
-  </data>
-  <data name="label14.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>Status:</value>
-  </data>
-  <data name="&gt;&gt;label14.Name" xml:space="preserve">
-    <value>label14</value>
-  </data>
-  <data name="&gt;&gt;label14.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
-    <value>tabDiag</value>
-  </data>
-  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="label15.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -605,7 +575,7 @@ Description:</value>
     <value>NoControl</value>
   </data>
   <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 44</value>
+    <value>3, 21</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>129, 13</value>
@@ -635,10 +605,13 @@ Description:</value>
     <value>NoControl</value>
   </data>
   <data name="buttonCreateMibFiles.Location" type="System.Drawing.Point, System.Drawing">
-    <value>557, 3</value>
+    <value>537, 8</value>
+  </data>
+  <data name="buttonCreateMibFiles.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 8, 3, 3</value>
   </data>
   <data name="buttonCreateMibFiles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 23</value>
+    <value>178, 23</value>
   </data>
   <data name="buttonCreateMibFiles.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -662,10 +635,10 @@ Description:</value>
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tvObjects.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 32</value>
+    <value>3, 37</value>
   </data>
   <data name="tvObjects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 361</value>
+    <value>712, 306</value>
   </data>
   <data name="tvObjects.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1301,10 +1274,10 @@ Description:</value>
     <value>Fill</value>
   </data>
   <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 50</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 506</value>
+    <value>720, 456</value>
   </data>
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1319,7 +1292,7 @@ Description:</value>
     <value>3, 3</value>
   </data>
   <data name="gbGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 65</value>
+    <value>712, 55</value>
   </data>
   <data name="gbGeneral.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1343,10 +1316,10 @@ Description:</value>
     <value>Top, Left, Right</value>
   </data>
   <data name="gbV2Security.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 74</value>
+    <value>3, 64</value>
   </data>
   <data name="gbV2Security.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 63</value>
+    <value>712, 52</value>
   </data>
   <data name="gbV2Security.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1370,10 +1343,10 @@ Description:</value>
     <value>Top, Left, Right</value>
   </data>
   <data name="gbV3Security.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 143</value>
+    <value>2, 122</value>
   </data>
   <data name="gbV3Security.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 87</value>
+    <value>712, 79</value>
   </data>
   <data name="gbV3Security.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -1397,10 +1370,10 @@ Description:</value>
     <value>Top, Left, Right</value>
   </data>
   <data name="gbDateFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 236</value>
+    <value>3, 207</value>
   </data>
   <data name="gbDateFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 59</value>
+    <value>712, 47</value>
   </data>
   <data name="gbDateFormat.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1424,7 +1397,7 @@ Description:</value>
     <value>1, 24</value>
   </data>
   <data name="tabConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>718, 481</value>
+    <value>718, 431</value>
   </data>
   <data name="tabConfiguration.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1445,7 +1418,7 @@ Description:</value>
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="tabObjects.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1457,7 +1430,7 @@ Description:</value>
     <value>1, 24</value>
   </data>
   <data name="tabObjects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>718, 481</value>
+    <value>718, 431</value>
   </data>
   <data name="tabObjects.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1490,7 +1463,7 @@ Description:</value>
     <value>1, 24</value>
   </data>
   <data name="tabDiag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>718, 481</value>
+    <value>718, 431</value>
   </data>
   <data name="tabDiag.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1524,6 +1497,33 @@ Description:</value>
   </data>
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="gbStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="gbStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="gbStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>720, 50</value>
+  </data>
+  <data name="gbStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="gbStatus.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="&gt;&gt;gbStatus.Name" xml:space="preserve">
+    <value>gbStatus</value>
+  </data>
+  <data name="&gt;&gt;gbStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbStatus.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbStatus.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

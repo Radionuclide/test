@@ -149,7 +149,6 @@
             this.colSessionID = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSessionLastMsgTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.label12 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.gbDebug = new System.Windows.Forms.GroupBox();
             this.gbStatus = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
@@ -1226,11 +1225,6 @@
             resources.ApplyResources(this.label12, "label12");
             this.label12.Name = "label12";
             // 
-            // label10
-            // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.Name = "label10";
-            // 
             // gbDebug
             // 
             this.gbDebug.Controls.Add(this.tbDiagTmp);
@@ -1240,7 +1234,6 @@
             // 
             // gbStatus
             // 
-            this.gbStatus.Controls.Add(this.label10);
             this.gbStatus.Controls.Add(this.tbStatus);
             resources.ApplyResources(this.gbStatus, "gbStatus");
             this.gbStatus.Name = "gbStatus";
@@ -1250,9 +1243,9 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.panelFooterWithButtons);
-            this.Controls.Add(this.gbStatus);
             this.Controls.Add(this.gbDebug);
+            this.Controls.Add(this.gbStatus);
+            this.Controls.Add(this.panelFooterWithButtons);
             this.Name = "OpcUaControl";
             resources.ApplyResources(this, "$this");
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
@@ -1415,7 +1408,6 @@
         protected DevExpress.XtraGrid.Columns.GridColumn colSessionID;
         protected DevExpress.XtraGrid.Columns.GridColumn colSessionLastMsgTime;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox gbDebug;
         private DevExpress.XtraGrid.GridControl gridCtrlSubscriptions;
         private System.Windows.Forms.Panel panelFooterWithButtons;
