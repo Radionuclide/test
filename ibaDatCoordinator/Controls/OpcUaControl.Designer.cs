@@ -37,6 +37,8 @@
             this.tbObjValue = new System.Windows.Forms.TextBox();
             this.labelObjDescription = new System.Windows.Forms.Label();
             this.tbObjDescription = new System.Windows.Forms.TextBox();
+            this.repositoryItemTextEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            this.repositoryItemSpinEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -124,9 +126,7 @@
             this.gridCtrlEndpoints = new DevExpress.XtraGrid.GridControl();
             this.gridViewEndpoints = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colHostname = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemTextEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.colPort = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemSpinEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.colURI = new DevExpress.XtraGrid.Columns.GridColumn();
             this.buttonEndpointRemove = new System.Windows.Forms.Button();
             this.buttonEndpointCopy = new System.Windows.Forms.Button();
@@ -157,6 +157,8 @@
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
             this.splitContainerObjectsFooter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
             this.panelCertificatesFooter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).BeginInit();
             this.contextMenuCerts.SuspendLayout();
@@ -169,8 +171,6 @@
             this.gbEndpoints.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridCtrlEndpoints)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewEndpoints)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabConfiguration.SuspendLayout();
             this.tabCertificates.SuspendLayout();
@@ -200,6 +200,7 @@
             // 
             this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjDescription);
             this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjDescription);
+            this.splitContainerObjectsFooter.TabStop = false;
             // 
             // labelObjType
             // 
@@ -236,6 +237,30 @@
             this.tbObjDescription.Name = "tbObjDescription";
             this.tbObjDescription.ReadOnly = true;
             this.tbObjDescription.TabStop = false;
+            // 
+            // repositoryItemTextEdit1
+            // 
+            this.repositoryItemTextEdit1.Name = "repositoryItemTextEdit1";
+            // 
+            // repositoryItemSpinEdit1
+            // 
+            resources.ApplyResources(this.repositoryItemSpinEdit1, "repositoryItemSpinEdit1");
+            this.repositoryItemSpinEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("repositoryItemSpinEdit1.Buttons"))))});
+            this.repositoryItemSpinEdit1.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
+            this.repositoryItemSpinEdit1.IsFloatValue = false;
+            this.repositoryItemSpinEdit1.Mask.EditMask = resources.GetString("repositoryItemSpinEdit1.Mask.EditMask");
+            this.repositoryItemSpinEdit1.MaxValue = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.repositoryItemSpinEdit1.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.repositoryItemSpinEdit1.Name = "repositoryItemSpinEdit1";
             // 
             // timerRefreshStatus
             // 
@@ -885,9 +910,6 @@
             resources.ApplyResources(this.gridCtrlEndpoints, "gridCtrlEndpoints");
             this.gridCtrlEndpoints.MainView = this.gridViewEndpoints;
             this.gridCtrlEndpoints.Name = "gridCtrlEndpoints";
-            this.gridCtrlEndpoints.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemTextEdit1,
-            this.repositoryItemSpinEdit1});
             this.gridCtrlEndpoints.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewEndpoints});
             // 
@@ -923,36 +945,12 @@
             this.colHostname.FieldName = "Hostname";
             this.colHostname.Name = "colHostname";
             // 
-            // repositoryItemTextEdit1
-            // 
-            this.repositoryItemTextEdit1.Name = "repositoryItemTextEdit1";
-            // 
             // colPort
             // 
             resources.ApplyResources(this.colPort, "colPort");
             this.colPort.ColumnEdit = this.repositoryItemSpinEdit1;
             this.colPort.FieldName = "Port";
             this.colPort.Name = "colPort";
-            // 
-            // repositoryItemSpinEdit1
-            // 
-            resources.ApplyResources(this.repositoryItemSpinEdit1, "repositoryItemSpinEdit1");
-            this.repositoryItemSpinEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("repositoryItemSpinEdit1.Buttons"))))});
-            this.repositoryItemSpinEdit1.ButtonsStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.repositoryItemSpinEdit1.IsFloatValue = false;
-            this.repositoryItemSpinEdit1.Mask.EditMask = resources.GetString("repositoryItemSpinEdit1.Mask.EditMask");
-            this.repositoryItemSpinEdit1.MaxValue = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.repositoryItemSpinEdit1.MinValue = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.repositoryItemSpinEdit1.Name = "repositoryItemSpinEdit1";
             // 
             // colURI
             // 
@@ -1034,13 +1032,13 @@
             // 
             // tabCertificates
             // 
+            resources.ApplyResources(this.tabCertificates, "tabCertificates");
             this.tabCertificates.Controls.Add(this.gridControlCerts);
             this.tabCertificates.Controls.Add(this.toolStrip1);
             this.tabCertificates.Controls.Add(this.panelCertificatesFooter);
             this.tabCertificates.InactiveBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.InactiveTextBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.InactiveTextColor = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.tabCertificates, "tabCertificates");
             this.tabCertificates.Name = "tabCertificates";
             this.tabCertificates.SelectBackColor = System.Drawing.Color.Empty;
             this.tabCertificates.Selected = false;
@@ -1049,6 +1047,7 @@
             // 
             // tabTags
             // 
+            resources.ApplyResources(this.tabTags, "tabTags");
             this.tabTags.Controls.Add(this.panelTagsFooter);
             this.tabTags.Controls.Add(this.buttonRefreshGuiTree);
             this.tabTags.Controls.Add(this.buttonRebuildTree);
@@ -1056,7 +1055,6 @@
             this.tabTags.InactiveBackColor = System.Drawing.Color.Empty;
             this.tabTags.InactiveTextBackColor = System.Drawing.Color.Empty;
             this.tabTags.InactiveTextColor = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.tabTags, "tabTags");
             this.tabTags.Name = "tabTags";
             this.tabTags.SelectBackColor = System.Drawing.Color.Empty;
             this.tabTags.SelectTextBackColor = System.Drawing.Color.Empty;
@@ -1064,6 +1062,7 @@
             // 
             // tabDiag
             // 
+            resources.ApplyResources(this.tabDiag, "tabDiag");
             this.tabDiag.Controls.Add(this.btOpenLogFile);
             this.tabDiag.Controls.Add(this.gridCtrlSubscriptions);
             this.tabDiag.Controls.Add(this.label3);
@@ -1074,7 +1073,6 @@
             this.tabDiag.InactiveBackColor = System.Drawing.Color.Empty;
             this.tabDiag.InactiveTextBackColor = System.Drawing.Color.Empty;
             this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
-            resources.ApplyResources(this.tabDiag, "tabDiag");
             this.tabDiag.Name = "tabDiag";
             this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
             this.tabDiag.Selected = false;
@@ -1259,10 +1257,10 @@
             // 
             // OpcUaControl
             // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.gbDebug);
+            resources.ApplyResources(this, "$this");
             this.Name = "OpcUaControl";
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
@@ -1271,6 +1269,8 @@
             this.splitContainerObjectsFooter.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
             this.splitContainerObjectsFooter.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
             this.panelCertificatesFooter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCerts)).EndInit();
             this.contextMenuCerts.ResumeLayout(false);
@@ -1287,8 +1287,6 @@
             this.gbEndpoints.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridCtrlEndpoints)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewEndpoints)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabConfiguration.ResumeLayout(false);
             this.tabConfiguration.PerformLayout();
@@ -1405,9 +1403,7 @@
         protected DevExpress.XtraGrid.GridControl gridCtrlEndpoints;
         protected DevExpress.XtraGrid.Views.Grid.GridView gridViewEndpoints;
         private DevExpress.XtraGrid.Columns.GridColumn colHostname;
-        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn colPort;
-        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn colURI;
         private Crownwood.DotNetMagic.Controls.TabPage tabCertificates;
         private Crownwood.DotNetMagic.Controls.TabPage tabTags;
@@ -1431,5 +1427,7 @@
         private DevExpress.XtraGrid.GridControl gridCtrlSubscriptions;
         private System.Windows.Forms.Panel panelCertificatesFooter;
         private System.Windows.Forms.Panel panelConfigurationFooter;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
     }
 }

@@ -136,7 +136,7 @@
     <value>NoControl</value>
   </data>
   <data name="labelObjType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 32</value>
+    <value>0, 32</value>
   </data>
   <data name="labelObjType.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 13</value>
@@ -163,13 +163,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="tbObjType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 29</value>
+    <value>63, 29</value>
   </data>
   <data name="tbObjType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>15, 3, 15, 3</value>
   </data>
   <data name="tbObjType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 20</value>
+    <value>184, 20</value>
   </data>
   <data name="tbObjType.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -193,7 +193,7 @@
     <value>NoControl</value>
   </data>
   <data name="labelObjValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 6</value>
+    <value>0, 6</value>
   </data>
   <data name="labelObjValue.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
@@ -220,10 +220,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="tbObjValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 3</value>
+    <value>63, 3</value>
   </data>
   <data name="tbObjValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 20</value>
+    <value>184, 20</value>
   </data>
   <data name="tbObjValue.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -295,7 +295,7 @@
     <value>True</value>
   </data>
   <data name="tbObjDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>364, 46</value>
+    <value>376, 46</value>
   </data>
   <data name="tbObjDescription.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -344,6 +344,16 @@
   </data>
   <data name="&gt;&gt;splitContainerObjectsFooter.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="repositoryItemSpinEdit1.AutoHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <assembly alias="DevExpress.Utils.v16.1" name="DevExpress.Utils.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+  <data name="repositoryItemSpinEdit1.Buttons" type="DevExpress.XtraEditors.Controls.ButtonPredefines, DevExpress.Utils.v16.1">
+    <value>Combo</value>
+  </data>
+  <data name="repositoryItemSpinEdit1.Mask.EditMask" xml:space="preserve">
+    <value>d</value>
   </data>
   <metadata name="timerRefreshStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>141, 17</value>
@@ -424,136 +434,136 @@
     <value>827, 17</value>
   </metadata>
   <data name="miColumnName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnName.Text" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="miColumnProperties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnProperties.Text" xml:space="preserve">
     <value>Properties</value>
   </data>
   <data name="miColumnOrganization.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnOrganization.Text" xml:space="preserve">
     <value>Organization</value>
   </data>
   <data name="miColumnLocality.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnLocality.Text" xml:space="preserve">
     <value>Locality</value>
   </data>
   <data name="miColumnState.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnState.Text" xml:space="preserve">
     <value>State</value>
   </data>
   <data name="miColumnCountry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnCountry.Text" xml:space="preserve">
     <value>Country</value>
   </data>
   <data name="miColumnIssuedBy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnIssuedBy.Text" xml:space="preserve">
     <value>Issued By</value>
   </data>
   <data name="miColumnIssuingDate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnIssuingDate.Text" xml:space="preserve">
     <value>Issuing Date</value>
   </data>
   <data name="miColumnExpirationDate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnExpirationDate.Text" xml:space="preserve">
     <value>Expiration Date</value>
   </data>
   <data name="miColumnAlgorithm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnAlgorithm.Text" xml:space="preserve">
     <value>Algorithm</value>
   </data>
   <data name="miColumnThumbprint.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnThumbprint.Text" xml:space="preserve">
     <value>Thumbprint</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 6</value>
+    <value>150, 6</value>
   </data>
   <data name="miColumnReset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 26</value>
+    <value>153, 22</value>
   </data>
   <data name="miColumnReset.Text" xml:space="preserve">
     <value>Reset</value>
   </data>
   <data name="miColumns.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 26</value>
+    <value>216, 22</value>
   </data>
   <data name="miColumns.Text" xml:space="preserve">
     <value>Columns</value>
   </data>
   <data name="miCertDelimiter1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>261, 6</value>
+    <value>213, 6</value>
   </data>
   <data name="miCertReject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 26</value>
+    <value>216, 22</value>
   </data>
   <data name="miCertReject.Text" xml:space="preserve">
     <value>Reject</value>
   </data>
   <data name="miCertTrust.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 26</value>
+    <value>216, 22</value>
   </data>
   <data name="miCertTrust.Text" xml:space="preserve">
     <value>Trust</value>
   </data>
   <data name="miCertToggleUserAuthentication.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 26</value>
+    <value>216, 22</value>
   </data>
   <data name="miCertToggleUserAuthentication.Text" xml:space="preserve">
     <value>Toggle user authentication</value>
   </data>
   <data name="miCertUseAsServerCert.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 26</value>
+    <value>216, 22</value>
   </data>
   <data name="miCertUseAsServerCert.Text" xml:space="preserve">
     <value>Use as server certificate</value>
   </data>
   <data name="miCertDelimiter2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>261, 6</value>
+    <value>213, 6</value>
   </data>
   <data name="miCertCopyAsText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 26</value>
+    <value>216, 22</value>
   </data>
   <data name="miCertCopyAsText.Text" xml:space="preserve">
     <value>Copy to clipboard as text</value>
   </data>
   <data name="miCertExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 26</value>
+    <value>216, 22</value>
   </data>
   <data name="miCertExport.Text" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="miCertRemove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>264, 26</value>
+    <value>216, 22</value>
   </data>
   <data name="miCertRemove.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="contextMenuCerts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 224</value>
+    <value>217, 192</value>
   </data>
   <data name="&gt;&gt;contextMenuCerts.Name" xml:space="preserve">
     <value>contextMenuCerts</value>
@@ -562,7 +572,7 @@
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="gridControlCerts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 28</value>
+    <value>2, 28</value>
   </data>
   <data name="colCertName.Caption" xml:space="preserve">
     <value>Name</value>
@@ -670,7 +680,7 @@
     <value>0, 80</value>
   </data>
   <data name="gridControlCerts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>689, 427</value>
+    <value>714, 427</value>
   </data>
   <data name="gridControlCerts.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -883,7 +893,7 @@
     <value>NoControl</value>
   </data>
   <data name="labelObjNodeId.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 6</value>
+    <value>0, 6</value>
   </data>
   <data name="labelObjNodeId.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 13</value>
@@ -910,10 +920,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="tbObjNodeId.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 3</value>
+    <value>63, 3</value>
   </data>
   <data name="tbObjNodeId.Size" type="System.Drawing.Size, System.Drawing">
-    <value>636, 20</value>
+    <value>652, 20</value>
   </data>
   <data name="tbObjNodeId.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1027,13 +1037,10 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tvObjects.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 3</value>
-  </data>
-  <data name="tvObjects.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 3, 15, 3</value>
+    <value>3, 3</value>
   </data>
   <data name="tvObjects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>688, 397</value>
+    <value>712, 397</value>
   </data>
   <data name="tvObjects.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1057,7 +1064,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonConfigurationReset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>548, 3</value>
+    <value>546, 3</value>
   </data>
   <data name="buttonConfigurationReset.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -1087,7 +1094,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonConfigurationApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>629, 3</value>
+    <value>627, 3</value>
   </data>
   <data name="buttonConfigurationApply.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 15, 3</value>
@@ -1120,7 +1127,7 @@
     <value>0, 458</value>
   </data>
   <data name="panelConfigurationFooter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 29</value>
+    <value>718, 29</value>
   </data>
   <data name="panelConfigurationFooter.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1339,13 +1346,10 @@
     <value>6</value>
   </data>
   <data name="gbSecurity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 162</value>
-  </data>
-  <data name="gbSecurity.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 3, 15, 3</value>
+    <value>3, 167</value>
   </data>
   <data name="gbSecurity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>689, 130</value>
+    <value>713, 130</value>
   </data>
   <data name="gbSecurity.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1372,7 +1376,7 @@
     <value>True</value>
   </data>
   <data name="labelPassword.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 75</value>
+    <value>23, 75</value>
   </data>
   <data name="labelPassword.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 13</value>
@@ -1399,7 +1403,7 @@
     <value>True</value>
   </data>
   <data name="cbLogonAnonymous.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 21</value>
+    <value>6, 19</value>
   </data>
   <data name="cbLogonAnonymous.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 17</value>
@@ -1426,7 +1430,7 @@
     <value>True</value>
   </data>
   <data name="cbLogonUserName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 48</value>
+    <value>6, 48</value>
   </data>
   <data name="cbLogonUserName.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 17</value>
@@ -1453,7 +1457,7 @@
     <value>True</value>
   </data>
   <data name="cbLogonCertificate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 102</value>
+    <value>6, 107</value>
   </data>
   <data name="cbLogonCertificate.Size" type="System.Drawing.Size, System.Drawing">
     <value>73, 17</value>
@@ -1522,13 +1526,10 @@
     <value>5</value>
   </data>
   <data name="gbLogon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 26</value>
-  </data>
-  <data name="gbLogon.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 3, 15, 3</value>
+    <value>3, 31</value>
   </data>
   <data name="gbLogon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>689, 130</value>
+    <value>728, 130</value>
   </data>
   <data name="gbLogon.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1572,16 +1573,6 @@
   <data name="colPort.Caption" xml:space="preserve">
     <value>Port</value>
   </data>
-  <data name="repositoryItemSpinEdit1.AutoHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <assembly alias="DevExpress.Utils.v16.1" name="DevExpress.Utils.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-  <data name="repositoryItemSpinEdit1.Buttons" type="DevExpress.XtraEditors.Controls.ButtonPredefines, DevExpress.Utils.v16.1">
-    <value>Combo</value>
-  </data>
-  <data name="repositoryItemSpinEdit1.Mask.EditMask" xml:space="preserve">
-    <value>d</value>
-  </data>
   <data name="colPort.Visible" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1607,7 +1598,7 @@
     <value>15, 3, 15, 3</value>
   </data>
   <data name="gridCtrlEndpoints.Size" type="System.Drawing.Size, System.Drawing">
-    <value>648, 132</value>
+    <value>672, 127</value>
   </data>
   <data name="gridCtrlEndpoints.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1634,7 +1625,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonEndpointRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>660, 128</value>
+    <value>684, 123</value>
   </data>
   <data name="buttonEndpointRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
@@ -1664,7 +1655,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonEndpointCopy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>660, 48</value>
+    <value>684, 48</value>
   </data>
   <data name="buttonEndpointCopy.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
@@ -1694,7 +1685,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonEndpointAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>660, 19</value>
+    <value>684, 19</value>
   </data>
   <data name="buttonEndpointAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
@@ -1715,19 +1706,13 @@
     <value>3</value>
   </data>
   <data name="gbEndpoints.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 298</value>
-  </data>
-  <data name="gbEndpoints.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 3, 15, 3</value>
-  </data>
-  <data name="gbEndpoints.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>999999, 200</value>
+    <value>3, 303</value>
   </data>
   <data name="gbEndpoints.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>0, 110</value>
   </data>
   <data name="gbEndpoints.Size" type="System.Drawing.Size, System.Drawing">
-    <value>689, 157</value>
+    <value>713, 152</value>
   </data>
   <data name="gbEndpoints.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1754,10 +1739,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbEnabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 3</value>
+    <value>9, 8</value>
   </data>
   <data name="cbEnabled.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 3, 3, 3</value>
+    <value>3, 8, 3, 3</value>
   </data>
   <data name="cbEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 17</value>
@@ -1795,14 +1780,14 @@
   <data name="tabConfiguration.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="tabConfiguration.AutoScrollMargin" type="System.Drawing.Size, System.Drawing">
+    <value>0, 130</value>
+  </data>
   <data name="tabConfiguration.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 24</value>
   </data>
-  <data name="tabConfiguration.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>720, 300</value>
-  </data>
   <data name="tabConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 487</value>
+    <value>718, 487</value>
   </data>
   <data name="tabConfiguration.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1823,7 +1808,13 @@
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
+  </data>
+  <data name="tabCertificates.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabCertificates.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 130</value>
   </data>
   <data name="tabCertificates.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 24</value>
@@ -1850,7 +1841,13 @@
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabCertificates.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
+  </data>
+  <data name="tabTags.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabTags.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 90</value>
   </data>
   <data name="tabTags.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 24</value>
@@ -1877,7 +1874,13 @@
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabTags.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>3</value>
+  </data>
+  <data name="tabDiag.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tabDiag.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 290</value>
   </data>
   <data name="btOpenLogFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1964,7 +1967,7 @@
     <value>218</value>
   </data>
   <data name="gridCtrlSubscriptions.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>500, 150</value>
+    <value>500, 70</value>
   </data>
   <data name="gridCtrlSubscriptions.Size" type="System.Drawing.Size, System.Drawing">
     <value>712, 269</value>
@@ -2209,12 +2212,6 @@
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>64</value>
   </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
-  </data>
-  <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>15, 3, 15, 3</value>
   </data>
@@ -2223,6 +2220,18 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>720, 600</value>
+  </data>
+  <data name="&gt;&gt;repositoryItemTextEdit1.Name" xml:space="preserve">
+    <value>repositoryItemTextEdit1</value>
+  </data>
+  <data name="&gt;&gt;repositoryItemTextEdit1.Type" xml:space="preserve">
+    <value>DevExpress.XtraEditors.Repository.RepositoryItemTextEdit, DevExpress.XtraEditors.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;repositoryItemSpinEdit1.Name" xml:space="preserve">
+    <value>repositoryItemSpinEdit1</value>
+  </data>
+  <data name="&gt;&gt;repositoryItemSpinEdit1.Type" xml:space="preserve">
+    <value>DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit, DevExpress.XtraEditors.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
   <data name="&gt;&gt;timerRefreshStatus.Name" xml:space="preserve">
     <value>timerRefreshStatus</value>
@@ -2548,23 +2557,11 @@
   <data name="&gt;&gt;colHostname.Type" xml:space="preserve">
     <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
-  <data name="&gt;&gt;repositoryItemTextEdit1.Name" xml:space="preserve">
-    <value>repositoryItemTextEdit1</value>
-  </data>
-  <data name="&gt;&gt;repositoryItemTextEdit1.Type" xml:space="preserve">
-    <value>DevExpress.XtraEditors.Repository.RepositoryItemTextEdit, DevExpress.XtraEditors.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
-  </data>
   <data name="&gt;&gt;colPort.Name" xml:space="preserve">
     <value>colPort</value>
   </data>
   <data name="&gt;&gt;colPort.Type" xml:space="preserve">
     <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
-  </data>
-  <data name="&gt;&gt;repositoryItemSpinEdit1.Name" xml:space="preserve">
-    <value>repositoryItemSpinEdit1</value>
-  </data>
-  <data name="&gt;&gt;repositoryItemSpinEdit1.Type" xml:space="preserve">
-    <value>DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit, DevExpress.XtraEditors.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
   <data name="&gt;&gt;colURI.Name" xml:space="preserve">
     <value>colURI</value>
