@@ -377,136 +377,136 @@
     <value>827, 17</value>
   </metadata>
   <data name="miColumnName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnName.Text" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="miColumnProperties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnProperties.Text" xml:space="preserve">
     <value>Properties</value>
   </data>
   <data name="miColumnOrganization.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnOrganization.Text" xml:space="preserve">
     <value>Organization</value>
   </data>
   <data name="miColumnLocality.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnLocality.Text" xml:space="preserve">
     <value>Locality</value>
   </data>
   <data name="miColumnState.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnState.Text" xml:space="preserve">
     <value>State</value>
   </data>
   <data name="miColumnCountry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnCountry.Text" xml:space="preserve">
     <value>Country</value>
   </data>
   <data name="miColumnIssuedBy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnIssuedBy.Text" xml:space="preserve">
     <value>Issued By</value>
   </data>
   <data name="miColumnIssuingDate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnIssuingDate.Text" xml:space="preserve">
     <value>Issuing Date</value>
   </data>
   <data name="miColumnExpirationDate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnExpirationDate.Text" xml:space="preserve">
     <value>Expiration Date</value>
   </data>
   <data name="miColumnAlgorithm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnAlgorithm.Text" xml:space="preserve">
     <value>Algorithm</value>
   </data>
   <data name="miColumnThumbprint.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnThumbprint.Text" xml:space="preserve">
     <value>Thumbprint</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 6</value>
+    <value>182, 6</value>
   </data>
   <data name="miColumnReset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>185, 26</value>
   </data>
   <data name="miColumnReset.Text" xml:space="preserve">
     <value>Reset</value>
   </data>
   <data name="miColumns.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>264, 26</value>
   </data>
   <data name="miColumns.Text" xml:space="preserve">
     <value>Columns</value>
   </data>
   <data name="miCertDelimiter1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 6</value>
+    <value>261, 6</value>
   </data>
   <data name="miCertReject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>264, 26</value>
   </data>
   <data name="miCertReject.Text" xml:space="preserve">
     <value>Reject</value>
   </data>
   <data name="miCertTrust.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>264, 26</value>
   </data>
   <data name="miCertTrust.Text" xml:space="preserve">
     <value>Trust</value>
   </data>
   <data name="miCertToggleUserAuthentication.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>264, 26</value>
   </data>
   <data name="miCertToggleUserAuthentication.Text" xml:space="preserve">
     <value>Toggle user authentication</value>
   </data>
   <data name="miCertUseAsServerCert.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>264, 26</value>
   </data>
   <data name="miCertUseAsServerCert.Text" xml:space="preserve">
     <value>Use as server certificate</value>
   </data>
   <data name="miCertDelimiter2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 6</value>
+    <value>261, 6</value>
   </data>
   <data name="miCertCopyAsText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>264, 26</value>
   </data>
   <data name="miCertCopyAsText.Text" xml:space="preserve">
     <value>Copy to clipboard as text</value>
   </data>
   <data name="miCertExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>264, 26</value>
   </data>
   <data name="miCertExport.Text" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="miCertRemove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
+    <value>264, 26</value>
   </data>
   <data name="miCertRemove.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="contextMenuCerts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 192</value>
+    <value>265, 224</value>
   </data>
   <data name="&gt;&gt;contextMenuCerts.Name" xml:space="preserve">
     <value>contextMenuCerts</value>
@@ -1004,7 +1004,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonConfigurationReset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>548, 3</value>
+    <value>549, 3</value>
   </data>
   <data name="buttonConfigurationReset.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -1034,7 +1034,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonConfigurationApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>629, 3</value>
+    <value>630, 3</value>
   </data>
   <data name="buttonConfigurationApply.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 15, 3</value>
@@ -1748,7 +1748,7 @@
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="tabCertificates.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>

@@ -987,7 +987,7 @@
             this.tabControl1.MediaPlayerDockSides = false;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.OfficeDockSides = false;
-            this.tabControl1.SelectedIndex = 3;
+            this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
@@ -1012,7 +1012,6 @@
             this.tabConfiguration.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabConfiguration.Name = "tabConfiguration";
             this.tabConfiguration.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabConfiguration.Selected = false;
             this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1059,6 +1058,7 @@
             this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabDiag.Name = "tabDiag";
             this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.Selected = false;
             this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
             // 
