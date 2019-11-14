@@ -1191,21 +1191,30 @@ namespace iba.Controls
                 // Control should be informed somehow to reflect changes in the table here.
                 // I use a timer here, because it is much simpler and more reliable than informing client via event.
                 // This Timer is active ONLY if the OPC UA pane is visible, so it doesn't have any computational impact most of time.
-                if (DateTime.Now - _lastCertTableUpdateStamp > TimeSpan.FromSeconds(3) /*not more often than once per 3 sec*/)
+                if (tabCertificates.Selected &&
+                    DateTime.Now - _lastCertTableUpdateStamp > TimeSpan.FromSeconds(3) /*not more often than once per 3 sec*/)
                 {
-                    var certs = TaskManager.Manager.OpcUaHandleCertificate("sync");
-                    if (certs != null)
+                    try
                     {
-                        try
+                        var certs = TaskManager.Manager.OpcUaHandleCertificate("sync");
+                        _lastCertTableUpdateStamp = DateTime.Now;
+                        if (certs == null)
+                        {
+                            // no changes in certificates; no need to refresh table
+                        }
+                        else
                         {
                             RefreshCertificatesTable(certs);
                         }
-                        catch { /* not critical; can happen if UaWorker is not initialized */}
                     }
+                    catch { /* not critical; can happen if UaWorker is not initialized */}
                 }
 
                 // update currently selected node information in object tree
-                UpdateObjectTreeNodeDescription();
+                if (tabTags.Selected)
+                {
+                    UpdateObjectTreeNodeDescription();
+                }
             }
             else
             {
