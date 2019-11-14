@@ -9,7 +9,6 @@ using iba.Data;
 using iba.Logging;
 using iba.Processing;
 using iba.Properties;
-using iba.Utility;
 using IbaSnmpLib;
 
 
@@ -30,22 +29,8 @@ namespace iba.Controls
         private const int ImageIndexFolder = 0;
         private const int ImageIndexLeaf = 1;
 
-        private CollapsibleElementManager _ceManager;
-
         private void SnmpControl_Load(object sender, EventArgs e)
         {
-            // initialize collapsible group boxes
-            _ceManager = new CollapsibleElementManager(this);
-
-            gbConfiguration.Init();
-            _ceManager.AddElement(gbConfiguration);
-
-            gbObjects.Init();
-            _ceManager.AddElement(gbObjects);
-
-            gbDiagnostics.Init();
-            _ceManager.AddElement(gbDiagnostics);
-
             // bind password text boxes to their show/hide buttons
             buttonShowPassword.Tag = tbPassword;
             buttonShowEncryptionKey.Tag = tbEncryptionKey;
@@ -135,6 +120,12 @@ namespace iba.Controls
 
 
         #region Configuration
+
+        private void tabControl1_SelectionChanged(Crownwood.DotNetMagic.Controls.TabControl sender, Crownwood.DotNetMagic.Controls.TabPage oldPage, Crownwood.DotNetMagic.Controls.TabPage newPage)
+        {
+            // show panel with Apply and Reset buttons only for Cfg tab
+            panelFooter.Visible = tabConfiguration.Selected;
+        }
 
         private void buttonConfigurationApply_Click(object sender, EventArgs e)
         {
@@ -341,7 +332,7 @@ namespace iba.Controls
             bool isConnectedOrLocal = IsConnectedOrLocal;
 
             buttonConfigurationReset.Enabled = buttonConfigurationApply.Enabled = 
-                gbObjects.Enabled = gbDiagnostics.Enabled = isConnectedOrLocal;
+                tabObjects.Enabled = tabDiag.Enabled = isConnectedOrLocal;
 
             if (isConnectedOrLocal)
             {
@@ -660,8 +651,8 @@ namespace iba.Controls
             }
         }
 
-        #endregion
 
+        #endregion
 
     }
 }

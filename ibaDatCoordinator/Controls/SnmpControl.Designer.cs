@@ -30,19 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SnmpControl));
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
-            this.gbDiagnostics = new iba.Utility.CollapsibleGroupBox();
-            this.dgvClients = new System.Windows.Forms.DataGridView();
-            this.ColAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColProtocol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColMsgCounter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tbStatus = new System.Windows.Forms.TextBox();
-            this.buttonClearClients = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.gbObjects = new iba.Utility.CollapsibleGroupBox();
             this.splitContainerObjectsFooter = new System.Windows.Forms.SplitContainer();
             this.tbObjOid = new System.Windows.Forms.TextBox();
             this.labelObjType = new System.Windows.Forms.Label();
@@ -54,9 +41,19 @@
             this.labelObjMibName = new System.Windows.Forms.Label();
             this.tbObjMibDescription = new System.Windows.Forms.TextBox();
             this.tbObjMibName = new System.Windows.Forms.TextBox();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
+            this.dgvClients = new System.Windows.Forms.DataGridView();
+            this.ColAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColProtocol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColMsgCounter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColLastMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbStatus = new System.Windows.Forms.TextBox();
+            this.buttonClearClients = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.buttonCreateMibFiles = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
-            this.gbConfiguration = new iba.Utility.CollapsibleGroupBox();
             this.rbDateTimeStr = new System.Windows.Forms.RadioButton();
             this.rbDateTimeTc = new System.Windows.Forms.RadioButton();
             this.cbEnabled = new System.Windows.Forms.CheckBox();
@@ -64,15 +61,12 @@
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.buttonShowPassword = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.buttonShowEncryptionKey = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.cmbEncryption = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.cmbAuthentication = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tbPassword = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.tbEncryptionKey = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -81,111 +75,31 @@
             this.tbCommunity = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.numPort = new System.Windows.Forms.NumericUpDown();
-            this.gbDiagnostics.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
-            this.gbObjects.SuspendLayout();
+            this.panelFooter = new System.Windows.Forms.Panel();
+            this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
+            this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.tabObjects = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.gbDateFormat = new System.Windows.Forms.GroupBox();
+            this.gbV3Security = new System.Windows.Forms.GroupBox();
+            this.gbV2Security = new System.Windows.Forms.GroupBox();
+            this.gbGeneral = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
             this.splitContainerObjectsFooter.SuspendLayout();
-            this.gbConfiguration.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
+            this.panelFooter.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabConfiguration.SuspendLayout();
+            this.tabObjects.SuspendLayout();
+            this.tabDiag.SuspendLayout();
+            this.gbDateFormat.SuspendLayout();
+            this.gbV3Security.SuspendLayout();
+            this.gbV2Security.SuspendLayout();
+            this.gbGeneral.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // timerRefreshStatus
-            // 
-            this.timerRefreshStatus.Interval = 1000;
-            this.timerRefreshStatus.Tick += new System.EventHandler(this.timerRefreshStatus_Tick);
-            // 
-            // gbDiagnostics
-            // 
-            resources.ApplyResources(this.gbDiagnostics, "gbDiagnostics");
-            this.gbDiagnostics.Controls.Add(this.dgvClients);
-            this.gbDiagnostics.Controls.Add(this.tbStatus);
-            this.gbDiagnostics.Controls.Add(this.buttonClearClients);
-            this.gbDiagnostics.Controls.Add(this.label14);
-            this.gbDiagnostics.Controls.Add(this.label15);
-            this.gbDiagnostics.Name = "gbDiagnostics";
-            this.gbDiagnostics.TabStop = false;
-            // 
-            // dgvClients
-            // 
-            this.dgvClients.AllowUserToAddRows = false;
-            this.dgvClients.AllowUserToDeleteRows = false;
-            this.dgvClients.AllowUserToResizeRows = false;
-            resources.ApplyResources(this.dgvClients, "dgvClients");
-            this.dgvClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColAddress,
-            this.ColProtocol,
-            this.ColMsgCounter,
-            this.ColLastMsg});
-            this.dgvClients.Name = "dgvClients";
-            this.dgvClients.ReadOnly = true;
-            this.dgvClients.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
-            this.dgvClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvClients.StandardTab = true;
-            // 
-            // ColAddress
-            // 
-            this.ColAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColAddress, "ColAddress");
-            this.ColAddress.Name = "ColAddress";
-            this.ColAddress.ReadOnly = true;
-            // 
-            // ColProtocol
-            // 
-            this.ColProtocol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColProtocol, "ColProtocol");
-            this.ColProtocol.Name = "ColProtocol";
-            this.ColProtocol.ReadOnly = true;
-            // 
-            // ColMsgCounter
-            // 
-            this.ColMsgCounter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColMsgCounter, "ColMsgCounter");
-            this.ColMsgCounter.Name = "ColMsgCounter";
-            this.ColMsgCounter.ReadOnly = true;
-            // 
-            // ColLastMsg
-            // 
-            this.ColLastMsg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColLastMsg, "ColLastMsg");
-            this.ColLastMsg.Name = "ColLastMsg";
-            this.ColLastMsg.ReadOnly = true;
-            // 
-            // tbStatus
-            // 
-            resources.ApplyResources(this.tbStatus, "tbStatus");
-            this.tbStatus.Name = "tbStatus";
-            this.tbStatus.ReadOnly = true;
-            this.tbStatus.TabStop = false;
-            // 
-            // buttonClearClients
-            // 
-            resources.ApplyResources(this.buttonClearClients, "buttonClearClients");
-            this.buttonClearClients.Name = "buttonClearClients";
-            this.buttonClearClients.UseVisualStyleBackColor = true;
-            this.buttonClearClients.Click += new System.EventHandler(this.buttonClearClients_Click);
-            // 
-            // label14
-            // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
-            // 
-            // label15
-            // 
-            resources.ApplyResources(this.label15, "label15");
-            this.label15.Name = "label15";
-            // 
-            // gbObjects
-            // 
-            resources.ApplyResources(this.gbObjects, "gbObjects");
-            this.gbObjects.Controls.Add(this.splitContainerObjectsFooter);
-            this.gbObjects.Controls.Add(this.buttonCreateMibFiles);
-            this.gbObjects.Controls.Add(this.tvObjects);
-            this.gbObjects.Name = "gbObjects";
-            this.gbObjects.TabStop = false;
             // 
             // splitContainerObjectsFooter
             // 
@@ -269,6 +183,82 @@
             this.tbObjMibName.ReadOnly = true;
             this.tbObjMibName.TabStop = false;
             // 
+            // timerRefreshStatus
+            // 
+            this.timerRefreshStatus.Interval = 1000;
+            this.timerRefreshStatus.Tick += new System.EventHandler(this.timerRefreshStatus_Tick);
+            // 
+            // dgvClients
+            // 
+            this.dgvClients.AllowUserToAddRows = false;
+            this.dgvClients.AllowUserToDeleteRows = false;
+            this.dgvClients.AllowUserToResizeRows = false;
+            resources.ApplyResources(this.dgvClients, "dgvClients");
+            this.dgvClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColAddress,
+            this.ColProtocol,
+            this.ColMsgCounter,
+            this.ColLastMsg});
+            this.dgvClients.Name = "dgvClients";
+            this.dgvClients.ReadOnly = true;
+            this.dgvClients.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
+            this.dgvClients.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window;
+            this.dgvClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvClients.StandardTab = true;
+            // 
+            // ColAddress
+            // 
+            this.ColAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.ColAddress, "ColAddress");
+            this.ColAddress.Name = "ColAddress";
+            this.ColAddress.ReadOnly = true;
+            // 
+            // ColProtocol
+            // 
+            this.ColProtocol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.ColProtocol, "ColProtocol");
+            this.ColProtocol.Name = "ColProtocol";
+            this.ColProtocol.ReadOnly = true;
+            // 
+            // ColMsgCounter
+            // 
+            this.ColMsgCounter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.ColMsgCounter, "ColMsgCounter");
+            this.ColMsgCounter.Name = "ColMsgCounter";
+            this.ColMsgCounter.ReadOnly = true;
+            // 
+            // ColLastMsg
+            // 
+            this.ColLastMsg.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.ColLastMsg, "ColLastMsg");
+            this.ColLastMsg.Name = "ColLastMsg";
+            this.ColLastMsg.ReadOnly = true;
+            // 
+            // tbStatus
+            // 
+            resources.ApplyResources(this.tbStatus, "tbStatus");
+            this.tbStatus.Name = "tbStatus";
+            this.tbStatus.ReadOnly = true;
+            this.tbStatus.TabStop = false;
+            // 
+            // buttonClearClients
+            // 
+            resources.ApplyResources(this.buttonClearClients, "buttonClearClients");
+            this.buttonClearClients.Name = "buttonClearClients";
+            this.buttonClearClients.UseVisualStyleBackColor = true;
+            this.buttonClearClients.Click += new System.EventHandler(this.buttonClearClients_Click);
+            // 
+            // label14
+            // 
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
+            // 
+            // label15
+            // 
+            resources.ApplyResources(this.label15, "label15");
+            this.label15.Name = "label15";
+            // 
             // buttonCreateMibFiles
             // 
             resources.ApplyResources(this.buttonCreateMibFiles, "buttonCreateMibFiles");
@@ -282,36 +272,6 @@
             this.tvObjects.HideSelection = false;
             this.tvObjects.Name = "tvObjects";
             this.tvObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvObjects_AfterSelect);
-            // 
-            // gbConfiguration
-            // 
-            resources.ApplyResources(this.gbConfiguration, "gbConfiguration");
-            this.gbConfiguration.Controls.Add(this.rbDateTimeStr);
-            this.gbConfiguration.Controls.Add(this.rbDateTimeTc);
-            this.gbConfiguration.Controls.Add(this.cbEnabled);
-            this.gbConfiguration.Controls.Add(this.buttonConfigurationReset);
-            this.gbConfiguration.Controls.Add(this.buttonConfigurationApply);
-            this.gbConfiguration.Controls.Add(this.label5);
-            this.gbConfiguration.Controls.Add(this.buttonShowPassword);
-            this.gbConfiguration.Controls.Add(this.label6);
-            this.gbConfiguration.Controls.Add(this.buttonShowEncryptionKey);
-            this.gbConfiguration.Controls.Add(this.label7);
-            this.gbConfiguration.Controls.Add(this.cmbEncryption);
-            this.gbConfiguration.Controls.Add(this.label8);
-            this.gbConfiguration.Controls.Add(this.cmbAuthentication);
-            this.gbConfiguration.Controls.Add(this.label9);
-            this.gbConfiguration.Controls.Add(this.tbPassword);
-            this.gbConfiguration.Controls.Add(this.label1);
-            this.gbConfiguration.Controls.Add(this.label10);
-            this.gbConfiguration.Controls.Add(this.tbEncryptionKey);
-            this.gbConfiguration.Controls.Add(this.label11);
-            this.gbConfiguration.Controls.Add(this.tbUserName);
-            this.gbConfiguration.Controls.Add(this.label12);
-            this.gbConfiguration.Controls.Add(this.tbCommunity);
-            this.gbConfiguration.Controls.Add(this.label13);
-            this.gbConfiguration.Controls.Add(this.numPort);
-            this.gbConfiguration.Name = "gbConfiguration";
-            this.gbConfiguration.TabStop = false;
             // 
             // rbDateTimeStr
             // 
@@ -364,11 +324,6 @@
             this.buttonShowPassword.MouseDown += new System.Windows.Forms.MouseEventHandler(this.handler_ShowPassword);
             this.buttonShowPassword.MouseUp += new System.Windows.Forms.MouseEventHandler(this.handler_HidePassword);
             // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
             // buttonShowEncryptionKey
             // 
             resources.ApplyResources(this.buttonShowEncryptionKey, "buttonShowEncryptionKey");
@@ -394,11 +349,6 @@
             resources.ApplyResources(this.cmbEncryption, "cmbEncryption");
             this.cmbEncryption.Name = "cmbEncryption";
             // 
-            // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
             // cmbAuthentication
             // 
             this.cmbAuthentication.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -417,11 +367,6 @@
             // 
             resources.ApplyResources(this.tbPassword, "tbPassword");
             this.tbPassword.Name = "tbPassword";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
             // 
             // label10
             // 
@@ -468,45 +413,164 @@
             0});
             this.numPort.Name = "numPort";
             // 
+            // panelFooter
+            // 
+            this.panelFooter.Controls.Add(this.buttonConfigurationReset);
+            this.panelFooter.Controls.Add(this.buttonConfigurationApply);
+            resources.ApplyResources(this.panelFooter, "panelFooter");
+            this.panelFooter.Name = "panelFooter";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.AllowDragReorder = false;
+            this.tabControl1.Appearance = Crownwood.DotNetMagic.Controls.VisualAppearance.MultiDocument;
+            resources.ApplyResources(this.tabControl1, "tabControl1");
+            this.tabControl1.MediaPlayerDockSides = false;
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.OfficeDockSides = false;
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.ShowArrows = false;
+            this.tabControl1.ShowClose = false;
+            this.tabControl1.ShowDropSelect = false;
+            this.tabControl1.Style = Crownwood.DotNetMagic.Common.VisualStyle.IDE2005;
+            this.tabControl1.TabPages.AddRange(new Crownwood.DotNetMagic.Controls.TabPage[] {
+            this.tabConfiguration,
+            this.tabObjects,
+            this.tabDiag});
+            this.tabControl1.TextTips = true;
+            this.tabControl1.SelectionChanged += new Crownwood.DotNetMagic.Controls.SelectTabHandler(this.tabControl1_SelectionChanged);
+            // 
+            // tabConfiguration
+            // 
+            resources.ApplyResources(this.tabConfiguration, "tabConfiguration");
+            this.tabConfiguration.Controls.Add(this.gbGeneral);
+            this.tabConfiguration.Controls.Add(this.gbV2Security);
+            this.tabConfiguration.Controls.Add(this.gbV3Security);
+            this.tabConfiguration.Controls.Add(this.gbDateFormat);
+            this.tabConfiguration.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.InactiveTextColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.Name = "tabConfiguration";
+            this.tabConfiguration.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // tabObjects
+            // 
+            resources.ApplyResources(this.tabObjects, "tabObjects");
+            this.tabObjects.Controls.Add(this.splitContainerObjectsFooter);
+            this.tabObjects.Controls.Add(this.buttonCreateMibFiles);
+            this.tabObjects.Controls.Add(this.tvObjects);
+            this.tabObjects.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabObjects.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabObjects.InactiveTextColor = System.Drawing.Color.Empty;
+            this.tabObjects.Name = "tabObjects";
+            this.tabObjects.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabObjects.Selected = false;
+            this.tabObjects.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabObjects.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // tabDiag
+            // 
+            resources.ApplyResources(this.tabDiag, "tabDiag");
+            this.tabDiag.Controls.Add(this.label15);
+            this.tabDiag.Controls.Add(this.tbStatus);
+            this.tabDiag.Controls.Add(this.dgvClients);
+            this.tabDiag.Controls.Add(this.buttonClearClients);
+            this.tabDiag.Controls.Add(this.label14);
+            this.tabDiag.InactiveBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.InactiveTextBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
+            this.tabDiag.Name = "tabDiag";
+            this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
+            // 
+            // gbDateFormat
+            // 
+            resources.ApplyResources(this.gbDateFormat, "gbDateFormat");
+            this.gbDateFormat.Controls.Add(this.rbDateTimeTc);
+            this.gbDateFormat.Controls.Add(this.rbDateTimeStr);
+            this.gbDateFormat.Name = "gbDateFormat";
+            this.gbDateFormat.TabStop = false;
+            // 
+            // gbV3Security
+            // 
+            resources.ApplyResources(this.gbV3Security, "gbV3Security");
+            this.gbV3Security.Controls.Add(this.cmbAuthentication);
+            this.gbV3Security.Controls.Add(this.tbUserName);
+            this.gbV3Security.Controls.Add(this.buttonShowPassword);
+            this.gbV3Security.Controls.Add(this.buttonShowEncryptionKey);
+            this.gbV3Security.Controls.Add(this.label12);
+            this.gbV3Security.Controls.Add(this.tbPassword);
+            this.gbV3Security.Controls.Add(this.label11);
+            this.gbV3Security.Controls.Add(this.tbEncryptionKey);
+            this.gbV3Security.Controls.Add(this.label9);
+            this.gbV3Security.Controls.Add(this.cmbEncryption);
+            this.gbV3Security.Controls.Add(this.label13);
+            this.gbV3Security.Controls.Add(this.label10);
+            this.gbV3Security.Name = "gbV3Security";
+            this.gbV3Security.TabStop = false;
+            // 
+            // gbV2Security
+            // 
+            resources.ApplyResources(this.gbV2Security, "gbV2Security");
+            this.gbV2Security.Controls.Add(this.tbCommunity);
+            this.gbV2Security.Controls.Add(this.label7);
+            this.gbV2Security.Name = "gbV2Security";
+            this.gbV2Security.TabStop = false;
+            // 
+            // gbGeneral
+            // 
+            resources.ApplyResources(this.gbGeneral, "gbGeneral");
+            this.gbGeneral.Controls.Add(this.cbEnabled);
+            this.gbGeneral.Controls.Add(this.label5);
+            this.gbGeneral.Controls.Add(this.numPort);
+            this.gbGeneral.Name = "gbGeneral";
+            this.gbGeneral.TabStop = false;
+            // 
             // SnmpControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.gbDiagnostics);
-            this.Controls.Add(this.gbObjects);
-            this.Controls.Add(this.gbConfiguration);
+            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.panelFooter);
             this.Name = "SnmpControl";
             this.Load += new System.EventHandler(this.SnmpControl_Load);
-            this.gbDiagnostics.ResumeLayout(false);
-            this.gbDiagnostics.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).EndInit();
-            this.gbObjects.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.PerformLayout();
             this.splitContainerObjectsFooter.Panel2.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
             this.splitContainerObjectsFooter.ResumeLayout(false);
-            this.gbConfiguration.ResumeLayout(false);
-            this.gbConfiguration.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
+            this.panelFooter.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabConfiguration.ResumeLayout(false);
+            this.tabObjects.ResumeLayout(false);
+            this.tabDiag.ResumeLayout(false);
+            this.tabDiag.PerformLayout();
+            this.gbDateFormat.ResumeLayout(false);
+            this.gbDateFormat.PerformLayout();
+            this.gbV3Security.ResumeLayout(false);
+            this.gbV3Security.PerformLayout();
+            this.gbV2Security.ResumeLayout(false);
+            this.gbV2Security.PerformLayout();
+            this.gbGeneral.ResumeLayout(false);
+            this.gbGeneral.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private Utility.CollapsibleGroupBox gbConfiguration;
-        private Utility.CollapsibleGroupBox gbDiagnostics;
-        private Utility.CollapsibleGroupBox gbObjects;
         private System.Windows.Forms.CheckBox cbEnabled;
         private System.Windows.Forms.Button buttonConfigurationApply;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button buttonShowPassword;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button buttonShowEncryptionKey;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cmbEncryption;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cmbAuthentication;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox tbPassword;
@@ -543,8 +607,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColLastMsg;
         private System.Windows.Forms.RadioButton rbDateTimeStr;
         private System.Windows.Forms.RadioButton rbDateTimeTc;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LabObjMibDescription;
         private System.Windows.Forms.TextBox tbObjMibDescription;
+        private System.Windows.Forms.Panel panelFooter;
+        private Crownwood.DotNetMagic.Controls.TabControl tabControl1;
+        private Crownwood.DotNetMagic.Controls.TabPage tabConfiguration;
+        private Crownwood.DotNetMagic.Controls.TabPage tabObjects;
+        private Crownwood.DotNetMagic.Controls.TabPage tabDiag;
+        private System.Windows.Forms.GroupBox gbGeneral;
+        private System.Windows.Forms.GroupBox gbV2Security;
+        private System.Windows.Forms.GroupBox gbV3Security;
+        private System.Windows.Forms.GroupBox gbDateFormat;
     }
 }
