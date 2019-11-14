@@ -622,6 +622,10 @@ namespace iba.Processing
             ji.DoneCount.Value = (uint)s.ProcessedFiles.Count;
             ji.FailedCount.Value = (uint)s.CountErrors();
 
+            ji.Lifebeat.Value = (ji.Status.Value == ExtMonData.JobStatus.Started)
+                ? (int) (DateTime.Now - worker.TimestampJobStarted).TotalSeconds
+                : -1;
+
             ExtMonRefreshTasks(ji, worker, s);
         }
 

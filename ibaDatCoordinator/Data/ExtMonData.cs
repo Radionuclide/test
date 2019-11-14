@@ -1149,6 +1149,8 @@ namespace iba.Data
             /// <summary> Oid 2 - Contains tasks (one subfolder per each task) </summary> 
             public ExtMonFolder FolderTasks;
 
+            /// <summary> Oid 99 </summary>
+            public readonly ExtMonVariable<int> Lifebeat;
             /// <summary> Oid General.1 </summary> 
             public readonly ExtMonVariable<string> JobName;
             /// <summary> Oid General.2 </summary>
@@ -1181,6 +1183,13 @@ namespace iba.Data
                     $@"Information about all tasks of the job '{jobName}'.",
                     SNMP_AUTO_LEAST_ID);
                 Debug.Assert(FolderTasks.SnmpLeastId == 2); // ensure id has an expected value
+
+                Lifebeat = AddChildVariable<int>(
+                    @"Lifebeat", @"Lifebeat",
+                    @"A special value that should be continuously changing if the job is running." +
+                    @" Is equal to time in seconds elapsed since the job start" +
+                    @" (and -1 if the job is stopped or disabled).",
+                    99 /*put it to the end, reserving place for other values*/); 
 
                 // create variables and add them to collection
 
