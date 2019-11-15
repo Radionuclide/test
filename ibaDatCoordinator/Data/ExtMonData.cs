@@ -27,11 +27,11 @@ namespace iba.Data
 
         /// <summary> Recommended timeout for trying to acquire
         /// a lock to <see cref="LockObject"/> </summary>
-        public static int LockTimeout { get; } = 50;
+        public static int LockTimeout { get; } = 100;
 
         /// <summary> A measure to tell whether some data is fresh enough (and can be used as is) or
         /// is probably too old (and should be updated before sending via SNMP or OPC UA). </summary>
-        public static TimeSpan AgeThreshold { get; set; } = TimeSpan.FromSeconds(2);
+        public static TimeSpan AgeThreshold { get; set; } = TimeSpan.FromSeconds(0.95);
 
         #endregion
 
