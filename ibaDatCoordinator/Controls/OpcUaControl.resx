@@ -1009,6 +1009,9 @@
   <data name="buttonShowHideDebug.Text" xml:space="preserve">
     <value>Show/Hide Debug info</value>
   </data>
+  <data name="buttonShowHideDebug.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;buttonShowHideDebug.Name" xml:space="preserve">
     <value>buttonShowHideDebug</value>
   </data>
