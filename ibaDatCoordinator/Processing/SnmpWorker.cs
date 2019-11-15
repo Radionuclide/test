@@ -287,6 +287,8 @@ namespace iba.Processing
 
         public bool RebuildTree()
         {
+            Debug.WriteLine($"{DateTime.Now}. SNMP. RebuildTree.");
+
             var man = TaskManager.Manager;
             if (man == null || IbaSnmp == null)
             {
@@ -339,6 +341,9 @@ namespace iba.Processing
                         $"{nameof(SnmpWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
+
+                // failed to rebuild; mark tree invalid to rebuild it later
+                ExtMonInstance.IsStructureValid = false;
 
                 return false; // rebuild failed
             }

@@ -220,8 +220,7 @@ namespace iba.Processing
             // start server
             UaApplication.Start(IbaOpcUaServer).Wait();
             
-            // it's not necessary to rebuild the tree immediately. It will be done on first request
-            // RebuildTree(); // not now
+            RebuildTree(); 
 
             // handle resetting group list on every change of monitored items
             NodeManager.MonitoredItemsChanged += (sender, args) 
@@ -963,6 +962,8 @@ namespace iba.Processing
 
         public bool RebuildTree()
         {
+            Debug.WriteLine($"{DateTime.Now}. OPC UA. RebuildTree.");
+
             var man = TaskManager.Manager;
             if (man == null || UaAppConfiguration == null || IbaOpcUaServer?.IbaOpcUaNodeManager == null)
             {
@@ -980,7 +981,8 @@ namespace iba.Processing
                     if (!ExtMonInstance.IsStructureValid)
                     {
                         // ExtMonData structure is invalid;
-                        // it makes no sense to rebuild our tree
+                        // Normally it should not happen, because usually we rebuild our tree on reaction to ExtMon structure change.
+                        // Anyway, it makes no sense to rebuild our tree
                         return false; // rebuild failed
                     }
 
@@ -1031,6 +1033,9 @@ namespace iba.Processing
                         $"{nameof(OpcUaWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
+
+                // failed to rebuild; mark tree invalid to rebuild it later
+                ExtMonInstance.IsStructureValid = false;
 
                 return false; // rebuild failed
             }

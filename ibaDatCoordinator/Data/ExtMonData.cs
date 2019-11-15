@@ -157,7 +157,7 @@ namespace iba.Data
         }
 
         /// <summary>
-        /// The reason for having this timer is a compromise between responsibility and computational efforts.
+        /// The reason for having this timer is a compromise between responsiveness, reliability and computational efforts.
         /// Without this timer we had to rebuild the tree on any
         /// firing of <see cref="TaskManager.ExtMonConfigurationChanged"/> event.
         /// With this timer it's guaranteed that:
@@ -186,12 +186,14 @@ namespace iba.Data
             _treeValidatorTimer.Enabled = true;
             _treeValidatorTimer.Elapsed += (sender, args) =>
             {
+                Debug.WriteLine($"{DateTime.Now}. {nameof(ExtMonData)}.{nameof(_treeValidatorTimer)}.Elapsed.");
                 RebuildTreeIfItIsInvalid();
 
-                // best option to test why it's needed
+                // best option to test why timer is needed (additionally to rebuild on first request):
                 // 1. setup SNMP manager to monitor some yet non-existent job. it will show "no such instance". ok.
                 // 2. Add one or several jobs to fit the requested OID area. 
-                //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
+                //  If there were no such timer, tree would be invalidated but not rebuilt.
+                //  Manager would still show "no such instance", though OID is really present.
             };
         }
 
