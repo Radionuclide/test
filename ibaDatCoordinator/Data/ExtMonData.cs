@@ -562,7 +562,15 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"Node '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}'";
+                try
+                {
+                    return $@"Node '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}'";
+                }
+                catch /* paranoic */
+                {
+                    Debug.Assert(false);
+                    return base.ToString();
+                }
             }
         }
 
@@ -584,7 +592,15 @@ namespace iba.Data
             
             public override string ToString()
             {
-                return $@"Variable '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}', G='{GetGroup()?.Caption}', UA='{UaVar?.BrowseName}'";
+                try
+                {
+                    return $@"Variable '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}', G='{GetGroup()?.Caption}', UA='{UaVar?.BrowseName}'";
+                }
+                catch /* paranoic */
+                {
+                    Debug.Assert(false);
+                    return base.ToString();
+                }
             }
 
             #region OPC UA - specific
@@ -608,7 +624,15 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"({typeof(T).Name}){Value}: " + base.ToString();
+                try
+                {
+                    return $@"({typeof(T).Name}){Value}: " + base.ToString();
+                }
+                catch /* paranoic */
+                {
+                    Debug.Assert(false);
+                    return base.ToString();
+                }
             }
         }
 
@@ -721,7 +745,15 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"Folder '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}'";
+                try
+                {
+                    return $@"Folder '{Caption}', OID={SnmpFullOid}, MIB='{SnmpFullMibName}'";
+                }
+                catch /* paranoic */
+                {
+                    Debug.Assert(false);
+                    return base.ToString();
+                }
             }
         }
 
@@ -956,7 +988,15 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"Drive '{Key}' [A:{Active.Value}, {CurrentFreeSpaceInMb.Value}/{SizeInMb.Value}]";
+                try
+                {
+                    return $@"Drive '{Key}' [A:{Active.Value}, {CurrentFreeSpaceInMb.Value}/{SizeInMb.Value}]";
+                }
+                catch /* paranoic */
+                {
+                    Debug.Assert(false);
+                    return base.ToString();
+                }
             }
         }
 
@@ -1071,7 +1111,15 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"{TaskName.Value} [{TaskType.Value}, {SnmpFullOid}, {ParentJob.JobName.Value}]";
+                try
+                {
+                    return $@"{TaskName.Value} [{TaskType.Value}, {SnmpFullOid}, {ParentJob.JobName.Value}]";
+                }
+                catch /* paranoic */
+                {
+                    Debug.Assert(false);
+                    return base.ToString();
+                }
             }
         }
         
@@ -1296,7 +1344,15 @@ namespace iba.Data
 
             public override string ToString()
             {
-                return $@"{JobName.Value} [{Status}, {TodoCount}/{DoneCount}/{FailedCount}, T:{TaskCount}]";
+                try
+                {
+                    return $@"{JobName.Value} [{Status}, {TodoCount}/{DoneCount}/{FailedCount}, T:{TaskCount}]";
+                }
+                catch /* paranoic */
+                {
+                    Debug.Assert(false);
+                    return base.ToString();
+                }
             }
         }
 
