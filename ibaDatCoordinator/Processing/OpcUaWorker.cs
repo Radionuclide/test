@@ -1265,39 +1265,48 @@ namespace iba.Processing
             ref StatusCode statusCode, ref DateTime timestamp)
             // ReSharper restore RedundantAssignment
         {
-            if (!(node is IbaOpcUaVariable iv)) //we handle only iba variables here 
+            try
             {
-                value = null;
-                statusCode = StatusCodes.Bad;
-                Debug.Assert(false); // should not happen
-                return ServiceResult.Good; // statusCode is bad; serviceResult is good
-            }
+                if (!(node is IbaOpcUaVariable iv)) //we handle only iba variables here 
+                {
+                    value = null;
+                    statusCode = StatusCodes.Bad;
+                    Debug.Assert(false); // should not happen
+                    return ServiceResult.Good; // statusCode is bad; serviceResult is good
+                }
 
-            if (iv.IsDeleted)
+                if (iv.IsDeleted)
+                {
+                    // don't try to refresh deleted variables
+                    iv.Value = null;
+                    Debug.Assert(iv.StatusCode == StatusCodes.BadObjectDeleted);
+                    iv.StatusCode = StatusCodes.BadObjectDeleted;
+                }
+                else
+                {
+                    Debug.Assert(iv.Value == value); // should be the same at this point
+                    Debug.Assert(iv.ExtMonVar.Group != null);
+
+                    // refresh data if it is too old (or rebuild the whole tree if necessary)
+                    RefreshGroup(iv.ExtMonVar.Group);
+                }
+
+                // re-read the value and send it back via args
+                // (we should do re-read independently on whether above call to RefreshXxx()
+                // had updated the value or not, because the value could be updated meanwhile by a similar call
+                // in another thread if multiple values are requested)
+                value = iv.Value;
+                statusCode = iv.StatusCode;
+                Debug.Assert(iv.StatusCode == StatusCodes.Good || iv.StatusCode == StatusCodes.BadObjectDeleted);
+
+                return ServiceResult.Good;
+            }
+            catch (Exception ex)
             {
-                // don't try to refresh deleted variables
-                iv.Value = null;
-                Debug.Assert(iv.StatusCode == StatusCodes.BadObjectDeleted);
-                iv.StatusCode = StatusCodes.BadObjectDeleted;
+                LogData.Data.Logger.Log(Level.Exception,
+                    $"{nameof(OpcUaWorker)}.{nameof(OnReadProductSpecificValue)}. Error requesting item {node?.NodeId}. {ex.Message}.");
+                return StatusCodes.BadUnexpectedError;
             }
-            else
-            {
-                Debug.Assert(iv.Value == value); // should be the same at this point
-                Debug.Assert(iv.ExtMonVar.Group != null);
-
-                // refresh data if it is too old (or rebuild the whole tree if necessary)
-                RefreshGroup(iv.ExtMonVar.Group);
-            }
-
-            // re-read the value and send it back via args
-            // (we should do re-read independently on whether above call to RefreshXxx()
-            // had updated the value or not, because the value could be updated meanwhile by a similar call
-            // in another thread if multiple values are requested)
-            value = iv.Value;
-            statusCode = iv.StatusCode;
-            Debug.Assert(iv.StatusCode == StatusCodes.Good || iv.StatusCode == StatusCodes.BadObjectDeleted);
-
-            return ServiceResult.Good;
         }
 
         #endregion

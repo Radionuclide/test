@@ -652,24 +652,33 @@ namespace iba.Processing
 
         private void ProductSpecificItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
         {
-            // refresh data if it is too old (or rebuild the whole tree if necessary)
-            if (args.Tag is ExtMonData.ExtMonGroup group)
+            try
             {
-                RefreshGroup(group);
-            }
-            else
-            {
-                // should not happen
-                Debug.Assert(false);
-                args.Value = null;
-                return;
-            }
 
-            // re-read the value and send it back via args
-            // (we should do re-read independently on whether above call to RefreshXxx()
-            // had updated the value or not, because the value could be updated meanwhile by a similar call
-            // in another thread if multiple values are requested)
-            args.Value = args.IbaSnmp.GetValue(args.Oid);
+                // refresh data if it is too old (or rebuild the whole tree if necessary)
+                if (args.Tag is ExtMonData.ExtMonGroup group)
+                {
+                    RefreshGroup(group);
+                }
+                else
+                {
+                    // should not happen
+                    args.Value = null;
+                    Debug.Assert(false);
+                    return;
+                }
+
+                // re-read the value and send it back via args
+                // (we should do re-read independently on whether above call to RefreshXxx()
+                // had updated the value or not, because the value could be updated meanwhile by a similar call
+                // in another thread if multiple values are requested)
+                args.Value = args.IbaSnmp.GetValue(args.Oid);
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Logger.Log(Level.Exception,
+                    $"{nameof(SnmpWorker)}.{nameof(ProductSpecificItemRequested)}. Error during requesting item {args?.Oid}. {ex.Message}.");
+            }
         }
 
         #endregion
