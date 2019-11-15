@@ -220,7 +220,8 @@ namespace iba.Processing
             // start server
             UaApplication.Start(IbaOpcUaServer).Wait();
             
-            RebuildTree();
+            // it's not necessary to rebuild the tree immediately. It will be done on first request
+            // RebuildTree(); // not now
 
             // handle resetting group list on every change of monitored items
             NodeManager.MonitoredItemsChanged += (sender, args) 
