@@ -43,13 +43,14 @@ namespace iba
         public static string GetVersion()
         {
             string ver = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
-            ver = ver + " BETA6ua"; // todo. kls. remove ua suffix after merging
+            ver = ver + " BETA7ua"; // todo. kls. remove ua suffix after merging
             return ver;
         }
 
         public static int MinimumClientVersion()
         {
             ///modify this if eventually a real minimum client is necessary (because features have been added)
+            // todo. kls. check after merging (on adding OPC, both client and server were changed significantly!)
             Version v = new Version(2,0,0,0);
             return ((v.Major * 1000) + v.Minor) * 1000 + v.Build;
         }
