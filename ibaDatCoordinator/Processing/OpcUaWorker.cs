@@ -991,6 +991,9 @@ namespace iba.Processing
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                         if (node is ExtMonData.ExtMonFolder xmFolder)
                             BuildFolderRecursively(null, xmFolder);
+                        // mark that the group is fresh (all OPC UA values were set just now)
+                        if (node is ExtMonData.ExtMonGroup xmGroup)
+                            xmGroup.UaTimeStamp.PutStamp();
                     }
 
                     // delete nodes that were marked for deletion and were not updated
@@ -1191,45 +1194,58 @@ namespace iba.Processing
                         return true; // data was updated
                     }
 
-                    if (xmGroup.IsUpToDate())
+                    // check if OPC UA data (values inside UA variables) is fresh enough
+                    if (xmGroup.UaTimeStamp.IsUpToDate)
                     {
-                        // data is fresh, no need to change something
-                        return false; // was not updated
-                    }
-
-                    var man = TaskManager.Manager;
-
-                    bool bSuccess;
-                    switch (xmGroup)
-                    {
-                        case ExtMonData.LicenseInfo licenseInfo:
-                            bSuccess = man.ExtMonRefreshLicenseInfo(licenseInfo);
-                            break;
-                        case ExtMonData.GlobalCleanupDriveInfo driveInfo:
-                            bSuccess = man.ExtMonRefreshGlobalCleanupDriveInfo(driveInfo);
-                            break;
-                        case ExtMonData.JobInfoBase jobInfo:
-                            bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
-                            break;
-                        default:
-                            // should not happen
-                            bSuccess = false;
-                            Debug.Assert(false);
-                            break;
-                    }
-
-                    if (!bSuccess)
-                    {
-                        // failed to update the data;
-                        // mark tree invalid to rebuild it later
-                        LogData.Data.Logger.Log(Level.Debug,
-                            $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
-                        ExtMonInstance.IsStructureValid = false;
+                        // is fresh; no need to copy it from extMonData or to request it from TaskManager
+                        // just return
                         return false; // data was NOT updated
                     }
 
-                    // TaskManager has updated the group successfully;
-                    // copy it to UA tree
+                    // OPC UA data is outdated
+                    // we should copy it from extMonGroup; 
+
+                    // first check if extMonGroup itself is fresh enough
+                    if (!xmGroup.TimeStamp.IsUpToDate)
+                    {
+                        // extMonGroup is not fresh enough;
+                        // request fresh data from TaskManager
+
+                        var man = TaskManager.Manager;
+                        bool bSuccess;
+                        switch (xmGroup)
+                        {
+                            case ExtMonData.LicenseInfo licenseInfo:
+                                bSuccess = man.ExtMonRefreshLicenseInfo(licenseInfo);
+                                break;
+                            case ExtMonData.GlobalCleanupDriveInfo driveInfo:
+                                bSuccess = man.ExtMonRefreshGlobalCleanupDriveInfo(driveInfo);
+                                break;
+                            case ExtMonData.JobInfoBase jobInfo:
+                                bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
+                                break;
+                            default:
+                                // should not happen
+                                bSuccess = false;
+                                Debug.Assert(false);
+                                break;
+                        }
+
+                        if (!bSuccess)
+                        {
+                            // failed to update the data;
+                            // mark tree invalid to rebuild it later
+                            LogData.Data.Logger.Log(Level.Debug,
+                                $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
+                            ExtMonInstance.IsStructureValid = false;
+                            return false; // data was NOT updated
+                        }
+                    }
+
+                    // memorize the moment when data was last updated
+                    xmGroup.UaTimeStamp.PutStamp();
+
+                    // copy values from extMonGroup to UA variables
                     foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
                         SetOpcUaValue(xmv);

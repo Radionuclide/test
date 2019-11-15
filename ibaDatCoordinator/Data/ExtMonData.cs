@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-//using DevExpress.Utils;
-//using DevExpress.XtraEditors.Controls;
 using iba.Logging;
 using iba.Processing;
 using iba.Processing.IbaOpcUa;
@@ -740,25 +738,32 @@ namespace iba.Data
             {
             }
 
-            /// <summary> When data has been last time updated </summary>
-            public DateTime TimeStamp { get; private set; } = DateTime.MinValue;
+            /// <summary> When data has been last time requested from the TaskManager </summary>
+            public TimeStampWithThreshold TimeStamp = new TimeStampWithThreshold();
 
-            public bool IsUpToDate()
+            /// <summary> When data was last time copied to SNMP </summary>
+            public TimeStampWithThreshold SnmpTimeStamp = new TimeStampWithThreshold();
+
+            /// <summary> When data was last time copied to OPC UA </summary>
+            public TimeStampWithThreshold UaTimeStamp = new TimeStampWithThreshold();
+
+
+            public class TimeStampWithThreshold
             {
-                if (TimeStamp == DateTime.MinValue)
+                public DateTime Stamp { get; private set; } = DateTime.MinValue;
+
+                public TimeSpan Age => Stamp == DateTime.MinValue 
+                    ? TimeSpan.MaxValue : DateTime.Now - Stamp;
+
+                /// <summary> Tells if data is younger than Threshold (then it is treated as fresh enough). </summary>
+                public bool IsUpToDate => Age < AgeThreshold;
+
+                public void PutStamp()
                 {
-                    return false;
+                    Stamp = DateTime.Now;
                 }
-                TimeSpan age = DateTime.Now - TimeStamp;
-
-                // if data is younger than Threshold, then it is treated as fresh
-                return age < AgeThreshold;
             }
 
-            public void PutTimeStamp()
-            {
-                TimeStamp = DateTime.Now;
-            }
         }
 
         [Serializable]

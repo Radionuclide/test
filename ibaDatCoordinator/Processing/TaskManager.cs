@@ -381,7 +381,7 @@ namespace iba.Processing
                     licenseInfo.DemoTimeLimit.Value = info.DemoTimeLimit;
                 }
 
-                licenseInfo.PutTimeStamp();
+                licenseInfo.TimeStamp.PutStamp();
             }
             catch {/**/}
 
@@ -443,7 +443,7 @@ namespace iba.Processing
 
             driveInfo.RescanTime.Value = (uint)gcData.RescanTime;
 
-            driveInfo.PutTimeStamp();
+            driveInfo.TimeStamp.PutStamp(); 
         }
 
         public bool ExtMonRefreshJobInfo(ExtMonData.JobInfoBase jobInfo)
@@ -526,7 +526,7 @@ namespace iba.Processing
                 jobInfo.LastProcessingStartTimeStamp.Value = worker.LastSuccessfulFileStartProcessingTimeStamp;
                 jobInfo.LastProcessingFinishTimeStamp.Value = worker.LastSuccessfulFileFinishProcessingTimeStamp;
 
-                jobInfo.PutTimeStamp();
+                jobInfo.TimeStamp.PutStamp();
             }
             catch (Exception ex)
             {
@@ -551,7 +551,7 @@ namespace iba.Processing
                 jobInfo.TimestampLastExecution.Value = worker.TimestampJobLastExecution; 
                 jobInfo.TimestampNextExecution.Value = worker.NextTrigger; 
 
-                jobInfo.PutTimeStamp();
+                jobInfo.TimeStamp.PutStamp();
             }
             catch (Exception ex)
             {
@@ -574,7 +574,7 @@ namespace iba.Processing
 
                 jobInfo.TimestampLastExecution.Value = worker.TimestampJobStarted;
 
-                jobInfo.PutTimeStamp();
+                jobInfo.TimeStamp.PutStamp();
             }
             catch (Exception ex)
             {
@@ -599,7 +599,7 @@ namespace iba.Processing
                 jobInfo.TimestampJobStarted.Value = worker.TimestampJobStarted; 
                 jobInfo.TimestampLastExecution.Value = worker.TimestampJobLastExecution; 
 
-                jobInfo.PutTimeStamp();
+                jobInfo.TimeStamp.PutStamp();
             }
             catch (Exception ex)
             {

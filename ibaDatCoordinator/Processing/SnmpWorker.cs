@@ -355,6 +355,9 @@ namespace iba.Processing
                     {
                         case ExtMonData.ExtMonFolder extMonFolder:
                             BuildFolderRecursively(extMonFolder);
+                            // mark that the group is fresh (all SNMP values were set just now)
+                            if (extMonFolder is ExtMonData.ExtMonGroup xmGroup)
+                                xmGroup.SnmpTimeStamp.PutStamp();
                             break;
                         case ExtMonData.ExtMonVariableBase extMonVariableBase:
                             CreateUserValue(extMonVariableBase);
@@ -496,31 +499,47 @@ namespace iba.Processing
             {
                 try
                 {
-                    if (ExtMonInstance.License.IsUpToDate())
+                    ExtMonData.LicenseInfo licGroup = ExtMonInstance.License;
+
+                    // check if SNMP data is fresh enough
+                    if (licGroup.SnmpTimeStamp.IsUpToDate)
                     {
-                        // data is fresh, no need to change something
+                        // is fresh; no need to copy it from extMonData or to request it from TaskManager
+                        // just return
                         return false; // was not updated
                     }
 
-                    var man = TaskManager.Manager;
-                    if (!man.ExtMonRefreshLicenseInfo(ExtMonInstance.License))
+                    // SNMP data is outdated
+                    // we should copy it from extMonGroup; 
+
+                    // first check if extMonGroup itself is fresh enough
+                    if (!licGroup.TimeStamp.IsUpToDate)
                     {
-                        // should not happen
-                        // failed to update data
-                        // don't rebuild the tree, just return false
-                        return false; // was not updated
+                        // extMonGroup is not fresh enough;
+                        // request fresh data from TaskManager
+
+                        var man = TaskManager.Manager;
+                        if (!man.ExtMonRefreshLicenseInfo(licGroup))
+                        {
+                            // should not happen
+                            // failed to update data
+                            // don't rebuild the tree, just return false
+                            return false; // was not updated
+                        }
                     }
 
-                    // TaskManager has updated info successfully 
-                    // copy it to snmp tree
+                    // memorize the moment when data was last copied to SNMP variables
+                    licGroup.SnmpTimeStamp.PutStamp();
 
-                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ExtMonInstance.License.IsValid.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingSn = ExtMonInstance.License.Sn.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = ExtMonInstance.License.HwId.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingType = ExtMonInstance.License.DongleType.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ExtMonInstance.License.Customer.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ExtMonInstance.License.TimeLimit.Value;
-                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ExtMonInstance.License.DemoTimeLimit.Value;
+                    // copy values from extMonGroup to SNMP variables
+                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = licGroup.IsValid.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingSn = licGroup.Sn.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = licGroup.HwId.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingType = licGroup.DongleType.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = licGroup.Customer.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = licGroup.TimeLimit.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = licGroup.DemoTimeLimit.Value;
+                    
                     return true; // data was updated
                 }
                 finally
@@ -557,42 +576,56 @@ namespace iba.Processing
                         return true; // data was updated
                     }
 
-                    if (xmGroup.IsUpToDate())
+                    // check if SNMP data (values inside SNMP objects) is fresh enough
+                    if (xmGroup.SnmpTimeStamp.IsUpToDate)
                     {
-                        // data is fresh, no need to change something
+                        // is fresh; no need to copy it from extMonData or to request it from TaskManager
+                        // just return
                         return false; // data was NOT updated
                     }
 
-                    var man = TaskManager.Manager;
+                    // SNMP data is outdated
+                    // we should copy it from extMonGroup; 
 
-                    bool bSuccess;
-                    switch (xmGroup)
+                    // first check if extMonGroup itself is fresh enough
+                    if (!xmGroup.TimeStamp.IsUpToDate)
                     {
-                        case ExtMonData.GlobalCleanupDriveInfo driveInfo:
-                            bSuccess = man.ExtMonRefreshGlobalCleanupDriveInfo(driveInfo);
-                            break;
-                        case ExtMonData.JobInfoBase jobInfo:
-                            bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
-                            break;
-                        default:
-                            // should not happen
-                            Debug.Assert(false);
-                            bSuccess = false;
-                            break;
+                        // extMonGroup is not fresh enough;
+                        // request fresh data from TaskManager
+
+                        var man = TaskManager.Manager;
+
+                        bool bSuccess;
+                        switch (xmGroup)
+                        {
+                            case ExtMonData.GlobalCleanupDriveInfo driveInfo:
+                                bSuccess = man.ExtMonRefreshGlobalCleanupDriveInfo(driveInfo);
+                                break;
+                            case ExtMonData.JobInfoBase jobInfo:
+                                bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
+                                break;
+                            default:
+                                // should not happen
+                                Debug.Assert(false);
+                                bSuccess = false;
+                                break;
+                        }
+
+                        if (!bSuccess)
+                        {
+                            // should not happen; failed to update the data;
+                            // mark tree invalid to rebuild it later
+                            LogData.Data.Logger.Log(Level.Debug,
+                                $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
+                            ExtMonInstance.IsStructureValid = false;
+                            return false; // data was NOT updated
+                        }
                     }
 
-                    if (!bSuccess)
-                    {
-                        // should not happen; failed to update the data;
-                        // mark tree invalid to rebuild it later
-                        LogData.Data.Logger.Log(Level.Debug,
-                            $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
-                        ExtMonInstance.IsStructureValid = false;
-                        return false; // data was NOT updated
-                    }
+                    // memorize the moment when data was last copied to SNMP variables
+                    xmGroup.SnmpTimeStamp.PutStamp();
 
-                    // TaskManager has updated the group successfully;
-                    // copy it to snmp tree
+                    // copy values from extMonGroup to SNMP variables
                     foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
                         SetUserValue(xmv);
