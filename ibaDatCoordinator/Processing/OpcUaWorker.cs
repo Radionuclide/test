@@ -351,7 +351,7 @@ namespace iba.Processing
                 UaAppConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
 
             if (_opcUaData.Endpoints.Count < 1)
-                throw new InvalidOperationException("At least one endpoint should be configured");
+                throw new InvalidOperationException("At least one endpoint must be configured");
         }
 
         private void ApplySecurityPolicies()
@@ -385,7 +385,7 @@ namespace iba.Processing
             }
 
             if (policies.Count < 1)
-                throw new InvalidOperationException("At least one security policy should be enabled");
+                throw new InvalidOperationException("At least one security policy must be configured");
         }
 
         private void ApplyUserPolicies()
@@ -415,7 +415,7 @@ namespace iba.Processing
 
             if (policies.Count < 1)
             {
-                throw new InvalidOperationException("At least one logon policy should be enabled");
+                throw new InvalidOperationException("At least one logon policy must be configured");
             }
         }
 
