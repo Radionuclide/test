@@ -271,14 +271,19 @@ namespace iba.Processing.IbaOpcUa
             // ReSharper disable once RedundantCast
             Debug.Assert((NodeId)(uint)uaType == varState.DataType);
 
-            // set value
-            varState.Value = value;
+            object oldValue = varState.Value;
+            
+            if (!Equals(oldValue, value))
+            {
+                // set value
+                varState.Value = value;
 
-            // on success set status code
-            varState.StatusCode = StatusCodes.Good;
-
-            // call state-change handlers
-            varState.ClearChangeMasks(SystemContext, false);
+                // on success set status code
+                varState.StatusCode = StatusCodes.Good;
+                
+                // call state-change handlers
+                varState.ClearChangeMasks(SystemContext, false);
+            }
         }
 
         public void SetNullValueAndMarkAsDeleted(BaseDataVariableState varState)
