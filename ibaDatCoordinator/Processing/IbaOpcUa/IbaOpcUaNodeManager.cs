@@ -75,9 +75,7 @@ namespace iba.Processing.IbaOpcUa
         {
             lock (Lock)
             {
-                IList<IReference> references;
-
-                if (!externalReferences.TryGetValue(ObjectIds.ObjectsFolder, out references))
+                if (!externalReferences.TryGetValue(ObjectIds.ObjectsFolder, out IList<IReference> references))
                 {
                     externalReferences[ObjectIds.ObjectsFolder] = references = new List<IReference>();
                 }
@@ -136,18 +134,18 @@ namespace iba.Processing.IbaOpcUa
                     return null;
                 }
 
-                NodeState node;
-                
-                if (!PredefinedNodes.TryGetValue(nodeId, out node))
+                if (!PredefinedNodes.TryGetValue(nodeId, out NodeState node))
                 {
                     return null;
                 }
 
-                NodeHandle handle = new NodeHandle();
+                NodeHandle handle = new NodeHandle
+                {
+                    NodeId = nodeId,
+                    Node = node,
+                    Validated = true
+                };
 
-                handle.NodeId = nodeId;
-                handle.Node = node;
-                handle.Validated = true;
 
                 return handle;
             }
@@ -181,7 +179,7 @@ namespace iba.Processing.IbaOpcUa
         /// <summary>
         /// 1. Recursively destroys the node a its children.
         /// 2. Removes node from its parent.
-        /// 3. Destroys parent (and all superparents) if it is empty, unless the parent is a global root
+        /// 3. Destroys parent (and all superParents) if it is empty, unless the parent is a global root
         /// </summary>
         /// <param name="node">instance to be deleted</param>
         /// <param name="enableDeletingOfEmptyParents"></param>
@@ -203,7 +201,7 @@ namespace iba.Processing.IbaOpcUa
                 iv.ClearChangeMasks(SystemContext, false);
             }
 
-            // go on with deleting of our parent (and superparents) if it is empty
+            // go on with deleting of our parent (and superParents) if it is empty
             if (!enableDeletingOfEmptyParents) return;
 
             // if parent is null or is not a folder, then don't touch it
@@ -250,6 +248,7 @@ namespace iba.Processing.IbaOpcUa
             DeleteNodeRecursively(parentFolder, false);
         }
 
+        // ReSharper disable once InconsistentNaming
         private static readonly Dictionary<Type, BuiltInType> _typeDict = new Dictionary<Type, BuiltInType>
         {
             {typeof(string), BuiltInType.String},
@@ -269,6 +268,7 @@ namespace iba.Processing.IbaOpcUa
         {
             FormatEnum(ref value);
             var uaType = GetOpcUaType(value);
+            // ReSharper disable once RedundantCast
             Debug.Assert((NodeId)(uint)uaType == varState.DataType);
 
             // set value
@@ -310,7 +310,7 @@ namespace iba.Processing.IbaOpcUa
         }
 
         /// <summary> Replaces <see cref="NODE_ID_DELIMITER"/> with a replacement character
-        /// to avoid hierarchial problems </summary>
+        /// to avoid hierarchical problems </summary>
         public static string GetAdaptedBrowseName(string browseName)
         {
             return string.IsNullOrWhiteSpace(browseName) ?
@@ -365,10 +365,9 @@ namespace iba.Processing.IbaOpcUa
         }
 
         /// <summary> Creates a folder in the default address space.  </summary>
-        /// <param name="parent">Parent folder to create a node in</param>
+        /// <param name="parent"> Parent folder to create a node in </param>
         /// <param name="browseName"></param>
-        /// <param name="displayName"> // todo. kls. BrowseName, that will be also used for creation of NodeId and a default Display name;
-        /// All characters (including whitespace) except dot are allowed. For example, 'My variable'</param>
+        /// <param name="displayName"></param>
         /// <param name="description">OPC UA node description - any string or null</param>
         /// <returns>Returns a created Folder</returns>
         public FolderState CreateFolderAndItsNode(FolderState parent, string browseName, string displayName, string description) 
@@ -416,7 +415,7 @@ namespace iba.Processing.IbaOpcUa
             FormatEnum(ref initialValue);
 
             // get uaType automatically from initial value
-            var uaType = IbaOpcUaNodeManager.GetOpcUaType(initialValue);
+            var uaType = GetOpcUaType(initialValue);
             Debug.Assert(uaType != BuiltInType.Null);
 
             AssertNameCorrectnessAndUniqueness(parent, xmv.UaBrowseName);
