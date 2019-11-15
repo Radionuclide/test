@@ -48,6 +48,7 @@ namespace iba.Controls
             colHostname.ColumnEdit = item;
 
 #if DEBUG
+            buttonShowHideDebug.Visible = true;
             gbDebug.Visible = true;
             gbDebug.Dock = DockStyle.Top;
 #endif
@@ -1411,7 +1412,12 @@ namespace iba.Controls
         {
             RebuildObjectsTree();
         }
-        
+
+        private void buttonHide_Click(object sender, EventArgs e)
+        {
+            gbDebug.Visible ^= true;
+        }
+
         #endregion
 
     }

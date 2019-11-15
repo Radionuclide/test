@@ -103,6 +103,7 @@
             this.buttonRebuildTree = new System.Windows.Forms.Button();
             this.tvObjects = new System.Windows.Forms.TreeView();
             this.panelFooterWithButtons = new System.Windows.Forms.Panel();
+            this.buttonShowHideDebug = new System.Windows.Forms.Button();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
@@ -742,10 +743,19 @@
             // 
             // panelFooterWithButtons
             // 
+            this.panelFooterWithButtons.Controls.Add(this.buttonShowHideDebug);
             this.panelFooterWithButtons.Controls.Add(this.buttonConfigurationReset);
             this.panelFooterWithButtons.Controls.Add(this.buttonConfigurationApply);
             resources.ApplyResources(this.panelFooterWithButtons, "panelFooterWithButtons");
             this.panelFooterWithButtons.Name = "panelFooterWithButtons";
+            // 
+            // buttonShowHideDebug
+            // 
+            this.buttonShowHideDebug.BackColor = System.Drawing.Color.MistyRose;
+            resources.ApplyResources(this.buttonShowHideDebug, "buttonShowHideDebug");
+            this.buttonShowHideDebug.Name = "buttonShowHideDebug";
+            this.buttonShowHideDebug.UseVisualStyleBackColor = false;
+            this.buttonShowHideDebug.Click += new System.EventHandler(this.buttonHide_Click);
             // 
             // buttonConfigurationReset
             // 
@@ -1414,5 +1424,6 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
         private System.Windows.Forms.GroupBox gbStatus;
+        private System.Windows.Forms.Button buttonShowHideDebug;
     }
 }

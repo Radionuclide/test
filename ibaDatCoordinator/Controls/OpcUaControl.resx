@@ -997,6 +997,30 @@
   <data name="&gt;&gt;tvObjects.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="buttonShowHideDebug.Location" type="System.Drawing.Point, System.Drawing">
+    <value>344, 3</value>
+  </data>
+  <data name="buttonShowHideDebug.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 23</value>
+  </data>
+  <data name="buttonShowHideDebug.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="buttonShowHideDebug.Text" xml:space="preserve">
+    <value>Show/Hide Debug info</value>
+  </data>
+  <data name="&gt;&gt;buttonShowHideDebug.Name" xml:space="preserve">
+    <value>buttonShowHideDebug</value>
+  </data>
+  <data name="&gt;&gt;buttonShowHideDebug.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonShowHideDebug.Parent" xml:space="preserve">
+    <value>panelFooterWithButtons</value>
+  </data>
+  <data name="&gt;&gt;buttonShowHideDebug.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="buttonConfigurationReset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -1025,7 +1049,7 @@
     <value>panelFooterWithButtons</value>
   </data>
   <data name="&gt;&gt;buttonConfigurationReset.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="buttonConfigurationApply.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -1058,7 +1082,7 @@
     <value>panelFooterWithButtons</value>
   </data>
   <data name="&gt;&gt;buttonConfigurationApply.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="panelFooterWithButtons.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Bottom</value>
