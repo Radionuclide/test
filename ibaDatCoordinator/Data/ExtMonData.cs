@@ -1215,7 +1215,7 @@ namespace iba.Data
             /// <summary> Oid General.5 </summary>
             public readonly ExtMonVariable<uint> FailedCount;
             
-            /// <summary> Oid General.(max+1) (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>) </summary>
+            /// <summary> Oid General.30 (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>) </summary>
             public ExtMonVariable<int> UpTime;
             /// <summary> Oid General.32767 (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>)</summary>
             public ExtMonVariable<int> Lifebeat;
@@ -1282,11 +1282,9 @@ namespace iba.Data
             {
                 UpTime = FolderGeneral.AddChildVariable<int>(
                     @"Up time", @"UpTime",
-                    @"A special value that should be continuously changing if the job is running." +
-                    @" Is equal to time in seconds elapsed since the job start" +
-                    @" (and -1 if the job is stopped or disabled).",
-                    SNMP_AUTO_LEAST_ID);
-
+                    @"Time in seconds elapsed since the job start" +
+                    @" (-1 if the job is stopped or disabled).",
+                    30); 
                 Lifebeat = FolderGeneral.AddChildVariable<int>(
                     @"Lifebeat", @"Lifebeat",
                     @"A special value that should be continuously changing, " +
