@@ -329,14 +329,12 @@ namespace iba.Processing
 
         public int GetZoomAreaBegin(int XType)
         {
-            return 0;
-           // return analyzer.GetZoomAreaBegin(XType);
+           return analyzer.GetZoomAreaBegin(XType);
         }
 
         public int GetZoomAreaEnd(int XType)
         {
-            return 0;
-            // return analyzer.GetZoomAreaEnd(XType);
+            return analyzer.GetZoomAreaEnd(XType);
         }
 
         public void SetFilePassword(string filename, string password )
@@ -361,9 +359,50 @@ namespace iba.Processing
             }
             catch //might be other version than analyzer V7;
             {
-
             }
+		}
 
-        }
-    }
+		public void EvaluateToArray(string expression, int XType, out double pTimebase, out double xoffset, out object pData)
+		{
+			analyzer.EvaluateToArray(expression, XType, out pTimebase, out xoffset, out pData);
+		}
+
+		public uint GetMarkerColor(int index)
+		{
+			return analyzer.GetMarkerColor(index);
+		}
+
+		public void UpdateOverlay()
+		{
+			analyzer.UpdateOverlay();
+		}
+
+		public dynamic GetSignalTree(int filter)
+		{
+			return analyzer.GetSignalTree(filter);
+		}
+
+		public void SignalTreeImageData(int index, out object pData)
+		{
+			analyzer.SignalTreeImageData(index, out pData);
+		}
+
+		public int SignalTreeImageCount
+		{ get => analyzer.SignalTreeImageCount; set => throw new NotImplementedException(); }
+
+		public void EvaluateToStringArray(string expression, int XType, out object pTimeStamps, out object pStrings)
+		{
+			analyzer.EvaluateToStringArray(expression, XType, out pTimeStamps, out pStrings);
+		}
+
+		public void EvaluateToNEArray(string expression, int XType, out object pTimeStamps, out object pValues)
+		{
+			analyzer.EvaluateToNEArray(expression, XType, out pTimeStamps, out pValues);
+		}
+
+		public void SaveAnalysis(string file)
+		{
+			analyzer.SaveAnalysis(file);
+		}
+	}
 }

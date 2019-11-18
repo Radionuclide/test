@@ -315,9 +315,9 @@ Function CheckRequirements
   Pop $1
 
   ;Check if .NET framework 4.0 full is installed
-  ${VersionCompare} $0 "4.5.2" $2
+  ${VersionCompare} $0 "4.6.0" $2
   ${If} $2 == 2
-    ;Framework 4.5.2 not found --> stop installer
+    ;Framework 4.6.0 not found --> stop installer
     MessageBox MB_OK|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_FRAMEWORK_MISSING)
     Quit
   ${EndIf}  
@@ -1234,7 +1234,7 @@ LangString DESC_DATCOOR_CLIENT           ${LANG_ENGLISH} "ibaDatCoordinator Clie
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_ENGLISH} "ibaDatCoordinator cannot be installed: This operating system is not supported."
 LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_ENGLISH} "This operating system is no longer supported. Would you like to continue the installation anyway?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_ENGLISH} "You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 4.5.2 is not installed. Please install this before running the ibaPDA installer. The .NET framework can be found on the $\"iba Software & Manuals$\" DVD or it can be downloaded via windows update."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 4.6.0 is not installed. Please install this before running the ibaPDA installer. The .NET framework can be found on the $\"iba Software & Manuals$\" DVD or it can be downloaded via windows update."
 LangString TEXT_UNINSTALL                 ${LANG_ENGLISH} "Uninstall ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_ENGLISH} "${PRODUCT_NAME} v${PRODUCT_VERSION} is already installed. Do you wish to reinstall?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_ENGLISH} "An older version of ${PRODUCT_NAME} is installed. Do you wish to upgrade to version ${PRODUCT_VERSION}?"
@@ -1274,7 +1274,7 @@ LangString DESC_DATCOOR_CLIENT           ${LANG_GERMAN} "ibaDatCoordinator Clien
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_GERMAN}  "ibaDatCoordinator kann nicht installiert werden: Das Betriebssystem wird nicht unterstützt."
 LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_GERMAN}  "Das Betriebssystem wird nicht mehr unterstützt. Möchten Sie mit der Installation trotzdem fortfahren?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_GERMAN} "Sie besitzen keine ausreichenden Berechtigungen, um diese Installation für alle Benutzer dieses Computers auszuführen. Melden Sie sich als Administrator an, und wiederholen Sie diese Installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN}  "Das .NET Framework, Version 4.5.2, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaPDA beginnen. Das .NET Framework finden Sie auf der DVD $\"iba Software & Manuals$\" oder als Download via Windows-Update."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN}  "Das .NET Framework, Version 4.6.0, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaPDA beginnen. Das .NET Framework finden Sie auf der DVD $\"iba Software & Manuals$\" oder als Download via Windows-Update."
 LangString TEXT_UNINSTALL                 ${LANG_GERMAN} "${PRODUCT_NAME} deinstallieren"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_GERMAN} "${PRODUCT_NAME} v${PRODUCT_VERSION} ist bereits installiert. Wollen Sie die Neuinstallation trotzdem durchführen?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_GERMAN} "Eine ältere Version von ${PRODUCT_NAME} ist bereits installiert. Wollen Sie ein upgrade auf die neuere Version ${PRODUCT_VERSION} durchführen?"
@@ -1314,7 +1314,7 @@ LangString DESC_DATCOOR_CLIENT            ${LANG_FRENCH} "ibaDatCoordinator Clie
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH}  "ibaDatCoordinator ne peut pas être installé: Le système d'exploitation n'est pas supporté."
 LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_FRENCH}  "Le système d'exploitation n'est plus supporté. Voulez-vous quand même continuer l'installation?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_FRENCH} "Vous n'avez pas assez de privilèges pour effectuer cette installation pour tous les utilisateurs de cet ordinateur. Connectez-vous en tant qu'administrateur et réessayez cette installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH}  "Le .NET framework version 4.5.2 n'est pas installée. Veuillez installer ceci avant d' excecuter l'installateur d'ibaPDA. Le .NET framework peut être trouvé sur le DVD $\"iba Software & Manuals$\" ou il peut être téléchargé par l'intermédiaire de Windows Update."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH}  "Le .NET framework version 4.6.0 n'est pas installée. Veuillez installer ceci avant d' excecuter l'installateur d'ibaPDA. Le .NET framework peut être trouvé sur le DVD $\"iba Software & Manuals$\" ou il peut être téléchargé par l'intermédiaire de Windows Update."
 LangString TEXT_UNINSTALL                 ${LANG_FRENCH} "Désinstaller ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_FRENCH} "${PRODUCT_NAME} v${PRODUCT_VERSION} est déj?install? Souhaitez-vous procéder ?une réinstallation?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_FRENCH} "Une ancienne version de ${PRODUCT_NAME} est déj?installée. Souhaitez-vous une mise ?niveau ?la nouvelle version ${PRODUCT_VERSION}?"
