@@ -797,8 +797,7 @@ namespace iba.Processing
         /// <returns> true on success and false on error </returns>
         public bool ExtMonRebuildObjectsData()
         {
-            Debug.WriteLine($"{DateTime.Now}. TaskManager. RebuildTree.");
-   
+            ExtMonData.DebugWriteLite(nameof(TaskManager), "RebuildTree");
             var od = ExtMonData.Instance;
             try
             {

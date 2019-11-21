@@ -280,7 +280,8 @@ namespace iba.Processing
 
         public bool RebuildTree()
         {
-            Debug.WriteLine($"{DateTime.Now}. SNMP. RebuildTree.");
+            ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (start)");
+
 
             var man = TaskManager.Manager;
             if (man == null || IbaSnmp == null)
@@ -290,6 +291,7 @@ namespace iba.Processing
 
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
+                ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (after lock)");
                 try
                 {
                     IbaSnmp.DeleteAllUserValues();
@@ -321,6 +323,7 @@ namespace iba.Processing
                 }
                 finally
                 {
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (lock exit)");
                     Monitor.Exit(LockObject);
                 }
             }
@@ -551,6 +554,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "Failed to acquire a lock when updating license");
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(SnmpWorker)}. Error acquiring lock when updating license, {ExtMonData.GetCurrentThreadString()}.");
                 }
@@ -648,6 +652,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
                 }

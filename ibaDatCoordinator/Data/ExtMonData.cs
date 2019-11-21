@@ -187,7 +187,7 @@ namespace iba.Data
             _treeValidatorTimer.Enabled = true;
             _treeValidatorTimer.Elapsed += (sender, args) =>
             {
-                Debug.WriteLine($"{DateTime.Now}. {nameof(ExtMonData)}.{nameof(_treeValidatorTimer)}.Elapsed.");
+                ExtMonData.DebugWriteLite(nameof(ExtMonData), $"{nameof(_treeValidatorTimer)}.Elapsed");
                 RebuildTreeIfItIsInvalid();
 
                 // best option to test why timer is needed (additionally to rebuild on first request):

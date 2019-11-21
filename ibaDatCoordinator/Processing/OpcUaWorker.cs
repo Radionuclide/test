@@ -102,6 +102,7 @@ namespace iba.Processing
                 // change status from initial (errored) to stopped
                 Status = ExtMonWorkerStatus.Stopped;
 
+                ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "Init");
                 // start server (if it is enabled), update status, write to log
                 RestartServer();
 
@@ -212,7 +213,8 @@ namespace iba.Processing
 
             // start server
             UaApplication.Start(IbaOpcUaServer).Wait();
-            
+
+            ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "Start Server");
             RebuildTree(); 
 
             // handle resetting group list on every change of monitored items
@@ -955,7 +957,7 @@ namespace iba.Processing
 
         public bool RebuildTree()
         {
-            Debug.WriteLine($"{DateTime.Now}. OPC UA. RebuildTree.");
+            ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (start)");
 
             var man = TaskManager.Manager;
             if (man == null || UaAppConfiguration == null || IbaOpcUaServer?.IbaOpcUaNodeManager == null)
@@ -966,6 +968,7 @@ namespace iba.Processing
 
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
+                ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (after lock)");
                 try
                 {
                     // reset currently monitored items to ensure they don't cache any outdated items
@@ -1013,6 +1016,7 @@ namespace iba.Processing
                 }
                 finally
                 {
+                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (lock exit)");
                     Monitor.Exit(LockObject);
                 }
             }
