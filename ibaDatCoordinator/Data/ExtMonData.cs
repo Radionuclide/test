@@ -206,8 +206,8 @@ namespace iba.Data
         /// <value>false</value> if it is valid and has not been modified by this call.</returns>
         public bool RebuildTreeIfItIsInvalid()
         {
-            // here I use double than normal timeout to give priority over other locks
-            if (Monitor.TryEnter(LockObject, LockTimeout * 2))
+            // here I use a multiple of the normal timeout to give an overwhelming priority over request-item locks
+            if (Monitor.TryEnter(LockObject, LockTimeout * 20))
             {
                 try
                 {

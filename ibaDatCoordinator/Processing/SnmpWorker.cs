@@ -289,7 +289,9 @@ namespace iba.Processing
                 return false; // rebuild failed
             }
 
-            if (Monitor.TryEnter(LockObject, LockTimeout))
+            ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (before lock)");
+            // here I use a multiple of the normal timeout to give an overwhelming priority over request-item locks
+            if (Monitor.TryEnter(LockObject, LockTimeout * 20))
             {
                 ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (after lock)");
                 try
