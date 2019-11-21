@@ -107,13 +107,6 @@ namespace iba.Processing
 
         public string StatusString { get; private set; }
 
-        public static string GetCurrentThreadString()
-        {
-            var thr = Thread.CurrentThread;
-            string thrNameOrId = String.IsNullOrWhiteSpace(thr.Name) ? thr.ManagedThreadId.ToString() : thr.Name;
-            return $"thr=[{thrNameOrId}]";
-        }
-
         public void RestartAgent()
         {
             var oldStatus = Status;
@@ -338,7 +331,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(SnmpWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -559,7 +552,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(SnmpWorker)}. Error acquiring lock when updating license, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}. Error acquiring lock when updating license, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -656,7 +649,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 

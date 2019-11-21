@@ -206,13 +206,6 @@ namespace iba.Processing
 
         public string StatusString { get; private set; }
 
-        public static string GetCurrentThreadString()
-        {
-            var thr = Thread.CurrentThread;
-            string thrNameOrId = String.IsNullOrWhiteSpace(thr.Name) ? thr.ManagedThreadId.ToString() : thr.Name;
-            return $"thr=[{thrNameOrId}]";
-        }
-
         private void StartServer()
         {
             ApplyApplicationConfiguration();
@@ -1030,7 +1023,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(OpcUaWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
+                        $"{nameof(OpcUaWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -1271,7 +1264,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {GetCurrentThreadString()}.");
+                        $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -1389,7 +1382,7 @@ namespace iba.Processing
                 try
                 {
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Error acquiring lock, {GetCurrentThreadString()}.");
+                        $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Error acquiring lock, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
             }

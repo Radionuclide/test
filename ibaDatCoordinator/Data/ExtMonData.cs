@@ -33,6 +33,7 @@ namespace iba.Data
 
         #endregion
 
+
         #region Body
 
         #region Fields and Props
@@ -432,11 +433,22 @@ namespace iba.Data
 
             return str.TrimEnd(',', ' ');
         }
-        
-        #endregion
+
+        public static string GetCurrentThreadString()
+        {
+            var thr = Thread.CurrentThread;
+            string thrNameOrId = String.IsNullOrWhiteSpace(thr.Name) ? thr.ManagedThreadId.ToString() : thr.Name;
+            return $"thr=[{thrNameOrId}]";
+        }
+
+        public static void DebugWriteLite(string sender, string msg)
+        {
+            Debug.WriteLine($"{DateTime.Now}. {GetCurrentThreadString()}. {sender}. {msg}");
+        }
 
         #endregion
 
+        #endregion
 
 
         #region Nested classes
