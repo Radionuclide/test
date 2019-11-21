@@ -115,12 +115,12 @@
             this.cbSecurity128 = new System.Windows.Forms.CheckBox();
             this.cbSecurityNone = new System.Windows.Forms.CheckBox();
             this.gbLogon = new System.Windows.Forms.GroupBox();
+            this.tbPassword = new iba.Controls.PasswordEditWithConfirmation();
             this.labelPassword = new System.Windows.Forms.Label();
             this.cbLogonAnonymous = new System.Windows.Forms.CheckBox();
             this.cbLogonUserName = new System.Windows.Forms.CheckBox();
             this.cbLogonCertificate = new System.Windows.Forms.CheckBox();
             this.tbUserName = new System.Windows.Forms.TextBox();
-            this.tbPassword = new System.Windows.Forms.TextBox();
             this.gbEndpoints = new System.Windows.Forms.GroupBox();
             this.gridCtrlEndpoints = new DevExpress.XtraGrid.GridControl();
             this.gridViewEndpoints = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -847,14 +847,22 @@
             // gbLogon
             // 
             resources.ApplyResources(this.gbLogon, "gbLogon");
+            this.gbLogon.Controls.Add(this.tbPassword);
             this.gbLogon.Controls.Add(this.labelPassword);
             this.gbLogon.Controls.Add(this.cbLogonAnonymous);
             this.gbLogon.Controls.Add(this.cbLogonUserName);
             this.gbLogon.Controls.Add(this.cbLogonCertificate);
             this.gbLogon.Controls.Add(this.tbUserName);
-            this.gbLogon.Controls.Add(this.tbPassword);
             this.gbLogon.Name = "gbLogon";
             this.gbLogon.TabStop = false;
+            // 
+            // tbPassword
+            // 
+            resources.ApplyResources(this.tbPassword, "tbPassword");
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Password = "";
+            this.tbPassword.ReadOnly = false;
+            this.tbPassword.Tooltip = null;
             // 
             // labelPassword
             // 
@@ -884,11 +892,6 @@
             // 
             resources.ApplyResources(this.tbUserName, "tbUserName");
             this.tbUserName.Name = "tbUserName";
-            // 
-            // tbPassword
-            // 
-            resources.ApplyResources(this.tbPassword, "tbPassword");
-            this.tbPassword.Name = "tbPassword";
             // 
             // gbEndpoints
             // 
@@ -1307,7 +1310,6 @@
         private System.Windows.Forms.CheckBox cbEnabled;
         private System.Windows.Forms.Button buttonConfigurationReset;
         private System.Windows.Forms.Button buttonConfigurationApply;
-        private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.TextBox tbUserName;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Timer timerRefreshStatus;
@@ -1425,5 +1427,6 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit1;
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.Button buttonShowHideDebug;
+        private PasswordEditWithConfirmation tbPassword;
     }
 }
