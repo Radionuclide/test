@@ -321,6 +321,7 @@ namespace iba.Processing
                     // ibaRoot.DatCoord.Product.5 - Event jobs
                     BuildFolderRecursively(ExtMonInstance.FolderEventBasedJobs);
 
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (success)");
                     return true; // rebuilt successfully
                 }
                 finally
@@ -335,8 +336,11 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(SnmpWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {ExtMonData.GetCurrentThreadString()}.");
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "WARNING! Failed to acquire a lock when rebuilding the tree");
+                    // 'Level.Warning' because we have a big timeout here, so, normally it should not happen 
+                    // (though not critical, but may indicate that something is wrong) 
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"{nameof(SnmpWorker)}. Failed to acquire a lock when rebuilding the tree, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -558,7 +562,7 @@ namespace iba.Processing
                 {
                     ExtMonData.DebugWriteLite(nameof(SnmpWorker), "Failed to acquire a lock when updating license");
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(SnmpWorker)}. Error acquiring lock when updating license, {ExtMonData.GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}. Failed to acquire a lock when updating license, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -656,7 +660,7 @@ namespace iba.Processing
                 {
                     ExtMonData.DebugWriteLite(nameof(SnmpWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}. Failed to acquire a lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 

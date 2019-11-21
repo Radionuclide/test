@@ -229,8 +229,11 @@ namespace iba.Data
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(ExtMonData)}. Error acquiring lock when checking whether tree is valid.");
+                    DebugWriteLite(nameof(ExtMonData), "WARNING! Failed to acquire a lock when checking whether tree is valid");
+                    // 'Level.Warning' because we have a big timeout here, so, normally it should not happen 
+                    // (though not critical, but may indicate that something is wrong)
+                    LogData.Data.Logger.Log(Level.Warning,
+                    $"{nameof(ExtMonData)}. Failed to acquire a lock when checking whether tree is valid.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -283,10 +286,16 @@ namespace iba.Data
             // failed to acquire a lock
             try
             {
-                LogData.Data.Logger.Log(Level.Debug,
-                    $"{nameof(ExtMonData)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree.");
+                // Level.Exception because normally the function is called only from RebuildTreeIfItIsInvalid(),
+                // so lock should ALWAYS be ours at this point;
+                // if we are here, then something is wrong
+                LogData.Data.Logger.Log(Level.Exception,
+                    $"{nameof(ExtMonData)}.{nameof(RebuildTree)}. Failed to acquire a lock when rebuilding the tree.");
             }
             catch { /* logging is not critical */ }
+
+            // should not happen (see comments above)
+            Debug.Assert(false);
 
             return false; // rebuild failed
         }

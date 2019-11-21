@@ -1013,7 +1013,8 @@ namespace iba.Processing
 
                     // delete all empty folders. (section folders will be preserved even if empty)
                     NodeManager.DeleteEmptySubfolders();
-                    
+
+                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (success)");
                     return true; // rebuilt successfully
                 }
                 finally
@@ -1028,8 +1029,11 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(OpcUaWorker)}.{nameof(RebuildTree)}. Error acquiring lock when rebuilding the tree, {ExtMonData.GetCurrentThreadString()}.");
+                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "WARNING! Failed to acquire a lock when rebuilding the tree");
+                    // 'Level.Warning' because we have a big timeout here, so, normally it should not happen 
+                    // (though not critical, but may indicate that something is wrong) 
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"{nameof(OpcUaWorker)}. Failed to acquire a lock when rebuilding the tree, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -1269,8 +1273,9 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
+                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Error acquiring lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
+                        $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Failed to acquire a lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
 
@@ -1387,8 +1392,10 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
+                    // not critical; will do this on next tick
+                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), $"{nameof(OnMonitoringTimerTick)}. Failed to acquire a lock.");
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Error acquiring lock, {ExtMonData.GetCurrentThreadString()}.");
+                        $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Failed to acquire a lock. {ExtMonData.GetCurrentThreadString()}.");
                 }
                 catch { /* logging is not critical */ }
             }
