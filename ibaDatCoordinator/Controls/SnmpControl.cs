@@ -31,10 +31,6 @@ namespace iba.Controls
 
         private void SnmpControl_Load(object sender, EventArgs e)
         {
-            // bind password text boxes to their show/hide buttons
-            buttonShowPassword.Tag = tbPassword;
-            buttonShowEncryptionKey.Tag = tbEncryptionKey;
-
             ImageList pdaList = new ImageList
             {
                 ImageSize = new Size(16, 16),
@@ -237,37 +233,6 @@ namespace iba.Controls
             tbEncryptionKey.Text = v3S.EncryptionKey;
             cmbAuthentication.SelectedIndex = (int) v3S.AuthAlgorithm;
             cmbEncryption.SelectedIndex = (int) v3S.EncrAlgorithm;
-        }
-
-        /// <summary>
-        /// Shows password in a bound TextBox. 
-        /// Before using, first connect your Button and TextBox like:
-        /// "showHideButton.Tag = TextBoxToBeControlled"
-        /// </summary>
-        private void handler_ShowPassword(object sender, MouseEventArgs e)
-        {
-            TextBox tb = (sender as Button)?.Tag as TextBox;
-            if (tb == null)
-            {
-                return;
-            }
-            tb.PasswordChar = '\0';
-        }
-
-
-        /// <summary>
-        /// Hides password in a bound TextBox. 
-        /// Before using, first connect your Button and TextBox like:
-        /// "showHideButton.Tag = TextBoxToBeControlled"
-        /// </summary>
-        private void handler_HidePassword(object sender, MouseEventArgs e)
-        {
-            TextBox tb = (sender as Button)?.Tag as TextBox;
-            if (tb == null)
-            {
-                return;
-            }
-            tb.PasswordChar = '*';
         }
 
         #endregion

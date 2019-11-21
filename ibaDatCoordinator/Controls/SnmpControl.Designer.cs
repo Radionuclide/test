@@ -59,15 +59,11 @@
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.buttonShowPassword = new System.Windows.Forms.Button();
-            this.buttonShowEncryptionKey = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.cmbEncryption = new System.Windows.Forms.ComboBox();
             this.cmbAuthentication = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.tbPassword = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.tbEncryptionKey = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tbUserName = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -84,6 +80,8 @@
             this.tabObjects = new Crownwood.DotNetMagic.Controls.TabPage();
             this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
             this.gbStatus = new System.Windows.Forms.GroupBox();
+            this.tbEncryptionKey = new iba.Controls.PasswordEditWithConfirmation();
+            this.tbPassword = new iba.Controls.PasswordEditWithConfirmation();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
@@ -310,26 +308,6 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
-            // buttonShowPassword
-            // 
-            resources.ApplyResources(this.buttonShowPassword, "buttonShowPassword");
-            this.buttonShowPassword.Image = global::iba.Properties.Resources.Eye;
-            this.buttonShowPassword.Name = "buttonShowPassword";
-            this.buttonShowPassword.TabStop = false;
-            this.buttonShowPassword.UseVisualStyleBackColor = true;
-            this.buttonShowPassword.MouseDown += new System.Windows.Forms.MouseEventHandler(this.handler_ShowPassword);
-            this.buttonShowPassword.MouseUp += new System.Windows.Forms.MouseEventHandler(this.handler_HidePassword);
-            // 
-            // buttonShowEncryptionKey
-            // 
-            resources.ApplyResources(this.buttonShowEncryptionKey, "buttonShowEncryptionKey");
-            this.buttonShowEncryptionKey.Image = global::iba.Properties.Resources.Eye;
-            this.buttonShowEncryptionKey.Name = "buttonShowEncryptionKey";
-            this.buttonShowEncryptionKey.TabStop = false;
-            this.buttonShowEncryptionKey.UseVisualStyleBackColor = true;
-            this.buttonShowEncryptionKey.MouseDown += new System.Windows.Forms.MouseEventHandler(this.handler_ShowPassword);
-            this.buttonShowEncryptionKey.MouseUp += new System.Windows.Forms.MouseEventHandler(this.handler_HidePassword);
-            // 
             // label7
             // 
             resources.ApplyResources(this.label7, "label7");
@@ -359,20 +337,10 @@
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
-            // tbPassword
-            // 
-            resources.ApplyResources(this.tbPassword, "tbPassword");
-            this.tbPassword.Name = "tbPassword";
-            // 
             // label10
             // 
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
-            // 
-            // tbEncryptionKey
-            // 
-            resources.ApplyResources(this.tbEncryptionKey, "tbEncryptionKey");
-            this.tbEncryptionKey.Name = "tbEncryptionKey";
             // 
             // label11
             // 
@@ -471,14 +439,12 @@
             // gbV3Security
             // 
             resources.ApplyResources(this.gbV3Security, "gbV3Security");
+            this.gbV3Security.Controls.Add(this.tbPassword);
+            this.gbV3Security.Controls.Add(this.tbEncryptionKey);
             this.gbV3Security.Controls.Add(this.cmbAuthentication);
             this.gbV3Security.Controls.Add(this.tbUserName);
-            this.gbV3Security.Controls.Add(this.buttonShowPassword);
-            this.gbV3Security.Controls.Add(this.buttonShowEncryptionKey);
             this.gbV3Security.Controls.Add(this.label12);
-            this.gbV3Security.Controls.Add(this.tbPassword);
             this.gbV3Security.Controls.Add(this.label11);
-            this.gbV3Security.Controls.Add(this.tbEncryptionKey);
             this.gbV3Security.Controls.Add(this.label9);
             this.gbV3Security.Controls.Add(this.cmbEncryption);
             this.gbV3Security.Controls.Add(this.label13);
@@ -520,6 +486,7 @@
             this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabDiag.Name = "tabDiag";
             this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.Selected = false;
             this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -529,6 +496,22 @@
             resources.ApplyResources(this.gbStatus, "gbStatus");
             this.gbStatus.Name = "gbStatus";
             this.gbStatus.TabStop = false;
+            // 
+            // tbEncryptionKey
+            // 
+            resources.ApplyResources(this.tbEncryptionKey, "tbEncryptionKey");
+            this.tbEncryptionKey.Name = "tbEncryptionKey";
+            this.tbEncryptionKey.Password = "";
+            this.tbEncryptionKey.ReadOnly = false;
+            this.tbEncryptionKey.Tooltip = null;
+            // 
+            // tbPassword
+            // 
+            resources.ApplyResources(this.tbPassword, "tbPassword");
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Password = "";
+            this.tbPassword.ReadOnly = false;
+            this.tbPassword.Tooltip = null;
             // 
             // SnmpControl
             // 
@@ -571,15 +554,11 @@
         private System.Windows.Forms.CheckBox cbEnabled;
         private System.Windows.Forms.Button buttonConfigurationApply;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button buttonShowPassword;
-        private System.Windows.Forms.Button buttonShowEncryptionKey;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cmbEncryption;
         private System.Windows.Forms.ComboBox cmbAuthentication;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox tbEncryptionKey;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox tbUserName;
         private System.Windows.Forms.Label label12;
@@ -622,5 +601,7 @@
         private System.Windows.Forms.GroupBox gbV3Security;
         private System.Windows.Forms.GroupBox gbDateFormat;
         private System.Windows.Forms.GroupBox gbStatus;
+        private PasswordEditWithConfirmation tbPassword;
+        private PasswordEditWithConfirmation tbEncryptionKey;
     }
 }
