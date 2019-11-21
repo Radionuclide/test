@@ -13,6 +13,7 @@ using iba.Processing.IbaOpcUa;
 using iba.Properties;
 using Opc.Ua;
 using Opc.Ua.Configuration;
+using Timer = System.Timers.Timer;
 
 namespace iba.Processing
 {
@@ -1340,7 +1341,7 @@ namespace iba.Processing
 
         #region Monitored itmes handling
 
-        private readonly System.Timers.Timer _monitoringTimer = new System.Timers.Timer { Enabled = false };
+        private readonly Timer _monitoringTimer = new Timer { Enabled = false };
 
         private void InitializeMonitoringTimer()
         {

@@ -20,6 +20,7 @@ namespace iba.Data
     {
         #region Static / Singleton
 
+        // ReSharper disable once InconsistentNaming
         private static readonly Lazy<ExtMonData> _lazyInstance = new Lazy<ExtMonData>();
         public static ExtMonData Instance => _lazyInstance.Value;
 
@@ -75,10 +76,12 @@ namespace iba.Data
             InitializeTreeValidator();
 
             FolderRoot = new ExtMonFolder(null,
-                @"ExtMonDataRoot", @"ExtMonDataRoot", @"ExtMonDataRoot", 0);
+                @"ExtMonDataRoot", @"ExtMonDataRoot", @"ExtMonDataRoot", 0)
+            {
+                UaBrowseName = "IbaDatCoordinator"
+            };
             // FolderRoot.SnmpFullMibName = ; // is not used
             // FolderRoot.SnmpFullOid = ; // is not used
-            FolderRoot.UaBrowseName = "IbaDatCoordinator";
 
             FolderRoot.Children.Add(License = new LicenseInfo(FolderRoot));
 
@@ -187,7 +190,7 @@ namespace iba.Data
             _treeValidatorTimer.Enabled = true;
             _treeValidatorTimer.Elapsed += (sender, args) =>
             {
-                ExtMonData.DebugWriteLite(nameof(ExtMonData), $"{nameof(_treeValidatorTimer)}.Elapsed");
+                DebugWriteLite(nameof(ExtMonData), $"{nameof(_treeValidatorTimer)}.Elapsed");
                 RebuildTreeIfItIsInvalid();
 
                 // best option to test why timer is needed (additionally to rebuild on first request):
@@ -308,8 +311,10 @@ namespace iba.Data
         public GlobalCleanupDriveInfo AddNewGlobalCleanup(string driveName)
         {
             var driveInfo = new GlobalCleanupDriveInfo(
-                FolderGlobalCleanup, (uint)FolderGlobalCleanup.Children.Count + 1, driveName);
-            driveInfo.UaBrowseName = $@"Drive_{driveName.Substring(0, 1)}:";
+                FolderGlobalCleanup, (uint) FolderGlobalCleanup.Children.Count + 1, driveName)
+            {
+                UaBrowseName = $@"Drive_{driveName.Substring(0, 1)}:"
+            };
             FolderGlobalCleanup.Children.Add(driveInfo);
             // check consistency between mib name and oid
             Debug.Assert(driveInfo.SnmpFullMibName.Contains($"Drive{driveInfo.SnmpLeastId}"));
@@ -1055,6 +1060,7 @@ namespace iba.Data
                 // determine parent job
                 Debug.Assert(parent != null); // "job.tasks" folder
                 Debug.Assert(parent.Parent != null); // job
+                // ReSharper disable once ConstantConditionalAccessQualifier (because of Debug.Assert)
                 ParentJob = parent?.Parent as JobInfoBase;
                 Debug.Assert(ParentJob != null);
 
