@@ -6,6 +6,7 @@ using DevExpress.XtraEditors.Popup;
 using DevExpress.XtraEditors.Registrator;
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraEditors.ViewInfo;
+using iba.HD.Client.Interfaces;
 using iba.Utility;
 using Microsoft.Win32;
 using System;
@@ -237,6 +238,8 @@ namespace iba.Controls
             Controls.Add(treeView);
 
             manager.SourceUpdated += Reset;
+            this.treeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.m_configTreeView_ItemDrag);
+
         }
         #endregion
 
@@ -601,6 +604,11 @@ namespace iba.Controls
             return null;
         }
 
+        public bool ContainsNode(string id)
+        {
+            return FindNode(id) != null;
+        }
+
         public Image GetImage(string id)
         {
             TreeNode trNode = FindNode(id);
@@ -644,6 +652,21 @@ namespace iba.Controls
             CustomDoubleClick?.Invoke(this, "");
         }
         #endregion
+
+
+
+        private void m_configTreeView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            // Move the dragged node when the left mouse button is used.
+            if (e.Button == MouseButtons.Left)
+            {
+                TreeNode draggedNode = (TreeNode)e.Item;
+                AfterSelect?.Invoke(this, draggedNode.Text);
+                SelectedChannel = draggedNode.Text;
+                if (!(draggedNode.Tag is NewConfigurationTreeItemDataBase) || draggedNode.Tag == null)
+                    DoDragDrop(e.Item, DragDropEffects.Copy | DragDropEffects.Move);
+            }
+        }
     }
     #endregion
 
@@ -666,7 +689,7 @@ namespace iba.Controls
     }
 
     [UserRepositoryItem("RegisterChannelTreeEdit")]
-    internal class RepositoryItemChannelTreeEdit : RepositoryItemPopupContainerEdit
+    internal class RepositoryItemChannelTreeEdit : RepositoryItemPopupContainerEdit, ISignalDragDropHandler
     {
         #region static
 
@@ -682,6 +705,50 @@ namespace iba.Controls
                 new ChannelTreeEditPainter(), false, EditImageIndexes.PopupContainerEdit, typeof(DevExpress.Accessibility.PopupEditAccessible)));
         }
 
+        #endregion
+
+        #region Drag/Drop
+
+        public event EventHandler onDragOverChannelResponse;
+
+        public EventHandler OnDragOverChannelResponse
+        {
+            get { return onDragOverChannelResponse; }
+            set { onDragOverChannelResponse = value; }
+        }
+
+        public event EventHandler onDragDropChannelResponse;
+
+        public EventHandler OnDragDropChannelResponse
+        {
+            get { return onDragDropChannelResponse; }
+            set { onDragDropChannelResponse = value; }
+        }
+
+        public void OnDragOverHandle(object sender, EventArgs drgevent)
+        {
+            DragDetailsEvent dragDetailsEvent = drgevent as DragDetailsEvent;
+            TreeNode inode = (TreeNode)dragDetailsEvent.drgEvent.Data.GetData(typeof(TreeNode));
+            if (inode != null)
+            {
+                IbaAnalyzer.ISignalTreeNode analyzerNode = (IbaAnalyzer.ISignalTreeNode)(inode.Tag);
+                string id = analyzerNode.channelId;
+                if (ChannelTree.ContainsNode(id))
+                    onDragOverChannelResponse?.Invoke(this, new DragDetailsResponseEvent(inode.Text, id, dragDetailsEvent.numeric, true, dragDetailsEvent.drgEvent));
+            }
+        }
+
+        public void OnDragDropHandle(object sender, EventArgs drgevent)
+        {
+            DragDetailsEvent dragDetailsEvent = drgevent as DragDetailsEvent;
+            TreeNode inode = (TreeNode)dragDetailsEvent.drgEvent.Data.GetData(typeof(TreeNode)); if (inode != null)
+            {
+                IbaAnalyzer.ISignalTreeNode analyzerNode = (IbaAnalyzer.ISignalTreeNode)(inode.Tag);
+                string id = analyzerNode.channelId;
+                if (ChannelTree.ContainsNode(id))
+                    onDragDropChannelResponse?.Invoke(this, new DragDetailsResponseEvent(inode.Text, id, dragDetailsEvent.numeric, true, dragDetailsEvent.drgEvent));
+            }
+        }
         #endregion
 
         #region instance

@@ -1640,4 +1640,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="HDEventTask_ToolTip_UploadPDO" xml:space="preserve">
     <value>Upload a PDO file to the server</value>
   </data>
+  <data name="HDEventsChanged" xml:space="preserve">
+    <value>Changes are made to the ibaHD events configurations. Do you want to save these changes on the HD server?</value>
+  </data>
 </root>

@@ -18,20 +18,6 @@ namespace iba.Data
         [Serializable]
         public class EventData : ICloneable
         {
-            private string m_server;
-            public string Server
-            {
-                get { return m_server; }
-                set { m_server = value; }
-            }
-
-            private int m_serverPort;
-            public int ServerPort
-            {
-                get { return m_serverPort; }
-                set { m_serverPort = value; }
-            }
-
             private string m_storeName;
             public string StoreName
             {
@@ -109,10 +95,22 @@ namespace iba.Data
                 set { m_blobFields = value; }
             }
 
+            private HDEventTriggerEnum m_triggerMode;
+            public HDEventTriggerEnum TriggerMode
+            {
+                get { return m_triggerMode; }
+                set { m_triggerMode = value; }
+            }
+
+            private string m_pulseSignal;
+            public string PulseSignal
+            {
+                get { return m_pulseSignal; }
+                set { m_pulseSignal = value; }
+            }
+
             public EventData()
             {
-                m_server = "";
-                m_serverPort = -1;
                 m_storeName = "";
                 m_username = "";
                 m_password = "";
@@ -121,13 +119,13 @@ namespace iba.Data
                 m_numericFields = new List<Tuple<string, string>>();
                 m_textFields = new List<Tuple<string, string>>();
                 m_blobFields = new List<string>();
+                m_triggerMode = HDEventTriggerEnum.PerFile;
+                m_pulseSignal = UnassignedExpression;
             }
 
             public object Clone()
             {
                 EventData cpy = new EventData();
-                cpy.m_server = m_server;
-                cpy.m_serverPort = m_serverPort;
                 cpy.m_storeName = m_storeName;
                 cpy.m_username = m_username;
                 cpy.m_password = m_password;
@@ -136,6 +134,8 @@ namespace iba.Data
                 cpy.m_numericFields = new List<Tuple<string, string>>(m_numericFields);
                 cpy.m_textFields = new List<Tuple<string, string>>(m_textFields);
                 cpy.m_blobFields = new List<string>(m_blobFields);
+                cpy.m_triggerMode = m_triggerMode;
+                cpy.m_pulseSignal = m_pulseSignal;
                 return cpy;
             }
 
@@ -146,17 +146,31 @@ namespace iba.Data
                 if (other == this)
                     return true;
 
-                return m_server == other.m_server
-                    && m_serverPort == other.m_serverPort
-                    && m_storeName == other.m_storeName
+                return m_storeName == other.m_storeName
                     && m_username == other.m_username
                     && m_password == other.m_password
                     && m_id == other.m_id
                     && m_name == other.m_name
+                    && m_triggerMode == other.m_triggerMode
+                    && m_pulseSignal == other.m_pulseSignal
                     && m_numericFields.SequenceEqual(other.m_numericFields)
                     && m_textFields.SequenceEqual(other.m_textFields)
                     && m_blobFields.SequenceEqual(other.m_blobFields);
             }
+        }
+
+        private string m_server;
+        public string Server
+        {
+            get { return m_server; }
+            set { m_server = value; }
+        }
+
+        private int m_serverPort;
+        public int ServerPort
+        {
+            get { return m_serverPort; }
+            set { m_serverPort = value; }
         }
 
         private string m_datFileHost;
@@ -193,25 +207,19 @@ namespace iba.Data
             PerSignalPulse
         }
 
-        private HDEventTriggerEnum m_triggerMode;
-        public HDEventTriggerEnum TriggerMode
-        {
-            get { return m_triggerMode; }
-            set { m_triggerMode = value; }
-        }
-
-        private string m_pulseSignal;
-        public string PulseSignal
-        {
-            get { return m_pulseSignal; }
-            set { m_pulseSignal = value; }
-        }
-
-        private EventData m_eventSettings;
-        public EventData EventSettings
+        private List<EventData> m_eventSettings;
+        public List<EventData> EventSettings
         {
             get { return m_eventSettings; }
             set { m_eventSettings = value; }
+        }
+
+        private Dictionary<string, string> m_fullEventConfig;
+        [XmlIgnore]
+        public Dictionary<string, string> FullEventConfig
+        {
+            get { return m_fullEventConfig; }
+            set { m_fullEventConfig = value; }
         }
 
         private MonitorData m_monitorData;
@@ -228,9 +236,9 @@ namespace iba.Data
             m_datFileHost = "";
             m_datFile = "";
             m_datFilePassword = "";
-            m_triggerMode = HDEventTriggerEnum.PerFile;
-            m_pulseSignal = UnassignedExpression;
-            m_eventSettings = new EventData();
+            m_server = "";
+            m_serverPort = -1;
+            m_eventSettings = new List<EventData>();
             m_monitorData = new MonitorData();
         }
 
@@ -246,9 +254,9 @@ namespace iba.Data
             ced.m_datFileHost = m_datFileHost;
             ced.m_datFile = m_datFile;
             ced.m_datFilePassword = m_datFilePassword;
-            ced.m_triggerMode = m_triggerMode;
-            ced.m_pulseSignal = m_pulseSignal;
-            ced.m_eventSettings = (EventData)m_eventSettings.Clone();
+            ced.m_server = m_server;
+            ced.m_serverPort = m_serverPort;
+            ced.m_eventSettings = new List<EventData>(m_eventSettings);
             ced.m_monitorData = (MonitorData)m_monitorData.Clone();
             return ced;
         }
@@ -259,13 +267,13 @@ namespace iba.Data
             if (other == null) return false;
             if (other == this) return true;
 
-            return other.m_pdoFile == m_pdoFile
+            return m_server == other.m_server
+                && m_serverPort == other.m_serverPort
+                && other.m_pdoFile == m_pdoFile
                 && other.m_datFileHost == m_datFileHost
                 && other.m_datFile == m_datFile
                 && other.m_datFilePassword == m_datFilePassword
-                && other.m_triggerMode == m_triggerMode
-                && other.m_pulseSignal == m_pulseSignal
-                && other.m_eventSettings.IsSame(m_eventSettings)
+                && Enumerable.SequenceEqual(other.m_eventSettings, m_eventSettings)
                 && other.m_monitorData.IsSame(m_monitorData);
         }
         #endregion

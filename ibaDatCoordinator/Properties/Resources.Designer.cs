@@ -1264,6 +1264,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Changes are made to the ibaHD events configurations. Do you want to save these changes on the HD server?.
+        /// </summary>
+        internal static string HDEventsChanged {
+            get {
+                return ResourceManager.GetString("HDEventsChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Processed filename.
         /// </summary>
         internal static string HDEventTask_ChannelProcessedFile {

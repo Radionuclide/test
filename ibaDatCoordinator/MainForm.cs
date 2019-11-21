@@ -25,6 +25,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using iba.Dialogs;
 using iba.Remoting;
 using System.Globalization;
+using iba.HD.Client;
 // ReSharper disable RedundantNameQualifier
 
 namespace iba
@@ -899,8 +900,8 @@ namespace iba
                 IPropertyPane pane = m_rightPane.Controls[0] as IPropertyPane;
                 if (pane != null)
                 {
-                    pane.LeaveCleanup();
                     pane.SaveData();
+                    pane.LeaveCleanup();
                 }
             }
 
@@ -1925,6 +1926,7 @@ namespace iba
                     {
                         ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(TaskManager.Manager);
                         mySerializer.Serialize(myWriter, dat);
+                        StoreHDChanges(dat);
                     }
                 }
                 catch (Exception ex)
@@ -1936,6 +1938,11 @@ namespace iba
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     Program.CommunicationObject.SaveConfigurations();
             }
+        }
+
+        private void StoreHDChanges(ibaDatCoordinatorData dat)
+        {
+            //HdConfigProxy proxyCfg = new HD.Client.HdConfigProxy(server, port);
         }
 
         private string TextToSave()
