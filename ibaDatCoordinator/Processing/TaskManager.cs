@@ -619,9 +619,9 @@ namespace iba.Processing
                     ExtMonData.JobStatus.Stopped);
 
             ji.TodoCount.Value = (uint)s.ReadFiles.Count;
-            ji.DoneCount.Value = (uint)s.ProcessedFiles.Count;
+            ji.DoneCount.Value = (uint)s.TotalFilesProcessed; 
+            //ji.DoneCount.Value = (uint)s.ProcessedFiles.Count; // doesn't show total count, so it is not so helpful
             ji.FailedCount.Value = (uint)s.CountErrors();
-
 
             ji.UpTime.Value = (ji.Status.Value == ExtMonData.JobStatus.Started)
                 ? (int)(DateTime.Now - worker.TimestampJobStarted).TotalSeconds

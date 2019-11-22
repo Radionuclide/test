@@ -858,6 +858,7 @@ namespace iba.Processing
                     lock (m_processedFiles)
                     {
                         m_processedFiles.Clear();
+                        m_sd.TotalFilesProcessed = 0;
                     }
                     lock (m_sd.DatFileStates)
                     {
@@ -1010,7 +1011,10 @@ namespace iba.Processing
                             lock (m_processedFiles)
                             {
                                 if (!m_processedFiles.Contains(DatFile))
+                                {
                                     m_processedFiles.Add(DatFile);
+                                    m_sd.TotalFilesProcessed++;
+                                }
                             }
                             lock (m_sd.DatFileStates)
                             {
@@ -1824,6 +1828,7 @@ namespace iba.Processing
                                 if(!m_processedFiles.Contains(filename))
                                 {
                                     m_processedFiles.Add(filename);
+                                    m_sd.TotalFilesProcessed++;
                                 }
                             }
                             DatFileStatus status = new DatFileStatus();
@@ -2453,8 +2458,11 @@ namespace iba.Processing
             {
                 lock (m_processedFiles)
                 {
-                    if( ! m_processedFiles.Contains(InputFile))
-                    m_processedFiles.Add(InputFile);
+                    if (!m_processedFiles.Contains(InputFile))
+                    {
+                        m_processedFiles.Add(InputFile);
+                        m_sd.TotalFilesProcessed++;
+                    }
                 }
               
                 try
