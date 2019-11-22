@@ -87,11 +87,9 @@ namespace iba.Processing
                 }
 
                 // OPC UA trace file
-                if (!string.IsNullOrEmpty(UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath))
-                {
-                    UaApplication.ApplicationConfiguration.TraceConfiguration.OutputFilePath = CfgUaTraceFilePath;
-                    UaApplication.ApplicationConfiguration.TraceConfiguration.ApplySettings();
-                }
+                UaAppConfiguration.TraceConfiguration.OutputFilePath = CfgUaTraceFilePath;
+                // UaAppConfiguration.TraceConfiguration.TraceMasks = // is set in ibaDatCoordinatorOpcUaServerConfig.xml;
+                UaAppConfiguration.TraceConfiguration.ApplySettings();
 
                 try
                 {
