@@ -182,7 +182,7 @@ namespace iba.Data
             }
         }
 
-        public static int DefaultPort { get; } = 48080;
+        public static int DefaultPort { get; } = 48081;
         public static string DefaultHostname => Dns.GetHostName();
         public static OpcUaEndPoint DefaultEndPoint => new OpcUaEndPoint(DefaultHostname, DefaultPort);
 
