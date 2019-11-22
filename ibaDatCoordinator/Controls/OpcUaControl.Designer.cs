@@ -751,8 +751,8 @@
             // 
             // buttonShowHideDebug
             // 
-            this.buttonShowHideDebug.BackColor = System.Drawing.Color.MistyRose;
             resources.ApplyResources(this.buttonShowHideDebug, "buttonShowHideDebug");
+            this.buttonShowHideDebug.BackColor = System.Drawing.Color.MistyRose;
             this.buttonShowHideDebug.Name = "buttonShowHideDebug";
             this.buttonShowHideDebug.UseVisualStyleBackColor = false;
             this.buttonShowHideDebug.Click += new System.EventHandler(this.buttonHide_Click);

@@ -1021,65 +1021,8 @@
   <data name="&gt;&gt;tvObjects.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;buttonShowHideDebug.Name" xml:space="preserve">
-    <value>buttonShowHideDebug</value>
-  </data>
-  <data name="&gt;&gt;buttonShowHideDebug.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonShowHideDebug.Parent" xml:space="preserve">
-    <value>panelFooterWithButtons</value>
-  </data>
-  <data name="&gt;&gt;buttonShowHideDebug.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;buttonConfigurationReset.Name" xml:space="preserve">
-    <value>buttonConfigurationReset</value>
-  </data>
-  <data name="&gt;&gt;buttonConfigurationReset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonConfigurationReset.Parent" xml:space="preserve">
-    <value>panelFooterWithButtons</value>
-  </data>
-  <data name="&gt;&gt;buttonConfigurationReset.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;buttonConfigurationApply.Name" xml:space="preserve">
-    <value>buttonConfigurationApply</value>
-  </data>
-  <data name="&gt;&gt;buttonConfigurationApply.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonConfigurationApply.Parent" xml:space="preserve">
-    <value>panelFooterWithButtons</value>
-  </data>
-  <data name="&gt;&gt;buttonConfigurationApply.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="panelFooterWithButtons.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="panelFooterWithButtons.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 610</value>
-  </data>
-  <data name="panelFooterWithButtons.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 29</value>
-  </data>
-  <data name="panelFooterWithButtons.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;panelFooterWithButtons.Name" xml:space="preserve">
-    <value>panelFooterWithButtons</value>
-  </data>
-  <data name="&gt;&gt;panelFooterWithButtons.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panelFooterWithButtons.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;panelFooterWithButtons.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="buttonShowHideDebug.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
   <data name="buttonShowHideDebug.Location" type="System.Drawing.Point, System.Drawing">
     <value>344, 3</value>
@@ -1170,6 +1113,30 @@
   </data>
   <data name="&gt;&gt;buttonConfigurationApply.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="panelFooterWithButtons.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="panelFooterWithButtons.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 610</value>
+  </data>
+  <data name="panelFooterWithButtons.Size" type="System.Drawing.Size, System.Drawing">
+    <value>720, 29</value>
+  </data>
+  <data name="panelFooterWithButtons.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;panelFooterWithButtons.Name" xml:space="preserve">
+    <value>panelFooterWithButtons</value>
+  </data>
+  <data name="&gt;&gt;panelFooterWithButtons.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelFooterWithButtons.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelFooterWithButtons.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="gbSecurity.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1483,6 +1450,102 @@
   <data name="gbLogon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;tbPassword.Name" xml:space="preserve">
+    <value>tbPassword</value>
+  </data>
+  <data name="&gt;&gt;tbPassword.Type" xml:space="preserve">
+    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tbPassword.Parent" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;tbPassword.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;labelPassword.Name" xml:space="preserve">
+    <value>labelPassword</value>
+  </data>
+  <data name="&gt;&gt;labelPassword.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelPassword.Parent" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;labelPassword.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;cbLogonAnonymous.Name" xml:space="preserve">
+    <value>cbLogonAnonymous</value>
+  </data>
+  <data name="&gt;&gt;cbLogonAnonymous.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbLogonAnonymous.Parent" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;cbLogonAnonymous.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;cbLogonUserName.Name" xml:space="preserve">
+    <value>cbLogonUserName</value>
+  </data>
+  <data name="&gt;&gt;cbLogonUserName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbLogonUserName.Parent" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;cbLogonUserName.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;cbLogonCertificate.Name" xml:space="preserve">
+    <value>cbLogonCertificate</value>
+  </data>
+  <data name="&gt;&gt;cbLogonCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbLogonCertificate.Parent" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;cbLogonCertificate.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tbUserName.Name" xml:space="preserve">
+    <value>tbUserName</value>
+  </data>
+  <data name="&gt;&gt;tbUserName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbUserName.Parent" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;tbUserName.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="gbLogon.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 31</value>
+  </data>
+  <data name="gbLogon.Size" type="System.Drawing.Size, System.Drawing">
+    <value>710, 130</value>
+  </data>
+  <data name="gbLogon.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="gbLogon.Text" xml:space="preserve">
+    <value>Logon policies</value>
+  </data>
+  <data name="&gt;&gt;gbLogon.Name" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;gbLogon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbLogon.Parent" xml:space="preserve">
+    <value>tabConfiguration</value>
+  </data>
+  <data name="&gt;&gt;gbLogon.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="tbPassword.Location" type="System.Drawing.Point, System.Drawing">
     <value>152, 72</value>
   </data>
@@ -1632,30 +1695,6 @@
   </data>
   <data name="&gt;&gt;tbUserName.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="gbLogon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 31</value>
-  </data>
-  <data name="gbLogon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>710, 130</value>
-  </data>
-  <data name="gbLogon.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="gbLogon.Text" xml:space="preserve">
-    <value>Logon policies</value>
-  </data>
-  <data name="&gt;&gt;gbLogon.Name" xml:space="preserve">
-    <value>gbLogon</value>
-  </data>
-  <data name="&gt;&gt;gbLogon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbLogon.Parent" xml:space="preserve">
-    <value>tabConfiguration</value>
-  </data>
-  <data name="&gt;&gt;gbLogon.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="gbEndpoints.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1933,6 +1972,66 @@
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
+  <data name="&gt;&gt;tabConfiguration.Name" xml:space="preserve">
+    <value>tabConfiguration</value>
+  </data>
+  <data name="&gt;&gt;tabConfiguration.Type" xml:space="preserve">
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tabConfiguration.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabConfiguration.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tabCertificates.Name" xml:space="preserve">
+    <value>tabCertificates</value>
+  </data>
+  <data name="&gt;&gt;tabCertificates.Type" xml:space="preserve">
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tabCertificates.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabCertificates.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;tabTags.Name" xml:space="preserve">
+    <value>tabTags</value>
+  </data>
+  <data name="&gt;&gt;tabTags.Type" xml:space="preserve">
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tabTags.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabTags.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;tabDiag.Name" xml:space="preserve">
+    <value>tabDiag</value>
+  </data>
+  <data name="&gt;&gt;tabDiag.Type" xml:space="preserve">
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tabDiag.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabDiag.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
+    <value>Crownwood.DotNetMagic.Controls.TabControl, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="tabConfiguration.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -2124,18 +2223,6 @@
   </data>
   <data name="&gt;&gt;tabDiag.ZOrder" xml:space="preserve">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabControl, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="btOpenLogFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
