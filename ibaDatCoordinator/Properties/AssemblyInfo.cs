@@ -43,7 +43,7 @@ namespace iba
         public static string GetVersion()
         {
             string ver = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
-            ver = ver + " BETA7ua"; // todo. kls. remove ua suffix after merging
+            ver = ver + " BETA8ua"; // todo. kls. remove ua suffix after merging
             return ver;
         }
 
