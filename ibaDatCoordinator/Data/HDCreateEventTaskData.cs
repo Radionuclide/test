@@ -25,27 +25,6 @@ namespace iba.Data
                 set { m_storeName = value; }
             }
 
-            private string m_username;
-            public string Username
-            {
-                get { return m_username; }
-                set { m_username = value; }
-            }
-
-            private string m_password;
-            [XmlIgnore]
-            public string Password
-            {
-                get { return m_password; }
-                set { m_password = value; }
-            }
-            
-            public string EncryptedPassword
-            {
-                get { return Crypt.Decrypt(m_password); }
-                set { m_password = Crypt.Encrypt(value); }
-            }
-
             private string m_id;
             public string ID
             {
@@ -112,8 +91,6 @@ namespace iba.Data
             public EventData()
             {
                 m_storeName = "";
-                m_username = "";
-                m_password = "";
                 m_id = "";
                 m_name = "";
                 m_numericFields = new List<Tuple<string, string>>();
@@ -127,8 +104,6 @@ namespace iba.Data
             {
                 EventData cpy = new EventData();
                 cpy.m_storeName = m_storeName;
-                cpy.m_username = m_username;
-                cpy.m_password = m_password;
                 cpy.m_id = m_id;
                 cpy.m_name = m_name;
                 cpy.m_numericFields = new List<Tuple<string, string>>(m_numericFields);
@@ -147,8 +122,6 @@ namespace iba.Data
                     return true;
 
                 return m_storeName == other.m_storeName
-                    && m_username == other.m_username
-                    && m_password == other.m_password
                     && m_id == other.m_id
                     && m_name == other.m_name
                     && m_triggerMode == other.m_triggerMode
@@ -214,6 +187,27 @@ namespace iba.Data
             set { m_eventSettings = value; }
         }
 
+        private string m_username;
+        public string Username
+        {
+            get { return m_username; }
+            set { m_username = value; }
+        }
+
+        private string m_password;
+        [XmlIgnore]
+        public string Password
+        {
+            get { return m_password; }
+            set { m_password = value; }
+        }
+
+        public string EncryptedEventPassword
+        {
+            get { return Crypt.Decrypt(m_password); }
+            set { m_password = Crypt.Encrypt(value); }
+        }
+
         private Dictionary<string, string> m_fullEventConfig;
         [XmlIgnore]
         public Dictionary<string, string> FullEventConfig
@@ -238,6 +232,8 @@ namespace iba.Data
             m_datFilePassword = "";
             m_server = "";
             m_serverPort = -1;
+            m_username = "";
+            m_password = "";
             m_eventSettings = new List<EventData>();
             m_monitorData = new MonitorData();
         }
@@ -256,6 +252,8 @@ namespace iba.Data
             ced.m_datFilePassword = m_datFilePassword;
             ced.m_server = m_server;
             ced.m_serverPort = m_serverPort;
+            ced.m_username = m_username;
+            ced.m_password = m_password;
             ced.m_eventSettings = new List<EventData>(m_eventSettings);
             ced.m_monitorData = (MonitorData)m_monitorData.Clone();
             return ced;
@@ -269,6 +267,8 @@ namespace iba.Data
 
             return m_server == other.m_server
                 && m_serverPort == other.m_serverPort
+                && m_username == other.m_username
+                && m_password == other.m_password
                 && other.m_pdoFile == m_pdoFile
                 && other.m_datFileHost == m_datFileHost
                 && other.m_datFile == m_datFile

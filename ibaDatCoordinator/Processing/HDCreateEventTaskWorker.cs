@@ -81,79 +81,73 @@ namespace iba.Processing
             return true;
         }
 
-        //TODO werkt niet met meer dan 1 local event
-        EventWriterItem GenerateEvent(HDCreateEventTaskData task, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<List<string>, List<double>>> textValues, double from = double.NaN, double to = double.NaN)
+        EventWriterItem GenerateEvent(HDCreateEventTaskData.EventData eventData, int index, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<List<string>, List<double>>> textValues, double from = double.NaN, double to = double.NaN)
         {
             bool bUseSinglePoint = !double.IsNaN(from) && from == to;
             bool bUseRange = !double.IsNaN(from) && !bUseSinglePoint;
             string exprRange = $"XCutRange({{0}},{from},{to})";
             string exprSinglePoint = $"YatX({{0}},{from})";
 
-            foreach (var eventData in task.EventSettings)
+            float[] floats = new float[eventData.NumericFields.Count];
+            for (int i = 0; i < floats.Length; i++)
             {
-                float[] floats = new float[eventData.NumericFields.Count];
-                for (int i = 0; i < floats.Length; i++)
-                {
-                    string lExpr = eventData.NumericFields[i].Item2;
+                string lExpr = eventData.NumericFields[i].Item2;
 
-                    if (string.IsNullOrWhiteSpace(lExpr) || lExpr == HDCreateEventTaskData.UnassignedExpression)
+                if (string.IsNullOrWhiteSpace(lExpr) || lExpr == HDCreateEventTaskData.UnassignedExpression)
+                {
+                    floats[i] = float.NaN;
+                    continue;
+                }
+
+                if (bUseRange)
+                    lExpr = string.Format(exprRange, lExpr);
+                else if (bUseSinglePoint)
+                    lExpr = string.Format(exprSinglePoint, lExpr);
+
+                monitor.Execute(() => { floats[i] = m_ibaAnalyzer.Evaluate(lExpr, 0); });
+            }
+
+            string[] texts = new string[eventData.TextFields.Count];
+            for (int i = 0; i < texts.Length; i++)
+            {
+                var values = textValues[eventData.TextFields[i].Item1];
+                List<string> strings = values.Item1;
+                List<double> stamps = values.Item2;
+
+                if (stamps.Count != 0)
+                {
+                    if (double.IsNaN(from))
                     {
-                        floats[i] = float.NaN;
+                        texts[i] = stamps[0] > 0.0 ? "" : strings[0];
                         continue;
                     }
 
-                    if (bUseRange)
-                        lExpr = string.Format(exprRange, lExpr);
-                    else if (bUseSinglePoint)
-                        lExpr = string.Format(exprSinglePoint, lExpr);
+                    int j = 0;
+                    while (j < stamps.Count && stamps[j] <= from)
+                        j++;
 
-                    monitor.Execute(() => { floats[i] = m_ibaAnalyzer.Evaluate(lExpr, 0); });
+                    texts[i] = j == 0 ? "" : strings[j - 1];
                 }
-
-                string[] texts = new string[eventData.TextFields.Count];
-                for (int i = 0; i < texts.Length; i++)
-                {
-                    var values = textValues[eventData.TextFields[i].Item1];
-                    List<string> strings = values.Item1;
-                    List<double> stamps = values.Item2;
-
-                    if (stamps.Count != 0)
-                    {
-                        if (double.IsNaN(from))
-                        {
-                            texts[i] = stamps[0] > 0.0 ? "" : strings[0];
-                            continue;
-                        }
-
-                        int j = 0;
-                        while (j < stamps.Count && stamps[j] <= from)
-                            j++;
-
-                        texts[i] = j == 0 ? "" : strings[j - 1];
-                    }
-                    else
-                        texts[i] = "";
-                }
-
-                byte[][] blobs = new byte[eventData.BlobFields.Count][];
-                for (int i = 0; i < blobs.Length; i++)
-                    blobs[i] = null; //Not supported at the moment
-
-                long duration = 0;
-                if (bUseRange)
-                    duration = TimeSpan.FromSeconds(to - from).Ticks;
-                else if (double.IsNaN(from))
-                    duration = (stopTime - startTime).Ticks;
-
-                long stamp = 0;
-                if (double.IsNaN(from))
-                    stamp = stopTime.Ticks;
                 else
-                    stamp = startTime.AddTicks(TimeSpan.FromSeconds(to).Ticks).Ticks;
-                return new EventWriterItem(0, stamp, duration, true, false, floats, texts, blobs);
+                    texts[i] = "";
             }
-            //return new EventWriterItem(0, stamp, duration, true, false, floats, texts, blobs);
-            return new EventWriterItem(0, 0, 0, true, false);
+
+            byte[][] blobs = new byte[eventData.BlobFields.Count][];
+            for (int i = 0; i < blobs.Length; i++)
+                blobs[i] = null; //Not supported at the moment
+
+            long duration = 0;
+            if (bUseRange)
+                duration = TimeSpan.FromSeconds(to - from).Ticks;
+            else if (double.IsNaN(from))
+                duration = (stopTime - startTime).Ticks;
+
+            long stamp = 0;
+            if (double.IsNaN(from))
+                stamp = stopTime.Ticks;
+            else
+                stamp = startTime.AddTicks(TimeSpan.FromSeconds(to).Ticks).Ticks;
+            return new EventWriterItem(index, stamp, duration, true, false, floats, texts, blobs);
         }
 
         //TODO maak writerconfig per store
@@ -165,7 +159,7 @@ namespace iba.Processing
             {
                 if (eventData.StoreName == store)
                 {
-                    SlimEventWriterSignal signal = new SlimEventWriterSignal(HdId.GetSubId(eventData.ID), eventData.Name);
+                    SlimEventWriterSignal signal = new SlimEventWriterSignal(eventData.ID, eventData.Name);
 
                     string[] floatFields = new string[eventData.NumericFields.Count];
                     for (int i = 0; i < eventData.NumericFields.Count; i++)
@@ -189,28 +183,29 @@ namespace iba.Processing
             return new SlimEventWriterConfig(hdWriterOrigin, storeId, writerSignalConfigs.ToArray(), true);
         }
 
-        HdWriterConfig CreateHDWriterConfig(HDCreateEventTaskData task, List<string> storeNames)
+        IEnumerable<HdWriterConfig> CreateHDWriterConfig(HDCreateEventTaskData task, IEnumerable<string> storeNames)
         {
+            List<HdWriterConfig> writerConfigs = new List<HdWriterConfig>();
             foreach (string store in storeNames)
             {
                 HdStoreId storeId = task.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.Server, task.ServerPort, store);
                 List<EventWriterSignal> writerSignalConfigs = new List<EventWriterSignal>();
-                EventWriterConfig config = new EventWriterConfig(hdWriterOrigin, storeId, new EventWriterSignal[] { }, true);
-                if (task.FullEventConfig.Count > 0)
+                if (task?.FullEventConfig?.Count > 0)
                 {
+                    EventWriterConfig config = new EventWriterConfig(hdWriterOrigin, storeId, new EventWriterSignal[] { }, true);
                     config.ServerEventWriterConfig = task.FullEventConfig[store];
+                    writerConfigs.Add(config);
                 }
                 else
                 {
-                    return CreateSlimHDWriterConfig(task, store);
+                    writerConfigs.Add(CreateSlimHDWriterConfig(task, store));
                 }
-                return config;
             }
-            return null;
+            return writerConfigs;
         }
 
         //TODO kijken of nog alles klopt
-        public EventWriterData GenerateEvents(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, string dataFile)
+        public Dictionary<string, EventWriterData> GenerateEvents(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, string dataFile)
         {
             m_ibaAnalyzer = ibaAnalyzer;
             m_dataFile = dataFile;
@@ -270,8 +265,11 @@ namespace iba.Processing
 
                     Dictionary<string, Tuple<List<string>, List<double>>> textResults = new Dictionary<string, Tuple<List<string>, List<double>>>();
                     List<EventWriterItem> events = new List<EventWriterItem>();
-                    foreach (var eventData in m_data.EventSettings)
+                    Dictionary<string, EventWriterData> generated = new Dictionary<string, EventWriterData>();
+                    for (int j = 0; j < m_data.EventSettings.Count; j++)
+                    //foreach (var eventData in m_data.EventSettings)
                     {
+                        var eventData = m_data.EventSettings[j];
                         foreach (var textField in eventData.TextFields)
                         {
                             if (string.IsNullOrWhiteSpace(textField.Item2) || textField.Item2 == HDCreateEventTaskData.UnassignedExpression)
@@ -345,12 +343,25 @@ namespace iba.Processing
 
                             // Create events
                             foreach (var interval in intervals)
-                                events.Add(GenerateEvent(m_data, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
+                            {
+                                if (generated.ContainsKey(eventData.StoreName))
+                                    generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
+                                else
+                                    generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2) });
+                            }
+                                //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
                         }
                         else
-                            events.Add(GenerateEvent(m_data, mon, startTime, endTime, textResults)); // One event for the entire file
+                        {
+                            // One event for the entire file
+                            if (generated.ContainsKey(eventData.StoreName))
+                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults));
+                            else
+                                generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, j, mon, startTime, endTime, textResults) });
+                        }
+                            //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults)); // One event for the entire file
                     }
-                    return new EventWriterData(events);
+                    return generated;
                 }
             }
             finally
@@ -377,49 +388,52 @@ namespace iba.Processing
             }
         }
 
-        public IEnumerable<HdValidationMessage> WriteEvents(List<string> storeNames, EventWriterData eventData)
+        public IEnumerable<HdValidationMessage> WriteEvents(IEnumerable<string> storeNames, Dictionary<string,EventWriterData> eventData)
         {
             IHdWriterManager writerManager = null;
-            IHdWriterSummary summary;
+            IHdWriterSummary summary = null;
             try
             {
-                HdWriterConfig cfg = CreateHDWriterConfig(m_data, storeNames);
+                IEnumerable<HdWriterConfig> cfgs = CreateHDWriterConfig(m_data, storeNames);
 
                 writerManager = HdClient.CreateWriterManager();
 
-                writerManager.StartConfig();
-
-                summary = writerManager.SetConfig(cfg, null, HdValidationMessage.Ignore);
-                while (summary.Result == WriterConfigResult.Conflict)
+                foreach (HdWriterConfig cfg in cfgs)
                 {
-                    foreach (var cflt in summary.Conflicts)
-                        cflt.Solution = HdWriterSolution.Append;
+                    writerManager.StartConfig();
 
-                    summary = writerManager.SetConfig(cfg, summary, HdValidationMessage.Ignore);
-                }
-
-                writerManager.EndConfig();
-
-                if (summary.Result != WriterConfigResult.Valid)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    if (summary.Errors != null && summary.Errors.Count > 0)
+                    summary = writerManager.SetConfig(cfg, null, HdValidationMessage.Ignore);
+                    while (summary.Result == WriterConfigResult.Conflict)
                     {
-                        foreach (var err in summary.Errors)
-                            sb.Append(" ").Append(err.Text).Append(",");
+                        foreach (var cflt in summary.Conflicts)
+                            cflt.Solution = HdWriterSolution.Append;
 
-                        sb.Remove(sb.Length - 1, 1);
+                        summary = writerManager.SetConfig(cfg, summary, HdValidationMessage.Ignore);
                     }
 
-                    throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
+                    writerManager.EndConfig();
+
+                    if (summary.Result != WriterConfigResult.Valid)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        if (summary.Errors != null && summary.Errors.Count > 0)
+                        {
+                            foreach (var err in summary.Errors)
+                                sb.Append(" ").Append(err.Text).Append(",");
+
+                            sb.Remove(sb.Length - 1, 1);
+                        }
+
+                        throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
+                    }
+
+                    writerManager.StartCreate();
+                    IHdWriter writer = writerManager.CreateWriter(summary, true, HdValidationMessage.Ignore);
+                    writerManager.EndCreate();
+
+                    if (eventData != null && eventData.ContainsKey(cfg.StoreId.StoreName))
+                        writer.Write(eventData[cfg.StoreId.StoreName]);
                 }
-
-                writerManager.StartCreate();
-                IHdWriter writer = writerManager.CreateWriter(summary, true, HdValidationMessage.Ignore);
-                writerManager.EndCreate();
-
-                if (eventData != null)
-                    writer.Write(eventData);
 
             }
             finally
@@ -437,6 +451,7 @@ namespace iba.Processing
             return summary?.Errors;
         }
 
+        // Deprecated do not use. No support for multiple events and multiple stores per task.
         public void WriteEvents(EventWriterData eventData)
         {
             // Write events

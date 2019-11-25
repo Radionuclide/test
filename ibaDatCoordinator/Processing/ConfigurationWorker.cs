@@ -4620,12 +4620,22 @@ namespace iba.Processing
             }
         }
 
+        private IEnumerable<string> GetTaskStoreNames(HDCreateEventTaskData task)
+        {
+            Set<string> stores = new Set<string>();
+            foreach (var eventData in task.EventSettings)
+            {
+                stores.Add(eventData.StoreName);
+            }
+            return stores;
+        }
+
         private void HDCreateEventTask(string filename, HDCreateEventTaskData task)
         {
             HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(task);
 
             // Generate events
-            EventWriterData eventData = null;
+            Dictionary<string,EventWriterData> eventData = null;
             try
             {
                 lock (m_sd.DatFileStates)
@@ -4692,7 +4702,7 @@ namespace iba.Processing
             // Write events
             try
             {
-                worker.WriteEvents(eventData);
+                worker.WriteEvents(GetTaskStoreNames(task), eventData);
 
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                 Log(Logging.Level.Info, iba.Properties.Resources.logHDEventTaskSuccess, filename, task);

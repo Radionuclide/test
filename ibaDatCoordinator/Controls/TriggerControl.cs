@@ -61,12 +61,17 @@ namespace iba.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public void TriggerChanged(object sender, EventArgs eventArgs)
+        {
+            RaisePropertyChanged("Trigger");
+        }
+
         public void LoadSignal(LocalEventData localEventData)
         {
             HDCreateEventTaskData.EventData m_data = localEventData.Tag as HDCreateEventTaskData.EventData;
             if (m_data != null)
             {
-                GrPulse.DataSource = new List<PulseSignal>(1) { new PulseSignal(m_data.PulseSignal) };
+                GrPulse.DataSource = new BindingList<PulseSignal>() { new PulseSignal(m_data.PulseSignal) };
                 if (m_data.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerFile)
                     TriggerPerFile = true;
                 else
@@ -74,7 +79,7 @@ namespace iba.Controls
             }
             else
             {
-                GrPulse.DataSource = new List<PulseSignal>(1) { new PulseSignal(HDCreateEventTaskData.UnassignedExpression) };
+                GrPulse.DataSource = new BindingList<PulseSignal>() { new PulseSignal(HDCreateEventTaskData.UnassignedExpression) };
                 TriggerPerFile = true;
             }
         }
@@ -84,9 +89,9 @@ namespace iba.Controls
             HDCreateEventTaskData.EventData m_data = localEventData.Tag as HDCreateEventTaskData.EventData;
             if (m_data == null)
                 m_data = new HDCreateEventTaskData.EventData();
-            List<PulseSignal> signals = ((List<PulseSignal>)GrPulse.DataSource);
-            if (signals != null && signals.Count == 1)
-                m_data.PulseSignal = ((List<PulseSignal>)GrPulse.DataSource)[0].PulseID;
+            BindingList<PulseSignal> signals = ((BindingList<PulseSignal>)GrPulse.DataSource);
+            if (signals != null && signals.Count > 0)
+                m_data.PulseSignal = signals[0].PulseID;
             if (TriggerPerFile)
                 m_data.TriggerMode = HDCreateEventTaskData.HDEventTriggerEnum.PerFile;
             else
@@ -118,10 +123,23 @@ namespace iba.Controls
             get { return m_colPulse; }
         }
 
+        void SetTriggerID(AnalyzerTreeControl sender, string id)
+        {
+            GrPulse.DataSource = new BindingList<PulseSignal>() { new PulseSignal(id) };
+        }
+
         public void SetChannelEditor(DevExpress.XtraEditors.Repository.RepositoryItem channelEditor, ISignalDragDropHandler dragDropHandler)
         {
             GrPulse.RepositoryItems.Add(channelEditor);
             ColPulse.ColumnEdit = channelEditor;
+            GrPulse.DataSourceChanged += TriggerChanged;
+            //channelEditor.EditValueChanged += TriggerChanged;
+            //((RepositoryItemChannelTreeEdit)channelEditor).Leave += TriggerChanged;
+            //GrPulse.LostFocus += TriggerChanged;
+            ((RepositoryItemChannelTreeEdit)channelEditor).ChannelTree.AfterSelect += SetTriggerID;
+            GrPulse.TextChanged += TriggerChanged;
+            ColPulse.ColumnEdit.Modified += TriggerChanged;
+            ColPulse.ColumnEdit.PropertiesChanged += TriggerChanged;
             if (signalDragDropHandler != null)
             {
                 OnDragOverHandler -= signalDragDropHandler.OnDragOverHandle;
@@ -179,9 +197,7 @@ namespace iba.Controls
             if (eventArgs is DragDetailsResponseEvent response && response.allowed)
             {
                 if (sender == signalDragDropHandler)
-                {
-                    GrPulse.DataSource = new List<PulseSignal>(1) { new PulseSignal(response.id) };
-                }
+                    ((BindingList<PulseSignal>)GrPulse.DataSource)[0] = new PulseSignal(response.id);                    
             }
         }
 

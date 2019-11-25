@@ -136,7 +136,7 @@ namespace iba.Controls
             m_data = datasource as HDCreateEventTaskData;
             if (m_data.EventSettings.Count > 0 && m_ctrlServer.Server != m_data.Server && m_ctrlServer.Port != m_data.ServerPort)
                 m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort,
-                    m_data.EventSettings[0].Username, m_data.EventSettings[0].Password, "");
+                    m_data.Username, m_data.Password, "");
             else if (m_data.EventSettings.Count == 0)
                 m_ctrlServer.LoadData("localhost", 9180, "", "", "");
             m_pdoFilePath = m_data.AnalysisFile;
@@ -194,7 +194,7 @@ namespace iba.Controls
             {
                 LocalEventData localEvent = new LocalEventData(signal.ID, signal.StoreName);
                 localEvent.NumericChannels = signal.NumericFields;
-                localEvent.TextChannels = signal.NumericFields;
+                localEvent.TextChannels = signal.TextFields;
                 localEvent.Tag = signal;
 
                 treeData.Add(localEvent);
@@ -248,6 +248,8 @@ namespace iba.Controls
             m_data.DatFilePassword = m_tbPwdDAT.Text;
             m_data.Server = m_ctrlServer.Server;
             m_data.ServerPort = m_ctrlServer.Port;
+            m_data.Username = m_ctrlServer.Username;
+            m_data.Password = m_ctrlServer.Password;
 
             //m_data.TriggerMode = triggerControl.TriggerBySignal ? HDCreateEventTaskData.HDEventTriggerEnum.PerSignalPulse : HDCreateEventTaskData.HDEventTriggerEnum.PerFile;
             //m_data.PulseSignal = (triggerControl.GrPulse.DataSource as List<PulseSignal>)[0].PulseID;
@@ -258,8 +260,8 @@ namespace iba.Controls
                                         || m_ctrlServer.Server != m_data.Server
                                         || m_ctrlServer.Port != m_data.ServerPort
                                         //|| m_ctrlServer.StoreName != eventData[0].StoreName
-                                        || m_ctrlServer.Username != eventData[0].Username
-                                        || m_ctrlServer.Password != eventData[0].Password;
+                                        || m_ctrlServer.Username != m_data.Username
+                                        || m_ctrlServer.Password != m_data.Password;
 
             if (bSaveEventSettings)
             {
@@ -271,9 +273,6 @@ namespace iba.Controls
                 {
 
                     //eventData.StoreName = m_ctrlServer.StoreName;
-                    data.Username = m_ctrlServer.Username;
-                    data.Password = m_ctrlServer.Password;
-
                     m_data.EventSettings.Add(data);
                 }
 
@@ -494,8 +493,9 @@ namespace iba.Controls
                 Cursor = Cursors.WaitCursor;
 
                 HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
-                EventWriterData eventData = worker.GenerateEvents(null, null);
-                worker.WriteEvents(eventData);
+                Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, null);
+
+                worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData);
 
                 Cursor = Cursors.Default;
                 MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
