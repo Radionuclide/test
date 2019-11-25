@@ -474,7 +474,7 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe"
-  CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
+  CreateDirectory "$LOCALAPPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
   
   ;MessageBox MB_OK "Debug Writing 0"
@@ -687,7 +687,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator Client.lnk" "$INSTDIR\ibaDatCoordinator.exe" "/service"
-  CreateDirectory "%LOCALAPPDATA%\iba\ibaDatCoordinator"
+  CreateDirectory "$LOCALAPPDATA\iba\ibaDatCoordinator"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\$(TEXT_LOG_FILES).lnk" "$LOCALAPPDATA\iba\ibaDatCoordinator"
   
   ;MessageBox MB_OK "Debug writing 2"

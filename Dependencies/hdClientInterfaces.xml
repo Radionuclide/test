@@ -209,6 +209,30 @@
             Request id that will be passed to callback
             </returns>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventChannel.AddRequest(System.Int64,System.Int64,System.Int32,System.Boolean,System.Action{System.Int32,iba.HD.Client.Interfaces.IHdEventIterator})">
+            <summary>
+            Used to requests channel data
+            </summary>
+            <param name="start">
+            Time range start stamp
+            </param>
+            <param name="stop">
+            Time range stop stamp
+            </param>
+            <param name="pixelRange">
+            axis range in pixels
+            </param>
+            <param name="scroll">
+            If true, the requested time range is expected to be 'newer' than previously requested
+            time ranges; otherwise the time range is unrelated to previously requested time ranges
+            </param>
+            <param name="callback">
+            Delegate that is called when the requested data has arrived
+            </param>
+            <returns>
+            Request id that will be passed to callback
+            </returns>
+        </member>
         <member name="M:iba.HD.Client.Interfaces.IHdLengthChannel.AddLengthRequest(System.Int64,System.Int64,System.Boolean,System.Action{System.Int32,iba.HD.Client.Interfaces.IHdLengthIterator})">
             <summary>
             Used to requests channel data
@@ -409,6 +433,25 @@
             <param name="min">minimum value</param>
             <param name="max">maximum value</param>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventIterator.GetFloatFields">
+            <summary>
+            Returns a list containing all float fields of an event
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventIterator.GetTextFields">
+            <summary>
+            Returns a list containing all text fields of an event
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventIterator.GetFieldValue(System.String,System.String@,System.Single@,System.Byte[]@)">
+            <summary>
+            Give all event data given the event field name
+            </summary>
+            <param name="fieldName">the field name of the requested data</param>
+            <param name="textValue">returns the text message in case of a text field</param>
+            <param name="floatValue">returns the float value in case of a numeric field</param>
+            <param name="blobValue">returns the blob value</param>
+        </member>
         <member name="F:iba.HD.Client.Interfaces.ProductRangeInfo.Start">
             <summary>
             Absolute start stamp
@@ -596,6 +639,11 @@
         <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilter">
             <summary>
             Gets or sets write status filter
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilterText">
+            <summary>
+            Gets write status filter name
             </summary>
         </member>
         <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilterChanged">

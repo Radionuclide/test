@@ -42,6 +42,15 @@
             false if config out of date
             </returns>
         </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.SetEvents(System.Collections.Generic.List{iba.HD.Common.EventConfig},System.Collections.Generic.List{iba.HD.Common.EventConfig})">
+            <summary>
+            Sets the given config on the HD server.
+            Currently this function is not used.
+            </summary>
+            <param name="oldCfgs"></param>
+            <param name="newCfgs"></param>
+            <returns></returns>
+        </member>
         <member name="T:iba.HD.Common.Enumeration">
             <remarks>
             WCF cannot (de)serialize unknown enum values. Unknown
