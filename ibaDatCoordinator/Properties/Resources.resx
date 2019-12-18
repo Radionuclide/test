@@ -1643,4 +1643,13 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="HDEventsChanged" xml:space="preserve">
     <value>Changes are made to the ibaHD events configurations. Do you want to save these changes on the HD server?</value>
   </data>
+  <data name="UseSignalName" xml:space="preserve">
+    <value>Signal Name</value>
+  </data>
+  <data name="TriggerPerFile" xml:space="preserve">
+    <value>Generate one event per processed file</value>
+  </data>
+  <data name="TriggerPerPulse" xml:space="preserve">
+    <value>Generate an event for every rectangular pulse</value>
+  </data>
 </root>

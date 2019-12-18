@@ -16,9 +16,23 @@ namespace iba.Controls
 {
     public partial class TriggerControl : UserControl, IEventTrigger, INotifyPropertyChanged
     {
-        private class PulseSignal
+        [System.Reflection.Obfuscation]
+        private class PulseSignal : INotifyPropertyChanged
         {
-            public string PulseID { get; set; }
+
+            string pulseID;
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public string PulseID {
+                get { return pulseID; }
+                set
+                {
+                    pulseID = value;
+                    RaisePropertyChanged("pulseID");
+                }
+
+            }
 
             public PulseSignal()
                 : this("")
@@ -28,27 +42,40 @@ namespace iba.Controls
             {
                 PulseID = id ?? "";
             }
+
+            void RaisePropertyChanged(string name)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
         }
+
+        BindingList<PulseSignal> pulseSignals;
+
 
         public TriggerControl()
         {
             InitializeComponent();
+            m_colPulse.OptionsColumn.AllowEdit = true;
+            m_colPulse.OptionsColumn.ReadOnly = false;
+
+            pulseSignals = new BindingList<PulseSignal>();
+            GrPulse.BeginUpdate();
+            try
+            {
+                GrPulse.DataSource = pulseSignals;
+            }
+            finally
+            {
+                GrPulse.EndUpdate();
+            }
+            pulseSignals.ListChanged += TriggerChanged;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        private bool ignoreChanges = false;
 
         private void m_rbTriggerBySignal_CheckedChanged(object sender, EventArgs e)
         {
-            if (m_rbTriggerBySignal.Checked)
-            {
-                m_colPulse.OptionsColumn.AllowEdit = true;
-                m_colPulse.OptionsColumn.ReadOnly = false;
-            }
-            else
-            {
-                m_colPulse.OptionsColumn.AllowEdit = false;
-                m_colPulse.OptionsColumn.ReadOnly = true;
-            }
             RaisePropertyChanged(nameof(TriggerBySignal));
         }
 
@@ -58,7 +85,8 @@ namespace iba.Controls
 
         void RaisePropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (!ignoreChanges)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void TriggerChanged(object sender, EventArgs eventArgs)
@@ -68,10 +96,12 @@ namespace iba.Controls
 
         public void LoadSignal(LocalEventData localEventData)
         {
+            ignoreChanges = true;
             HDCreateEventTaskData.EventData m_data = localEventData.Tag as HDCreateEventTaskData.EventData;
             if (m_data != null)
             {
-                GrPulse.DataSource = new BindingList<PulseSignal>() { new PulseSignal(m_data.PulseSignal) };
+                pulseSignals.Clear();
+                pulseSignals.Add(new PulseSignal(m_data.PulseSignal));
                 if (m_data.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerFile)
                     TriggerPerFile = true;
                 else
@@ -82,6 +112,7 @@ namespace iba.Controls
                 GrPulse.DataSource = new BindingList<PulseSignal>() { new PulseSignal(HDCreateEventTaskData.UnassignedExpression) };
                 TriggerPerFile = true;
             }
+            ignoreChanges = false;
         }
 
         public LocalEventData StoreSignal(LocalEventData localEventData)
@@ -133,33 +164,20 @@ namespace iba.Controls
             GrPulse.RepositoryItems.Add(channelEditor);
             ColPulse.ColumnEdit = channelEditor;
             GrPulse.DataSourceChanged += TriggerChanged;
-            //channelEditor.EditValueChanged += TriggerChanged;
-            //((RepositoryItemChannelTreeEdit)channelEditor).Leave += TriggerChanged;
-            //GrPulse.LostFocus += TriggerChanged;
-            ((RepositoryItemChannelTreeEdit)channelEditor).ChannelTree.AfterSelect += SetTriggerID;
-            GrPulse.TextChanged += TriggerChanged;
-            ColPulse.ColumnEdit.Modified += TriggerChanged;
-            ColPulse.ColumnEdit.PropertiesChanged += TriggerChanged;
             if (signalDragDropHandler != null)
             {
                 OnDragOverHandler -= signalDragDropHandler.OnDragOverHandle;
                 OnDragDropHandler -= signalDragDropHandler.OnDragDropHandle;
-                handlerDrag = signalDragDropHandler.OnDragOverChannelResponse;
-                handlerDrag -= OnDragoverResponse;
-                signalDragDropHandler.OnDragOverChannelResponse = handlerDrag;
-                HandlerDrop -= OnDragDropResponse;
-                signalDragDropHandler.OnDragDropChannelResponse = HandlerDrop;
+                signalDragDropHandler.OnDragOverChannelResponse -= OnDragoverResponse;
+                signalDragDropHandler.OnDragDropChannelResponse -= OnDragDropResponse;
             }
             signalDragDropHandler = dragDropHandler;
             if (dragDropHandler != null)
             {
                 OnDragOverHandler += dragDropHandler.OnDragOverHandle;
                 OnDragDropHandler += dragDropHandler.OnDragDropHandle;
-                handlerDrag = dragDropHandler.OnDragOverChannelResponse;
-                handlerDrag += OnDragoverResponse;
-                dragDropHandler.OnDragOverChannelResponse = handlerDrag;
-                HandlerDrop += OnDragDropResponse;
-                dragDropHandler.OnDragDropChannelResponse = HandlerDrop;
+                dragDropHandler.OnDragOverChannelResponse += OnDragoverResponse;
+                dragDropHandler.OnDragDropChannelResponse += OnDragDropResponse;
             }
         }
 
@@ -168,8 +186,6 @@ namespace iba.Controls
         public event EventHandler OnDragOverHandler;
         public event EventHandler OnDragDropHandler;
 
-        private event EventHandler handlerDrag;
-        public event EventHandler HandlerDrop;
         private ISignalDragDropHandler signalDragDropHandler;
 
         protected override void OnDragOver(DragEventArgs drgevent)
@@ -180,7 +196,7 @@ namespace iba.Controls
         public void OnDragoverResponse(object sender, EventArgs eventArgs)
         {
             DragDetailsResponseEvent response = eventArgs as DragDetailsResponseEvent;
-            if (response != null && response.allowed && sender == signalDragDropHandler)
+            if (response != null && response.allowed && sender == signalDragDropHandler && response.signals.Count == 1)
                 response.drgEvent.Effect = response.drgEvent.AllowedEffect;
             else
                 response.drgEvent.Effect = DragDropEffects.None;
@@ -196,8 +212,11 @@ namespace iba.Controls
         {
             if (eventArgs is DragDetailsResponseEvent response && response.allowed)
             {
-                if (sender == signalDragDropHandler)
-                    ((BindingList<PulseSignal>)GrPulse.DataSource)[0] = new PulseSignal(response.id);                    
+                if (sender == signalDragDropHandler && response.signals.Count == 1)
+                {
+                    pulseSignals.Clear();
+                    pulseSignals.Add(new PulseSignal(response.signals[0].Item1));
+                }
             }
         }
 

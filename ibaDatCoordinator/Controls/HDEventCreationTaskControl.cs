@@ -12,6 +12,9 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using iba.HD.Client.Interfaces;
 using Crownwood.DotNetMagic.Controls;
+using iba.Client.Archiver;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace iba.Controls
 {
@@ -28,7 +31,8 @@ namespace iba.Controls
         TriggerControl triggerControl;
 
         string m_pdoFilePath, m_datFilePath;
-        RepositoryItemChannelTreeEdit channelTree;
+        AnalyzerTreeControl channelTree;
+        AnalyzerTreeControl numericTree;
         #endregion
 
         public HDEventCreationTaskControl()
@@ -40,43 +44,63 @@ namespace iba.Controls
             m_ctrlServer.SetServerFeatures(new List<ReaderFeature>(1) { ReaderFeature.ComputedValue }, new List<WriterFeature>(1) { WriterFeature.ComputedValue });
             m_ctrlServer.StoreFilter = new List<HdStoreType> { HdStoreType.Event };
             m_ctrlServer.HideStoreSelection();
-
             m_analyzerManager = new AnalyzerManager();
-
             m_pulseEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital);
             m_pulseEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
 
             m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog);
+            numericTree = m_channelEditor.ChannelTree;
             m_channelEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
 
             m_textEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Text);
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.CurrentFileExpression, Properties.Resources.HDEventTask_ChannelProcessedFile, Properties.Resources.img_file);
 
-            triggerControl = new TriggerControl();
+            m_pulseEditor.ChannelTree.Invalidated += ChannelEditorModified;
+            numericTree.Invalidated += ChannelEditorModified;
+            m_textEditor.ChannelTree.Invalidated += ChannelEditorModified;
 
-            triggerControl.SetChannelEditor(m_pulseEditor, m_pulseEditor);
+
+            triggerControl = new TriggerControl();
+            triggerControl.SetChannelEditor(m_pulseEditor, m_pulseEditor.ChannelTree);
 
             m_ctrlEvent.ApplicationName = "ibaDatCoordinator";
 
             m_ctrlEvent.DefaultNumericChannelValue = HDCreateEventTaskData.UnassignedExpression;
             m_ctrlEvent.DefaultTextChannelValue = HDCreateEventTaskData.UnassignedExpression;
 
-            m_ctrlEvent.SetNumericChannelEditor(m_channelEditor, m_channelEditor);
-            m_ctrlEvent.SetTextChannelEditor(m_textEditor, m_textEditor);
-            channelTree = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Text);
-            //channelTree.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
-            m_ctrlEvent.channelTree = channelTree.ChannelTree;
-            //m_ctrlEvent.SignalDragDropHandler = channelTree;
+            m_ctrlEvent.SetNumericChannelEditor(m_channelEditor, m_channelEditor.ChannelTree);
+            m_ctrlEvent.SetTextChannelEditor(m_textEditor, m_textEditor.ChannelTree);
+            channelTree = new AnalyzerTreeControl(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Text);
+            m_ctrlEvent.ChannelTree = channelTree;
 
             m_toolTip.SetToolTip(m_btnOpenPDO, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
             m_toolTip.SetToolTip(m_btnUploadPDO, Properties.Resources.HDEventTask_ToolTip_UploadPDO);
             m_toolTip.SetToolTip(m_btnTest, Properties.Resources.HDEventTask_ToolTip_Test);
 
             m_ctrlEvent.EventTrigger = triggerControl;
-            m_ctrlServer.ServerSelectionChanged += (s, e) => { m_ctrlEvent.StoreFilter = null; };
-            m_ctrlEvent.initializeEventConfig(m_ctrlServer.Reader, new List<string>(), false);
+            m_ctrlServer.ServerSelectionChanged += (s, e) => 
+            {
+                if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
+                {
+                    if (user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
+                        m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
+                    else if (user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
+                        m_ctrlEvent.StoreFilter = null;
+                }
+            };
+            m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), false);
+            m_ctrlEvent.EventWizard = new HDEventWizard(m_analyzerManager, GetPriorities());
+        }
 
+        public void ChannelEditorModified(object sender, EventArgs args)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action<object, EventArgs>(ChannelEditorModified), sender, args);
+                return;
+            }
+            m_ctrlEvent.Invalidate(true);
         }
 
         #region Dispose
@@ -130,61 +154,55 @@ namespace iba.Controls
         #region IPropertyPane
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal;
-
-            m_manager = manager;
-            m_data = datasource as HDCreateEventTaskData;
-            if (m_data.EventSettings.Count > 0 && m_ctrlServer.Server != m_data.Server && m_ctrlServer.Port != m_data.ServerPort)
-                m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort,
-                    m_data.Username, m_data.Password, "");
-            else if (m_data.EventSettings.Count == 0)
-                m_ctrlServer.LoadData("localhost", 9180, "", "", "");
-            m_pdoFilePath = m_data.AnalysisFile;
-            m_tbPDO.Text = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? m_data.AnalysisFile : Path.GetFileName(m_data.AnalysisFile);
-
-            m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
-
-            if (Environment.MachineName != m_data.DatFileHost)
+            Task.Factory.StartNew(() =>
             {
-                m_datFilePath = "";
-                m_tbDAT.Text = "";
-                m_tbPwdDAT.Text = "";
-            }
-            else
-            {
-                m_datFilePath = m_data.DatFile;
-                m_tbDAT.Text = m_datFilePath;
-                m_tbPwdDAT.Text = "";
-            }
+                m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal;
 
-            m_tbPwdDAT.TextChanged += m_tbPwdDAT_TextChanged;
+                m_manager = manager;
+                m_data = datasource as HDCreateEventTaskData;
+                if (m_data.EventSettings.Count > 0 && m_ctrlServer.Server != m_data.Server && m_ctrlServer.Port != m_data.ServerPort)
+                    m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort,
+                        m_data.Username, m_data.Password, "");
+                else if (m_data.EventSettings.Count == 0)
+                    m_ctrlServer.LoadData("localhost", 9180, "", "", "");
+                m_pdoFilePath = m_data.AnalysisFile;
+                m_tbPDO.Text = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? m_data.AnalysisFile : Path.GetFileName(m_data.AnalysisFile);
 
-            UpdateSources();
+                m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
 
-            /* triggerControl.GrPulse.DataSource = new List<PulseSignal>(1) { new PulseSignal(m_data.PulseSignal) };
-             if (m_data.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerFile)
-                 triggerControl.TriggerPerFile = true;
-             else
-                 triggerControl.TriggerBySignal = true;
-                 */
-            //TODO
-            /*ControlEvent.EventSettings eventSettings = new ControlEvent.EventSettings(m_data.EventSettings.ID, m_data.EventSettings.Name,
-                m_data.EventSettings.NumericFields, m_data.EventSettings.TextFields, m_data.EventSettings.BlobFields);
+                if (Environment.MachineName != m_data.DatFileHost)
+                {
+                    m_datFilePath = "";
+                    m_tbDAT.Text = "";
+                    m_tbPwdDAT.Text = "";
+                }
+                else
+                {
+                    m_datFilePath = m_data.DatFile;
+                    m_tbDAT.Text = m_datFilePath;
+                    m_tbPwdDAT.Text = "";
+                }
 
-            m_ctrlEvent.LoadSettings(eventSettings);*/
+                m_tbPwdDAT.TextChanged += m_tbPwdDAT_TextChanged;
 
-            m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
-            m_cbTime.Checked = m_data.MonitorData.MonitorTime;
-            m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
-            m_nudTime.Value = (decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
+                UpdateSources();
+
+                m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
+                m_cbTime.Checked = m_data.MonitorData.MonitorTime;
+                m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
+                m_nudTime.Value = (decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
 
 
-            LoadLocalData(m_data);
-            while (!channelTree.ChannelTree.Load()) ;
-            while (!m_textEditor.ChannelTree.Load()) ;
-            while (!m_channelEditor.ChannelTree.Load()) ;
-            while (!m_pulseEditor.ChannelTree.Load()) ;
-
+                LoadLocalData(m_data);
+                while (!channelTree.Load()) ;
+                while (!m_analyzerManager.IsOpened)
+                {
+                    Thread.Sleep(500);
+                }
+                while (!numericTree.Load()) ;
+                while (!m_pulseEditor.ChannelTree.Load()) ;
+                while (!m_textEditor.ChannelTree.Load()) ;
+            });
         }
 
         private void LoadLocalData(HDCreateEventTaskData data)
@@ -199,7 +217,7 @@ namespace iba.Controls
 
                 treeData.Add(localEvent);
             }
-            m_ctrlEvent.initializeLocalEvents(treeData);
+            m_ctrlEvent.InitializeLocalEvents(treeData);
         }
 
         public void LeaveCleanup()
@@ -208,6 +226,7 @@ namespace iba.Controls
             m_pulseEditor.ResetChannelTree();
             m_channelEditor.ResetChannelTree();
             m_textEditor.ResetChannelTree();
+            channelTree.Reset();
             m_analyzerManager.Dispose();
         }
 
@@ -224,7 +243,7 @@ namespace iba.Controls
                     m_data.FullEventConfig.Clear();
                     List<string> storeNames = m_ctrlEvent.GetStoreNames();
                     foreach (string storeName in storeNames)
-                        m_data.FullEventConfig.Add(storeName, m_ctrlEvent.SerialzeServerEvents(storeName, m_ctrlServer.Server, m_ctrlServer.Port, m_data.Guid, m_data.Name));
+                        m_data.FullEventConfig.Add(storeName, m_ctrlEvent.SerialzeServerEvents(storeName, m_ctrlServer.Server, m_ctrlServer.Port, m_data.Guid, m_data.Name, m_data.Username, m_data.Password));
 
 
                     HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
@@ -251,15 +270,11 @@ namespace iba.Controls
             m_data.Username = m_ctrlServer.Username;
             m_data.Password = m_ctrlServer.Password;
 
-            //m_data.TriggerMode = triggerControl.TriggerBySignal ? HDCreateEventTaskData.HDEventTriggerEnum.PerSignalPulse : HDCreateEventTaskData.HDEventTriggerEnum.PerFile;
-            //m_data.PulseSignal = (triggerControl.GrPulse.DataSource as List<PulseSignal>)[0].PulseID;
-
             List<HDCreateEventTaskData.EventData> eventData = m_data.EventSettings;
             bool bSaveEventSettings = m_ctrlServer.Reader.IsConnected()
                                         || eventData.Count == 0
                                         || m_ctrlServer.Server != m_data.Server
                                         || m_ctrlServer.Port != m_data.ServerPort
-                                        //|| m_ctrlServer.StoreName != eventData[0].StoreName
                                         || m_ctrlServer.Username != m_data.Username
                                         || m_ctrlServer.Password != m_data.Password;
 
@@ -268,12 +283,11 @@ namespace iba.Controls
                 //Fill list of events again from tree
                 List<HDCreateEventTaskData.EventData> localEvents = new List<HDCreateEventTaskData.EventData>();
                 Get(m_ctrlEvent.GetEventNodes(), new List<String>(), localEvents, "");
-                m_data.EventSettings.Clear();
-                foreach(HDCreateEventTaskData.EventData data in localEvents)
+                if (localEvents.Count > 0)
                 {
-
-                    //eventData.StoreName = m_ctrlServer.StoreName;
-                    m_data.EventSettings.Add(data);
+                    m_data.EventSettings.Clear();
+                    foreach (HDCreateEventTaskData.EventData data in localEvents)
+                        m_data.EventSettings.Add(data);
                 }
 
                 if (m_ctrlEvent.ServerEventsChanged())
@@ -290,16 +304,6 @@ namespace iba.Controls
                             break;
                     }
                 }
-                //TODO
-                /*ControlEvent.EventSettings eventSettings = m_ctrlEvent.GetSettings();
-                eventData.ID = eventSettings.ID;
-                eventData.Name = eventSettings.Name;
-                List<Tuple<string, string>> numFields = new List<Tuple<string, string>>();
-                foreach (var field in eventSettings.FloatFields)
-                    numFields.Add(Tuple.Create(field.Item1, field.Item2));
-                eventData.NumericFields = numFields;
-                eventData.TextFields = new List<Tuple<string, string>>(eventSettings.TextFields);
-                eventData.BlobFields = new List<string>(eventSettings.BlobFields);*/
             }
             else
             {
@@ -317,6 +321,20 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
                 UploadPdoFile(false);
             }
+        }
+
+        List<string> GetPriorities()
+        {
+            HashSet<string> prios = new HashSet<string>();
+
+            prios.Add("Low");
+            prios.Add("Normal");
+            prios.Add("High");
+
+            List<string> priorities = new List<string>(prios);
+            priorities.Sort();
+
+            return priorities;
         }
 
         void Get(NodeCollection nodes, List<string> path, List<HDCreateEventTaskData.EventData> localSignals, string store)
@@ -338,7 +356,7 @@ namespace iba.Controls
                 else
                 {
                     LocalEventData localEventData = sigNode.localEventData;
-                    EventWriterSignal eventWriterSignal = sigNode.hdServerData;
+                    EventWriterSignal eventWriterSignal = sigNode.EventWriterSignal;
                     HDCreateEventTaskData.EventData eventData = new HDCreateEventTaskData.EventData();
                     if (localEventData != null)
                     {
@@ -393,7 +411,7 @@ namespace iba.Controls
 
             m_tbDAT.Text = m_datFilePath;
             UpdateSources();
-            while (!channelTree.ChannelTree.Load()) ;
+            while (!channelTree.Load()) ;
             while (!m_textEditor.ChannelTree.Load()) ;
             while (!m_channelEditor.ChannelTree.Load()) ;
             while (!m_pulseEditor.ChannelTree.Load()) ;
@@ -555,7 +573,7 @@ namespace iba.Controls
                 m_pdoFilePath = path;
                 m_tbPDO.Text = bLocal ? path : Path.GetFileName(path);
                 UpdateSources();
-                while (!channelTree.ChannelTree.Load());
+                while (!channelTree.Load());
                 while (!m_textEditor.ChannelTree.Load());
                 while (!m_channelEditor.ChannelTree.Load());
                 while (!m_pulseEditor.ChannelTree.Load()) ;

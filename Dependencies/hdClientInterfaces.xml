@@ -933,6 +933,24 @@
             True upon success
             </returns>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.SelectedSignals">
+            <summary>
+            Gets the ids of all the selected signals of the event wizard
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.Apply">
+            <summary>
+            Create a new event based on the selected signals in the popup dialog.
+            </summary>
+            <returns>
+            Null if id is unknown
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.ShowDialog(System.Windows.Forms.IWin32Window)">
+            <summary>
+            Gets event queries on the connected server
+            </summary>
+        </member>
         <member name="T:iba.HD.Client.Interfaces.IHdTimeSynchronizer">
             <summary>
             Interface to convert between server time and local client time

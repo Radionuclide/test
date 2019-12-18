@@ -1,4 +1,5 @@
-﻿using DevExpress.Utils.Drawing;
+﻿using Crownwood.DotNetMagic.Controls;
+using DevExpress.Utils.Drawing;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Drawing;
@@ -11,6 +12,7 @@ using iba.Utility;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -31,6 +33,7 @@ namespace iba.Controls
         public bool IsOpened => bFilesOpened;
         DateTime m_dtLastWriteTime;
         string pdoFile, datFile, datFilePassword;
+
 
         public event Action SourceUpdated;
         #endregion
@@ -179,7 +182,7 @@ namespace iba.Controls
         Text = 0x04,
     };
 
-    internal class AnalyzerTreeControl : Panel
+    internal class AnalyzerTreeControl : Panel, ISignalDragDropHandler
     {
         private class CustomNode
         {
@@ -193,18 +196,22 @@ namespace iba.Controls
         const int Unloaded = 0;
         const int Loading = 1;
         const int Loaded = 2;
+        bool ignoreCheckChange = false;
 
         int iState;
         AnalyzerManager manager;
         ChannelTreeFilter filter;
 
-        List<CustomNode> customNodes;
-        List<TreeNode> customTreeNodes;
+        List<Node> customTreeNodes;
 
         string pendingSelection;
 
-        ImageList imageList;
-        TreeView treeView;
+        static ImageList imageList;
+        static Dictionary<string, Tuple<int, Image>> customNodesImages = new Dictionary<string, Tuple<int, Image>> ();
+        List<CustomNode> customNodes;
+
+        protected Crownwood.DotNetMagic.Controls.TreeControl tree;
+
         IbaAnalyzer.ISignalTree analyzerTree;
 
         public event Action<AnalyzerTreeControl, string> AfterSelect;
@@ -222,7 +229,7 @@ namespace iba.Controls
             iState = Unloaded;
 
             customNodes = new List<CustomNode>();
-            customTreeNodes = new List<TreeNode>();
+            customTreeNodes = new List<Node>();
 
             pendingSelection = "";
 
@@ -230,16 +237,17 @@ namespace iba.Controls
 
             imageList = new ImageList();
             imageList.TransparentColor = Color.Magenta;
-            treeView = new TreeView();
-            treeView.ImageList = imageList;
-            treeView.Dock = DockStyle.Fill;
-            treeView.Location = Point.Empty;
+            tree = new Crownwood.DotNetMagic.Controls.TreeControl();
+            tree.ImageList = imageList;
+            tree.Dock = DockStyle.Fill;
+            tree.Location = Point.Empty;
 
-            Controls.Add(treeView);
+            Controls.Add(tree);
 
             manager.SourceUpdated += Reset;
-            this.treeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.m_configTreeView_ItemDrag);
+            this.tree.NodeDrag += new Crownwood.DotNetMagic.Controls.StartDragEventHandler(this.tree_NodeDrag);
 
+            CreateHandle();
         }
         #endregion
 
@@ -251,10 +259,10 @@ namespace iba.Controls
                 Reset();
 
                 Controls?.Clear();
-                if (treeView != null)
+                if (tree != null)
                 {
-                    treeView.Dispose();
-                    treeView = null;
+                    tree.Dispose();
+                    tree = null;
                 }
 
                 manager.SourceUpdated -= Reset;
@@ -264,17 +272,202 @@ namespace iba.Controls
         }
         #endregion
 
+        #region Checkboxes
+        public event Crownwood.DotNetMagic.Controls.NodeEventHandler TreeAfterCheck;
+        protected void OnTreeAfterCheck(Crownwood.DotNetMagic.Controls.TreeControl tc, Crownwood.DotNetMagic.Controls.NodeEventArgs e)
+        {
+            if (TreeAfterCheck != null)
+                TreeAfterCheck(tc, e);
+        }
+
+        public void UncheckAllNodes()
+        {
+            UncheckNodes(tree.Nodes);
+        }
+
+        private void UncheckNodes(NodeCollection nodes)
+        {
+            foreach (Node node in nodes)
+            {
+                if (node.CheckState != Crownwood.DotNetMagic.Controls.CheckState.Unchecked)
+                {
+                    node.CheckState = Crownwood.DotNetMagic.Controls.CheckState.Unchecked;
+                    if (node.Nodes.Count > 0)
+                        UncheckNodes(node.Nodes);
+                }
+            }
+        }
+
+        //Update check state of all parent nodes
+        public void UpdateChecks()
+        {
+            UpdateChecksForNodes(tree.Nodes);
+        }
+
+        public bool UpdateAfterCheck(Node node)
+        {
+            if (ignoreCheckChange)
+                return false;
+
+            ignoreCheckChange = true;
+
+            //Update all child nodes
+            CheckChildNodes(node, node.Checked);
+
+            //Update check state of parent nodes
+            if (node.Parent != null)
+                UpdateCheckStateNode(node.Parent);
+
+            ignoreCheckChange = false;
+
+            return true;
+        }
+
+        private void CheckChildNodes(Node parentNode, bool bCheck)
+        {
+            foreach (Node node in parentNode.Nodes)
+            {
+                node.Checked = bCheck;
+                if (node.Nodes.Count > 0)
+                    CheckChildNodes(node, bCheck);
+            }
+        }
+
+        private void UpdateCheckStateNode(Node node)
+        {
+            Crownwood.DotNetMagic.Controls.CheckState savedState = node.CheckState;
+
+            int nrChecked = 0;
+            int nrMixed = 0;
+            foreach (Node childNode in node.Nodes)
+            {
+                switch (childNode.CheckState)
+                {
+                    case Crownwood.DotNetMagic.Controls.CheckState.Checked:
+                        nrChecked++;
+                        break;
+                    case Crownwood.DotNetMagic.Controls.CheckState.Mixed:
+                        nrMixed++;
+                        break;
+                }
+            }
+
+            if ((nrChecked == 0) && (nrMixed == 0))
+                node.CheckState = Crownwood.DotNetMagic.Controls.CheckState.Unchecked;
+            else if ((nrChecked == node.Nodes.Count) && (nrMixed == 0))
+                node.CheckState = Crownwood.DotNetMagic.Controls.CheckState.Checked;
+            else
+                node.CheckState = Crownwood.DotNetMagic.Controls.CheckState.Mixed;
+
+            if (savedState != node.CheckState)
+            {
+                if (node.Parent != null)
+                    UpdateCheckStateNode(node.Parent);
+            }
+        }
+
+        private void tree_AfterCheck(Crownwood.DotNetMagic.Controls.TreeControl tc, Crownwood.DotNetMagic.Controls.NodeEventArgs e)
+        {
+            if (UpdateAfterCheck(e.Node))
+                OnTreeAfterCheck(tc, e);
+        }
+
+        protected Crownwood.DotNetMagic.Controls.CheckState UpdateChecksForNodes(NodeCollection nodes)
+        {
+            bool uncheck = false;
+            bool check = false;
+            bool mixed = false;
+            foreach (Node node in nodes)
+            {
+                if (node.Nodes.Count > 0)
+                    node.CheckState = UpdateChecksForNodes(node.Nodes);
+
+                switch (node.CheckState)
+                {
+                    case Crownwood.DotNetMagic.Controls.CheckState.Unchecked:
+                        uncheck = true;
+                        break;
+
+                    case Crownwood.DotNetMagic.Controls.CheckState.Checked:
+                        check = true;
+                        break;
+
+                    default:
+                        mixed = true;
+                        break;
+                }
+            }
+
+            if (mixed || (check && uncheck))
+                return Crownwood.DotNetMagic.Controls.CheckState.Mixed;
+            else if (uncheck)
+                return Crownwood.DotNetMagic.Controls.CheckState.Unchecked;
+            else
+                return Crownwood.DotNetMagic.Controls.CheckState.Checked;
+        }
+        #endregion
+
+        #region Drag/Drop
+
+        public event EventHandler OnDragOverChannelResponse;
+
+        public event EventHandler OnDragDropChannelResponse;
+
+
+        public void OnDragOverHandle(object sender, EventArgs drgevent)
+        {
+            DragDetailsEvent dragDetailsEvent = drgevent as DragDetailsEvent;
+            SelectedNodeCollection inodes = (SelectedNodeCollection)dragDetailsEvent.drgEvent.Data.GetData(typeof(SelectedNodeCollection));
+            if (inodes != null)
+            {
+                List<Tuple<string, string>> validSignals = new List<Tuple<string, string>>();
+                foreach (Node node in inodes)
+                {
+                    IbaAnalyzer.ISignalTreeNode analyzerNode = (IbaAnalyzer.ISignalTreeNode)(node.Tag);
+                    string id = analyzerNode.channelId;
+                    if (ContainsNode(id))
+                        validSignals.Add(Tuple.Create(id, node.Text));
+
+                }
+                if (validSignals.Count > 0)
+                    OnDragOverChannelResponse?.Invoke(this, new DragDetailsResponseEvent(validSignals, dragDetailsEvent.numeric, true, dragDetailsEvent.drgEvent));
+
+            }
+        }
+
+        public void OnDragDropHandle(object sender, EventArgs drgevent)
+        {
+            DragDetailsEvent dragDetailsEvent = drgevent as DragDetailsEvent;
+            SelectedNodeCollection inodes = (SelectedNodeCollection)dragDetailsEvent.drgEvent.Data.GetData(typeof(SelectedNodeCollection));
+            if (inodes != null)
+            {
+                List<Tuple<string, string>> validSignals = new List<Tuple<string, string>>();
+                foreach (Node node in inodes)
+                {
+                    IbaAnalyzer.ISignalTreeNode analyzerNode = (IbaAnalyzer.ISignalTreeNode)(node.Tag);
+                    string id = analyzerNode.channelId;
+                    if (ContainsNode(id))
+                        validSignals.Add(Tuple.Create(id, node.Text));
+                }
+                if (validSignals.Count > 0)
+                    OnDragDropChannelResponse?.Invoke(this, new DragDetailsResponseEvent(validSignals, dragDetailsEvent.numeric, true, dragDetailsEvent.drgEvent));
+
+            }
+        }
+        #endregion
+
+
         public string SelectedChannel
         {
             get
             {
-                if (iState != Loaded || treeView.SelectedNode == null)
+                if (iState != Loaded || tree.SelectedNode == null)
                     return "";
 
-                if (treeView.SelectedNode.Tag is CustomNode cstNode)
+                if (tree.SelectedNode.Tag is CustomNode cstNode)
                     return cstNode.ChannelID;
 
-                if (treeView.SelectedNode.Tag is IbaAnalyzer.ISignalTreeNode sigNode)
+                if (tree.SelectedNode.Tag is IbaAnalyzer.ISignalTreeNode sigNode)
                     return sigNode.channelId;
 
                 return "";
@@ -283,9 +476,10 @@ namespace iba.Controls
             {
                 if (iState == Loaded)
                 {
-                    TreeNode node = FindNode(value);
+                    Node node = FindNode(value);
+                    tree.ClearSelection();
                     if (node != null)
-                        treeView.SelectedNode = node;
+                        tree.SelectedNode = node;
                 }
                 else
                     pendingSelection = value;
@@ -304,23 +498,55 @@ namespace iba.Controls
             if (prevState == Unloading)
                 return;
 
-            if (treeView != null)
+            if (tree != null)
             {
-                treeView.BeforeSelect -= treeView_BeforeSelect;
-                treeView.AfterSelect -= treeView_AfterSelect;
-                treeView.AfterExpand -= treeView_AfterExpand;
-                treeView.DoubleClick -= treeView_DoubleClick;
+                tree.AfterSelect -= treeView_AfterSelect;
+                tree.AfterExpand -= treeView_AfterExpand;
+                tree.AfterCheck -= tree_AfterCheck;
                 ClearNodes();
             }
 
             if (analyzerTree != null)
                 Marshal.ReleaseComObject(analyzerTree);
             analyzerTree = null;
-            imageList.Images.Clear();
             customTreeNodes.Clear();
             pendingSelection = "";
 
             Interlocked.Exchange(ref iState, Unloaded);
+        }
+
+        private bool checkBoxes;
+
+        [DefaultValue(false)]
+        public bool CheckBoxes
+        {
+            get { return checkBoxes; }
+            set
+            {
+                checkBoxes = value;
+                tree.CheckStates = value ? CheckStates.TwoStateCheck : CheckStates.None;
+            }
+        }
+
+        [DefaultValue(false)]
+        public bool MultiSelect
+        {
+            get { return tree.SelectMode == SelectMode.Multiple; }
+            set
+            {
+                if (MultiSelect == value)
+                    return;
+
+                if (value)
+                {
+                    tree.SelectMode = SelectMode.Multiple;
+                    tree.SelectSameLevel = true;
+                }
+                else
+                {
+                    tree.SelectMode = SelectMode.Single;
+                }
+            }
         }
 
         string OpenAnalyzer()
@@ -355,11 +581,23 @@ namespace iba.Controls
                     imageList.Images.Add(bm);
                 }
             }
+            foreach (string key in new List<string>(customNodesImages.Keys))
+            {
+                Tuple<int, Image> val = customNodesImages[key];
+                customNodesImages[key] = Tuple.Create(imageList.Images.Count, val.Item2);
+                imageList.Images.Add(val.Item2);
+            }
+
         }
 
-        void ReleaseSignalNodes(TreeNodeCollection nodes)
+        public Node GetSignalNode(string id)
         {
-            foreach (TreeNode node in nodes)
+            return FindNode(id);
+        }
+
+        void ReleaseSignalNodes(NodeCollection nodes)
+        {
+            foreach (Node node in nodes)
             {
                 ReleaseSignalNodes(node.Nodes);
 
@@ -373,8 +611,19 @@ namespace iba.Controls
 
         void ClearNodes()
         {
-            ReleaseSignalNodes(treeView.Nodes);
-            treeView.Nodes.Clear();
+            ReleaseSignalNodes(tree.Nodes);
+            tree.Nodes.Clear();
+        }
+
+        private void UpdateTree()
+        {
+            if (tree.InvokeRequired)
+            {
+                tree.Invoke(new Action(UpdateTree));
+                return;
+            }
+
+            tree.Update();
         }
 
         void CreateTree(Task<string> task)
@@ -382,16 +631,19 @@ namespace iba.Controls
             if (Disposing || IsDisposed || iState != Loading)
                 return;
 
-            if (InvokeRequired)
+            if (tree.InvokeRequired)
             {
-                BeginInvoke(new Action<Task<string>>(CreateTree), task);
+                tree.Invoke(new Action<Task<string>>(CreateTree), task);
                 return;
             }
-
-            imageList.Images.Clear();
+            
+            if (imageList.Images.Count < 2)
+            {
+                imageList.Images.Clear();
+                FillImageList();
+            }
             ClearNodes();
-
-            treeView.BeginUpdate();
+            tree.ImageList = imageList;
             string error = "";
             if (task != null && (task.IsFaulted || !string.IsNullOrEmpty(task.Result)))
                 error = task.Exception?.Message ?? task.Result ?? Properties.Resources.AnalyzerTree_UnknownError;
@@ -399,19 +651,20 @@ namespace iba.Controls
             {
                 try
                 {
-                    FillImageList();
-
                     object treeObj = manager.Analyzer.GetSignalTree((int)filter);
                     analyzerTree = treeObj as IbaAnalyzer.ISignalTree;
                     object nodeObj = analyzerTree.GetRootNode();
                     IbaAnalyzer.ISignalTreeNode node = nodeObj as IbaAnalyzer.ISignalTreeNode;
                     if (node != null)
                     {
-                        TreeNode trnode = new TreeNode(node.Text, node.ImageIndex, node.ImageIndex);
+                        Node trnode = new Node(node.Text, node.ImageIndex);
                         trnode.Tag = node;
-                        treeView.Nodes.Add(trnode);
+                        tree.Nodes.Add(trnode);
                         RecursiveAdd(trnode);
                     }
+                    Invalidate();
+                    OnInvalidated(null);
+
                 }
                 catch (Exception ex)
                 {
@@ -419,16 +672,15 @@ namespace iba.Controls
                     if (analyzerTree != null)
                         Marshal.ReleaseComObject(analyzerTree);
                     analyzerTree = null;
-                    imageList.Images.Clear();
                     ClearNodes();
                 }
             }
 
-            TreeNode errorNode = null;
+            Node errorNode = null;
             if (!string.IsNullOrEmpty(error))
             {
                 int imgIndex = imageList.Images.Count;
-                errorNode = new TreeNode(error, imgIndex, imgIndex);
+                errorNode = new Node(error, imgIndex);
                 imageList.Images.Add(Properties.Resources.img_error);
             }
 
@@ -436,25 +688,39 @@ namespace iba.Controls
                 InsertSpecialNode(cstNode);
 
             if (errorNode != null)
-                treeView.Nodes.Add(errorNode);
-
-            treeView.EndUpdate();
+                tree.Nodes.Add(errorNode);
 
             if (!string.IsNullOrEmpty(pendingSelection))
             {
-                TreeNode trNode = FindNode(pendingSelection);
+                Node trNode = FindNode(pendingSelection);
                 if (trNode != null)
-                    treeView.SelectedNode = trNode;
+                    tree.SelectedNode = trNode;
 
                 pendingSelection = "";
             }
 
-            treeView.BeforeSelect += treeView_BeforeSelect;
-            treeView.AfterSelect += treeView_AfterSelect;
-            treeView.AfterExpand += treeView_AfterExpand;
-            treeView.DoubleClick += treeView_DoubleClick;
+            tree.AfterSelect += treeView_AfterSelect;
+            tree.AfterExpand += treeView_AfterExpand;
+            tree.AfterCheck += tree_AfterCheck;
 
             Interlocked.Exchange(ref iState, Loaded);
+
+            UpdateTree();
+
+        }
+
+        private void TreeSetAnalyzerLoading()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(TreeSetAnalyzerLoading));
+                return;
+            }
+            imageList.Images.Clear();
+            ClearNodes();
+            imageList.Images.Add(Properties.Resources.img_warning);
+            tree.Nodes.Add(new Node(Properties.Resources.AnalyzerTree_Loading, 0));
+            UpdateTree();
         }
 
         public bool Load()
@@ -462,22 +728,19 @@ namespace iba.Controls
             if (Disposing || IsDisposed)
                 return true;
 
+
+
             int prevState = Interlocked.CompareExchange(ref iState, Loading, Unloaded);
             if (prevState == Loading || prevState == Loaded)
                 return true;
             if (prevState == Unloading)
                 return false;
-
+            
             if (manager.IsOpened)
                 CreateTree(null);
             else
             {
-                treeView.BeginUpdate();
-                imageList.Images.Clear();
-                ClearNodes();
-                imageList.Images.Add(Properties.Resources.img_warning);
-                treeView.Nodes.Add(new TreeNode(Properties.Resources.AnalyzerTree_Loading, 0, 0));
-                treeView.EndUpdate();
+                TreeSetAnalyzerLoading();
 
                 
                 Task<string>.Factory.StartNew(OpenAnalyzer).ContinueWith(CreateTree);
@@ -486,16 +749,13 @@ namespace iba.Controls
             return true;
         }
 
-        void InsertSpecialNode(CustomNode customNode)
+        private void InsertSpecialNode(CustomNode customNode)
         {
-            int imageIndex = imageList.Images.Count;
-            imageList.Images.Add(customNode.Image);
-
-            TreeNode trNode = new TreeNode(customNode.Text, imageIndex, imageIndex);
+            Node trNode = new Node(customNode.Text, customNodesImages[customNode.Text].Item1);
             trNode.Tag = customNode;
             customTreeNodes.Add(trNode);
 
-            TreeNodeCollection collNodes = treeView.Nodes;
+            NodeCollection collNodes = tree.Nodes;
             int insertIdx = 0;
             while (insertIdx < collNodes.Count && collNodes[insertIdx].Tag is CustomNode)
                 insertIdx++;
@@ -512,6 +772,8 @@ namespace iba.Controls
 
             CustomNode cstNode = new CustomNode() { Text = text, ChannelID = key, Image = image };
             customNodes.Add(cstNode);
+            if (!customNodesImages.ContainsKey(text))
+                customNodesImages.Add(text, Tuple.Create(-1, image));
 
             if (iState == Loaded)
                 InsertSpecialNode(cstNode);
@@ -519,13 +781,13 @@ namespace iba.Controls
             return key;
         }
 
-        private void RecursiveAdd(TreeNode trnode, bool addSiblings = true)
+        private void RecursiveAdd(Node trnode, bool addSiblings = true)
         {
             IbaAnalyzer.ISignalTreeNode signalTreeNode = trnode.Tag as IbaAnalyzer.ISignalTreeNode;
             IbaAnalyzer.ISignalTreeNode child = signalTreeNode?.GetFirstChildNode() as IbaAnalyzer.ISignalTreeNode;
             if (child != null)
             {
-                TreeNode childtrnode = new TreeNode(child.Text, child.ImageIndex, child.ImageIndex);
+                Node childtrnode = new Node(child.Text, child.ImageIndex);
                 childtrnode.Tag = child;
                 trnode.Nodes.Add(childtrnode);
                 RecursiveAdd(childtrnode);
@@ -534,16 +796,16 @@ namespace iba.Controls
             IbaAnalyzer.ISignalTreeNode sibling = signalTreeNode.GetSiblingNode() as IbaAnalyzer.ISignalTreeNode;
             while (sibling != null)
             {
-                TreeNode siblingtrnode = new TreeNode(sibling.Text, sibling.ImageIndex, sibling.ImageIndex);
+                Node siblingtrnode = new Node(sibling.Text, sibling.ImageIndex);
                 siblingtrnode.Tag = sibling;
-                TreeNodeCollection parentCollection = (trnode.Parent == null) ? treeView.Nodes : trnode.Parent.Nodes;
+                NodeCollection parentCollection = (trnode.Parent == null) ? tree.Nodes : trnode.Parent.Nodes;
                 parentCollection.Add(siblingtrnode);
                 RecursiveAdd(siblingtrnode, false);
                 sibling = sibling.GetSiblingNode() as IbaAnalyzer.ISignalTreeNode;
             }
         }
 
-        private void ExpandNode(TreeNode node)
+        private void ExpandNode(Node node)
         {
             if (node.Nodes.Count == 1 && node.Nodes[0].Text == "dummy")
             {
@@ -552,14 +814,13 @@ namespace iba.Controls
                 if (parent != null)
                 {
                     parent.Expand();
-                    treeView.BeginUpdate();
                     RecursiveAdd(node, false);
-                    treeView.EndUpdate();
+                    tree.Update();
                 }
             }
         }
 
-        TreeNode FindNode(string id)
+        private Node FindNode(string id)
         {
             foreach (var trNode in customTreeNodes)
             {
@@ -570,18 +831,20 @@ namespace iba.Controls
             IbaAnalyzer.ISignalTreeNode inode = analyzerTree?.FindNodeWithID(id);
             if (inode == null) return null;
             Stack<IbaAnalyzer.ISignalTreeNode> parents = new Stack<IbaAnalyzer.ISignalTreeNode>();
-            TreeNode node = null;
+            Node node = null;
             while (inode != null)
             {
                 parents.Push(inode);
                 inode = inode.GetParentNode() as IbaAnalyzer.ISignalTreeNode;
             }
-            TreeNodeCollection tc = treeView.Nodes;
+            NodeCollection tc = tree.Nodes;
             bool bFirstPop = true;
             while (parents.Count > 0)
             {
                 inode = parents.Pop();
-                node = bFirstPop ? tc[inode.IndexInCollection + customNodes.Count] : tc[inode.IndexInCollection];
+                if (tc.Count <= inode.IndexInCollection || inode.IndexInCollection < 0)
+                    return null;
+                node = bFirstPop && tc.Count > inode.IndexInCollection + customNodes.Count ? tc[inode.IndexInCollection + customNodes.Count] : tc[inode.IndexInCollection];
                 bFirstPop = false;
                 ExpandNode(node);
                 Marshal.ReleaseComObject(inode);
@@ -592,7 +855,7 @@ namespace iba.Controls
 
         public string GetDisplayName(string id)
         {
-            TreeNode trNode = FindNode(id);
+            Node trNode = FindNode(id);
             if (trNode == null)
                 return null;
 
@@ -609,9 +872,63 @@ namespace iba.Controls
             return FindNode(id) != null;
         }
 
+        public IEnumerable<Node> EnumerateNodes(Crownwood.DotNetMagic.Controls.TreeControl tree)
+        {
+            NodeCollection nodes = tree.Nodes;
+            List<Node> result = new List<Node>();
+            if (nodes.Count == 0)
+                return null;
+
+            return EnumerateNodes(nodes);
+
+
+        }
+
+        private IEnumerable<Node> EnumerateNodes(NodeCollection nodes)
+        {
+            List<Node> result = new List<Node>();
+            foreach (Node n in nodes)
+            {
+                result.Add(n);
+
+                if (n.Nodes.Count > 0)
+                {
+                    foreach (Node subNode in EnumerateNodes(n.Nodes))
+                        result.Add(subNode);
+                }
+            }
+            return result;
+        }
+
+        public IEnumerable<Node> EnumerateCheckedNodes(Crownwood.DotNetMagic.Controls.TreeControl tree)
+        {
+            NodeCollection nodes = tree.Nodes;
+            if (nodes.Count == 0)
+                return null;
+
+            return EnumerateCheckedNodes(nodes);
+        }
+
+        private IEnumerable<Node> EnumerateCheckedNodes(NodeCollection nodes)
+        {
+            List<Node> result = new List<Node>();
+            foreach (Node n in nodes)
+            {
+                if (n.CheckState == Crownwood.DotNetMagic.Controls.CheckState.Checked)
+                    result.Add(n);
+
+                if ((n.CheckState != Crownwood.DotNetMagic.Controls.CheckState.Unchecked) && (n.Nodes.Count > 0))
+                {
+                    foreach (Node subNode in EnumerateCheckedNodes(n.Nodes))
+                        result.Add(subNode);
+                }
+            }
+            return result;
+        }
+
         public Image GetImage(string id)
         {
-            TreeNode trNode = FindNode(id);
+            Node trNode = FindNode(id);
             if (trNode == null)
                 return null;
 
@@ -619,23 +936,18 @@ namespace iba.Controls
         }
 
         #region Handlers
-        private void treeView_AfterExpand(object sender, TreeViewEventArgs e)
+        private void treeView_AfterExpand(Crownwood.DotNetMagic.Controls.TreeControl tc, Crownwood.DotNetMagic.Controls.NodeEventArgs e)
         {
             ExpandNode(e.Node);
         }
 
-        private void treeView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
-        {
-            if (e.Node?.Tag == null)
-                e.Cancel = true;
-        }
-
-        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        private void treeView_AfterSelect(Crownwood.DotNetMagic.Controls.TreeControl tc, Crownwood.DotNetMagic.Controls.NodeEventArgs e)
         {
             //Action is only Unknown when setting the selected node in OnBeforeShowPopup
             //If we don't return here, the popup will be shown without any attached event handlers
-            if (e.Action == TreeViewAction.Unknown)
-                return;
+            //TODO
+            //if (e. == TreeViewAction.Unknown)
+            //    return;
 
             string id = "";
             if (e.Node?.Tag is CustomNode cstNode)
@@ -647,14 +959,34 @@ namespace iba.Controls
                 AfterSelect?.Invoke(this, id);
         }
 
-        void treeView_DoubleClick(object sender, EventArgs e)
+        void treeView_DoubleClick(Crownwood.DotNetMagic.Controls.TreeControl tc, Crownwood.DotNetMagic.Controls.NodeEventArgs e)
         {
             CustomDoubleClick?.Invoke(this, "");
         }
         #endregion
 
+        private void tree_NodeDrag(Crownwood.DotNetMagic.Controls.TreeControl tc, Crownwood.DotNetMagic.Controls.StartDragEventArgs e)
+        {
+            // Move the dragged node when the left mouse button is used.
+            Node node = e.Node;
+            if ((node == null) || (node.Tag == null))
+                return;
 
+            bool multiSelect = tree.SelectMode == SelectMode.Multiple;
 
+            if (!multiSelect)
+            {
+                Node draggedNode = e.Node;
+                AfterSelect?.Invoke(this, draggedNode.Text);
+                SelectedChannel = draggedNode.Text;
+                if (!(draggedNode.Tag is NewConfigurationTreeItemDataBase) || draggedNode.Tag == null)
+                    DoDragDrop(tree.SelectedNodes, DragDropEffects.Copy | DragDropEffects.Move);
+            }
+            else
+                DoDragDrop(tree.SelectedNodes, DragDropEffects.Copy | DragDropEffects.Move);
+        }
+
+        //Deprecated
         private void m_configTreeView_ItemDrag(object sender, ItemDragEventArgs e)
         {
             // Move the dragged node when the left mouse button is used.
@@ -689,7 +1021,7 @@ namespace iba.Controls
     }
 
     [UserRepositoryItem("RegisterChannelTreeEdit")]
-    internal class RepositoryItemChannelTreeEdit : RepositoryItemPopupContainerEdit, ISignalDragDropHandler
+    internal class RepositoryItemChannelTreeEdit : RepositoryItemPopupContainerEdit
     {
         #region static
 
@@ -707,54 +1039,10 @@ namespace iba.Controls
 
         #endregion
 
-        #region Drag/Drop
-
-        public event EventHandler onDragOverChannelResponse;
-
-        public EventHandler OnDragOverChannelResponse
-        {
-            get { return onDragOverChannelResponse; }
-            set { onDragOverChannelResponse = value; }
-        }
-
-        public event EventHandler onDragDropChannelResponse;
-
-        public EventHandler OnDragDropChannelResponse
-        {
-            get { return onDragDropChannelResponse; }
-            set { onDragDropChannelResponse = value; }
-        }
-
-        public void OnDragOverHandle(object sender, EventArgs drgevent)
-        {
-            DragDetailsEvent dragDetailsEvent = drgevent as DragDetailsEvent;
-            TreeNode inode = (TreeNode)dragDetailsEvent.drgEvent.Data.GetData(typeof(TreeNode));
-            if (inode != null)
-            {
-                IbaAnalyzer.ISignalTreeNode analyzerNode = (IbaAnalyzer.ISignalTreeNode)(inode.Tag);
-                string id = analyzerNode.channelId;
-                if (ChannelTree.ContainsNode(id))
-                    onDragOverChannelResponse?.Invoke(this, new DragDetailsResponseEvent(inode.Text, id, dragDetailsEvent.numeric, true, dragDetailsEvent.drgEvent));
-            }
-        }
-
-        public void OnDragDropHandle(object sender, EventArgs drgevent)
-        {
-            DragDetailsEvent dragDetailsEvent = drgevent as DragDetailsEvent;
-            TreeNode inode = (TreeNode)dragDetailsEvent.drgEvent.Data.GetData(typeof(TreeNode)); if (inode != null)
-            {
-                IbaAnalyzer.ISignalTreeNode analyzerNode = (IbaAnalyzer.ISignalTreeNode)(inode.Tag);
-                string id = analyzerNode.channelId;
-                if (ChannelTree.ContainsNode(id))
-                    onDragDropChannelResponse?.Invoke(this, new DragDetailsResponseEvent(inode.Text, id, dragDetailsEvent.numeric, true, dragDetailsEvent.drgEvent));
-            }
-        }
-        #endregion
-
         #region instance
         bool bOriginalInstance;
-        AnalyzerTreeControl channelTree;
-        public AnalyzerTreeControl ChannelTree => channelTree;
+        private AnalyzerTreeControl channelTree;
+
         public bool DrawImages;
 
         public RepositoryItemChannelTreeEdit()
@@ -781,6 +1069,11 @@ namespace iba.Controls
         public override string EditorTypeName
         {
             get { return "ChannelTreeEdit"; }
+        }
+
+        public AnalyzerTreeControl ChannelTree
+        {
+            get { return channelTree; }
         }
 
         public override void Assign(RepositoryItem item)
@@ -1049,6 +1342,11 @@ namespace iba.Controls
                     AnalyzerTreeControl tree = item.ChannelTree;
                     text = tree.GetDisplayName(id) ?? id;
                     image = tree.GetImage(id);
+                    if (image == null)
+                    {
+                        SpecialNode unassigned = item.GetSpecialNodeFromValue("*UNASSIGNED*");
+                        image = unassigned?.Image;
+                    }
                 }
 
                 Rectangle r = vi.ContentRect;

@@ -201,6 +201,12 @@
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\HDEventWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\HDEventWizard.Designer.cs">
+      <DependentUpon>HDEventWizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TriggerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -529,6 +535,9 @@
     <EmbeddedResource Include="Controls\StatusControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>StatusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HDEventWizard.resx">
+      <DependentUpon>HDEventWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TriggerControl.resx">
       <DependentUpon>TriggerControl.cs</DependentUpon>

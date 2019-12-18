@@ -4328,6 +4328,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate one event per processed file.
+        /// </summary>
+        internal static string TriggerPerFile {
+            get {
+                return ResourceManager.GetString("TriggerPerFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate an event for every rectangular pulse.
+        /// </summary>
+        internal static string TriggerPerPulse {
+            get {
+                return ResourceManager.GetString("TriggerPerPulse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find the UNC path &apos;{0}&apos;.
         /// </summary>
         internal static string UNCPathUnavailable {
@@ -4488,6 +4506,15 @@ namespace iba.Properties {
         internal static string uploadFileProblem {
             get {
                 return ResourceManager.GetString("uploadFileProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signal Name.
+        /// </summary>
+        internal static string UseSignalName {
+            get {
+                return ResourceManager.GetString("UseSignalName", resourceCulture);
             }
         }
         
