@@ -27,7 +27,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <PublishUrl>http://localhost/ibaDatCoordinator/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -120,11 +120,22 @@
       <HintPath>..\Dependencies\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Opc.Ua.Configuration">
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Core, Version=1.4.353.0, Culture=neutral, PublicKeyToken=bfa7a73c5cf4b6e8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Server">
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Server.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
@@ -171,11 +182,47 @@
     <Compile Include="Controls\ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\OpcUaIpAddressSelect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaIpAddressSelect.Designer.cs">
+      <DependentUpon>OpcUaIpAddressSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.Designer.cs">
+      <DependentUpon>OpcUaCertificateEnterPasswordForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateGenerateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateGenerateForm.Designer.cs">
+      <DependentUpon>OpcUaCertificateGenerateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaControl.Designer.cs">
+      <DependentUpon>OpcUaControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaEndpointSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaEndpointSelectionForm.Designer.cs">
+      <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PanelEventJob.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\PanelEventJob.designer.cs">
       <DependentUpon>PanelEventJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PasswordEditWithConfirmation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PasswordEditWithConfirmation.Designer.cs">
+      <DependentUpon>PasswordEditWithConfirmation.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ServerFolderBrowser.cs">
       <SubType>Form</SubType>
@@ -216,6 +263,7 @@
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
     <Compile Include="Data\HDCreateEventTaskData.cs" />
+    <Compile Include="Data\OpcUaData.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
     <Compile Include="Dialogs\About.cs">
       <SubType>Form</SubType>
@@ -229,14 +277,24 @@
     <Compile Include="Dialogs\GenerateEventJobTestFileDlg.Designer.cs">
       <DependentUpon>GenerateEventJobTestFileDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\PasswordEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\PasswordEditForm.Designer.cs">
+      <DependentUpon>PasswordEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ServerSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
-    <Compile Include="Data\SnmpObjectsData.cs" />
+    <Compile Include="Data\ExtMonData.cs" />
+    <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
+    <Compile Include="Processing\IbaOpcUa\IbaOpcUaNodeManager.cs" />
+    <Compile Include="Processing\IbaOpcUa\IbaOpcUaVariable.cs" />
     <Compile Include="Processing\HDCreateEventTaskWorker.cs" />
     <Compile Include="Processing\HDEventMonitor.cs" />
     <Compile Include="Processing\ibaAnalyzerWrapper.cs" />
+    <Compile Include="Processing\OpcUaWorker.cs" />
     <Compile Include="Processing\SnmpWorker.cs" />
     <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
       <SubType>Form</SubType>
@@ -506,9 +564,26 @@
     <EmbeddedResource Include="Controls\HDEventCreationTaskControl.resx">
       <DependentUpon>HDEventCreationTaskControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaCertificateEnterPasswordForm.resx">
+      <DependentUpon>OpcUaCertificateEnterPasswordForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaCertificateGenerateForm.resx">
+      <DependentUpon>OpcUaCertificateGenerateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaControl.resx">
+      <DependentUpon>OpcUaControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaEndpointSelectionForm.resx">
+      <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelEventJob.resx">
       <DependentUpon>PanelEventJob.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PasswordEditWithConfirmation.resx">
+      <DependentUpon>PasswordEditWithConfirmation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ServerFolderBrowser.resx">
       <DependentUpon>ServerFolderBrowser.cs</DependentUpon>
@@ -551,6 +626,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\GenerateEventJobTestFileDlg.resx">
       <DependentUpon>GenerateEventJobTestFileDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\PasswordEditForm.resx">
+      <DependentUpon>PasswordEditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ServerSelectionForm.resx">
       <DependentUpon>ServerSelectionForm.cs</DependentUpon>
@@ -714,6 +792,14 @@
     <Content Include="Resources\img_file.png" />
     <Content Include="Resources\img_pdo_upload.png" />
     <Content Include="Resources\img_warning.png" />
+    <None Include="Resources\opcUaServer_icon.png" />
+    <None Include="Resources\remove.png" />
+    <None Include="Resources\img_shldred.png" />
+    <None Include="Resources\img_shldgreen.png" />
+    <None Include="Resources\img_opcuaserver_cert.png" />
+    <None Include="Resources\img_opcuaclient_cert.png" />
+    <None Include="Resources\img_key.png" />
+    <None Include="Resources\img_export.png" />
     <None Include="Resources\about_background.png" />
     <None Include="Resources\about80x80.png" />
     <None Include="Resources\dat-file.ico" />
@@ -730,11 +816,14 @@
     <Content Include="Resources\img_computed_values.png" />
     <Content Include="Resources\img_error.png" />
     <Content Include="Resources\img_eventjob_range_both.png" />
+    <None Include="Resources\img_add.png" />
+    <None Include="Resources\img_cert.png" />
+    <None Include="Resources\img_dude.png" />
+    
     <Content Include="Resources\img_eventjob_range_single.png" />
     <None Include="Resources\snmp_icon.png" />
     <None Include="Resources\snmp_images.png" />
     <None Include="Resources\Toolbars16.bmp" />
-    <None Include="Resources\paneSnmpIcon.ico" />
     <None Include="Resources\SplitDat.ico" />
     <None Include="Resources\plus.bmp" />
     <None Include="Resources\minus.bmp" />
@@ -792,8 +881,11 @@
     <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"
 move "$(TargetDir)hd_plugin.dll" "$(TargetDir)Plugins"
 copy "$(SolutionDir)Dependencies\PowerCollections.dll" "$(TargetDir)"
-
+copy "$(SolutionDir)Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" "$(TargetDir)"
 </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>copy "$(SolutionDir)Dependencies\DevExpress*.dll" "$(TargetDir)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

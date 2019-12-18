@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
-using System.Threading;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Logging;
 using iba.Processing;
 using iba.Properties;
-using iba.Utility;
 using IbaSnmpLib;
 
 
@@ -33,31 +29,15 @@ namespace iba.Controls
         private const int ImageIndexFolder = 0;
         private const int ImageIndexLeaf = 1;
 
-        private CollapsibleElementManager _ceManager;
-
         private void SnmpControl_Load(object sender, EventArgs e)
         {
-            // initialize collapsible group boxes
-            _ceManager = new CollapsibleElementManager(this);
-
-            gbConfiguration.Init();
-            _ceManager.AddElement(gbConfiguration);
-
-            gbObjects.Init();
-            _ceManager.AddElement(gbObjects);
-
-            gbDiagnostics.Init();
-            _ceManager.AddElement(gbDiagnostics);
-
-            // bind password text boxes to their show/hide buttons
-            buttonShowPassword.Tag = tbPassword;
-            buttonShowEncryptionKey.Tag = tbEncryptionKey;
-
-            ImageList pdaList = new ImageList();
-            pdaList.ImageSize = new System.Drawing.Size(16, 16);
-            pdaList.TransparentColor = Color.Magenta;
-            pdaList.ColorDepth = ColorDepth.Depth24Bit;
-            pdaList.Images.AddStrip(iba.Properties.Resources.snmp_images);
+            ImageList pdaList = new ImageList
+            {
+                ImageSize = new Size(16, 16),
+                TransparentColor = Color.Magenta,
+                ColorDepth = ColorDepth.Depth24Bit
+            };
+            pdaList.Images.AddStrip(Resources.snmp_images);
 
             // image list for objects TreeView
             ImageList tvObjectsImageList = new ImageList();
@@ -76,11 +56,11 @@ namespace iba.Controls
 
         private SnmpData _data;
 
-        public void LoadData(object datasource, IPropertyPaneManager manager)
+        public void LoadData(object dataSource, IPropertyPaneManager manager)
         {
             try
             {
-                _data = datasource as SnmpData; // clone of current Manager's data
+                _data = dataSource as SnmpData; // clone of current Manager's data
 
                 // if data is wrong, disable all controls, and cancel load
                 Enabled = _data != null;
@@ -92,8 +72,8 @@ namespace iba.Controls
                 // read from data to controls
                 ConfigurationFromDataToControls();
 
-                //// force rebuild snmpworker's tree to ensure we have most recent information
-                //TaskManager.Manager.SnmpRebuildObjectTree();
+                //// force rebuild worker's tree to ensure we have most recent information
+                // /*this is unnecessary*/ TaskManager.Manager.SnmpRebuildObjectTree();
 
                 // rebuild gui-tree
                 RebuildObjectsTree();
@@ -137,6 +117,12 @@ namespace iba.Controls
 
         #region Configuration
 
+        private void tabControl1_SelectionChanged(Crownwood.DotNetMagic.Controls.TabControl sender, Crownwood.DotNetMagic.Controls.TabPage oldPage, Crownwood.DotNetMagic.Controls.TabPage newPage)
+        {
+            // show panel with Apply and Reset buttons only for Cfg tab
+            panelFooter.Visible = tabConfiguration.Selected;
+        }
+
         private void buttonConfigurationApply_Click(object sender, EventArgs e)
         {
             try
@@ -145,7 +131,7 @@ namespace iba.Controls
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
 
-                // rebuild the tree because probabaly textual conventions were changed
+                // rebuild the tree because probably textual conventions were changed
                 TaskManager.Manager.SnmpRebuildObjectTree();
 
                 // rebuild GUI tree
@@ -161,8 +147,8 @@ namespace iba.Controls
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(this,
-                    iba.Properties.Resources.snmpQuestionReset,
-                    iba.Properties.Resources.snmpQuestionResetTitle,
+                    Resources.snmpQuestionReset,
+                    Resources.snmpQuestionResetTitle,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
@@ -184,7 +170,7 @@ namespace iba.Controls
                 // set data to manager and restart snmp agent if necessary
                 TaskManager.Manager.SnmpData = _data.Clone() as SnmpData;
 
-                // rebuild the tree because probabaly textual conventions were changed
+                // rebuild the tree because probably textual conventions were changed
                 TaskManager.Manager.SnmpRebuildObjectTree();
 
                 // rebuild GUI tree
@@ -249,37 +235,6 @@ namespace iba.Controls
             cmbEncryption.SelectedIndex = (int) v3S.EncrAlgorithm;
         }
 
-        /// <summary>
-        /// Shows password in a bound TextBox. 
-        /// Before using, first connect your Button and TextBox like:
-        /// "showHideButton.Tag = TextBoxToBeControlled"
-        /// </summary>
-        private void handler_ShowPassword(object sender, MouseEventArgs e)
-        {
-            TextBox tb = (sender as Button)?.Tag as TextBox;
-            if (tb == null)
-            {
-                return;
-            }
-            tb.PasswordChar = '\0';
-        }
-
-
-        /// <summary>
-        /// Hides password in a bound TextBox. 
-        /// Before using, first connect your Button and TextBox like:
-        /// "showHideButton.Tag = TextBoxToBeControlled"
-        /// </summary>
-        private void handler_HidePassword(object sender, MouseEventArgs e)
-        {
-            TextBox tb = (sender as Button)?.Tag as TextBox;
-            if (tb == null)
-            {
-                return;
-            }
-            tb.PasswordChar = '*';
-        }
-
         #endregion
 
 
@@ -301,11 +256,11 @@ namespace iba.Controls
             }
         }
 
-        public static Color StatusToColor(SnmpWorkerStatus status)
+        public static Color StatusToColor(ExtMonWorkerStatus status)
         {
-            return status == SnmpWorkerStatus.Started
+            return status == ExtMonWorkerStatus.Started
                 ? Color.LimeGreen // running
-                : (status == SnmpWorkerStatus.Stopped
+                : (status == ExtMonWorkerStatus.Stopped
                     ? Color.LightGray // stopped
                     : Color.Red); // error
         }
@@ -342,12 +297,15 @@ namespace iba.Controls
             bool isConnectedOrLocal = IsConnectedOrLocal;
 
             buttonConfigurationReset.Enabled = buttonConfigurationApply.Enabled = 
-                gbObjects.Enabled = gbDiagnostics.Enabled = isConnectedOrLocal;
+                tabObjects.Enabled = tabDiag.Enabled = isConnectedOrLocal;
 
             if (isConnectedOrLocal)
             {
                 RefreshBriefStatus();
                 RefreshClientsTable();
+
+                // update currently selected node information in object tree
+                UpdateObjectTreeNodeDescription();
             }
             else
             {
@@ -404,16 +362,13 @@ namespace iba.Controls
                 var sortedOids = objSnapshot.Keys.ToList();
                 sortedOids.Sort();
 
-
-                var nodesToExpand = new List<TreeNode>();
-
                 foreach (var oid in sortedOids)
                 {
                     var tag = objSnapshot[oid];
 
                     // get parent node
                     var parentOid = oid.GetParent();
-                    var parentNode = FindSingleNodeByOid(parentOid);
+                    var parentNode = FindSingleNodeById(parentOid);
 
                     // if parent node exists, add item there.
                     // otherwise add directly to the root
@@ -422,25 +377,29 @@ namespace iba.Controls
                     // for all but root nodes add least subId before string caption
                     string leastIdPrefix = parentNode == null ? "" : $@"{oid.GetLeastSignificantSubId()}. ";
 
-                    string captionWithSubid = leastIdPrefix + tag.Caption;
+                    string captionWithSubId = leastIdPrefix + tag.Caption;
 
-                    int imageindex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
+                    int imageIndex = tag.IsFolder ? ImageIndexFolder : ImageIndexLeaf;
 
                     // add this item to parent node
-                    var node = placeToAddTo.Add(oid.ToString(), captionWithSubid, imageindex, imageindex);
+                    var node = placeToAddTo.Add(oid.ToString(), captionWithSubId, imageIndex, imageIndex);
                     node.Tag = tag;
-
-                    // mark for expanding
-                    if (tag.IsExpandedByDefault)
-                    {
-                        nodesToExpand.Add(node);
-                    }
                 }
 
-                // expand those which are marked for
-                foreach (var treeNode in nodesToExpand)
+
+                // nodes to expand; (order/sorting is not important; ancestors are expanded automatically)
+                var nodesToExpand = new HashSet<IbaSnmpOid>
                 {
-                    treeNode.Expand();
+                    "1.3.6.1.4.1.45120.2.1.2", // Standard jobs
+                    "1.3.6.1.4.1.45120.2.1.3", // Scheduled jobs
+                    "1.3.6.1.4.1.45120.2.1.4", // One time jobs
+                    "1.3.6.1.4.1.45120.2.1.5" // Event jobs
+                };
+
+                // expand those which are marked for
+                foreach (IbaSnmpOid oid in nodesToExpand)
+                {
+                    ExpandNodeAndAllAncestors(FindSingleNodeById(oid));
                 }
             }
             catch (Exception ex)
@@ -449,41 +408,61 @@ namespace iba.Controls
                     $@"{nameof(SnmpControl)}.{nameof(RebuildObjectsTree)}. {ex.Message}");
             }
 
-            // navigate to last selected oid if possible
-            if (_lastOid == null)
+            // navigate to recent user selected node if possible
+            SelectTreeNode(tvObjects, _recentOid?.ToString());
+        }
+
+        /// <summary> Selects a given node in a given treeView
+        /// and expands all its ancestors to make it visible </summary>
+        public static void SelectTreeNode(TreeView treeView, string nodeId)
+        {
+            if (nodeId == null)
             {
                 return;
             }
-
-            var parents = _lastOid.GetParents();
-            foreach (IbaSnmpOid oid in parents)
+            var treeNode = FindSingleNodeById(treeView.Nodes, nodeId);
+            if (treeNode == null)
             {
-                try
-                {
-                    FindSingleNodeByOid(oid)?.Expand();
-                }
-                catch
-                {
-                    // just go on with others
-                }
+                // requested node was not found; likely, it's is deleted
+                return;
             }
-
-            tvObjects.SelectedNode = FindSingleNodeByOid(_lastOid);
-
-            //tvObjects.Select();
-//            tvObjects.Focus();
+            // expand all ancestors to make the node visible
+            ExpandNodeAndAllAncestors(treeNode.Parent);
+            // select it
+            treeView.SelectedNode = treeNode;
         }
 
-        private TreeNode FindSingleNodeByOid(IbaSnmpOid oid)
+        /// <summary> Expands given node and all its parents
+        /// to ensure that given node is visible </summary>
+        public static void ExpandNodeAndAllAncestors(TreeNode node)
         {
-            if (oid == null)
+            if (node == null)
+                return;
+
+            while (true)
+            {
+                node.Expand();
+                if (node.Parent == null)
+                {
+                    // root is reached
+                    break;
+                }
+                node = node.Parent;
+            }
+        }
+
+        /// <summary> Looks for a given id in a given collection </summary>
+        public static TreeNode FindSingleNodeById(TreeNodeCollection collection, string id)
+        {
+            if (id == null)
             {
                 // should not happen
-                throw new ArgumentNullException(nameof(oid));
+                Debug.Assert(false);
+                return null;
             }
 
             // check if exists
-            TreeNode[] nodes = tvObjects.Nodes.Find(oid.ToString(), true);
+            TreeNode[] nodes = collection.Find(id, true);
 
             if (nodes.Length == 1)
             {
@@ -493,16 +472,52 @@ namespace iba.Controls
             if (nodes.Length > 1)
             {
                 // Length > 1
-                // should not happen
-                // inconsisnensy?
-                throw new Exception($@"Found more than one match for {oid}");
+                // throw new Exception($@"Found more than one match for {id}");
+                // should not happen. inconsistency?
+                Debug.Assert(false);
+                return nodes[0];
             }
             return null; // not found
         }
 
+        /// <summary> Looks for a given id in the <see cref="tvObjects"/> </summary>
+        private TreeNode FindSingleNodeById(IbaSnmpOid oid) => 
+            FindSingleNodeById(tvObjects.Nodes, oid.ToString());
+        
+        /// <summary> The most recent node that was selected by the user </summary>
+        private IbaSnmpOid _recentOid;
+        
+        private void UpdateObjectTreeNodeDescription(IbaSnmpOid oid = null)
+        {
+            // if no argument then try to use the recent one
+            if (oid == null)
+            {
+                oid = _recentOid;
+            }
 
-        /// <summary> The last Oid that was selected by the user </summary>
-        private IbaSnmpOid _lastOid;
+            // if there is no recent one, then return and do nothing
+            if (oid == null)
+            {
+                return;
+            }
+
+            // try to refresh node's tag
+            try
+            {
+                var tag = TaskManager.Manager.SnmpGetTreeNodeTag(oid);
+                tbObjOid.Text = tag.SnmpOid?.ToString();
+                tbObjValue.Text = tag.Value;
+                tbObjType.Text = tag.Type;
+                tbObjMibName.Text = tag.SnmpMibName;
+                tbObjMibDescription.Text = tag.Description;
+            }
+            catch
+            {
+                // reset value that we know that something is wrong
+                tbObjValue.Text = String.Empty;
+                tbObjType.Text = String.Empty;
+            }
+        }
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -513,8 +528,8 @@ namespace iba.Controls
 
             try
             {
-                // reset last selected oid
-                _lastOid = null;
+                // reset recently selected node
+                _recentOid = null;
 
                 // reset all fields
                 tbObjOid.Text = String.Empty;
@@ -524,33 +539,22 @@ namespace iba.Controls
                 tbObjType.Text = String.Empty;
 
                 // get existing node's tag
-                var tag = (SnmpTreeNodeTag)e.Node.Tag;
-
-                // try to refresh node's tag
-                try
+                if (!(e.Node.Tag is ExtMonData.GuiTreeNodeTag tag))
                 {
-                    tag = TaskManager.Manager.SnmpGetTreeNodeTag(tag.Oid);
-                }
-                catch (Exception)
-                {
-                    // reset value that we know that something is wrong
-                    tag.Value = String.Empty;
-                    tag.Type = String.Empty;
+                    // should not happen; each node should be equipped with a tag
+                    Debug.Assert(false);
+                    return;
                 }
 
-                tbObjOid.Text = tag.Oid?.ToString();
-                tbObjValue.Text = tag.Value;
-                tbObjType.Text = tag.Type;
-                tbObjMibName.Text = tag.MibName;
-                tbObjMibDescription.Text = tag.MibDescription;
+                UpdateObjectTreeNodeDescription(tag.SnmpOid);
 
-                // remember last selected oid
-                _lastOid = tag.Oid;
+                // remember recently selected node
+                _recentOid = tag.SnmpOid;
             }
             catch (Exception ex)
             {
                 LogData.Data.Logger.Log(Level.Debug,
-                    @"SnmpControl.tvObjects_AfterSelect(). Exception: " + ex.Message);
+                    $@"{nameof(SnmpControl)}.{nameof(tvObjects_AfterSelect)}. Exception: " + ex.Message);
             }
         }
 
@@ -577,8 +581,8 @@ namespace iba.Controls
                 if (mibFiles == null || mibFiles.Count == 0)
                 {
                     MessageBox.Show(this,
-                        iba.Properties.Resources.snmpFailedMibFiles,
-                        iba.Properties.Resources.snmpFailedMibFiles,
+                        Resources.snmpFailedMibFiles,
+                        Resources.snmpFailedMibFiles,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -598,8 +602,8 @@ namespace iba.Controls
                     filesListForMessage += $"\r\n{fullFilename}";
                 }
 
-                if (MessageBox.Show(this, String.Format(iba.Properties.Resources.snmpCreatedMibFiles, filesListForMessage),
-                    iba.Properties.Resources.snmpCreatedMibFilesTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information)
+                if (MessageBox.Show(this, String.Format(Resources.snmpCreatedMibFiles, filesListForMessage),
+                    Resources.snmpCreatedMibFilesTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information)
                     == DialogResult.Yes)
                 {
                     // open folder and show files
@@ -612,8 +616,8 @@ namespace iba.Controls
             }
         }
 
-        #endregion
 
+        #endregion
 
     }
 }

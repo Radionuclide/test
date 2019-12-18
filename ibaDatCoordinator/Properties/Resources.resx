@@ -1652,4 +1652,61 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="TriggerPerPulse" xml:space="preserve">
     <value>Generate an event for every rectangular pulse</value>
   </data>
+  <data name="opcUaStatusDisabled" xml:space="preserve">
+    <value>OPC UA server is disabled</value>
+  </data>
+  <data name="opcUaStatusError" xml:space="preserve">
+    <value>Starting the OPC UA server failed with error: {0}</value>
+  </data>
+  <data name="opcUaStatusNotInit" xml:space="preserve">
+    <value>OPC UA server is not initialized</value>
+  </data>
+  <data name="opcUaStatusRunning" xml:space="preserve">
+    <value>OPC UA server running</value>
+  </data>
+  <data name="opcUaStatusRunningRestarted" xml:space="preserve">
+    <value>OPC UA agent was successfully restarted. Current status: {0}</value>
+  </data>
+  <data name="opcUaStatusRunningStarted" xml:space="preserve">
+    <value>OPC UA agent was successfully started. Current status: {0}</value>
+  </data>
+  <data name="opcUaStatusStopped" xml:space="preserve">
+    <value>OPC UA agent was successfully stopped. Current status: {0}</value>
+  </data>
+  <data name="opcUaTitle" xml:space="preserve">
+    <value>OPC UA server</value>
+  </data>
+  <data name="img_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_cert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_dude" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_dude.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_export" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_key" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_key.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_opcuaclient_cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_opcuaclient_cert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_opcuaserver_cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_opcuaserver_cert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_shldgreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_shldgreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_shldred" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_shldred.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="opcUaServer_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\opcUaServer_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

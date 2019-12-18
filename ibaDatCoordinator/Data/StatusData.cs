@@ -144,7 +144,10 @@ namespace iba.Data
                             if (bMoveAll || df == null || df.TimesTried < newConf.NrTryTimes)
                             {
                                 if (!m_processedFiles.Contains(filename))
+                                {
                                     m_processedFiles.Add(filename);
+                                    TotalFilesProcessed++;
+                                }
                                 m_permanentErrorFiles.RemoveAt(i);
                             }
                         }
@@ -206,11 +209,22 @@ namespace iba.Data
             get { return m_readFiles; }
             set { m_readFiles = value; }
         }
+
+        /// <summary> Total amount of files that was processed by the Job.
+        /// Is used by SNMP Server and OPC UA Server.
+        /// (<see cref="ProcessedFiles"/>.Count cannot be used for this purpose,
+        /// because the list is periodically truncated.)
+        /// </summary>
+        public int TotalFilesProcessed { get; set; }
         private FileSetWithTimeStamps m_processedFiles;
         public FileSetWithTimeStamps ProcessedFiles
         {
             get { return m_processedFiles; }
-            set { m_processedFiles = value; }
+            set
+            {
+                m_processedFiles = value;
+                TotalFilesProcessed = m_processedFiles.Count;
+            }
         }
         private FileSetWithTimeStamps m_permanentErrorFiles;
         public FileSetWithTimeStamps PermanentErrorFiles

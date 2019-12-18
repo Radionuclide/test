@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Threading;
 using iba.Data;
 using iba.Logging;
+using iba.Properties;
 using IbaSnmpLib;
 
 // all verbatim strings that are in the file (e.g. @"General") should NOT be localized.
@@ -14,33 +16,13 @@ namespace iba.Processing
 
     #region Helper classes
 
-    public enum SnmpWorkerStatus
+    public enum ExtMonWorkerStatus
     {
         Started,
         Stopped,
         Errored
     }
-
-    [Serializable]
-    public class SnmpTreeNodeTag
-    {
-        public IbaSnmpOid Oid { get; set; }
-
-        public bool IsFolder { get; set; }
-
-        public string Caption { get; set; }
-
-        public string Value { get; set; }
-
-        public string Type { get; set; }
-
-        public string MibName { get; set; }
-
-        public string MibDescription { get; set; }
-
-        public bool IsExpandedByDefault { get; set; }
-    }
-
+    
     /// <summary> Is used to send MIB file contents from Server to Client via remoting </summary>
     [Serializable]
     public struct SnmpMibFileContainer
@@ -57,90 +39,34 @@ namespace iba.Processing
 
     public class SnmpWorker
     {
-
-//        #region tmp
-
-//        //todo remove
-//        private static string _tmpFn = @"C:\tmp_ls\datcolog.txt";
-
-//        public static void QLog(string str)
-//        {
-//#if DEBUG
-//            string dom = AppDomain.CurrentDomain.FriendlyName.ToUpper().Contains("SERV")
-//                ? "SERV"
-//                : "FORM";
-//            QLog1($"\r\n{DateTime.Now.ToLongTimeString()}. {dom}. {str}");
-//#endif
-//        }
-
-//        public static void QLog1(string str)
-//        {
-//#if DEBUG
-//            File.AppendAllText(_tmpFn, str);
-//#endif
-//        }
-
-//        #endregion
-
-
+        
         #region Construction, Destruction, Init
 
         public SnmpWorker()
         {
-            Status = SnmpWorkerStatus.Errored;
-            StatusString = iba.Properties.Resources.snmpStatusNotInit;
+            Status = ExtMonWorkerStatus.Errored;
+            StatusString = Resources.snmpStatusNotInit;
         }
 
         public void Init()
         {
-            lock (LockObject)
+            if (IbaSnmp != null)
             {
-                if (IbaSnmp != null)
-                {
-                    // disable double initialisation
-                    return;
-                }
-
-                IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
+                // disable double initialization
+                return;
             }
+
+            IbaSnmp = new IbaSnmp(IbaSnmpProductId.IbaDatCoordinator);
 
             IbaSnmp.DosProtectionInternal.Enabled = false;
             IbaSnmp.DosProtectionExternal.Config(5000, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
             RestartAgent();
 
-            TaskManager.Manager.SnmpConfigurationChanged += TaskManager_SnmpConfigurationChanged;
-            SnmpObjectsData.SnmpObjectWithATimeStamp.AgeThreshold = SnmpObjectsDataValidTimePeriod;
-
-            // create the timer for delayed tree rebuild
-            _treeValidatorTimer = new System.Timers.Timer
-            {
-                Interval = SnmpObjectsDataValidTimePeriod.TotalMilliseconds,
-                AutoReset = false // do not repeat
-                // it will be re-activated only if data was invalidated
-            };
-            _treeValidatorTimer.Elapsed += (sender, args) =>
-            {
-                RebuildTreeIfItIsInvalid();
-
-                // best option to test why it's needed
-                // 1. setup SNMP manager to monitor some yet inexisting job. it will show "no such instance". ok.
-                // 2. Add one ore several jobs to fit the requested OID area. 
-                //    Tree will be invalidated but not rebuilt. manager will still show "n.s.i." - wrong.
-            };
+            // subscribe to tree structure changes 
+            ExtMonInstance.ExtMonStructureChanged += (sender, args) => RebuildTree();
 
             RegisterEnums();
             SetGeneralProductInformation();
-            RebuildTree();
-        }
-
-        public void TaskManager_SnmpConfigurationChanged(object sender, EventArgs e)
-        {
-            // we do not need to lock something here
-            // it's not a problem if structure is invalidated during rebuild is in progress
-
-            // mark tree as invalid
-            // it will be rebuilt on 1st request to any existing user node
-            IsStructureValid = false;
         }
 
         #endregion
@@ -148,14 +74,13 @@ namespace iba.Processing
 
         #region Configuration of SNMP agent (IbaSnmp libraray)
 
-        //private IbaSnmp IbaSnmp { get; set; }
         public IbaSnmp IbaSnmp { get; private set; }
 
         private SnmpData _snmpData = new SnmpData();
 
         public SnmpData SnmpData
         {
-            get { return _snmpData; }
+            get => _snmpData;
             set
             {
                 if (value == null)
@@ -178,21 +103,14 @@ namespace iba.Processing
             }
         }
 
-        public SnmpWorkerStatus Status { get; private set; }
+        public ExtMonWorkerStatus Status { get; private set; }
 
         public string StatusString { get; private set; }
-
-        public static string GetCurrentThreadString()
-        {
-            var thr = Thread.CurrentThread;
-            string thrNameOrId = String.IsNullOrWhiteSpace(thr.Name) ? thr.ManagedThreadId.ToString() : thr.Name;
-            return $"thr=[{thrNameOrId}]";
-        }
 
         public void RestartAgent()
         {
             var oldStatus = Status;
-            Status = SnmpWorkerStatus.Errored;
+            Status = ExtMonWorkerStatus.Errored;
             StatusString = @"";
 
             try
@@ -204,21 +122,21 @@ namespace iba.Processing
                 if (_snmpData.Enabled)
                 {
                     IbaSnmp.Start();
-                    Status = SnmpWorkerStatus.Started;
-                    StatusString = String.Format(iba.Properties.Resources.snmpStatusRunningOnPort, _snmpData.Port);
+                    Status = ExtMonWorkerStatus.Started;
+                    StatusString = String.Format(Resources.snmpStatusRunningOnPort, _snmpData.Port);
 
                     logMessage = Status == oldStatus
                         ?
                        // log 'was restarted' if status has not changed (now is 'Started' as before) 
-                       String.Format(iba.Properties.Resources.snmpStatusRunningRestarted, StatusString)
+                       String.Format(Resources.snmpStatusRunningRestarted, StatusString)
                         :
                         // log 'was started' if status has changed from 'Errored' or 'Stopped' to 'Started' 
-                        String.Format(iba.Properties.Resources.snmpStatusRunningStarted, StatusString);
+                        String.Format(Resources.snmpStatusRunningStarted, StatusString);
                 }
                 else
                 {
-                    Status = SnmpWorkerStatus.Stopped;
-                    StatusString = iba.Properties.Resources.snmpStatusDisabled;
+                    Status = ExtMonWorkerStatus.Stopped;
+                    StatusString = Resources.snmpStatusDisabled;
 
                     logMessage = Status == oldStatus
                         ?
@@ -226,7 +144,7 @@ namespace iba.Processing
                         null
                         :
                         // log 'was stopped' if status has changed from 'Errored' or 'Started' to 'Stopped'
-                        String.Format(iba.Properties.Resources.snmpStatusStopped, StatusString);
+                        String.Format(Resources.snmpStatusStopped, StatusString);
                 }
 
                 // log the message if it necessary
@@ -237,8 +155,8 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
-                Status = SnmpWorkerStatus.Errored;
-                StatusString = String.Format(iba.Properties.Resources.snmpStatusError, ex.Message);
+                Status = ExtMonWorkerStatus.Errored;
+                StatusString = String.Format(Resources.snmpStatusError, ex.Message);
                 if (LogData.Data.Logger.IsOpen) LogData.Data.Logger.Log(Level.Exception, StatusString);
             }
         }
@@ -270,24 +188,17 @@ namespace iba.Processing
 
         #region Handling object tree - building, refreshing
 
-        #region Common functionality for all objects
+        /// <summary> A quick reference to singleton <see cref="ExtMonData"/> </summary>
+        private static ExtMonData ExtMonInstance => ExtMonData.Instance;
 
-        /// <summary> Lock this object while using SnmpWorker.ObjectsData </summary>
-        public readonly object LockObject = new object();
+        /// <summary> A quick reference to <see cref="ExtMonData"/> instance lock </summary>
+        private static object LockObject => ExtMonInstance.LockObject;
 
-        public int LockTimeout { get; } = 50;
+        /// <summary> A quick reference to <see cref="ExtMonData"/> recommended lock timeout </summary>
+        private static int LockTimeout => ExtMonData.LockTimeout;
 
-        /// <summary> Data older than this will be trated as outdated. 
-        /// When requested, such data will be refreshed first before sending via SNMP. </summary>
-        public TimeSpan SnmpObjectsDataValidTimePeriod { get; } = TimeSpan.FromSeconds(2);
 
-        /// <summary> Holds all data that is shown via SNMP. 
-        /// This data is in convenient structured format, and does not contain SNMP adresses (OIDs) explicitly.
-        /// This structure is filled by TaskManager and then is used by SnmpWorker to create SNMP-tree.
-        /// </summary>
-        internal SnmpObjectsData ObjectsData { get; } = new SnmpObjectsData();
-
-        #region register enums
+        #region Register enums
 
         private IbaSnmpValueType _enumJobStatus;
         private IbaSnmpValueType _enumCleanupType;
@@ -298,9 +209,9 @@ namespace iba.Processing
                 "JobStatus", "Current status of the job (started, stopped or disabled)",
                 new Dictionary<int, string>
                 {
-                    {(int) SnmpObjectsData.JobStatus.Disabled, "disabled"},
-                    {(int) SnmpObjectsData.JobStatus.Started, "started"},
-                    {(int) SnmpObjectsData.JobStatus.Stopped, "stopped"}
+                    {(int) ExtMonData.JobStatus.Disabled, "disabled"},
+                    {(int) ExtMonData.JobStatus.Started, "started"},
+                    {(int) ExtMonData.JobStatus.Stopped, "stopped"}
                 }
             );
 
@@ -315,8 +226,6 @@ namespace iba.Processing
                 }
             );
         }
-
-        #endregion
 
         #endregion
 
@@ -367,101 +276,34 @@ namespace iba.Processing
         #endregion
 
 
-        #region Building and rebuilding the tree
-
-        private bool _isStructureValid;
-
-        public bool IsStructureValid
-        {
-            get { return _isStructureValid; }
-            set
-            {
-                // this implementation works properly if called from different threads
-                // lock of the timer is not needed here
-                _isStructureValid = value;
-
-                // stop current cycle
-                _treeValidatorTimer?.Stop();
-
-                // if sturcture is marked ivalid
-                if (!value)
-                {
-                    // schedule a delayed tree rebuild, 
-                    // if it will not happen earlier
-                    _treeValidatorTimer?.Start();
-                }
-            }
-        }
-
-        private System.Timers.Timer _treeValidatorTimer;
-
-        /// <summary>
-        /// Rebuilds a tree completely if its <see cref="IsStructureValid"/> flag is set to false. 
-        /// Use returned value to know whether tree has been rebuilt.
-        /// </summary>
-        /// <returns> <value>true</value> if tree was rebuilt, 
-        /// <value>false</value> if it is valid and has not been modified by this call.</returns>
-        public bool RebuildTreeIfItIsInvalid()
-        {
-            // here I use double thamn normal timeout to give priority over other locks
-            if (Monitor.TryEnter(LockObject, LockTimeout*2))
-            {
-                try
-                {
-                    if (IsStructureValid)
-                    {
-                        return false; // tree structure has not changed
-                    }
-                    RebuildTree();
-                    return true; // tree structure has changed
-                }
-                finally
-                {
-                    Monitor.Exit(LockObject);
-                }
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                // failed to acquire a lock
-                try
-                {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when checking whether tree is valid, {GetCurrentThreadString()}.");
-                }
-                catch
-                {
-                    // logging is not critical
-                }
-                return false; // tree structure has not changed
-            }
-        }
+        #region Building the tree
 
         public bool RebuildTree()
         {
+            ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (start)");
+
+
             var man = TaskManager.Manager;
             if (man == null || IbaSnmp == null)
             {
                 return false; // rebuild failed
             }
 
-            if (Monitor.TryEnter(LockObject, LockTimeout))
+            ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (before lock)");
+            // here I use a multiple of the normal timeout to give an overwhelming priority over request-item locks
+            if (Monitor.TryEnter(LockObject, LockTimeout * 20))
             {
+                ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (after lock)");
                 try
                 {
-                    // snmp structure is valid until datcoordinator configuration is changed.
-                    // theoretically it can be reset to false by another thread
-                    // during the process of rebuild of SnmpObjectsData,
-                    // but it's not a problem. 
-                    // If this happens, then the tree will be rebuilt once again.
-                    // this is better than to lock resetting of IsStructureValid (and consequently have potential risk of a deadlock).
-                    IsStructureValid = true;
-
                     IbaSnmp.DeleteAllUserValues();
                     IbaSnmp.DeleteAllUserOidMetadata();
 
-                    if (!man.SnmpRebuildObjectsData(ObjectsData))
+                    if (!ExtMonInstance.IsStructureValid)
                     {
+                        // ExtMonData structure is invalid;
+                        // Normally it should not happen, because usually we rebuild our tree on reaction to ExtMon structure change.
+                        // Anyway, it makes no sense to rebuild our tree
                         return false; // rebuild failed
                     }
 
@@ -469,24 +311,22 @@ namespace iba.Processing
                     IbaSnmp.SetOidMetadata(IbaSnmp.OidIbaProductSpecific, "Product-specific");
 
                     // ibaRoot.DatCoord.Product.1 - Global cleanup
-                    BuildSectionGlobalCleanup();
-
+                    BuildFolderRecursively(ExtMonInstance.FolderGlobalCleanup);
                     // ibaRoot.DatCoord.Product.2 - Standard jobs
-                    BuildSectionStandardJobs();
-
+                    BuildFolderRecursively(ExtMonInstance.FolderStandardJobs);
                     // ibaRoot.DatCoord.Product.3 - Scheduled jobs
-                    BuildSectionScheduledJobs();
-
+                    BuildFolderRecursively(ExtMonInstance.FolderScheduledJobs);
                     // ibaRoot.DatCoord.Product.4 - One time jobs
-                    BuildSectionOneTimeJobs();
-
+                    BuildFolderRecursively(ExtMonInstance.FolderOneTimeJobs);
                     // ibaRoot.DatCoord.Product.5 - Event jobs
-                    BuildSectionEventJobs();
+                    BuildFolderRecursively(ExtMonInstance.FolderEventBasedJobs);
 
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (success)");
                     return true; // rebuilt successfully
                 }
                 finally
                 {
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (lock exit)");
                     Monitor.Exit(LockObject);
                 }
             }
@@ -496,592 +336,113 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when rebuilding the tree, {GetCurrentThreadString()}.");
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "WARNING! Failed to acquire a lock when rebuilding the tree");
+                    // 'Level.Warning' because we have a big timeout here, so, normally it should not happen 
+                    // (though not critical, but may indicate that something is wrong) 
+                    LogData.Data.Logger.Log(Level.Warning,
+                        $"{nameof(SnmpWorker)}. Failed to acquire a lock when rebuilding the tree, {ExtMonData.GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
+                // failed to rebuild; mark tree invalid to rebuild it later
+                ExtMonInstance.IsStructureValid = false;
+
                 return false; // rebuild failed
             }
         }
 
-
-        #region Building tree Sections 1...4 (from 'GlobalCleanup' to 'OneTimeJobs')
-
-        private void BuildSectionGlobalCleanup()
+        private void BuildFolderRecursively(ExtMonData.ExtMonFolder startingFolder)
         {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.GlobalCleanupOid);
-
-            AddMetadataForOidSuffix(oidSection, @"Global cleanup", @"globalCleanup",
-                "Global cleanup settings for all local drives.");
-
-            for (int i = 0; i < ObjectsData.GlobalCleanup.Count; i++)
+            try
             {
-                try
+                SetOidMetadata(startingFolder);
+                foreach (var node in startingFolder.Children)
                 {
-                    var driveInfo = ObjectsData.GlobalCleanup[i];
-
-                    // ibaRoot.DatCoord.Product.GlobalCleanup.(index) - Drive [Folder]
-                    IbaSnmpOid oidDrive = oidSection + (uint) (i + 1);
-                    driveInfo.Oid = oidDrive;
-
-                    string mibNameDrive = $@"globalCleanupDrive{oidDrive.GetLeastSignificantSubId()}";
-                    AddMetadataForOidSuffix(oidDrive, $@"Drive '{driveInfo.DriveName}'", mibNameDrive,
-                        $@"Global cleanup settings for the drive '{driveInfo.DriveName}'.");
-
-                    // ibaRoot.DatCoord.Product.GlobalCleanup.DriveX....
+                    switch (node)
                     {
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.DriveNameOid, driveInfo.DriveName,
-                            @"Drive Name", mibNameDrive + @"Name",
-                            @"Drive name like it appears in operating system.",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
-
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active,
-                            @"Active", mibNameDrive + @"Active",
-                            @"Whether or not the global cleanup is enabled for the drive.",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
-
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb,
-                            @"Size", mibNameDrive + @"Size",
-                            @"Size of the drive (in megabytes).",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
-
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb,
-                            @"Curr. free space", mibNameDrive + @"CurrFreeSpace",
-                            @"Current free space of the drive (in megabytes).",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
-
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.MinFreeSpaceInPercentOid, driveInfo.MinFreeSpaceInPercent,
-                            @"Min free space", mibNameDrive + @"MinFreeSpace",
-                            @"Minimum disk space that is kept free on the drive by deleting the oldest iba dat files (in percent).",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
-
-                        CreateUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.RescanTimeOid, driveInfo.RescanTime,
-                            @"Rescan time", mibNameDrive + @"RescanTime",
-                            @"How often the application rescans the drive parameters (in minutes).",
-                            GlobalCleanupDriveInfoItemRequested, driveInfo);
+                        case ExtMonData.ExtMonFolder extMonFolder:
+                            BuildFolderRecursively(extMonFolder);
+                            // mark that the group is fresh (all SNMP values were set just now)
+                            if (extMonFolder is ExtMonData.ExtMonGroup xmGroup)
+                                xmGroup.SnmpTimeStamp.PutStamp();
+                            break;
+                        case ExtMonData.ExtMonVariableBase extMonVariableBase:
+                            CreateUserValue(extMonVariableBase);
+                            break;
+                        default:
+                            continue;
                     }
                 }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
             }
-        }
-
-        private void BuildSectionStandardJobs()
-        {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.StandardJobsOid);
-
-            // ibaRoot.DatCoord.Product.2 - StandardJobs [Folder]
-            AddMetadataForOidSuffix(oidSection, @"Standard jobs", @"standardJobs",
-                @"List of all standard jobs.");
-
-            for (int i = 0; i < ObjectsData.StandardJobs.Count; i++)
+            catch 
             {
-                try
-                {
-                    SnmpObjectsData.StandardJobInfo jobInfo = ObjectsData.StandardJobs[i];
-
-                    // ibaRoot.DatCoord.Product.StdJobs.(index) - Job [Folder]
-                    IbaSnmpOid oidJob = oidSection + (uint) (i + 1);
-                    string mibNameJob = $@"standardJob{oidJob.GetLeastSignificantSubId()}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
-                        $@"Properties of standard job '{jobInfo.JobName}'.");
-
-                    // create objects that are common for all the job types
-                    IbaSnmpOid oidJobGen;
-                    string mibNameJobGen;
-                    BuildCommonGeneralJobSubsection(
-                        oidJob, out oidJobGen,
-                        mibNameJob, out mibNameJobGen,
-                        jobInfo);
-
-                    // create all the rest of general job objects
-                    // ibaRoot.DatCoord.Product.StdJobs.Job.General ...
-                    {
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid,
-                            jobInfo.PermFailedCount,
-                            @"Perm. Failed #", mibNameJobGen + @"PermFailed",
-                            @"Number of files with persistent errors.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid,
-                            jobInfo.TimestampJobStarted,
-                            @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
-                            @"Time when the job was started. For a stopped job, it relates to the last start of the job. " +
-                            @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastDirectoryScanOid,
-                            jobInfo.TimestampLastDirectoryScan,
-                            @"Timestamp last directory scan", mibNameJobGen + @"TimestampLastDirectoryScan",
-                            @"Time when the last scan for new (unprocessed) .dat files was performed. " +
-                            @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid, 
-                            jobInfo.TimestampLastReprocessErrorsScan,
-                            @"Timestamp last reprocess errors scan", mibNameJobGen + @"TimestampLastReprocessErrorsScan",
-                            @"Time when the last reprocess scan was performed " +
-                            @"(reprocess scan is a scan for .dat files that previously were processed with errors).  " +
-                            @"If scan was never performed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        // ibaRoot.DatCoord.Product.StdJobs.Job.General.10 - LastProcessing [Folder]
-                        IbaSnmpOid oidLastProc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
-                        AddMetadataForOidSuffix(oidLastProc, @"LastProcessing", mibNameJobGen + @"LastProcessing",
-                            @"Information about the last successfully processed file.");
-
-                        CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid,
-                            jobInfo.LastProcessingLastDatFileProcessed,
-                            @"Last dat-file processed", mibNameJobGen + @"LastFile",
-                            @"Filename of the last successfully processed file. If no files were successfully processed, then value is empty.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid,
-                            jobInfo.LastProcessingStartTimeStamp,
-                            @"Start timestamp", mibNameJobGen + @"StartStamp",
-                            @"Time when processing of the last successfully processed file was started. " +
-                            @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidLastProc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid,
-                            jobInfo.LastProcessingFinishTimeStamp,
-                            @"Finish timestamp", mibNameJobGen + @"FinishStamp",
-                            @"Time when processing of the last successfully processed file was finished. " +
-                            @"If no files were successfully processed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-                    }
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
+                // go on with other items 
+                // even if current one has failed 
             }
+
         }
 
-        private void BuildSectionScheduledJobs()
+
+        #region SetOidMetadata and CreateUserValue() 
+
+        private void SetOidMetadata(ExtMonData.ExtMonFolder xmf)
         {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.ScheduledJobsOid);
+            Debug.Assert(xmf.SnmpFullOid != null);
+            IbaSnmp.SetUserOidMetadata(xmf.SnmpFullOid, xmf.SnmpFullMibName, xmf.Description, xmf.Caption);
+        }
 
-            AddMetadataForOidSuffix(oidSection, @"Scheduled jobs", @"scheduledJobs",
-                @"List of all scheduled jobs.");
+        private static readonly Dictionary<Type, IbaSnmpValueType> TYPE_DICT = new Dictionary<Type, IbaSnmpValueType>
+        {
+            {typeof(string), IbaSnmpValueType.String},
+            {typeof(bool), IbaSnmpValueType.Bool},
+            //{typeof(DateTime), IbaSnmpValueType.DateStr} /*should be handled specially*/,
+            {typeof(DateTime), IbaSnmpValueType.DateTimeStr},
+            //{typeof(DateTime), IbaSnmpValueType.DateTimeTc} /*should be handled specially*/,
+            {typeof(int), IbaSnmpValueType.Int32},
+            {typeof(uint), IbaSnmpValueType.Uint32},
+            {typeof(float), IbaSnmpValueType.FloatStr},
+            //{typeof(float), IbaSnmpValueType.FloatTc} /*should be handled specially*/,
+            {typeof(double), IbaSnmpValueType.DoubleStr},
+            //{typeof(double), IbaSnmpValueType.DoubleTc} /*should be handled specially*/,
+            {typeof(IbaSnmpOid), IbaSnmpValueType.Oid}
+        };
 
-            for (int i = 0; i < ObjectsData.ScheduledJobs.Count; i++)
+        public IbaSnmpValueType GetSnmpType(object value)
+        {
+            var type = TYPE_DICT.TryGetValue(value.GetType(), out IbaSnmpValueType snmpType) ? snmpType : IbaSnmpValueType.Unknown;
+            // handle a special case of possible different date formats
+            if (type == IbaSnmpValueType.DateTimeStr && UseSnmpV2TcForStrings)
+                type = IbaSnmpValueType.DateTimeTc;
+            return type;
+        }
+
+        private void CreateUserValue(ExtMonData.ExtMonVariableBase xmv)
+        {
+            Debug.Assert(xmv.Parent != null);
+            Debug.Assert(xmv.SnmpFullOid != null);
+
+            IbaSnmpValueType type;
+            if (xmv.ObjValue.GetType().IsEnum)
+            {   
+                //enum
+                Debug.Assert(xmv.ObjValue is ExtMonData.JobStatus || xmv.ObjValue is TaskWithTargetDirData.OutputLimitChoiceEnum);
+                type = xmv.ObjValue is ExtMonData.JobStatus ? _enumJobStatus : _enumCleanupType;
+
+                IbaSnmp.CreateEnumUserValue(xmv.SnmpFullOid, type, (int)xmv.ObjValue, null, null,
+                    ProductSpecificItemRequested, xmv.GetGroup() );
+
+            }
+            else // simple types
             {
-                try
-                {
-                    var jobInfo = ObjectsData.ScheduledJobs[i];
+                type = GetSnmpType(xmv.ObjValue);
+                Debug.Assert(type != IbaSnmpValueType.Unknown);
 
-                    // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
-                    IbaSnmpOid oidJob = oidSection + (uint) (i + 1);
-                    string mibNameJob = $@"scheduledJob{oidJob.GetLeastSignificantSubId()}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
-                        $@"Properties of scheduled job '{jobInfo.JobName}'.");
-
-                    // create objects that are common for all the job types
-                    IbaSnmpOid oidJobGen;
-                    string mibNameJobGen;
-                    BuildCommonGeneralJobSubsection(
-                        oidJob, out oidJobGen,
-                        mibNameJob, out mibNameJobGen,
-                        jobInfo);
-
-                    // create all the rest of general job objects
-                    // ibaRoot.DatCoord.Product.SchJobs.Job xxx
-                    {
-                        CreateUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, jobInfo.PermFailedCount,
-                            @"Perm. Failed #", mibNameJobGen + @"PermFailedCount",
-                            @"Number of files with persistent errors.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, jobInfo.TimestampJobStarted,
-                            @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
-                            @"Time when job was started (starting of the scheduled job does NOT mean that it will be executed immediately).  " +
-                            @"For a stopped job, it relates to the last start of the job.  " +
-                            @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, jobInfo.TimestampLastExecution,
-                            @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
-                            @"Time when the job was last executed. " +
-                            @"(This does not mean the moment when job was started, but the moment when configured trigger was fired last time); " +
-                            @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampNextExecutionOid, jobInfo.TimestampNextExecution,
-                            @"Timestamp next execution", mibNameJobGen + @"TimestampNextExecution",
-                            @"Time of the next scheduled execution. " +
-                            @"If there is no execution scheduled, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-                    }
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
-            }
-        }
-
-        private void BuildSectionOneTimeJobs()
-        {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.OneTimeJobsOid);
-
-            AddMetadataForOidSuffix(oidSection, @"One time jobs", @"oneTimeJobs",
-                @"List of all one-time jobs.");
-
-            for (int i = 0; i < ObjectsData.OneTimeJobs.Count; i++)
-            {
-                try
-                {
-                    var jobInfo = ObjectsData.OneTimeJobs[i];
-                    // ibaRoot.DatCoord.Product.OtJobs.(index) - Job [folder]
-                    IbaSnmpOid oidJob = oidSection + (uint) (i + 1);
-                    string mibNameJob = $@"oneTimeJob{oidJob.GetLeastSignificantSubId()}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
-                        $@"Properties of one-time job '{jobInfo.JobName}'.");
-
-                    // create objects that are common for all the job types
-                    IbaSnmpOid oidJobGen;
-                    string mibNameJobGen;
-                    BuildCommonGeneralJobSubsection(
-                        oidJob, out oidJobGen,
-                        mibNameJob, out mibNameJobGen,
-                        jobInfo);
-
-                    // create all the rest of general job objects
-                    // ibaRoot.DatCoord.Product.OtJobs.Job xxx
-                    {
-                        CreateUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, jobInfo.TimestampLastExecution,
-                            @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
-                            @"Time when the last execution was started. " +
-                            @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-                    }
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
-            }
-        }
-
-        private void BuildSectionEventJobs()
-        {
-            var oidSection = new IbaSnmpOid(SnmpObjectsData.EventBasedJobsOid);
-
-            AddMetadataForOidSuffix(oidSection, @"Event jobs", @"eventJobs",
-                @"List of all event jobs.");
-
-            for (int i = 0; i < ObjectsData.EventBasedJobs.Count; i++)
-            {
-                try
-                {
-                    var jobInfo = ObjectsData.EventBasedJobs[i];
-
-                    // ibaRoot.DatCoord.Product.SchJobs.(index) - Job [Folder]
-                    IbaSnmpOid oidJob = oidSection + (uint)(i + 1);
-                    string mibNameJob = $@"eventJob{oidJob.GetLeastSignificantSubId()}";
-                    AddMetadataForOidSuffix(oidJob, $@"Job '{jobInfo.JobName}'", mibNameJob,
-                        $@"Properties of event job '{jobInfo.JobName}'.");
-
-                    // create objects that are common for all the job types
-                    IbaSnmpOid oidJobGen;
-                    string mibNameJobGen;
-                    BuildCommonGeneralJobSubsection(
-                        oidJob, out oidJobGen,
-                        mibNameJob, out mibNameJobGen,
-                        jobInfo);
-
-                    // create all the rest of general job objects
-                    // ibaRoot.DatCoord.Product.EvtJobs.Job xxx
-                    {
-                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.PermFailedCountOid, jobInfo.PermFailedCount,
-                            @"Perm. Failed #", mibNameJobGen + @"PermFailedCount",
-                            @"Number of files with persistent errors.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.TimestampJobStartedOid, jobInfo.TimestampJobStarted,
-                            @"Timestamp job started", mibNameJobGen + @"TimestampJobStarted",
-                            @"Time when job was started (starting of the event job does NOT mean that it will be executed immediately).  " +
-                            @"For a stopped job, it relates to the last start of the job.  " +
-                            @"If job was never started, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-
-                        CreateUserValue(oidJobGen + SnmpObjectsData.EventBasedJobInfo.TimestampLastExecutionOid, jobInfo.TimestampLastExecution,
-                            @"Timestamp last execution", mibNameJobGen + @"TimestampLastExecution",
-                            @"Time when the job was last executed. " +
-                            @"(This does not mean the moment when job was started, but the last occurrence of a monitored event); " +
-                            @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                            JobInfoItemRequested, jobInfo);
-                    }
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other items 
-                    // even if current one has failed 
-                }
-            }
-        }
-
-        #endregion
-
-
-        #region helper functions for building the tree - Common Subsections, Tasks, CreateUserValue overloads
-
-        #region Common for all the jobs
-
-        /// <summary> Build the part that is common for all the Jobs 
-        /// (items that are present in the base class SnmpObjectsData.JobInfoBase)  </summary>
-        private void BuildCommonGeneralJobSubsection(
-            IbaSnmpOid oidJob, out IbaSnmpOid oidJobGen,
-            string mibNameJob, out string mibNameJobGen,
-            SnmpObjectsData.JobInfoBase jobInfo)
-        {
-
-            jobInfo.Oid = oidJob;
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.1 - General [Folder]
-            oidJobGen = oidJob + SnmpObjectsData.JobInfoBase.GeneralOid;
-            mibNameJobGen = mibNameJob + @"General";
-            AddMetadataForOidSuffix(oidJobGen, @"General", mibNameJobGen,
-                $@"General properties of job '{jobInfo.JobName}'.");
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.General ...
-            {
-                CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName,
-                    @"Job Name", mibNameJobGen + @"Name",
-                    @"The name of the job as it appears in GUI.",
-                    JobInfoItemRequested, jobInfo);
-
-                CreateEnumUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, _enumJobStatus, (int) jobInfo.Status,
-                    @"Status", mibNameJobGen + @"Status",
-                    @"Current status of the job (started, stopped or disabled).",
-                    JobInfoItemRequested, jobInfo);
-
-                CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.TodoCountOid, jobInfo.TodoCount,
-                    @"Todo #", mibNameJobGen + @"Todo",
-                    @"Number of dat files to be processed.",
-                    JobInfoItemRequested, jobInfo);
-
-                CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.DoneCountOid, jobInfo.DoneCount,
-                    @"Done #", mibNameJobGen + @"Done",
-                    @"Number of processed files.",
-                    JobInfoItemRequested, jobInfo);
-
-                CreateUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.FailedCountOid, jobInfo.FailedCount,
-                    @"Failed #", mibNameJobGen + @"Failed",
-                    @"Number of errors occurred during processing.",
-                    JobInfoItemRequested, jobInfo);
+                IbaSnmp.CreateUserValue(xmv.SnmpFullOid, xmv.ObjValue, type, null, null,
+                    ProductSpecificItemRequested, xmv.GetGroup() );
             }
 
-            // create tasks
-            BuildTasks(oidJob, mibNameJob, jobInfo);
+            IbaSnmp.SetUserOidMetadata(xmv.SnmpFullOid, xmv.SnmpFullMibName, xmv.Description, xmv.Caption);
         }
-
-        #endregion
-
-
-        #region Tasks subtrees
-
-        private void BuildTasks(IbaSnmpOid oidjJob, string mibNameJob, SnmpObjectsData.JobInfoBase jobInfo)
-        {
-            var tasks = jobInfo?.Tasks;
-            if (tasks == null)
-            {
-                return;
-            }
-
-            var oidTasks = oidjJob + SnmpObjectsData.JobInfoBase.TasksOid;
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.2 - Tasks [Folder]
-            AddMetadataForOidSuffix(oidTasks, @"Tasks", mibNameJob + @"Tasks",
-                $@"Information about all tasks of the job '{jobInfo.JobName}'.");
-
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                SnmpObjectsData.TaskInfo taskInfo = tasks[i];
-
-                uint i1 = (uint) (i + 1); // index for mib
-
-                string mibNameTask = mibNameJob + $@"Task{i1}";
-                // ibaRoot.DatCoord.Product.XxxJobs.JobY.Tasks.(index) - Task [Folder]
-                AddMetadataForOidSuffix(oidTasks + i1, $@"Task '{taskInfo.TaskName}'", mibNameTask,
-                    $@"Information about task '{taskInfo.TaskName}' of the job '{jobInfo.JobName}'.");
-
-                // create task contents
-                // ibaRoot.DatCoord.Product.XxxJobs.JobY.Tasks.TaskZ ...
-                try
-                {
-                    BuildTask(oidTasks + i1, mibNameTask, taskInfo);
-                }
-                catch
-                {
-                    // ReSharper disable once RedundantJumpStatement
-                    continue;
-                    // go on with other tasks 
-                    // even if some task has failed 
-                }
-            }
-        }
-
-        private void BuildTask(IbaSnmpOid oidTask, string mibNameTask, SnmpObjectsData.TaskInfo taskInfo)
-        {
-            var parentJob = taskInfo.Parent;
-
-            taskInfo.Oid = oidTask;
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ ... 
-
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskNameOid, taskInfo.TaskName,
-                @"Task name", mibNameTask + @"Name",
-                @"The name of the task as it appears in GUI.",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType,
-                @"Task type", mibNameTask + @"Type",
-                @"The type of the task (copy, extract, report, etc.).",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success,
-                @"Success", mibNameTask + @"Success",
-                @"Whether or not the last executed task was completed successfully, i.e. without errors. " +
-                @"For Condition task this means that the expression was successfully evaluated as TRUE or FALSE - both results are treated as success.",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.DurationOfLastExecutionOid, taskInfo.DurationOfLastExecution,
-                @"Duration of last execution", mibNameTask + @"DurationOfLastExecution",
-                @"Duration of the last task execution (in seconds).",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidTask + SnmpObjectsData.TaskInfo.MemoryUsedForLastExecutionOid, taskInfo.MemoryUsedForLastExecution,
-                @"Memory used for last execution", mibNameTask + @"LastMemoryUsed",
-                @"Amount of memory used during the last execution of the task (in megabytes). " +
-                @"This is applicable only to tasks that use ibaAnalyzer for their processing e.g., Condition, Report, Extract and some custom tasks.",
-                JobInfoItemRequested, parentJob);
-
-            var ci = taskInfo.CleanupInfo;
-            if (ci == null)
-            {
-                return;
-            }
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.Cleanup [Folder]
-            IbaSnmpOid oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
-            string mibNameCleanup = mibNameTask + @"Cleanup";
-            AddMetadataForOidSuffix(oidCleanup, @"Cleanup", mibNameCleanup,
-                @"Cleanup parameters of the task.");
-
-            // ibaRoot.DatCoord.Product.XxxJobs.JobY.TaskZ.Cleanup ...
-
-            CreateEnumUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, _enumCleanupType, (int) ci.LimitChoice,
-                @"Limit choice", mibNameCleanup + @"LimitChoice",
-                @"Option selected as limit for the disk space usage. " +
-                @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.SubdirectoriesOid, ci.Subdirectories,
-                @"Subdirectories", mibNameCleanup + @"Subdirectories",
-                @"Maximum count of directories the task can use.",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.UsedDiskSpaceOid, ci.UsedDiskSpace,
-                @"Used disk space", mibNameCleanup + @"UsedDiskSpace",
-                @"Maximum disk space that can be used by the task (in megabytes).",
-                JobInfoItemRequested, parentJob);
-
-            CreateUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.FreeDiskSpaceOid, ci.FreeDiskSpace,
-                @"Free disk space", mibNameCleanup + @"FreeDiskSpace",
-                @"Minimum disk space that is kept free (in megabytes).",
-                JobInfoItemRequested, parentJob);
-        }
-
-        #endregion
-
-
-        #region Oid metadata and CreateUserValue() overloads
-
-        private void AddMetadataForOidSuffix(IbaSnmpOid oidSuffix, string guiCaption, string mibName,
-            string mibDescription)
-        {
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, guiCaption);
-        }
-
-        private void CreateUserValue(IbaSnmpOid oidSuffix, bool initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        private void CreateUserValue(IbaSnmpOid oidSuffix, string initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        // ReSharper disable once UnusedMember.Local
-        private void CreateUserValue(IbaSnmpOid oidSuffix, int initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        private void CreateUserValue(IbaSnmpOid oidSuffix, uint initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        private void CreateUserValue(IbaSnmpOid oidSuffix, DateTime initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateUserValue(oidSuffix, initialValue,
-                UseSnmpV2TcForStrings ? IbaSnmpValueType.DateTimeTc : IbaSnmpValueType.DateTimeStr,
-                null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        private void CreateEnumUserValue(IbaSnmpOid oidSuffix, IbaSnmpValueType valueType, int initialValue,
-            string caption, string mibName = null, string mibDescription = null,
-            EventHandler<IbaSnmpObjectValueRequestedEventArgs> handler = null,
-            object tag = null)
-        {
-            IbaSnmp.CreateEnumUserValue(oidSuffix, valueType, initialValue, null, null, handler, tag);
-            IbaSnmp.SetUserOidMetadata(oidSuffix, mibName, mibDescription, caption);
-        }
-
-        #endregion
 
         #endregion
 
@@ -1091,6 +452,53 @@ namespace iba.Processing
 
         #region Value-Refresh functions  
 
+        private void SetUserValue(ExtMonData.ExtMonVariableBase xmv)
+        {
+            // IbaSnmp does not have untyped version of SetUserValue(),
+            // so we have to use some workaround here.
+            // Either "type dictionary + delegate wrapping" or "switch-case".
+            // Since we have mainly only FOUR types (str, DateTime, bool, uint) in use
+            // in our current implementation, it's more efficient to use "switch-case". 
+
+            switch (xmv.ObjValue)
+            {
+                case string val:
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case uint val:
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case bool val:
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case DateTime val:
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case ExtMonData.JobStatus _:
+                case TaskWithTargetDirData.OutputLimitChoiceEnum _:
+                    // ReSharper disable once PossibleInvalidCastException
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, (int)xmv.ObjValue);
+                    break;
+
+                // other types (below) are not used in current implementations
+                // and stand here for possible future additions.
+
+                case int val: // not used by now
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case float val: // not used by now
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                case double val: // not used by now
+                    IbaSnmp.SetUserValue(xmv.SnmpFullOid, val);
+                    break;
+                default:
+                    // should not happen
+                    Debug.Assert(false);
+                    break;
+            }
+        }
+
         // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshLicenseInfo()
         {
@@ -1098,31 +506,47 @@ namespace iba.Processing
             {
                 try
                 {
-                    if (ObjectsData.License.IsUpToDate())
+                    ExtMonData.LicenseInfo licGroup = ExtMonInstance.License;
+
+                    // check if SNMP data is fresh enough
+                    if (licGroup.SnmpTimeStamp.IsUpToDate)
                     {
-                        // data is fresh, no need to change something
+                        // is fresh; no need to copy it from extMonData or to request it from TaskManager
+                        // just return
                         return false; // was not updated
                     }
 
-                    var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshLicenseInfo(ObjectsData.License))
+                    // SNMP data is outdated
+                    // we should copy it from extMonGroup; 
+
+                    // first check if extMonGroup itself is fresh enough
+                    if (!licGroup.TimeStamp.IsUpToDate)
                     {
-                        // should not happen
-                        // failed to update data
-                        // don't rebuild the tree, just return false
-                        return false; // was not updated
+                        // extMonGroup is not fresh enough;
+                        // request fresh data from TaskManager
+
+                        var man = TaskManager.Manager;
+                        if (!man.ExtMonRefreshLicenseInfo(licGroup))
+                        {
+                            // should not happen
+                            // failed to update data
+                            // don't rebuild the tree, just return false
+                            return false; // was not updated
+                        }
                     }
 
-                    // TaskManager has updated info successfully 
-                    // copy it to snmp tree
+                    // memorize the moment when data was last copied to SNMP variables
+                    licGroup.SnmpTimeStamp.PutStamp();
 
-                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = ObjectsData.License.IsValid;
-                    IbaSnmp.ValueIbaProductGeneralLicensingSn = ObjectsData.License.Sn;
-                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = ObjectsData.License.HwId;
-                    IbaSnmp.ValueIbaProductGeneralLicensingType = ObjectsData.License.DongleType;
-                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = ObjectsData.License.Customer;
-                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = ObjectsData.License.TimeLimit;
-                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = ObjectsData.License.DemoTimeLimit;
+                    // copy values from extMonGroup to SNMP variables
+                    IbaSnmp.ValueIbaProductGeneralLicensingIsValid = licGroup.IsValid.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingSn = licGroup.Sn.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingHwId = licGroup.HwId.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingType = licGroup.DongleType.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingCustomer = licGroup.Customer.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingTimeLimit = licGroup.TimeLimit.Value;
+                    IbaSnmp.ValueIbaProductGeneralLicensingDemoTimeLimit = licGroup.DemoTimeLimit.Value;
+                    
                     return true; // data was updated
                 }
                 finally
@@ -1136,25 +560,23 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "Failed to acquire a lock when updating license");
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating license, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}. Failed to acquire a lock when updating license, {ExtMonData.GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // was not updated
             }
         }
 
-        // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshGlobalCleanupDriveInfo(SnmpObjectsData.GlobalCleanupDriveInfo driveInfo)
+        private bool RefreshGroup(ExtMonData.ExtMonGroup xmGroup)
         {
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
                 try
                 {
-                    if (RebuildTreeIfItIsInvalid())
+                    if (ExtMonInstance.RebuildTreeIfItIsInvalid())
                     {
                         // tree was rebuilt completely
                         // no need to update some parts of it
@@ -1162,152 +584,67 @@ namespace iba.Processing
                         return true; // data was updated
                     }
 
-                    if (driveInfo.IsUpToDate())
+                    // check if SNMP data (values inside SNMP objects) is fresh enough
+                    if (xmGroup.SnmpTimeStamp.IsUpToDate)
                     {
-                        // data is fresh, no need to change something
-                        return false; // was not updated
-                    }
-
-                    var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshGlobalCleanupDriveInfo(driveInfo))
-                    {
-                        // should not happen
-                        // failed to update data
-                        // rebuild the tree
-                        LogData.Data.Logger.Log(Level.Debug,
-                            "SNMP. RefreshGlobalCleanupDriveInfo(). Failed to refresh; tree is marked invalid.");
-                        IsStructureValid = false;
+                        // is fresh; no need to copy it from extMonData or to request it from TaskManager
+                        // just return
                         return false; // data was NOT updated
                     }
 
-                    // TaskManager has updated driveInfo successfully 
-                    // copy it to snmp tree
+                    // SNMP data is outdated
+                    // we should copy it from extMonGroup; 
 
-                    IbaSnmpOid oidDrive = driveInfo.Oid;
-
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.DriveNameOid, driveInfo.DriveName);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.ActiveOid, driveInfo.Active);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.SizeInMbOid, driveInfo.SizeInMb);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.CurrentFreeSpaceInMbOid, driveInfo.CurrentFreeSpaceInMb);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.MinFreeSpaceInPercentOid, driveInfo.MinFreeSpaceInPercent);
-                    IbaSnmp.SetUserValue(oidDrive + SnmpObjectsData.GlobalCleanupDriveInfo.RescanTimeOid, driveInfo.RescanTime);
-                    return true; // data was updated
-                }
-                finally
-                {
-                    Monitor.Exit(LockObject);
-                }
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                // failed to acquire a lock
-                try
-                {
-                    LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {driveInfo.DriveName}, {GetCurrentThreadString()}.");
-                }
-                catch
-                {
-                    // logging is not critical
-                }
-                return false; // data was NOT updated
-            }
-        }
-
-        // ReSharper disable once UnusedMethodReturnValue.Local
-        private bool RefreshJobInfo(SnmpObjectsData.JobInfoBase jobInfo)
-        {
-            if (Monitor.TryEnter(LockObject, LockTimeout))
-            {
-                try
-                {
-                    if (RebuildTreeIfItIsInvalid())
+                    // first check if extMonGroup itself is fresh enough
+                    if (!xmGroup.TimeStamp.IsUpToDate)
                     {
-                        // tree was rebuilt completely
-                        // no need to update some parts of it
-                        // just return right now
-                        return true; // data was updated
+                        // extMonGroup is not fresh enough;
+                        // request fresh data from TaskManager
+
+                        var man = TaskManager.Manager;
+
+                        bool bSuccess;
+                        switch (xmGroup)
+                        {
+                            case ExtMonData.GlobalCleanupDriveInfo driveInfo:
+                                bSuccess = man.ExtMonRefreshGlobalCleanupDriveInfo(driveInfo);
+                                break;
+                            case ExtMonData.JobInfoBase jobInfo:
+                                bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
+                                break;
+                            default:
+                                // should not happen
+                                Debug.Assert(false);
+                                bSuccess = false;
+                                break;
+                        }
+
+                        if (!bSuccess)
+                        {
+                            // should not happen; failed to update the data;
+                            // mark tree invalid to rebuild it later
+                            LogData.Data.Logger.Log(Level.Debug,
+                                $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
+                            ExtMonInstance.IsStructureValid = false;
+                            return false; // data was NOT updated
+                        }
                     }
 
-                    if (jobInfo.IsUpToDate())
+                    // memorize the moment when data was last copied to SNMP variables
+                    xmGroup.SnmpTimeStamp.PutStamp();
+
+                    // copy values from extMonGroup to SNMP variables
+                    foreach (var xmv in xmGroup.GetFlatListOfAllVariables())
                     {
-                        // data is fresh, no need to change something
-                        return false; // data was NOT updated
+                        SetUserValue(xmv);
                     }
 
-                    var man = TaskManager.Manager;
-                    if (!man.SnmpRefreshJobInfo(jobInfo))
-                    {
-                        // should not happen
-                        // failed to update data
-                        // rebuild the tree
-                        LogData.Data.Logger.Log(Level.Debug,
-                            "SNMP. RefreshJobInfo(). Failed to refresh; tree is marked invalid.");
-                        IsStructureValid = false;
-                        return false; // data was NOT updated
-                    }
-
-                    // TaskManager has updated info successfully 
-                    // copy it to snmp tree
-
-                    IbaSnmpOid oidJobGen = jobInfo.Oid + SnmpObjectsData.JobInfoBase.GeneralOid;
-
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.JobNameOid, jobInfo.JobName);
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.StatusOid, (int) jobInfo.Status);
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.TodoCountOid, jobInfo.TodoCount);
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.DoneCountOid, jobInfo.DoneCount);
-                    IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.JobInfoBase.FailedCountOid, jobInfo.FailedCount);
-
-                    var stdJi = jobInfo as SnmpObjectsData.StandardJobInfo;
-                    var schJi = jobInfo as SnmpObjectsData.ScheduledJobInfo;
-                    var otJi = jobInfo as SnmpObjectsData.OneTimeJobInfo;
-                    var evtJi = jobInfo as SnmpObjectsData.EventBasedJobInfo;
-                    if (stdJi != null)
-                    {
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.PermFailedCountOid, stdJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampJobStartedOid, stdJi.TimestampJobStarted);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastDirectoryScanOid, stdJi.TimestampLastDirectoryScan);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.StandardJobInfo.TimestampLastReprocessErrorsScanOid, stdJi.TimestampLastReprocessErrorsScan);
-                        IbaSnmpOid oidJobGenLastproc = oidJobGen + SnmpObjectsData.StandardJobInfo.LastProcessingOid;
-                        IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingLastDatFileProcessedOid, stdJi.LastProcessingLastDatFileProcessed);
-                        IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingStartTimeStampOid, stdJi.LastProcessingStartTimeStamp);
-                        IbaSnmp.SetUserValue(oidJobGenLastproc + SnmpObjectsData.StandardJobInfo.LastProcessingFinishTimeStampOid, stdJi.LastProcessingFinishTimeStamp);
-                    }
-                    else if (schJi != null)
-                    {
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, schJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, schJi.TimestampJobStarted);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, schJi.TimestampLastExecution);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampNextExecutionOid, schJi.TimestampNextExecution);
-                    }
-                    else if (otJi != null)
-                    {
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.OneTimeJobInfo.TimestampLastExecutionOid, otJi.TimestampLastExecution);
-                    }
-                    else if (evtJi != null)
-                    {
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.PermFailedCountOid, evtJi.PermFailedCount);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampJobStartedOid, evtJi.TimestampJobStarted);
-                        IbaSnmp.SetUserValue(oidJobGen + SnmpObjectsData.ScheduledJobInfo.TimestampLastExecutionOid, evtJi.TimestampLastExecution);
-                    }
-                    else
-                    {
-                        // should not happen
-                        throw new Exception($"Unknown job type {jobInfo}");
-                    }
-
-                    // refresh tasks
-                    foreach (var taskInfo in jobInfo.Tasks)
-                    {
-                        RefreshTaskInfo(taskInfo);
-                    }
                     return true; // was updated
                 }
                 catch (Exception ex)
                 {
                     LogData.Data.Logger.Log(Level.Exception,
-                        $"SNMP. Error during refreshing job {jobInfo.JobName}. {ex.Message}.");
+                        $"{nameof(SnmpWorker)}.{nameof(RefreshGroup)}. Error during refreshing group {xmGroup.Caption}. {ex.Message}.");
                     return false; // was not updated
                 }
                 finally
@@ -1321,52 +658,20 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
+                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
                     LogData.Data.Logger.Log(Level.Debug,
-                        $"SNMP. Error acquiring lock when updating {jobInfo.JobName}, {GetCurrentThreadString()}.");
+                        $"{nameof(SnmpWorker)}. Failed to acquire a lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
                 }
-                catch
-                {
-                    // logging is not critical
-                }
+                catch { /* logging is not critical */ }
+
                 return false; // was not updated
             }
         }
-
-        private void RefreshTaskInfo(SnmpObjectsData.TaskInfo taskInfo)
-        {
-            IbaSnmpOid oidTask = taskInfo.Oid;
-
-            try
-            {
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskNameOid, taskInfo.TaskName);
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.TaskTypeOid, taskInfo.TaskType);
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.SuccessOid, taskInfo.Success);
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.DurationOfLastExecutionOid, taskInfo.DurationOfLastExecution);
-                IbaSnmp.SetUserValue(oidTask + SnmpObjectsData.TaskInfo.MemoryUsedForLastExecutionOid, taskInfo.MemoryUsedForLastExecution);
-
-                var ci = taskInfo.CleanupInfo;
-                // ReSharper disable once InvertIf
-                if (ci != null)
-                {
-                    IbaSnmpOid oidCleanup = oidTask + SnmpObjectsData.TaskInfo.CleanupInfoOid;
-
-                    IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.LimitChoiceOid, (int)ci.LimitChoice);
-                    IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.SubdirectoriesOid, ci.Subdirectories);
-                    IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.UsedDiskSpaceOid, ci.UsedDiskSpace);
-                    IbaSnmp.SetUserValue(oidCleanup + SnmpObjectsData.LocalCleanupInfo.FreeDiskSpaceOid, ci.FreeDiskSpace);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception,
-                    $"SNMP. Error during refreshing task {taskInfo.TaskName}. {ex.Message}.");
-            }
-        }
-
+        
         #endregion
 
 
-        #region XxxRequested event handlers
+        #region Value Requested event handlers
 
         private void IbaSnmp_LicensingValueRequested<T>(object sender, IbaSnmpValueRequestedEventArgs<T> args)
         {
@@ -1387,46 +692,35 @@ namespace iba.Processing
             }
         }
 
-        private void GlobalCleanupDriveInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
+        private void ProductSpecificItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
         {
-            var driveInfo = args.Tag as SnmpObjectsData.GlobalCleanupDriveInfo;
-
-            if (driveInfo == null)
+            try
             {
-                // should not happen
-                args.Value = null;
-                return;
+
+                // refresh data if it is too old (or rebuild the whole tree if necessary)
+                if (args.Tag is ExtMonData.ExtMonGroup group)
+                {
+                    RefreshGroup(group);
+                }
+                else
+                {
+                    // should not happen
+                    args.Value = null;
+                    Debug.Assert(false);
+                    return;
+                }
+
+                // re-read the value and send it back via args
+                // (we should do re-read independently on whether above call to RefreshXxx()
+                // had updated the value or not, because the value could be updated meanwhile by a similar call
+                // in another thread if multiple values are requested)
+                args.Value = args.IbaSnmp.GetValue(args.Oid);
             }
-
-            // refresh data if it is too old (or rebuild the whole tree if necessary)
-            RefreshGlobalCleanupDriveInfo(driveInfo);
-
-            // re-read the value and send it back via args
-            // (we should do re-read independently on whether above call to RefreshXxx()
-            // had updated the value or not, because the value could be updated meanwhile by a similar call
-            // in another thread if multiple values are requested)
-            args.Value = args.IbaSnmp.GetValue(args.Oid);
-        }
-
-        private void JobInfoItemRequested(object sender, IbaSnmpObjectValueRequestedEventArgs args)
-        {
-            var jobInfo = args.Tag as SnmpObjectsData.JobInfoBase;
-
-            if (jobInfo == null)
+            catch (Exception ex)
             {
-                // should not happen
-                args.Value = null;
-                return;
+                LogData.Data.Logger.Log(Level.Exception,
+                    $"{nameof(SnmpWorker)}.{nameof(ProductSpecificItemRequested)}. Error during requesting item {args?.Oid}. {ex.Message}.");
             }
-
-            // refresh data if it is too old (or rebuild the whole tree if necessary)
-            RefreshJobInfo(jobInfo);
-
-            // re-read the value and send it back via args
-            // (we should do re-read independently on whether above call to RefreshXxx()
-            // had updated the value or not, because the value could be updated meanwhile by a similar call
-            // in another thread if multiple values are requested)
-            args.Value = args.IbaSnmp.GetValue(args.Oid);
         }
 
         #endregion
@@ -1436,14 +730,14 @@ namespace iba.Processing
 
         #region Tree Snapshot for GUI and MIB generation
 
-        public Dictionary<IbaSnmpOid, SnmpTreeNodeTag> GetObjectTreeSnapShot()
+        public Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag> GetObjectTreeSnapShot()
         {
             try
             {
                 // check tree structure before taking a snapshot
-                RebuildTreeIfItIsInvalid();
+                ExtMonInstance.RebuildTreeIfItIsInvalid();
 
-                var result = new Dictionary<IbaSnmpOid, SnmpTreeNodeTag>();
+                var result = new Dictionary<IbaSnmpOid, ExtMonData.GuiTreeNodeTag>();
                 var objList = IbaSnmp.GetListOfAllOids();
                 if (objList == null)
                 {
@@ -1486,28 +780,6 @@ namespace iba.Processing
                     }
                 }
 
-                // mark some nodes as expanded
-                var nodesToExpand = new HashSet<IbaSnmpOid>
-                {
-                    rootOid,
-                    IbaSnmp.OidIbaRoot,
-                    IbaSnmp.OidIbaProduct,
-                    IbaSnmp.OidIbaProductSpecific,
-                    //IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.GlobalCleanupOid,// not needed
-                    IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.StandardJobsOid,
-                    IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.ScheduledJobsOid,
-                    IbaSnmp.OidIbaProductSpecific + SnmpObjectsData.OneTimeJobsOid
-                };
-
-                foreach (var oid in nodesToExpand)
-                {
-                    SnmpTreeNodeTag tag;
-                    if (result.TryGetValue(oid, out tag))
-                    {
-                        tag.IsExpandedByDefault = true;
-                    }
-                }
-
                 return result;
             }
             catch (Exception ex)
@@ -1520,23 +792,23 @@ namespace iba.Processing
         }
 
         /// <summary> Gets all information about a node in the format convenient for GUI tree. </summary>
-        public SnmpTreeNodeTag GetTreeNodeTag(IbaSnmpOid oid, bool bUpdate = false)
+        public ExtMonData.GuiTreeNodeTag GetTreeNodeTag(IbaSnmpOid oid, bool bUpdate = false)
         {
             try
             {
-                var tag = new SnmpTreeNodeTag {Oid = oid};
+                var tag = new ExtMonData.GuiTreeNodeTag { SnmpOid = oid};
 
                 IbaSnmpOidMetadata metadata = IbaSnmp.GetOidMetadata(oid);
                 if (metadata == null)
                 {
-                    // this is inexisting node
+                    // this is nonexistent node
                     // leave all fields empty
                     return tag;
                 }
 
                 // fill data common for folders and leaves
-                tag.MibName = metadata.MibName;
-                tag.MibDescription = metadata.MibDescription;
+                tag.SnmpMibName = metadata.MibName;
+                tag.Description = metadata.MibDescription;
                 tag.Caption = metadata.GuiCaption;
 
                 // try to get value (applicable only to objects=leaves)
@@ -1619,5 +891,6 @@ namespace iba.Processing
         }
 
         #endregion
+
     }
 }

@@ -37,6 +37,7 @@ namespace iba
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_navBar = new TD.Eyefinder.NavigationBar();
             this.m_settingsPane = new TD.Eyefinder.NavigationPane();
+            this.m_opcUaPane = new TD.Eyefinder.NavigationPane();
             this.m_snmpPane = new TD.Eyefinder.NavigationPane();
             this.m_watchdogPane = new TD.Eyefinder.NavigationPane();
             this.m_loggingPane = new TD.Eyefinder.NavigationPane();
@@ -75,6 +76,7 @@ namespace iba
             this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.watchdogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.snmpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.opcUaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -163,6 +165,7 @@ namespace iba
             // m_navBar
             // 
             this.m_navBar.Controls.Add(this.m_settingsPane);
+            this.m_navBar.Controls.Add(this.m_opcUaPane);
             this.m_navBar.Controls.Add(this.m_snmpPane);
             this.m_navBar.Controls.Add(this.m_watchdogPane);
             this.m_navBar.Controls.Add(this.m_loggingPane);
@@ -174,13 +177,18 @@ namespace iba
             this.m_navBar.Name = "m_navBar";
             this.m_navBar.PaneFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.m_navBar.SelectedPane = this.m_loggingPane;
-            this.m_navBar.ShowPanes = 6;
+            this.m_navBar.ShowPanes = 7;
             this.m_navBar.SelectedPaneChanged += new System.EventHandler(this.navbar_SelectedPaneChanged);
             // 
             // m_settingsPane
             // 
             resources.ApplyResources(this.m_settingsPane, "m_settingsPane");
             this.m_settingsPane.Name = "m_settingsPane";
+            // 
+            // m_opcUaPane
+            // 
+            resources.ApplyResources(this.m_opcUaPane, "m_opcUaPane");
+            this.m_opcUaPane.Name = "m_opcUaPane";
             // 
             // m_snmpPane
             // 
@@ -437,6 +445,7 @@ namespace iba
             this.loggingToolStripMenuItem,
             this.watchdogToolStripMenuItem,
             this.snmpToolStripMenuItem,
+            this.opcUaToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.toolStripSeparator1,
             this.languageToolStripMenuItem});
@@ -472,6 +481,12 @@ namespace iba
             this.snmpToolStripMenuItem.Name = "snmpToolStripMenuItem";
             resources.ApplyResources(this.snmpToolStripMenuItem, "snmpToolStripMenuItem");
             this.snmpToolStripMenuItem.Click += new System.EventHandler(this.snmpToolStripMenuItem_Click);
+            // 
+            // opcUaToolStripMenuItem
+            // 
+            this.opcUaToolStripMenuItem.Name = "opcUaToolStripMenuItem";
+            resources.ApplyResources(this.opcUaToolStripMenuItem, "opcUaToolStripMenuItem");
+            this.opcUaToolStripMenuItem.Click += new System.EventHandler(this.opcUaToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -648,6 +663,8 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem supportToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private TD.Eyefinder.NavigationPane m_opcUaPane;
+        private System.Windows.Forms.ToolStripMenuItem opcUaToolStripMenuItem;
     }
 }
 

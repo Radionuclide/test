@@ -90,6 +90,7 @@ namespace iba
             m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.watchdog.Handle);
             // added by kolesnik - begin
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = iba.Properties.Resources.snmp_icon;
+            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.opcUaServer_icon; 
             // added by kolesnik - end
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
@@ -387,9 +388,24 @@ namespace iba
                     propertyPanes["snmpControl"] = ctrl;
                 }
 
-                SetRightPaneControl(ctrl as Control, iba.Properties.Resources.snmpTitle,
+                SetRightPaneControl(ctrl, Properties.Resources.snmpTitle,
                     TaskManager.Manager.SnmpData?.Clone());
                 EnableAllButOnePaneToolStripMenuItems(snmpToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+            }
+            else if (m_navBar.SelectedPane == m_opcUaPane)
+            {
+                SaveRightPaneControl();
+                Control ctrl = propertyPanes["opcUaControl"] as Control;
+                if (ctrl == null)
+                {
+                    ctrl = new OpcUaControl();
+                    propertyPanes["opcUaControl"] = ctrl;
+                }
+
+                SetRightPaneControl(ctrl, Properties.Resources.opcUaTitle, 
+                    TaskManager.Manager.OpcUaData?.Clone());
+                EnableAllButOnePaneToolStripMenuItems(opcUaToolStripMenuItem);  
                 DisableCopyPasteCutDeleteMenuItems();
             }
             // added by kolesnik - end
@@ -430,6 +446,7 @@ namespace iba
             loggingToolStripMenuItem.Enabled = true;
             watchdogToolStripMenuItem.Enabled = true;
             snmpToolStripMenuItem.Enabled = true;
+            opcUaToolStripMenuItem.Enabled = true;
             settingsToolStripMenuItem.Enabled = true;
 
             // disable the only one of them
@@ -456,13 +473,16 @@ namespace iba
                     pane.LoadData(TaskManager.Manager.WatchDogData.Clone(), this);
                 }
             }
-            // added by kolesnik - begin
             if (m_navBar.SelectedPane == m_snmpPane)
             {
                 SnmpControl pane = propertyPanes["snmpControl"] as SnmpControl;
                 pane?.LoadData(TaskManager.Manager.SnmpData.Clone(), this);
             }
-            // added by kolesnik - end
+            else if (m_navBar.SelectedPane == m_opcUaPane)
+            {
+                OpcUaControl pane = propertyPanes["opcUaControl"] as OpcUaControl;
+                pane?.LoadData(TaskManager.Manager.OpcUaData.Clone(), this); 
+            }            
             else if (m_navBar.SelectedPane == m_settingsPane)
             {
                 ServiceSettingsControl pane = propertyPanes["settingsControl"] as ServiceSettingsControl;
@@ -498,8 +518,8 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
                 // Initialize it here only if the app is standalone
-                //TaskManager.Manager.SnmpWorker = new SnmpWorker();
                 TaskManager.Manager.SnmpWorkerInit();
+                TaskManager.Manager.OpcUaWorkerInit();
             }
             // added by kolesnik - end
         }
@@ -1836,6 +1856,10 @@ namespace iba
         private void snmpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_navBar.SelectedPane = m_snmpPane;
+        }
+        private void opcUaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_navBar.SelectedPane = m_opcUaPane;
         }
         // added by kolesnik - end
 

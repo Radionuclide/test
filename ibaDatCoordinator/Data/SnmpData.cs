@@ -12,14 +12,6 @@ namespace iba.Data
         }
 
         public bool Enabled { get; set; }
-        //public bool Enabled
-        //{
-        //    get { return true; }
-        //    set
-        //    {
-        //        ;
-        //    }
-        //}
 
         public bool UseSnmpV2TcForStrings { get; set; }
 
@@ -34,8 +26,8 @@ namespace iba.Data
 
         public object Clone()
         {
-            object newobj = MemberwiseClone();
-            return newobj;
+            var newObj = MemberwiseClone();
+            return newObj;
         }
 
         public void ResetToDefaults()

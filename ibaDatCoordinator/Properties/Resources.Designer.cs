@@ -1515,9 +1515,39 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap img_add {
+            get {
+                object obj = ResourceManager.GetObject("img_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_cert {
+            get {
+                object obj = ResourceManager.GetObject("img_cert", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap img_computed_values {
             get {
                 object obj = ResourceManager.GetObject("img_computed_values", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_dude {
+            get {
+                object obj = ResourceManager.GetObject("img_dude", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1555,6 +1585,16 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap img_export {
+            get {
+                object obj = ResourceManager.GetObject("img_export", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap img_file {
             get {
                 object obj = ResourceManager.GetObject("img_file", resourceCulture);
@@ -1565,9 +1605,59 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap img_key {
+            get {
+                object obj = ResourceManager.GetObject("img_key", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_opcuaclient_cert {
+            get {
+                object obj = ResourceManager.GetObject("img_opcuaclient_cert", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_opcuaserver_cert {
+            get {
+                object obj = ResourceManager.GetObject("img_opcuaserver_cert", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap img_pdo_upload {
             get {
                 object obj = ResourceManager.GetObject("img_pdo_upload", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_shldgreen {
+            get {
+                object obj = ResourceManager.GetObject("img_shldgreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_shldred {
+            get {
+                object obj = ResourceManager.GetObject("img_shldred", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -3041,6 +3131,88 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap opcUaServer_icon {
+            get {
+                object obj = ResourceManager.GetObject("opcUaServer_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA server is disabled.
+        /// </summary>
+        internal static string opcUaStatusDisabled {
+            get {
+                return ResourceManager.GetString("opcUaStatusDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting the OPC UA server failed with error: {0}.
+        /// </summary>
+        internal static string opcUaStatusError {
+            get {
+                return ResourceManager.GetString("opcUaStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA server is not initialized.
+        /// </summary>
+        internal static string opcUaStatusNotInit {
+            get {
+                return ResourceManager.GetString("opcUaStatusNotInit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA server running.
+        /// </summary>
+        internal static string opcUaStatusRunning {
+            get {
+                return ResourceManager.GetString("opcUaStatusRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA agent was successfully restarted. Current status: {0}.
+        /// </summary>
+        internal static string opcUaStatusRunningRestarted {
+            get {
+                return ResourceManager.GetString("opcUaStatusRunningRestarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA agent was successfully started. Current status: {0}.
+        /// </summary>
+        internal static string opcUaStatusRunningStarted {
+            get {
+                return ResourceManager.GetString("opcUaStatusRunningStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA agent was successfully stopped. Current status: {0}.
+        /// </summary>
+        internal static string opcUaStatusStopped {
+            get {
+                return ResourceManager.GetString("opcUaStatusStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA server.
+        /// </summary>
+        internal static string opcUaTitle {
+            get {
+                return ResourceManager.GetString("opcUaTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap open {
             get {
                 object obj = ResourceManager.GetObject("open", resourceCulture);
@@ -3450,6 +3622,16 @@ namespace iba.Properties {
         internal static string regOptWritingProblem {
             get {
                 return ResourceManager.GetString("regOptWritingProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap remove {
+            get {
+                object obj = ResourceManager.GetObject("remove", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

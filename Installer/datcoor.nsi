@@ -315,9 +315,9 @@ Function CheckRequirements
   Pop $1
 
   ;Check if .NET framework 4.0 full is installed
-  ${VersionCompare} $0 "4.5.2" $2
+  ${VersionCompare} $0 "4.6.0" $2
   ${If} $2 == 2
-    ;Framework 4.5.2 not found --> stop installer
+    ;Framework 4.6.0 not found --> stop installer
     MessageBox MB_OK|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_FRAMEWORK_MISSING)
     Quit
   ${EndIf}  
@@ -414,6 +414,13 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
+  ;OPC UA
+  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
+  File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
+  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
+  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -502,6 +509,13 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
+  ;OPC UA
+  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
+  File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
+  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
+  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"  
   ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -634,6 +648,13 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   File "..\Dependencies\GenuineChannels.dll"
   ;SNMP
   File "..\Dependencies\ibaSnmpLib.dll"
+  ;OPC UA
+  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
+  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
+  File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
+  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
+  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" 
 ;HD-stuff
   File "..\InstallFiles\Protected\hdCore.dll"
   File "..\InstallFiles\Protected\hdClient.dll"
@@ -886,6 +907,12 @@ Function un.UninstallTasks
   Delete "$INSTDIR\GenuineChannels.dll"
 
   Delete "$INSTDIR\ibaSnmpLib.dll"  
+  Delete "$INSTDIR\Opc.Ua.Configuration.dll"
+  Delete "$INSTDIR\Opc.Ua.Core.dll"
+  Delete "$INSTDIR\Opc.Ua.Server.dll"
+  Delete "$INSTDIR\BouncyCastle.Crypto.dll"
+  Delete "$INSTDIR\Newtonsoft.Json.dll"
+  Delete "$INSTDIR\ibaDatCoordinatorOpcUaServerConfig.xml"
 
   Delete "$INSTDIR\DevExpress.XtraEditors.v16.1.dll"
   Delete "$INSTDIR\DevExpress.XtraGrid.v16.1.dll"
@@ -995,28 +1022,19 @@ FunctionEnd
 
 ;--------------------------------
 ; Usefull functions
+/*
+Function GetDotNETVersion
+  Push $0
+  Push $1
 
-;--------------------------------
-; GetDotNETVersion
-;
-; Usage:
-;   Call GetDotNETVersion
-;   Pop $0
-;   $0 = "not found" when no .NET framework is installed
-;      = "VERSION" with VERSION the version of the .NET framework installed
+  System::Call "mscoree::GetCORVersion(w .r0, i ${NSIS_MAX_STRLEN}, *i) i .r1"
+  StrCmp $1 "error" 0 +2
+  StrCpy $0 "not found"
 
-
-;Function GetDotNETVersion
-;  Push $0
-;  Push $1
-;
-;  System::Call "mscoree::GetCORVersion(w .r0, i ${NSIS_MAX_STRLEN}, *i) i .r1"
-;  StrCmp $1 0 +2
-;    StrCpy $0 "not found"
-;
-;  Pop $1
-;  Exch $0
-;FunctionEnd
+  Pop $1
+  Exch $0
+FunctionEnd
+*/
 
 Function GetDotNETVersion
   Push $0
@@ -1029,14 +1047,43 @@ Function GetDotNETVersion
   ;in x64
   ;ReadRegDWORD $0 HKLM "SOFTWARE\Wow6432node\Microsoft\NET Framework Setup\NDP\v4\Full" "Install"
   
-  ;Check if v4.5.2 or higher is installed
+  ;Check if v4.7.2 or higher is installed
   ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Install"
   ${If} $2 = 1
     ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Release"
-    ${If} $2 >= 379893
-      StrCpy $0 "4.5.2"  ;4.5.2 or higher
+    ${If} $2 = 378389
+      StrCpy $0 "4.5"
+    ${ElseIf} $2 = 378675
+    ${OrIf} $2 = 378758
+      StrCpy $0 "4.5.1"
+    ${ElseIf} $2 = 379893
+      StrCpy $0 "4.5.2"
+    ${ElseIf} $2 = 393295
+    ${OrIf} $2 = 393297
+      StrCpy $0 "4.6"
+    ${ElseIf} $2 = 394254
+    ${OrIf} $2 = 394271
+      StrCpy $0 "4.6.1"
+    ${ElseIf} $2 = 394802
+    ${OrIf} $2 = 394806
+      StrCpy $0 "4.6.2"
+    ${ElseIf} $2 = 460798
+    ${OrIf} $2 = 460805
+      StrCpy $0 "4.7"
+    ${ElseIf} $2 = 461308
+    ${OrIf} $2 = 461310
+      StrCpy $0 "4.7.1"
+    ${ElseIf} $2 = 461808
+    ${OrIf} $2 = 461814
+      StrCpy $0 "4.7.2"
+    ${ElseIf} $2 = 528040
+    ${OrIf} $2 = 528049
+      StrCpy $0 "4.8.0"
+    ${ElseIf} $2 > 528049 ; For future versions
+      StrCpy $0 "4.8.0"
     ${EndIf}
   ${EndIf}
+  
   
   ;Check if v3.5 is installed
   ReadRegDWORD $2 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Install"
@@ -1275,7 +1322,7 @@ LangString DESC_DATCOOR_CLIENT           ${LANG_ENGLISH} "ibaDatCoordinator Clie
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_ENGLISH} "ibaDatCoordinator cannot be installed: This operating system is not supported."
 LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_ENGLISH} "This operating system is no longer supported. Would you like to continue the installation anyway?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_ENGLISH} "You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 4.5.2 is not installed. Please install this before running the ibaPDA installer. The .NET framework can be found on the $\"iba Software & Manuals$\" DVD or it can be downloaded via windows update."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_ENGLISH} "The .NET framework version 4.6 is not installed. Please install this before running the ibaPDA installer. The .NET framework can be found on the $\"iba Software & Manuals$\" DVD or it can be downloaded via windows update."
 LangString TEXT_UNINSTALL                 ${LANG_ENGLISH} "Uninstall ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_ENGLISH} "${PRODUCT_NAME} v${PRODUCT_VERSION} is already installed. Do you wish to reinstall?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_ENGLISH} "An older version of ${PRODUCT_NAME} is installed. Do you wish to upgrade to version ${PRODUCT_VERSION}?"
@@ -1315,7 +1362,7 @@ LangString DESC_DATCOOR_CLIENT           ${LANG_GERMAN} "ibaDatCoordinator Clien
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_GERMAN}  "ibaDatCoordinator kann nicht installiert werden: Das Betriebssystem wird nicht unterstützt."
 LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_GERMAN}  "Das Betriebssystem wird nicht mehr unterstützt. Möchten Sie mit der Installation trotzdem fortfahren?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_GERMAN} "Sie besitzen keine ausreichenden Berechtigungen, um diese Installation für alle Benutzer dieses Computers auszuführen. Melden Sie sich als Administrator an, und wiederholen Sie diese Installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN}  "Das .NET Framework, Version 4.5.2, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaPDA beginnen. Das .NET Framework finden Sie auf der DVD $\"iba Software & Manuals$\" oder als Download via Windows-Update."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_GERMAN}  "Das .NET Framework, Version 4.6, ist nicht installiert. Bitte installieren Sie dies zunächst, bevor Sie mit der Installation von ibaPDA beginnen. Das .NET Framework finden Sie auf der DVD $\"iba Software & Manuals$\" oder als Download via Windows-Update."
 LangString TEXT_UNINSTALL                 ${LANG_GERMAN} "${PRODUCT_NAME} deinstallieren"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_GERMAN} "${PRODUCT_NAME} v${PRODUCT_VERSION} ist bereits installiert. Wollen Sie die Neuinstallation trotzdem durchführen?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_GERMAN} "Eine ältere Version von ${PRODUCT_NAME} ist bereits installiert. Wollen Sie ein upgrade auf die neuere Version ${PRODUCT_VERSION} durchführen?"
@@ -1355,7 +1402,7 @@ LangString DESC_DATCOOR_CLIENT            ${LANG_FRENCH} "ibaDatCoordinator Clie
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_FRENCH}  "ibaDatCoordinator ne peut pas être installé: Le système d'exploitation n'est pas supporté."
 LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_FRENCH}  "Le système d'exploitation n'est plus supporté. Voulez-vous quand même continuer l'installation?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_FRENCH} "Vous n'avez pas assez de privilèges pour effectuer cette installation pour tous les utilisateurs de cet ordinateur. Connectez-vous en tant qu'administrateur et réessayez cette installation."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH}  "Le .NET framework version 4.5.2 n'est pas installée. Veuillez installer ceci avant d' excecuter l'installateur d'ibaPDA. Le .NET framework peut être trouvé sur le DVD $\"iba Software & Manuals$\" ou il peut être téléchargé par l'intermédiaire de Windows Update."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_FRENCH}  "Le .NET framework version 4.6 n'est pas installée. Veuillez installer ceci avant d' excecuter l'installateur d'ibaPDA. Le .NET framework peut être trouvé sur le DVD $\"iba Software & Manuals$\" ou il peut être téléchargé par l'intermédiaire de Windows Update."
 LangString TEXT_UNINSTALL                 ${LANG_FRENCH} "Désinstaller ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_FRENCH} "${PRODUCT_NAME} v${PRODUCT_VERSION} est déj?install? Souhaitez-vous procéder ?une réinstallation?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_FRENCH} "Une ancienne version de ${PRODUCT_NAME} est déj?installée. Souhaitez-vous une mise ?niveau ?la nouvelle version ${PRODUCT_VERSION}?"
