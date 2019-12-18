@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using iba.Controls;
+using iba.Properties;
 
 namespace iba.Dialogs
 {
@@ -30,9 +31,7 @@ namespace iba.Dialogs
 
             if (tbNew.Text != tbVerify.Text)
             {
-                // todo. kls. localize
-                // Properties.Resources.PasswordVerificationError
-                MessageBox.Show(this, "The passwords don't match. Please correct them.", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, Resources.opcUaErrorPasswordVerificationError, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             

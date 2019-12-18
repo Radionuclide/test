@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using iba.Data;
+using iba.Properties;
 
 namespace iba.Controls
 {
@@ -144,9 +145,7 @@ namespace iba.Controls
 
             public override string ToString()
             {
-                //todo.kls.localize
-                //return All ? iba.Utility.Localizer.GetString("All") : Adapter.Name;
-                return All ? ("All") : Adapter.Name;
+                return All ?  Resources.opcUaAdapterAll : Adapter.Name;
             }
         }
     }

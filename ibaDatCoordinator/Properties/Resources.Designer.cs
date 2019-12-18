@@ -3129,6 +3129,204 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string opcUaAdapterAll {
+            get {
+                return ResourceManager.GetString("opcUaAdapterAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add certificate.
+        /// </summary>
+        internal static string opcUaAddCertificate {
+            get {
+                return ResourceManager.GetString("opcUaAddCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication.
+        /// </summary>
+        internal static string opcUaCertPropAuthentication {
+            get {
+                return ResourceManager.GetString("opcUaCertPropAuthentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private key.
+        /// </summary>
+        internal static string opcUaCertPropPrivateKey {
+            get {
+                return ResourceManager.GetString("opcUaCertPropPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected.
+        /// </summary>
+        internal static string opcUaCertPropRejected {
+            get {
+                return ResourceManager.GetString("opcUaCertPropRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA Server certificate.
+        /// </summary>
+        internal static string opcUaCertPropServerCert {
+            get {
+                return ResourceManager.GetString("opcUaCertPropServerCert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trusted.
+        /// </summary>
+        internal static string opcUaCertPropTrusted {
+            get {
+                return ResourceManager.GetString("opcUaCertPropTrusted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to use the generated certificate as OPC UA Server certificate?.
+        /// </summary>
+        internal static string opcUaDoYouWantUseAsServerCert {
+            get {
+                return ResourceManager.GetString("opcUaDoYouWantUseAsServerCert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected certificate does not contain a private key.
+        /// </summary>
+        internal static string opcUaErrorCertNoPrivateKey {
+            get {
+                return ResourceManager.GetString("opcUaErrorCertNoPrivateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The configured OPC UA Server certificate is not trusted.
+        /// </summary>
+        internal static string opcUaErrorCertNotTrusted {
+            get {
+                return ResourceManager.GetString("opcUaErrorCertNotTrusted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error exporting certificate.
+        /// </summary>
+        internal static string opcUaErrorExportingCertificate {
+            get {
+                return ResourceManager.GetString("opcUaErrorExportingCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to add certificate: {0}.
+        /// </summary>
+        internal static string opcUaErrorFailedToAddCertificate {
+            get {
+                return ResourceManager.GetString("opcUaErrorFailedToAddCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to generate the certificate.
+        /// </summary>
+        internal static string opcUaErrorFailedToGenerateTheCertificate {
+            get {
+                return ResourceManager.GetString("opcUaErrorFailedToGenerateTheCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA Server has no configured certificate.
+        /// </summary>
+        internal static string opcUaErrorNoCert {
+            get {
+                return ResourceManager.GetString("opcUaErrorNoCert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one endpoint must be configured.
+        /// </summary>
+        internal static string opcUaErrorNoEndpoint {
+            get {
+                return ResourceManager.GetString("opcUaErrorNoEndpoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one logon policy must be configured.
+        /// </summary>
+        internal static string opcUaErrorNoLogonPolicy {
+            get {
+                return ResourceManager.GetString("opcUaErrorNoLogonPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one security policy must be configured.
+        /// </summary>
+        internal static string opcUaErrorNoSecurity {
+            get {
+                return ResourceManager.GetString("opcUaErrorNoSecurity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The passwords don&apos;t match. Please correct them..
+        /// </summary>
+        internal static string opcUaErrorPasswordVerificationError {
+            get {
+                return ResourceManager.GetString("opcUaErrorPasswordVerificationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error trying to get network configuration from server.
+        /// </summary>
+        internal static string opcUaErrorTryingToGetNetworkConfiguration {
+            get {
+                return ResourceManager.GetString("opcUaErrorTryingToGetNetworkConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export certificate.
+        /// </summary>
+        internal static string opcUaExportCertificate {
+            get {
+                return ResourceManager.GetString("opcUaExportCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File is located on remote machine &apos;{0}&apos; at path &apos;{1}&apos;.
+        /// </summary>
+        internal static string opcUaFileLocatedOnRemoteMachine {
+            get {
+                return ResourceManager.GetString("opcUaFileLocatedOnRemoteMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate certificate.
+        /// </summary>
+        internal static string opcUaGenerateCertificate {
+            get {
+                return ResourceManager.GetString("opcUaGenerateCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap opcUaServer_icon {
@@ -3198,6 +3396,24 @@ namespace iba.Properties {
         internal static string opcUaStatusStopped {
             get {
                 return ResourceManager.GetString("opcUaStatusStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully exported certificate.
+        /// </summary>
+        internal static string opcUaSuccessfullyExportedCertificate {
+            get {
+                return ResourceManager.GetString("opcUaSuccessfullyExportedCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the certificate permanently?.
+        /// </summary>
+        internal static string opcUaSureToDeleteCert {
+            get {
+                return ResourceManager.GetString("opcUaSureToDeleteCert", resourceCulture);
             }
         }
         

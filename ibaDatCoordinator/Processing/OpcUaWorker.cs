@@ -23,7 +23,6 @@ namespace iba.Processing
         private static string CfgConfigSectionName { get; } = "iba_ag.ibaDatCoordinatorOpcUaServer";
         public static string CfgUaTraceFilePath { get; } =
             "%CommonApplicationData%\\iba\\ibaDatCoordinator\\ibaDatCoordinatorLog_OpcUa.txt";
-        public static string OpcUaServerString { get; } = "OPC UA Server";
 
         /// <summary>
         /// If set to true, this will allow clients with
@@ -320,9 +319,9 @@ namespace iba.Processing
             // check own server certificate
             var serverCert = _opcUaData.GetServerCertificate();
             if (serverCert == null)  
-                throw new InvalidOperationException("OPC UA Server has no configured certificate"); // todo. kls. localize
+                throw new InvalidOperationException(Resources.opcUaErrorNoCert); 
             if (!serverCert.IsTrusted)
-                throw new InvalidOperationException("The configured OPC UA Server certificate is not trusted"); // todo. kls. localize
+                throw new InvalidOperationException(Resources.opcUaErrorCertNotTrusted); 
 
             // create list of allowed user certificates
             IbaOpcUaServer.CertifiedUsers.Clear();
@@ -344,7 +343,7 @@ namespace iba.Processing
                 UaAppConfiguration.ServerConfiguration.BaseAddresses.Add(ep.Uri);
 
             if (_opcUaData.Endpoints.Count < 1)
-                throw new InvalidOperationException("At least one endpoint must be configured");
+                throw new InvalidOperationException(Resources.opcUaErrorNoEndpoint);
         }
 
         private void ApplySecurityPolicies()
@@ -378,7 +377,7 @@ namespace iba.Processing
             }
 
             if (policies.Count < 1)
-                throw new InvalidOperationException("At least one security policy must be configured");
+                throw new InvalidOperationException(Resources.opcUaErrorNoSecurity);
         }
 
         private void ApplyUserPolicies()
@@ -408,7 +407,7 @@ namespace iba.Processing
 
             if (policies.Count < 1)
             {
-                throw new InvalidOperationException("At least one logon policy must be configured");
+                throw new InvalidOperationException(Resources.opcUaErrorNoLogonPolicy);
             }
         }
 
@@ -542,6 +541,7 @@ namespace iba.Processing
                     break;
 
                 default:
+                    // should not happen
                     throw new NotSupportedException(
                         $@"{nameof(HandleCertificate)}. Command {command} is not supported");
             }

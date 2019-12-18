@@ -1709,4 +1709,82 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="opcUaErrorTryingToGetNetworkConfiguration" xml:space="preserve">
+    <value>Error trying to get network configuration from server</value>
+  </data>
+  <data name="opcUaAddCertificate" xml:space="preserve">
+    <value>Add certificate</value>
+  </data>
+  <data name="opcUaErrorFailedToAddCertificate" xml:space="preserve">
+    <value>Failed to add certificate: {0}</value>
+  </data>
+  <data name="opcUaGenerateCertificate" xml:space="preserve">
+    <value>Generate certificate</value>
+  </data>
+  <data name="opcUaErrorFailedToGenerateTheCertificate" xml:space="preserve">
+    <value>Failed to generate the certificate</value>
+  </data>
+  <data name="opcUaDoYouWantUseAsServerCert" xml:space="preserve">
+    <value>Do you want to use the generated certificate as OPC UA Server certificate?</value>
+  </data>
+  <data name="opcUaExportCertificate" xml:space="preserve">
+    <value>Export certificate</value>
+  </data>
+  <data name="opcUaErrorExportingCertificate" xml:space="preserve">
+    <value>Error exporting certificate</value>
+  </data>
+  <data name="opcUaSuccessfullyExportedCertificate" xml:space="preserve">
+    <value>Successfully exported certificate</value>
+  </data>
+  <data name="opcUaSureToDeleteCert" xml:space="preserve">
+    <value>Are you sure you want to delete the certificate permanently?</value>
+  </data>
+  <data name="opcUaErrorCertNoPrivateKey" xml:space="preserve">
+    <value>The selected certificate does not contain a private key</value>
+  </data>
+  <data name="opcUaAdapterAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Adapter = All</comment>
+  </data>
+  <data name="opcUaCertPropAuthentication" xml:space="preserve">
+    <value>Authentication</value>
+    <comment>The certificate can be used for user Authentication</comment>
+  </data>
+  <data name="opcUaCertPropPrivateKey" xml:space="preserve">
+    <value>Private key</value>
+    <comment>The certificate has a private key</comment>
+  </data>
+  <data name="opcUaCertPropRejected" xml:space="preserve">
+    <value>Rejected</value>
+    <comment>The certificate is not trused</comment>
+  </data>
+  <data name="opcUaCertPropServerCert" xml:space="preserve">
+    <value>OPC UA Server certificate</value>
+    <comment>The certificate is used as a Server Certificate</comment>
+  </data>
+  <data name="opcUaCertPropTrusted" xml:space="preserve">
+    <value>Trusted</value>
+    <comment>The certificate is trusted</comment>
+  </data>
+  <data name="opcUaFileLocatedOnRemoteMachine" xml:space="preserve">
+    <value>File is located on remote machine '{0}' at path '{1}'</value>
+  </data>
+  <data name="opcUaErrorPasswordVerificationError" xml:space="preserve">
+    <value>The passwords don't match. Please correct them.</value>
+  </data>
+  <data name="opcUaErrorCertNotTrusted" xml:space="preserve">
+    <value>The configured OPC UA Server certificate is not trusted</value>
+  </data>
+  <data name="opcUaErrorNoCert" xml:space="preserve">
+    <value>OPC UA Server has no configured certificate</value>
+  </data>
+  <data name="opcUaErrorNoEndpoint" xml:space="preserve">
+    <value>At least one endpoint must be configured</value>
+  </data>
+  <data name="opcUaErrorNoLogonPolicy" xml:space="preserve">
+    <value>At least one logon policy must be configured</value>
+  </data>
+  <data name="opcUaErrorNoSecurity" xml:space="preserve">
+    <value>At least one security policy must be configured</value>
+  </data>
 </root>

@@ -356,8 +356,7 @@ namespace iba.Controls
                 var netwConf = TaskManager.Manager.OpcUaGetNetworkConfiguration();
                 if (netwConf == null)
                 {
-                    // todo. kls. localize
-                    MessageBox.Show(parent, "Error trying to get network configuration", "OpcUaServer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(parent, Resources.opcUaErrorTryingToGetNetworkConfiguration, Resources.opcUaTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -486,9 +485,8 @@ namespace iba.Controls
                     }
                     catch (Exception ex)
                     {
-                        // todo. kls. localize - AddCertificateFailed/AddCertificateCaption
                         MessageBox.Show(this,
-                            string.Format("Failed to add certificate: {0}", ex.Message), "Add certificate",
+                            string.Format(Resources.opcUaErrorFailedToAddCertificate, ex.Message), Resources.opcUaAddCertificate,
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
@@ -522,19 +520,16 @@ namespace iba.Controls
 
             if (certs == null)
             {
-                // todo. kls. localize
                 MessageBox.Show(this,
-                    "Failed to generate the certificate", "Generate certificate",
+                    Resources.opcUaErrorFailedToGenerateTheCertificate, Resources.opcUaGenerateCertificate,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             RefreshCertificatesTable(certs);
 
-            // todo. kls. localize?
-            if (MessageBox.Show(
-                    "Do you want to use the generated certificate as OPC UA Server certificate",
-                    "Generate certificate",
+            if (MessageBox.Show(Resources.opcUaDoYouWantUseAsServerCert,
+                    Resources.opcUaGenerateCertificate,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 // get last row
@@ -581,14 +576,12 @@ namespace iba.Controls
                     file.Write(bytes, 0, bytes.Length);
                 }
 
-                // todo. kls. localize?
-                MessageBox.Show("Successfully exported certificate", "Export certificate",
+                MessageBox.Show(Resources.opcUaSuccessfullyExportedCertificate, Resources.opcUaExportCertificate,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch
             {
-                // todo. kls. localize?
-                MessageBox.Show("Error exporting certificate", "Export certificate",
+                MessageBox.Show(Resources.opcUaErrorExportingCertificate, Resources.opcUaExportCertificate,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -599,9 +592,8 @@ namespace iba.Controls
             if (certTag == null)
                 return;
 
-            // todo. kls. low. localize?
             if (MessageBox.Show(
-                    "Are you sure you want to delete the certificate permanently?", "",
+                    Resources.opcUaSureToDeleteCert, Resources.opcUaTitle,
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
 
@@ -644,9 +636,8 @@ namespace iba.Controls
 
             if (!certTag.HasPrivateKey)
             {
-                // todo. kls. low. localize?
                 MessageBox.Show(
-                    "The selected certificate does not contain a private key", "",
+                    Resources.opcUaErrorCertNoPrivateKey, Resources.opcUaTitle,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -856,17 +847,16 @@ namespace iba.Controls
 
                     if (view.GetRow(toolTipLastRowHandle) is OpcUaData.CertificateTag cert)
                     {
-                        // todo. kls. localize
-                        ttInfo = cert.IsTrusted ? "Trusted" : "Rejected";//Properties.Resources.CertificateIsTrusted : Properties.Resources.CertificateIsRejected;
+                        ttInfo = cert.IsTrusted ? Resources.opcUaCertPropTrusted : Resources.opcUaCertPropRejected;
 
                         if (cert.HasPrivateKey)
-                            ttInfo += $"; {"Private key"}";//string.Concat(ttInfo, "; ", Properties.Resources.CertificateHasPrivateKey);
+                            ttInfo += $"; {Resources.opcUaCertPropPrivateKey}";
 
                         if (cert.IsUsedForServer)
-                            ttInfo += $"; {"OPC UA Server certificate"}";//string.Concat(ttInfo, "; ", Properties.Resources.CertificateHasPrivateKey);
+                            ttInfo += $"; {Resources.opcUaCertPropServerCert}";
 
                         if (cert.IsUsedForAuthentication)
-                            ttInfo += $"; {"Authentication"}";//string.Concat(ttInfo, "; ", Properties.Resources.CertificateHasPrivateKey);
+                            ttInfo += $"; {Resources.opcUaCertPropAuthentication}";
                     }
 
                     lastTooltip = string.IsNullOrEmpty(ttInfo) ? null :
@@ -931,7 +921,6 @@ namespace iba.Controls
                 if (cert == null)
                     return;
 
-                // todo. kls. localize?
                 string str = "";
                 str += $"Name = {GetCertificateAttribute(cert.Subject, "CN=")}\r\n";
                 str += $"Organization = {GetCertificateAttribute(cert.Subject, "CN=")}\r\n";
@@ -1222,9 +1211,10 @@ namespace iba.Controls
             if (networkCfg == null || string.IsNullOrWhiteSpace(networkCfg.Hostname) ||
                 string.IsNullOrWhiteSpace(networkCfg.UaTraceFilePath))
             {
-                // should not happen (localization is not needed)
-                MessageBox.Show("Cannot get network configuration from server", 
-                    OpcUaWorker.OpcUaServerString, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // should not happen
+                MessageBox.Show(Resources.opcUaErrorTryingToGetNetworkConfiguration, 
+                    Resources.opcUaTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Debug.Assert(false);
                 return;
             }
 
@@ -1237,11 +1227,10 @@ namespace iba.Controls
             else
             {
                 // client is running on a different machine
-                // todo. kls. localize
                 MessageBox.Show(
-                    string.Format("File is located on remote machine '{0}' at path \"{1}\"",
+                    string.Format(Resources.opcUaFileLocatedOnRemoteMachine,
                         networkCfg.Hostname, networkCfg.UaTraceFilePath),
-                    OpcUaWorker.OpcUaServerString,
+                    Resources.opcUaTitle,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -1401,13 +1390,19 @@ namespace iba.Controls
 
         #region Tmp and Debug
 
-        // todo. kls. delete before last beta
+        /// <summary>
+        /// This handler is used only for debug purposes.
+        /// Normally rebuilding is handled automatically.
+        /// </summary>
         private void buttonRebuildTree_Click(object sender, EventArgs e)
         {
             TaskManager.Manager.OpcUaRebuildObjectTree();
         }
 
-        // todo. kls. delete before last beta
+        /// <summary>
+        /// This handler is used only for debug purposes.
+        /// Normally GUI tree refresh is handled automatically.
+        /// </summary>
         private void buttonRefreshGuiTree_Click(object sender, EventArgs e)
         {
             RebuildObjectsTree();
