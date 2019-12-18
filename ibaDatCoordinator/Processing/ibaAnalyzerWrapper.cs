@@ -401,5 +401,10 @@ namespace iba.Processing
 		{
 			analyzer.EvaluateToNEArray(expression, XType, out pTimeStamps, out pValues);
 		}
+
+		public void SaveAnalysis(string file)
+		{
+			analyzer.SaveAnalysis(file);
+		}
 	}
 }

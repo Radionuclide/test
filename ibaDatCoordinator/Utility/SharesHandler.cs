@@ -180,7 +180,7 @@ namespace iba.Utility
         ConnectResult TryToConnectToComputer(string computer, string user, string pass, out int errorCode)
         {
             //TODO: do this on a thread
-            TimeSpan timeOut = TimeSpan.FromSeconds(30);
+            TimeSpan timeOut = TimeSpan.FromSeconds(60);
 
             AutoResetEvent waitConnect = new AutoResetEvent(false);
             int errorCodeLocal=0;
@@ -231,7 +231,7 @@ namespace iba.Utility
             {
                 if (m_connectedComputers.ContainsKey(computer))
                 {
-                    TimeSpan timeOut = TimeSpan.FromSeconds(30);
+                    TimeSpan timeOut = TimeSpan.FromSeconds(60);
                     AutoResetEvent waitConnect = new AutoResetEvent(false);
                     if (!force)
                     {

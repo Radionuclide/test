@@ -1697,7 +1697,7 @@ namespace iba.Processing
                     }
                     m_newFiles.Clear();
                 }
-                else if(what == WhatToUpdate.DIRECTORY)//DIRECTORY
+                else if (what == WhatToUpdate.DIRECTORY)//DIRECTORY
                 {
                     count = m_directoryFiles.Count;
                     fileInfos = new FileInfo[count];
