@@ -3405,25 +3405,31 @@ namespace iba.Processing
                     try
                     {
                         ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
-                        outputfile = ibaDatFile.InfoFields[task.InfoFieldForOutputFile];
-						if (String.IsNullOrEmpty(outputfile))
-						{ //try expression
-							outputfile = EvaluateTextExpression(task.InfoFieldForOutputFile);
+						if (!ibaDatFile.InfoFields.TryGetValue(task.InfoFieldForOutputFile, out outputfile))
+						{
+							outputfile = "";
 						}
-						if (task.InfoFieldForOutputFileLength == 0)
-                        {
-                            if (task.InfoFieldForOutputFileStart != 0)
-                            {
-                                outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
-                            }
-                        }
-                        else
-                            outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
-                        if (task.InfoFieldForOutputFileRemoveBlanksAll)
-                            outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
-                        else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
-                            outputfile = outputfile.TrimEnd(null);
-                        outputfile = CPathCleaner.CleanFile(outputfile);
+						else
+						{
+							if (String.IsNullOrEmpty(outputfile))
+							{ //try expression
+								outputfile = EvaluateTextExpression(task.InfoFieldForOutputFile);
+							}
+							if (task.InfoFieldForOutputFileLength == 0)
+							{
+								if (task.InfoFieldForOutputFileStart != 0)
+								{
+									outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
+								}
+							}
+							else
+								outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+							if (task.InfoFieldForOutputFileRemoveBlanksAll)
+								outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
+							else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
+								outputfile = outputfile.TrimEnd(null);
+							outputfile = CPathCleaner.CleanFile(outputfile);
+						}
                     }
                     catch
                     {
@@ -3530,21 +3536,25 @@ namespace iba.Processing
                 try
                 {
                     ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
-                    Subdir = ibaDatFile.InfoFields[task.InfoFieldForSubdir];
-                    if (task.InfoFieldForSubdirLength == 0)
-                    {
-                        if (task.InfoFieldForSubdirStart != 0)
-                        {
-                            Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
-                        }
-                    }
-                    else
-                        Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
-                    if (task.InfoFieldForSubdirRemoveBlanksAll)
-                        Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
-                    else if (task.InfoFieldForSubdirRemoveBlanksEnd)
-                        Subdir = Subdir.TrimEnd(null);
-                }
+					if (!ibaDatFile.InfoFields.TryGetValue(task.InfoFieldForSubdir, out Subdir))
+						Subdir = "";
+					else
+					{
+						if (task.InfoFieldForSubdirLength == 0)
+						{
+							if (task.InfoFieldForSubdirStart != 0)
+							{
+								Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
+							}
+						}
+						else
+							Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+						if (task.InfoFieldForSubdirRemoveBlanksAll)
+							Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
+						else if (task.InfoFieldForSubdirRemoveBlanksEnd)
+							Subdir = Subdir.TrimEnd(null);
+					}
+				}
                 catch
                 {
                     Subdir = "";
