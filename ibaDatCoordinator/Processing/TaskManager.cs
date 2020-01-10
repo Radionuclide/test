@@ -627,12 +627,13 @@ namespace iba.Processing
                 ? (int)(DateTime.Now - worker.TimestampJobStarted).TotalSeconds
                 : -1;
 
-            // value like xxSss,
-            // where xx is a 2-digit job hash
-            // where S is a job status (0, 1 or 2)
-            // and ss - seconds within current minute
+            // Lifebeat is a value like xxSssd,
+            // where xx is a 2-digit job hash,
+            // S is a job status (0, 1 or 2),
+            // ss - seconds within current minute,
+            // d - deci-second within current second;
             int hash = Math.Abs(cfg.Guid.GetHashCode()) % 90 + 10; // [10..99] i.e. a 2-digit hash
-            ji.Lifebeat.Value = hash * 1000 + (int)(ji.Status.Value) * 100 + DateTime.Now.Second;
+            ji.Lifebeat.Value = (hash * 10 + (int)(ji.Status.Value)) * 1000 + DateTime.Now.Second * 10 + DateTime.Now.Millisecond / 100;
 
             ExtMonRefreshTasks(ji, worker, s);
         }
