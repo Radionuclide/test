@@ -1345,7 +1345,7 @@ namespace iba.Processing
         {
             // set interval to value slightly bigger than AgeThreshold,
             // to ensure we don't request update twice within one interval
-            _monitoringTimer.Interval = (int)(ExtMonData.AgeThreshold.TotalMilliseconds * 1.04);
+            _monitoringTimer.Interval = (int)(ExtMonData.MinimalAgeThreshold.TotalMilliseconds * 1.04);
             // let it be always enabled as long as worker lives;
             // if OPC UA is disabled then timer handler does nothing and returns immediately
             _monitoringTimer.Enabled = true;

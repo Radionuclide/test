@@ -7,6 +7,7 @@ using iba.Processing;
 using iba.Processing.IbaOpcUa;
 using iba.Utility;
 using IbaSnmpLib;
+using Timer = System.Timers.Timer;
 
 namespace iba.Data
 {
@@ -18,19 +19,41 @@ namespace iba.Data
     /// </summary>
     public class ExtMonData 
     {
-        #region Static / Singleton
-
-        // ReSharper disable once InconsistentNaming
-        private static readonly Lazy<ExtMonData> _lazyInstance = new Lazy<ExtMonData>();
-        public static ExtMonData Instance => _lazyInstance.Value;
+        #region Constants / settings / tuning
 
         /// <summary> Recommended timeout for trying to acquire
         /// a lock to <see cref="LockObject"/> </summary>
         public static int LockTimeout { get; } = 100;
 
-        /// <summary> A measure to tell whether some data is fresh enough (and can be used as is) or
-        /// is probably too old (and should be updated before sending via SNMP or OPC UA). </summary>
-        public static TimeSpan AgeThreshold { get; set; } = TimeSpan.FromSeconds(0.95);
+        /// <summary> Minimal possible AgeThreshold for any group.
+        /// AgeThreshold - is a measure to tell whether some data is fresh enough (and can be used as is) or
+        /// is probably too old (and should be updated before sending via SNMP or OPC UA).
+        /// From point of view of a user it's like a sampling rate </summary>
+        public static TimeSpan MinimalAgeThreshold { get; set; } = TimeSpan.FromSeconds(0.5);
+
+        /// <summary> AgeThreshold (sampling rate) for all values within any Job;
+        /// It's rather easy (computationally) to update a job info
+        /// and job's variables can be changing quickly,
+        /// so the value can be set to a reasonable minimum. </summary>
+        public static TimeSpan JobAgeThreshold { get; set; } = MinimalAgeThreshold;
+
+        /// <summary> AgeThreshold (sampling rate) for all values within <see cref="LicenseInfo"/> group;
+        /// Dongle usually is not plugged/unplugged too often,
+        /// and retrieving of dongle information is rather time-consuming procedure,
+        /// so this value is recommended NOT to be too small </summary>
+        public static TimeSpan LicenseAgeThreshold { get; set; } = TimeSpan.FromSeconds(10);
+
+        /// <summary> AgeThreshold (sampling rate) for all values within any <see cref="GlobalCleanupDriveInfo"/> group.
+        /// Drive info variables usually do not change too often,
+        /// so this value can be considerably bigger than the minimal value</summary>
+        public static TimeSpan DriveInfoAgeThreshold { get; set; } = TimeSpan.FromSeconds(3); 
+
+        #endregion
+        #region Static / Singleton
+
+        // ReSharper disable once InconsistentNaming
+        private static readonly Lazy<ExtMonData> _lazyInstance = new Lazy<ExtMonData>();
+        public static ExtMonData Instance => _lazyInstance.Value;
 
         #endregion
 
@@ -168,7 +191,7 @@ namespace iba.Data
         ///  1. Tree will not be rebuilt too often
         ///  2. Tree will be rebuilt not later than after a certain time
         /// </summary>
-        private readonly System.Timers.Timer _treeValidatorTimer = new System.Timers.Timer {Enabled = false};
+        private readonly Timer _treeValidatorTimer = new Timer {Enabled = false};
 
         private void InitializeTreeValidator()
         {
@@ -185,7 +208,7 @@ namespace iba.Data
             };
 
             // create the timer for delayed tree rebuild
-            _treeValidatorTimer.Interval = AgeThreshold.TotalMilliseconds;
+            _treeValidatorTimer.Interval = MinimalAgeThreshold.TotalMilliseconds;
             _treeValidatorTimer.AutoReset = false;
             _treeValidatorTimer.Enabled = true;
             _treeValidatorTimer.Elapsed += (sender, args) =>
@@ -476,8 +499,8 @@ namespace iba.Data
         {
             public readonly ExtMonFolder Parent;
 
-            public string Caption; // todo. kls. low. try make readonly 
-            public string Description; // todo. kls. low. try make readonly 
+            public string Caption; // todo. kls. low priority. try make readonly 
+            public string Description; // todo. kls. low priority. try make readonly 
 
             /// <summary> Least significant (rightmost) subId of SNMP OID for corresponding object </summary>
             public readonly uint SnmpLeastId;
@@ -792,31 +815,57 @@ namespace iba.Data
         /// </summary>
         public abstract class ExtMonGroup : ExtMonFolder
         {
-            protected ExtMonGroup(ExtMonFolder parent, uint snmpLeastId,
+            protected ExtMonGroup(ExtMonFolder parent, TimeSpan ageThreshold, uint snmpLeastId,
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
                 : base(parent, caption, snmpMibNameSuffix, description, snmpLeastId)
             {
+                if (ageThreshold < MinimalAgeThreshold)
+                {
+                    // it makes no sense to set group's threshold to level lower than minimal;
+                    // (you should change MinimalAgeThreshold also if you need a better resolution)
+                    ageThreshold = MinimalAgeThreshold;
+                    Debug.Assert(false, 
+                        $"Warning! {nameof(ExtMonGroup)}.{nameof(AgeThreshold)} was truncated to {nameof(MinimalAgeThreshold)}.");
+                }
+                TimeStamp = new TimeStampWithThreshold(ageThreshold);
+                SnmpTimeStamp = new TimeStampWithThreshold(ageThreshold);
+                UaTimeStamp = new TimeStampWithThreshold(ageThreshold);
+
+                Debug.Assert(AgeThreshold == SnmpTimeStamp.AgeThreshold &&
+                             AgeThreshold == UaTimeStamp.AgeThreshold);
             }
 
+
+            public TimeSpan AgeThreshold => TimeStamp.AgeThreshold;
+
             /// <summary> When data has been last time requested from the TaskManager </summary>
-            public TimeStampWithThreshold TimeStamp = new TimeStampWithThreshold();
+            public TimeStampWithThreshold TimeStamp { get; }
 
             /// <summary> When data was last time copied to SNMP </summary>
-            public TimeStampWithThreshold SnmpTimeStamp = new TimeStampWithThreshold();
+            public TimeStampWithThreshold SnmpTimeStamp { get; }
 
             /// <summary> When data was last time copied to OPC UA </summary>
-            public TimeStampWithThreshold UaTimeStamp = new TimeStampWithThreshold();
+            public TimeStampWithThreshold UaTimeStamp { get; }
 
 
             public class TimeStampWithThreshold
             {
                 public DateTime Stamp { get; private set; } = DateTime.MinValue;
 
-                public TimeSpan Age => Stamp == DateTime.MinValue 
-                    ? TimeSpan.MaxValue : DateTime.Now - Stamp;
+                /// <summary> A measure to tell whether some data is fresh enough (and can be used as is) or
+                /// is probably too old (and should be updated before sending via SNMP or OPC UA). </summary>
+                public TimeSpan AgeThreshold { get; }
+
+                public TimeSpan Age => Stamp == DateTime.MinValue
+                        ? TimeSpan.MaxValue : DateTime.Now - Stamp;
 
                 /// <summary> Tells if data is younger than Threshold (then it is treated as fresh enough). </summary>
                 public bool IsUpToDate => Age < AgeThreshold;
+
+                public TimeStampWithThreshold(TimeSpan ageThreshold)
+                {
+                    AgeThreshold = ageThreshold;
+                }
 
                 public void PutStamp()
                 {
@@ -872,7 +921,7 @@ namespace iba.Data
             public readonly ExtMonVariable<int> DemoTimeLimit;
 
             public LicenseInfo(ExtMonFolder parent) 
-                : base(parent, 0 /*not used*/)
+                : base(parent, LicenseAgeThreshold, 0 /*not used*/)
             {
                 // set Caption, Description, etc.
                 Caption = @"Licensing";
@@ -955,7 +1004,7 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> RescanTime;
 
             public GlobalCleanupDriveInfo(ExtMonFolder parent, uint snmpLeastId, string driveName) 
-                : base(parent, snmpLeastId)
+                : base(parent, DriveInfoAgeThreshold, snmpLeastId)
             {
                 // set Caption, Description, etc.
                 Caption = $@"Drive '{driveName}'";
@@ -1071,7 +1120,7 @@ namespace iba.Data
 
                 // create variables and add them to collection
 
-                // todo. kls. low. Do description change on Task rename (this was NOT implemented in original version also) 
+                // todo. kls. low priority. Do description change on Task rename (this was NOT implemented in original version also) 
                 TaskName = AddChildVariable<string>(
                     @"Task name", @"Name",
                     @"The name of the task as it appears in GUI.",
@@ -1248,7 +1297,7 @@ namespace iba.Data
             public ExtMonVariable<int> Lifebeat;
 
             protected JobInfoBase(ExtMonFolder parent, uint snmpLeastId, string jobName) 
-                : base(parent, snmpLeastId)
+                : base(parent, JobAgeThreshold, snmpLeastId)
             {
                 Caption = $@"Job '{jobName}'";
                 // SnmpFullMibName = ""; // is set in derived classes
@@ -1256,7 +1305,7 @@ namespace iba.Data
 
                 // create folders and add them to collection
 
-                // todo. kls. low. Do description change on Job rename (this was NOT implemented in original version also) 
+                // todo. kls. low priority. Do description change on Job rename (this was NOT implemented in original version also) 
                 FolderGeneral = AddChildFolder(
                     @"General", @"General",
                     $@"General properties of job '{jobName}'.",
