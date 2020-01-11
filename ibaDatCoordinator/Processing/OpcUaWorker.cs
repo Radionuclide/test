@@ -1269,7 +1269,10 @@ namespace iba.Processing
             // ReSharper disable once RedundantIfElseBlock
             else
             {
-                // failed to acquire a lock
+                // failed to acquire a lock; this is NOT really a problem;
+                // (this happens often when license info is being updated (requested) by another request,
+                // because retrieving of dongle info can take long time - more than the LockTimeout)
+                // So, we just return old values for now; and group will be updated on next request
                 try
                 {
                     ExtMonData.DebugWriteLite(nameof(OpcUaWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
@@ -1343,9 +1346,12 @@ namespace iba.Processing
 
         private void InitializeMonitoringTimer()
         {
-            // set interval to value slightly bigger than AgeThreshold,
-            // to ensure we don't request update twice within one interval
-            _monitoringTimer.Interval = (int)(ExtMonData.MinimalAgeThreshold.TotalMilliseconds * 1.04);
+            // set interval to some fraction of the minimal AgeThreshold
+            // (it can be helpful if some thresholds are not multiples of MinimalAgeThreshold,
+            // (e.g. MinimalAgeThreshold*1.5) or if spans are not aligned);
+            // timer handler returns very quickly if groups don't need to be updated,
+            // so, it's not a problem to call this 3-5 times more often)
+            _monitoringTimer.Interval = (int)(ExtMonData.MinimalAgeThreshold.TotalMilliseconds/4);
             // let it be always enabled as long as worker lives;
             // if OPC UA is disabled then timer handler does nothing and returns immediately
             _monitoringTimer.Enabled = true;
@@ -1367,7 +1373,12 @@ namespace iba.Processing
                         PrepareMonitoredGroupsList();
 
                     if (_monitoredGroups == null)
+                    {
+                        // can happen if monitored items list was changed
+                        // during recreation of _monitoredGroups list.
+                        // no problem, we will update values in the next cycle
                         return;
+                    }
 
                     // refresh all groups that have items being monitored
                     foreach (var group in _monitoredGroups)
@@ -1423,8 +1434,11 @@ namespace iba.Processing
             }
             catch
             {
-                /*should not happen*/
-                Debug.Assert(false);
+                // can happen if 'NodeManager.GetMonitoredNodes()' list was changed
+                // during foreach loop;
+                // no problem, we will update the list on the next call
+                _monitoredGroups = null;
+                Debug.WriteLine($"Debug warning. {nameof(PrepareMonitoredGroupsList)}() failed.");
             }
         }
 
