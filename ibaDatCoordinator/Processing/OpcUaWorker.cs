@@ -100,7 +100,7 @@ namespace iba.Processing
                 // change status from initial (errored) to stopped
                 Status = ExtMonWorkerStatus.Stopped;
 
-                ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "Init");
+                ExtMonData.DebugWriteLine(nameof(OpcUaWorker), "Init");
                 // start server (if it is enabled), update status, write to log
                 RestartServer();
 
@@ -212,7 +212,7 @@ namespace iba.Processing
             // start server
             UaApplication.Start(IbaOpcUaServer).Wait();
 
-            ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "Start Server");
+            ExtMonData.DebugWriteLine(nameof(OpcUaWorker), "Start Server");
             RebuildTree(); 
 
             // handle resetting group list on every change of monitored items
@@ -956,7 +956,7 @@ namespace iba.Processing
 
         public bool RebuildTree()
         {
-            ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (start)");
+            ExtMonData.DebugWriteLine(nameof(OpcUaWorker), "RebuildTree (start)");
 
             var man = TaskManager.Manager;
             if (man == null || UaAppConfiguration == null || IbaOpcUaServer?.IbaOpcUaNodeManager == null)
@@ -965,11 +965,11 @@ namespace iba.Processing
                 return false; // rebuild failed
             }
 
-            ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (before lock)");
+            ExtMonData.DebugWriteLine(nameof(OpcUaWorker), "RebuildTree (before lock)");
             // here I use a multiple of the normal timeout to give an overwhelming priority over request-item locks
             if (Monitor.TryEnter(LockObject, LockTimeout * 20))
             {
-                ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (after lock)");
+                ExtMonData.DebugWriteLine(nameof(OpcUaWorker), "RebuildTree (after lock)");
                 try
                 {
                     // reset currently monitored items to ensure they don't cache any outdated items
@@ -1013,12 +1013,12 @@ namespace iba.Processing
                     // delete all empty folders. (section folders will be preserved even if empty)
                     NodeManager.DeleteEmptySubfolders();
 
-                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (success)");
+                    ExtMonData.DebugWriteLine(nameof(OpcUaWorker), "RebuildTree (success)");
                     return true; // rebuilt successfully
                 }
                 finally
                 {
-                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "RebuildTree (lock exit)");
+                    ExtMonData.DebugWriteLine(nameof(OpcUaWorker), "RebuildTree (lock exit)");
                     Monitor.Exit(LockObject);
                 }
             }
@@ -1028,7 +1028,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), "WARNING! Failed to acquire a lock when rebuilding the tree");
+                    ExtMonData.DebugWriteLine(nameof(OpcUaWorker), "WARNING! Failed to acquire a lock when rebuilding the tree");
                     // 'Level.Warning' because we have a big timeout here, so, normally it should not happen 
                     // (though not critical, but may indicate that something is wrong) 
                     LogData.Data.Logger.Log(Level.Warning,
@@ -1275,7 +1275,7 @@ namespace iba.Processing
                 // So, we just return old values for now; and group will be updated on next request
                 try
                 {
-                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
+                    ExtMonData.DebugWriteLine(nameof(OpcUaWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Failed to acquire a lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
                 }
@@ -1403,7 +1403,7 @@ namespace iba.Processing
                 try
                 {
                     // not critical; will do this on next tick
-                    ExtMonData.DebugWriteLite(nameof(OpcUaWorker), $"{nameof(OnMonitoringTimerTick)}. Failed to acquire a lock.");
+                    ExtMonData.DebugWriteLine(nameof(OpcUaWorker), $"{nameof(OnMonitoringTimerTick)}. Failed to acquire a lock.");
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Failed to acquire a lock. {ExtMonData.GetCurrentThreadString()}.");
                 }

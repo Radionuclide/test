@@ -213,7 +213,7 @@ namespace iba.Data
             _treeValidatorTimer.Enabled = true;
             _treeValidatorTimer.Elapsed += (sender, args) =>
             {
-                DebugWriteLite(nameof(ExtMonData), $"{nameof(_treeValidatorTimer)}.Elapsed");
+                DebugWriteLine(nameof(ExtMonData), $"{nameof(_treeValidatorTimer)}.Elapsed");
                 RebuildTreeIfItIsInvalid();
 
                 // best option to test why timer is needed (additionally to rebuild on first request):
@@ -255,7 +255,7 @@ namespace iba.Data
                 // failed to acquire a lock
                 try
                 {
-                    DebugWriteLite(nameof(ExtMonData), "WARNING! Failed to acquire a lock when checking whether tree is valid");
+                    DebugWriteLine(nameof(ExtMonData), "WARNING! Failed to acquire a lock when checking whether tree is valid");
                     // 'Level.Warning' because we have a big timeout here, so, normally it should not happen 
                     // (though not critical, but may indicate that something is wrong)
                     LogData.Data.Logger.Log(Level.Warning,
@@ -478,7 +478,7 @@ namespace iba.Data
             return $"thr=[{thrNameOrId}]";
         }
 
-        public static void DebugWriteLite(string sender, string msg)
+        public static void DebugWriteLine(string sender, string msg)
         {
             Debug.WriteLine($"{DateTime.Now}. {GetCurrentThreadString()}. {sender}. {msg}");
         }

@@ -803,7 +803,7 @@ namespace iba.Processing
         /// <returns> true on success and false on error </returns>
         public bool ExtMonRebuildObjectsData()
         {
-            ExtMonData.DebugWriteLite(nameof(TaskManager), "RebuildTree");
+            ExtMonData.DebugWriteLine(nameof(TaskManager), "RebuildTree");
             var od = ExtMonData.Instance;
             try
             {

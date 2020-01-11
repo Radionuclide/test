@@ -280,7 +280,7 @@ namespace iba.Processing
 
         public bool RebuildTree()
         {
-            ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (start)");
+            ExtMonData.DebugWriteLine(nameof(SnmpWorker), "RebuildTree (start)");
 
 
             var man = TaskManager.Manager;
@@ -289,11 +289,11 @@ namespace iba.Processing
                 return false; // rebuild failed
             }
 
-            ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (before lock)");
+            ExtMonData.DebugWriteLine(nameof(SnmpWorker), "RebuildTree (before lock)");
             // here I use a multiple of the normal timeout to give an overwhelming priority over request-item locks
             if (Monitor.TryEnter(LockObject, LockTimeout * 20))
             {
-                ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (after lock)");
+                ExtMonData.DebugWriteLine(nameof(SnmpWorker), "RebuildTree (after lock)");
                 try
                 {
                     IbaSnmp.DeleteAllUserValues();
@@ -321,12 +321,12 @@ namespace iba.Processing
                     // ibaRoot.DatCoord.Product.5 - Event jobs
                     BuildFolderRecursively(ExtMonInstance.FolderEventBasedJobs);
 
-                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (success)");
+                    ExtMonData.DebugWriteLine(nameof(SnmpWorker), "RebuildTree (success)");
                     return true; // rebuilt successfully
                 }
                 finally
                 {
-                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "RebuildTree (lock exit)");
+                    ExtMonData.DebugWriteLine(nameof(SnmpWorker), "RebuildTree (lock exit)");
                     Monitor.Exit(LockObject);
                 }
             }
@@ -336,7 +336,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "WARNING! Failed to acquire a lock when rebuilding the tree");
+                    ExtMonData.DebugWriteLine(nameof(SnmpWorker), "WARNING! Failed to acquire a lock when rebuilding the tree");
                     // 'Level.Warning' because we have a big timeout here, so, normally it should not happen 
                     // (though not critical, but may indicate that something is wrong) 
                     LogData.Data.Logger.Log(Level.Warning,
@@ -560,7 +560,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), "Failed to acquire a lock when updating license");
+                    ExtMonData.DebugWriteLine(nameof(SnmpWorker), "Failed to acquire a lock when updating license");
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(SnmpWorker)}. Failed to acquire a lock when updating license, {ExtMonData.GetCurrentThreadString()}.");
                 }
@@ -658,7 +658,7 @@ namespace iba.Processing
                 // failed to acquire a lock
                 try
                 {
-                    ExtMonData.DebugWriteLite(nameof(SnmpWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
+                    ExtMonData.DebugWriteLine(nameof(SnmpWorker), $"Failed to acquire a lock when updating {xmGroup.Caption}");
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(SnmpWorker)}. Failed to acquire a lock when updating {xmGroup.Caption}, {ExtMonData.GetCurrentThreadString()}.");
                 }
