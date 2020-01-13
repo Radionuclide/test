@@ -232,30 +232,33 @@ namespace iba.Controls
 
         private void SaveServerData()
         {
-            using (var validationForm = new HdFormValidation("save HD events"))
+            if (!m_ctrlEvent.IsReadOnly())
             {
-                validationForm.Text = "Save HD events";
-
-                try
+                using (var validationForm = new HdFormValidation("save HD events"))
                 {
-                    if (m_data.FullEventConfig == null)
-                        m_data.FullEventConfig = new Dictionary<string, string>();
-                    m_data.FullEventConfig.Clear();
-                    List<string> storeNames = m_ctrlEvent.GetStoreNames();
-                    foreach (string storeName in storeNames)
-                        m_data.FullEventConfig.Add(storeName, m_ctrlEvent.SerialzeServerEvents(storeName, m_ctrlServer.Server, m_ctrlServer.Port, m_data.Guid, m_data.Name, m_data.Username, m_data.Password));
+                    validationForm.Text = "Save HD events";
+
+                    try
+                    {
+                        if (m_data.FullEventConfig == null)
+                            m_data.FullEventConfig = new Dictionary<string, string>();
+                        m_data.FullEventConfig.Clear();
+                        List<string> storeNames = m_ctrlEvent.GetStoreNames();
+                        foreach (string storeName in storeNames)
+                            m_data.FullEventConfig.Add(storeName, m_ctrlEvent.SerialzeServerEvents(storeName, m_ctrlServer.Server, m_ctrlServer.Port, m_data.Guid, m_data.Name, m_data.Username, m_data.Password));
 
 
-                    HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
-                    validationForm.AddRange(worker.WriteEvents(storeNames, null));
+                        HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
+                        validationForm.AddRange(worker.WriteEvents(storeNames, null));
+                    }
+                    catch (Exception ex)
+                    {
+                        validationForm.Add(new HdValidationMessage(HdValidationType.Error, ex.Message));
+                    }
+
+                    validationForm.Start((f) => { }); //Start with dummy to enable OK
+                    validationForm.ShowDialog(this);
                 }
-                catch (Exception ex)
-                {
-                    validationForm.Add(new HdValidationMessage(HdValidationType.Error, ex.Message));
-                }
-
-                validationForm.Start((f) => { }); //Start with dummy to enable OK
-                validationForm.ShowDialog(this);
             }
         }
 
@@ -278,7 +281,7 @@ namespace iba.Controls
                                         || m_ctrlServer.Username != m_data.Username
                                         || m_ctrlServer.Password != m_data.Password;
 
-            if (bSaveEventSettings)
+            if (bSaveEventSettings && !m_ctrlEvent.IsReadOnly())
             {
                 //Fill list of events again from tree
                 List<HDCreateEventTaskData.EventData> localEvents = new List<HDCreateEventTaskData.EventData>();

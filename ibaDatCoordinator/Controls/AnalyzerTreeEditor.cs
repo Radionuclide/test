@@ -579,6 +579,7 @@ namespace iba.Controls
                     IntPtr ptr = (IntPtr)p;
                     Bitmap bm = new Bitmap(16, 16, 16 * 4, System.Drawing.Imaging.PixelFormat.Format32bppRgb, ptr);
                     imageList.Images.Add(bm);
+                    var image = imageList.Images[i];
                 }
             }
             foreach (string key in new List<string>(customNodesImages.Keys))
@@ -636,14 +637,13 @@ namespace iba.Controls
                 tree.Invoke(new Action<Task<string>>(CreateTree), task);
                 return;
             }
-            
+
             if (imageList.Images.Count < 2)
             {
                 imageList.Images.Clear();
                 FillImageList();
             }
             ClearNodes();
-            tree.ImageList = imageList;
             string error = "";
             if (task != null && (task.IsFaulted || !string.IsNullOrEmpty(task.Result)))
                 error = task.Exception?.Message ?? task.Result ?? Properties.Resources.AnalyzerTree_UnknownError;
@@ -662,6 +662,7 @@ namespace iba.Controls
                         tree.Nodes.Add(trnode);
                         RecursiveAdd(trnode);
                     }
+                    tree.ImageList = imageList;
                     Invalidate();
                     OnInvalidated(null);
 
