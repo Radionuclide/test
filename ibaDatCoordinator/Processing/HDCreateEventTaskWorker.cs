@@ -150,7 +150,6 @@ namespace iba.Processing
             return new EventWriterItem(index, stamp, duration, true, false, floats, texts, blobs);
         }
 
-        //TODO maak writerconfig per store
         SlimEventWriterConfig CreateSlimHDWriterConfig(HDCreateEventTaskData task, string store)
         {
             HdStoreId storeId = null;
@@ -180,7 +179,10 @@ namespace iba.Processing
                     writerSignalConfigs.Add(signal);
                 }
             }
-            return new SlimEventWriterConfig(hdWriterOrigin, storeId, writerSignalConfigs.ToArray(), true);
+            SlimEventWriterConfig config = new SlimEventWriterConfig(hdWriterOrigin, storeId, writerSignalConfigs.ToArray(), true);
+            config.Password = task.Password;
+            config.Username = task.Username;
+            return config;
         }
 
         IEnumerable<HdWriterConfig> CreateHDWriterConfig(HDCreateEventTaskData task, IEnumerable<string> storeNames)
@@ -193,6 +195,8 @@ namespace iba.Processing
                 if (task?.FullEventConfig?.Count > 0)
                 {
                     EventWriterConfig config = new EventWriterConfig(hdWriterOrigin, storeId, new EventWriterSignal[] { }, true);
+                    config.Username = task.Username;
+                    config.Password = task.Password;
                     config.ServerEventWriterConfig = task.FullEventConfig[store];
                     writerConfigs.Add(config);
                 }
@@ -204,7 +208,6 @@ namespace iba.Processing
             return writerConfigs;
         }
 
-        //TODO kijken of nog alles klopt
         public Dictionary<string, EventWriterData> GenerateEvents(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, string dataFile)
         {
             m_ibaAnalyzer = ibaAnalyzer;

@@ -154,46 +154,46 @@ namespace iba.Controls
         #region IPropertyPane
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal;
+
+            m_manager = manager;
+            m_data = datasource as HDCreateEventTaskData;
+            if (m_data.EventSettings.Count > 0 && m_ctrlServer.Server != m_data.Server && m_ctrlServer.Port != m_data.ServerPort)
+                m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort,
+                    m_data.Username, m_data.Password, "");
+            else if (m_data.EventSettings.Count == 0)
+                m_ctrlServer.LoadData("localhost", 9180, "", "", "");
+            m_pdoFilePath = m_data.AnalysisFile;
+            m_tbPDO.Text = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? m_data.AnalysisFile : Path.GetFileName(m_data.AnalysisFile);
+
+            m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
+
+            if (Environment.MachineName != m_data.DatFileHost)
+            {
+                m_datFilePath = "";
+                m_tbDAT.Text = "";
+                m_tbPwdDAT.Text = "";
+            }
+            else
+            {
+                m_datFilePath = m_data.DatFile;
+                m_tbDAT.Text = m_datFilePath;
+                m_tbPwdDAT.Text = "";
+            }
+
+            m_tbPwdDAT.TextChanged += m_tbPwdDAT_TextChanged;
+
+            UpdateSources();
+
+            m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
+            m_cbTime.Checked = m_data.MonitorData.MonitorTime;
+            m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
+            m_nudTime.Value = (decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
+
+
+            LoadLocalData(m_data);
             Task.Factory.StartNew(() =>
             {
-                m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal;
-
-                m_manager = manager;
-                m_data = datasource as HDCreateEventTaskData;
-                if (m_data.EventSettings.Count > 0 && m_ctrlServer.Server != m_data.Server && m_ctrlServer.Port != m_data.ServerPort)
-                    m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort,
-                        m_data.Username, m_data.Password, "");
-                else if (m_data.EventSettings.Count == 0)
-                    m_ctrlServer.LoadData("localhost", 9180, "", "", "");
-                m_pdoFilePath = m_data.AnalysisFile;
-                m_tbPDO.Text = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? m_data.AnalysisFile : Path.GetFileName(m_data.AnalysisFile);
-
-                m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
-
-                if (Environment.MachineName != m_data.DatFileHost)
-                {
-                    m_datFilePath = "";
-                    m_tbDAT.Text = "";
-                    m_tbPwdDAT.Text = "";
-                }
-                else
-                {
-                    m_datFilePath = m_data.DatFile;
-                    m_tbDAT.Text = m_datFilePath;
-                    m_tbPwdDAT.Text = "";
-                }
-
-                m_tbPwdDAT.TextChanged += m_tbPwdDAT_TextChanged;
-
-                UpdateSources();
-
-                m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
-                m_cbTime.Checked = m_data.MonitorData.MonitorTime;
-                m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
-                m_nudTime.Value = (decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
-
-
-                LoadLocalData(m_data);
                 while (!channelTree.Load()) ;
                 while (!m_analyzerManager.IsOpened)
                 {
