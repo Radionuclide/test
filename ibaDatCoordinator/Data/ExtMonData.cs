@@ -49,6 +49,8 @@ namespace iba.Data
         public static TimeSpan DriveInfoAgeThreshold { get; set; } = TimeSpan.FromSeconds(3); 
 
         #endregion
+        
+        
         #region Static / Singleton
 
         // ReSharper disable once InconsistentNaming
@@ -97,6 +99,8 @@ namespace iba.Data
         public ExtMonData()
         {
             InitializeTreeValidator();
+
+            CreateEnumDescriptions();
 
             FolderRoot = new ExtMonFolder(null,
                 @"ExtMonDataRoot", @"ExtMonDataRoot", @"ExtMonDataRoot", 0)
@@ -451,24 +455,6 @@ namespace iba.Data
                 uaPaths.Add(uaPath);
             }
             return true;
-        }
-
-
-        /// <summary> For a given enum type Creates a string like "0=Disabled, 1=Started, 2=Stopped" </summary>
-        public static string GetEnumTextDescription(Type t)
-        {
-            string str = "";
-            if (!t.IsEnum)
-                return str;
-
-            var values = t.GetEnumValues();
-            for (int i = 0; i < values.Length; i++)
-            {
-                object val = values.GetValue(i);
-                str += $"{(int)val} = {val}, ";
-            }
-
-            return str.TrimEnd(',', ' ');
         }
 
         public static string GetCurrentThreadString()
@@ -1166,10 +1152,7 @@ namespace iba.Data
 
                 WhenToExecute = AddChildVariable<TaskData.WhenToDo>(
                     @"Execute condition", @"ExecuteCondition",
-                    @"Condition when the task is executed. " +
-                    /* we don't use {GetEnumTextDescription(typeof(TaskData.WhenToDo))}
-                     here because this enum's values are not self-explanatory and are not user-friendly formatted*/
-                    @"(0 = On success, 1 = On failure, 2 = Always, 3 = On 1st failure of file, 4 = On 1st failure of task, 5 = Disabled).",
+                    $@"Condition when the task is executed ({GetEnumTextDescription(typeof(TaskData.WhenToDo).Name)}).",
                     40);
                 //Debug.Assert(.SnmpLeastId == ); // makes no sense to assert because is OID is explicit (not SNMP_AUTO_LEAST_ID)
 
@@ -1242,10 +1225,8 @@ namespace iba.Data
 
                 LimitChoice = AddChildVariable<TaskWithTargetDirData.OutputLimitChoiceEnum>(
                         @"Limit choice", @"LimitChoice",
-                        @"Option selected as limit for the disk space usage. " +
-                        /* we don't use {GetEnumTextDescription(typeof(TaskWithTargetDirData.OutputLimitChoiceEnum))}
-                         here because this enum's values are not self-explanatory */
-                        @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
+                        @"Option selected as limit for the disk space usage " +
+                        $@"({GetEnumTextDescription(typeof(TaskWithTargetDirData.OutputLimitChoiceEnum).Name)}).",
                         SNMP_AUTO_LEAST_ID);
                 Debug.Assert(LimitChoice.SnmpLeastId == 1); // ensure id has an expected value
 
@@ -1349,7 +1330,7 @@ namespace iba.Data
                 
                 Status = FolderGeneral.AddChildVariable<JobStatus>(
                     @"Status", @"Status",
-                    $@"Current status of the job ({GetEnumTextDescription(typeof(JobStatus))}).",
+                    $@"Current status of the job ({GetEnumTextDescription(typeof(JobStatus).Name)}).",
                     SNMP_AUTO_LEAST_ID);
 
                 TodoCount = FolderGeneral.AddChildVariable<uint>(
@@ -1741,6 +1722,105 @@ namespace iba.Data
 
 
         #endregion
+
+
+        #endregion
+
+
+        #region Enums handling
+
+        public struct EnumDescription
+        {
+            /// <summary> Enum value description; this is needed because in-code enum item names are
+            /// sometimes not so self-descriptive or not so user-friendly, to be shown in GUI and MIB
+            /// (e.g. <see cref="TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE"/> that is replaced here with "always")
+            /// </summary>
+            public struct ValDsc
+            {
+                /// <summary> Short name in lowerCamelStyle without spaces; is used:
+                ///  * in GUI to show value, e.g. something like "1 (limitDirectories)"
+                ///  * as SNMP MIB name </summary>
+                public readonly string Name;
+                /// <summary> User-friendly descriptions (spaces allowed);
+                /// is used to create explication of values inside descriptions (in GUI and in SNMP MIB) </summary>
+                public readonly string Description;
+                public ValDsc(string name, string description)
+                {
+                    Name = name;
+                    Description = description;
+                }
+            }
+            //public string InternalName;
+            public string SnmpMibName;
+            public string Description;
+            public Dictionary<int, ValDsc> Values;
+        }
+
+        public static readonly Dictionary<string, EnumDescription> RegisteredEnums = new Dictionary<string, EnumDescription>();
+
+        private static void CreateEnumDescriptions()
+        {
+            EnumDescription enumJobStatus = new EnumDescription
+            {
+                SnmpMibName = "JobStatus",
+                Description = "Current status of the job (started, stopped or disabled)",
+                Values = new Dictionary<int, EnumDescription.ValDsc>
+                {
+                    {(int) JobStatus.Disabled, new EnumDescription.ValDsc("disabled", nameof(JobStatus.Disabled))},
+                    {(int) JobStatus.Started, new EnumDescription.ValDsc("started", nameof(JobStatus.Started))},
+                    {(int) JobStatus.Stopped, new EnumDescription.ValDsc("stopped", nameof(JobStatus.Stopped))}
+                }
+            };
+            RegisteredEnums.Add(typeof(JobStatus).Name, enumJobStatus);
+
+            EnumDescription enumCleanupType = new EnumDescription
+            {
+                SnmpMibName = "LocalCleanupType",
+                Description = "Type of limitation of disk space usage",
+                Values = new Dictionary<int, EnumDescription.ValDsc>
+                {
+                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.None, new EnumDescription.ValDsc("none","None")},
+                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDirectories, new EnumDescription.ValDsc( "limitDirectories", "Maximum subdirectories")},
+                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDiskspace, new EnumDescription.ValDsc("limitDiskSpace", "Maximum used disk space")},
+                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.SaveFreeSpace, new EnumDescription.ValDsc("saveFreeSpace", "Minimum free disk space")}
+                }
+            };
+            RegisteredEnums.Add(typeof(TaskWithTargetDirData.OutputLimitChoiceEnum).Name, enumCleanupType);
+
+            EnumDescription enumExecutionCondition = new EnumDescription
+            {
+                SnmpMibName = "ExecutionCondition",
+                Description = "Condition when a task is executed",
+                Values = new Dictionary<int, EnumDescription.ValDsc>
+                {
+                    {(int) TaskData.WhenToDo.AFTER_SUCCES,  new EnumDescription.ValDsc("onSuccess", "On success")},
+                    {(int) TaskData.WhenToDo.AFTER_FAILURE,  new EnumDescription.ValDsc("onFailure", "On failure")},
+                    {(int) TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE,  new EnumDescription.ValDsc("always", "Always")},
+                    {(int) TaskData.WhenToDo.AFTER_1st_FAILURE_DAT,  new EnumDescription.ValDsc("on1stFailureFile", "On 1st failure of file")},
+                    {(int) TaskData.WhenToDo.AFTER_1st_FAILURE_TASK,  new EnumDescription.ValDsc("on1stFailureTask", "On 1st failure of task")},
+                    {(int) TaskData.WhenToDo.DISABLED,  new EnumDescription.ValDsc("disabled", "Disabled")},
+                }
+            };
+            RegisteredEnums.Add(typeof(TaskData.WhenToDo).Name, enumExecutionCondition);
+        }
+
+        /// <summary> For a given enum type creates a textual explication of values like "0=Disabled, 1=Started, 2=Stopped" </summary>
+        public static string GetEnumTextDescription(EnumDescription desc)
+        {
+            string str = "";
+            foreach (var kvp in desc.Values)
+            {
+                str += $"{kvp.Key} = {kvp.Value.Description}, ";
+            }
+            return str.TrimEnd(',', ' ');
+        }
+
+        /// <summary> For a given enum type creates a textual explication of values like "0=Disabled, 1=Started, 2=Stopped" </summary>
+        public static string GetEnumTextDescription(string internalEnumName)
+        {
+            Debug.Assert(RegisteredEnums.ContainsKey(internalEnumName));
+            return GetEnumTextDescription(RegisteredEnums[internalEnumName]);
+        }
 
 
         #endregion

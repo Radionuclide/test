@@ -200,45 +200,24 @@ namespace iba.Processing
 
         #region Register enums
 
-        private IbaSnmpValueType _enumJobStatus;
-        private IbaSnmpValueType _enumCleanupType;
-        private IbaSnmpValueType _enumWhenToDo;
+        private Dictionary<string, IbaSnmpValueType> _registeredEnums;
 
         private void RegisterEnums()
         {
-            _enumJobStatus = IbaSnmp.RegisterEnumDataType(
-                "JobStatus", "Current status of the job (started, stopped or disabled)",
-                new Dictionary<int, string>
+            _registeredEnums = new Dictionary<string, IbaSnmpValueType>();
+            foreach (var kvp in ExtMonData.RegisteredEnums)
+            {
+                var desc = kvp.Value;
+                // change value descriptions to format needed for ibaSnmp lib
+                Dictionary<int, string> valNames = new Dictionary<int, string>();
+                foreach (var valKvp in desc.Values)
                 {
-                    {(int) ExtMonData.JobStatus.Disabled, "disabled"},
-                    {(int) ExtMonData.JobStatus.Started, "started"},
-                    {(int) ExtMonData.JobStatus.Stopped, "stopped"}
+                    valNames.Add(valKvp.Key,valKvp.Value.Name);
                 }
-            );
+                IbaSnmpValueType type = IbaSnmp.RegisterEnumDataType(desc.SnmpMibName, desc.Description, valNames);
 
-            _enumCleanupType = IbaSnmp.RegisterEnumDataType(
-                "LocalCleanupType", "Type of limitation of disk space usage",
-                new Dictionary<int, string>
-                {
-                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.None, "none"},
-                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
-                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
-                    {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
-                }
-            );
-
-            _enumWhenToDo = IbaSnmp.RegisterEnumDataType(
-                "ExecutionCondition", "Condition when a task is executed",
-                new Dictionary<int, string>
-                {
-                    {(int) TaskData.WhenToDo.AFTER_SUCCES, "onSuccess"},
-                    {(int) TaskData.WhenToDo.AFTER_FAILURE, "onFailure"},
-                    {(int) TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE, "always"},
-                    {(int) TaskData.WhenToDo.AFTER_1st_FAILURE_DAT, "on1stFailureFile"},
-                    {(int) TaskData.WhenToDo.AFTER_1st_FAILURE_TASK, "on1stFailureTask"},
-                    {(int) TaskData.WhenToDo.DISABLED, "disabled"},
-                }
-            );
+                _registeredEnums.Add(kvp.Key, type);
+            }
         }
 
         #endregion
@@ -437,26 +416,21 @@ namespace iba.Processing
 
             IbaSnmpValueType type;
             if (xmv.ObjValue.GetType().IsEnum)
-            {   
-                //enum
-                switch (xmv.ObjValue)
+            {
+                string typeName = xmv.ObjValue.GetType().Name;
+
+                if (ExtMonData.RegisteredEnums.TryGetValue(typeName, out ExtMonData.EnumDescription _))
                 {
-                    case ExtMonData.JobStatus _:
-                        type = _enumJobStatus;
-                        break;
-                    case TaskWithTargetDirData.OutputLimitChoiceEnum _:
-                        type = _enumCleanupType;
-                        break;
-                    case TaskData.WhenToDo _:
-                        type = _enumWhenToDo;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(xmv.ObjValue),@"Unsupported enum type");
+                    Debug.Assert(_registeredEnums.ContainsKey(typeName));
+                    type = _registeredEnums[typeName];
+
+                    IbaSnmp.CreateEnumUserValue(xmv.SnmpFullOid, type, (int)xmv.ObjValue, null, null,
+                        ProductSpecificItemRequested, xmv.GetGroup());
                 }
-
-                IbaSnmp.CreateEnumUserValue(xmv.SnmpFullOid, type, (int)xmv.ObjValue, null, null,
-                    ProductSpecificItemRequested, xmv.GetGroup() );
-
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(xmv.ObjValue), @"Unsupported enum type");
+                }
             }
             else // simple types
             {

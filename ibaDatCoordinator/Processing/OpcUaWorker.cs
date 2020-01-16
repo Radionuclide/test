@@ -1523,7 +1523,27 @@ namespace iba.Processing
                     {
                         RefreshGroup(xmv.Group);
                         object val = xmv.ObjValue;
-                        tag.Value = type.IsEnum ? $"{(int)val} ({val})" : $"{val}";
+                        if (type.IsEnum)
+                        {
+                            string explication;
+                            // try to get value explication from registered ones
+                            if (ExtMonData.RegisteredEnums.TryGetValue(type.Name, out var desc) &&
+                                desc.Values.TryGetValue((int)val, out var valueDesc))
+                            {
+                                explication = valueDesc.Name;
+                            }
+                            else
+                            {
+                                explication = val.ToString();
+                                Debug.Assert(false, "Should not happen. Either enum is unregistered or its value is unregistered");
+                            }
+                            tag.Value = $"{(int)val} ({explication})";
+                        }
+                        else 
+                        {
+                            // not enum - a usual value
+                            tag.Value = $"{val}";
+                        }
                     }
                     catch
                     {
