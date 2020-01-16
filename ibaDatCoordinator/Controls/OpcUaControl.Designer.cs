@@ -1254,13 +1254,13 @@
             // 
             // OpcUaControl
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.gbDebug);
             this.Controls.Add(this.gbStatus);
             this.Controls.Add(this.panelFooterWithButtons);
             this.Name = "OpcUaControl";
-            resources.ApplyResources(this, "$this");
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
             this.splitContainerObjectsFooter.Panel1.PerformLayout();
