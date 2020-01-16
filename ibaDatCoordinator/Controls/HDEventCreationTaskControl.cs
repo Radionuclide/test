@@ -83,9 +83,9 @@ namespace iba.Controls
             {
                 if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
                 {
-                    if (user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
+                    if (m_ctrlServer.Reader.UserManager.IsActive() && user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
                         m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
-                    else if (user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
+                    else if (!m_ctrlServer.Reader.UserManager.IsActive() || user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
                         m_ctrlEvent.StoreFilter = null;
                 }
             };
