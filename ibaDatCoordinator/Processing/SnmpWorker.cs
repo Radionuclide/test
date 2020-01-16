@@ -202,6 +202,7 @@ namespace iba.Processing
 
         private IbaSnmpValueType _enumJobStatus;
         private IbaSnmpValueType _enumCleanupType;
+        private IbaSnmpValueType _enumWhenToDo;
 
         private void RegisterEnums()
         {
@@ -223,6 +224,19 @@ namespace iba.Processing
                     {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDirectories, "limitDirectories"},
                     {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.LimitDiskspace, "limitDiskSpace"},
                     {(int) TaskWithTargetDirData.OutputLimitChoiceEnum.SaveFreeSpace, "saveFreeSpace"}
+                }
+            );
+
+            _enumWhenToDo = IbaSnmp.RegisterEnumDataType(
+                "ExecutionCondition", "Condition when a task is executed",
+                new Dictionary<int, string>
+                {
+                    {(int) TaskData.WhenToDo.AFTER_SUCCES, "onSuccess"},
+                    {(int) TaskData.WhenToDo.AFTER_FAILURE, "onFailure"},
+                    {(int) TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE, "always"},
+                    {(int) TaskData.WhenToDo.AFTER_1st_FAILURE_DAT, "on1stFailureFile"},
+                    {(int) TaskData.WhenToDo.AFTER_1st_FAILURE_TASK, "on1stFailureTask"},
+                    {(int) TaskData.WhenToDo.DISABLED, "disabled"},
                 }
             );
         }
@@ -425,8 +439,20 @@ namespace iba.Processing
             if (xmv.ObjValue.GetType().IsEnum)
             {   
                 //enum
-                Debug.Assert(xmv.ObjValue is ExtMonData.JobStatus || xmv.ObjValue is TaskWithTargetDirData.OutputLimitChoiceEnum);
-                type = xmv.ObjValue is ExtMonData.JobStatus ? _enumJobStatus : _enumCleanupType;
+                switch (xmv.ObjValue)
+                {
+                    case ExtMonData.JobStatus _:
+                        type = _enumJobStatus;
+                        break;
+                    case TaskWithTargetDirData.OutputLimitChoiceEnum _:
+                        type = _enumCleanupType;
+                        break;
+                    case TaskData.WhenToDo _:
+                        type = _enumWhenToDo;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(xmv.ObjValue),@"Unsupported enum type");
+                }
 
                 IbaSnmp.CreateEnumUserValue(xmv.SnmpFullOid, type, (int)xmv.ObjValue, null, null,
                     ProductSpecificItemRequested, xmv.GetGroup() );
@@ -476,6 +502,7 @@ namespace iba.Processing
                     break;
                 case ExtMonData.JobStatus _:
                 case TaskWithTargetDirData.OutputLimitChoiceEnum _:
+                case TaskData.WhenToDo _:
                     // ReSharper disable once PossibleInvalidCastException
                     IbaSnmp.SetUserValue(xmv.SnmpFullOid, (int)xmv.ObjValue);
                     break;

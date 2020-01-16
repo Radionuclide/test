@@ -1097,6 +1097,12 @@ namespace iba.Data
             /// <summary> Oid 5 </summary>
             public readonly ExtMonVariable<uint> MemoryUsedForLastExecutionInMb;
 
+            /// <summary> Oid 30 </summary>
+            public readonly ExtMonVariable<bool> Enabled;
+
+            /// <summary> Oid 40 </summary>
+            public readonly ExtMonVariable<TaskData.WhenToDo> WhenToExecute;
+
             /// <summary> A Job the task belongs to </summary>
             public JobInfoBase ParentJob;
 
@@ -1151,6 +1157,21 @@ namespace iba.Data
                     @"Condition, Report, Extract and some custom tasks.",
                     SNMP_AUTO_LEAST_ID);
                 Debug.Assert(MemoryUsedForLastExecutionInMb.SnmpLeastId == 5); // ensure id has an expected value
+
+                Enabled = AddChildVariable<bool>(
+                    @"Enabled", @"Enabled",
+                    @"Whether or not the task is enabled",
+                    30);
+                //Debug.Assert(.SnmpLeastId == ); // makes no sense to assert because is OID is explicit (not SNMP_AUTO_LEAST_ID)
+
+                WhenToExecute = AddChildVariable<TaskData.WhenToDo>(
+                    @"Execute condition", @"ExecuteCondition",
+                    @"Condition when the task is executed. " +
+                    /* we don't use {GetEnumTextDescription(typeof(TaskData.WhenToDo))}
+                     here because this enum's values are not self-explanatory and are not user-friendly formatted*/
+                    @"(0 = On success, 1 = On failure, 2 = Always, 3 = On 1st failure of file, 4 = On 1st failure of task, 5 = Disabled).",
+                    40);
+                //Debug.Assert(.SnmpLeastId == ); // makes no sense to assert because is OID is explicit (not SNMP_AUTO_LEAST_ID)
 
                 // set default values
                 Reset();
@@ -1223,7 +1244,7 @@ namespace iba.Data
                         @"Limit choice", @"LimitChoice",
                         @"Option selected as limit for the disk space usage. " +
                         /* we don't use {GetEnumTextDescription(typeof(TaskWithTargetDirData.OutputLimitChoiceEnum))}
-                         here because this enum's values are are not self-explanatory */
+                         here because this enum's values are not self-explanatory */
                         @"(0 = None, 1 = Maximum subdirectories, 2 = Maximum used disk space, 3 = Minimum free disk space).",
                         SNMP_AUTO_LEAST_ID);
                 Debug.Assert(LimitChoice.SnmpLeastId == 1); // ensure id has an expected value

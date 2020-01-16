@@ -675,6 +675,8 @@ namespace iba.Processing
 
                 taskInfo.Reset();
                 taskInfo.TaskName.Value = taskData.Name;
+                taskInfo.Enabled.Value = taskData.Enabled;
+                taskInfo.WhenToExecute.Value = taskData.WhenToExecute;
 
                 // last execution - success, duration, memory
                 try
