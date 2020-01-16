@@ -396,9 +396,8 @@ Section -PreInstall
   
 SectionEnd
 
-Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
-  SetOverwrite on
-  ;MessageBox MB_OK "Debug in DATCOOR_NOSERVICE (1)"
+Function InstallServerFiles
+
   ;Copy server files
   SetOutPath "$INSTDIR"
   File "..\Dependencies\ibaLogger.dll"
@@ -412,7 +411,12 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\PowerCollections.dll"
   File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\GenuineChannels.dll"
-  ;SNMP
+  File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
+  File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
+  File "..\Dependencies\DevExpress.Data.v16.1.dll"
+  File "..\Dependencies\DevExpress.Utils.v16.1.dll"
+  File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
+  File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   File "..\Dependencies\ibaSnmpLib.dll"
   ;OPC UA
   File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
@@ -429,37 +433,36 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\Dependencies\hdProtoBuf.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
   
-  File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
-  File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
-  File "..\Dependencies\DevExpress.Data.v16.1.dll"
-  File "..\Dependencies\DevExpress.Utils.v16.1.dll"
-  File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
-  File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
-  
-  File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
-
-  File "..\InstallFiles\Protected\DatCoUtil.dll"
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
+  File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
+  File "..\InstallFiles\Protected\DatCoUtil.dll"
+  ; runtime
+  File "..\InstallFiles\Protected\ibaRuntime.dll"
+
   File "versions_dat.htm"
   File "LicenseInformation.txt"
   File "License_Agreement_DatCoordinator.pdf"
   File "Support.htm"
-  
-  ; runtime
-  File "..\InstallFiles\Protected\ibaRuntime.dll"
   
   ; dongle viewer
   SetOutPath "$INSTDIR"
   File "..\Dependencies\ibaDongleViewerSetup.exe"
   nsExec::Exec '"$INSTDIR\ibaDongleViewerSetup.exe" /S'
   Delete "$INSTDIR\ibaDongleViewerSetup.exe"
-  ;silently install certificate
+  
+  ; silently install certificate
+  SetOutPath "$INSTDIR"
   File "DigiCertAssuredIDRootCA.crt"
   Push "$INSTDIR\DigiCertAssuredIDRootCA.crt"
   Call AddCertificateToStore
+  Pop $9
+  ${If} $9 <> "success"
+    !insertmacro WriteToInstallHistory "Installing certificate failed with error: $9"
+  ${EndIf}
   
   ;help files
   File "..\iDatCo_HTML_Help\*.chm"
+  
   ;localisation
   SetOutPath "$INSTDIR\de"
   File "..\Passolo\de\ibaDatCoordinator.resources.dll"
@@ -471,14 +474,22 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
   File "..\Dependencies\fr\hdCommon.resources.dll"
   File "..\Dependencies\fr\hd_plugin.resources.dll"
+  
   ;plugins
   SetOutPath "$INSTDIR\plugins"
   File "..\Dependencies\hd_plugin.dll"
+
+FunctionEnd
+
+Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
+  SetOverwrite on
+  ;MessageBox MB_OK "Debug in DATCOOR_NOSERVICE (1)"
+  
+  Call InstallServerFiles
   
   SetOutPath "$INSTDIR"
-  ;Create uninstall shortcut
 
-  
+  ;Create uninstall shortcut
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\ibaDatCoordinator.lnk" "$INSTDIR\ibaDatCoordinator.exe"
   CreateDirectory "$LOCALAPPDATA\iba\ibaDatCoordinator"
@@ -488,86 +499,27 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "0"
   !insertmacro WriteToInstallHistory "Finished installing stand alone version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
+  
 SectionEnd
 
 Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   SetOverwrite on
   
+  Call InstallServerFiles
+  
   ;MessageBox MB_OK "Debug in DATCOOR_SERVICE (2)"
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaLogger.dll"
-  File "..\Dependencies\Eyefinder.dll"
-  File "..\Dependencies\DotNetMagic2005.DLL"
-  File "..\Dependencies\DotNetMagic.DLL"
-  File "..\Dependencies\ICSharpCode.TextEditor.dll"
-  File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
-  File "..\Dependencies\msvcr100.dll"
-  File "..\Dependencies\msvcp100.dll"
-  File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
-  File "..\Dependencies\PowerCollections.dll"
-  File "..\Dependencies\GenuineChannels.dll"
-  ;SNMP
-  File "..\Dependencies\ibaSnmpLib.dll"
-  ;OPC UA
-  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
-  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
-  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
-  File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
-  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
-  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"  
-  ;HD-stuff
-  File "..\InstallFiles\Protected\hdCore.dll"
-  File "..\InstallFiles\Protected\hdClient.dll"
-  File "..\InstallFiles\Obfuscated\hdClientFiles.dll"
-  File "..\Dependencies\hdCommon.dll"
-  File "..\Dependencies\hdProtoBuf.dll"
-  File "..\Dependencies\hdClientInterfaces.dll"
-
-  File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
-  File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
-  File "..\Dependencies\DevExpress.Data.v16.1.dll"
-  File "..\Dependencies\DevExpress.Utils.v16.1.dll"
-  File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
-  File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
-  File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
-
-  File "..\ibaDatCoordinator\bin\Release\DatCoUtil.dll"
-  File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
-  File "versions_dat.htm"
-  File "LicenseInformation.txt"
-  File "License_Agreement_DatCoordinator.pdf"
-  File "Support.htm"
-  File "Copy_Printer_Settings_To_System_Account.bat"
-  File "createundoregfile.bat"
-  ; runtime
-  File "..\InstallFiles\Protected\ibaRuntime.dll"
-  ; dongle viewer
-  SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaDongleViewerSetup.exe"
-  nsExec::Exec '"$INSTDIR\ibaDongleViewerSetup.exe" /S'
-  Delete "$INSTDIR\ibaDongleViewerSetup.exe"
-  ;help files
-  File "..\iDatCo_HTML_Help\*.chm"
+
   ;localisation
   SetOutPath "$INSTDIR\de"
-  File "..\Passolo\de\ibaDatCoordinator.resources.dll"
   File "..\Passolo\de\ibaDatCoordinatorStatus.resources.dll"
-  File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
-  File "..\Dependencies\de\hdCommon.resources.dll"
-  File "..\Dependencies\de\hd_plugin.resources.dll"
   SetOutPath "$INSTDIR\fr"
-  File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
   File "..\Passolo\fr\ibaDatCoordinatorStatus.resources.dll"
-  File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
-  File "..\Dependencies\fr\hdCommon.resources.dll"
-  File "..\Dependencies\fr\hd_plugin.resources.dll"
-  ;plugins
-  SetOutPath "$INSTDIR\plugins"
-  File "..\Dependencies\hd_plugin.dll"
-  
+
+  ;Install service
   DetailPrint $(TEXT_SERVICE_INSTALL)
   !insertmacro MUI_INSTALLOPTIONS_READ $R0 "ServiceAccount.ini" "Field 2" "State" ;local system
   ${If} $R0 == "1"
@@ -595,7 +547,9 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
 
   ;printer stuff
   SetOutPath "$INSTDIR"
+  File "createundoregfile.bat"
   nsExec::Exec '"$INSTDIR\createundoregfile.bat"'
+  File "Copy_Printer_Settings_To_System_Account.bat"
   nsExec::Exec '"$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"'
   Delete "$INSTDIR\createundoregfile.bat"
   nsSCMEx::Stop /NOUNLOAD "Spooler"
@@ -628,7 +582,9 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   
   ;Start service status
   Exec "$INSTDIR\ibaDatCoordinatorStatus.exe"
+  
   !insertmacro WriteToInstallHistory "Finished installing client-server version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
+  
 SectionEnd
 
 Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
@@ -931,6 +887,8 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
+  Delete "$INSTDIR\DigiCertAssuredIDRootCA.crt"
+  
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"
   ;resources
