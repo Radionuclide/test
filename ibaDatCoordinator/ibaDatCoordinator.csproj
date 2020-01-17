@@ -819,7 +819,6 @@
     <None Include="Resources\img_add.png" />
     <None Include="Resources\img_cert.png" />
     <None Include="Resources\img_dude.png" />
-    
     <Content Include="Resources\img_eventjob_range_single.png" />
     <None Include="Resources\snmp_icon.png" />
     <None Include="Resources\snmp_images.png" />
