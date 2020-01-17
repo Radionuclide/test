@@ -49,10 +49,6 @@
     <SecurityTokenLifetime>3600000</SecurityTokenLifetime>
   </TransportQuotas>
   <ServerConfiguration>
-    <BaseAddresses>
-      <ua:String>opc.tcp://localhost:21060/ibaDatCoordinator</ua:String>
-      <ua:String>http://localhost:21061/ibaDatCoordinator</ua:String>
-    </BaseAddresses>
     <SecurityPolicies>
       <ServerSecurityPolicy>
         <SecurityMode>None_1</SecurityMode>
@@ -93,7 +89,7 @@
         <Count>20</Count>
       </SamplingRateGroup>
     </AvailableSamplingRates>
-    <MaxRegistrationInterval>30000</MaxRegistrationInterval>
+    <MaxRegistrationInterval>3600000</MaxRegistrationInterval>
     <NodeManagerSaveFile>ibaDatCoordinator.UA.Server.nodes.xml</NodeManagerSaveFile>
   </ServerConfiguration>
 
