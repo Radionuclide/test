@@ -396,7 +396,9 @@ Section -PreInstall
   
 SectionEnd
 
-Function InstallServerFiles
+;Installation steps that are common for client, server and standalone version
+Section -Common
+  SetOverwrite on
 
   ;Copy server files
   SetOutPath "$INSTDIR"
@@ -479,13 +481,11 @@ Function InstallServerFiles
   SetOutPath "$INSTDIR\plugins"
   File "..\Dependencies\hd_plugin.dll"
 
-FunctionEnd
+SectionEnd
 
 Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   SetOverwrite on
   ;MessageBox MB_OK "Debug in DATCOOR_NOSERVICE (1)"
-  
-  Call InstallServerFiles
   
   SetOutPath "$INSTDIR"
 
@@ -504,8 +504,6 @@ SectionEnd
 
 Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   SetOverwrite on
-  
-  Call InstallServerFiles
   
   ;MessageBox MB_OK "Debug in DATCOOR_SERVICE (2)"
   ;Copy server files
@@ -590,71 +588,8 @@ SectionEnd
 Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   SetOverwrite on
   ;MessageBox MB_OK "Debug in DATCOOR_CLIENT(3)"
-  ;Copy server files
-  SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaLogger.dll"
-  File "..\Dependencies\Eyefinder.dll"
-  File "..\Dependencies\DotNetMagic2005.DLL"
-  File "..\Dependencies\DotNetMagic.DLL"
-  File "..\Dependencies\msvcr100.dll"
-  File "..\Dependencies\msvcp100.dll"  
-  File "..\Dependencies\ICSharpCode.TextEditor.dll"
-  File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
-  File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
-  File "..\Dependencies\GenuineChannels.dll"
-  ;SNMP
-  File "..\Dependencies\ibaSnmpLib.dll"
-  ;OPC UA
-  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
-  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
-  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
-  File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
-  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
-  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" 
-;HD-stuff
-  File "..\InstallFiles\Protected\hdCore.dll"
-  File "..\InstallFiles\Protected\hdClient.dll"
-  File "..\Dependencies\hdClientInterfaces.dll"
-  File "..\Dependencies\hdCommon.dll"
-  File "..\Dependencies\hdProtoBuf.dll"
-  File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
-  File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
-  File "..\Dependencies\DevExpress.Data.v16.1.dll"
-  File "..\Dependencies\DevExpress.Utils.v16.1.dll"
-  File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
-  File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
-  
-  File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
 
-  File "..\InstallFiles\Protected\DatCoUtil.dll"
-  File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
-  File "versions_dat.htm"
-  File "LicenseInformation.txt"
-  File "License_Agreement_DatCoordinator.pdf"
-  File "Support.htm"
-  
-  ; runtime
-  File "..\InstallFiles\Protected\ibaRuntime.dll"
-  
-  ; dongle viewer
-  SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaDongleViewerSetup.exe"
-  nsExec::Exec '"$INSTDIR\ibaDongleViewerSetup.exe" /S'
-  Delete "$INSTDIR\ibaDongleViewerSetup.exe"
-  ;help files
-  File "..\iDatCo_HTML_Help\*.chm"
-  ;localisation
-  SetOutPath "$INSTDIR\de"
-  File "..\Passolo\de\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
-  SetOutPath "$INSTDIR\fr"
-  File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
-
-  SetOutPath "$INSTDIR"
-  ;Create uninstall shortcut
-
-    ;add firewall exceptions...
+  ;add firewall exceptions...
   nsSCMEx::FirewallIsAvailable
   Pop $R0
   ${If} $R0 == "1"
@@ -669,7 +604,7 @@ Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT
   
   ;MessageBox MB_OK "Debug writing 2"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server" "2"
-  !insertmacro WriteToInstallHistory "Finished installing stand alone version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
+  !insertmacro WriteToInstallHistory "Finished installing client-only version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
 SectionEnd
 
 Section -Post
@@ -888,7 +823,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
   Delete "$INSTDIR\DigiCertAssuredIDRootCA.crt"
-  
+
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"
   ;resources
