@@ -89,7 +89,7 @@ namespace iba.Controls
                         m_ctrlEvent.StoreFilter = null;
                 }
             };
-            m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), false);
+            m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), "", false);
             m_ctrlEvent.EventWizard = new HDEventWizard(m_analyzerManager, GetPriorities());
         }
 
