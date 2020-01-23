@@ -127,16 +127,232 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="splitContainerObjectsFooter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 346</value>
+    <value>0, 350</value>
+  </data>
+  <data name="&gt;&gt;tbObjOid.Name" xml:space="preserve">
+    <value>tbObjOid</value>
+  </data>
+  <data name="&gt;&gt;tbObjOid.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbObjOid.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
+  </data>
+  <data name="&gt;&gt;tbObjOid.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;labelObjOid.Name" xml:space="preserve">
+    <value>labelObjOid</value>
+  </data>
+  <data name="&gt;&gt;labelObjOid.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelObjOid.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
+  </data>
+  <data name="&gt;&gt;labelObjOid.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;labelObjType.Name" xml:space="preserve">
+    <value>labelObjType</value>
+  </data>
+  <data name="&gt;&gt;labelObjType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelObjType.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
+  </data>
+  <data name="&gt;&gt;labelObjType.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tbObjValue.Name" xml:space="preserve">
+    <value>tbObjValue</value>
+  </data>
+  <data name="&gt;&gt;tbObjValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbObjValue.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
+  </data>
+  <data name="&gt;&gt;tbObjValue.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;labelObjValue.Name" xml:space="preserve">
+    <value>labelObjValue</value>
+  </data>
+  <data name="&gt;&gt;labelObjValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelObjValue.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
+  </data>
+  <data name="&gt;&gt;labelObjValue.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tbObjType.Name" xml:space="preserve">
+    <value>tbObjType</value>
+  </data>
+  <data name="&gt;&gt;tbObjType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbObjType.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
+  </data>
+  <data name="&gt;&gt;tbObjType.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="panelSplitContainerLeft.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panelSplitContainerLeft.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panelSplitContainerLeft.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 81</value>
+  </data>
+  <data name="panelSplitContainerLeft.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panelSplitContainerLeft.Name" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
+  </data>
+  <data name="&gt;&gt;panelSplitContainerLeft.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelSplitContainerLeft.Parent" xml:space="preserve">
+    <value>splitContainerObjectsFooter.Panel1</value>
+  </data>
+  <data name="&gt;&gt;panelSplitContainerLeft.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="splitContainerObjectsFooter.Panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>15, 0, 0, 0</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Panel1.Name" xml:space="preserve">
+    <value>splitContainerObjectsFooter.Panel1</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Panel1.Parent" xml:space="preserve">
+    <value>splitContainerObjectsFooter</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;LabObjMibDescription.Name" xml:space="preserve">
+    <value>LabObjMibDescription</value>
+  </data>
+  <data name="&gt;&gt;LabObjMibDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LabObjMibDescription.Parent" xml:space="preserve">
+    <value>panelSplitContainerRight</value>
+  </data>
+  <data name="&gt;&gt;LabObjMibDescription.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tbObjMibName.Name" xml:space="preserve">
+    <value>tbObjMibName</value>
+  </data>
+  <data name="&gt;&gt;tbObjMibName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbObjMibName.Parent" xml:space="preserve">
+    <value>panelSplitContainerRight</value>
+  </data>
+  <data name="&gt;&gt;tbObjMibName.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tbObjMibDescription.Name" xml:space="preserve">
+    <value>tbObjMibDescription</value>
+  </data>
+  <data name="&gt;&gt;tbObjMibDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbObjMibDescription.Parent" xml:space="preserve">
+    <value>panelSplitContainerRight</value>
+  </data>
+  <data name="&gt;&gt;tbObjMibDescription.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;labelObjMibName.Name" xml:space="preserve">
+    <value>labelObjMibName</value>
+  </data>
+  <data name="&gt;&gt;labelObjMibName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelObjMibName.Parent" xml:space="preserve">
+    <value>panelSplitContainerRight</value>
+  </data>
+  <data name="&gt;&gt;labelObjMibName.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="panelSplitContainerRight.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panelSplitContainerRight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panelSplitContainerRight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>444, 81</value>
+  </data>
+  <data name="panelSplitContainerRight.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panelSplitContainerRight.Name" xml:space="preserve">
+    <value>panelSplitContainerRight</value>
+  </data>
+  <data name="&gt;&gt;panelSplitContainerRight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelSplitContainerRight.Parent" xml:space="preserve">
+    <value>splitContainerObjectsFooter.Panel2</value>
+  </data>
+  <data name="&gt;&gt;panelSplitContainerRight.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Panel2.Name" xml:space="preserve">
+    <value>splitContainerObjectsFooter.Panel2</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Panel2.Parent" xml:space="preserve">
+    <value>splitContainerObjectsFooter</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="splitContainerObjectsFooter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>718, 81</value>
+  </data>
+  <data name="splitContainerObjectsFooter.SplitterDistance" type="System.Int32, mscorlib">
+    <value>270</value>
+  </data>
+  <data name="splitContainerObjectsFooter.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Name" xml:space="preserve">
+    <value>splitContainerObjectsFooter</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.Parent" xml:space="preserve">
+    <value>tabObjects</value>
+  </data>
+  <data name="&gt;&gt;splitContainerObjectsFooter.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="tbObjOid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="tbObjOid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 3</value>
+    <value>75, 3</value>
   </data>
   <data name="tbObjOid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 20</value>
+    <value>192, 20</value>
   </data>
   <data name="tbObjOid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -148,40 +364,10 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbObjOid.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel1</value>
+    <value>panelSplitContainerLeft</value>
   </data>
   <data name="&gt;&gt;tbObjOid.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="labelObjType.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelObjType.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="labelObjType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 58</value>
-  </data>
-  <data name="labelObjType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 13</value>
-  </data>
-  <data name="labelObjType.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="labelObjType.Text" xml:space="preserve">
-    <value>Type:</value>
-  </data>
-  <data name="&gt;&gt;labelObjType.Name" xml:space="preserve">
-    <value>labelObjType</value>
-  </data>
-  <data name="&gt;&gt;labelObjType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelObjType.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel1</value>
-  </data>
-  <data name="&gt;&gt;labelObjType.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="labelObjOid.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -208,36 +394,63 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;labelObjOid.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel1</value>
+    <value>panelSplitContainerLeft</value>
   </data>
   <data name="&gt;&gt;labelObjOid.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tbObjType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="tbObjType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 55</value>
-  </data>
-  <data name="tbObjType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 3, 15, 3</value>
-  </data>
-  <data name="tbObjType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 20</value>
-  </data>
-  <data name="tbObjType.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;tbObjType.Name" xml:space="preserve">
-    <value>tbObjType</value>
+  <data name="labelObjType.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;tbObjType.Type" xml:space="preserve">
+  <data name="labelObjType.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelObjType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 58</value>
+  </data>
+  <data name="labelObjType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 13</value>
+  </data>
+  <data name="labelObjType.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="labelObjType.Text" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="&gt;&gt;labelObjType.Name" xml:space="preserve">
+    <value>labelObjType</value>
+  </data>
+  <data name="&gt;&gt;labelObjType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelObjType.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
+  </data>
+  <data name="&gt;&gt;labelObjType.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tbObjValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbObjValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 29</value>
+  </data>
+  <data name="tbObjValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 20</value>
+  </data>
+  <data name="tbObjValue.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tbObjValue.Name" xml:space="preserve">
+    <value>tbObjValue</value>
+  </data>
+  <data name="&gt;&gt;tbObjValue.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbObjType.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel1</value>
+  <data name="&gt;&gt;tbObjValue.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
   </data>
-  <data name="&gt;&gt;tbObjType.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbObjValue.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="labelObjValue.AutoSize" type="System.Boolean, mscorlib">
@@ -265,49 +478,37 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;labelObjValue.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel1</value>
+    <value>panelSplitContainerLeft</value>
   </data>
   <data name="&gt;&gt;labelObjValue.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="tbObjValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="tbObjType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="tbObjValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 29</value>
+  <data name="tbObjType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 55</value>
   </data>
-  <data name="tbObjValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 20</value>
+  <data name="tbObjType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>15, 3, 15, 3</value>
   </data>
-  <data name="tbObjValue.TabIndex" type="System.Int32, mscorlib">
+  <data name="tbObjType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 20</value>
+  </data>
+  <data name="tbObjType.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;tbObjValue.Name" xml:space="preserve">
-    <value>tbObjValue</value>
+  <data name="&gt;&gt;tbObjType.Name" xml:space="preserve">
+    <value>tbObjType</value>
   </data>
-  <data name="&gt;&gt;tbObjValue.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbObjType.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbObjValue.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel1</value>
+  <data name="&gt;&gt;tbObjType.Parent" xml:space="preserve">
+    <value>panelSplitContainerLeft</value>
   </data>
-  <data name="&gt;&gt;tbObjValue.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbObjType.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="splitContainerObjectsFooter.Panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>15, 0, 0, 0</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Panel1.Name" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel1</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Panel1.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="LabObjMibDescription.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -335,7 +536,7 @@ Description:</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;LabObjMibDescription.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel2</value>
+    <value>panelSplitContainerRight</value>
   </data>
   <data name="&gt;&gt;LabObjMibDescription.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -365,10 +566,10 @@ Description:</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;labelObjMibName.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel2</value>
+    <value>panelSplitContainerRight</value>
   </data>
   <data name="&gt;&gt;labelObjMibName.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="tbObjMibDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -380,7 +581,7 @@ Description:</value>
     <value>True</value>
   </data>
   <data name="tbObjMibDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>290, 46</value>
+    <value>347, 46</value>
   </data>
   <data name="tbObjMibDescription.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -392,7 +593,7 @@ Description:</value>
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbObjMibDescription.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel2</value>
+    <value>panelSplitContainerRight</value>
   </data>
   <data name="&gt;&gt;tbObjMibDescription.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -404,7 +605,7 @@ Description:</value>
     <value>94, 3</value>
   </data>
   <data name="tbObjMibName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>290, 20</value>
+    <value>347, 20</value>
   </data>
   <data name="tbObjMibName.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -416,43 +617,10 @@ Description:</value>
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbObjMibName.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel2</value>
+    <value>panelSplitContainerRight</value>
   </data>
   <data name="&gt;&gt;tbObjMibName.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Panel2.Name" xml:space="preserve">
-    <value>splitContainerObjectsFooter.Panel2</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Panel2.Parent" xml:space="preserve">
-    <value>splitContainerObjectsFooter</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="splitContainerObjectsFooter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>718, 85</value>
-  </data>
-  <data name="splitContainerObjectsFooter.SplitterDistance" type="System.Int32, mscorlib">
-    <value>327</value>
-  </data>
-  <data name="splitContainerObjectsFooter.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Name" xml:space="preserve">
-    <value>splitContainerObjectsFooter</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.Parent" xml:space="preserve">
-    <value>tabObjects</value>
-  </data>
-  <data name="&gt;&gt;splitContainerObjectsFooter.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -462,30 +630,6 @@ Description:</value>
   </metadata>
   <data name="dgvClients.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="ColAddress.HeaderText" xml:space="preserve">
-    <value>Address</value>
-  </data>
-  <data name="ColAddress.MinimumWidth" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <data name="ColProtocol.HeaderText" xml:space="preserve">
-    <value>Protocol</value>
-  </data>
-  <data name="ColProtocol.MinimumWidth" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <data name="ColMsgCounter.HeaderText" xml:space="preserve">
-    <value>Message counter</value>
-  </data>
-  <data name="ColMsgCounter.MinimumWidth" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <data name="ColLastMsg.HeaderText" xml:space="preserve">
-    <value>Last message</value>
-  </data>
-  <data name="ColLastMsg.MinimumWidth" type="System.Int32, mscorlib">
-    <value>50</value>
   </data>
   <data name="dgvClients.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 37</value>
@@ -510,6 +654,30 @@ Description:</value>
   </data>
   <data name="&gt;&gt;dgvClients.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="ColAddress.HeaderText" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="ColAddress.MinimumWidth" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="ColProtocol.HeaderText" xml:space="preserve">
+    <value>Protocol</value>
+  </data>
+  <data name="ColProtocol.MinimumWidth" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="ColMsgCounter.HeaderText" xml:space="preserve">
+    <value>Message counter</value>
+  </data>
+  <data name="ColMsgCounter.MinimumWidth" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="ColLastMsg.HeaderText" xml:space="preserve">
+    <value>Last message</value>
+  </data>
+  <data name="ColLastMsg.MinimumWidth" type="System.Int32, mscorlib">
+    <value>50</value>
   </data>
   <data name="tbStatus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -638,7 +806,7 @@ Description:</value>
     <value>3, 37</value>
   </data>
   <data name="tvObjects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 306</value>
+    <value>712, 310</value>
   </data>
   <data name="tvObjects.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1019,7 +1187,7 @@ Description:</value>
     <value>312, 19</value>
   </data>
   <data name="tbUserName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 20</value>
+    <value>131, 20</value>
   </data>
   <data name="tbUserName.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1250,7 +1418,7 @@ Description:</value>
     <value>tbPassword</value>
   </data>
   <data name="&gt;&gt;tbPassword.Type" xml:space="preserve">
-    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tbPassword.Parent" xml:space="preserve">
     <value>gbV3Security</value>
@@ -1271,7 +1439,7 @@ Description:</value>
     <value>tbEncryptionKey</value>
   </data>
   <data name="&gt;&gt;tbEncryptionKey.Type" xml:space="preserve">
-    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tbEncryptionKey.Parent" xml:space="preserve">
     <value>gbV3Security</value>
@@ -1349,13 +1517,13 @@ Description:</value>
     <value>tabConfiguration</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="tabObjects.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1382,13 +1550,13 @@ Description:</value>
     <value>tabObjects</value>
   </data>
   <data name="&gt;&gt;tabObjects.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabObjects.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabObjects.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="tabDiag.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1415,7 +1583,7 @@ Description:</value>
     <value>tabDiag</value>
   </data>
   <data name="&gt;&gt;tabDiag.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabDiag.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -1427,7 +1595,7 @@ Description:</value>
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabControl, DotNetMagic2005, Version=6.1.11.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabControl, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
     <value>$this</value>

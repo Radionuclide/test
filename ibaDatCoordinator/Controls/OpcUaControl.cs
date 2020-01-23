@@ -47,6 +47,11 @@ namespace iba.Controls
             gridCtrlEndpoints.RepositoryItems.Add(item);
             colHostname.ColumnEdit = item;
 
+            // tune tbObjDescription.Height:
+            // (if screen DPI is not 100%, then one-line textBoxes and multi-line textBox can be scaled differently;
+            // we want to ensure that Description has the same height as Type+Value)
+            tbObjDescription.Height = tbObjType.Bottom - tbObjValue.Top;
+
 #if DEBUG
             buttonShowHideDebug.Visible = true;
             gbDebug.Visible = true;

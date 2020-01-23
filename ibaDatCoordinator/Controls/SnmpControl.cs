@@ -24,6 +24,11 @@ namespace iba.Controls
         public SnmpControl()
         {
             InitializeComponent();
+
+            // tune tbObjDescription.Height:
+            // (if screen DPI is not 100%, then one-line textBoxes and multi-line textBox can be scaled differently;
+            // we want to ensure that Description has the same height as Type+Value)
+            tbObjMibDescription.Height = tbObjType.Bottom - tbObjValue.Top;
         }
 
         private const int ImageIndexFolder = 0;

@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PasswordEditWithConfirmation));
             this.tbPass = new System.Windows.Forms.TextBox();
             this.btEdit = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbPass
@@ -48,15 +51,22 @@
             this.btEdit.UseVisualStyleBackColor = true;
             this.btEdit.Click += new System.EventHandler(this.btEdit_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btEdit);
+            this.panel1.Controls.Add(this.tbPass);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
+            // 
             // PasswordEditWithConfirmation
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btEdit);
-            this.Controls.Add(this.tbPass);
+            this.Controls.Add(this.panel1);
             this.Name = "PasswordEditWithConfirmation";
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -65,5 +75,6 @@
         private System.Windows.Forms.TextBox tbPass;
         private System.Windows.Forms.Button btEdit;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Panel panel1;
     }
 }

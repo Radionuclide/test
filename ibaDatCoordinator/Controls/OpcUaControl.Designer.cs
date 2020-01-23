@@ -152,6 +152,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.gbDebug = new System.Windows.Forms.GroupBox();
             this.gbStatus = new System.Windows.Forms.GroupBox();
+            this.panelSplitContainerLeft = new System.Windows.Forms.Panel();
+            this.panelSplitContainerRight = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
@@ -180,6 +182,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSessions)).BeginInit();
             this.gbDebug.SuspendLayout();
             this.gbStatus.SuspendLayout();
+            this.panelSplitContainerLeft.SuspendLayout();
+            this.panelSplitContainerRight.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainerObjectsFooter
@@ -189,16 +193,12 @@
             // 
             // splitContainerObjectsFooter.Panel1
             // 
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjType);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjType);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.labelObjValue);
-            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.tbObjValue);
+            this.splitContainerObjectsFooter.Panel1.Controls.Add(this.panelSplitContainerLeft);
             resources.ApplyResources(this.splitContainerObjectsFooter.Panel1, "splitContainerObjectsFooter.Panel1");
             // 
             // splitContainerObjectsFooter.Panel2
             // 
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.labelObjDescription);
-            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.tbObjDescription);
+            this.splitContainerObjectsFooter.Panel2.Controls.Add(this.panelSplitContainerRight);
             this.splitContainerObjectsFooter.TabStop = false;
             // 
             // labelObjType
@@ -1053,7 +1053,6 @@
             this.tabTags.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabTags.Name = "tabTags";
             this.tabTags.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabTags.Selected = false;
             this.tabTags.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabTags.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -1252,6 +1251,22 @@
             this.gbStatus.Name = "gbStatus";
             this.gbStatus.TabStop = false;
             // 
+            // panelSplitContainerLeft
+            // 
+            this.panelSplitContainerLeft.Controls.Add(this.labelObjType);
+            this.panelSplitContainerLeft.Controls.Add(this.tbObjValue);
+            this.panelSplitContainerLeft.Controls.Add(this.labelObjValue);
+            this.panelSplitContainerLeft.Controls.Add(this.tbObjType);
+            resources.ApplyResources(this.panelSplitContainerLeft, "panelSplitContainerLeft");
+            this.panelSplitContainerLeft.Name = "panelSplitContainerLeft";
+            // 
+            // panelSplitContainerRight
+            // 
+            this.panelSplitContainerRight.Controls.Add(this.labelObjDescription);
+            this.panelSplitContainerRight.Controls.Add(this.tbObjDescription);
+            resources.ApplyResources(this.panelSplitContainerRight, "panelSplitContainerRight");
+            this.panelSplitContainerRight.Name = "panelSplitContainerRight";
+            // 
             // OpcUaControl
             // 
             resources.ApplyResources(this, "$this");
@@ -1263,9 +1278,7 @@
             this.Name = "OpcUaControl";
             this.Load += new System.EventHandler(this.OpcUaControl_Load);
             this.splitContainerObjectsFooter.Panel1.ResumeLayout(false);
-            this.splitContainerObjectsFooter.Panel1.PerformLayout();
             this.splitContainerObjectsFooter.Panel2.ResumeLayout(false);
-            this.splitContainerObjectsFooter.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).EndInit();
             this.splitContainerObjectsFooter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit1)).EndInit();
@@ -1301,6 +1314,10 @@
             this.gbDebug.PerformLayout();
             this.gbStatus.ResumeLayout(false);
             this.gbStatus.PerformLayout();
+            this.panelSplitContainerLeft.ResumeLayout(false);
+            this.panelSplitContainerLeft.PerformLayout();
+            this.panelSplitContainerRight.ResumeLayout(false);
+            this.panelSplitContainerRight.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1428,5 +1445,7 @@
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.Button buttonShowHideDebug;
         private PasswordEditWithConfirmation tbPassword;
+        private System.Windows.Forms.Panel panelSplitContainerLeft;
+        private System.Windows.Forms.Panel panelSplitContainerRight;
     }
 }

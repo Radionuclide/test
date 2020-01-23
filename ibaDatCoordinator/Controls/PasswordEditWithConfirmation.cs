@@ -17,6 +17,11 @@ namespace iba.Controls
             InitializeComponent();
 
             Password = "";
+
+            // tune btEdit.Height:
+            // (if screen DPI is not 100%, then textBox and Button can be scaled differently;
+            // we want to ensure they are identical in any case)
+            btEdit.Height = tbPass.Height;
         }
 
         //public static PasswordEditWithConfirmation ReplaceControl(Control ctrl)
