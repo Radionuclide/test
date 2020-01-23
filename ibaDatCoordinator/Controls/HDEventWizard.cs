@@ -76,7 +76,6 @@ namespace iba.Client.Archiver
         }
 
         #region Signal tree
-        bool bIgnoreChecks;
         AnalyzerTreeControl signalTree;
 
         private void CreateSignalTree(AnalyzerManager analyzerManager)
@@ -98,8 +97,6 @@ namespace iba.Client.Archiver
 
         private void Tree_AfterCheck(TreeControl tc, NodeEventArgs e)
         {
-            if (bIgnoreChecks)
-                return;
 
             if (e.Node.Tag is IbaAnalyzer.ISignalTreeNode)
             {

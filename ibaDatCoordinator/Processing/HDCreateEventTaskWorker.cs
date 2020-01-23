@@ -348,7 +348,7 @@ namespace iba.Processing
                             foreach (var interval in intervals)
                             {
                                 if (generated.ContainsKey(eventData.StoreName))
-                                    generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, generated[eventData.StoreName].Items.Count - 1, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
+                                    generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, generated[eventData.StoreName].Items.Count, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
                                 else
                                     generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, 0, mon, startTime, endTime, textResults, interval.Item1, interval.Item2) });
                             }
@@ -358,7 +358,7 @@ namespace iba.Processing
                         {
                             // One event for the entire file
                             if (generated.ContainsKey(eventData.StoreName))
-                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults));
+                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, generated[eventData.StoreName].Items.Count, mon, startTime, endTime, textResults));
                             else
                                 generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, 0, mon, startTime, endTime, textResults) });
                         }

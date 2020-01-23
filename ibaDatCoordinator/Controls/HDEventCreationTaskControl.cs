@@ -158,11 +158,26 @@ namespace iba.Controls
 
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
+
+            //Check if server settings are changed
             if (m_data.EventSettings.Count > 0 && m_ctrlServer.Server != m_data.Server && m_ctrlServer.Port != m_data.ServerPort)
-                m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort,
-                    m_data.Username, m_data.Password, "");
+                m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, m_data.Username, m_data.Password, "");
             else if (m_data.EventSettings.Count == 0)
                 m_ctrlServer.LoadData("localhost", 9180, "", "", "");
+            else if (!m_ctrlServer.Reader.IsConnected())
+            {
+                // Reconnect to server in case connection is lost.
+                HdConnectResult res = m_ctrlServer.Reader.ConnectEx(m_ctrlServer.Server, m_ctrlServer.Port);
+                if (res != HdConnectResult.Connected)
+                {
+                    m_ctrlEvent.ReadOnly = true;
+                }
+            }
+
+            // Set the storeFilter to null as all dataStores should be shown
+            // This will also request edit locks on all hd event stores.
+            m_ctrlEvent.StoreFilter = null;
+
             m_pdoFilePath = m_data.AnalysisFile;
             m_tbPDO.Text = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? m_data.AnalysisFile : Path.GetFileName(m_data.AnalysisFile);
 
@@ -223,6 +238,7 @@ namespace iba.Controls
         public void LeaveCleanup()
         {
             m_ctrlServer.Reader.Disconnect();
+            m_ctrlEvent.ReleaseEditRightsServer();
             m_pulseEditor.ResetChannelTree();
             m_channelEditor.ResetChannelTree();
             m_textEditor.ResetChannelTree();
@@ -232,7 +248,7 @@ namespace iba.Controls
 
         private void SaveServerData()
         {
-            if (!m_ctrlEvent.IsReadOnly())
+            if (!m_ctrlEvent.ReadOnly)
             {
                 using (var validationForm = new HdFormValidation("save HD events"))
                 {
@@ -281,7 +297,7 @@ namespace iba.Controls
                                         || m_ctrlServer.Username != m_data.Username
                                         || m_ctrlServer.Password != m_data.Password;
 
-            if (bSaveEventSettings && !m_ctrlEvent.IsReadOnly())
+            if (bSaveEventSettings && !m_ctrlEvent.ReadOnly)
             {
                 //Fill list of events again from tree
                 List<HDCreateEventTaskData.EventData> localEvents = new List<HDCreateEventTaskData.EventData>();
