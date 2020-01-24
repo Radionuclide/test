@@ -37,8 +37,8 @@ namespace iba.Controls
                 if(m_jobType == ConfigurationData.JobTypeEnum.OneTime)
                 {
                     m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
-                    groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-                    groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                    gbNewTask.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                    gbNotifications.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                 }
                 else
                 {
@@ -66,10 +66,10 @@ namespace iba.Controls
                 lPanel.Width = m_sourcePanel.Width;
                 lPanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
                 this.AutoScrollMinSize = new Size(0, this.AutoScrollMinSize.Height + diff);
-                groupBox4.Location = new Point(groupBox4.Location.X, groupBox4.Location.Y + diff);
-                groupBox4.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-                groupBox6.Location = new Point(groupBox6.Location.X, groupBox6.Location.Y + diff);
-                groupBox6.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                gbNewTask.Location = new Point(gbNewTask.Location.X, gbNewTask.Location.Y + diff);
+                gbNewTask.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                gbNotifications.Location = new Point(gbNotifications.Location.X, gbNotifications.Location.Y + diff);
+                gbNotifications.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                 this.Controls.Add(lPanel);
             }
 
@@ -147,21 +147,21 @@ namespace iba.Controls
 
 
             //init groupBoxes
-            groupBox2.Init();
-            groupBox4.Init();
-            groupBox6.Init();
+            gbJobName.Init();
+            gbNewTask.Init();
+            gbNotifications.Init();
 
             //groupBox managers
             m_ceManager = new CollapsibleElementManager(this);
-            m_ceManager.AddElement(groupBox2);
+            m_ceManager.AddElement(gbJobName);
             if(m_panelDatFilesJob != null)
                 m_ceManager.AddSubManagerFromControl(m_panelDatFilesJob);
             else if (m_panelEventJob != null)
                 m_ceManager.AddSubManagerFromControl(m_panelEventJob);
             else
                 m_ceManager.AddSubManagerFromControl(m_panelScheduledJob);
-            m_ceManager.AddElement(groupBox4);
-            m_ceManager.AddElement(groupBox6);
+            m_ceManager.AddElement(gbNewTask);
+            m_ceManager.AddElement(gbNotifications);
 
             CueProvider.SetCue(m_tbSender,@"ibaDatCoordinator <noreply@iba-ag.com>");
         }
