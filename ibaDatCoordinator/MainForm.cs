@@ -1000,6 +1000,8 @@ namespace iba
                         msg = String.Format(iba.Properties.Resources.deleteCleanupTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is SplitterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteSplitterTaskQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is HDCreateEventTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteCreateEventTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is CustomTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion,
                         (((CustomTaskTreeItemData)(node.Tag)).DataSource as ICustomTaskData).Plugin.NameInfo,

@@ -1787,4 +1787,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="opcUaErrorNoSecurity" xml:space="preserve">
     <value>At least one security policy must be configured</value>
   </data>
+  <data name="deleteCreateEventTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the ibaHD event options "{0}" of Job "{1}" ?</value>
+  </data>
 </root>

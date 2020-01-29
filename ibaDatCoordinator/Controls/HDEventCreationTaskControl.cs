@@ -210,7 +210,7 @@ namespace iba.Controls
             Task.Factory.StartNew(() =>
             {
                 while (!channelTree.Load()) ;
-                while (!m_analyzerManager.IsOpened)
+                while (m_analyzerManager != null && !m_analyzerManager.IsOpened)
                 {
                     Thread.Sleep(500);
                 }

@@ -651,6 +651,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the ibaHD event options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteCreateEventTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteCreateEventTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the &apos;{0}&apos; options &quot;{1}&quot; of Job &quot;{2}&quot; ?.
         /// </summary>
         internal static string deleteCustomTaskQuestion {
