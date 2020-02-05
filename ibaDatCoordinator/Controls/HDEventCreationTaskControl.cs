@@ -246,7 +246,7 @@ namespace iba.Controls
             m_analyzerManager.Dispose();
         }
 
-        private void SaveServerData()
+        private void SaveServerData(List<EventConfig> changedConfigs)
         {
             if (!m_ctrlEvent.ReadOnly)
             {
@@ -259,10 +259,12 @@ namespace iba.Controls
                         if (m_data.FullEventConfig == null)
                             m_data.FullEventConfig = new Dictionary<string, string>();
                         m_data.FullEventConfig.Clear();
-                        List<string> storeNames = m_ctrlEvent.GetStoreNames();
-                        foreach (string storeName in storeNames)
-                            m_data.FullEventConfig.Add(storeName, m_ctrlEvent.SerialzeServerEvents(storeName, m_ctrlServer.Server, m_ctrlServer.Port, m_data.Guid, m_data.Name, m_data.Username, m_data.Password));
-
+                        List<string> storeNames = new List<string>();
+                        foreach (EventConfig config in changedConfigs)
+                        {
+                            m_data.FullEventConfig.Add(config.StoreName, m_ctrlEvent.SerialzeServerEvents(config.StoreName, m_ctrlServer.Server, m_ctrlServer.Port, m_data.Guid, m_data.Name, m_data.Username, m_data.Password));
+                            storeNames.Add(config.StoreName);
+                        }
 
                         HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
                         validationForm.AddRange(worker.WriteEvents(storeNames, null));
@@ -308,8 +310,8 @@ namespace iba.Controls
                     foreach (HDCreateEventTaskData.EventData data in localEvents)
                         m_data.EventSettings.Add(data);
                 }
-
-                if (m_ctrlEvent.ServerEventsChanged())
+                List<EventConfig > changedConfigs = m_ctrlEvent.ServerEventsChanged();
+                if (changedConfigs!= null && changedConfigs.Count > 0)
                 {
                     DialogResult res = MessageBox.Show(this, iba.Properties.Resources.HDEventsChanged,
                             iba.Properties.Resources.closing, MessageBoxButtons.YesNo, MessageBoxIcon.Question,
@@ -317,7 +319,7 @@ namespace iba.Controls
                     switch (res)
                     {
                         case DialogResult.Yes:
-                            SaveServerData();
+                            SaveServerData(changedConfigs);
                             break;
                         case DialogResult.No:
                             break;

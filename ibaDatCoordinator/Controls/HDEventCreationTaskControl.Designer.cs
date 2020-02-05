@@ -151,12 +151,15 @@
             // 
             this.m_ctrlEvent.AllowDrop = true;
             this.m_ctrlEvent.ApplicationName = null;
+            this.m_ctrlEvent.ChannelTree = null;
             this.m_ctrlEvent.DefaultNumericChannelValue = null;
             this.m_ctrlEvent.DefaultTextChannelValue = null;
             resources.ApplyResources(this.m_ctrlEvent, "m_ctrlEvent");
             this.m_ctrlEvent.EventTrigger = null;
+            this.m_ctrlEvent.EventWizard = null;
             this.m_ctrlEvent.Local = false;
             this.m_ctrlEvent.Name = "m_ctrlEvent";
+            this.m_ctrlEvent.ReadOnly = true;
             // 
             // gbStoreSelection
             // 

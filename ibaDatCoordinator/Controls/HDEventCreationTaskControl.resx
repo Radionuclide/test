@@ -465,6 +465,54 @@
   <data name="gbEvent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;m_ctrlEvent.Name" xml:space="preserve">
+    <value>m_ctrlEvent</value>
+  </data>
+  <data name="&gt;&gt;m_ctrlEvent.Type" xml:space="preserve">
+    <value>iba.HD.Client.FormEventConfig, hdClient, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_ctrlEvent.Parent" xml:space="preserve">
+    <value>gbEvent</value>
+  </data>
+  <data name="&gt;&gt;m_ctrlEvent.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;gbStoreSelection.Name" xml:space="preserve">
+    <value>gbStoreSelection</value>
+  </data>
+  <data name="&gt;&gt;gbStoreSelection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbStoreSelection.Parent" xml:space="preserve">
+    <value>gbEvent</value>
+  </data>
+  <data name="&gt;&gt;gbStoreSelection.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="gbEvent.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 110</value>
+  </data>
+  <data name="gbEvent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>942, 806</value>
+  </data>
+  <data name="gbEvent.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="gbEvent.Text" xml:space="preserve">
+    <value>Event configuration</value>
+  </data>
+  <data name="&gt;&gt;gbEvent.Name" xml:space="preserve">
+    <value>gbEvent</value>
+  </data>
+  <data name="&gt;&gt;gbEvent.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gbEvent.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbEvent.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_ctrlEvent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -490,18 +538,6 @@
     <value>gbEvent</value>
   </data>
   <data name="&gt;&gt;m_ctrlEvent.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_ctrlServer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_ctrlServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="m_ctrlServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>930, 64</value>
-  </data>
-  <data name="m_ctrlServer.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="&gt;&gt;m_ctrlServer.Name" xml:space="preserve">
@@ -543,32 +579,128 @@
   <data name="&gt;&gt;gbStoreSelection.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="gbEvent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 110</value>
+  <data name="m_ctrlServer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="gbEvent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>942, 806</value>
+  <data name="m_ctrlServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
   </data>
-  <data name="gbEvent.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="m_ctrlServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>930, 64</value>
   </data>
-  <data name="gbEvent.Text" xml:space="preserve">
-    <value>Event configuration</value>
+  <data name="m_ctrlServer.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;gbEvent.Name" xml:space="preserve">
-    <value>gbEvent</value>
+  <data name="&gt;&gt;m_ctrlServer.Name" xml:space="preserve">
+    <value>m_ctrlServer</value>
   </data>
-  <data name="&gt;&gt;gbEvent.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;m_ctrlServer.Type" xml:space="preserve">
+    <value>iba.HD.Client.ControlServerSelection, hdClient, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;gbEvent.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;m_ctrlServer.Parent" xml:space="preserve">
+    <value>gbStoreSelection</value>
   </data>
-  <data name="&gt;&gt;gbEvent.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_ctrlServer.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Name" xml:space="preserve">
+    <value>m_nudTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Name" xml:space="preserve">
+    <value>m_nudMemory</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Name" xml:space="preserve">
+    <value>m_cbTime</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Name" xml:space="preserve">
+    <value>m_cbMemory</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 922</value>
+  </data>
+  <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>942, 73</value>
+  </data>
+  <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_monitorGroup.Text" xml:space="preserve">
+    <value>Monitor ibaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Name" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -737,30 +869,6 @@
   </data>
   <data name="&gt;&gt;m_cbMemory.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 922</value>
-  </data>
-  <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>942, 73</value>
-  </data>
-  <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_monitorGroup.Text" xml:space="preserve">
-    <value>Monitor ibaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Name" xml:space="preserve">
-    <value>m_monitorGroup</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
