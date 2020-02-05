@@ -1083,10 +1083,10 @@ namespace iba.Data
             /// <summary> Oid 5 </summary>
             public readonly ExtMonVariable<uint> MemoryUsedForLastExecutionInMb;
 
-            /// <summary> Oid 30 </summary>
+            /// <summary> Oid 7 </summary>
             public readonly ExtMonVariable<bool> Enabled;
 
-            /// <summary> Oid 40 </summary>
+            /// <summary> Oid 8 </summary>
             public readonly ExtMonVariable<TaskData.WhenToDo> WhenToExecute;
 
             /// <summary> A Job the task belongs to </summary>
@@ -1147,13 +1147,13 @@ namespace iba.Data
                 Enabled = AddChildVariable<bool>(
                     @"Enabled", @"Enabled",
                     @"Whether or not the task is enabled",
-                    30);
+                    7);
                 //Debug.Assert(.SnmpLeastId == ); // makes no sense to assert because is OID is explicit (not SNMP_AUTO_LEAST_ID)
 
                 WhenToExecute = AddChildVariable<TaskData.WhenToDo>(
                     @"Execute condition", @"ExecuteCondition",
                     $@"Condition when the task is executed ({GetEnumTextDescription(typeof(TaskData.WhenToDo).Name)}).",
-                    40);
+                    8);
                 //Debug.Assert(.SnmpLeastId == ); // makes no sense to assert because is OID is explicit (not SNMP_AUTO_LEAST_ID)
 
                 // set default values
@@ -1292,10 +1292,14 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> DoneCount;
             /// <summary> Oid General.5 </summary>
             public readonly ExtMonVariable<uint> FailedCount;
-            
-            /// <summary> Oid General.30 (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>) </summary>
+
+            /// <summary> In General folder OIDs from 6 to BaseExtraVariablesStartNumber are reserved for JobType-specific values.
+            /// Additional common items should be added with OIDs greater than this number. </summary>
+            public const int BaseExtraVariablesStartNumber = 100;
+
+            /// <summary> Oid General.(<see cref="BaseExtraVariablesStartNumber"/>+1) (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>) </summary>
             public ExtMonVariable<int> UpTime;
-            /// <summary> Oid General.32767 (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>)</summary>
+            /// <summary> Oid General.(<see cref="BaseExtraVariablesStartNumber"/>+2) (is added using <see cref="AddBaseExtraVariablesToTheEnd"/>)</summary>
             public ExtMonVariable<int> Lifebeat;
 
             protected JobInfoBase(ExtMonFolder parent, uint snmpLeastId, string jobName) 
@@ -1352,22 +1356,22 @@ namespace iba.Data
                 PrivateReset();
             }
 
-            /// <summary>
-            /// Adds variables that are common for all job types but are located at the end of the list
-            /// (after child-specialized variables).
-            /// </summary>
+            /// <summary> Adds variables that are common for all job types but are located at the end of the list
+            /// (after jobType-specific variables).
+            /// Numbering of this part starts with <see cref="BaseExtraVariablesStartNumber"/>
+            /// to reserve some OID space for jobType-specific variables. </summary>
             protected void AddBaseExtraVariablesToTheEnd()
             {
                 UpTime = FolderGeneral.AddChildVariable<int>(
                     @"Up time", @"UpTime",
                     @"Time in seconds elapsed since the job start" +
                     @" (-1 if the job is stopped or disabled).",
-                    30); 
+                    BaseExtraVariablesStartNumber + 1); 
                 Lifebeat = FolderGeneral.AddChildVariable<int>(
                     @"Lifebeat", @"Lifebeat",
                     @"A special value that should be continuously changing, " +
                     @"indicating that is everything is ok with connection, processing, etc.",
-                    32767 /*put it to the end, reserving place for other values*/);
+                    BaseExtraVariablesStartNumber + 2);
             }
 
             /// <summary> Resets everything except tasks </summary>
@@ -1641,7 +1645,7 @@ namespace iba.Data
                         @"Timestamp last execution", @"TimestampLastExecution",
                         @"Time when the last execution was started. " +
                         @"If job was never executed, then value is '01.01.0001 0:00:00'.",
-                        SNMP_AUTO_LEAST_ID);
+                SNMP_AUTO_LEAST_ID);
                 Debug.Assert(TimestampLastExecution.SnmpLeastId == 6); // ensure id has an expected value
 
                 AddBaseExtraVariablesToTheEnd();
