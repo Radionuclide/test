@@ -486,6 +486,8 @@ namespace iba.Controls
             }
         }
 
+        public Control TreeControl { get { return tree; } }
+
         public void Reset()
         {
             int prevState = Interlocked.Exchange(ref iState, Unloading);

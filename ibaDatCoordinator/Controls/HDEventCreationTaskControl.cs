@@ -73,6 +73,7 @@ namespace iba.Controls
             m_ctrlEvent.SetTextChannelEditor(m_textEditor, m_textEditor.ChannelTree);
             channelTree = new AnalyzerTreeControl(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Text);
             m_ctrlEvent.ChannelTree = channelTree;
+            m_ctrlEvent.SetChannelTreeCtrl(channelTree);
 
             m_toolTip.SetToolTip(m_btnOpenPDO, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
             m_toolTip.SetToolTip(m_btnUploadPDO, Properties.Resources.HDEventTask_ToolTip_UploadPDO);
