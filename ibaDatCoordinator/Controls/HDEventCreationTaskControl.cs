@@ -82,6 +82,10 @@ namespace iba.Controls
             m_ctrlEvent.EventTrigger = triggerControl;
             m_ctrlServer.ServerSelectionChanged += (s, e) => 
             {
+                if (m_ctrlServer.Reader.IsConnected())
+                    m_ctrlEvent.ReadOnly = false;
+                else
+                    m_ctrlEvent.ReadOnly = true;
                 if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
                 {
                     if (m_ctrlServer.Reader.UserManager.IsActive() && user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
@@ -170,9 +174,9 @@ namespace iba.Controls
                 // Reconnect to server in case connection is lost.
                 HdConnectResult res = m_ctrlServer.Reader.ConnectEx(m_ctrlServer.Server, m_ctrlServer.Port);
                 if (res != HdConnectResult.Connected)
-                {
                     m_ctrlEvent.ReadOnly = true;
-                }
+                else
+                    m_ctrlEvent.ReadOnly = false;
             }
 
             // Set the storeFilter to null as all dataStores should be shown
