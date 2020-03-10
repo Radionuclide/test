@@ -648,7 +648,10 @@ namespace iba.Controls
             ClearNodes();
             string error = "";
             if (task != null && (task.IsFaulted || !string.IsNullOrEmpty(task.Result)))
+            {
                 error = task.Exception?.Message ?? task.Result ?? Properties.Resources.AnalyzerTree_UnknownError;
+                tree.ImageList = imageList;
+            }
             else
             {
                 try
