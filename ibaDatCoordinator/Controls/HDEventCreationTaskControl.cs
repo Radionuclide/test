@@ -126,15 +126,6 @@ namespace iba.Controls
                     m_pulseEditor = null;
                 }
 
-                if (m_channelEditor != null)
-                {
-                    if (m_ctrlEvent != null)
-                        m_ctrlEvent.SetNumericChannelEditor(null, null);
-
-                    m_channelEditor.Dispose();
-                    m_channelEditor = null;
-                }
-
                 if (m_textEditor != null)
                 {
                     if (m_ctrlEvent != null)
@@ -150,6 +141,29 @@ namespace iba.Controls
                     m_analyzerManager = null;
                 }
 
+                if (channelTree != null)
+                {
+                    m_ctrlEvent.SetChannelTreeCtrl(null);
+                    channelTree.Dispose();
+                    channelTree = null;
+                }
+                if (numericTree != null)
+                {
+                    m_ctrlEvent.SetChannelTreeCtrl(null);
+                    numericTree.Invalidated -= ChannelEditorModified;
+                    numericTree.Dispose();
+                    numericTree = null;
+                }
+
+                if (m_channelEditor != null)
+                {
+                    if (m_ctrlEvent != null)
+                        m_ctrlEvent.SetNumericChannelEditor(null, null);
+
+                    m_channelEditor.Dispose();
+                    m_channelEditor = null;
+                }
+
                 components?.Dispose();
             }
             base.Dispose(disposing);
@@ -157,6 +171,22 @@ namespace iba.Controls
         #endregion
 
         #region IPropertyPane
+        private void loadAnalyzerTreeDataTask()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                while (channelTree != null && !channelTree.Load()) ;
+                while (m_analyzerManager != null && !m_analyzerManager.IsOpened)
+                {
+                    Thread.Sleep(500);
+                }
+                while (numericTree != null && !numericTree.Load()) ;
+                while (m_pulseEditor != null && !m_pulseEditor.ChannelTree.Load()) ;
+                while (m_textEditor != null && !m_textEditor.ChannelTree.Load()) ;
+            });
+        }
+
+
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal;
@@ -212,17 +242,7 @@ namespace iba.Controls
 
 
             LoadLocalData(m_data);
-            Task.Factory.StartNew(() =>
-            {
-                while (!channelTree.Load()) ;
-                while (m_analyzerManager != null && !m_analyzerManager.IsOpened)
-                {
-                    Thread.Sleep(500);
-                }
-                while (!numericTree.Load()) ;
-                while (!m_pulseEditor.ChannelTree.Load()) ;
-                while (!m_textEditor.ChannelTree.Load()) ;
-            });
+            loadAnalyzerTreeDataTask();
         }
 
         private void LoadLocalData(HDCreateEventTaskData data)
@@ -437,10 +457,8 @@ namespace iba.Controls
 
             m_tbDAT.Text = m_datFilePath;
             UpdateSources();
-            while (!channelTree.Load()) ;
-            while (!m_textEditor.ChannelTree.Load()) ;
-            while (!m_channelEditor.ChannelTree.Load()) ;
-            while (!m_pulseEditor.ChannelTree.Load()) ;
+
+            loadAnalyzerTreeDataTask();
 
         }
 
@@ -599,10 +617,7 @@ namespace iba.Controls
                 m_pdoFilePath = path;
                 m_tbPDO.Text = bLocal ? path : Path.GetFileName(path);
                 UpdateSources();
-                while (!channelTree.Load());
-                while (!m_textEditor.ChannelTree.Load());
-                while (!m_channelEditor.ChannelTree.Load());
-                while (!m_pulseEditor.ChannelTree.Load()) ;
+                loadAnalyzerTreeDataTask();
             }
         }
 
