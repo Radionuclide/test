@@ -32,6 +32,7 @@ namespace iba.DatCoordinator.Status
         public StatusForm()
         {
             InitializeComponent();
+			WindowState = FormWindowState.Minimized; //DO NOT set this in resources, gives issues with localization.
             m_quitForm = new QuitForm(this, "ibaDatCoordinatorStatusCloseForm", true);
             m_quitForm.CreateHandle(new CreateParams());
 
@@ -598,6 +599,7 @@ namespace iba.DatCoordinator.Status
         }
 
         private bool updatingAutoStart;
+		
         private void m_cbAutoStart_CheckedChanged(object sender, EventArgs e)
         {
             ServiceControllerEx service = new ServiceControllerEx("ibaDatCoordinatorService");
@@ -637,34 +639,7 @@ namespace iba.DatCoordinator.Status
             updatingAutoStart = false;
         }
 
-        //private void m_registerButton_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
-        //        procInfo.UseShellExecute = true;
-        //        procInfo.ErrorDialog = true;
-
-        //        procInfo.FileName = m_tbAnalyzerExe.Text;
-
-        //        procInfo.Arguments = "/register";
-        //        procInfo.Verb = "runas";
-
-        //        try
-        //        {
-        //            System.Diagnostics.Process.Start(procInfo);
-        //        }
-        //        catch
-        //        {
-        //            MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
-
+        
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
             try

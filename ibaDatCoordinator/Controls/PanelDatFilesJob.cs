@@ -218,7 +218,7 @@ namespace iba.Controls
                 fd.FixedDrivesOnly = false;
                 fd.ShowFiles = false;
                 fd.Filter = ".dat files (*.dat)|*.dat";
-                if (!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text))
+                if (!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text)  && System.IO.Directory.Exists(m_datDirTextBox.Text))
                     fd.SelectedPath = m_datDirTextBox.Text;
                 else
                 {
@@ -476,9 +476,10 @@ namespace iba.Controls
             m_selectDatFilesDialog.Filter = ".dat files (*.dat)|*.dat";
             bool oneTime = m_data.JobType == ConfigurationData.JobTypeEnum.OneTime;
             m_selectDatFilesDialog.Multiselect = oneTime;
-            if (!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text) && Directory.Exists(m_datDirTextBox.Text))
-                m_selectDatFilesDialog.InitialDirectory = m_datDirTextBox.Text;
-            if (m_selectDatFilesDialog.ShowDialog() == DialogResult.OK)
+			if (!oneTime && !String.IsNullOrEmpty(m_datDirTextBox.Text) && Directory.Exists(m_datDirTextBox.Text))
+				m_selectDatFilesDialog.InitialDirectory = m_datDirTextBox.Text;
+
+			if (m_selectDatFilesDialog.ShowDialog() == DialogResult.OK)
             {
                 if (oneTime)
                 {

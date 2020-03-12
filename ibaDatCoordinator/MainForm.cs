@@ -3188,7 +3188,7 @@ namespace iba
                 helpProvider.HelpNamespace = helpFile;
                 helpProvider.SetShowHelp(this, true);
                 helpProvider.SetHelpNavigator(this, HelpNavigator.Topic);
-                helpProvider.SetHelpKeyword(this, "14989.htm");
+                helpProvider.SetHelpKeyword(this, "d9e4.html");
 
                 //helpProvider.SetShowHelp(recorderContainer, true);
                 //helpProvider.SetHelpNavigator(recorderContainer, HelpNavigator.Topic);

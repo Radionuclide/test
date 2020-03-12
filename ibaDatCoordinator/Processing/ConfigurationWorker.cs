@@ -2151,15 +2151,9 @@ namespace iba.Processing
                     ibaDatFile.OpenForUpdate(filename, m_cd.FileEncryptionPassword);
 
                     String frames = null;
-                    try
-                    {
+					if (ibaDatFile.InfoFields.ContainsKey("frames"))
                         frames = ibaDatFile.InfoFields["frames"];
-                    }
-                    catch
-                    {
-                    }
-                    //modification: do not consider an emtpy frames field as 'still busy', in QDR 1 files it could mean they are simply missing.
-                    if (/*String.IsNullOrEmpty(frames)*/ frames == null || frames == "1000000000")
+                    if (frames != null && frames == "1000000000") //missing "frames is allowed, being 1e9 is not...
                     {
                         try { 
                             ibaDatFile.Close();
@@ -2375,22 +2369,10 @@ namespace iba.Processing
                 string frames = null;
                 IbaFileReader ibaDatFile = new IbaFileReader();
                 ibaDatFile.Open(filename, m_cd.FileEncryptionPassword);
-                try
-                {
-                    frames = ibaDatFile.InfoFields["frames"];
-                }
-                catch 
-                {
-                }
-                finally
-                {
-                    ibaDatFile.Close();
-                    ibaDatFile.Dispose();
-                }
-
-                //modification: do not consider an emtpy frames field as 'still busy', in QDR 1 files it could mean they are simply missing.
-                if (/*String.IsNullOrEmpty(frames)*/ frames == null || frames == "1000000000")
-                {
+				if (ibaDatFile.InfoFields.ContainsKey("frames"))
+					frames = ibaDatFile.InfoFields["frames"];
+				if (frames != null && frames == "1000000000") //missing "frames is allowed, being 1e9 is not...
+				{
                     Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess3, filename);
                     return DatFileStatus.State.NO_ACCESS;
                 }
@@ -3083,7 +3065,6 @@ namespace iba.Processing
         }
 
 
-
         internal bool RestartIbaAnalyzerAndOpenDatFile(string datfile)
         {
             RestartIbaAnalyzer();
@@ -3409,27 +3390,24 @@ namespace iba.Processing
 						{
 							outputfile = "";
 						}
-						else
-						{
-							if (String.IsNullOrEmpty(outputfile))
-							{ //try expression
-								outputfile = EvaluateTextExpression(task.InfoFieldForOutputFile);
-							}
-							if (task.InfoFieldForOutputFileLength == 0)
-							{
-								if (task.InfoFieldForOutputFileStart != 0)
-								{
-									outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
-								}
-							}
-							else
-								outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
-							if (task.InfoFieldForOutputFileRemoveBlanksAll)
-								outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
-							else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
-								outputfile = outputfile.TrimEnd(null);
-							outputfile = CPathCleaner.CleanFile(outputfile);
+						if (String.IsNullOrEmpty(outputfile))
+						{ //try expression
+							outputfile = EvaluateTextExpression(task.InfoFieldForOutputFile);
 						}
+						if (task.InfoFieldForOutputFileLength == 0)
+						{
+							if (task.InfoFieldForOutputFileStart != 0)
+							{
+								outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
+							}
+						}
+						else
+							outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+						if (task.InfoFieldForOutputFileRemoveBlanksAll)
+							outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
+						else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
+							outputfile = outputfile.TrimEnd(null);
+						outputfile = CPathCleaner.CleanFile(outputfile);
                     }
                     catch
                     {
