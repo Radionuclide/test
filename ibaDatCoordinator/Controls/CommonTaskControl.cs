@@ -41,6 +41,11 @@ namespace iba.Controls
         private CollapsibleElementManager m_ceManager;
 
 
+        protected override System.Drawing.Point ScrollToControl(Control activeControl)
+        {
+            return AutoScrollPosition;
+        }
+
         private void m_nameTextBox_TextChanged(object sender, EventArgs e)
         {
             TreeNode node = m_manager.LeftTree.SelectedNode;

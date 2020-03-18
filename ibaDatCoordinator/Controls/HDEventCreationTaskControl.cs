@@ -20,8 +20,6 @@ namespace iba.Controls
 {
     public partial class HDEventCreationTaskControl : UserControl, IPropertyPane
     {
-        
-
         #region Members
         HDCreateEventTaskData m_data;
         IPropertyPaneManager m_manager;
