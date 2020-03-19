@@ -283,7 +283,7 @@ namespace iba.Processing
 
                             if (textField.Item2 == HDCreateEventTaskData.CurrentFileExpression)
                             {
-                                textResults[textField.Item1] = Tuple.Create(new List<string>(1) { Path.GetFileName(m_dataFile) }, new List<double>(1) { 0.0 });
+                                textResults[textField.Item1] = Tuple.Create(new List<string>(1) { Path.GetFullPath(m_dataFile) }, new List<double>(1) { 0.0 });
                                 continue;
                             }
 
