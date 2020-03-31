@@ -717,6 +717,11 @@
             Identifies a store on a server
             </summary>
         </member>
+        <member name="T:iba.HD.Common.HdStoreConnection">
+            <summary>
+            Identifies a store on a server
+            </summary>
+        </member>
         <member name="T:iba.HD.Common.IHdBrowseContract">
             <summary>
             Allows server file system browsing

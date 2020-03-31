@@ -1086,20 +1086,6 @@
             <param name="incServerName">include server part</param>
             <param name="incStoreName">include store part</param>
         </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdReader.GetID(iba.HD.Common.EventWriterSignal)">
-            <summary>
-            Convert the IDString to a long
-            </summary>
-            <param name="signal">The signal the ID belongs to</param>
-            <returns></returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdReader.GetIDString(System.Int64)">
-            <summary>
-            Convert the ID to the correct string format
-            </summary>
-            <param name="id">The ID to convert</param>
-            <returns></returns>
-        </member>
         <member name="M:iba.HD.Client.Interfaces.IHdReader.GetSegmentFirst(iba.HD.Common.HdSegmentRequest)">
             <summary>
             Gets first signal segment. Null if not found.
