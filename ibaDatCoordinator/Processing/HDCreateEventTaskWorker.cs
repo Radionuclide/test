@@ -40,7 +40,7 @@ namespace iba.Processing
                 if (Path.GetExtension(filename)?.ToLower() == ".hdq")
                 {
                     IniParser parser = new IniParser(filename);
-                    if (parser.Read() && parser.Sections.ContainsKey("HDQ file"))
+                    if (parser.Read() && !parser.Sections.ContainsKey("HDQ file"))
                         return false;
 
                     string strStart = "";
