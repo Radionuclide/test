@@ -193,13 +193,15 @@ namespace iba.Controls
             m_data = datasource as HDCreateEventTaskData;
 
             //Check if server settings are changed
-            if (m_data.EventSettings.Count > 0 && m_ctrlServer.Server != m_data.Server && m_ctrlServer.Port != m_data.ServerPort)
+            if (m_data.EventSettings.Count > 0 && (m_ctrlServer.Server != m_data.Server || m_ctrlServer.Port != m_data.ServerPort))
                 m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, m_data.Username, m_data.Password, "");
             else if (m_data.EventSettings.Count == 0)
                 m_ctrlServer.LoadData("localhost", 9180, "", "", "");
             else if (!m_ctrlServer.Reader.IsConnected())
             {
                 // Reconnect to server in case connection is lost.
+                m_ctrlServer.Reader.UserLoginInfo.UserName = m_data.Username;
+                m_ctrlServer.Reader.UserLoginInfo.Password = m_data.Password;
                 HdConnectResult res = m_ctrlServer.Reader.ConnectEx(m_ctrlServer.Server, m_ctrlServer.Port);
                 if (res != HdConnectResult.Connected)
                     m_ctrlEvent.ReadOnly = true;
