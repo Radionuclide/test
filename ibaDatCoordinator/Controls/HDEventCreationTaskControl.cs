@@ -196,7 +196,7 @@ namespace iba.Controls
             if (m_data.EventSettings.Count > 0 && (m_ctrlServer.Server != m_data.Server || m_ctrlServer.Port != m_data.ServerPort))
                 m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, m_data.Username, m_data.Password, "");
             else if (m_data.EventSettings.Count == 0)
-                m_ctrlServer.LoadData("localhost", 9180, "", "", "");
+                m_ctrlServer.LoadData("", 9180, "", "", "");
             else if (!m_ctrlServer.Reader.IsConnected())
             {
                 // Reconnect to server in case connection is lost.
