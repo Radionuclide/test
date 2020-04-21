@@ -284,6 +284,21 @@ namespace iba.Processing
                             if (textField.Item2 == HDCreateEventTaskData.CurrentFileExpression)
                             {
                                 textResults[textField.Item1] = Tuple.Create(new List<string>(1) { Path.GetFullPath(m_dataFile) }, new List<double>(1) { 0.0 });
+                                if (Path.GetExtension(m_dataFile)?.ToLower() == ".hdq")
+                                {
+                                    IniParser parser = new IniParser(m_dataFile);
+                                    if (parser.Read() && !parser.Sections.ContainsKey("HDQ file"))
+                                        continue;
+
+                                    string server = "";
+                                    if (!parser.Sections["HDQ file"].TryGetValue("server", out server))
+                                        continue;
+
+                                    string port = "";
+                                    if (!parser.Sections["HDQ file"].TryGetValue("portnumber", out port))
+                                        continue;
+                                    textResults[textField.Item1] = Tuple.Create(new List<string>(1) { $"{server}:{port}/{eventData.StoreName}" }, new List<double>(1) { 0.0 });
+                                }
                                 continue;
                             }
 

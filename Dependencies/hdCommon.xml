@@ -176,7 +176,7 @@
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderComputedValue">
             <summary>
-              Looks up a localized string similar to Read event based store computed value data.
+              Looks up a localized string similar to Read computed value data from event based store.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderDiagnostic">
@@ -266,7 +266,7 @@
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterComputedValue">
             <summary>
-              Looks up a localized string similar to Write event based store computed value data.
+              Looks up a localized string similar to Write computed value data to event based store.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEvent">
@@ -719,7 +719,7 @@
         </member>
         <member name="T:iba.HD.Common.HdStoreConnection">
             <summary>
-            Identifies a store on a server
+            Identifies a store on a server including username and password.
             </summary>
         </member>
         <member name="T:iba.HD.Common.IHdBrowseContract">
