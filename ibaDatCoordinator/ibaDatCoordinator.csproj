@@ -878,6 +878,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"
+mkdir "$(TargetDir)Plugins"
 move "$(TargetDir)hd_plugin.dll" "$(TargetDir)Plugins"
 copy "$(SolutionDir)Dependencies\PowerCollections.dll" "$(TargetDir)"
 copy "$(SolutionDir)Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" "$(TargetDir)"
