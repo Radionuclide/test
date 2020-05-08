@@ -4698,7 +4698,7 @@ namespace iba.Processing
             // Write events
             try
             {
-                worker.WriteEvents(GetTaskStoreNames(task), eventData);
+                worker.WriteEvents(GetTaskStoreNames(task), eventData, HdValidationMessage.Ignore);
 
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                 Log(Logging.Level.Info, iba.Properties.Resources.logHDEventTaskSuccess, filename, task);

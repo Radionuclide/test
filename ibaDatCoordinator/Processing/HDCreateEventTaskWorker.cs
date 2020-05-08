@@ -406,7 +406,7 @@ namespace iba.Processing
             }
         }
 
-        public IEnumerable<HdValidationMessage> WriteEvents(IEnumerable<string> storeNames, Dictionary<string,EventWriterData> eventData)
+        public IEnumerable<HdValidationMessage> WriteEvents(IEnumerable<string> storeNames, Dictionary<string,EventWriterData> eventData, HdValidatorMulti validator)
         {
             IHdWriterManager writerManager = null;
             IHdWriterSummary summary = null;
@@ -420,13 +420,13 @@ namespace iba.Processing
                 {
                     writerManager.StartConfig();
 
-                    summary = writerManager.SetConfig(cfg, null, HdValidationMessage.Ignore);
+                    summary = writerManager.SetConfig(cfg, null, validator);
                     while (summary.Result == WriterConfigResult.Conflict)
                     {
                         foreach (var cflt in summary.Conflicts)
                             cflt.Solution = HdWriterSolution.Append;
 
-                        summary = writerManager.SetConfig(cfg, summary, HdValidationMessage.Ignore);
+                        summary = writerManager.SetConfig(cfg, summary, validator);
                     }
 
                     writerManager.EndConfig();
@@ -446,7 +446,7 @@ namespace iba.Processing
                     }
 
                     writerManager.StartCreate();
-                    IHdWriter writer = writerManager.CreateWriter(summary, true, HdValidationMessage.Ignore);
+                    IHdWriter writer = writerManager.CreateWriter(summary, true, validator);
                     writerManager.EndCreate();
 
                     if (eventData != null && eventData.ContainsKey(cfg.StoreId.StoreName))

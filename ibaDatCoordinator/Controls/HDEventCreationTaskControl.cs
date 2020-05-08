@@ -209,9 +209,12 @@ namespace iba.Controls
                     m_ctrlEvent.ReadOnly = false;
             }
 
-            // Set the storeFilter to null as all dataStores should be shown
-            // This will also request edit locks on all hd event stores.
-            m_ctrlEvent.StoreFilter = null;
+            if (m_data.FullEventConfig?.Count > 0 && MessageBox.Show(this, iba.Properties.Resources.ReloadHdEvents,
+                            iba.Properties.Resources.ReloadHdEventsCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                            MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), m_data.FullEventConfig.Values, m_ctrlEvent.ReadOnly);
+            else
+                m_ctrlEvent.StoreFilter = null;      // Set the storeFilter to null as all dataStores should be shown. This will also request edit locks on all hd event stores.
 
             m_pdoFilePath = m_data.AnalysisFile;
             m_tbPDO.Text = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? m_data.AnalysisFile : Path.GetFileName(m_data.AnalysisFile);
@@ -271,8 +274,9 @@ namespace iba.Controls
             m_analyzerManager.Dispose();
         }
 
-        private void SaveServerData(List<EventConfig> changedConfigs)
+        private bool SaveServerData(List<EventConfig> changedConfigs)
         {
+            bool saveSuccessfull = true;
             if (!m_ctrlEvent.ReadOnly)
             {
                 using (var validationForm = new HdFormValidation("save HD events"))
@@ -292,17 +296,24 @@ namespace iba.Controls
                         }
 
                         HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
-                        validationForm.AddRange(worker.WriteEvents(storeNames, null));
+                        worker.WriteEvents(storeNames, null, validationForm.AddRange);
+
+                    }
+                    catch (HDCreateEventException ex)
+                    {
+                        saveSuccessfull = false;
                     }
                     catch (Exception ex)
                     {
                         validationForm.Add(new HdValidationMessage(HdValidationType.Error, ex.Message));
+                        saveSuccessfull = false;
                     }
 
                     validationForm.Start((f) => { }); //Start with dummy to enable OK
                     validationForm.ShowDialog(this);
                 }
             }
+            return saveSuccessfull;
         }
 
         public void SaveData()
@@ -344,7 +355,19 @@ namespace iba.Controls
                     switch (res)
                     {
                         case DialogResult.Yes:
-                            SaveServerData(changedConfigs);
+                            if (SaveServerData(changedConfigs))
+                            {
+                                m_data.FullEventConfig.Clear();
+                            }
+                            else
+                            {
+                                var storeNames = m_ctrlEvent.GetStoreNames();
+                                m_data.FullEventConfig.Clear();
+                                foreach (string storeName in storeNames)
+                                {
+                                    m_data.FullEventConfig[storeName] = m_ctrlEvent.SerialzeServerEvents(storeName, m_data.Server, m_data.ServerPort, m_data.Guid, m_data.Name, m_data.Username, m_data.Password);
+                                }
+                            }
                             break;
                         case DialogResult.No:
                             break;
@@ -557,7 +580,7 @@ namespace iba.Controls
                 HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
                 Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, null);
 
-                worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData);
+                worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData, HdValidationMessage.Ignore);
 
                 Cursor = Cursors.Default;
                 MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
