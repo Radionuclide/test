@@ -1791,7 +1791,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Are you sure you want to delete the ibaHD event options "{0}" of Job "{1}" ?</value>
   </data>
   <data name="ReloadHdEvents" xml:space="preserve">
-    <value>The previous save to the ibaHD server of this task failed. Do you wish to reuse this ibaHD configuration? Reusing the previous configuration could result in overwriting changes made in other clients or tasks. Select No to use the latest version from the ibaHD server.</value>
+    <value>The previous save to the ibaHD server of this task failed. Do you wish to reuse this ibaHD configuration? Reusing the previous configuration could result in overwriting changes made in other clients or tasks. Select "No" to use the latest version from the ibaHD server.</value>
   </data>
   <data name="ReloadHdEventsCaption" xml:space="preserve">
     <value>Reload ibaHD events</value>

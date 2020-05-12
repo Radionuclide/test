@@ -3851,7 +3851,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The previous save to the ibaHD server of this task failed. Do you wish to reuse this ibaHD configuration? Reusing the previous configuration could result in overwriting changes made in other clients or tasks. Select No to use the latest version from the ibaHD server..
+        ///   Looks up a localized string similar to The previous save to the ibaHD server of this task failed. Do you wish to reuse this ibaHD configuration? Reusing the previous configuration could result in overwriting changes made in other clients or tasks. Select &quot;No&quot; to use the latest version from the ibaHD server..
         /// </summary>
         internal static string ReloadHdEvents {
             get {
