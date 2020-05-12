@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace iba.Processing
@@ -212,6 +213,7 @@ namespace iba.Processing
         {
             m_ibaAnalyzer = ibaAnalyzer;
             m_dataFile = dataFile;
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
             Version versionIbaAnalyzer = null;
             string ibaAnalyzerExe = "";
