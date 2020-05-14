@@ -271,10 +271,15 @@ namespace iba.Processing
                     Dictionary<string, Tuple<List<string>, List<double>>> textResults = new Dictionary<string, Tuple<List<string>, List<double>>>();
                     List<EventWriterItem> events = new List<EventWriterItem>();
                     Dictionary<string, EventWriterData> generated = new Dictionary<string, EventWriterData>();
+                    Dictionary<string, int> eventIndex = new Dictionary<string, int>();
                     for (int j = 0; j < m_data.EventSettings.Count; j++)
                     //foreach (var eventData in m_data.EventSettings)
                     {
                         var eventData = m_data.EventSettings[j];
+                        if (eventIndex.ContainsKey(eventData.StoreName))
+                            eventIndex[eventData.StoreName]++;
+                        else
+                            eventIndex[eventData.StoreName] = 0;
                         foreach (var textField in eventData.TextFields)
                         {
                             if (string.IsNullOrWhiteSpace(textField.Item2) || textField.Item2 == HDCreateEventTaskData.UnassignedExpression)
@@ -365,9 +370,9 @@ namespace iba.Processing
                             foreach (var interval in intervals)
                             {
                                 if (generated.ContainsKey(eventData.StoreName))
-                                    generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
+                                    generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
                                 else
-                                    generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2) });
+                                    generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, interval.Item1, interval.Item2) });
                             }
                                 //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
                         }
@@ -375,9 +380,9 @@ namespace iba.Processing
                         {
                             // One event for the entire file
                             if (generated.ContainsKey(eventData.StoreName))
-                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults));
+                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults));
                             else
-                                generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, j, mon, startTime, endTime, textResults) });
+                                generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults) });
                         }
                             //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults)); // One event for the entire file
                     }
