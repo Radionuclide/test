@@ -91,6 +91,7 @@ namespace iba.Controls
 
         public void TriggerChanged(object sender, EventArgs eventArgs)
         {
+            TriggerBySignal = true;
             RaisePropertyChanged("Trigger");
         }
 
@@ -165,6 +166,7 @@ namespace iba.Controls
         {
             GrPulse.RepositoryItems.Add(channelEditor);
             ColPulse.ColumnEdit = channelEditor;
+            channelEditor.EditValueChanged += TriggerChanged;
             GrPulse.DataSourceChanged += TriggerChanged;
 
             if (signalDragDropHandler != null)
