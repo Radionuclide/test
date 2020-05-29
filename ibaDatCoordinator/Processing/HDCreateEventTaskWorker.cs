@@ -137,17 +137,33 @@ namespace iba.Processing
             for (int i = 0; i < blobs.Length; i++)
                 blobs[i] = null; //Not supported at the moment
 
+            long stamp = 0;
+
+            if (eventData.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerFile)
+            {
+                if (eventData.TimeSignal == HDCreateEventTaskData.StartTime)
+                {
+                    stamp = startTime.Ticks;
+                }
+                else
+                {
+                    stamp = stopTime.Ticks;
+                }
+            }
+            else
+            {
+                if (double.IsNaN(from))
+                    stamp = stopTime.Ticks;
+                else
+                    stamp = startTime.AddTicks(TimeSpan.FromSeconds(to).Ticks).Ticks;
+            }
+
             long duration = 0;
             if (bUseRange)
                 duration = TimeSpan.FromSeconds(to - from).Ticks;
             else if (double.IsNaN(from))
-                duration = (stopTime - startTime).Ticks;
+                duration = stamp - startTime.Ticks;
 
-            long stamp = 0;
-            if (double.IsNaN(from))
-                stamp = stopTime.Ticks;
-            else
-                stamp = startTime.AddTicks(TimeSpan.FromSeconds(to).Ticks).Ticks;
             return new EventWriterItem(index, stamp, duration, true, false, floats, texts, blobs);
         }
 
@@ -157,7 +173,7 @@ namespace iba.Processing
             List<SlimEventWriterSignal> writerSignalConfigs = new List<SlimEventWriterSignal>();
             foreach (var eventData in task.EventSettings)
             {
-                if (eventData.StoreName == store)
+                if (eventData.StoreName == store && eventData.Active)
                 {
                     SlimEventWriterSignal signal = new SlimEventWriterSignal(eventData.ID, eventData.Name);
 
@@ -273,9 +289,13 @@ namespace iba.Processing
                     Dictionary<string, EventWriterData> generated = new Dictionary<string, EventWriterData>();
                     Dictionary<string, int> eventIndex = new Dictionary<string, int>();
                     for (int j = 0; j < m_data.EventSettings.Count; j++)
-                    //foreach (var eventData in m_data.EventSettings)
                     {
                         var eventData = m_data.EventSettings[j];
+
+                        // Skip inactive events
+                        if (!eventData.Active)
+                            continue;
+
                         if (eventIndex.ContainsKey(eventData.StoreName))
                             eventIndex[eventData.StoreName]++;
                         else

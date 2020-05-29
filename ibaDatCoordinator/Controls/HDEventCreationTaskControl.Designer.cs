@@ -31,7 +31,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.gbEvent = new iba.Utility.CollapsibleGroupBox();
-            this.m_ctrlEvent = new iba.HD.Client.FormEventConfig();
+            this.m_ctrlEvent = new iba.HD.Client.ControlEventConfig();
             this.gbStoreSelection = new System.Windows.Forms.GroupBox();
             this.m_ctrlServer = new iba.HD.Client.ControlServerSelection();
             this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
@@ -293,7 +293,7 @@
         private System.Windows.Forms.Button m_btnUploadPDO;
         private System.Windows.Forms.Button m_btnTest;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private HD.Client.FormEventConfig m_ctrlEvent;
+        private HD.Client.ControlEventConfig m_ctrlEvent;
         private HD.Client.ControlServerSelection m_ctrlServer;
     }
 }

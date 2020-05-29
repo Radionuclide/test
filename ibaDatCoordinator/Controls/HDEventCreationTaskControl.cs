@@ -25,7 +25,7 @@ namespace iba.Controls
         IPropertyPaneManager m_manager;
 
         AnalyzerManager m_analyzerManager;
-        RepositoryItemChannelTreeEdit m_pulseEditor, m_channelEditor, m_textEditor;
+        RepositoryItemChannelTreeEdit m_pulseEditor, m_timeEditor, m_channelEditor, m_textEditor;
         TriggerControl triggerControl;
 
         string m_pdoFilePath, m_datFilePath;
@@ -46,6 +46,10 @@ namespace iba.Controls
             m_pulseEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital);
             m_pulseEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
 
+            m_timeEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Text);
+            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.EndTime, Properties.Resources.EndTime, Properties.Resources.img_computed_values);
+            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Properties.Resources.img_computed_values);
+
             m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog);
             numericTree = m_channelEditor.ChannelTree;
             m_channelEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
@@ -55,12 +59,13 @@ namespace iba.Controls
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.CurrentFileExpression, Properties.Resources.HDEventTask_ChannelProcessedFile, Properties.Resources.img_file);
 
             m_pulseEditor.ChannelTree.Invalidated += ChannelEditorModified;
+            m_timeEditor.ChannelTree.Invalidated += ChannelEditorModified;
             numericTree.Invalidated += ChannelEditorModified;
             m_textEditor.ChannelTree.Invalidated += ChannelEditorModified;
 
-
             triggerControl = new TriggerControl();
-            triggerControl.SetChannelEditor(m_pulseEditor, m_pulseEditor.ChannelTree);
+            triggerControl.SetPulseChannelEditor(m_pulseEditor, m_pulseEditor.ChannelTree);
+            triggerControl.SetTimeChannelEditor(m_timeEditor, m_timeEditor.ChannelTree);
 
             m_ctrlEvent.ApplicationName = "ibaDatCoordinator";
 
@@ -180,7 +185,9 @@ namespace iba.Controls
                 }
                 while (numericTree != null && !numericTree.Load()) ;
                 while (m_pulseEditor != null && !m_pulseEditor.ChannelTree.Load()) ;
+                while (m_timeEditor != null && !m_timeEditor.ChannelTree.Load()) ;
                 while (m_textEditor != null && !m_textEditor.ChannelTree.Load()) ;
+                
             });
         }
 
@@ -254,6 +261,7 @@ namespace iba.Controls
             foreach (HDCreateEventTaskData.EventData signal in data.EventSettings)
             {
                 LocalEventData localEvent = new LocalEventData(signal.ID, signal.StoreName);
+                localEvent.Active = signal.Active;
                 localEvent.NumericChannels = signal.NumericFields;
                 localEvent.TextChannels = signal.TextFields;
                 localEvent.Tag = signal;
@@ -268,6 +276,7 @@ namespace iba.Controls
             m_ctrlServer.Reader.Disconnect();
             m_ctrlEvent.ReleaseEditRightsServer();
             m_pulseEditor.ResetChannelTree();
+            m_timeEditor.ResetChannelTree();
             m_channelEditor.ResetChannelTree();
             m_textEditor.ResetChannelTree();
             channelTree.Reset();
@@ -441,6 +450,7 @@ namespace iba.Controls
                         eventData.TextFields = localEventData?.TextChannels;
 
                         eventData.BlobFields = new List<string>(eventWriterSignal.BlobFields);
+                        eventData.Active = localEventData.Active;
 
                         localSignals.Add(eventData);
                     }

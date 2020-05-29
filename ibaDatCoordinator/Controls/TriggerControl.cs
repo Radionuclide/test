@@ -50,6 +50,7 @@ namespace iba.Controls
         }
 
         BindingList<PulseSignal> pulseSignals;
+        BindingList<PulseSignal> timeSignals;
 
 
         public TriggerControl()
@@ -57,8 +58,12 @@ namespace iba.Controls
             InitializeComponent();
             m_colPulse.OptionsColumn.AllowEdit = true;
             m_colPulse.OptionsColumn.ReadOnly = false;
+            m_colTime.OptionsColumn.AllowEdit = true;
+            m_colTime.OptionsColumn.ReadOnly = false;
 
             pulseSignals = new BindingList<PulseSignal>();
+            timeSignals = new BindingList<PulseSignal>();
+
             GrPulse.BeginUpdate();
             try
             {
@@ -68,7 +73,19 @@ namespace iba.Controls
             {
                 GrPulse.EndUpdate();
             }
-            pulseSignals.ListChanged += TriggerChanged;
+
+            GrTime.BeginUpdate();
+            try
+            {
+                GrTime.DataSource = timeSignals;
+            }
+            finally
+            {
+                GrTime.EndUpdate();
+            }
+            pulseSignals.ListChanged += TriggerPulseChanged;
+            timeSignals.ListChanged += TriggerTimeChanged;
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -89,9 +106,15 @@ namespace iba.Controls
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void TriggerChanged(object sender, EventArgs eventArgs)
+        public void TriggerPulseChanged(object sender, EventArgs eventArgs)
         {
             TriggerBySignal = true;
+            RaisePropertyChanged("Trigger");
+        }
+
+        public void TriggerTimeChanged(object sender, EventArgs eventArgs)
+        {
+            TriggerPerFile = true;
             RaisePropertyChanged("Trigger");
         }
 
@@ -101,9 +124,11 @@ namespace iba.Controls
             HDCreateEventTaskData.EventData m_data = localEventData.Tag as HDCreateEventTaskData.EventData;
 
             pulseSignals.Clear();
+            timeSignals.Clear();
             if (m_data != null)
             {
                 pulseSignals.Add(new PulseSignal(m_data.PulseSignal));
+                timeSignals.Add(new PulseSignal(m_data.TimeSignal));
 
                 if (m_data.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerFile)
                     TriggerPerFile = true;
@@ -113,9 +138,12 @@ namespace iba.Controls
             else
             {
                 pulseSignals.Add(new PulseSignal(HDCreateEventTaskData.UnassignedExpression));
+                timeSignals.Add(new PulseSignal(HDCreateEventTaskData.EndTime));
+
 
                 TriggerPerFile = true;
             }
+            SetActive(localEventData.Active ? CheckState.Checked : CheckState.Unchecked);
             ignoreChanges = false;
         }
 
@@ -130,12 +158,17 @@ namespace iba.Controls
             if (signals != null && signals.Count > 0)
                 m_data.PulseSignal = signals[0].PulseID;
 
+            signals = ((BindingList<PulseSignal>)GrTime.DataSource);
+            if (signals != null && signals.Count > 0)
+                m_data.TimeSignal = signals[0].PulseID;
+
             if (TriggerPerFile)
                 m_data.TriggerMode = HDCreateEventTaskData.HDEventTriggerEnum.PerFile;
             else
                 m_data.TriggerMode = HDCreateEventTaskData.HDEventTriggerEnum.PerSignalPulse;
 
             localEventData.Tag = m_data;
+            localEventData.Active = Active;
 
             return localEventData;
         }
@@ -152,9 +185,32 @@ namespace iba.Controls
             set { m_rbTriggerBySignal.Checked = value; }
         }
 
+        public void SetActive(CheckState checkState)
+        {
+            ignoreChanges = true;
+            ckActive.CheckState = checkState;
+            ignoreChanges = false;
+        }
+
+        private void ckActive_CheckedChanged(object sender, EventArgs e)
+        {
+            RaisePropertyChanged(nameof(Active));
+        }
+
+        [Browsable(false)]
+        public bool Active
+        {
+            get { return ckActive.Checked; }
+        }
+
         public GridControl GrPulse
         {
             get { return m_grPulse; }
+        }
+
+        public GridControl GrTime
+        {
+            get { return m_grTime; }
         }
 
         public GridColumn ColPulse
@@ -162,12 +218,17 @@ namespace iba.Controls
             get { return m_colPulse; }
         }
 
-        public void SetChannelEditor(DevExpress.XtraEditors.Repository.RepositoryItem channelEditor, ISignalDragDropHandler dragDropHandler)
+        public GridColumn ColTime
+        {
+            get { return m_colTime; }
+        }
+
+        public void SetPulseChannelEditor(DevExpress.XtraEditors.Repository.RepositoryItem channelEditor, ISignalDragDropHandler dragDropHandler)
         {
             GrPulse.RepositoryItems.Add(channelEditor);
             ColPulse.ColumnEdit = channelEditor;
-            channelEditor.EditValueChanged += TriggerChanged;
-            GrPulse.DataSourceChanged += TriggerChanged;
+            channelEditor.EditValueChanged += TriggerPulseChanged;
+            GrPulse.DataSourceChanged += TriggerPulseChanged;
 
             if (signalDragDropHandler != null)
             {
@@ -185,6 +246,14 @@ namespace iba.Controls
                 dragDropHandler.OnDragOverChannelResponse += OnDragoverResponse;
                 dragDropHandler.OnDragDropChannelResponse += OnDragDropResponse;
             }
+        }
+
+        public void SetTimeChannelEditor(DevExpress.XtraEditors.Repository.RepositoryItem channelEditor, ISignalDragDropHandler dragDropHandler)
+        {
+            GrTime.RepositoryItems.Add(channelEditor);
+            ColTime.ColumnEdit = channelEditor;
+            channelEditor.EditValueChanged += TriggerTimeChanged;
+            GrTime.DataSourceChanged += TriggerTimeChanged;
         }
 
         #region Drag/Drop

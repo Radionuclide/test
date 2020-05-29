@@ -4621,7 +4621,8 @@ namespace iba.Processing
             Set<string> stores = new Set<string>();
             foreach (var eventData in task.EventSettings)
             {
-                stores.Add(eventData.StoreName);
+                if (eventData.Active)
+                    stores.Add(eventData.StoreName);
             }
             return stores;
         }

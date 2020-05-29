@@ -870,6 +870,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End time.
+        /// </summary>
+        internal static string EndTime {
+            get {
+                return ResourceManager.GetString("EndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IbaAnalyzer exceeded the imposed memory limit.
         /// </summary>
         internal static string errAnalyzerMemory {
@@ -4354,6 +4363,15 @@ namespace iba.Properties {
         internal static string startButton {
             get {
                 return ResourceManager.GetString("startButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start time.
+        /// </summary>
+        internal static string StartTime {
+            get {
+                return ResourceManager.GetString("StartTime", resourceCulture);
             }
         }
         

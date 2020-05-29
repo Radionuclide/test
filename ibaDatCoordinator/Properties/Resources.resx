@@ -1796,4 +1796,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ReloadHdEventsCaption" xml:space="preserve">
     <value>Reload ibaHD events</value>
   </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="StartTime" xml:space="preserve">
+    <value>Start time</value>
+  </data>
 </root>

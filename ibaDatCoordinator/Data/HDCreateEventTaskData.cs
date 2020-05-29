@@ -13,6 +13,8 @@ namespace iba.Data
     public class HDCreateEventTaskData : TaskData
     {
         public const string CurrentFileExpression = "*CURRENT_FILE_NAME*";
+        public const string StartTime = "*STARTTIME*";
+        public const string EndTime = "*ENDTIME*";
         public const string UnassignedExpression = "*UNASSIGNED*";
 
         [Serializable]
@@ -23,6 +25,13 @@ namespace iba.Data
             {
                 get { return m_storeName; }
                 set { m_storeName = value; }
+            }
+
+            private bool active;
+            public bool Active
+            {
+                get { return active; }
+                set { active = value; }
             }
 
             private string m_id;
@@ -88,6 +97,13 @@ namespace iba.Data
                 set { m_pulseSignal = value; }
             }
 
+            private string m_timeSignal;
+            public string TimeSignal
+            {
+                get { return m_timeSignal; }
+                set { m_timeSignal = value; }
+            }
+
             public EventData()
             {
                 m_storeName = "";
@@ -98,6 +114,7 @@ namespace iba.Data
                 m_blobFields = new List<string>();
                 m_triggerMode = HDEventTriggerEnum.PerFile;
                 m_pulseSignal = UnassignedExpression;
+                m_timeSignal = UnassignedExpression;
             }
 
             public object Clone()
@@ -106,11 +123,13 @@ namespace iba.Data
                 cpy.m_storeName = m_storeName;
                 cpy.m_id = m_id;
                 cpy.m_name = m_name;
+                cpy.active = active;
                 cpy.m_numericFields = new List<Tuple<string, string>>(m_numericFields);
                 cpy.m_textFields = new List<Tuple<string, string>>(m_textFields);
                 cpy.m_blobFields = new List<string>(m_blobFields);
                 cpy.m_triggerMode = m_triggerMode;
                 cpy.m_pulseSignal = m_pulseSignal;
+                cpy.m_timeSignal = m_timeSignal;
                 return cpy;
             }
 
@@ -124,8 +143,10 @@ namespace iba.Data
                 return m_storeName == other.m_storeName
                     && m_id == other.m_id
                     && m_name == other.m_name
+                    && active == other.active
                     && m_triggerMode == other.m_triggerMode
                     && m_pulseSignal == other.m_pulseSignal
+                    && m_timeSignal == other.m_timeSignal
                     && m_numericFields.SequenceEqual(other.m_numericFields)
                     && m_textFields.SequenceEqual(other.m_textFields)
                     && m_blobFields.SequenceEqual(other.m_blobFields);
