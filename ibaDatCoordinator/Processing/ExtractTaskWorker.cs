@@ -273,7 +273,8 @@ namespace iba.Processing
                 case ExtractData.ExtractFileType.TEXT: return ".txt";
                 case ExtractData.ExtractFileType.TDMS: return ".tdms";
                 case ExtractData.ExtractFileType.PARQUET: return ".parquet";
-                default: return ".dat";
+				case ExtractData.ExtractFileType.MATLAB: return ".mat";
+				default: return ".dat";
             }
         }
 

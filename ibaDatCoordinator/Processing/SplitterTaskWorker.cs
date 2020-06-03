@@ -102,7 +102,11 @@ namespace iba.Processing
         public bool Split(string fileName = null, string outputFolder = null, ISplitterTaskProgress progress =null)
         {
             if (string.IsNullOrEmpty(fileName)) fileName = m_task.TestDatFile;
-            if (string.IsNullOrEmpty(outputFolder)) outputFolder = m_task.DestinationMapUNC;
+			string outname = m_confWorker.GetOutputFileName(m_task, fileName)+Path.GetExtension(fileName);
+			if (string.IsNullOrEmpty(outputFolder))
+			{
+				outputFolder = m_confWorker.GetOutputDirectoryName(fileName,m_task);
+			}
             if (points == null)
                 GetPoints(fileName);
             if (progress == null && m_confWorker != null)
@@ -112,7 +116,7 @@ namespace iba.Processing
             
             try
             {
-                string fileNameWithoutPath = Path.GetFileName(fileName);
+                string fileNameWithoutPath = Path.GetFileName(outname);
                 using (IbaFileSplitter splitter = new IbaFileSplitter())
                 {
                     splitter.Open(fileName, m_task.ParentConfigurationData.FileEncryptionPassword);
@@ -267,8 +271,11 @@ namespace iba.Processing
                             progress.Update(GetName(i, filename), i);
                         if (!res) break;
                     }
-                    m_ibaAnalyzer.CloseAnalysis();
-                    m_ibaAnalyzer.CloseDataFile(0);
+					if (!m_task.UseInfoFieldForOutputFile)
+					{
+						m_ibaAnalyzer.CloseAnalysis();
+						m_ibaAnalyzer.CloseDataFile(0);
+					}
                 }
                 if (result.Count < 2)
                 {

@@ -341,7 +341,7 @@ namespace iba.Processing
                                         ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS,ExtractData.ExtractFileType.PARQUET};
                             ed.m_bExternalVideoResultIsCached = false;
                             int index = ExtractTaskWorker.FileTypeAsInt(ed);
-                            if (index >= 0 && index < 5 && indexToType[index] != ed.FileType)
+                            if (index >= 0 && index < indexToType.Length && indexToType[index] != ed.FileType)
                             {
                                 string errorMessage = string.Format(iba.Properties.Resources.WarningFileTypeMismatch, ed.FileType, indexToType[index]);
                                 Log(Logging.Level.Warning, errorMessage, string.Empty, task);
@@ -454,7 +454,8 @@ namespace iba.Processing
                         //see if a report or extract or if task is present
                         if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
-                            || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
+							|| (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
+							|| (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
                             )
                             m_needIbaAnalyzer = true;
 
@@ -2940,18 +2941,6 @@ namespace iba.Processing
                 CopyMoveTaskData dat = task as CopyMoveTaskData;
                 if (dat.RemoveSource && dat.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE)
                 {
-                    try
-                    {
-                        if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
-                    }
-                    catch
-                    {
-                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, DatFile, task);
-                        if (m_needIbaAnalyzer)
-                        {
-                            RestartIbaAnalyzer();
-                        }
-                    }
                     CopyDatFile(DatFile, dat);
                     if (m_sd.DatFileStates[DatFile].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY && task.Index != m_cd.Tasks.Count - 1) //was not last task
                     {
@@ -4265,14 +4254,40 @@ namespace iba.Processing
             {
                 if (task.ActionDelete)
                 {
-                    foreach (string fileToCopy in filesToCopy)
+					//close .dat file first...
+					try
+					{
+						if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+					}
+					catch
+					{
+						Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+						if (m_needIbaAnalyzer)
+						{
+							RestartIbaAnalyzer();
+						}
+					}
+					foreach (string fileToCopy in filesToCopy)
                         File.Delete(fileToCopy);
                     Log(Logging.Level.Info, iba.Properties.Resources.logDeleteTaskSuccess, filename, task);
                     m_outPutFilesPrevTask = null;
                 }
                 else if (task.RemoveSource)
                 {
-                    for (int i = 0; i < destinations.Length; i++)
+					//close .dat file first
+					try
+					{
+						if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+					}
+					catch
+					{
+						Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+						if (m_needIbaAnalyzer)
+						{
+							RestartIbaAnalyzer();
+						}
+					}
+					for (int i = 0; i < destinations.Length; i++)
                     {
                             if (task.OverwriteFiles && task.UsesQuota && File.Exists(destinations[i]))
                             {

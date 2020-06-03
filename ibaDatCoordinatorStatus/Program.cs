@@ -21,12 +21,38 @@ namespace iba.DatCoordinator.Status
             System.Security.Principal.WindowsPrincipal principal = new System.Security.Principal.WindowsPrincipal(identity);
             m_IsAdmin = principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
 
-            if (args.Length > 0 && String.Compare(args[0], "/startservice", true) == 0)
+			if (args.Length > 0 && String.Compare(args[0], "/startservice", true) == 0)
+			{
+				try
+				{
+					System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
+					myController.Start();
+					myController.Close();
+				}
+				catch
+				{
+				}
+				return;
+			}
+			else if (args.Length > 0 && String.Compare(args[0], "/startservice0", true) == 0)
             {
                 try
                 {
                     System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                    myController.Start();
+					string lastsaved = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastSaved.xml");
+					string lastsaved_backup = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastsaved_backup.xml");
+					if (System.IO.File.Exists(lastsaved))
+					{
+						try
+						{
+							System.IO.File.Move(lastsaved, lastsaved_backup);
+						}
+						catch
+						{
+
+						}
+					}
+					myController.Start();
                     myController.Close();
                 }
                 catch
@@ -47,14 +73,42 @@ namespace iba.DatCoordinator.Status
                 }
                 return;
             }
-            if (args.Length > 0 && String.Compare(args[0], "/restartservice", true) == 0)
+			else if (args.Length > 0 && String.Compare(args[0], "/restartservice0", true) == 0)
+			{
+				try
+				{
+					System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
+					myController.Stop();
+					myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromHours(1.0));
+					string lastsaved = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastSaved.xml");
+					string lastsaved_backup = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastsaved_backup.xml");
+					if (System.IO.File.Exists(lastsaved))
+					{
+						try
+						{
+							System.IO.File.Move(lastsaved, lastsaved_backup);
+						}
+						catch
+						{
+
+						}
+					}
+					myController.Start();
+					myController.Close();
+				}
+				catch
+				{
+				}
+				return;
+			}
+			else if (args.Length > 0 && String.Compare(args[0], "/restartservice", true) == 0)
             {
                 try
                 {
                     System.ServiceProcess.ServiceController myController = new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
                     myController.Stop();
                     myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromHours(1.0));
-                    myController.Start();
+					myController.Start();
                     myController.Close();
                 }
                 catch

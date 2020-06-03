@@ -102,9 +102,9 @@
 				<tr><th class="head" colspan="3">Current version</th></tr>
 				<tr><th width="15%">Version</th><th width="35%">Application version</th><th width="50%">Notes</th></tr>
 
-				<tr><th rowspan="11">v2.3.0</th><td>.NET framework v4.5.2</td><td>Version 4.8.0 is supported also</td></tr>
+				<tr><th rowspan="11">v2.2.3</th><td>.NET framework v4.5.2</td><td>Full version is required <br>Version 4.8.0 is supported also</td></tr>
 				<tr><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64), 2012 Server R2 (x64), Windows 10 (x86/x64), Windows Server 2016, Windows Server 2019</td><td></td></tr>
-				<tr><td>ibaAnalyzer v7.1.0</td><td>Required for ibaHD event generation tasks</td></tr>
+				<tr><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
 
 				<tr><th width="35%">Plugins</th><th width="50%">Notes</th></tr>
 				<tr><td>ibaSinecH1 v2.4.0</td><td></td></tr>
@@ -120,22 +120,8 @@
 				<tr><th class="head" colspan="3">History</th></tr>
 				<tr><th>Version</th><th>Application version</th><th>Notes</th></tr>
 				
-				<tr><th rowspan="1">v2.3.0</th><td>ibaAnalyzer v7.1.0</td><td>Required for ibaHD event generation tasks</td></tr>
-				
-				<tr><td class="empty" /></tr>
-
-				<tr><th rowspan="5">v2.2.1</th><td>ibaSinecH1 v2.4.0</td><td></td></tr>
-				<tr><td>ibaRoh v2.2.0</td><td></td></tr>
-				<tr><td>ibaAM-OSPC v2.1.0</td><td></td></tr>
-				<tr><td>ibaTksXml v2.2.0</td><td></td></tr>
-				<tr><td>ibaDatawyzer-ICC v1.18.0</td><td></td></tr>
-				
-				<tr><td class="empty" /></tr>
-				
-				<tr><th rowspan="1">v2.2.0</th><td>ibaAnalyzer v7.0.1</td><td>Required for processing PDA3 .dat files</td></tr>
-				
-				<tr><td class="empty" /></tr>
-				
+				<tr><th rowspan="1">v2.2.4</th><td>ibaLicenseService-V2 v2.4.0</td><td>Required for for processing PDA 1 .dat files if no license dongle attached.</td></tr>
+				<tr><th rowspan="1">v2.2.0</th><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
 				<tr><th rowspan="1">v2.1.0</th><td>ibaAnalyzer v6.12.0</td><td>Required for PARQUET extract</td></tr>
 				
 				<tr><td class="empty" /></tr>
@@ -173,20 +159,54 @@
 
 	<div id="hist">
 		<div class="box">
-		<P class="header1">Version 2.3.0 - ??/??/2019</P>
-			<P class="header2">New features (N)</P>
+			<P class="header1">Version 2.2.5 - 24/04/2020</P>
+			<P class="header2">Improvement (I)</P>
 			<OL>
-				<li>A new task has been added which allows the generation of offline ibaHD events containing computed values. #12737</li>
-				 
-			</OL>
-			<P class="header2">Improvements (I)</P>
-			<OL>
-				<li>When logging in as administrator in the ibaHD-Server the password can no longer be saved. #15798</li>
+				<li>Support for the matlab file format in the extract task. #15629</li>
 			</OL>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
-				<li>In some cases, digital signals were lost when importing dat files into the ibaHD-server. #16596</li>
+				<li>Issue with the split task if signals have offsets. #16234</li>
+				<li>Selecting an infofield or expression for the subfolder or output filename did not work for the splitter taks. #16462</li>
+				<li>Status view did not jump to correct job after job start.</li>
 			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 2.2.4 - 24/01/2020</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<li>Splitter task now supports non-equidistant data and text channels.</li>
+				<li>Support for older .dat file formats through license server (version 2.4.0 of license server required).</li>
+				<li>Improved installation process.</li>
+			</OL>	
+			<P class="header2">Bugfixes (B)</P>
+			<OL>
+				<li>Text expressions for alternative file names for output producing tasks were not working.</li>
+				<li>QDR5 files couldn't be processed anymore.</li>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 2.2.3 - 19/11/2019</P>
+			<P class="header2">Improvement (I)</P>
+			<OL>
+				<li>A text signal can be used as report filename or folder in file output producing tasks #15078</li>
+				<li>The .dat file that is currently being written by ibaPDA was skipped during the initial scan and postponed processing until the next error cycle scan. Now the file is processed whenever ibaPDA is ready.</li>
+			</OL>	
+			<P class="header2">Bugfix (B)</P>
+			<OL>
+				<li>French resources missing.</li>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 2.2.2 - 8/10/2019</P>
+			<P class="header2">Improvements (I)</P>
+			<OL>
+				<li>Minor resource modifications.</li>
+				<li>Updated French resources.</li>
+			</OL>
+			<P class="header2">Bugfixes (B)</P>
+			<OL>
+				<li>One time job, wrong file browse filter for conditional and batch file task file browse dialogs. #15432</li>
+				<li>Buttons were missing in the ibaDatCoordinator status application German localisation. #15316</li>
+			</OL>
+			<p>&nbsp; </p>
 			<P class="header1">Version 2.2.1 - 30/08/2019</P>
 			<P class="header2">Improvements (I)</P>
 			<OL>
@@ -205,6 +225,7 @@
 				<li>Groupboxes in batchfile task did not work properly.</li>
 				<li>TimeOut parameter for the script task was ignored/not persistent.#15230</li>
 			</OL>
+			<p>&nbsp; </p>
 			<P class="header1">Version 2.2.0 - 26/03/2019</P>
 			<P class="header2">New features (N)</P>
 			<OL>
@@ -217,6 +238,7 @@
 				<li>A DLL was missing if only the ibaDatCoodinator client was installed. #14290</li>
 				<li>Preferred timebase field of event and scheduled jobs not respected.</li>
 			</OL>
+			<p>&nbsp; </p>
 			<P class="header1">Version 2.1.0 - 28/01/2019</P>
 			<p class="header2">New features (N)</p>
             <ol>

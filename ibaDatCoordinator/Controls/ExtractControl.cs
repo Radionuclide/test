@@ -92,8 +92,10 @@ namespace iba.Controls
             m_rbTDMS.Checked = m_data.FileType == ExtractData.ExtractFileType.TDMS;
             m_rbComtrade.Checked = m_data.FileType == ExtractData.ExtractFileType.COMTRADE;
             m_rbParquet.Checked = m_data.FileType == ExtractData.ExtractFileType.PARQUET;
+			m_rbMatLab.Checked = m_data.FileType == ExtractData.ExtractFileType.MATLAB;
 
-            m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
+
+			m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
             m_nudMemory.Value = Math.Max(m_nudMemory.Minimum,Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
             m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
@@ -122,10 +124,11 @@ namespace iba.Controls
                 m_data.FileType = ExtractData.ExtractFileType.COMTRADE;
             else if (m_rbTDMS.Checked)
                 m_data.FileType = ExtractData.ExtractFileType.TDMS;
-            else
+            else if (m_rbParquet.Checked)
                 m_data.FileType = ExtractData.ExtractFileType.PARQUET;
-
-            m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
+			else
+				m_data.FileType = ExtractData.ExtractFileType.MATLAB;
+			m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;
             m_data.MonitorData.MemoryLimit = (uint) m_nudMemory.Value;
             m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double) m_nudTime.Value);

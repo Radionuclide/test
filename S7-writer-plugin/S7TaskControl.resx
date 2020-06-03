@@ -228,9 +228,6 @@
   <data name="&gt;&gt;m_pdoFileTextBox.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="m_browsePDOFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -246,6 +243,9 @@
   <data name="m_browsePDOFileButton.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="m_browsePDOFileButton.ToolTip" xml:space="preserve">
     <value>Browse for analysis file</value>
   </data>
@@ -408,9 +408,6 @@
   <data name="&gt;&gt;m_testButton.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>123, 17</value>
   </metadata>

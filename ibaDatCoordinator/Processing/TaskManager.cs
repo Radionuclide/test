@@ -1268,7 +1268,14 @@ namespace iba.Processing
             }
         }
 
-        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+		private bool m_serviceRestartedClean;
+		public virtual bool ServiceRestartedClean
+		{
+			get { return m_serviceRestartedClean; }
+			set { m_serviceRestartedClean = value; }
+		}
+
+		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
         struct BinaryWatchdogMessageLine
         {
             public int state;
@@ -1660,14 +1667,33 @@ namespace iba.Processing
             }
         }
 
-        #region External monitoring - SNMP and OPC UA interfaces
+		public override bool ServiceRestartedClean
+		{
+			get
+			{
+				try
+				{
+					return Program.CommunicationObject.Manager.ServiceRestartedClean;
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+			}
+			set
+			{
+				try
+				{
+					Program.CommunicationObject.Manager.ServiceRestartedClean = value;
+				}
+				catch (Exception)
+				{
 
+				}
+			}
+		}
 
-        #region External monitoring - Functionality common for SNMP and OPC UA
-
-        /// <summary> Calls <see cref="CommunicationObjectWrapper.HandleBrokenConnection(ex)"/> 
-        /// for <see cref="Program.CommunicationObject"/>  if it is not null. </summary>
-        private void HandleBrokenConnection(Exception ex)
+		private void HandleBrokenConnection(Exception ex)
         {
             Program.CommunicationObject?.HandleBrokenConnection(ex);
         }
@@ -1684,8 +1710,6 @@ namespace iba.Processing
                 return Manager.GetServerHostName();
             }
         }
-
-        #endregion
 
 
         #region External monitoring - SNMP
@@ -1967,8 +1991,6 @@ namespace iba.Processing
 
         #endregion
 
-
-        #endregion
 
 
         public override int Count

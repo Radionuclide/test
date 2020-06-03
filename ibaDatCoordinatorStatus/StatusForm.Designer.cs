@@ -52,6 +52,7 @@
 			this.m_lblPriority = new System.Windows.Forms.Label();
 			this.m_cbAutoStart = new System.Windows.Forms.CheckBox();
 			this.m_timer = new System.Windows.Forms.Timer(this.components);
+			this.m_cbStartLastSaved = new System.Windows.Forms.CheckBox();
 			this.groupBox5.SuspendLayout();
 			this.m_gbApp.SuspendLayout();
 			this.SuspendLayout();
@@ -103,6 +104,7 @@
 			// m_gbApp
 			// 
 			resources.ApplyResources(this.m_gbApp, "m_gbApp");
+			this.m_gbApp.Controls.Add(this.m_cbStartLastSaved);
 			this.m_gbApp.Controls.Add(this.m_btnClient);
 			this.m_gbApp.Controls.Add(this.m_btChange);
 			this.m_gbApp.Controls.Add(this.m_tbPort);
@@ -209,6 +211,14 @@
 			this.m_timer.Interval = 1000;
 			this.m_timer.Tick += new System.EventHandler(this.m_timer_Tick);
 			// 
+			// m_cbStartLastSaved
+			// 
+			resources.ApplyResources(this.m_cbStartLastSaved, "m_cbStartLastSaved");
+			this.m_cbStartLastSaved.Checked = true;
+			this.m_cbStartLastSaved.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.m_cbStartLastSaved.Name = "m_cbStartLastSaved";
+			this.m_cbStartLastSaved.UseVisualStyleBackColor = true;
+			// 
 			// StatusForm
 			// 
 			resources.ApplyResources(this, "$this");
@@ -251,5 +261,6 @@
         private System.Windows.Forms.Button m_btChange;
         private System.Windows.Forms.TextBox m_tbPort;
         private System.Windows.Forms.Button m_btnClient;
-    }
+		private System.Windows.Forms.CheckBox m_cbStartLastSaved;
+	}
 }

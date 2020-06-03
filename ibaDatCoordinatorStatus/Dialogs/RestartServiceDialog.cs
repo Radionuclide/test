@@ -10,8 +10,10 @@ namespace iba.DatCoordinator.Status.Dialogs
 {
     public partial class RestartServiceDialog : Form
     {
-        public RestartServiceDialog()
+		bool m_deleteLastSaved;
+        public RestartServiceDialog(bool deleteLastSaved)
         {
+			m_deleteLastSaved = deleteLastSaved;
             InitializeComponent();
             m_result = false;
         }
@@ -50,7 +52,7 @@ namespace iba.DatCoordinator.Status.Dialogs
                     procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
                     procInfo.FileName = Application.ExecutablePath;
 
-                    procInfo.Arguments = "/restartservice";
+                    procInfo.Arguments = m_deleteLastSaved? "/restartservice0" : "/restartservice";
                     procInfo.Verb = "runas";
 
                     try
@@ -69,7 +71,23 @@ namespace iba.DatCoordinator.Status.Dialogs
                 {
                     myController.Stop();
                     myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(3.0));
-                    myController.Start();
+					if (m_deleteLastSaved)
+					{
+						string lastsaved = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastSaved.xml");
+						string lastsaved_backup = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastsaved_backup.xml");
+						if (System.IO.File.Exists(lastsaved))
+						{
+							try
+							{
+								System.IO.File.Move(lastsaved,lastsaved_backup);
+							}
+							catch
+							{
+
+							}
+						}
+					}
+					myController.Start();
                 }
 
                 myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running, TimeSpan.FromMinutes(3.0));

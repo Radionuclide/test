@@ -249,7 +249,7 @@ namespace iba
                 if (confNode != null)
                 {
                     bool skipFurther = false;
-                    for(int index = 0; index < 3; index++)
+                    for(int index = 0; index < m_statusTreeView.Nodes.Count; index++)
                     {
                         if(confNode == m_configTreeView.Nodes[index])
                         {
@@ -264,7 +264,7 @@ namespace iba
 
                         ConfigurationData dat = (confNode.Tag as ConfigurationTreeItemData).ConfigurationData;
                         TreeNode statNode = null;
-                        for(int index = 0; index < 3; index++ )
+                        for(int index = 0; index < m_statusTreeView.Nodes.Count; index++ )
                             foreach(TreeNode statCandidate in m_statusTreeView.Nodes[index].Nodes)
                             {
                                 if(!(statCandidate.Tag is StatusTreeItemData)) continue;
@@ -504,7 +504,7 @@ namespace iba
             SetupHelp();
             string returnvalue = "";
             Profiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
-            if (returnvalue != "not set" && Program.RunsWithService != Program.ServiceEnum.CONNECTED) loadFromFile(returnvalue,true);
+            if (returnvalue != "not set" && Program.RunsWithService == Program.ServiceEnum.NOSERVICE) loadFromFile(returnvalue,true);
             loadConfigurations();
             loadStatuses();
             UpdateButtons();
@@ -3099,7 +3099,12 @@ namespace iba
                 m_suppresUpload = false; //reset the flag
                 return false;
             }
-            if (TaskManager.Manager.Count == 0) return true; //nothing on server side, upload the minimum configuration of one
+			if (TaskManager.Manager.Count == 0)
+			{
+				bool clean = TaskManager.Manager.ServiceRestartedClean; //nothing on server side, upload the minimum configuration of one
+				TaskManager.Manager.ServiceRestartedClean = false;
+				return !clean;
+			}
             if (m_firstConnectToService) return false;
             //test if there's a difference between the client and server configurations
             if (IsServerClientDifference())

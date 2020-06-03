@@ -45,7 +45,8 @@ namespace iba.Services
                 TaskManager.Manager = m_communicationObject.Manager;
 
                 string filename = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "lastsaved.xml");
-                m_communicationObject.FileName = filename;
+				string filename2 = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "lastsaved_backup.xml");
+				m_communicationObject.FileName = filename;
 
                 SetServicePriority();
 
@@ -53,27 +54,39 @@ namespace iba.Services
                 //return;
                 try
                 {
-                    if (File.Exists(filename))
-                    {
-                        XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
-                        List<ConfigurationData> confs;
-                        using (FileStream myFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                        {
-                            ibaDatCoordinatorData dat = null;
-                            dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
-                            confs = dat.ApplyToManager(m_communicationObject.Manager, null);
-                        }
-                        foreach (ConfigurationData dat in confs)
-                        {
-                            dat.relinkChildData();
-                        }
-                        m_communicationObject.Manager.Configurations = confs;
-                        m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
-                        foreach (ConfigurationData dat in confs)
-                        {
-                            if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);
-                        }
-                    }
+					if (File.Exists(filename))
+					{
+						XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
+						List<ConfigurationData> confs;
+						using (FileStream myFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+						{
+							ibaDatCoordinatorData dat = null;
+							dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
+							confs = dat.ApplyToManager(m_communicationObject.Manager, null);
+						}
+						foreach (ConfigurationData dat in confs)
+						{
+							dat.relinkChildData();
+						}
+						m_communicationObject.Manager.Configurations = confs;
+						m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
+						foreach (ConfigurationData dat in confs)
+						{
+							if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);
+						}
+					}
+					else if (File.Exists(filename2))
+					{
+						m_communicationObject.Manager.ServiceRestartedClean = true;
+						try
+						{
+							File.Delete(filename2);
+						}
+						catch
+						{
+
+						}
+					}
                 }
                 catch (Exception ex)
                 { //last saved could not be deserialised, could be from a previous install or otherwise corrupted file

@@ -378,7 +378,7 @@ namespace iba.DatCoordinator.Status
             m_timer.Enabled = false;
             //startservice dialog
             bool result = false;
-            using (StartServiceDialog ssd = new StartServiceDialog())
+            using (StartServiceDialog ssd = new StartServiceDialog(!m_cbStartLastSaved.Checked))
             {
                 if (WindowState == FormWindowState.Minimized)
                 {
@@ -393,6 +393,9 @@ namespace iba.DatCoordinator.Status
                     result = ssd.Result;
                 }
             }
+			//string lastsaved = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastSaved.xml");
+			//MessageBox.Show(File.Exists(lastsaved).ToString() + lastsaved);
+
             if (result)
             {
                 //if (LogData.Data.Logger != null) LogData.Data.Logger.Log(Logging.Level.Info, iba.Properties.Resources.logServiceStarted);
@@ -406,7 +409,7 @@ namespace iba.DatCoordinator.Status
         {
             bool bTimerEnabled = m_timer.Enabled;
             m_timer.Enabled = false;
-            using (RestartServiceDialog ssd = new RestartServiceDialog())
+            using (RestartServiceDialog ssd = new RestartServiceDialog(!m_cbStartLastSaved.Checked))
             {
                 if (WindowState == FormWindowState.Minimized)
                 {

@@ -10,8 +10,10 @@ namespace iba.DatCoordinator.Status.Dialogs
 {
     public partial class StartServiceDialog : Form
     {
-        public StartServiceDialog()
+		private bool m_deleteLastSaved;
+        public StartServiceDialog(bool deleteLastSaved)
         {
+			m_deleteLastSaved = deleteLastSaved;
             InitializeComponent();
             m_result = false;
         }
@@ -50,7 +52,7 @@ namespace iba.DatCoordinator.Status.Dialogs
                     procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
                     procInfo.FileName = Application.ExecutablePath;
 
-                    procInfo.Arguments = "/startservice";
+                    procInfo.Arguments = m_deleteLastSaved ? "/startservice0" : "/startservice";
                     procInfo.Verb = "runas";
 
                     try
@@ -67,8 +69,24 @@ namespace iba.DatCoordinator.Status.Dialogs
 
                 }
                 else
-                {
-                    myController.Start();
+				{
+					if (m_deleteLastSaved)
+					{
+						string lastsaved = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastSaved.xml");
+						string lastsaved_backup = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastsaved_backup.xml");
+						if (System.IO.File.Exists(lastsaved))
+						{
+							try
+							{
+								System.IO.File.Move(lastsaved, lastsaved_backup);
+							}
+							catch
+							{
+
+							}
+						}
+					}
+					myController.Start();
                 }
 
                 myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running,TimeSpan.FromMinutes(1.0));
