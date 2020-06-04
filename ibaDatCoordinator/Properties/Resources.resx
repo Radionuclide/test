@@ -1802,4 +1802,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="StartTime" xml:space="preserve">
     <value>Start time</value>
   </data>
+  <data name="HDEventTask_ChannelClientId" xml:space="preserve">
+    <value>Client ID</value>
+  </data>
 </root>

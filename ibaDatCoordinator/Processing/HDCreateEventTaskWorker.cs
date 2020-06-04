@@ -328,6 +328,11 @@ namespace iba.Processing
                                 }
                                 continue;
                             }
+                            else if (textField.Item2 == HDCreateEventTaskData.ClientIDExpression)
+                            {
+                                textResults[textField.Item1] = Tuple.Create(new List<string>(1) { $"{Environment.MachineName}/{Environment.UserName}/ibaDatCoordinator" }, new List<double>(1) { 0.0 });
+                                continue;
+                            }
 
                             object oStamps = null;
                             object oValues = null;

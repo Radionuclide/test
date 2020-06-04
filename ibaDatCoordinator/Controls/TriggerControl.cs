@@ -118,6 +118,11 @@ namespace iba.Controls
             RaisePropertyChanged("Trigger");
         }
 
+        public void SetActive(bool active)
+        {
+            SetActive(active ? CheckState.Checked : CheckState.Unchecked);
+        }
+
         public void LoadSignal(LocalEventData localEventData)
         {
             ignoreChanges = true;
@@ -292,7 +297,9 @@ namespace iba.Controls
                     GrPulse.BeginUpdate();
                     try
                     {
+                        ignoreChanges = true;
                         pulseSignals.Clear();
+                        ignoreChanges = false;
                         pulseSignals.Add(new PulseSignal(response.signals[0].Item1));
                     }
                     finally

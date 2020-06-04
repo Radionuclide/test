@@ -1291,6 +1291,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Client ID.
+        /// </summary>
+        internal static string HDEventTask_ChannelClientId {
+            get {
+                return ResourceManager.GetString("HDEventTask_ChannelClientId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Processed filename.
         /// </summary>
         internal static string HDEventTask_ChannelProcessedFile {

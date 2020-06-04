@@ -150,7 +150,6 @@
             // m_ctrlEvent
             // 
             this.m_ctrlEvent.AllowDrop = true;
-            this.m_ctrlEvent.ApplicationName = null;
             this.m_ctrlEvent.ChannelTree = null;
             this.m_ctrlEvent.DefaultNumericChannelValue = null;
             this.m_ctrlEvent.DefaultTextChannelValue = null;

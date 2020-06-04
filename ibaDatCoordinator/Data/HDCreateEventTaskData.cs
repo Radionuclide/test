@@ -13,6 +13,7 @@ namespace iba.Data
     public class HDCreateEventTaskData : TaskData
     {
         public const string CurrentFileExpression = "*CURRENT_FILE_NAME*";
+        public const string ClientIDExpression = "*CLIENT_ID*";
         public const string StartTime = "*STARTTIME*";
         public const string EndTime = "*ENDTIME*";
         public const string UnassignedExpression = "*UNASSIGNED*";

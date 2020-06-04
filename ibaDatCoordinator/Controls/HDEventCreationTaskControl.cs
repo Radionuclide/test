@@ -39,6 +39,12 @@ namespace iba.Controls
 
             m_pdoFilePath = m_datFilePath = "";
 
+            ImageList list = new ImageList();
+            list.ImageSize = new System.Drawing.Size(16, 16);
+            list.TransparentColor = Color.Magenta;
+            list.ColorDepth = ColorDepth.Depth24Bit;
+            list.Images.AddStrip(iba.Properties.Resources.Toolbars16);
+
             m_ctrlServer.SetServerFeatures(new List<ReaderFeature>(1) { ReaderFeature.ComputedValue }, new List<WriterFeature>(1) { WriterFeature.ComputedValue });
             m_ctrlServer.StoreFilter = new List<HdStoreType> { HdStoreType.Event };
             m_ctrlServer.HideStoreSelection();
@@ -46,9 +52,9 @@ namespace iba.Controls
             m_pulseEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital);
             m_pulseEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
 
-            m_timeEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Text);
-            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.EndTime, Properties.Resources.EndTime, Properties.Resources.img_computed_values);
-            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Properties.Resources.img_computed_values);
+            m_timeEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Text & ChannelTreeFilter.Digital);
+            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.EndTime, Properties.Resources.EndTime, Properties.Resources.pausetask);
+            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Properties.Resources.pausetask);
 
             m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog);
             numericTree = m_channelEditor.ChannelTree;
@@ -57,6 +63,7 @@ namespace iba.Controls
             m_textEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Text);
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.CurrentFileExpression, Properties.Resources.HDEventTask_ChannelProcessedFile, Properties.Resources.img_file);
+            m_textEditor.AddSpecialNode(HDCreateEventTaskData.ClientIDExpression, Properties.Resources.HDEventTask_ChannelClientId, list.Images[10]);
 
             m_pulseEditor.ChannelTree.Invalidated += ChannelEditorModified;
             m_timeEditor.ChannelTree.Invalidated += ChannelEditorModified;
@@ -66,8 +73,6 @@ namespace iba.Controls
             triggerControl = new TriggerControl();
             triggerControl.SetPulseChannelEditor(m_pulseEditor, m_pulseEditor.ChannelTree);
             triggerControl.SetTimeChannelEditor(m_timeEditor, m_timeEditor.ChannelTree);
-
-            m_ctrlEvent.ApplicationName = "ibaDatCoordinator";
 
             m_ctrlEvent.DefaultNumericChannelValue = HDCreateEventTaskData.UnassignedExpression;
             m_ctrlEvent.DefaultTextChannelValue = HDCreateEventTaskData.UnassignedExpression;
