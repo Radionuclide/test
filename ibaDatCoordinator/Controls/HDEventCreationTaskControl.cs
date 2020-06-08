@@ -432,12 +432,21 @@ namespace iba.Controls
                     else
                     {
                         path.Add(node.Text);
+                        // If a folder does not have any children, add an emptyFolder event
+                        if (node.Nodes.Count == 0 && node.Tag == null)
+                        {
+                            node.Nodes.Add(m_ctrlEvent.CreateEmptyFolderEvent(node));
+                        }
                         Get(node.Nodes, path, localSignals, store);
                         path.RemoveAt(path.Count - 1);
                     }
                 }
                 else
                 {
+                    // Only add the emptyFolderEvent in case it is the only event in the folder.
+                    if (sigNode.EventWriterSignal?.Name == ClientConstants.EmptyFolderEventName && nodes.Count != 1)
+                        continue;
+
                     LocalEventData localEventData = sigNode.localEventData;
                     EventWriterSignal eventWriterSignal = sigNode.EventWriterSignal;
                     HDCreateEventTaskData.EventData eventData = new HDCreateEventTaskData.EventData();
