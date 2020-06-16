@@ -180,7 +180,10 @@ namespace iba.Controls
         Analog = 0x01,
         Digital = 0x02,
         Text = 0x04,
-    };
+		Expressions = 0x100000,
+		Logicals = 0x200000,
+		Infofields = 0x400000
+	};
 
     internal class AnalyzerTreeControl : Panel, ISignalDragDropHandler
     {
