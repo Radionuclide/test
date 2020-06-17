@@ -59,12 +59,15 @@ namespace iba.Processing
                 {
                     IbaShortFileInfo sfi = IbaFileReader.ReadShortFileInfo(filename);
                     DateTime dtEnd = sfi.EndTime;
-                    DateTime dtStart = sfi.StartTime;
+                    DateTime dtStart = new DateTime();
+                    int microSeconds = 0;
+                    m_ibaAnalyzer.GetStartTime(ref dtStart, ref microSeconds);                    
+                    dtStart.AddTicks(microSeconds * 10);
+
                     if (sfi.UtcOffsetValid)
                     {
                         var currOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
                         var fileOffset = TimeSpan.FromMinutes(sfi.UtcOffset);
-                        dtStart = dtStart.AddTicks((currOffset - fileOffset).Ticks);
                         dtEnd = dtEnd.AddTicks((currOffset - fileOffset).Ticks);
                     }
 
@@ -145,9 +148,17 @@ namespace iba.Processing
                 {
                     stamp = startTime.Ticks;
                 }
-                else
+                else if (eventData.TimeSignal == HDCreateEventTaskData.EndTime)
                 {
                     stamp = stopTime.Ticks;
+                }
+                else
+                {
+                    double seconds = 0;
+                    monitor.Execute(() => { seconds = m_ibaAnalyzer.Evaluate(eventData.TimeSignal, 0); });
+                    if (double.IsNaN(seconds))
+                        throw new ArgumentException("Invalid timeSignal");
+                    stamp = startTime.AddSeconds(seconds).Ticks;
                 }
             }
             else

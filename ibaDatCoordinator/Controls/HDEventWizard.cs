@@ -80,7 +80,7 @@ namespace iba.Client.Archiver
 
         private void CreateSignalTree(AnalyzerManager analyzerManager)
         {
-            var channelTree = new RepositoryItemChannelTreeEdit(analyzerManager, ChannelTreeFilter.Digital);
+            var channelTree = new RepositoryItemChannelTreeEdit(analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Expressions | ChannelTreeFilter.Logicals);
             signalTree = channelTree.ChannelTree;
             signalTree.AllowDrop = false;
             signalTree.MultiSelect = true;

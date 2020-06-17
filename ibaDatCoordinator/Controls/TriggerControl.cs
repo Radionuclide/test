@@ -11,6 +11,7 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
 using iba.HD.Client.Interfaces;
 using iba.Data;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace iba.Controls
 {
@@ -237,8 +238,8 @@ namespace iba.Controls
 
             if (signalDragDropHandler != null)
             {
-                OnDragOverHandler -= signalDragDropHandler.OnDragOverHandle;
-                OnDragDropHandler -= signalDragDropHandler.OnDragDropHandle;
+                OnSignalDragOverHandler -= signalDragDropHandler.OnDragOverHandle;
+                OnSignalDragDropHandler -= signalDragDropHandler.OnDragDropHandle;
                 signalDragDropHandler.OnDragOverChannelResponse -= OnDragoverResponse;
                 signalDragDropHandler.OnDragDropChannelResponse -= OnDragDropResponse;
             }
@@ -246,8 +247,8 @@ namespace iba.Controls
             signalDragDropHandler = dragDropHandler;
             if (dragDropHandler != null)
             {
-                OnDragOverHandler += dragDropHandler.OnDragOverHandle;
-                OnDragDropHandler += dragDropHandler.OnDragDropHandle;
+                OnSignalDragOverHandler += dragDropHandler.OnDragOverHandle;
+                OnSignalDragDropHandler += dragDropHandler.OnDragDropHandle;
                 dragDropHandler.OnDragOverChannelResponse += OnDragoverResponse;
                 dragDropHandler.OnDragDropChannelResponse += OnDragDropResponse;
             }
@@ -259,24 +260,60 @@ namespace iba.Controls
             ColTime.ColumnEdit = channelEditor;
             channelEditor.EditValueChanged += TriggerTimeChanged;
             GrTime.DataSourceChanged += TriggerTimeChanged;
+
+            if (timeDragDropHandler != null)
+            {
+                OnTimeDragOverHandler -= timeDragDropHandler.OnDragOverHandle;
+                OnTimeDragDropHandler -= timeDragDropHandler.OnDragDropHandle;
+                timeDragDropHandler.OnDragOverChannelResponse -= OnDragoverResponse;
+                timeDragDropHandler.OnDragDropChannelResponse -= OnDragDropResponse;
+            }
+
+            timeDragDropHandler = dragDropHandler;
+            if (dragDropHandler != null)
+            {
+                OnTimeDragOverHandler += dragDropHandler.OnDragOverHandle;
+                OnTimeDragDropHandler += dragDropHandler.OnDragDropHandle;
+                dragDropHandler.OnDragOverChannelResponse += OnDragoverResponse;
+                dragDropHandler.OnDragDropChannelResponse += OnDragDropResponse;
+            }
         }
 
         #region Drag/Drop
 
-        public event EventHandler OnDragOverHandler;
-        public event EventHandler OnDragDropHandler;
+        public event EventHandler OnSignalDragOverHandler;
+        public event EventHandler OnSignalDragDropHandler;
+        public event EventHandler OnTimeDragOverHandler;
+        public event EventHandler OnTimeDragDropHandler;
 
         private ISignalDragDropHandler signalDragDropHandler;
+        private ISignalDragDropHandler timeDragDropHandler;
 
-        protected override void OnDragOver(DragEventArgs drgevent)
+        protected override void OnDragOver(DragEventArgs drgEvent)
         {
-            OnDragOverHandler?.Invoke(this, new DragDetailsEvent(false, drgevent));
+            GridHitInfo hi = m_viewPulse.CalcHitInfo(m_viewPulse.GridControl.PointToClient(new Point(drgEvent.X, drgEvent.Y)));
+            if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
+                OnSignalDragOverHandler?.Invoke(this, new DragDetailsEvent(false, drgEvent));
+            else
+            {
+                hi = m_viewTime.CalcHitInfo(m_viewTime.GridControl.PointToClient(new Point(drgEvent.X, drgEvent.Y)));
+                if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
+                    OnTimeDragOverHandler?.Invoke(this, new DragDetailsEvent(false, drgEvent));
+                else
+                {
+                    drgEvent.Effect = DragDropEffects.None;
+                    base.OnDragOver(drgEvent);
+                }
+            }
+
         }
 
         public void OnDragoverResponse(object sender, EventArgs eventArgs)
         {
             DragDetailsResponseEvent response = eventArgs as DragDetailsResponseEvent;
             if (response != null && response.allowed && sender == signalDragDropHandler && response.signals.Count == 1)
+                response.drgEvent.Effect = response.drgEvent.AllowedEffect;
+            else if (response != null && response.allowed && sender == timeDragDropHandler && response.signals.Count == 1)
                 response.drgEvent.Effect = response.drgEvent.AllowedEffect;
             else
                 response.drgEvent.Effect = DragDropEffects.None;
@@ -285,7 +322,13 @@ namespace iba.Controls
 
         protected override void OnDragDrop(DragEventArgs drgevent)
         {
-            OnDragDropHandler?.Invoke(this, new DragDetailsEvent(false, drgevent));
+            GridHitInfo hi = m_viewPulse.CalcHitInfo(m_viewPulse.GridControl.PointToClient(new Point(drgevent.X, drgevent.Y)));
+            if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
+                OnSignalDragDropHandler?.Invoke(this, new DragDetailsEvent(false, drgevent));
+
+            hi = m_viewTime.CalcHitInfo(m_viewTime.GridControl.PointToClient(new Point(drgevent.X, drgevent.Y)));
+            if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
+                OnTimeDragDropHandler?.Invoke(this, new DragDetailsEvent(false, drgevent));
         }
 
         public void OnDragDropResponse(object sender, EventArgs eventArgs)
@@ -305,6 +348,21 @@ namespace iba.Controls
                     finally
                     {
                         GrPulse.EndUpdate();
+                    }
+                }
+                else if (sender == timeDragDropHandler && response.signals.Count == 1)
+                {
+                    GrTime.BeginUpdate();
+                    try
+                    {
+                        ignoreChanges = true;
+                        timeSignals.Clear();
+                        ignoreChanges = false;
+                        timeSignals.Add(new PulseSignal(response.signals[0].Item1));
+                    }
+                    finally
+                    {
+                        GrTime.EndUpdate();
                     }
                 }
             }

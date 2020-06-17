@@ -4684,6 +4684,14 @@ namespace iba.Processing
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                 }
             }
+            catch (ArgumentException ex)
+            {
+                Log(Logging.Level.Exception, ex.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
             catch
             {
                 Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);

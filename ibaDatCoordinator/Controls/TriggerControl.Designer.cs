@@ -137,8 +137,6 @@
             resources.ApplyResources(this.m_colTime, "m_colTime");
             this.m_colTime.FieldName = "PulseID";
             this.m_colTime.Name = "m_colTime";
-            this.m_colTime.OptionsColumn.AllowEdit = false;
-            this.m_colTime.OptionsColumn.ReadOnly = true;
             // 
             // label2
             // 

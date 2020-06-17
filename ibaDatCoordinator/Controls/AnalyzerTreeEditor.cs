@@ -1351,11 +1351,11 @@ namespace iba.Controls
                     AnalyzerTreeControl tree = item.ChannelTree;
                     text = tree.GetDisplayName(id) ?? id;
                     image = tree.GetImage(id);
-                    if (image == null)
+                    /*if (image == null)
                     {
                         SpecialNode unassigned = item.GetSpecialNodeFromValue("*UNASSIGNED*");
                         image = unassigned?.Image;
-                    }
+                    }*/
                 }
 
                 Rectangle r = vi.ContentRect;
