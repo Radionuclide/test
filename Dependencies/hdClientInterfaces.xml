@@ -977,6 +977,12 @@
             User info used when connecting to server (<see cref="M:iba.HD.Client.Interfaces.IHdReader.Connect(System.String,System.Int32)"/>).
             </summary>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdReader.ConnectionInfoSuffix">
+            <summary>
+            The connection info is constructed in the hdClient. 
+            This method is used to add additional data from the base application that is not accessible by the hdClient e.g. ActiveX.
+            </summary>
+        </member>
         <member name="M:iba.HD.Client.Interfaces.IHdReader.Connect(System.String,System.Int32)">
             <summary>
             Connect to server located on given host and port

@@ -452,7 +452,7 @@ namespace iba.Controls
                     if (sigNode.EventWriterSignal?.Name == ClientConstants.EmptyFolderEventName && nodes.Count != 1)
                         continue;
 
-                    LocalEventData localEventData = sigNode.localEventData;
+                    LocalEventData localEventData = sigNode.LocalEventData;
                     EventWriterSignal eventWriterSignal = sigNode.EventWriterSignal;
                     HDCreateEventTaskData.EventData eventData = new HDCreateEventTaskData.EventData();
                     if (localEventData != null)

@@ -12,6 +12,7 @@ using DevExpress.XtraGrid.Columns;
 using iba.HD.Client.Interfaces;
 using iba.Data;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using iba.HD.Common;
 
 namespace iba.Controls
 {

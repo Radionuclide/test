@@ -216,7 +216,7 @@ namespace iba.Client.Archiver
             LocalEventData localEvent = new LocalEventData("", "");
             localEvent.Tag = eventConfig;
             ControlEventTreeData controlEventTreeData = new ControlEventTreeData(eventServerConfig);
-            controlEventTreeData.localEventData = localEvent;
+            controlEventTreeData.LocalEventData = localEvent;
             return controlEventTreeData;
         }
 
