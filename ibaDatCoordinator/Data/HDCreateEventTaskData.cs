@@ -115,7 +115,7 @@ namespace iba.Data
                 m_blobFields = new List<string>();
                 m_triggerMode = HDEventTriggerEnum.PerFile;
                 m_pulseSignal = UnassignedExpression;
-                m_timeSignal = UnassignedExpression;
+                m_timeSignal = EndTime;
             }
 
             public object Clone()
