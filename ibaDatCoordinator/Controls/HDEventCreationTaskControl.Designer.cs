@@ -121,13 +121,13 @@
             // 
             resources.ApplyResources(this.m_tbDAT, "m_tbDAT");
             this.m_tbDAT.Name = "m_tbDAT";
-            this.m_tbDAT.ReadOnly = true;
+            this.m_tbDAT.Leave += new System.EventHandler(this.DatTextChanged);
             // 
             // m_tbPDO
             // 
             resources.ApplyResources(this.m_tbPDO, "m_tbPDO");
             this.m_tbPDO.Name = "m_tbPDO";
-            this.m_tbPDO.ReadOnly = true;
+            this.m_tbPDO.Leave += new System.EventHandler(this.PDOTextChanged);
             // 
             // label3
             // 

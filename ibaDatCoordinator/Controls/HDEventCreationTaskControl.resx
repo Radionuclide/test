@@ -177,6 +177,9 @@
   <data name="m_btnUploadPDO.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
+  <data name="m_btnUploadPDO.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;m_btnUploadPDO.Name" xml:space="preserve">
     <value>m_btnUploadPDO</value>
   </data>
@@ -484,7 +487,7 @@
     <value>m_ctrlEvent</value>
   </data>
   <data name="&gt;&gt;m_ctrlEvent.Type" xml:space="preserve">
-    <value>iba.HD.Client.FormEventConfig, hdClient, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.HD.Client.ControlEventConfig, hdClient, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ctrlEvent.Parent" xml:space="preserve">
     <value>gbEvent</value>

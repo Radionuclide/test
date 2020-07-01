@@ -59,12 +59,12 @@ namespace iba.Controls
             m_timeEditor.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Properties.Resources.pausetask);
             m_timeEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 
-            m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions);
+            m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields);
             numericTree = m_channelEditor.ChannelTree;
             m_channelEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
             m_channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 
-            m_textEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Text | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions);
+            m_textEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Text | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields);
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.CurrentFileExpression, Properties.Resources.HDEventTask_ChannelProcessedFile, Properties.Resources.img_file);
             m_textEditor.AddSpecialNode(HDCreateEventTaskData.ClientIDExpression, Properties.Resources.HDEventTask_ChannelClientId, list.Images[10]);
@@ -594,6 +594,22 @@ namespace iba.Controls
             }
         }
 
+        private void DatTextChanged(object sender, EventArgs e)
+        {
+            m_datFilePath = m_tbDAT.Text;
+            UpdateSources();
+
+            loadAnalyzerTreeDataTask();
+        }
+
+        private void PDOTextChanged(object sender, EventArgs e)
+        {
+            m_pdoFilePath = m_tbPDO.Text;
+            UpdateSources();
+
+            loadAnalyzerTreeDataTask();
+        }
+
         private void m_btnUploadPDO_Click(object sender, EventArgs e)
         {
             UploadPdoFile(true);
@@ -609,7 +625,7 @@ namespace iba.Controls
                 HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
                 Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, null);
 
-                worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData, HdValidationMessage.Ignore);
+                //worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData, HdValidationMessage.Ignore);
 
                 Cursor = Cursors.Default;
                 MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
