@@ -419,7 +419,7 @@ Section -Common
   File "..\Dependencies\DevExpress.Utils.v16.1.dll"
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
-  File "..\Dependencies\ibaSnmpLib.dll"
+  File "..\InstallFiles\ibaSnmpLib.dll"
   ;OPC UA
   File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
