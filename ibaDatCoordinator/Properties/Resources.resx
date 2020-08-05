@@ -1518,16 +1518,16 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>..\Resources\ibaAnalyzer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HDEventTaskTitle" xml:space="preserve">
-    <value>Generate ibaHD event</value>
+    <value>HD offline events</value>
   </data>
   <data name="img_computed_values" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_computed_values.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NewHDCreateEventTaskTitle" xml:space="preserve">
-    <value>Add ibaHD Generate Event Task</value>
+    <value>Add HD Offline Events Task</value>
   </data>
   <data name="hdcreateeventtaskButton" xml:space="preserve">
-    <value>add new ibaHD generate event task</value>
+    <value>add new HD offline events task</value>
   </data>
   <data name="logHDEventTaskActivateError" xml:space="preserve">
     <value>The writer configuration could not be activated</value>
@@ -1620,7 +1620,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>No changes to the PDO file were detected</value>
   </data>
   <data name="HDEventTask_TestSuccess" xml:space="preserve">
-    <value>ibaHD events were generated successfully</value>
+    <value>HD offline events were generated successfully</value>
   </data>
   <data name="img_pdo_upload" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_pdo_upload.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1641,7 +1641,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Upload a PDO file to the server</value>
   </data>
   <data name="HDEventsChanged" xml:space="preserve">
-    <value>Changes are made to the ibaHD events configurations. Do you want to save these changes on the HD server?</value>
+    <value>Changes are made to the HD offline events configurations. Do you want to save these changes on the HD server?</value>
   </data>
   <data name="UseSignalName" xml:space="preserve">
     <value>Signal Name</value>

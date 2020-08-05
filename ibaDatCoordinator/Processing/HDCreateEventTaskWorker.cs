@@ -52,8 +52,8 @@ namespace iba.Processing
                     if (!parser.Sections["HDQ file"].TryGetValue("stoptime", out strEnd))
                         return false;
 
-                    startTime = DateTime.ParseExact(strStart, "dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
-                    endTime = DateTime.ParseExact(strEnd, "dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    startTime = DateTime.ParseExact(strStart, "dd.MM.yyyy HH:mm:ss.ffffff", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    endTime = DateTime.ParseExact(strEnd, "dd.MM.yyyy HH:mm:ss.ffffff", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                 }
                 else
                 {

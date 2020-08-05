@@ -1273,7 +1273,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add new ibaHD generate event task.
+        ///   Looks up a localized string similar to add new HD offline events task.
         /// </summary>
         internal static string hdcreateeventtaskButton {
             get {
@@ -1282,7 +1282,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes are made to the ibaHD events configurations. Do you want to save these changes on the HD server?.
+        ///   Looks up a localized string similar to Changes are made to the HD offline events configurations. Do you want to save these changes on the HD server?.
         /// </summary>
         internal static string HDEventsChanged {
             get {
@@ -1327,7 +1327,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ibaHD events were generated successfully.
+        ///   Looks up a localized string similar to HD offline events were generated successfully.
         /// </summary>
         internal static string HDEventTask_TestSuccess {
             get {
@@ -1363,7 +1363,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generate ibaHD event.
+        ///   Looks up a localized string similar to HD offline events.
         /// </summary>
         internal static string HDEventTaskTitle {
             get {
@@ -2829,7 +2829,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add ibaHD Generate Event Task.
+        ///   Looks up a localized string similar to Add HD Offline Events Task.
         /// </summary>
         internal static string NewHDCreateEventTaskTitle {
             get {

@@ -561,9 +561,9 @@ namespace iba.Data
                     sw.WriteLine("server=" + lServer);
                     sw.WriteLine("portnumber=" + lPort);
                     sw.WriteLine("store=" + lStores[i]);
-                    String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    String temp = startTime.ToString("dd.MM.yyyy HH:mm:ss.ffffff", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     sw.WriteLine("starttime=" + temp);
-                    temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    temp = stopTime.ToString("dd.MM.yyyy HH:mm:ss.ffffff", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     sw.WriteLine("stoptime=" + temp);
                     if (!string.IsNullOrWhiteSpace(comment))
                         sw.WriteLine("comment=" + comment);
