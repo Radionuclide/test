@@ -160,13 +160,13 @@
     <value>36, 92</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 13</value>
+    <value>73, 13</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Pulse signal:</value>
+    <value>Trigger signal:</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -190,13 +190,13 @@
     <value>17, 69</value>
   </data>
   <data name="m_rbTriggerBySignal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 17</value>
+    <value>272, 17</value>
   </data>
   <data name="m_rbTriggerBySignal.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_rbTriggerBySignal.Text" xml:space="preserve">
-    <value>Generate an event occurrence for every rectangular pulse:</value>
+    <value>Generate an event occurrence for every rising edge:</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerBySignal.Name" xml:space="preserve">
     <value>m_rbTriggerBySignal</value>
