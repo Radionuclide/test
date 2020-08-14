@@ -19,7 +19,7 @@ namespace iba.Data
         public const string UnassignedExpression = "*UNASSIGNED*";
 
         [Serializable]
-        public class EventData : ICloneable
+        public class EventData : ICloneable, IEquatable<EventData>
         {
             private string m_storeName;
             public string StoreName
@@ -134,7 +134,7 @@ namespace iba.Data
                 return cpy;
             }
 
-            public bool IsSame(EventData other)
+            public bool Equals(EventData other)
             {
                 if (other == null)
                     return false;
