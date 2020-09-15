@@ -187,6 +187,8 @@ Var ServiceUserName
 Var ServicePassword
 Var InstallTypeSelection
 Var PortNumber
+Var CheckMpi
+Var LicenseNr
 
 InstType "service"
 InstType "standalone"
@@ -656,6 +658,30 @@ Section -Post
   nsSCMEx::Unload
 SectionEnd
 
+;Check if there is an MPI dongle installed with ibaDatCoordinator related licenses
+Function CheckForMpiDongle
+
+  nsSCMEx::ReadDongleType /NOUNLOAD
+  Pop $R0
+
+  ${If} $R0 == "MPI"
+    nsSCMEx::ReadDongleOption /NOUNLOAD "61" ;Check ibaDatCoordinator license
+    Pop $R1
+    IntCmp $R1 0 +1 +1 mpi_warning
+  ${EndIf}
+
+  Return
+
+mpi_warning:
+
+  nsSCMEx::ReadDongleLicenseNr /NOUNLOAD
+  Pop $LicenseNr
+
+  MessageBox MB_OK|MB_ICONSTOP $(TEXT_MPI_NOT_SUPPORTED)
+  Quit
+
+FunctionEnd
+
 Function InstalltypeSelect
 
   IfSilent lbl_applySelect +1
@@ -696,19 +722,23 @@ Function InstalltypeSelect
   
  lbl_applySelect:
  
+  StrCpy $CheckMpi 0
+ 
   SectionGetFlags ${DATCOOR_NOSERVICE} $R0
   ${If} $InstallTypeSelection == "0"
     IntOp $R1 $R0 | ${SF_SELECTED}
     SectionSetFlags ${DATCOOR_NOSERVICE} $R1
+    StrCpy $CheckMpi 1
   ${Else}
     IntOp $R1 $R0 & ~${SF_SELECTED}
     SectionSetFlags ${DATCOOR_NOSERVICE} $R1
   ${EndIf}
   
   SectionGetFlags ${DATCOOR_SERVICE} $R0
-    ${If} $InstallTypeSelection == "1"
+  ${If} $InstallTypeSelection == "1"
     IntOp $R1 $R0 | ${SF_SELECTED}
     SectionSetFlags ${DATCOOR_SERVICE} $R1
+    StrCpy $CheckMpi 1
   ${Else}
     IntOp $R1 $R0 & ~${SF_SELECTED}
     SectionSetFlags ${DATCOOR_SERVICE} $R1
@@ -722,7 +752,11 @@ Function InstalltypeSelect
     IntOp $R1 $R0 & ~${SF_SELECTED}
     SectionSetFlags ${DATCOOR_CLIENT} $R1
   ${EndIf}
- 
+  
+  ${If} $CheckMpi == 1
+    Call CheckForMpiDongle
+  ${EndIf}
+
 FunctionEnd
 
 
@@ -1248,6 +1282,7 @@ LangString TEXT_CONFIGURE_FIREWALL        ${LANG_ENGLISH} "Configuring firewall"
 LangString TEXT_CLOSE_CLIENT              ${LANG_ENGLISH} "ibaDatCoordinator client is running. Please close the ibaDatCoordinator client before continuing the installation."
 LangString TEXT_UPDATEINFO				  ${LANG_ENGLISH} "Please register here for regular information about product updates"
 LangString TEXT_UPDATEINFO_LINK			  ${LANG_ENGLISH} "https://www.iba-ag.com/en/subscribe-to-regular-product-information/"
+LangString TEXT_MPI_NOT_SUPPORTED         ${LANG_ENGLISH} "This version of ${PRODUCT_NAME} requires a firmware update of the connected dongle. Please contact your local iba support and request a dongle firmware update for license $LicenseNr.$\r$\n$\r$\nThe installation of ${PRODUCT_NAME} will be aborted."
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_GERMAN}  "Benutzerkonto wählen"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_GERMAN}  "Wählen Sie das Benutzerkonto für den Server-Dienst aus."
@@ -1288,6 +1323,7 @@ LangString TEXT_CONFIGURE_FIREWALL        ${LANG_GERMAN}  "Firewall wird konfigu
 LangString TEXT_CLOSE_CLIENT              ${LANG_GERMAN}  "Der ibaDatCoordinator-Client läuft. Bitte schließen Sie den ibaDatCoordinator-Client, bevor Sie mit der Installation fortfahren."
 LangString TEXT_UPDATEINFO				  ${LANG_GERMAN} "Registrieren Sie sich hier für regelmäßige Informationen über Produkt-Updates"
 LangString TEXT_UPDATEINFO_LINK			  ${LANG_GERMAN} "https://www.iba-ag.com/de/anmeldung-zu-regelmaessigen-produkt-informationen/"
+LangString TEXT_MPI_NOT_SUPPORTED         ${LANG_GERMAN} "Diese Version von ${PRODUCT_NAME} erfordert ein Firmware-Update des gesteckten Dongles. Bitte wenden Sie sich an Ihren lokalen iba-Support und fragen Sie nach einem Dongle-Firmware-Update für die Lizenz $LicenseNr.$\r$\n$\r$\nDie Installation von ${PRODUCT_NAME} ist nicht möglich und wird abgebrochen."
 
 LangString TEXT_SERVICEACCOUNT_TITLE      ${LANG_FRENCH}  "Choisir le compte d'utilisateur"
 LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_FRENCH}  "Choisir le compte d'utilisateur employé par le service de serveur."
@@ -1328,3 +1364,4 @@ LangString TEXT_CONFIGURE_FIREWALL        ${LANG_FRENCH}  "Configuration du pare
 LangString TEXT_CLOSE_CLIENT              ${LANG_FRENCH}  "Le client d'ibaDatCoordinator est en cours d'exécution. Veuillez fermer le client d'ibaDatCoordinator avant de continuer l'installation."
 LangString TEXT_UPDATEINFO				  ${LANG_FRENCH} "Please register here for regular information about product updates"
 LangString TEXT_UPDATEINFO_LINK			  ${LANG_FRENCH} "https://www.iba-ag.com/en/subscribe-to-regular-product-information/"
+LangString TEXT_MPI_NOT_SUPPORTED         ${LANG_FRENCH} "Cette version d'${PRODUCT_NAME} nécessite une mise à jour du firmware du dongle connecté. Veuillez contacter votre support technique iba local et demander une mise à jour du firmware du dongle pour la licence $LicenseNr.$\r$\n$\r$\nL'installation de ${PRODUCT_NAME} sera annulé."
