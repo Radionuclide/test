@@ -276,7 +276,7 @@ namespace iba.Processing
                         throw new HDCreateEventException(Properties.Resources.logHDEventTaskDATError);
 
                     bDisposeAnalyzer = true;
-                    m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysisNonInteractive();
+                    m_ibaAnalyzer = new ibaAnalyzerWrapper(new IbaAnalyzer.IbaAnalysisNonInteractive());
 
                     if (!string.IsNullOrEmpty(m_data.DatFilePassword))
                         m_ibaAnalyzer.SetFilePassword("", m_data.DatFilePassword);

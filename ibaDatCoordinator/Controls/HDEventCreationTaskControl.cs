@@ -31,6 +31,10 @@ namespace iba.Controls
         string m_pdoFilePath, m_datFilePath;
         AnalyzerTreeControl channelTree;
         AnalyzerTreeControl numericTree;
+
+        bool bLoadingChannelTree;
+        bool bResetChannelTree;
+        bool bDisposeChannelTree;
         #endregion
 
         public HDEventCreationTaskControl()
@@ -109,6 +113,10 @@ namespace iba.Controls
             };
             m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), null, false);
             m_ctrlEvent.EventWizard = new HDEventWizard(m_analyzerManager, GetPriorities());
+
+            bLoadingChannelTree = false;
+            bResetChannelTree = false;
+            bDisposeChannelTree = false;
         }
 
         public void ChannelEditorModified(object sender, EventArgs args)
@@ -128,8 +136,26 @@ namespace iba.Controls
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action<bool>(Dispose), disposing);
+                return;
+            }
+
             if (disposing)
             {
+                bDisposeChannelTree = true;
+                if (bLoadingChannelTree)
+                    return;
+
+                if (m_timeEditor != null)
+                {
+
+                    triggerControl.GrTime.RepositoryItems.Remove(m_timeEditor);
+                    triggerControl.ColTime.ColumnEdit = null;
+                    m_timeEditor.Dispose();
+                    m_timeEditor = null;
+                }
                 if (m_pulseEditor != null)
                 {
                     triggerControl.GrPulse.RepositoryItems.Remove(m_pulseEditor);
@@ -176,6 +202,7 @@ namespace iba.Controls
                     m_channelEditor.Dispose();
                     m_channelEditor = null;
                 }
+                bDisposeChannelTree = false;
 
                 components?.Dispose();
             }
@@ -186,18 +213,30 @@ namespace iba.Controls
         #region IPropertyPane
         private void loadAnalyzerTreeDataTask()
         {
+            bLoadingChannelTree = true;
+
             Task.Factory.StartNew(() =>
             {
-                while (channelTree != null && !channelTree.Load()) ;
-                while (m_analyzerManager != null && !m_analyzerManager.IsOpened)
+                while (!bResetChannelTree && !bDisposeChannelTree && channelTree != null && !channelTree.Load()) ;
+                int i = 0;
+                while (!bResetChannelTree && !bDisposeChannelTree && m_analyzerManager != null && !m_analyzerManager.IsOpened && i < 40)
                 {
+                    i++;
                     Thread.Sleep(500);
                 }
-                while (numericTree != null && !numericTree.Load()) ;
-                while (m_pulseEditor != null && !m_pulseEditor.ChannelTree.Load()) ;
-                while (m_timeEditor != null && !m_timeEditor.ChannelTree.Load()) ;
-                while (m_textEditor != null && !m_textEditor.ChannelTree.Load()) ;
-                
+                while (!bResetChannelTree && !bDisposeChannelTree && numericTree != null && !numericTree.Load()) ;
+                while (!bResetChannelTree && !bDisposeChannelTree && m_pulseEditor != null && !m_pulseEditor.ChannelTree.Load()) ;
+                while (!bResetChannelTree && !bDisposeChannelTree && m_timeEditor != null && !m_timeEditor.ChannelTree.Load()) ;
+                while (!bResetChannelTree && !bDisposeChannelTree && m_textEditor != null && !m_textEditor.ChannelTree.Load()) ;
+
+                bLoadingChannelTree = false;
+
+                if (bResetChannelTree)
+                    ResetChannelTrees();
+
+                if (bDisposeChannelTree)
+                    Dispose(true);
+
             });
         }
 
@@ -285,12 +324,31 @@ namespace iba.Controls
         {
             m_ctrlServer.Reader.Disconnect();
             m_ctrlEvent.ReleaseEditRightsServer();
+            ResetChannelTrees();
+        }
+
+        private void ResetChannelTrees()
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(ResetChannelTrees));
+                return;
+            }
+
+            bResetChannelTree = true;
+
+            if (bLoadingChannelTree)
+                return;
+
             m_pulseEditor.ResetChannelTree();
             m_timeEditor.ResetChannelTree();
             m_channelEditor.ResetChannelTree();
             m_textEditor.ResetChannelTree();
             channelTree.Reset();
+            numericTree.Reset();
             m_analyzerManager.Dispose();
+
+            bResetChannelTree = false;
         }
 
         private bool SaveServerData(List<EventConfig> changedConfigs)
