@@ -1401,6 +1401,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting output file {0} because of task failure..
+        /// </summary>
+        internal static string IbaAnalyzerDeletingRemFile {
+            get {
+                return ResourceManager.GetString("IbaAnalyzerDeletingRemFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specified ibaAnalyzer executable does not exist: .
         /// </summary>
         internal static string IbaAnalyzerExecutableDoesNotExist {
@@ -4634,7 +4643,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to auto ( {0} );1 ms;10 ms;100 ms;1 s;1 min;1 hour;1 day.
+        ///   Looks up a localized string similar to auto ( {0} );1 ms;10 ms;100 ms;1 s;10 s;1 min;10 min;1 hour;1 day.
         /// </summary>
         internal static string TimeSelectionChoices {
             get {

@@ -82,8 +82,8 @@ namespace iba.Controls
             string[] itemStrs = iba.Properties.Resources.TimeSelectionChoices.Split(';');
             long ms = 10000; //10000 * 100 nanosec = 1 ms
             long s = 1000 * ms;
-            m_timeBases = new long[] { 0, 1 * ms, 10 * ms, 100 * ms, s, 60 * s, 3600 * s, 24 * 3600 * s };
-            int n = itemStrs.Count();
+			m_timeBases = new long[] { 0, 1 * ms, 10 * ms, 100 * ms, s, 10 * s, 60 * s, 600 * s, 3600 * s, 24 * 3600 * s };
+			int n = itemStrs.Count();
             //Debug.Assert(n == tmpStamps.Count());
             for (int i = 0; i < n; i++)
                 m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));

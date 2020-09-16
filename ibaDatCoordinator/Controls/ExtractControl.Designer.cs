@@ -45,6 +45,7 @@ namespace iba.Controls
 			this.m_rbParquet = new System.Windows.Forms.RadioButton();
 			this.m_rbTDMS = new System.Windows.Forms.RadioButton();
 			this.m_rbComtrade = new System.Windows.Forms.RadioButton();
+			this.m_rbMatLab = new System.Windows.Forms.RadioButton();
 			this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
@@ -52,7 +53,6 @@ namespace iba.Controls
 			this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
 			this.m_cbTime = new System.Windows.Forms.CheckBox();
 			this.m_cbMemory = new System.Windows.Forms.CheckBox();
-			this.m_rbMatLab = new System.Windows.Forms.RadioButton();
 			this.groupBox1.SuspendLayout();
 			this.groupBox3.SuspendLayout();
 			this.m_panelFile.SuspendLayout();
@@ -178,6 +178,13 @@ namespace iba.Controls
 			this.m_rbComtrade.TabStop = true;
 			this.m_rbComtrade.UseVisualStyleBackColor = true;
 			// 
+			// m_rbMatLab
+			// 
+			resources.ApplyResources(this.m_rbMatLab, "m_rbMatLab");
+			this.m_rbMatLab.Name = "m_rbMatLab";
+			this.m_rbMatLab.TabStop = true;
+			this.m_rbMatLab.UseVisualStyleBackColor = true;
+			// 
 			// m_monitorGroup
 			// 
 			resources.ApplyResources(this.m_monitorGroup, "m_monitorGroup");
@@ -224,7 +231,7 @@ namespace iba.Controls
 			// 
 			resources.ApplyResources(this.m_nudMemory, "m_nudMemory");
 			this.m_nudMemory.Maximum = new decimal(new int[] {
-            2000,
+            4096,
             0,
             0,
             0});
@@ -235,7 +242,7 @@ namespace iba.Controls
             0});
 			this.m_nudMemory.Name = "m_nudMemory";
 			this.m_nudMemory.Value = new decimal(new int[] {
-            512,
+            1024,
             0,
             0,
             0});
@@ -251,13 +258,6 @@ namespace iba.Controls
 			resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
 			this.m_cbMemory.Name = "m_cbMemory";
 			this.m_cbMemory.UseVisualStyleBackColor = true;
-			// 
-			// m_rbMatLab
-			// 
-			resources.ApplyResources(this.m_rbMatLab, "m_rbMatLab");
-			this.m_rbMatLab.Name = "m_rbMatLab";
-			this.m_rbMatLab.TabStop = true;
-			this.m_rbMatLab.UseVisualStyleBackColor = true;
 			// 
 			// ExtractControl
 			// 

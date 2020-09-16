@@ -1079,7 +1079,7 @@
     <value>..\Resources\scheduled_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TimeSelectionChoices" xml:space="preserve">
-    <value>auto ( {0} );1 ms;10 ms;100 ms;1 s;1 min;1 hour;1 day</value>
+    <value>auto ( {0} );1 ms;10 ms;100 ms;1 s;10 s;1 min;10 min;1 hour;1 day</value>
   </data>
   <data name="TooltipGreen" xml:space="preserve">
     <value>Time base ok</value>
@@ -1804,5 +1804,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="HDEventTask_ChannelClientId" xml:space="preserve">
     <value>Client ID</value>
+  </data>
+  <data name="IbaAnalyzerDeletingRemFile" xml:space="preserve">
+    <value>Deleting output file {0} because of task failure.</value>
   </data>
 </root>

@@ -69,7 +69,7 @@ namespace iba.Data
         {
             m_bMonitorMemoryUsage = m_bMonitorTime = true;
             m_timeLimit = TimeSpan.FromMinutes(10.0);
-            m_memoryLimit = 512;
+            m_memoryLimit = 2048;
         }
         
         public object Clone()

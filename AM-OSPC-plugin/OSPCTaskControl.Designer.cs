@@ -249,7 +249,7 @@
             // 
             resources.ApplyResources(this.m_nudMemory, "m_nudMemory");
             this.m_nudMemory.Maximum = new decimal(new int[] {
-            2000,
+            4096,
             0,
             0,
             0});
@@ -260,7 +260,7 @@
             0});
             this.m_nudMemory.Name = "m_nudMemory";
             this.m_nudMemory.Value = new decimal(new int[] {
-            512,
+            1024,
             0,
             0,
             0});

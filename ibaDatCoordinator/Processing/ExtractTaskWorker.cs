@@ -34,7 +34,8 @@ namespace iba.Processing
                 }
                 return;
             }
-            try
+			List<string> toDelete = new List<string>();
+			try
             {
                 using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, m_task.MonitorData))
                 {
@@ -50,8 +51,9 @@ namespace iba.Processing
                         if (outFile == null) return;
                         if (m_task.OverwriteFiles && m_task.UsesQuota && File.Exists(outFile))
                             m_confWorker.m_quotaCleanups[m_task.Guid].RemoveFile(outFile);
-                        
-                        string outFile2 = "";
+						toDelete.Add(outFile);
+
+						string outFile2 = "";
                         if (!IsExternalVideoExport(m_task))
                         {
                             //fix cleanup for TDMS in case of overwrite
@@ -60,7 +62,8 @@ namespace iba.Processing
                                 outFile2 = outFile.Replace(GetPrimeExtractExtension(), ext2);
                             if (m_task.OverwriteFiles && m_task.UsesQuota && !string.IsNullOrEmpty(outFile2) && File.Exists(outFile2))
                                 m_confWorker.m_quotaCleanups[m_task.Guid].RemoveFile(outFile2);
-                        }
+							toDelete.Add(outFile2);
+						}
                         else if (m_task.OverwriteFiles && m_task.UsesQuota )
                         { //fix cleanup for videos
                             try
@@ -121,6 +124,7 @@ namespace iba.Processing
                     //code on succes
                     lock (m_sd.DatFileStates)
                     {
+						toDelete.Clear();
                         m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                         m_sd.DatFileStates[filename].OutputFiles[m_task] = (m_confWorker.m_outPutFilesPrevTask == null)? null : (m_confWorker.m_outPutFilesPrevTask[0]);
                     }
@@ -168,6 +172,21 @@ namespace iba.Processing
                     }
                 }
             }
+			foreach (string file in toDelete)
+			{
+				try
+				{
+					if (File.Exists(file))
+					{
+						File.Delete(file);
+						String msg = String.Format(iba.Properties.Resources.IbaAnalyzerDeletingRemFile, file);
+						m_confWorker.Log(iba.Logging.Level.Warning, msg, filename, m_task);
+					}
+				}
+				catch
+				{
+				}
+			}
         }
 
         private string GetExtractFileName(string filename)
