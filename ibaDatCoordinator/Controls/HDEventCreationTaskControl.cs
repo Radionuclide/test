@@ -592,11 +592,15 @@ namespace iba.Controls
                     return;
                 }
 
+				string path = localFile;
+				if ()
+
+
                 using (Process ibaProc = new Process())
                 {
                     ibaProc.EnableRaisingEvents = false;
                     ibaProc.StartInfo.FileName = ibaAnalyzerExe;
-                    ibaProc.StartInfo.Arguments = "\"" + m_pdoFilePath + "\"";
+                    ibaProc.StartInfo.Arguments = "\"" + localFile + "\"";
                     ibaProc.Start();
                 }
             }

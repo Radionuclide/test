@@ -174,6 +174,8 @@ namespace iba.Processing
             }
 			foreach (string file in toDelete)
 			{
+				if (String.IsNullOrEmpty(file))
+					continue;
 				try
 				{
 					if (File.Exists(file))
@@ -181,6 +183,13 @@ namespace iba.Processing
 						File.Delete(file);
 						String msg = String.Format(iba.Properties.Resources.IbaAnalyzerDeletingRemFile, file);
 						m_confWorker.Log(iba.Logging.Level.Warning, msg, filename, m_task);
+					}
+					string dir = Path.GetDirectoryName(file);
+					while (Directory.Exists(dir) && dir != m_task.DestinationMapUNC && Directory.GetFiles(dir).Length == 0)
+					{
+						string dir2 = System.IO.Directory.GetParent(dir).FullName;
+						Directory.Delete(dir);
+						dir = dir2;
 					}
 				}
 				catch
