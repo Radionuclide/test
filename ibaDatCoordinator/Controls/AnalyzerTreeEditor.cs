@@ -33,7 +33,7 @@ namespace iba.Controls
         public bool IsOpened => bFilesOpened;
         DateTime m_dtLastWriteTime;
         string pdoFile, datFile, datFilePassword;
-
+		string localPdoFile;
 
         public event Action SourceUpdated;
         #endregion
@@ -73,8 +73,9 @@ namespace iba.Controls
         public bool OpenAnalyzer(out string error)
         {
             error = "";
+			
 
-            lock (lockAnalyzer)
+			lock (lockAnalyzer)
             {
                 bool bErrorFromAnalyzer = false;
 
@@ -92,31 +93,36 @@ namespace iba.Controls
                         Analyzer = new IbaAnalyzer.IbaAnalysis(); //TODO eventually replace by NonInteractive when tree images are supported
                     }
 
-                    FileInfo info = new FileInfo(Program.RemoteFileLoader.GetLocalPath(pdoFile));
-                    if (!info.Exists  || info.LastWriteTimeUtc != m_dtLastWriteTime)
-                        UnsafeClose();
+					FileInfo info;
 
-                    if (!bFilesOpened)
-                    {
-                        if (!Program.RemoteFileLoader.DownloadFile(pdoFile, out string localFile, out error))
-                            return false;
+					if (!String.IsNullOrEmpty(pdoFile))
+					{
+						info = new FileInfo(Program.RemoteFileLoader.GetLocalPath(pdoFile));
+						if (!info.Exists || info.LastWriteTimeUtc != m_dtLastWriteTime)
+							UnsafeClose();
+					}
+					if (!bFilesOpened)
+					{
+						if (!String.IsNullOrEmpty(pdoFile))
+						{
+							if (!Program.RemoteFileLoader.DownloadFile(pdoFile, out string localFile, out error))
+								return false;
+							info = new FileInfo(localFile);
+							DateTime dtLastWriteTime = info.LastWriteTimeUtc;
 
-                        info = new FileInfo(localFile);
-                        DateTime dtLastWriteTime = info.LastWriteTimeUtc;
+							bErrorFromAnalyzer = true;
 
-                        bErrorFromAnalyzer = true;
-
-                        Analyzer.OpenAnalysis(localFile);
-                        m_dtLastWriteTime = dtLastWriteTime;
-
-                        if (!string.IsNullOrEmpty(datFile))
+							Analyzer.OpenAnalysis(localFile);
+							m_dtLastWriteTime = dtLastWriteTime;
+							localPdoFile = localFile;
+						}
+						if (!string.IsNullOrEmpty(datFile))
                         {
                             if (!string.IsNullOrEmpty(datFilePassword))
                                 Analyzer.SetFilePassword("", datFilePassword);
 
                             Analyzer.OpenDataFile(0, datFile);
                         }
-
                         bFilesOpened = true;
                     }
 
@@ -172,9 +178,35 @@ namespace iba.Controls
 
             SourceUpdated?.Invoke();
         }
-    }
 
-    [Flags]
+		public void UnLoadAnalysis()
+		{
+			try
+			{
+				if (Analyzer != null)
+				{
+					Analyzer.CloseAnalysis();
+				}
+			}
+			catch
+			{ }
+		}
+
+		public void ReopenAnalysis()
+		{
+			try
+			{
+				if (Analyzer != null)
+				{
+					Analyzer.OpenAnalysis(localPdoFile);
+				}
+			}
+			catch
+			{ }
+		}
+	}
+
+	[Flags]
     public enum ChannelTreeFilter
     {
         Analog = 0x01,
@@ -520,7 +552,7 @@ namespace iba.Controls
             Interlocked.Exchange(ref iState, Unloaded);
         }
 
-        private bool checkBoxes;
+		private bool checkBoxes;
 
         [DefaultValue(false)]
         public bool CheckBoxes
@@ -750,8 +782,6 @@ namespace iba.Controls
             else
             {
                 TreeSetAnalyzerLoading();
-
-                
                 Task<string>.Factory.StartNew(OpenAnalyzer).ContinueWith(CreateTree);
             }
 

@@ -143,8 +143,8 @@ namespace iba.Remoting
 
         public bool IsFileChangedLocally(string localFile, string remoteFile)
         {
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-                return false;
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
+                return File.Exists(localFile) && File.Exists(remoteFile) && File.GetLastWriteTime(localFile) > File.GetLastWriteTime(remoteFile);
 
             string filename = "";
 
@@ -185,11 +185,24 @@ namespace iba.Remoting
         public bool UploadFile(string localFile, string remoteFile, bool ifExists, out string error)
         {
             error = "";
+			string filename = "";
 
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-                return true;
+			if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
+			{ //just copy
 
-            string filename = "";
+				try
+				{
+					File.Copy(localFile, remoteFile, true);
+					return true;
+				}
+				catch (Exception ex)
+				{
+					filename = Path.GetFileName(localFile);
+					error = string.Format(Properties.Resources.Upload_ErrorException, filename) + ": " + ex.Message;
+					return false;
+				}
+			}
+
 
             try
             {

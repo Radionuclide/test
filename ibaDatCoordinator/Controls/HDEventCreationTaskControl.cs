@@ -243,7 +243,7 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal;
+            m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.RunsWithService == Program.ServiceEnum.CONNECTED;
 
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
@@ -351,7 +351,7 @@ namespace iba.Controls
             bResetChannelTree = false;
         }
 
-        private bool SaveServerData(List<EventConfig> changedConfigs)
+		private bool SaveServerData(List<EventConfig> changedConfigs)
         {
             bool saveSuccessfull = true;
             if (!m_ctrlEvent.ReadOnly)
@@ -462,11 +462,15 @@ namespace iba.Controls
             m_data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
             m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-            {
-                TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
-                UploadPdoFile(false);
-            }
+			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+			{
+				TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
+				UploadPdoFile(false);
+			}
+			else if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+			{
+				UploadPdoFile(false);
+			}
         }
 
         List<string> GetPriorities()
@@ -586,16 +590,29 @@ namespace iba.Controls
                     return;
                 }
 
-                if (!Program.RemoteFileLoader.DownloadFile(m_pdoFilePath, out string localFile, out string error))
-                {
-                    MessageBox.Show(this, error, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+				string localFile = "";
+				if (!string.IsNullOrEmpty(m_pdoFilePath))
+				{
 
-				string path = localFile;
-				if ()
+					if (!Program.RemoteFileLoader.DownloadFile(m_pdoFilePath, out localFile, out string error))
+					{
+						MessageBox.Show(this, error, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						return;
+					}
 
+					string copyForInteractiveEdit = localFile.Replace(".pdo", "_(ibaDatCoordinator).pdo");
 
+					try
+					{
+						if (!File.Exists(copyForInteractiveEdit) || File.GetLastWriteTime(copyForInteractiveEdit) < File.GetLastWriteTime(localFile))
+							File.Copy(localFile, copyForInteractiveEdit, true);
+						if (File.Exists(copyForInteractiveEdit))
+							localFile = copyForInteractiveEdit;
+					}
+					catch
+					{
+					}
+				}
                 using (Process ibaProc = new Process())
                 {
                     ibaProc.EnableRaisingEvents = false;
@@ -621,15 +638,40 @@ namespace iba.Controls
                 return;
             }
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-            {
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+			{
                 string localFile = Program.RemoteFileLoader.GetLocalPath(m_pdoFilePath);
-                if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, m_pdoFilePath))
+				string copyForInteractiveEdit = localFile.Replace(".pdo", "_(ibaDatCoordinator).pdo");
+
+				if (File.Exists(copyForInteractiveEdit) && (!File.Exists(localFile) || File.GetLastWriteTime(copyForInteractiveEdit) > File.GetLastWriteTime(localFile)))
+				{
+					if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+					{ //copy locally
+						m_analyzerManager.UnLoadAnalysis();
+						try
+						{
+							File.Copy(copyForInteractiveEdit, localFile, true);
+						}
+						catch
+						{
+
+						}
+					}
+					else
+						localFile = copyForInteractiveEdit;
+				}
+
+				if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, m_pdoFilePath))
                 {
                     if (MessageBox.Show(this, Properties.Resources.FileChanged_Upload, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                         return;
 
                     Cursor = Cursors.WaitCursor;
+
+					if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
+					{ //unload ibaAnalyzer from trees
+						m_analyzerManager.UnLoadAnalysis();
+					}
 
                     try
                     {
@@ -650,8 +692,15 @@ namespace iba.Controls
                         Cursor = Cursors.Default;
                         MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }
-                else if (messageOnNoChanges)
+
+					if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
+					{ //unload ibaAnalyzer from trees
+						m_analyzerManager.ReopenAnalysis();
+					}
+					UpdateSources();
+					loadAnalyzerTreeDataTask();
+				}
+				else if (messageOnNoChanges)
                     MessageBox.Show(this, Properties.Resources.FileChanged_UploadNoChanges, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }

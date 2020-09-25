@@ -191,9 +191,9 @@ namespace iba
         {
             get
             {
-                //#if DEBUG
-                //              return false;
-                //#else
+               // //#if DEBUG
+                            //  return false;
+             //   #else
                 try
                 { // get host IP addresses
                     IPAddress[] hostIPs = Dns.GetHostAddresses(ServiceHost);
