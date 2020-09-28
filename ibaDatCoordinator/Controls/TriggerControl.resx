@@ -137,6 +137,9 @@
   <data name="m_grPulse.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
+  <data name="m_grPulse.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;m_grPulse.Name" xml:space="preserve">
     <value>m_grPulse</value>
   </data>
@@ -168,6 +171,9 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Trigger signal:</value>
   </data>
+  <data name="label1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
@@ -197,6 +203,9 @@
   </data>
   <data name="m_rbTriggerBySignal.Text" xml:space="preserve">
     <value>Generate an event occurrence for every rising edge:</value>
+  </data>
+  <data name="m_rbTriggerBySignal.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerBySignal.Name" xml:space="preserve">
     <value>m_rbTriggerBySignal</value>
