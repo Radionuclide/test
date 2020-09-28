@@ -1942,7 +1942,7 @@ namespace iba.Processing
                         else
                             Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 						//Log(Logging.Level.Warning, "Exception at location 3: " + ex.ToString(), filename);
 						Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);

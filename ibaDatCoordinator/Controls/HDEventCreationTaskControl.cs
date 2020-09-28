@@ -93,7 +93,8 @@ namespace iba.Controls
             m_ctrlEvent.SetChannelTreeCtrl(channelTree);
 
             m_toolTip.SetToolTip(m_btnOpenPDO, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
-            m_toolTip.SetToolTip(m_btnUploadPDO, Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService==Program.ServiceEnum.NOSERVICE?Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone:Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+
             m_toolTip.SetToolTip(m_btnTest, Properties.Resources.HDEventTask_ToolTip_Test);
 
             m_ctrlEvent.EventTrigger = triggerControl;
@@ -376,7 +377,7 @@ namespace iba.Controls
                         worker.WriteEvents(storeNames, null, validationForm.AddRange);
 
                     }
-                    catch (HDCreateEventException ex)
+                    catch (HDCreateEventException)
                     {
                         saveSuccessfull = false;
                     }
@@ -642,7 +643,7 @@ namespace iba.Controls
 			{
                 string localFile = Program.RemoteFileLoader.GetLocalPath(m_pdoFilePath);
 				string copyForInteractiveEdit = localFile.Replace(".pdo", "_(ibaDatCoordinator).pdo");
-
+				string toDelete = "";
 				if (File.Exists(copyForInteractiveEdit) && (!File.Exists(localFile) || File.GetLastWriteTime(copyForInteractiveEdit) > File.GetLastWriteTime(localFile)))
 				{
 					if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
@@ -651,6 +652,7 @@ namespace iba.Controls
 						try
 						{
 							File.Copy(copyForInteractiveEdit, localFile, true);
+							toDelete = copyForInteractiveEdit;
 						}
 						catch
 						{
@@ -658,40 +660,43 @@ namespace iba.Controls
 						}
 					}
 					else
+					{
 						localFile = copyForInteractiveEdit;
+						toDelete = copyForInteractiveEdit;
+					}
 				}
 
 				if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, m_pdoFilePath))
-                {
-                    if (MessageBox.Show(this, Properties.Resources.FileChanged_Upload, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                        return;
+				{
+					if (MessageBox.Show(this, Program.RunsWithService==Program.ServiceEnum.NOSERVICE? Properties.Resources.FileChanged_UploadStandalone:Properties.Resources.FileChanged_Upload, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+						return;
 
-                    Cursor = Cursors.WaitCursor;
+					Cursor = Cursors.WaitCursor;
 
 					if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
 					{ //unload ibaAnalyzer from trees
 						m_analyzerManager.UnLoadAnalysis();
 					}
 
-                    try
-                    {
-                        bool bStarted = TaskManager.Manager.IsJobStarted(m_data.ParentConfigurationData.Guid);
-                        if (bStarted)
-                            TaskManager.Manager.StopAndWaitForConfiguration(m_data.ParentConfigurationData);
+					try
+					{
+						bool bStarted = TaskManager.Manager.IsJobStarted(m_data.ParentConfigurationData.Guid);
+						if (bStarted)
+							TaskManager.Manager.StopAndWaitForConfiguration(m_data.ParentConfigurationData);
 
-                        if (!Program.RemoteFileLoader.UploadFile(localFile, m_pdoFilePath, true, out string error))
-                            throw new Exception(error);
+						if (!Program.RemoteFileLoader.UploadFile(localFile, m_pdoFilePath, true, out string error))
+							throw new Exception(error);
 
-                        if (bStarted)
-                            TaskManager.Manager.StartConfiguration(m_data.ParentConfigurationData);
+						if (bStarted)
+							TaskManager.Manager.StartConfiguration(m_data.ParentConfigurationData);
 
-                        Cursor = Cursors.Default;
-                    }
-                    catch (Exception ex)
-                    {
-                        Cursor = Cursors.Default;
-                        MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+						Cursor = Cursors.Default;
+					}
+					catch (Exception ex)
+					{
+						Cursor = Cursors.Default;
+						MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
 
 					if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
 					{ //unload ibaAnalyzer from trees
@@ -699,10 +704,24 @@ namespace iba.Controls
 					}
 					UpdateSources();
 					loadAnalyzerTreeDataTask();
+
 				}
 				else if (messageOnNoChanges)
-                    MessageBox.Show(this, Properties.Resources.FileChanged_UploadNoChanges, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+				{
+					MessageBox.Show(this, Properties.Resources.FileChanged_UploadNoChanges, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					toDelete = "";
+				}
+				if (!String.IsNullOrEmpty(toDelete))
+				{
+					try
+					{
+						File.Delete(toDelete);
+					}
+					catch
+					{
+					}
+				}
+			}
         }
 
         private void DatTextChanged(object sender, EventArgs e)

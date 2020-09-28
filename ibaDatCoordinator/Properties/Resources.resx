@@ -1808,4 +1808,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="IbaAnalyzerDeletingRemFile" xml:space="preserve">
     <value>Deleting output file {0} because of task failure.</value>
   </data>
+  <data name="FileChanged_UploadStandalone" xml:space="preserve">
+    <value>Changes were detected to one or more PDO files. In order to apply these changes,  the source files must be updated. This might automatically stop and start the corresponding job. Do you wish to update these files?</value>
+  </data>
+  <data name="HDEventTask_ToolTip_UploadPDOStandAlone" xml:space="preserve">
+    <value>Update the PDO file</value>
+  </data>
 </root>

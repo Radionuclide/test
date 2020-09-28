@@ -1200,6 +1200,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Changes were detected to one or more PDO files. In order to apply these changes,  the source files must be updated. This might automatically stop and start the corresponding job. Do you wish to update these files?.
+        /// </summary>
+        internal static string FileChanged_UploadStandalone {
+            get {
+                return ResourceManager.GetString("FileChanged_UploadStandalone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem monitoring .dat directory &apos;{0}&apos; : &quot;{1}&quot;.
         /// </summary>
         internal static string FileSystemWatcherProblem {
@@ -1359,6 +1368,15 @@ namespace iba.Properties {
         internal static string HDEventTask_ToolTip_UploadPDO {
             get {
                 return ResourceManager.GetString("HDEventTask_ToolTip_UploadPDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update the PDO file.
+        /// </summary>
+        internal static string HDEventTask_ToolTip_UploadPDOStandAlone {
+            get {
+                return ResourceManager.GetString("HDEventTask_ToolTip_UploadPDOStandAlone", resourceCulture);
             }
         }
         
