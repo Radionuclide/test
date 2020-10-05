@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_grPulse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>126, 89</value>
+    <value>170, 89</value>
   </data>
   <data name="m_colPulse.Caption" xml:space="preserve">
     <value>Trigger signal</value>
@@ -250,7 +250,7 @@
     <value>6</value>
   </data>
   <data name="m_grTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>126, 45</value>
+    <value>170, 45</value>
   </data>
   <data name="m_colTime.Caption" xml:space="preserve">
     <value>Pulse signal</value>
