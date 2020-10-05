@@ -983,12 +983,6 @@
             This method is used to add additional data from the base application that is not accessible by the hdClient e.g. ActiveX.
             </summary>
         </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdReader.ClientVersion">
-            <summary>
-            The overrides the default client version calculated in the hdClient 
-            This can be needed in case the client is embedded. Then the client version would be that of the host application instead of the embedded iba client.
-            </summary>
-        </member>
         <member name="M:iba.HD.Client.Interfaces.IHdReader.Connect(System.String,System.Int32)">
             <summary>
             Connect to server located on given host and port
