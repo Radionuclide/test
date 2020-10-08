@@ -53,7 +53,7 @@ namespace iba.Controls
 
         BindingList<PulseSignal> pulseSignals;
         BindingList<PulseSignal> timeSignals;
-
+        BindingList<PulseSignal> timeSignalsOut;
 
         public TriggerControl()
         {
@@ -65,29 +65,31 @@ namespace iba.Controls
 
             pulseSignals = new BindingList<PulseSignal>();
             timeSignals = new BindingList<PulseSignal>();
+            timeSignalsOut = new BindingList<PulseSignal>();
 
-            GrPulse.BeginUpdate();
-            try
-            {
-                GrPulse.DataSource = pulseSignals;
-            }
-            finally
-            {
-                GrPulse.EndUpdate();
-            }
+            comboEventIn.Items.AddRange(new string[] { Properties.Resources.HdRisingEdge, Properties.Resources.HdRisingEdgeAvg, Properties.Resources.HdFallingEdge, Properties.Resources.HdFallingEdgeAvg });
+            comboEventOut.Items.AddRange(new string[] { Properties.Resources.HdNoEdge, Properties.Resources.HdFallingEdge, Properties.Resources.HdFallingEdgeAvg }); //Required for designer
 
-            GrTime.BeginUpdate();
-            try
-            {
-                GrTime.DataSource = timeSignals;
-            }
-            finally
-            {
-                GrTime.EndUpdate();
-            }
+            SetDataSource(GrPulse, pulseSignals);
+            SetDataSource(GrTime, timeSignals);
+            SetDataSource(GrTimeOut, timeSignalsOut);
+
             pulseSignals.ListChanged += TriggerPulseChanged;
             timeSignals.ListChanged += TriggerTimeChanged;
+            timeSignalsOut.ListChanged += TriggerTimeChanged;
+        }
 
+        void SetDataSource(GridControl grid, object bindinglist)
+        {
+            grid.BeginUpdate();
+            try
+            {
+                grid.DataSource = bindinglist;
+            }
+            finally
+            {
+                grid.EndUpdate();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -132,21 +134,27 @@ namespace iba.Controls
 
             pulseSignals.Clear();
             timeSignals.Clear();
+            timeSignalsOut.Clear();
             if (m_data != null)
             {
                 pulseSignals.Add(new PulseSignal(m_data.PulseSignal));
                 timeSignals.Add(new PulseSignal(m_data.TimeSignal));
+                timeSignalsOut.Add(new PulseSignal(m_data.TimeSignalOutgoing));
 
                 if (m_data.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerFile)
                     TriggerPerFile = true;
                 else
                     TriggerBySignal = true;
+
+                SetSlope(m_data.Slope, m_data.AvgSlope);
             }
             else
             {
                 pulseSignals.Add(new PulseSignal(HDCreateEventTaskData.UnassignedExpression));
                 timeSignals.Add(new PulseSignal(HDCreateEventTaskData.EndTime));
+                timeSignalsOut.Add(new PulseSignal(HDCreateEventTaskData.UnassignedExpression));
 
+                SetSlope(HDCreateEventTaskData.TriggerSlope.RisingFalling, HDCreateEventTaskData.AvgSlope.None);
 
                 TriggerPerFile = true;
             }
@@ -169,10 +177,17 @@ namespace iba.Controls
             if (signals != null && signals.Count > 0)
                 m_data.TimeSignal = signals[0].PulseID;
 
+            signals = ((BindingList<PulseSignal>)GrTimeOut.DataSource);
+            if (signals != null && signals.Count > 0)
+                m_data.TimeSignalOutgoing = signals[0].PulseID;
+
             if (TriggerPerFile)
                 m_data.TriggerMode = HDCreateEventTaskData.HDEventTriggerEnum.PerFile;
             else
                 m_data.TriggerMode = HDCreateEventTaskData.HDEventTriggerEnum.PerSignalPulse;
+
+            m_data.Slope = GetSlope();
+            m_data.AvgSlope = GetAvgSlope();
 
             localEventData.Tag = m_data;
             localEventData.Active = Active;
@@ -191,6 +206,97 @@ namespace iba.Controls
             get { return m_rbTriggerBySignal.Checked; }
             set { m_rbTriggerBySignal.Checked = value; }
         }
+
+        void SetSlope(HDCreateEventTaskData.TriggerSlope slope, HDCreateEventTaskData.AvgSlope avg)
+        {
+            if (slope == HDCreateEventTaskData.TriggerSlope.Rising)
+            {
+                comboEventIn.SelectedIndex = 0;
+                comboEventOut.SelectedIndex = 0;
+            }
+            else if (slope == HDCreateEventTaskData.TriggerSlope.Falling)
+            {
+                comboEventIn.SelectedIndex = 1;
+                comboEventOut.SelectedIndex = 0;
+            }
+            else if (slope == HDCreateEventTaskData.TriggerSlope.RisingFalling)
+            {
+                comboEventIn.SelectedIndex = 0;
+                comboEventOut.SelectedIndex = 1;
+            }
+            else if (slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
+            {
+                comboEventIn.SelectedIndex = 1;
+                comboEventOut.SelectedIndex = 1;
+            }
+
+            if (avg == HDCreateEventTaskData.AvgSlope.Rising || avg == HDCreateEventTaskData.AvgSlope.RisingFalling)
+                comboEventIn.SelectedIndex += 1;
+            if (avg == HDCreateEventTaskData.AvgSlope.Falling || avg == HDCreateEventTaskData.AvgSlope.RisingFalling)
+                comboEventOut.SelectedIndex += 1;
+        }
+
+        HDCreateEventTaskData.TriggerSlope GetSlope()
+        {
+            if (comboEventIn.SelectedIndex == 0 || comboEventIn.SelectedIndex == 1)
+            {
+                if (comboEventOut.SelectedIndex == 0)
+                    return HDCreateEventTaskData.TriggerSlope.Rising;
+                else
+                    return HDCreateEventTaskData.TriggerSlope.RisingFalling;
+            }
+            else
+            {
+                if (comboEventOut.SelectedIndex == 0)
+                    return HDCreateEventTaskData.TriggerSlope.Falling;
+                else
+                    return HDCreateEventTaskData.TriggerSlope.FallingRising;
+            }
+        }
+
+        HDCreateEventTaskData.AvgSlope GetAvgSlope()
+        {
+            if (comboEventIn.SelectedIndex == 0 || comboEventIn.SelectedIndex == 2)
+            {
+                if (comboEventOut.SelectedIndex == 0 || comboEventOut.SelectedIndex == 1)
+                    return HDCreateEventTaskData.AvgSlope.None;
+                else
+                    return HDCreateEventTaskData.AvgSlope.Falling;
+            }
+            else
+            {
+                if (comboEventOut.SelectedIndex == 2)
+                    return HDCreateEventTaskData.AvgSlope.RisingFalling;
+                else
+                    return HDCreateEventTaskData.AvgSlope.Rising;
+            }
+        }
+
+        void comboEventIn_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int iOut = comboEventOut.SelectedIndex;
+
+            if (comboEventIn.SelectedIndex == 0 || comboEventIn.SelectedIndex == 1)
+            {
+                comboEventOut.Items.Clear();
+                comboEventOut.Items.AddRange(new string[] { Properties.Resources.HdNoEdge, Properties.Resources.HdFallingEdge, Properties.Resources.HdFallingEdgeAvg });
+            }
+            else
+            {
+                comboEventOut.Items.Clear();
+                comboEventOut.Items.AddRange(new string[] { Properties.Resources.HdNoEdge, Properties.Resources.HdRisingEdge, Properties.Resources.HdRisingEdgeAvg });
+            }
+
+            comboEventOut.SelectedIndex = Math.Max(0, iOut);
+
+            RaisePropertyChanged("Trigger");
+        }
+
+        void comboEventOut_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RaisePropertyChanged("Trigger");
+        }
+
 
         public void SetActive(CheckState checkState)
         {
@@ -220,6 +326,11 @@ namespace iba.Controls
             get { return m_grTime; }
         }
 
+        public GridControl GrTimeOut
+        {
+            get { return m_grTimeOut; }
+        }
+
         public GridColumn ColPulse
         {
             get { return m_colPulse; }
@@ -228,6 +339,11 @@ namespace iba.Controls
         public GridColumn ColTime
         {
             get { return m_colTime; }
+        }
+
+        public GridColumn ColTimeOut
+        {
+            get { return m_colTimeOut; }
         }
 
         public void SetPulseChannelEditor(DevExpress.XtraEditors.Repository.RepositoryItem channelEditor, ISignalDragDropHandler dragDropHandler)
@@ -280,6 +396,39 @@ namespace iba.Controls
             }
         }
 
+        public void SetTimeOutgoingChannelEditor(DevExpress.XtraEditors.Repository.RepositoryItem channelEditor, ISignalDragDropHandler dragDropHandler)
+        {
+            try
+            {
+                GrTimeOut.RepositoryItems.Add(channelEditor);
+                ColTimeOut.ColumnEdit = channelEditor;
+                channelEditor.EditValueChanged += TriggerTimeChanged;
+                GrTimeOut.DataSourceChanged += TriggerTimeChanged;
+
+                if (timeDragDropHandler != null)
+                {
+                    OnTimeDragOverHandler -= timeDragDropHandler.OnDragOverHandle;
+                    OnTimeDragDropHandler -= timeDragDropHandler.OnDragDropHandle;
+                    timeDragDropHandler.OnDragOverChannelResponse -= OnDragoverResponse;
+                    timeDragDropHandler.OnDragDropChannelResponse -= OnDragDropResponse;
+                }
+
+                timeDragDropHandler = dragDropHandler;
+                if (dragDropHandler != null)
+                {
+                    OnTimeDragOverHandler += dragDropHandler.OnDragOverHandle;
+                    OnTimeDragDropHandler += dragDropHandler.OnDragDropHandle;
+                    dragDropHandler.OnDragOverChannelResponse += OnDragoverResponse;
+                    dragDropHandler.OnDragDropChannelResponse += OnDragDropResponse;
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.ibaLogger.Log(e);
+            }
+        }
+
+
         #region Drag/Drop
 
         public event EventHandler OnSignalDragOverHandler;
@@ -298,7 +447,8 @@ namespace iba.Controls
             else
             {
                 hi = m_viewTime.CalcHitInfo(m_viewTime.GridControl.PointToClient(new Point(drgEvent.X, drgEvent.Y)));
-                if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
+                GridHitInfo hi2 = m_viewTimeOut.CalcHitInfo(m_viewTimeOut.GridControl.PointToClient(new Point(drgEvent.X, drgEvent.Y)));
+                if (hi.InColumn || hi2.InColumn || hi.InRow || hi2.InRow || hi.HitTest != GridHitTest.None || hi2.HitTest != GridHitTest.None)
                     OnTimeDragOverHandler?.Invoke(this, new DragDetailsEvent(false, drgEvent));
                 else
                 {
@@ -330,6 +480,10 @@ namespace iba.Controls
             hi = m_viewTime.CalcHitInfo(m_viewTime.GridControl.PointToClient(new Point(drgevent.X, drgevent.Y)));
             if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
                 OnTimeDragDropHandler?.Invoke(this, new DragDetailsEvent(false, drgevent));
+
+            hi = m_viewTimeOut.CalcHitInfo(m_viewTimeOut.GridControl.PointToClient(new Point(drgevent.X, drgevent.Y)));
+            if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
+                OnTimeDragDropHandler?.Invoke(this, new DragDetailsEvent(false, drgevent));
         }
 
         public void OnDragDropResponse(object sender, EventArgs eventArgs)
@@ -353,17 +507,38 @@ namespace iba.Controls
                 }
                 else if (sender == timeDragDropHandler && response.signals.Count == 1)
                 {
-                    GrTime.BeginUpdate();
+                    GridHitInfo hi = m_viewTime.CalcHitInfo(m_viewTime.GridControl.PointToClient(new Point(response.drgEvent.X, response.drgEvent.Y)));
+                    GridControl grid = null;
+                    BindingList<PulseSignal> signals = null;
+                    if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
+                    {
+                        grid = GrTime;
+                        signals = timeSignals;
+                    }
+                    else
+                    {
+                        hi = m_viewTimeOut.CalcHitInfo(m_viewTimeOut.GridControl.PointToClient(new Point(response.drgEvent.X, response.drgEvent.Y)));
+                        if (hi.InColumn || hi.InRow || hi.HitTest != GridHitTest.None)
+                        {
+                            grid = GrTimeOut;
+                            signals = timeSignalsOut;
+                        }
+                        else
+                            return;
+
+                    }
+
+                    grid?.BeginUpdate();
                     try
                     {
                         ignoreChanges = true;
-                        timeSignals.Clear();
+                        signals.Clear();
                         ignoreChanges = false;
-                        timeSignals.Add(new PulseSignal(response.signals[0].Item1));
+                        signals.Add(new PulseSignal(response.signals[0].Item1));
                     }
                     finally
                     {
-                        GrTime.EndUpdate();
+                        grid?.EndUpdate();
                     }
                 }
             }

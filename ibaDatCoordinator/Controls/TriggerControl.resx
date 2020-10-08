@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_grPulse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 89</value>
+    <value>376, 81</value>
   </data>
   <data name="m_colPulse.Caption" xml:space="preserve">
     <value>Trigger signal</value>
@@ -137,9 +137,6 @@
   <data name="m_grPulse.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="m_grPulse.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;m_grPulse.Name" xml:space="preserve">
     <value>m_grPulse</value>
   </data>
@@ -150,62 +147,26 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_grPulse.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 92</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 13</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Trigger signal:</value>
-  </data>
-  <data name="label1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="m_rbTriggerBySignal.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_rbTriggerBySignal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_rbTriggerBySignal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 69</value>
+    <value>17, 83</value>
   </data>
   <data name="m_rbTriggerBySignal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 17</value>
+    <value>278, 17</value>
   </data>
   <data name="m_rbTriggerBySignal.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_rbTriggerBySignal.Text" xml:space="preserve">
-    <value>Generate an event occurrence for every rising edge:</value>
-  </data>
-  <data name="m_rbTriggerBySignal.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+    <value>Generate an event occurrence for every trigger pulse:</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerBySignal.Name" xml:space="preserve">
     <value>m_rbTriggerBySignal</value>
@@ -217,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerBySignal.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>10</value>
   </data>
   <data name="m_rbTriggerPerFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -226,7 +187,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbTriggerPerFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 25</value>
+    <value>17, 29</value>
   </data>
   <data name="m_rbTriggerPerFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>263, 17</value>
@@ -247,10 +208,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_rbTriggerPerFile.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>11</value>
   </data>
   <data name="m_grTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 45</value>
+    <value>125, 50</value>
   </data>
   <data name="m_colTime.Caption" xml:space="preserve">
     <value>Pulse signal</value>
@@ -277,7 +238,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_grTime.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>8</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -286,16 +247,16 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 48</value>
+    <value>35, 52</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 13</value>
+    <value>84, 13</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>Event time:</value>
+    <value>Incoming Event:</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -307,7 +268,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
   <data name="ckActive.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -316,7 +277,7 @@
     <value>NoControl</value>
   </data>
   <data name="ckActive.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 2</value>
+    <value>17, 3</value>
   </data>
   <data name="ckActive.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 17</value>
@@ -337,6 +298,168 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ckActive.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>35, 106</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 13</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Incoming event:</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="comboEventIn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>125, 104</value>
+  </data>
+  <data name="comboEventIn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 21</value>
+  </data>
+  <data name="comboEventIn.TabIndex" type="System.Int32, mscorlib">
+    <value>66</value>
+  </data>
+  <data name="&gt;&gt;comboEventIn.Name" xml:space="preserve">
+    <value>comboEventIn</value>
+  </data>
+  <data name="&gt;&gt;comboEventIn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboEventIn.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;comboEventIn.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>273, 106</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 13</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>67</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Outgoing event:</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="comboEventOut.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 104</value>
+  </data>
+  <data name="comboEventOut.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 21</value>
+  </data>
+  <data name="comboEventOut.TabIndex" type="System.Int32, mscorlib">
+    <value>68</value>
+  </data>
+  <data name="&gt;&gt;comboEventOut.Name" xml:space="preserve">
+    <value>comboEventOut</value>
+  </data>
+  <data name="&gt;&gt;comboEventOut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboEventOut.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;comboEventOut.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>273, 52</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 13</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Outgoing Event:</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_grTimeOut.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 50</value>
+  </data>
+  <data name="m_colTimeOut.Caption" xml:space="preserve">
+    <value>Pulse signal</value>
+  </data>
+  <data name="m_colTimeOut.Visible" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_colTimeOut.VisibleIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_grTimeOut.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 20</value>
+  </data>
+  <data name="m_grTimeOut.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="&gt;&gt;m_grTimeOut.Name" xml:space="preserve">
+    <value>m_grTimeOut</value>
+  </data>
+  <data name="&gt;&gt;m_grTimeOut.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.GridControl, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;m_grTimeOut.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_grTimeOut.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -346,7 +469,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>494, 120</value>
+    <value>735, 151</value>
   </data>
   <data name="&gt;&gt;m_viewPulse.Name" xml:space="preserve">
     <value>m_viewPulse</value>
@@ -370,6 +493,18 @@
     <value>m_colTime</value>
   </data>
   <data name="&gt;&gt;m_colTime.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;m_viewTimeOut.Name" xml:space="preserve">
+    <value>m_viewTimeOut</value>
+  </data>
+  <data name="&gt;&gt;m_viewTimeOut.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.Views.Grid.GridView, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;m_colTimeOut.Name" xml:space="preserve">
+    <value>m_colTimeOut</value>
+  </data>
+  <data name="&gt;&gt;m_colTimeOut.Type" xml:space="preserve">
     <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

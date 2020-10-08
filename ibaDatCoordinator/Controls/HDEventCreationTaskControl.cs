@@ -25,7 +25,7 @@ namespace iba.Controls
         IPropertyPaneManager m_manager;
 
         AnalyzerManager m_analyzerManager;
-        RepositoryItemChannelTreeEdit m_pulseEditor, m_timeEditor, m_channelEditor, m_textEditor;
+        RepositoryItemChannelTreeEdit m_pulseEditor, m_timeEditor, m_timeEditorOut, m_channelEditor, m_textEditor;
         TriggerControl triggerControl;
 
         string m_pdoFilePath, m_datFilePath;
@@ -63,6 +63,12 @@ namespace iba.Controls
             m_timeEditor.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Properties.Resources.pausetask);
             m_timeEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 
+            m_timeEditorOut = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields);
+            m_timeEditorOut.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
+            m_timeEditorOut.AddSpecialNode(HDCreateEventTaskData.EndTime, Properties.Resources.EndTime, Properties.Resources.pausetask);
+            m_timeEditorOut.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Properties.Resources.pausetask);
+            m_timeEditorOut.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+
             m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields);
             numericTree = m_channelEditor.ChannelTree;
             m_channelEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
@@ -76,12 +82,14 @@ namespace iba.Controls
 
             m_pulseEditor.ChannelTree.Invalidated += ChannelEditorModified;
             m_timeEditor.ChannelTree.Invalidated += ChannelEditorModified;
+            m_timeEditorOut.ChannelTree.Invalidated += ChannelEditorModified;
             numericTree.Invalidated += ChannelEditorModified;
             m_textEditor.ChannelTree.Invalidated += ChannelEditorModified;
 
             triggerControl = new TriggerControl();
             triggerControl.SetPulseChannelEditor(m_pulseEditor, m_pulseEditor.ChannelTree);
             triggerControl.SetTimeChannelEditor(m_timeEditor, m_timeEditor.ChannelTree);
+            triggerControl.SetTimeOutgoingChannelEditor(m_timeEditorOut, m_timeEditorOut.ChannelTree);
 
             m_ctrlEvent.DefaultNumericChannelValue = HDCreateEventTaskData.UnassignedExpression;
             m_ctrlEvent.DefaultTextChannelValue = HDCreateEventTaskData.UnassignedExpression;
@@ -157,6 +165,14 @@ namespace iba.Controls
                     m_timeEditor.Dispose();
                     m_timeEditor = null;
                 }
+                if (m_timeEditorOut != null)
+                {
+
+                    triggerControl.GrTime.RepositoryItems.Remove(m_timeEditorOut);
+                    triggerControl.ColTime.ColumnEdit = null;
+                    m_timeEditorOut.Dispose();
+                    m_timeEditorOut = null;
+                }
                 if (m_pulseEditor != null)
                 {
                     triggerControl.GrPulse.RepositoryItems.Remove(m_pulseEditor);
@@ -228,6 +244,7 @@ namespace iba.Controls
                 while (!bResetChannelTree && !bDisposeChannelTree && numericTree != null && !numericTree.Load()) ;
                 while (!bResetChannelTree && !bDisposeChannelTree && m_pulseEditor != null && !m_pulseEditor.ChannelTree.Load()) ;
                 while (!bResetChannelTree && !bDisposeChannelTree && m_timeEditor != null && !m_timeEditor.ChannelTree.Load()) ;
+                while (!bResetChannelTree && !bDisposeChannelTree && m_timeEditorOut != null && !m_timeEditorOut.ChannelTree.Load()) ;
                 while (!bResetChannelTree && !bDisposeChannelTree && m_textEditor != null && !m_textEditor.ChannelTree.Load()) ;
 
                 bLoadingChannelTree = false;
@@ -343,6 +360,7 @@ namespace iba.Controls
 
             m_pulseEditor.ResetChannelTree();
             m_timeEditor.ResetChannelTree();
+            m_timeEditorOut.ResetChannelTree();
             m_channelEditor.ResetChannelTree();
             m_textEditor.ResetChannelTree();
             channelTree.Reset();

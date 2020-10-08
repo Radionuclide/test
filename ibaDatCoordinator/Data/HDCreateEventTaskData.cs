@@ -18,6 +18,10 @@ namespace iba.Data
         public const string EndTime = "*ENDTIME*";
         public const string UnassignedExpression = "*UNASSIGNED*";
 
+        public enum TriggerSlope { Rising, Falling, RisingFalling, FallingRising };
+
+        public enum AvgSlope { None, Rising, Falling, RisingFalling };
+
         [Serializable]
         public class EventData : ICloneable, IEquatable<EventData>
         {
@@ -105,6 +109,23 @@ namespace iba.Data
                 set { m_timeSignal = value; }
             }
 
+            private TriggerSlope slope;
+            public TriggerSlope Slope
+            {
+                get { return slope; }
+                set { slope = value; }
+            }
+
+            private AvgSlope avgSlope;
+            public AvgSlope AvgSlope
+            {
+                get { return avgSlope; }
+                set { avgSlope = value; }
+            }
+
+            private string m_timeSignalOutgoing;
+            public string TimeSignalOutgoing { get => m_timeSignalOutgoing; set => m_timeSignalOutgoing = value; }
+
             public EventData()
             {
                 m_storeName = "";
@@ -131,6 +152,9 @@ namespace iba.Data
                 cpy.m_triggerMode = m_triggerMode;
                 cpy.m_pulseSignal = m_pulseSignal;
                 cpy.m_timeSignal = m_timeSignal;
+                cpy.m_timeSignalOutgoing = m_timeSignalOutgoing;
+                cpy.slope = slope;
+                cpy.AvgSlope = avgSlope;
                 return cpy;
             }
 
@@ -148,6 +172,9 @@ namespace iba.Data
                     && m_triggerMode == other.m_triggerMode
                     && m_pulseSignal == other.m_pulseSignal
                     && m_timeSignal == other.m_timeSignal
+                    && m_timeSignalOutgoing == other.m_timeSignalOutgoing
+                    && slope == other.slope
+                    && AvgSlope == other.avgSlope
                     && m_numericFields.SequenceEqual(other.m_numericFields)
                     && m_textFields.SequenceEqual(other.m_textFields)
                     && m_blobFields.SequenceEqual(other.m_blobFields);

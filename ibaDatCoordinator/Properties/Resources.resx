@@ -1814,4 +1814,19 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="HDEventTask_ToolTip_UploadPDOStandAlone" xml:space="preserve">
     <value>Update the PDO file</value>
   </data>
+  <data name="HdFallingEdge" xml:space="preserve">
+    <value>on falling edge (Point)</value>
+  </data>
+  <data name="HdNoEdge" xml:space="preserve">
+    <value>never</value>
+  </data>
+  <data name="HdRisingEdge" xml:space="preserve">
+    <value>on rising edge (Point)</value>
+  </data>
+  <data name="HdFallingEdgeAvg" xml:space="preserve">
+    <value>on falling edge (Avg)</value>
+  </data>
+  <data name="HdRisingEdgeAvg" xml:space="preserve">
+    <value>on rising edge (Avg)</value>
+  </data>
 </root>

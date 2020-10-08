@@ -1390,11 +1390,56 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to on falling edge (Point).
+        /// </summary>
+        internal static string HdFallingEdge {
+            get {
+                return ResourceManager.GetString("HdFallingEdge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on falling edge (Avg).
+        /// </summary>
+        internal static string HdFallingEdgeAvg {
+            get {
+                return ResourceManager.GetString("HdFallingEdgeAvg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to never.
+        /// </summary>
+        internal static string HdNoEdge {
+            get {
+                return ResourceManager.GetString("HdNoEdge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to iba HDQ files (*.hdq)|*.hdq.
         /// </summary>
         internal static string HdqFileFilter {
             get {
                 return ResourceManager.GetString("HdqFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on rising edge (Point).
+        /// </summary>
+        internal static string HdRisingEdge {
+            get {
+                return ResourceManager.GetString("HdRisingEdge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on rising edge (Avg).
+        /// </summary>
+        internal static string HdRisingEdgeAvg {
+            get {
+                return ResourceManager.GetString("HdRisingEdgeAvg", resourceCulture);
             }
         }
         

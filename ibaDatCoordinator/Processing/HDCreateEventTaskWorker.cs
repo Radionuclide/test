@@ -85,7 +85,7 @@ namespace iba.Processing
             return true;
         }
 
-        EventWriterItem GenerateEvent(HDCreateEventTaskData.EventData eventData, int index, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<List<string>, List<double>>> textValues, double from = double.NaN, double to = double.NaN)
+        EventWriterItem GenerateEvent(HDCreateEventTaskData.EventData eventData, int index, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<List<string>, List<double>>> textValues, double stamp = double.NaN, double from = double.NaN, double to = double.NaN, bool bIncoming = true)
         {
             bool bUseSinglePoint = !double.IsNaN(from) && from == to;
             bool bUseRange = !double.IsNaN(from) && !bUseSinglePoint;
@@ -140,42 +140,50 @@ namespace iba.Processing
             for (int i = 0; i < blobs.Length; i++)
                 blobs[i] = null; //Not supported at the moment
 
-            long stamp = 0;
-
-            if (eventData.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerFile)
+            long eventStamp = 0;
+            if (double.IsNaN(stamp))
             {
-                if (eventData.TimeSignal == HDCreateEventTaskData.StartTime)
+                if (eventData.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerFile)
                 {
-                    stamp = startTime.Ticks;
-                }
-                else if (eventData.TimeSignal == HDCreateEventTaskData.EndTime)
-                {
-                    stamp = stopTime.Ticks;
+                    string perFileTimeSignal = bIncoming ? eventData.TimeSignal : eventData.TimeSignalOutgoing;
+
+                    if (perFileTimeSignal == HDCreateEventTaskData.StartTime)
+                    {
+                        eventStamp = startTime.Ticks;
+                    }
+                    else if (perFileTimeSignal == HDCreateEventTaskData.EndTime)
+                    {
+                        eventStamp = stopTime.Ticks;
+                    }
+                    else
+                    {
+                        double seconds = 0;
+                        monitor.Execute(() => { seconds = m_ibaAnalyzer.Evaluate(perFileTimeSignal, 0); });
+                        if (double.IsNaN(seconds))
+                            throw new ArgumentException("Invalid timeSignal");
+                        eventStamp = startTime.AddTicks((long)(TimeSpan.TicksPerSecond * seconds)).Ticks;
+                    }
                 }
                 else
                 {
-                    double seconds = 0;
-                    monitor.Execute(() => { seconds = m_ibaAnalyzer.Evaluate(eventData.TimeSignal, 0); });
-                    if (double.IsNaN(seconds))
-                        throw new ArgumentException("Invalid timeSignal");
-                    stamp = startTime.AddSeconds(seconds).Ticks;
+                    if (double.IsNaN(from))
+                        eventStamp = stopTime.Ticks;
+                    else
+                        eventStamp = startTime.AddTicks((long)(TimeSpan.TicksPerSecond * to)).Ticks;
                 }
             }
             else
             {
-                if (double.IsNaN(from))
-                    stamp = stopTime.Ticks;
-                else
-                    stamp = startTime.AddTicks(TimeSpan.FromSeconds(to).Ticks).Ticks;
+                eventStamp = startTime.AddTicks((long)(TimeSpan.TicksPerSecond * stamp)).Ticks;
             }
 
             long duration = 0;
             if (bUseRange)
-                duration = TimeSpan.FromSeconds(to - from).Ticks;
+                duration = (long)(to - from) * TimeSpan.TicksPerSecond;
             else if (double.IsNaN(from))
-                duration = stamp - startTime.Ticks;
+                duration = eventStamp - startTime.Ticks;
 
-            return new EventWriterItem(index, stamp, duration, true, false, floats, texts, blobs);
+            return new EventWriterItem(index, eventStamp, duration, bIncoming, !bIncoming, floats, texts, blobs);
         }
 
         SlimEventWriterConfig CreateSlimHDWriterConfig(HDCreateEventTaskData task, string store)
@@ -394,7 +402,7 @@ namespace iba.Processing
                                 if (bAboveZero)
                                     currStart = xoffset + i * timebase;
                                 else
-                                    intervals.Add(Tuple.Create(currStart, xoffset + (i - 1) * timebase));
+                                    intervals.Add(Tuple.Create(currStart, xoffset + i * timebase));
 
                                 bInPulse = bAboveZero;
                             }
@@ -405,22 +413,56 @@ namespace iba.Processing
                             // Create events
                             foreach (var interval in intervals)
                             {
+                                EventWriterItem incoming;
+
+                                bool avg = eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.Rising || eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.RisingFalling;
+
+                                double stamp = (eventData.Slope == HDCreateEventTaskData.TriggerSlope.Rising || eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling) ? interval.Item1 : interval.Item2;
+
+                                double from = avg ? interval.Item1 : stamp;
+                                double to = avg ? interval.Item2 : stamp;
+                                
+                                //Generate the incoming event
+                                incoming = GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, true);
+
+                                // Add the incoming event to the list of generated events
                                 if (generated.ContainsKey(eventData.StoreName))
-                                    generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
+                                    generated[eventData.StoreName].Items.Add(incoming);
                                 else
-                                    generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, interval.Item1, interval.Item2) });
-                            }
+                                    generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { incoming });
+
+                                // Generate and add the outgoing event if it exists
+                                avg = eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.Falling || eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.RisingFalling;
+
+                                if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling)
+                                    stamp = interval.Item2;
+                                else if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
+                                    stamp = interval.Item1;
+                                else
+                                    stamp = double.NaN;
+
+                                from = avg ? interval.Item1 : double.NaN;
+                                to = avg ? interval.Item2 : double.NaN;
+
+                                if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling || eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
+                                    generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, false));
+
                                 //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
+                            }
                         }
                         else
                         {
                             // One event for the entire file
                             if (generated.ContainsKey(eventData.StoreName))
-                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults));
+                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, double.NaN, double.NaN, double.NaN, true));
                             else
-                                generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults) });
+                                generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, double.NaN, double.NaN, double.NaN, true) });
+
+                            if (!string.IsNullOrEmpty(eventData.TimeSignalOutgoing))
+                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, double.NaN, double.NaN, double.NaN, false));
+
                         }
-                            //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults)); // One event for the entire file
+                        //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults)); // One event for the entire file
                     }
                     return generated;
                 }
