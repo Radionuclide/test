@@ -3288,12 +3288,12 @@ namespace iba
 
 
             IList<CultureInfo> supportedCultures = new List<CultureInfo>();
-            //hardcoded languages, datco has never been translated in 12  years to other languages so unlikely they ever will in the future
             supportedCultures.Add(CultureInfo.GetCultureInfo("de"));
             supportedCultures.Add(CultureInfo.GetCultureInfo("en"));
             supportedCultures.Add(CultureInfo.GetCultureInfo("fr"));
+			supportedCultures.Add(CultureInfo.GetCultureInfo("es"));
 
-            foreach (var supportedCulture in supportedCultures)
+			foreach (var supportedCulture in supportedCultures)
             {
                 mi = new ToolStripMenuItem(supportedCulture.NativeName, null, OnChangeLanguage)
                 {

@@ -483,6 +483,7 @@ Section -Common
   File "..\Dependencies\fr\hdCommon.resources.dll"
   File "..\Dependencies\fr\hd_plugin.resources.dll"
   SetOutPath "$INSTDIR\es"
+  File "..\Passolo\es\ibaDatCoordinator.resources.dll"
   File "..\InstallFiles\Obfuscated\es\hdClient.resources.dll"
   File "..\InstallFiles\Obfuscated\es\hdClientFiles.resources.dll"
   File "..\Dependencies\es\hdCommon.resources.dll"
@@ -527,6 +528,8 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\Passolo\de\ibaDatCoordinatorStatus.resources.dll"
   SetOutPath "$INSTDIR\fr"
   File "..\Passolo\fr\ibaDatCoordinatorStatus.resources.dll"
+  SetOutPath "$INSTDIR\es"
+  File "..\Passolo\es\ibaDatCoordinatorStatus.resources.dll"
 
   ;Install service
   DetailPrint $(TEXT_SERVICE_INSTALL)
@@ -882,6 +885,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\fr\hdCommon.resources.dll"
   Delete "$INSTDIR\fr\hd_plugin.resources.dll"
   RMDir "$INSTDIR\fr"
+  Delete "$INSTDIR\es\ibaDatCoordinator.resources.dll"
   Delete "$INSTDIR\es\hdClient.resources.dll"
   Delete "$INSTDIR\es\hdClientFiles.resources.dll"
   Delete "$INSTDIR\es\hdCommon.resources.dll"
@@ -921,6 +925,7 @@ Function un.UninstallService
   
   Delete "$INSTDIR\de\ibaDatCoordinatorStatus.resources.dll"
   Delete "$INSTDIR\fr\ibaDatCoordinatorStatus.resources.dll"
+  Delete "$INSTDIR\es\ibaDatCoordinatorStatus.resources.dll"
 
   ;Clear uninstall is busy flag
   WriteRegDWORD HKLM "SOFTWARE\iba\ibaPDA\Uninstall" "isBusy" 0
