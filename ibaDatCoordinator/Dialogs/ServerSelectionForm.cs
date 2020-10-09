@@ -494,21 +494,17 @@ namespace iba.Dialogs
             subItems[2] = host.EndpointProperties["PortNr"] as string;
             subItems[3] = host.EndpointProperties["Version"] as string;
 
-            int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
+			int version = Math.Abs(DatCoVersion.CurrentVersion());
+			//int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
             DataGridViewRow newRow = grid.Rows[grid.Rows.Add(subItems[0], subItems[1], subItems[2], subItems[3], "")];
             newRow.Tag = host;
             if(host.EndpointProperties["MinimumClientVersion"] != null)
             {
-				int serverVersion = (int) host.EndpointProperties["MinimumClientVersion"];
-                if (clientVersion != serverVersion)
-                {
-                    if (serverVersion >= 6010)
-                        newRow.DefaultCellStyle.ForeColor = Color.Blue;	//automatic upgrade possible
-                    else
-                        newRow.DefaultCellStyle.ForeColor = Color.Red;		//need to upgrade manually
-                }
+				int reqClientVersion = (int) host.EndpointProperties["MinimumClientVersion"];
+                if (version >= reqClientVersion)
+                    newRow.DefaultCellStyle.ForeColor = Color.Green;	
                 else
-                    newRow.DefaultCellStyle.ForeColor = Color.Green;	//same version
+                    newRow.DefaultCellStyle.ForeColor = Color.Red;		//need to upgrade manually
             }
         }
 

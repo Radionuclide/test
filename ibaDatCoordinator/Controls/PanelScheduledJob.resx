@@ -274,7 +274,7 @@
     <value>m_nudRepeatTimes</value>
   </data>
   <data name="&gt;&gt;m_nudRepeatTimes.Type" xml:space="preserve">
-    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=2.2.5.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.CustomNumericUpDown, ibaDatCoordinator, Version=2.3.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_nudRepeatTimes.Parent" xml:space="preserve">
     <value>gbSchedule</value>
@@ -460,7 +460,7 @@
     <value>m_dtStart</value>
   </data>
   <data name="&gt;&gt;m_dtStart.Type" xml:space="preserve">
-    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=2.2.5.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.RippleDateTimePicker, ibaDatCoordinator, Version=2.3.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_dtStart.Parent" xml:space="preserve">
     <value>gbTrigger</value>
@@ -1115,7 +1115,7 @@
     <value>gbSchedule</value>
   </data>
   <data name="&gt;&gt;gbSchedule.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.5.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbSchedule.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1427,7 +1427,7 @@
     <value>gbHD</value>
   </data>
   <data name="&gt;&gt;gbHD.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.5.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbHD.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1535,13 +1535,13 @@
     <value>375, 75</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 13</value>
+    <value>134, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
-    <value>seconds after trigger time</value>
+    <value>seconds before trigger time</value>
   </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
@@ -2009,7 +2009,7 @@
     <value>gbTimeSelection</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.5.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbTimeSelection.Parent" xml:space="preserve">
     <value>$this</value>
