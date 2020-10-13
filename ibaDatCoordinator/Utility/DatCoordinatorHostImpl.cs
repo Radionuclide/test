@@ -4,6 +4,7 @@ using System.Text;
 using iba.Plugins;
 using iba.Processing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace iba.Utility
 {
@@ -79,5 +80,45 @@ namespace iba.Utility
             catch { }
             return candidate;
         }
-    }
+
+		public bool BrowseForDatFile(ref string datFile, IJobData data)
+		{
+			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+			{
+				using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
+				{
+					fd.FixedDrivesOnly = false;
+					fd.ShowFiles = true;
+					fd.SelectedPath = datFile;
+					bool isDat = data?.DatTriggered ?? true;
+					fd.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
+					if (fd.ShowDialog() == DialogResult.OK)
+					{
+						datFile = fd.SelectedPath;
+						return true;
+					}
+					else return false;
+				}
+			}
+			else
+			{
+				OpenFileDialog dlg = new OpenFileDialog();
+				dlg.CheckFileExists = true;
+				if (!string.IsNullOrEmpty(datFile))
+					dlg.FileName = datFile;
+				bool isDat = data?.DatTriggered ?? true;
+				dlg.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
+				if (!string.IsNullOrEmpty(datFile) && System.IO.File.Exists(datFile))
+					dlg.FileName = datFile;
+				else if (System.IO.Directory.Exists(datFile))
+					dlg.InitialDirectory = datFile;
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					datFile = dlg.FileName;
+					return true;
+				}
+				else return false;
+			}
+		}
+	}
 }

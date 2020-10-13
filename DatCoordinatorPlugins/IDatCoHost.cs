@@ -54,5 +54,12 @@ namespace iba.Plugins
 
 
         PluginTaskWorkerStatus GetStatusPlugin(Guid guid, int taskindex);
-    }
+
+		/// <summary>
+		/// browse for a .dat file or .hdq file
+		/// </summary>
+		/// <param name="filename">On return the selected file, On input where to open the browser dialog</param>
+		/// <returns>True if file was selected, false if the dialog was cancelled;
+		bool BrowseForDatFile(ref string datFile, IJobData data);
+	}
 }

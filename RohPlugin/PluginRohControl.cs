@@ -471,17 +471,12 @@ namespace Alunorf_roh_plugin
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
-            m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.FileName = "";
-			bool isDat = m_data?.DatTriggered ?? true;
-			m_openFileDialog.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
-
-			if (m_openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                m_datFileTextBox.Text = m_openFileDialog.FileName;
-                m_datFileTextBox_TextChanged(null, null); //dont know if this is necessary
-            }
-        }
+			string datFile = m_datFileTextBox.Text;
+			if (m_datcoHost.BrowseForDatFile(ref datFile, m_data.m_parentJob))
+			{
+				m_datFileTextBox.Text = datFile;
+			}
+		}
 
         private void m_selectButton_Click(object sender, EventArgs e)
         {

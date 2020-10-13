@@ -571,28 +571,13 @@ namespace iba.Controls
 
         private void m_btnBrowseDAT_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog dlg = new OpenFileDialog())
-            {
-                string dir = string.IsNullOrEmpty(m_datFilePath) ? m_datFilePath : Path.GetDirectoryName(m_datFilePath);
-                if (!string.IsNullOrEmpty(dir))
-                    dlg.InitialDirectory = dir;
-
-                if (File.Exists(m_datFilePath))
-                    dlg.FileName = Path.GetFileName(m_datFilePath);
-				bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
-				dlg.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
-
-                if (dlg.ShowDialog() != DialogResult.OK)
-                    return;
-
-                m_datFilePath = dlg.FileName;
-            }
-
-            m_tbDAT.Text = m_datFilePath;
-            UpdateSources();
-
-            loadAnalyzerTreeDataTask();
-
+			string datFile = m_tbDAT.Text;
+			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
+			{
+				m_tbDAT.Text = datFile;
+				UpdateSources();
+				loadAnalyzerTreeDataTask();
+			}
         }
 
         private void m_btnOpenPDO_Click(object sender, EventArgs e)

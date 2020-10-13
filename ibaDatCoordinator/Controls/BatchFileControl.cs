@@ -364,41 +364,11 @@ namespace iba.Controls
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = DialogResult.Abort;
-            String path = m_datFileTextBox.Text;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-            {
-                using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
-                {
-                    fd.FixedDrivesOnly = false;
-                    fd.ShowFiles = true;
-                    fd.SelectedPath = path;
-					bool isDat = true;
-					if (m_data != null && m_data.ParentConfigurationData != null 
-						&&  m_data.ParentConfigurationData.JobType != ConfigurationData.JobTypeEnum.DatTriggered
-						&& m_data.ParentConfigurationData.JobType != ConfigurationData.JobTypeEnum.OneTime)
-						isDat = false;
-					fd.Filter = isDat?Properties.Resources.DatFileFilter: Properties.Resources.HdqFileFilter;
-					result = fd.ShowDialog(this);
-                    path = fd.SelectedPath;
-                }
-            }
-            else
-            {
-                m_openFileDialog1.CheckFileExists = true;
-                m_openFileDialog1.FileName = "";
-				bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
-
-				m_openFileDialog1.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
-                if (System.IO.File.Exists(path))
-                    m_openFileDialog1.FileName = path;
-                else if (System.IO.Directory.Exists(path))
-                    m_openFileDialog1.InitialDirectory = path;
-                result = m_openFileDialog1.ShowDialog(this);
-                path = m_openFileDialog1.FileName;
-            }
-            if (result == DialogResult.OK)
-                m_datFileTextBox.Text = path;
-        }
+			string datFile = m_datFileTextBox.Text;
+			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
+			{
+				m_datFileTextBox.Text = datFile;
+			}
+		}
     }
 }

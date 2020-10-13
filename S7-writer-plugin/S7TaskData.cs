@@ -101,7 +101,7 @@ namespace S7_writer_plugin
         }
 
         private IDatCoHost m_datcoHost;
-        private IJobData m_parentJob;
+        internal IJobData m_parentJob;
 
         private string m_nameInfo;
 

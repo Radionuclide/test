@@ -165,13 +165,12 @@ namespace iba.Controls
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
-            m_openFileDialog.CheckFileExists = true;
-			bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
-			m_openFileDialog.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
-            DialogResult result = m_openFileDialog.ShowDialog();
-            if (result == DialogResult.OK)
-                m_datFileTextBox.Text = m_openFileDialog.FileName;
-        }
+			string datFile = m_datFileTextBox.Text;
+			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
+			{
+				m_datFileTextBox.Text = datFile;
+			}
+		}
 
         private void m_testButton_Click(object sender, EventArgs e)
         {

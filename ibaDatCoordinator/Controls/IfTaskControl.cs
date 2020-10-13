@@ -142,36 +142,11 @@ namespace iba.Controls
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = DialogResult.Abort;
-            String path = m_datFileTextBox.Text;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-            {
-                using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
-                {
-                    fd.FixedDrivesOnly = false;
-                    fd.ShowFiles = true;
-                    fd.SelectedPath = path;
-					bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
-					fd.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
-					result = fd.ShowDialog(this);
-                    path = fd.SelectedPath;
-                }
-            }
-            else
-            {
-                m_openFileDialog.CheckFileExists = true;
-                m_openFileDialog.FileName = "";
-				bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
-				m_openFileDialog.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
-                if (System.IO.File.Exists(path))
-                    m_openFileDialog.FileName = path;
-                else if (System.IO.Directory.Exists(path))
-                    m_openFileDialog.InitialDirectory = path;
-                result = m_openFileDialog.ShowDialog(this);
-                path = m_openFileDialog.FileName;
-            }
-            if (result == DialogResult.OK)
-                m_datFileTextBox.Text = path;
+			string datFile = m_datFileTextBox.Text;
+			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data?.ParentConfigurationData))
+			{
+				m_datFileTextBox.Text = datFile;
+			}
         }
 
         private void m_testButton_Click(object sender, EventArgs e)

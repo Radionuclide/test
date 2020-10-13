@@ -141,15 +141,12 @@ namespace S7_writer_plugin
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
-            m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.FileName = "";
-			bool isDat =  m_data?.DatTriggered ?? true;
-			m_openFileDialog.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
-
-
-			if (m_openFileDialog.ShowDialog(this) == DialogResult.OK)
-                m_datFileTextBox.Text = m_openFileDialog.FileName;
-        }
+			string datFile = m_datFileTextBox.Text;
+			if (m_datcoHost.BrowseForDatFile(ref datFile, m_data.m_parentJob))
+			{
+				m_datFileTextBox.Text = datFile;
+			}
+		}
 
         private void m_testButton_Click(object sender, EventArgs e)
         {

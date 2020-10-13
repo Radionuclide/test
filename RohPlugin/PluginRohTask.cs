@@ -113,7 +113,7 @@ namespace Alunorf_roh_plugin
             m_datcoHost = host;
         }
 
-        private IJobData m_parentJob;
+        internal IJobData m_parentJob;
         public void SetParentJob(IJobData data)
         {
             m_parentJob = data;
