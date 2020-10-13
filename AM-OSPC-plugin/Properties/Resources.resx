@@ -151,10 +151,4 @@
   <data name="PdoFileFilter" xml:space="preserve">
     <value>ibaAnalyzer PDO files (*.pdo)|*.pdo</value>
   </data>
-  <data name="DatFileFilter" xml:space="preserve">
-    <value>iba dat files (*.dat)|*.dat</value>
-  </data>
-  <data name="HdqFileFilter" xml:space="preserve">
-    <value>iba HDQ files (*.hdq)|*.hdq</value>
-  </data>
 </root>

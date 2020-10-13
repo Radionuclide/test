@@ -79,24 +79,6 @@ namespace S7_writer_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to iba dat files (*.dat)|*.dat.
-        /// </summary>
-        internal static string DatFileFilter {
-            get {
-                return ResourceManager.GetString("DatFileFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to iba HDQ files (*.hdq)|*.hdq.
-        /// </summary>
-        internal static string HdqFileFilter {
-            get {
-                return ResourceManager.GetString("HdqFileFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ibaAnalyzer {

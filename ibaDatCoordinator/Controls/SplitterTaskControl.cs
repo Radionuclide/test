@@ -205,6 +205,5 @@ namespace iba.Controls
                 m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                     File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
-
     }
 }
