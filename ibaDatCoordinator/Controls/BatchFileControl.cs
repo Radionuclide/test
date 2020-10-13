@@ -387,11 +387,8 @@ namespace iba.Controls
             {
                 m_openFileDialog1.CheckFileExists = true;
                 m_openFileDialog1.FileName = "";
-				bool isDat = true;
-				if (m_data != null && m_data.ParentConfigurationData != null 
-					&& m_data.ParentConfigurationData.JobType != ConfigurationData.JobTypeEnum.DatTriggered
-					&& m_data.ParentConfigurationData.JobType != ConfigurationData.JobTypeEnum.OneTime)
-					isDat = false;
+				bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
+
 				m_openFileDialog1.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
                 if (System.IO.File.Exists(path))
                     m_openFileDialog1.FileName = path;

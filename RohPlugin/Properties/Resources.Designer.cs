@@ -79,6 +79,15 @@ namespace Alunorf_roh_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to iba dat files (*.dat)|*.dat.
+        /// </summary>
+        internal static string DatFileFilter {
+            get {
+                return ResourceManager.GetString("DatFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unerwarteter Fehler beim Lesen der .dat Datei: {0}.
         /// </summary>
         internal static string ErrorDatUnexpected {
@@ -147,6 +156,15 @@ namespace Alunorf_roh_plugin.Properties {
         internal static string ErrorUnexpected {
             get {
                 return ResourceManager.GetString("ErrorUnexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to iba HDQ files (*.hdq)|*.hdq.
+        /// </summary>
+        internal static string HdqFileFilter {
+            get {
+                return ResourceManager.GetString("HdqFileFilter", resourceCulture);
             }
         }
         

@@ -130,8 +130,9 @@ namespace AM_OSPC_plugin
         {
             m_openFileDialog.CheckFileExists = true;
             m_openFileDialog.FileName = "";
-            m_openFileDialog.Filter = "All files (*.dat)|*.dat";
-            if(m_openFileDialog.ShowDialog(this) == DialogResult.OK)
+			bool isDat = m_data?.DatTriggered ?? true;
+			m_openFileDialog.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
+			if (m_openFileDialog.ShowDialog(this) == DialogResult.OK)
                 m_datFileTextBox.Text = m_openFileDialog.FileName;
         }
 

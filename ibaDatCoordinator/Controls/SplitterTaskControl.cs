@@ -166,7 +166,8 @@ namespace iba.Controls
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
             m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.Filter = Properties.Resources.DatFileFilter;
+			bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
+			m_openFileDialog.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
             DialogResult result = m_openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
                 m_datFileTextBox.Text = m_openFileDialog.FileName;

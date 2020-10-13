@@ -305,8 +305,16 @@ namespace AM_OSPC_plugin
             get { return m_monitorData; }
         }
 
-        #endregion
-    }
+		public bool DatTriggered
+		{
+			get
+			{
+				return m_parentJob.DatTriggered;
+			}
+		}
+
+		#endregion
+	}
 
     public class Crypt
     {

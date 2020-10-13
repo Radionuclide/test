@@ -579,8 +579,8 @@ namespace iba.Controls
 
                 if (File.Exists(m_datFilePath))
                     dlg.FileName = Path.GetFileName(m_datFilePath);
-
-                dlg.Filter = Properties.Resources.DatFileFilter;
+				bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
+				dlg.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
 
                 if (dlg.ShowDialog() != DialogResult.OK)
                     return;

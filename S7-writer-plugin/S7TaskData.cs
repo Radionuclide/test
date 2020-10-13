@@ -105,6 +105,8 @@ namespace S7_writer_plugin
 
         private string m_nameInfo;
 
+		private bool m_datTriggered;
+
         private void InitData(string name, IDatCoHost host, IJobData parentJob)
         {
             m_parentJob = parentJob;
@@ -119,6 +121,8 @@ namespace S7_writer_plugin
             m_s7ConnPars = new S7ConnectionParameters();
             m_bAllowErrors = false;
             m_monitorData = new iba.Data.MonitorData();
+
+			m_datTriggered = parentJob.DatTriggered;
         }
 
         public bool IsSame(IPluginTaskDataIsSame data)
@@ -416,8 +420,17 @@ namespace S7_writer_plugin
             get { return !string.IsNullOrEmpty(m_pdoFile); }
         }
 
-        private iba.Data.MonitorData m_monitorData;
-        public iba.Data.MonitorData MonitorData
+		public bool DatTriggered
+		{
+			get
+			{
+				return m_datTriggered;
+			}
+		}
+
+		private iba.Data.MonitorData m_monitorData;
+
+		public iba.Data.MonitorData MonitorData
         {
             get { return m_monitorData; }
         }

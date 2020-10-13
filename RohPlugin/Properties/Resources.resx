@@ -217,4 +217,10 @@
   <data name="StichDataNotRead" xml:space="preserve">
     <value>Fehler: Stichdaten Tabellenzeile {1}:  Daten aus Kanal '{0}' konnten nicht geladen werden</value>
   </data>
+  <data name="DatFileFilter" xml:space="preserve">
+    <value>iba dat files (*.dat)|*.dat</value>
+  </data>
+  <data name="HdqFileFilter" xml:space="preserve">
+    <value>iba HDQ files (*.hdq)|*.hdq</value>
+  </data>
 </root>

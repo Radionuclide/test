@@ -281,7 +281,15 @@ namespace Alunorf_roh_plugin
             set { m_selectedTab = value; }
         }
 
-        static public int FindDataLine(iba.RohWriterDataLineInput[] rohWriterDataLineInputArray, iba.RohWriterDataLineInput rohWriterDataLineInput)
+		public bool DatTriggered
+		{
+			get
+			{
+				return m_parentJob.DatTriggered;
+			}
+		}
+
+		static public int FindDataLine(iba.RohWriterDataLineInput[] rohWriterDataLineInputArray, iba.RohWriterDataLineInput rohWriterDataLineInput)
         {
             for (int i = 0; i < rohWriterDataLineInputArray.Length; i++)
                 if (rohWriterDataLineInput == rohWriterDataLineInputArray[i])

@@ -14,5 +14,6 @@ namespace iba.Plugins
         bool SubDirs { get; set; }
         string Username { get; set; }
         string FileEncryptionPassword { get; }
-    }
+		bool DatTriggered { get; }
+	}
 }

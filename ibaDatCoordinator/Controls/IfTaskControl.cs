@@ -151,11 +151,7 @@ namespace iba.Controls
                     fd.FixedDrivesOnly = false;
                     fd.ShowFiles = true;
                     fd.SelectedPath = path;
-					bool isDat = true;
-					if (m_data != null && m_data.ParentConfigurationData != null 
-						&& m_data.ParentConfigurationData.JobType != ConfigurationData.JobTypeEnum.DatTriggered
-						&& m_data.ParentConfigurationData.JobType != ConfigurationData.JobTypeEnum.OneTime)
-						isDat = false;
+					bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
 					fd.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
 					result = fd.ShowDialog(this);
                     path = fd.SelectedPath;
@@ -165,11 +161,7 @@ namespace iba.Controls
             {
                 m_openFileDialog.CheckFileExists = true;
                 m_openFileDialog.FileName = "";
-				bool isDat = true;
-				if (m_data != null && m_data.ParentConfigurationData != null 
-					&& m_data.ParentConfigurationData.JobType != ConfigurationData.JobTypeEnum.DatTriggered
-					&& m_data.ParentConfigurationData.JobType != ConfigurationData.JobTypeEnum.OneTime)
-					isDat = false;
+				bool isDat = m_data?.ParentConfigurationData?.DatTriggered ?? true;
 				m_openFileDialog.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
                 if (System.IO.File.Exists(path))
                     m_openFileDialog.FileName = path;

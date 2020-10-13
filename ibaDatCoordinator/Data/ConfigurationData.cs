@@ -607,11 +607,20 @@ namespace iba.Data
             }
         }
 
-        #endregion
+		public bool DatTriggered
+		{
+			get
+			{
+				return JobType == ConfigurationData.JobTypeEnum.DatTriggered
+				|| JobType == ConfigurationData.JobTypeEnum.OneTime;
+			}
+		}
 
-    }
+	#endregion
 
-    [Serializable]
+}
+
+[Serializable]
     public class NotificationData
     {
         private string m_email;
