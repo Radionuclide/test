@@ -130,7 +130,7 @@ namespace iba.Controls
         public void LoadSignal(LocalEventData localEventData)
         {
             ignoreChanges = true;
-            HDCreateEventTaskData.EventData m_data = localEventData.Tag as HDCreateEventTaskData.EventData;
+            HDCreateEventTaskData.EventData m_data = localEventData?.Tag as HDCreateEventTaskData.EventData;
 
             pulseSignals.Clear();
             timeSignals.Clear();
@@ -158,7 +158,7 @@ namespace iba.Controls
 
                 TriggerPerFile = true;
             }
-            SetActive(localEventData.Active ? CheckState.Checked : CheckState.Unchecked);
+            SetActive((localEventData?.Active ?? false) ? CheckState.Checked : CheckState.Unchecked);
             ignoreChanges = false;
         }
 
