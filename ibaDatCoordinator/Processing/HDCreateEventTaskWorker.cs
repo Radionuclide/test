@@ -7,6 +7,7 @@ using iba.Utility;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -85,7 +86,57 @@ namespace iba.Processing
             return true;
         }
 
-        EventWriterItem GenerateEvent(HDCreateEventTaskData.EventData eventData, int index, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<List<string>, List<double>>> textValues, double stamp = double.NaN, double from = double.NaN, double to = double.NaN, bool bIncoming = true)
+        float EvaluateFloatField(string numericField, IbaAnalyzerMonitor monitor, double from, double to)
+        {
+            bool bUseSinglePoint = !double.IsNaN(from) && from == to;
+            bool bUseRange = !double.IsNaN(from) && !bUseSinglePoint;
+            string exprRange = $"XCutRange({{0}},{from},{to})";
+            string exprSinglePoint = $"YatX({{0}},{from})";
+
+            string lExpr = numericField;
+
+            if (string.IsNullOrWhiteSpace(lExpr) || lExpr == HDCreateEventTaskData.UnassignedExpression)
+                return float.NaN;
+
+            if (bUseRange)
+                lExpr = string.Format(exprRange, lExpr);
+            else if (bUseSinglePoint)
+                lExpr = string.Format(exprSinglePoint, lExpr);
+
+            float result = float.NaN;
+            monitor.Execute(() => { result = m_ibaAnalyzer.Evaluate(lExpr, 0); });
+            return result;
+        }
+
+        string EvaluateTextField(string textField, IbaAnalyzerMonitor monitor, double from, double to, object oStamps = null, object oValues = null)
+        {
+            if (oStamps == null || oValues == null)
+                monitor.Execute(delegate () { m_ibaAnalyzer.EvaluateToStringArray(textField, 0, out oStamps, out oValues); });
+
+            double[] stamps = oStamps as double[];
+            string[] strings = oValues as string[];
+
+            if (strings == null)
+                return null;
+
+            if (stamps.Length != 0)
+            {
+                if (double.IsNaN(from))
+                {
+                    return stamps[0] > 0.0 ? "" : strings[0];
+                }
+
+                int j = 0;
+                while (j < stamps.Length && stamps[j] <= from)
+                    j++;
+
+                return j == 0 ? "" : strings[j - 1];
+            }
+            else
+                return "";
+        }
+
+        EventWriterItem GenerateEvent(HDCreateEventTaskData.EventData eventData, int index, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<string[], double[]>> textValues, double stamp = double.NaN, double from = double.NaN, double to = double.NaN, bool bIncoming = true)
         {
             bool bUseSinglePoint = !double.IsNaN(from) && from == to;
             bool bUseRange = !double.IsNaN(from) && !bUseSinglePoint;
@@ -102,23 +153,25 @@ namespace iba.Processing
                     floats[i] = float.NaN;
                     continue;
                 }
+                
+                floats[i] = EvaluateFloatField(eventData.NumericFields[i].Item2, monitor, from, to);
 
-                if (bUseRange)
-                    lExpr = string.Format(exprRange, lExpr);
-                else if (bUseSinglePoint)
-                    lExpr = string.Format(exprSinglePoint, lExpr);
-
-                monitor.Execute(() => { floats[i] = m_ibaAnalyzer.Evaluate(lExpr, 0); });
+                if (float.IsNaN(floats[i]))
+                {
+                    string text = EvaluateTextField(eventData.NumericFields[i].Item2, monitor, from, to, null, null);
+                    if (!float.TryParse(text, out floats[i]))
+                        floats[i] = float.NaN;
+                }
             }
 
             string[] texts = new string[eventData.TextFields.Count];
             for (int i = 0; i < texts.Length; i++)
             {
                 var values = textValues[eventData.TextFields[i].Item1];
-                List<string> strings = values.Item1;
-                List<double> stamps = values.Item2;
+                string[] strings = values.Item1;
+                double[] stamps = values.Item2;
 
-                if (stamps.Count != 0)
+                if (stamps != null && stamps.Length != 0)
                 {
                     if (double.IsNaN(from))
                     {
@@ -126,14 +179,13 @@ namespace iba.Processing
                         continue;
                     }
 
-                    int j = 0;
-                    while (j < stamps.Count && stamps[j] <= from)
-                        j++;
-
-                    texts[i] = j == 0 ? "" : strings[j - 1];
+                    texts[i] = EvaluateTextField("", monitor, from, to, stamps, strings);
                 }
                 else
-                    texts[i] = "";
+                {
+                    float numeric = EvaluateFloatField(eventData.TextFields[i].Item2, monitor, from, to);
+                    texts[i] = float.IsNaN(numeric) ? "" : numeric.ToString(CultureInfo.InvariantCulture);
+                }
             }
 
             byte[][] blobs = new byte[eventData.BlobFields.Count][];
@@ -303,7 +355,7 @@ namespace iba.Processing
                 {
                     mon.Execute(delegate () { m_ibaAnalyzer.OpenAnalysis(pdoFile); });
 
-                    Dictionary<string, Tuple<List<string>, List<double>>> textResults = new Dictionary<string, Tuple<List<string>, List<double>>>();
+                    Dictionary<string, Tuple<string[], double[]>> textResults = new Dictionary<string, Tuple<string[], double[]>>();
                     List<EventWriterItem> events = new List<EventWriterItem>();
                     Dictionary<string, EventWriterData> generated = new Dictionary<string, EventWriterData>();
                     Dictionary<string, int> eventIndex = new Dictionary<string, int>();
@@ -323,13 +375,13 @@ namespace iba.Processing
                         {
                             if (string.IsNullOrWhiteSpace(textField.Item2) || textField.Item2 == HDCreateEventTaskData.UnassignedExpression)
                             {
-                                textResults[textField.Item1] = Tuple.Create(new List<string>(1) { "" }, new List<double>(1) { 0.0 });
+                                textResults[textField.Item1] = Tuple.Create(new string[] { "" }, new double[] { 0.0 });
                                 continue;
                             }
 
                             if (textField.Item2 == HDCreateEventTaskData.CurrentFileExpression)
                             {
-                                textResults[textField.Item1] = Tuple.Create(new List<string>(1) { Path.GetFullPath(m_dataFile) }, new List<double>(1) { 0.0 });
+                                textResults[textField.Item1] = Tuple.Create(new string[] { Path.GetFullPath(m_dataFile) }, new double[] { 0.0 });
                                 if (Path.GetExtension(m_dataFile)?.ToLower() == ".hdq")
                                 {
                                     IniParser parser = new IniParser(m_dataFile);
@@ -343,13 +395,13 @@ namespace iba.Processing
                                     string port = "";
                                     if (!parser.Sections["HDQ file"].TryGetValue("portnumber", out port))
                                         continue;
-                                    textResults[textField.Item1] = Tuple.Create(new List<string>(1) { $"{server}:{port}/{eventData.StoreName}" }, new List<double>(1) { 0.0 });
+                                    textResults[textField.Item1] = Tuple.Create(new string[] { $"{server}:{port}/{eventData.StoreName}" }, new double[] { 0.0 });
                                 }
                                 continue;
                             }
                             else if (textField.Item2 == HDCreateEventTaskData.ClientIDExpression)
                             {
-                                textResults[textField.Item1] = Tuple.Create(new List<string>(1) { $"{Environment.MachineName}/{Environment.UserName}/ibaDatCoordinator" }, new List<double>(1) { 0.0 });
+                                textResults[textField.Item1] = Tuple.Create(new string[] { $"{Environment.MachineName}/{Environment.UserName}/ibaDatCoordinator" }, new double[] { 0.0 });
                                 continue;
                             }
 
@@ -360,20 +412,7 @@ namespace iba.Processing
                             double[] stamps = oStamps as double[];
                             string[] values = oValues as string[];
 
-                            List<double> lStamps = null;
-                            List<string> lValues = null;
-                            if (stamps == null || values == null || stamps.Length != values.Length)
-                            {
-                                lStamps = new List<double>(1) { 0.0 };
-                                lValues = new List<string>(1) { "" };
-                            }
-                            else
-                            {
-                                lStamps = new List<double>(stamps);
-                                lValues = new List<string>(values);
-                            }
-
-                            textResults[textField.Item1] = Tuple.Create(lValues, lStamps);
+                            textResults[textField.Item1] = Tuple.Create(values, stamps);
                         }
                         if (eventData.TriggerMode == HDCreateEventTaskData.HDEventTriggerEnum.PerSignalPulse)
                         {
@@ -458,7 +497,7 @@ namespace iba.Processing
                             else
                                 generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, double.NaN, double.NaN, double.NaN, true) });
 
-                            if (!string.IsNullOrEmpty(eventData.TimeSignalOutgoing))
+                            if (!string.IsNullOrEmpty(eventData.TimeSignalOutgoing) && eventData.TimeSignalOutgoing != HDCreateEventTaskData.UnassignedExpression)
                                 generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, double.NaN, double.NaN, double.NaN, false));
 
                         }
