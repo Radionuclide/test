@@ -30,13 +30,6 @@
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(S7TaskControl));
-			this.m_datagvMessages = new System.Windows.Forms.DataGridView();
-			this.m_columnAnalyzerExpression = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.m_columnDBNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.columnAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.columnBitNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.m_columnDataType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.m_columnTestValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.label2 = new System.Windows.Forms.Label();
 			this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
 			this.m_browsePDOFileButton = new System.Windows.Forms.Button();
@@ -65,91 +58,28 @@
 			this.label6 = new System.Windows.Forms.Label();
 			this.spSlot = new System.Windows.Forms.NumericUpDown();
 			this.ckAllowErrors = new System.Windows.Forms.CheckBox();
-			((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).BeginInit();
+			this.dataGrid = new DevExpress.XtraGrid.GridControl();
+			this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
+			this.expressionColumn = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.repositoryItemComboBoxS7DataTypes = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
+			this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.buttonEndpointAdd = new System.Windows.Forms.Button();
+			this.buttonEndpointRemove = new System.Windows.Forms.Button();
+			this.buttonEndpointCopy = new System.Windows.Forms.Button();
 			this.m_monitorGroup.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.spTimeout)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.spRack)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.spSlot)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.repositoryItemComboBoxS7DataTypes)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// m_datagvMessages
-			// 
-			resources.ApplyResources(this.m_datagvMessages, "m_datagvMessages");
-			this.m_datagvMessages.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.m_datagvMessages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.m_columnAnalyzerExpression,
-            this.m_columnDBNr,
-            this.columnAddress,
-            this.columnBitNr,
-            this.m_columnDataType,
-            this.m_columnTestValue});
-			this.m_datagvMessages.Name = "m_datagvMessages";
-			this.m_datagvMessages.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.m_datagvMessages_DataError);
-			this.m_datagvMessages.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.m_datagvMessages_RowPostPaint);
-			// 
-			// m_columnAnalyzerExpression
-			// 
-			this.m_columnAnalyzerExpression.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.m_columnAnalyzerExpression.DataPropertyName = "Expression";
-			this.m_columnAnalyzerExpression.FillWeight = 40F;
-			resources.ApplyResources(this.m_columnAnalyzerExpression, "m_columnAnalyzerExpression");
-			this.m_columnAnalyzerExpression.Name = "m_columnAnalyzerExpression";
-			this.m_columnAnalyzerExpression.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// m_columnDBNr
-			// 
-			this.m_columnDBNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.m_columnDBNr.DataPropertyName = "DBNr";
-			this.m_columnDBNr.FillWeight = 10F;
-			resources.ApplyResources(this.m_columnDBNr, "m_columnDBNr");
-			this.m_columnDBNr.Name = "m_columnDBNr";
-			this.m_columnDBNr.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-			this.m_columnDBNr.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// columnAddress
-			// 
-			this.columnAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.columnAddress.DataPropertyName = "Address";
-			this.columnAddress.FillWeight = 10F;
-			resources.ApplyResources(this.columnAddress, "columnAddress");
-			this.columnAddress.Name = "columnAddress";
-			// 
-			// columnBitNr
-			// 
-			this.columnBitNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.columnBitNr.DataPropertyName = "BitNr";
-			this.columnBitNr.FillWeight = 10F;
-			resources.ApplyResources(this.columnBitNr, "columnBitNr");
-			this.columnBitNr.Name = "columnBitNr";
-			// 
-			// m_columnDataType
-			// 
-			this.m_columnDataType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.m_columnDataType.DataPropertyName = "DataTypeAsString";
-			this.m_columnDataType.FillWeight = 20F;
-			resources.ApplyResources(this.m_columnDataType, "m_columnDataType");
-			this.m_columnDataType.Items.AddRange(new object[] {
-            "BOOL",
-            "BYTE",
-            "CHAR",
-            "WORD",
-            "INT",
-            "DWORD",
-            "DINT",
-            "REAL"});
-			this.m_columnDataType.Name = "m_columnDataType";
-			this.m_columnDataType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-			// 
-			// m_columnTestValue
-			// 
-			this.m_columnTestValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.m_columnTestValue.DataPropertyName = "TestValueString";
-			this.m_columnTestValue.FillWeight = 20F;
-			resources.ApplyResources(this.m_columnTestValue, "m_columnTestValue");
-			this.m_columnTestValue.Name = "m_columnTestValue";
-			this.m_columnTestValue.ReadOnly = true;
 			// 
 			// label2
 			// 
@@ -369,10 +299,133 @@
 			this.ckAllowErrors.Name = "ckAllowErrors";
 			this.ckAllowErrors.UseVisualStyleBackColor = true;
 			// 
+			// dataGrid
+			// 
+			resources.ApplyResources(this.dataGrid, "dataGrid");
+			this.dataGrid.EmbeddedNavigator.Margin = ((System.Windows.Forms.Padding)(resources.GetObject("gridExpressionTest.EmbeddedNavigator.Margin")));
+			this.dataGrid.MainView = this.dataGV;
+			this.dataGrid.Name = "dataGrid";
+			this.dataGrid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemComboBoxS7DataTypes});
+			this.dataGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.dataGV});
+			// 
+			// gridView1
+			// 
+			this.dataGV.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.expressionColumn,
+            this.gridColumn7,
+            this.gridColumn8,
+            this.gridColumn9,
+            this.gridColumn10,
+            this.gridColumn11});
+			this.dataGV.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
+			this.dataGV.GridControl = this.dataGrid;
+			resources.ApplyResources(this.dataGV, "gridView1");
+			this.dataGV.Name = "gridView1";
+			this.dataGV.OptionsBehavior.AutoSelectAllInEditor = false;
+			this.dataGV.OptionsBehavior.KeepGroupExpandedOnSorting = false;
+			this.dataGV.OptionsCustomization.AllowColumnMoving = false;
+			this.dataGV.OptionsCustomization.AllowFilter = false;
+			this.dataGV.OptionsCustomization.AllowSort = false;
+			this.dataGV.OptionsMenu.EnableColumnMenu = false;
+			this.dataGV.OptionsMenu.EnableFooterMenu = false;
+			this.dataGV.OptionsMenu.EnableGroupPanelMenu = false;
+			this.dataGV.OptionsNavigation.AutoMoveRowFocus = false;
+			this.dataGV.OptionsSelection.EnableAppearanceFocusedCell = false;
+			this.dataGV.OptionsSelection.EnableAppearanceFocusedRow = false;
+			this.dataGV.OptionsSelection.EnableAppearanceHideSelection = false;
+			this.dataGV.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+			this.dataGV.OptionsView.ShowGroupPanel = false;
+			// 
+			// gridColumn6
+			// 
+			resources.ApplyResources(this.expressionColumn, "gridColumn6");
+			this.expressionColumn.FieldName = "Expression";
+			this.expressionColumn.Name = "gridColumn6";
+			// 
+			// gridColumn7
+			// 
+			resources.ApplyResources(this.gridColumn7, "gridColumn7");
+			this.gridColumn7.FieldName = "DBNr";
+			this.gridColumn7.Name = "gridColumn7";
+			// 
+			// gridColumn8
+			// 
+			resources.ApplyResources(this.gridColumn8, "gridColumn8");
+			this.gridColumn8.FieldName = "Address";
+			this.gridColumn8.Name = "gridColumn8";
+			// 
+			// gridColumn9
+			// 
+			resources.ApplyResources(this.gridColumn9, "gridColumn9");
+			this.gridColumn9.FieldName = "BitNr";
+			this.gridColumn9.Name = "gridColumn9";
+			// 
+			// gridColumn10
+			// 
+			resources.ApplyResources(this.gridColumn10, "gridColumn10");
+			this.gridColumn10.ColumnEdit = this.repositoryItemComboBoxS7DataTypes;
+			this.gridColumn10.FieldName = "DataTypeAsString";
+			this.gridColumn10.Name = "gridColumn10";
+			// 
+			// repositoryItemComboBoxS7DataTypes
+			// 
+			resources.ApplyResources(this.repositoryItemComboBoxS7DataTypes, "repositoryItemComboBoxS7DataTypes");
+			this.repositoryItemComboBoxS7DataTypes.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("repositoryItemComboBoxS7DataTypes.Buttons"))))});
+			this.repositoryItemComboBoxS7DataTypes.DropDownRows = 8;
+			this.repositoryItemComboBoxS7DataTypes.Items.AddRange(new object[] {
+            resources.GetString("repositoryItemComboBoxS7DataTypes.Items"),
+            resources.GetString("repositoryItemComboBoxS7DataTypes.Items1"),
+            resources.GetString("repositoryItemComboBoxS7DataTypes.Items2"),
+            resources.GetString("repositoryItemComboBoxS7DataTypes.Items3"),
+            resources.GetString("repositoryItemComboBoxS7DataTypes.Items4"),
+            resources.GetString("repositoryItemComboBoxS7DataTypes.Items5"),
+            resources.GetString("repositoryItemComboBoxS7DataTypes.Items6"),
+            resources.GetString("repositoryItemComboBoxS7DataTypes.Items7")});
+			this.repositoryItemComboBoxS7DataTypes.Name = "repositoryItemComboBoxS7DataTypes";
+			// 
+			// gridColumn11
+			// 
+			resources.ApplyResources(this.gridColumn11, "gridColumn11");
+			this.gridColumn11.FieldName = "TestValueString";
+			this.gridColumn11.Name = "gridColumn11";
+			this.gridColumn11.OptionsColumn.AllowEdit = false;
+			this.gridColumn11.OptionsColumn.ReadOnly = true;
+			// 
+			// buttonEndpointAdd
+			// 
+			resources.ApplyResources(this.buttonEndpointAdd, "buttonEndpointAdd");
+			this.buttonEndpointAdd.Name = "buttonEndpointAdd";
+			this.buttonEndpointAdd.TabStop = false;
+			this.buttonEndpointAdd.UseVisualStyleBackColor = true;
+			this.buttonEndpointAdd.Click += new System.EventHandler(this.buttonEndpointAdd_Click);
+			// 
+			// buttonEndpointRemove
+			// 
+			resources.ApplyResources(this.buttonEndpointRemove, "buttonEndpointRemove");
+			this.buttonEndpointRemove.Name = "buttonEndpointRemove";
+			this.buttonEndpointRemove.TabStop = false;
+			this.buttonEndpointRemove.UseVisualStyleBackColor = true;
+			this.buttonEndpointRemove.Click += new System.EventHandler(this.buttonEndpointRemove_Click);
+			// 
+			// buttonEndpointCopy
+			// 
+			resources.ApplyResources(this.buttonEndpointCopy, "buttonEndpointCopy");
+			this.buttonEndpointCopy.Name = "buttonEndpointCopy";
+			this.buttonEndpointCopy.TabStop = false;
+			this.buttonEndpointCopy.UseVisualStyleBackColor = true;
+			this.buttonEndpointCopy.Click += new System.EventHandler(this.buttonEndpointCopy_Click);
+			// 
 			// S7TaskControl
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.buttonEndpointCopy);
+			this.Controls.Add(this.buttonEndpointRemove);
+			this.Controls.Add(this.buttonEndpointAdd);
+			this.Controls.Add(this.dataGrid);
 			this.Controls.Add(this.ckAllowErrors);
 			this.Controls.Add(this.spRack);
 			this.Controls.Add(this.label1);
@@ -393,9 +446,7 @@
 			this.Controls.Add(this.m_pdoFileTextBox);
 			this.Controls.Add(this.m_browsePDOFileButton);
 			this.Controls.Add(this.m_executeIBAAButton);
-			this.Controls.Add(this.m_datagvMessages);
 			this.Name = "S7TaskControl";
-			((System.ComponentModel.ISupportInitialize)(this.m_datagvMessages)).EndInit();
 			this.m_monitorGroup.ResumeLayout(false);
 			this.m_monitorGroup.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
@@ -403,14 +454,15 @@
 			((System.ComponentModel.ISupportInitialize)(this.spTimeout)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.spRack)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.spSlot)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dataGV)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.repositoryItemComboBoxS7DataTypes)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView m_datagvMessages;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox m_pdoFileTextBox;
         private System.Windows.Forms.Button m_browsePDOFileButton;
@@ -438,12 +490,18 @@
         private System.Windows.Forms.TextBox tbAddress;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown spSlot;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnAnalyzerExpression;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnDBNr;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnAddress;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnBitNr;
-        private System.Windows.Forms.DataGridViewComboBoxColumn m_columnDataType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn m_columnTestValue;
         private System.Windows.Forms.CheckBox ckAllowErrors;
-    }
+		protected DevExpress.XtraGrid.GridControl dataGrid;
+		private System.Windows.Forms.Button buttonEndpointAdd;
+		private System.Windows.Forms.Button buttonEndpointRemove;
+		private DevExpress.XtraEditors.Repository.RepositoryItemComboBox repositoryItemComboBoxS7DataTypes;
+		private DevExpress.XtraGrid.Views.Grid.GridView dataGV;
+		private DevExpress.XtraGrid.Columns.GridColumn expressionColumn;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
+		private System.Windows.Forms.Button buttonEndpointCopy;
+	}
 }

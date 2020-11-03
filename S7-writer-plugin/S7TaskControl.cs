@@ -2,30 +2,35 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using iba.Plugins;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace S7_writer_plugin
 {
-    public partial class S7TaskControl : UserControl, IPluginControl
+	public partial class S7TaskControl : UserControl, IPluginControl
     {
         private IDatCoHost m_datcoHost;
-        public S7TaskControl(IDatCoHost datcoHost)
+		[NonSerialized]
+		private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
+		[NonSerialized]
+		private IAnalyzerManagerUpdateSource m_analyzerManager;
+
+		public S7TaskControl(IDatCoHost datcoHost)
         {
             m_datcoHost = datcoHost;
             InitializeComponent();
-            m_datagvMessages.AutoGenerateColumns = false;
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
-        }
+			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;
+			dataGV.IndicatorWidth = 50;
+		}
 
-        protected override void OnLoad(EventArgs e)
+		protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             WindowsAPI.SHAutoComplete(m_pdoFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
@@ -40,49 +45,55 @@ namespace S7_writer_plugin
         ICommonTaskControl m_control;
         private string ibaAnalyzerExe;
 
-        public void LoadData(object datasource, ICommonTaskControl parentcontrol)
-        {
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-            }
-            catch
-            {
-                ibaAnalyzerExe = Properties.Resources.noIbaAnalyzer;
-            }
-            m_data = datasource as S7TaskData; //we'll assume its never null
-            m_control = parentcontrol;
-            m_datFileTextBox.Text = m_data.TestDatFile;
-            m_pdoFileTextBox.Text = m_data.AnalysisFile;
+		public void LoadData(object datasource, ICommonTaskControl parentcontrol)
+		{
+			try
+			{
+				RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+				object o = key.GetValue("");
+				ibaAnalyzerExe = Path.GetFullPath(o.ToString());
+			}
+			catch
+			{
+				ibaAnalyzerExe = Properties.Resources.noIbaAnalyzer;
+			}
+			m_data = datasource as S7TaskData; //we'll assume its never null
+			m_control = parentcontrol;
+			m_datFileTextBox.Text = m_data.TestDatFile;
+			m_pdoFileTextBox.Text = m_data.AnalysisFile;
 
-            BindingList<S7TaskData.Record> list = new BindingList<S7TaskData.Record>(m_data.Records);
-            list.AllowNew = true;
-            list.AllowRemove = true;
-            m_datagvMessages.DataSource = list;
+			BindingList<S7TaskData.Record> list = new BindingList<S7TaskData.Record>(m_data.Records);
+			list.AllowNew = true;
+			list.AllowRemove = true;
 
-            cbConnType.SelectedIndex = m_data.S7ConnectionType;
-            spTimeout.SetIntValue(m_data.S7Timeout);
-            tbAddress.Text = m_data.S7Address;
-            spRack.SetIntValue(m_data.S7Rack);
-            spSlot.SetIntValue(m_data.S7Slot);
 
-            ckAllowErrors.Checked = m_data.AllowErrors;
-            
-            UpdateButtons();
+			dataGrid.DataSource = list;
+			
+			m_channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+			dataGrid.RepositoryItems.Add(m_channelEditor);
+			expressionColumn.ColumnEdit = m_channelEditor;
+			
+			cbConnType.SelectedIndex = m_data.S7ConnectionType;
+			spTimeout.SetIntValue(m_data.S7Timeout);
+			tbAddress.Text = m_data.S7Address;
+			spRack.SetIntValue(m_data.S7Rack);
+			spSlot.SetIntValue(m_data.S7Slot);
 
-            m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
-            m_cbTime.Checked = m_data.MonitorData.MonitorTime;
-            m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
-            m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
-        }
+			ckAllowErrors.Checked = m_data.AllowErrors;
 
-        public void SaveData()
+			UpdateButtons();
+
+			m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
+			m_cbTime.Checked = m_data.MonitorData.MonitorTime;
+			m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
+			m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
+		}
+
+		public void SaveData()
         {
             m_data.TestDatFile = m_datFileTextBox.Text;
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
-            m_data.Records = (m_datagvMessages.DataSource as BindingList<S7TaskData.Record>).ToList();
+            m_data.Records = (dataGrid.DataSource as BindingList<S7TaskData.Record>).ToList();
 
             m_data.S7ConnectionType = cbConnType.SelectedIndex;
             m_data.S7Timeout = spTimeout.GetIntValue();
@@ -103,9 +114,25 @@ namespace S7_writer_plugin
             //throw new NotImplementedException();
         }
 
-        #endregion
+		#endregion
 
-        private void m_browsePDOFileButton_Click(object sender, EventArgs e)
+		void gridExpressionTest_CustomDrawRowIndicator(object sender, DevExpress.XtraGrid.Views.Grid.RowIndicatorCustomDrawEventArgs e)
+		{
+			GridView grid = sender as GridView;
+			if (e.RowHandle < 0)
+				return;
+
+			string strRowNumber = (e.RowHandle + 1).ToString();
+			//prepend leading zeros to the string if necessary to improve
+			//appearance. For example, if there are ten rows in the grid,
+			//row seven will be numbered as "07" instead of "7". Similarly, if 
+			//there are 100 rows in the grid, row seven will be numbered as "007".
+			while (strRowNumber.Length < dataGV.RowCount.ToString().Length) strRowNumber = "0" + strRowNumber;
+			
+			e.Info.DisplayText = strRowNumber;
+		}
+
+		private void m_browsePDOFileButton_Click(object sender, EventArgs e)
         {
             m_openFileDialog.CheckFileExists = true;
             m_openFileDialog.Filter = Properties.Resources.PdoFileFilter;
@@ -206,7 +233,7 @@ namespace S7_writer_plugin
                     if(bUseDatFile) ibaAnalyzer.OpenDataFile(0,m_datFileTextBox.Text);
 
                     bool bOneValid = false;
-                    S7TaskData.Record[] records = (m_datagvMessages.DataSource as IList<S7TaskData.Record>).ToArray<S7TaskData.Record>();
+                    S7TaskData.Record[] records = (dataGrid.DataSource as IList<S7TaskData.Record>).ToArray<S7TaskData.Record>();
                     foreach (S7TaskData.Record record in records)
                     {
                         if (!record.IsValid())
@@ -227,7 +254,7 @@ namespace S7_writer_plugin
                             bOneValid = true;
                     }
 
-                    m_datagvMessages.Refresh();
+					dataGrid.Refresh();
                     this.ParentForm.Activate();
 
                     if(!bOneValid)
@@ -260,36 +287,6 @@ namespace S7_writer_plugin
             }
         }
 
-        private void m_datagvMessages_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
-        {
-            DataGridView grid = sender as DataGridView;
-            if(grid == null) return;
-            //store a string representation of the row number in 'strRowNumber'
-            string strRowNumber = (e.RowIndex + 1).ToString();
-
-            //prepend leading zeros to the string if necessary to improve
-            //appearance. For example, if there are ten rows in the grid,
-            //row seven will be numbered as "07" instead of "7". Similarly, if 
-            //there are 100 rows in the grid, row seven will be numbered as "007".
-            while(strRowNumber.Length < grid.RowCount.ToString().Length) strRowNumber = "0" + strRowNumber;
-
-            //determine the display size of the row number string using
-            //the DataGridView's current font.
-            SizeF size = e.Graphics.MeasureString(strRowNumber, this.Font);
-
-            //adjust the width of the column that contains the row header cells 
-            //if necessary
-            if(grid.RowHeadersWidth < (int)(size.Width + 20)) grid.RowHeadersWidth = (int)(size.Width + 20);
-
-            //this brush will be used to draw the row number string on the
-            //row header cell using the system's current ControlText color
-            Brush b = SystemBrushes.ControlText;
-
-            //draw the row number string on the current row header cell using
-            //the brush defined above and the DataGridView's default font
-            e.Graphics.DrawString(strRowNumber, this.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));   
-        }
-
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
             UpdateButtons();
@@ -298,23 +295,61 @@ namespace S7_writer_plugin
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
             UpdateButtons();
-        }
+		}
+		private void buttonEndpointAdd_Click(object sender, EventArgs e)
+		{
+			var view = dataGrid.MainView as GridView;
+			m_data.Records.Add(new S7TaskData.Record());
+			view.FocusedRowHandle = m_data.Records.Count - 1;
+			view.ShowEditor();
 
-        private void UpdateButtons()
+			dataGrid.RefreshDataSource();
+			buttonEndpointCopy.Enabled = buttonEndpointRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+		}
+		private void buttonEndpointCopy_Click(object sender, EventArgs e)
+		{
+			var view = dataGrid.MainView as GridView;
+			if ((view.FocusedRowHandle >= 0) &&
+				(view.FocusedRowHandle < m_data.Records.Count) &&
+				view.GetRow(view.FocusedRowHandle) is S7TaskData.Record selEp)
+			{
+				m_data.Records.Add(selEp.Clone() as S7TaskData.Record);
+				view.FocusedRowHandle = m_data.Records.Count - 1;
+				view.ShowEditor();
+
+				buttonEndpointCopy.Enabled = buttonEndpointRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+			}
+			dataGrid.RefreshDataSource();
+		}
+		private void buttonEndpointRemove_Click(object sender, EventArgs e)
+		{
+			var view = dataGrid.MainView as GridView;
+			if ((view.FocusedRowHandle >= 0) && (view.FocusedRowHandle < m_data.Records.Count))
+			{
+				m_data.Records.RemoveAt(view.FocusedRowHandle);
+				buttonEndpointCopy.Enabled = buttonEndpointRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+			}
+			dataGrid.RefreshDataSource();
+		}
+
+		private void UpdateButtons()
         {
             bool enabled = File.Exists(ibaAnalyzerExe);
             if(enabled) enabled = string.IsNullOrEmpty(m_pdoFileTextBox.Text) || File.Exists(m_pdoFileTextBox.Text);
             if(enabled) enabled = string.IsNullOrEmpty(m_datFileTextBox.Text) || File.Exists(m_datFileTextBox.Text);
             m_executeIBAAButton.Enabled = enabled;
-        }
 
-        private void m_datagvMessages_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
-            e.ThrowException = false;
-        }
-    }
+			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+		}
 
-    static class NumericUpDownHelper
+		internal void SetAnalyzerControl(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		{
+			m_channelEditor = e;
+			m_analyzerManager = analyzer;
+		}
+	}
+
+	static class NumericUpDownHelper
     {
         public static int GetIntValue(this NumericUpDown spinner)
         {

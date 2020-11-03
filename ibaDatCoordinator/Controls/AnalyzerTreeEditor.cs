@@ -8,6 +8,7 @@ using DevExpress.XtraEditors.Registrator;
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraEditors.ViewInfo;
 using iba.HD.Client.Interfaces;
+using iba.Plugins;
 using iba.Utility;
 using Microsoft.Win32;
 using System;
@@ -22,9 +23,9 @@ using System.Windows.Forms;
 
 namespace iba.Controls
 {
-    #region AnalyzerTree
-    internal class AnalyzerManager : IDisposable
-    {
+	#region AnalyzerTree
+	internal class AnalyzerManager : IDisposable, IAnalyzerManagerUpdateSource
+	{
         #region Members
         object lockAnalyzer;
         public IbaAnalyzer.IbaAnalyzer Analyzer { get; private set; }
@@ -217,7 +218,7 @@ namespace iba.Controls
 		Infofields = 0x400000
 	};
 
-    internal class AnalyzerTreeControl : Panel, ISignalDragDropHandler
+	internal class AnalyzerTreeControl : Panel, ISignalDragDropHandler
     {
         private class CustomNode
         {

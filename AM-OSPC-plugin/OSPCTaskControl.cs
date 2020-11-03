@@ -11,19 +11,26 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace AM_OSPC_plugin
 {
     public partial class OSPCTaskControl : UserControl, IPluginControl
     {
         private IDatCoHost m_datcoHost;
-        public OSPCTaskControl(IDatCoHost datcoHost)
+		[NonSerialized]
+		private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
+		[NonSerialized]
+		private IAnalyzerManagerUpdateSource m_analyzerManager;
+
+		public OSPCTaskControl(IDatCoHost datcoHost)
         {
             m_datcoHost = datcoHost;
             InitializeComponent();
-            m_datagvMessages.AutoGenerateColumns = false;
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
-        }
+			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;
+			dataGV.IndicatorWidth = 50;
+		}
 
         protected override void OnLoad(EventArgs e)
         {
@@ -56,8 +63,13 @@ namespace AM_OSPC_plugin
             m_control = parentcontrol;
             m_datFileTextBox.Text = m_data.TestDatFile;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
-            m_datagvMessages.DataSource = m_data.Records.ToList();
-            m_ospcHost.Text = m_data.OspcServerHost;
+            dataGrid.DataSource = m_data.Records.ToList();
+
+			m_channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+			dataGrid.RepositoryItems.Add(m_channelEditor);
+			expressionColumn.ColumnEdit = m_channelEditor;
+
+			m_ospcHost.Text = m_data.OspcServerHost;
             m_ospcUsername.Text = m_data.OspcServerUser;
             m_ospcPassword.Text = m_data.OspcServerPassword;
             UpdateButtons();
@@ -73,7 +85,7 @@ namespace AM_OSPC_plugin
         {
             m_data.TestDatFile = m_datFileTextBox.Text;
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
-            m_data.Records = (m_datagvMessages.DataSource as IList<OSPCTaskData.Record>).ToArray<OSPCTaskData.Record>();
+            m_data.Records = (dataGrid.DataSource as IList<OSPCTaskData.Record>).ToArray<OSPCTaskData.Record>();
 
             m_data.OspcServerHost = m_ospcHost.Text;
             m_data.OspcServerUser = m_ospcUsername.Text;
@@ -90,9 +102,23 @@ namespace AM_OSPC_plugin
             //nothing to do
         }
 
-        #endregion
+		#endregion
+		void gridExpressionTest_CustomDrawRowIndicator(object sender, DevExpress.XtraGrid.Views.Grid.RowIndicatorCustomDrawEventArgs e)
+		{
+			GridView grid = sender as GridView;
+			if (e.RowHandle < 0)
+				return;
 
-        private void m_browsePDOFileButton_Click(object sender, EventArgs e)
+			string strRowNumber = (e.RowHandle + 1).ToString();
+			//prepend leading zeros to the string if necessary to improve
+			//appearance. For example, if there are ten rows in the grid,
+			//row seven will be numbered as "07" instead of "7". Similarly, if 
+			//there are 100 rows in the grid, row seven will be numbered as "007".
+			while (strRowNumber.Length < dataGV.RowCount.ToString().Length) strRowNumber = "0" + strRowNumber;
+
+			e.Info.DisplayText = strRowNumber;
+		}
+		private void m_browsePDOFileButton_Click(object sender, EventArgs e)
         {
             m_openFileDialog.CheckFileExists = true;
             m_openFileDialog.Filter = Properties.Resources.PdoFileFilter;
@@ -191,7 +217,7 @@ namespace AM_OSPC_plugin
                 {
                     if(bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if(bUseDatFile) ibaAnalyzer.OpenDataFile(0,m_datFileTextBox.Text);
-                    OSPCTaskData.Record[] records = (m_datagvMessages.DataSource as IList<OSPCTaskData.Record>).ToArray<OSPCTaskData.Record>();
+                    OSPCTaskData.Record[] records = (dataGrid.DataSource as IList<OSPCTaskData.Record>).ToArray<OSPCTaskData.Record>();
                     foreach (OSPCTaskData.Record record in records)
                     {
                         if (string.IsNullOrEmpty(record.VariableName) && string.IsNullOrEmpty(record.Expression)) continue;
@@ -210,7 +236,7 @@ namespace AM_OSPC_plugin
                             MessageBox.Show(String.Format(Properties.Resources.BadEvaluate,record.VariableName), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
-                    m_datagvMessages.DataSource = records.ToList();
+                    dataGrid.DataSource = records.ToList();
                     this.ParentForm.Activate();
                 }
             }
@@ -286,8 +312,15 @@ namespace AM_OSPC_plugin
             if (enabled) enabled = string.IsNullOrEmpty(m_pdoFileTextBox.Text);// || File.Exists(m_pdoFileTextBox.Text);
             if (enabled) enabled = string.IsNullOrEmpty(m_datFileTextBox.Text);// || File.Exists(m_datFileTextBox.Text);
             m_executeIBAAButton.Enabled = enabled;
-        }
-    }
+
+			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+		}
+		internal void SetAnalyzerControl(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		{
+			m_channelEditor = e;
+			m_analyzerManager = analyzer;
+		}
+	}
 
     /// </summary>
     internal class WindowsAPI

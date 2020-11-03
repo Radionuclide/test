@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Text;
+using DevExpress.XtraEditors.Repository;
 using iba.Plugins;
 
 namespace S7_writer_plugin
 {
-    class PluginCollection : IDatCoPlugin
-    {
+    class PluginCollection : IDatCoPlugin, IGridAnalyzer
+	{
         #region IDatCoPlugin Members
 
         PluginTaskInfo m_info;
@@ -33,13 +34,26 @@ namespace S7_writer_plugin
             }
         }
 
-        public IPluginTaskData CreateTask(string taskname, IJobData parentjob)
+		private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
+		private IAnalyzerManagerUpdateSource m_analyzer;
+		public void SetGridAnalyzer(RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		{
+			m_channelEditor = e;
+			m_analyzer = analyzer;
+		}
+		public IPluginTaskData CreateTask(string taskname, IJobData parentjob)
         {
-            if(taskname == "S7 Writer")
-                return new S7TaskData(taskname, DatCoordinatorHost, parentjob);
-            else return null;
+			if (taskname == "S7 Writer")
+			{
+				var td = new S7TaskData(taskname, DatCoordinatorHost, parentjob);
+				td.SetAnalyzerControl(m_channelEditor, m_analyzer);
+				return td;
+			}
+			else
+				return null;
         }
 
-        #endregion
-    }
+
+		#endregion
+	}
 }

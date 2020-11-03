@@ -280,11 +280,17 @@ namespace AM_OSPC_plugin
             set { m_ospcServerHost = value; }
         }
 
-        #endregion
+		#endregion
+		public void SetAnalyzerControl(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		{
+			if (m_control == null)
+				m_control = new OSPCTaskControl(m_datcoHost);
+			m_control.SetAnalyzerControl(e, analyzer);
+		}
 
-        #region IPluginTaskDataIbaAnalyzer Members
+		#region IPluginTaskDataIbaAnalyzer Members
 
-        public void SetIbaAnalyzer(IbaAnalyzer.IbaAnalyzer Analyzer, iba.Processing.IIbaAnalyzerMonitor Monitor)
+		public void SetIbaAnalyzer(IbaAnalyzer.IbaAnalyzer Analyzer, iba.Processing.IIbaAnalyzerMonitor Monitor)
         {
             if(m_worker == null) m_worker = new OSPCTaskWorker(this);
             m_worker.SetIbaAnalyzer(Analyzer, Monitor);

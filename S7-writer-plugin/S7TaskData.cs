@@ -411,11 +411,18 @@ namespace S7_writer_plugin
             m_worker.SetIbaAnalyzer(Analyzer, Monitor);
         }
 
-        #endregion
+		public void SetAnalyzerControl(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		{
+			if (m_control == null)
+				m_control = new S7TaskControl(m_datcoHost);
+			m_control.SetAnalyzerControl(e, analyzer);
+		}
 
-        #region IPluginTaskDataIbaAnalyzer Members
+		#endregion
 
-        public bool UsesAnalysis
+		#region IPluginTaskDataIbaAnalyzer Members
+
+		public bool UsesAnalysis
         {
             get { return !string.IsNullOrEmpty(m_pdoFile); }
         }

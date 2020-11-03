@@ -57,12 +57,38 @@ namespace iba.Plugins
         void SetParentJob (IJobData data);
     }
 
-    /// <summary>
-    /// Interface implemented by a plugin task, data part in the case that the plugin needs
-    /// to use the datcoordinator network shares handling functionallity
-    /// Implementation must have the Serializable attribute
-    /// </summary>
-    public interface IPluginTaskDataUNC : IPluginTaskData
+	/// <summary>
+	/// Interface for plugins which uses analyzer tree to select signals
+	/// We use SetGridAnalyzer method to avoid direct reference to ibaDatCoordinator
+	/// </summary>
+	public interface IGridAnalyzer
+	{
+		/// <summary>
+		/// Method should be called before CreateTask call
+		/// </summary>
+		/// <param name="editor">DevExpress tree editor - RepositoryItemChannelTreeEdit </param>
+		/// <param name="analyzer">AnalyzerManager class </param>
+		void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit editor, IAnalyzerManagerUpdateSource analyzer);
+	}
+
+	/// <summary>
+	/// Interface to use AnalyzerManager without reference to ibaDatCoordinator
+	/// </summary>
+	public interface IAnalyzerManagerUpdateSource
+	{       
+		/// <summary>
+		/// Use this method to set .pdo and .dat files to Analyzer tree
+		/// </summary>
+		void UpdateSource(string pdoFile, string datFile, string datFilePassword);
+	}
+
+
+	/// <summary>
+	/// Interface implemented by a plugin task, data part in the case that the plugin needs
+	/// to use the datcoordinator network shares handling functionallity
+	/// Implementation must have the Serializable attribute
+	/// </summary>
+	public interface IPluginTaskDataUNC : IPluginTaskData
     {
         /// <summary>
         /// Extention of the generated output file, e.g.: ".xml"

@@ -9,6 +9,7 @@ using iba.Remoting;
 using System.Windows.Forms;
 using iba.Logging;
 using System.Linq;
+using iba.Controls;
 
 namespace iba.Utility
 {
@@ -179,8 +180,18 @@ namespace iba.Utility
 
         public IPluginTaskData CreateTask(string name, ConfigurationData parentjob)
         {
-            if (! m_plugins.ContainsKey(name)) return null;
-            else return m_plugins[name].CreateTask(name, parentjob);
+			if (!m_plugins.ContainsKey(name))
+				return null;
+			else
+			{
+				var plugin = m_plugins[name];
+				if (plugin is IGridAnalyzer)
+				{
+					var analyzer = new AnalyzerManager();
+					(plugin as IGridAnalyzer).SetGridAnalyzer(new RepositoryItemChannelTreeEdit(analyzer, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields), analyzer);
+				}
+				return plugin.CreateTask(name, parentjob);
+			}
         }
 
         static private PluginManager m_instance = null;
