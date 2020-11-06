@@ -286,15 +286,13 @@ Function CheckRequirements
   nsSCMEx::GetOsVersion
   Pop $Is64Bit
   Pop $WinVer
-  StrCmp $WinVer "VISTA" WarnNoLongerSupported +1
-  StrCmp $WinVer "2008" OSisOK +1
   StrCmp $WinVer "7" OSisOK +1
   StrCmp $WinVer "2008 R2" OSisOK +1
   StrCmp $WinVer "8" OSisOK +1
+  StrCmp $WinVer "10" OSisOK +1
   StrCmp $WinVer "2012" OSisOK +1
   StrCmp $WinVer "2016" OSisOK +1
   StrCmp $WinVer "2019" OSisOK +1
-  StrCmp $WinVer "10" OSisOK +1
     MessageBox MB_OK|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_OS_NOT_SUPPORTED)
     Quit
 
