@@ -62,6 +62,7 @@ namespace iba.Controls
             else
                 m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
                     File.Exists(ibaAnalyzerExe);
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
                 m_testButton.Enabled = true; //we'll give a warning when not allowed ...
             else
