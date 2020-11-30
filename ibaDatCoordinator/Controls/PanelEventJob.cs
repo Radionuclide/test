@@ -447,13 +447,21 @@ namespace iba.Controls
 
                 foreach (var name in m_currStores)
                 {
+                    bool storeExists = false;
                     foreach (ListViewItem item in m_lvStores.Items)
                     {
                         if (item.Text == name)
                         {
+                            storeExists = true;
                             item.Checked = true;
                             break;
                         }
+                    }
+
+                    if (!storeExists)
+                    {
+                        ListViewItem item = m_lvStores.Items.Add(name, HdTreeNodes.GetImageIndex(HdStoreType.Unknown, false, false));
+                        item.Checked = true;
                     }
                 }
             }
