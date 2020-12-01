@@ -52,6 +52,7 @@ namespace iba.Controls
             m_ctrlServer.SetServerFeatures(new List<ReaderFeature>(1) { ReaderFeature.ComputedValue }, new List<WriterFeature>(1) { WriterFeature.ComputedValue });
             m_ctrlServer.StoreFilter = new List<HdStoreType> { HdStoreType.Event };
             m_ctrlServer.HideStoreSelection();
+            m_ctrlServer.AllowCurrentWindowsUser = false;
             m_analyzerManager = new AnalyzerManager();
 
             m_pulseEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital);
@@ -106,18 +107,24 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_btnTest, Properties.Resources.HDEventTask_ToolTip_Test);
 
             m_ctrlEvent.EventTrigger = triggerControl;
-            m_ctrlServer.ServerSelectionChanged += (s, e) => 
+            m_ctrlServer.ServerSelectionChanged += (s, e) =>
             {
                 if (m_ctrlServer.Reader.IsConnected())
-                    m_ctrlEvent.ReadOnly = false;
-                else
-                    m_ctrlEvent.ReadOnly = true;
-                if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
                 {
-                    if (m_ctrlServer.Reader.UserManager.IsActive() && user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
-                        m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
-                    else if (!m_ctrlServer.Reader.UserManager.IsActive() || user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
-                        m_ctrlEvent.StoreFilter = null;
+                    m_ctrlEvent.ReadOnly = false;
+
+                    if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
+                    {
+                        if (m_ctrlServer.Reader.UserManager.IsActive() && user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
+                            m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
+                        else if (!m_ctrlServer.Reader.UserManager.IsActive() || user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
+                            m_ctrlEvent.StoreFilter = null;
+                    }
+                }
+                else
+                {
+                    m_ctrlEvent.ReadOnly = true;
+                    m_ctrlEvent.StoreFilter = null;
                 }
             };
             m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), null, false);
@@ -266,22 +273,12 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
 
-            //Check if server settings are changed
-            if (m_data.EventSettings.Count > 0 && (m_ctrlServer.Server != m_data.Server || m_ctrlServer.Port != m_data.ServerPort))
-                m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, m_data.Username, m_data.Password, "");
-            else if (m_data.EventSettings.Count == 0)
-                m_ctrlServer.LoadData("", 9180, "", "", "");
-            else if (!m_ctrlServer.Reader.IsConnected())
-            {
-                // Reconnect to server in case connection is lost.
-                m_ctrlServer.Reader.UserLoginInfo.UserName = m_data.Username;
-                m_ctrlServer.Reader.UserLoginInfo.Password = m_data.Password;
-                HdConnectResult res = m_ctrlServer.Reader.ConnectEx(m_ctrlServer.Server, m_ctrlServer.Port);
-                if (res != HdConnectResult.Connected)
-                    m_ctrlEvent.ReadOnly = true;
-                else
-                    m_ctrlEvent.ReadOnly = false;
-            }
+            m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, false, m_data.Username, m_data.Password, "");
+
+            if (m_ctrlServer.Reader.IsConnected())
+                m_ctrlEvent.ReadOnly = false;
+            else
+                m_ctrlEvent.ReadOnly = true;
 
             if (m_data.FullEventConfig?.Count > 0 && MessageBox.Show(this, iba.Properties.Resources.ReloadHdEvents,
                             iba.Properties.Resources.ReloadHdEventsCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question,
@@ -340,8 +337,8 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            m_ctrlServer.Reader.Disconnect();
             m_ctrlEvent.ReleaseEditRightsServer();
+            m_ctrlServer.Reader.Disconnect();
             ResetChannelTrees();
         }
 

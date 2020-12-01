@@ -1053,6 +1053,11 @@
             True upon success
             </returns>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdReader.DisableAutoReconnect">
+            <summary>
+            Determines if reader should automatically try to reconnect when the connection is lost.
+            </summary>
+        </member>
         <member name="P:iba.HD.Client.Interfaces.IHdReader.TimeSynchronizer">
             <summary>
             Converts between server and client time
@@ -1203,7 +1208,12 @@
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdUserManager.GetUsers">
             <summary>
-            Get all users
+            Get all local users
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdUserManager.GetAllUsers">
+            <summary>
+            Get all local and AD users
             </summary>
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdUserManager.StartEditUser">
@@ -1443,6 +1453,11 @@
         <member name="P:iba.HD.Client.Interfaces.IHdWriter.WriteVersion">
             <summary>
             Write data version information
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdWriter.BufferPct">
+            <summary>
+            Provide information about buffer usage of Writer
             </summary>
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdWriter.Write(iba.HD.Common.HdWriterData)">

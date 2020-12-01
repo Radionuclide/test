@@ -165,6 +165,7 @@ namespace iba.Processing
 
                 lHdReader.UserLoginInfo.UserName = m_ejd.HDUsername;
                 lHdReader.UserLoginInfo.Password = m_ejd.HDPassword;
+                lHdReader.UserLoginInfo.UseCurrentWindowsUser = false;
 
                 m_liveData.Clear();
                 lHdReader.Connect(m_ejd.HDServer, m_ejd.HDPort);

@@ -73,6 +73,31 @@
             True if range is expanded
             </returns>
         </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.GetADUsers">
+            <summary>
+            Gets all Active Directory users
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.GetADConfig">
+            <summary>
+            Gets the current Active Directory connection configuration
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.SetADConfig(iba.HD.Common.ADConnectionConfig)">
+            <summary>
+            Sets the current Active Directory connection configuration
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.TestADConnection(iba.HD.Common.ADConnectionConfig,System.String@)">
+            <summary>
+            Test connection to Active Directory
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.GetADGroupsForUser(iba.HD.Common.HdUser)">
+            <summary>
+            Get the SIDs of all Active Directory groups this user belongs to
+            </summary>
+        </member>
         <member name="M:iba.HD.Common.IHdUserContract.GetUserVersion(iba.HD.Common.HdUserType)">
             <summary>
             Versioning per user type
@@ -167,6 +192,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureNotification">
             <summary>
               Looks up a localized string similar to Send and receive notifications.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderADUsers">
+            <summary>
+              Looks up a localized string similar to Active Directory support.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderCleanup">
@@ -853,17 +883,17 @@
         </member>
         <member name="M:iba.HD.Common.IHdStoreContract.TestStoreConfig(iba.HD.Common.HdStoreConfig,System.String@)">
             <remarks>
-            Depricated
+            Deprecated
             </remarks>
         </member>
         <member name="M:iba.HD.Common.IHdStoreContract.GetDiskSpace(iba.HD.Common.HdStoreConfig,System.Int64@,System.Int64@)">
             <remarks>
-            Depricated
+            Deprecated
             </remarks>
         </member>
         <member name="M:iba.HD.Common.IHdStoreContract.GetDiskSpaceEx(iba.HD.Common.HdStoreConfig,System.Int64@,System.Int64@,System.Int64@)">
             <remarks>
-            Depricated
+            Deprecated
             </remarks>
         </member>
         <member name="M:iba.HD.Common.IHdSegmentContract.GetSegmentFirst(iba.HD.Common.HdSegmentRequest)">

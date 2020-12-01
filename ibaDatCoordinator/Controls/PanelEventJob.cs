@@ -79,7 +79,7 @@ namespace iba.Controls
             m_hdReader.UserLoginInfo.Password = m_password;
             m_hdReader.UserLoginInfo.AllowSavePassword = false;
             m_hdReader.UserLoginInfo.SavePassword = true;
-
+            m_hdReader.UserLoginInfo.AllowCurrentWindowsUser = false;
             m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
 
             m_treeEvents = m_hdReader.CreateSignalTree(false);
@@ -327,6 +327,7 @@ namespace iba.Controls
                 m_hdReader.UserLoginInfo.Parent = this;
                 m_hdReader.UserLoginInfo.UserName = username;
                 m_hdReader.UserLoginInfo.Password = password;
+                m_hdReader.UserLoginInfo.AllowCurrentWindowsUser = false;
                 m_hdReader.UserLoginOptions = showLoginForm;
 
                 HdConnectResult res = m_hdReader?.ConnectEx(tpl.Item1, tpl.Item2) ?? HdConnectResult.ConnectionFailure;
