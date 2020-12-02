@@ -15,6 +15,7 @@
 		.btn_normal	{cursor: pointer; cursor: pointer; color: white; background-color: #006600; font-size: 20px; font-weight: bold; padding: 4px}
 		.btn_over		{cursor: pointer; cursor: pointer; color: white; background-color: #008800; font-size: 20px; font-weight: bold; padding: 4px}
 		.box				{border-style:solid; border-width: 1px; border-color: black; margin-bottom: 20px; padding: 5px}
+		.box>ol>li>ol {list-style-type: lower-alpha;}
 		#comp	table {padding: 1px;  margin: 1px; }
 		#comp th		{background-color: #5082BE; color: white; font-size: 16px}
 		#comp th.head	{background-color: #315BA9}
@@ -102,9 +103,10 @@
 				<tr><th class="head" colspan="3">Current version</th></tr>
 				<tr><th width="15%">Version</th><th width="35%">Application version</th><th width="50%">Notes</th></tr>
 
-				<tr><th rowspan="11">v2.3.1</th><td>.NET framework v4.6.0</td><td>Full version is required <br>Version 4.8.0 is supported also</td></tr>
+				<tr><th rowspan="12">v2.4.0</th><td>.NET framework v4.8</td><td></td></tr>
 				<tr><td>Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64), 2012 Server R2 (x64), Windows 10 (x86/x64), Windows Server 2016, Windows Server 2019</td><td></td></tr>
 				<tr><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
+				<tr><td>ibaHD v2.6.0</td><td>Required for Active Directory users.</td></tr>
 
 				<tr><th width="35%">Plugins</th><th width="50%">Notes</th></tr>
 				<tr><td>ibaSinecH1 v2.4.0</td><td></td></tr>
@@ -119,17 +121,23 @@
 				<tr><td class="sep" /></tr>
 				<tr><th class="head" colspan="3">History</th></tr>
 				<tr><th>Version</th><th>Application version</th><th>Notes</th></tr>
+
+				<tr><th rowspan="2">v2.4.0</th><td>.NET framework v4.8</td><td></td></tr>
+				<tr><td>ibaHD v2.6.0</td><td>Required for Active Directory users.</td></tr>
+				<tr><td class="empty" /></tr>
 				
 				<tr><th rowspan="1">v2.2.4</th><td>ibaLicenseService-V2 v2.4.0</td><td>Required for for processing PDA 1 .dat files if no license dongle attached.</td></tr>
-				<tr><th rowspan="1">v2.2.0</th><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
-				<tr><th rowspan="1">v2.1.0</th><td>ibaAnalyzer v6.12.0</td><td>Required for PARQUET extract</td></tr>
+				<tr><td class="empty" /></tr>
 				
+				<tr><th rowspan="1">v2.2.0</th><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
+				<tr><td class="empty" /></tr>
+				
+				<tr><th rowspan="1">v2.1.0</th><td>ibaAnalyzer v6.12.0</td><td>Required for PARQUET extract</td></tr>
 				<tr><td class="empty" /></tr>
 
 				<tr><th rowspan="3">v2.0.0</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7.1 is supported also</td></tr>
 				<tr><td>ibaS7-Writer v2.0.0</td><td></td></tr>
 				<tr><td>ibaDBSync v1.0.5</td><td></td></tr>
-				
 				<tr><td class="empty" /></tr>
 
 				<tr><th rowspan="7">v1.25.1</th><td>.NET framework v4.0</td><td>Full version is required <br>Version 4.7 is supported also</td></tr>
@@ -139,11 +147,9 @@
 				<tr><td>ibaTksXml v1.3.2</td><td></td></tr>
 				<tr><td>ibaDatmanagerDBSync v1.0.5</td><td></td></tr>
 				<tr><td>ibaDatawyzer-ICC v1.17.1</td><td></td></tr>
-								
 				<tr><td class="empty" /></tr>
 				
 				<tr><th rowspan="1">v1.25.0</th><td>ibaAnalyzer v6.3.1</td><td>Required for significantly less resources usage</td></tr>
-				
 				<tr><td class="empty" /></tr>
 
 				<tr><th rowspan="1">v1.24.0</th><td>Windows Vista (x86), Windows 2008 Server (x86), Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64) and Windows 2012 Server R2 (x64)</td><td>Windows XP (x86) and Windows 2003 Server (x86) are no longer supported</td></tr>
@@ -159,16 +165,21 @@
 
 	<div id="hist">
 		<div class="box">
-			<P class="header1">Version 2.3.2 - ??/??/2020</P>
+			<P class="header1">Version 2.4.0 - ??/??/2020</P>
+			<p class="warning">.NET framework 4.8 is required</p>
+			<P class="header2">New features (N)</P>
+			<OL>
+				<li>Support for Active Directory users in ibaHD server.</li>
+			</OL>
 			<P class="header2">Improvements (I)</P>
 			<OL>
-				<li>ibaHD Offline event creation task: Add trigger options for generating events based on digital signals. #17439</li>
-				<li>ibaHD Offline event creation task: Allow numeric signals in text fields and text signals in numeric fields. #17534</li>
-				<li>ibaHD import task: Update localisations.</li>
+				<li>ibaHD Offline event creation task: Trigger options for generating events based on digital signals. #17439</li>
+				<li>ibaHD Offline event creation task: Numeric signals in text fields and text signals in numeric fields are allowed. #17534</li>
+				<li>ibaHD import task: Updated localisations.</li>
 			</OL>
 			<P class="header2">Bugfix (B)</P>
 			<OL>
-				<li>ibaHD Offline event creation task: Clear values from previous configured offline event task when adding a new offline event task. #16661</li>
+				<li>ibaHD Offline event creation task: Values from previously configured offline event task are now cleared when adding a new offline event task. #16661</li>
 			</OL>
 			<p>&nbsp; </p>
 			<P class="header1">Version 2.3.1 - 6/10/2020</P>
