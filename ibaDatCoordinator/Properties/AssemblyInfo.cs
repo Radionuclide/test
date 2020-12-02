@@ -8,30 +8,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("ibaDatCoordinator")]
 [assembly: AssemblyDescription("ibaDatCoordinator standalone or client")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("iba AG")]
-[assembly: AssemblyProduct("ibaDatCoordinator")]
-[assembly: AssemblyCopyright("© iba AG. All rights reserved")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("dbf18f93-2396-468f-8e79-4fe266454300")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-[assembly: AssemblyVersion("2.3.2.0")]
-[assembly: AssemblyFileVersion("2.3.2.0")]
 
 [assembly: InternalsVisibleTo("ibaDatCoordinatorStatus")]
 
@@ -39,12 +18,21 @@ namespace iba
 {
     public class DatCoVersion
     {
+        static string cachedVersion;
+
         //this build, version of the client should be same as the service (update ibaDatCoordinatorServer.AssemblyInfo
         public static string GetVersion()
         {
-            string ver = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
-            ver = ver + " BETA1";
-            return ver;
+            if (cachedVersion != null)
+                return cachedVersion;
+
+            AssemblyInformationalVersionAttribute attrib = typeof(iba.MainForm).Assembly.GetCustomAttribute(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
+            if (attrib != null)
+                cachedVersion = attrib.InformationalVersion;
+            else
+                cachedVersion = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
+
+            return cachedVersion;
         }
 
         public static int MinimumClientVersion()
