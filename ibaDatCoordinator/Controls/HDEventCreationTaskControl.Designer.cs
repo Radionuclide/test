@@ -27,7 +27,6 @@
 			this.m_btnBrowseDAT = new System.Windows.Forms.Button();
 			this.m_btnBrowsePDO = new System.Windows.Forms.Button();
 			this.m_tbDAT = new System.Windows.Forms.TextBox();
-			this.m_tbPDO = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.gbEvent = new iba.Utility.CollapsibleGroupBox();
@@ -41,6 +40,7 @@
 			this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
 			this.m_cbTime = new System.Windows.Forms.CheckBox();
 			this.m_cbMemory = new System.Windows.Forms.CheckBox();
+			this.m_tbPDO = new System.Windows.Forms.TextBox();
 			this.gbDataSource.SuspendLayout();
 			this.gbEvent.SuspendLayout();
 			this.gbStoreSelection.SuspendLayout();
@@ -122,12 +122,6 @@
 			resources.ApplyResources(this.m_tbDAT, "m_tbDAT");
 			this.m_tbDAT.Name = "m_tbDAT";
 			this.m_tbDAT.Leave += new System.EventHandler(this.DatTextChanged);
-			// 
-			// m_tbPDO
-			// 
-			resources.ApplyResources(this.m_tbPDO, "m_tbPDO");
-			this.m_tbPDO.Name = "m_tbPDO";
-			this.m_tbPDO.Leave += new System.EventHandler(this.PDOTextChanged);
 			// 
 			// label3
 			// 
@@ -248,6 +242,12 @@
 			this.m_cbMemory.Name = "m_cbMemory";
 			this.m_cbMemory.UseVisualStyleBackColor = true;
 			// 
+			// m_tbPDO
+			// 
+			resources.ApplyResources(this.m_tbPDO, "m_tbPDO");
+			this.m_tbPDO.Name = "m_tbPDO";
+			this.m_tbPDO.Leave += new System.EventHandler(this.PDOTextChanged);
+			// 
 			// HDEventCreationTaskControl
 			// 
 			resources.ApplyResources(this, "$this");
@@ -278,7 +278,6 @@
         private System.Windows.Forms.Button m_btnBrowseDAT;
         private System.Windows.Forms.Button m_btnBrowsePDO;
         private System.Windows.Forms.TextBox m_tbDAT;
-        private System.Windows.Forms.TextBox m_tbPDO;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox gbStoreSelection;
@@ -294,5 +293,6 @@
         private System.Windows.Forms.ToolTip m_toolTip;
         private HD.Client.ControlEventConfig m_ctrlEvent;
         private HD.Client.ControlServerSelection m_ctrlServer;
-    }
+		private System.Windows.Forms.TextBox m_tbPDO;
+	}
 }

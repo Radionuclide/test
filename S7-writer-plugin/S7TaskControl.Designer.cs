@@ -27,7 +27,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-        {
+		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(S7TaskControl));
 			this.label2 = new System.Windows.Forms.Label();
@@ -60,7 +60,7 @@
 			this.ckAllowErrors = new System.Windows.Forms.CheckBox();
 			this.dataGrid = new DevExpress.XtraGrid.GridControl();
 			this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
-			this.expressionColumn = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
 			this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
 			this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
 			this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -70,6 +70,7 @@
 			this.buttonEndpointAdd = new System.Windows.Forms.Button();
 			this.buttonEndpointRemove = new System.Windows.Forms.Button();
 			this.buttonEndpointCopy = new System.Windows.Forms.Button();
+			this.m_btnUploadPDO = new System.Windows.Forms.Button();
 			this.m_monitorGroup.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
@@ -104,7 +105,7 @@
 			// m_executeIBAAButton
 			// 
 			resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-			this.m_executeIBAAButton.Image = global::S7_writer_plugin.Properties.Resources.ibaAnalyzer;
+			this.m_executeIBAAButton.Image = global::S7_writer_plugin.Properties.Resources.ibaAnalyzer_16x16;
 			this.m_executeIBAAButton.Name = "m_executeIBAAButton";
 			this.m_toolTip.SetToolTip(this.m_executeIBAAButton, resources.GetString("m_executeIBAAButton.ToolTip"));
 			this.m_executeIBAAButton.UseVisualStyleBackColor = true;
@@ -302,7 +303,7 @@
 			// dataGrid
 			// 
 			resources.ApplyResources(this.dataGrid, "dataGrid");
-			this.dataGrid.EmbeddedNavigator.Margin = ((System.Windows.Forms.Padding)(resources.GetObject("gridExpressionTest.EmbeddedNavigator.Margin")));
+			this.dataGrid.EmbeddedNavigator.Margin = ((System.Windows.Forms.Padding)(resources.GetObject("dataGrid.EmbeddedNavigator.Margin")));
 			this.dataGrid.MainView = this.dataGV;
 			this.dataGrid.Name = "dataGrid";
 			this.dataGrid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -310,10 +311,10 @@
 			this.dataGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.dataGV});
 			// 
-			// gridView1
+			// dataGV
 			// 
 			this.dataGV.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.expressionColumn,
+            this.gridColumn6,
             this.gridColumn7,
             this.gridColumn8,
             this.gridColumn9,
@@ -321,8 +322,8 @@
             this.gridColumn11});
 			this.dataGV.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
 			this.dataGV.GridControl = this.dataGrid;
-			resources.ApplyResources(this.dataGV, "gridView1");
-			this.dataGV.Name = "gridView1";
+			resources.ApplyResources(this.dataGV, "dataGV");
+			this.dataGV.Name = "dataGV";
 			this.dataGV.OptionsBehavior.AutoSelectAllInEditor = false;
 			this.dataGV.OptionsBehavior.KeepGroupExpandedOnSorting = false;
 			this.dataGV.OptionsCustomization.AllowColumnMoving = false;
@@ -340,9 +341,9 @@
 			// 
 			// gridColumn6
 			// 
-			resources.ApplyResources(this.expressionColumn, "gridColumn6");
-			this.expressionColumn.FieldName = "Expression";
-			this.expressionColumn.Name = "gridColumn6";
+			resources.ApplyResources(this.gridColumn6, "gridColumn6");
+			this.gridColumn6.FieldName = "Expression";
+			this.gridColumn6.Name = "gridColumn6";
 			// 
 			// gridColumn7
 			// 
@@ -418,10 +419,19 @@
 			this.buttonEndpointCopy.UseVisualStyleBackColor = true;
 			this.buttonEndpointCopy.Click += new System.EventHandler(this.buttonEndpointCopy_Click);
 			// 
+			// m_btnUploadPDO
+			// 
+			resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+			this.m_btnUploadPDO.Image = global::S7_writer_plugin.Properties.Resources.img_pdo_upload;
+			this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+			this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+			this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
+			// 
 			// S7TaskControl
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.m_btnUploadPDO);
 			this.Controls.Add(this.buttonEndpointCopy);
 			this.Controls.Add(this.buttonEndpointRemove);
 			this.Controls.Add(this.buttonEndpointAdd);
@@ -496,12 +506,13 @@
 		private System.Windows.Forms.Button buttonEndpointRemove;
 		private DevExpress.XtraEditors.Repository.RepositoryItemComboBox repositoryItemComboBoxS7DataTypes;
 		private DevExpress.XtraGrid.Views.Grid.GridView dataGV;
-		private DevExpress.XtraGrid.Columns.GridColumn expressionColumn;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
 		private System.Windows.Forms.Button buttonEndpointCopy;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
+		private System.Windows.Forms.Button m_btnUploadPDO;
 	}
 }

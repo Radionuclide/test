@@ -136,6 +136,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specified analysis file does not exist. Do you want to start ibaAnalyzer without it?.
+        /// </summary>
+        internal static string AnalysisDoesNotExist {
+            get {
+                return ResourceManager.GetString("AnalysisDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Analysis file not found: .
         /// </summary>
         internal static string AnalysisFileNotFound {

@@ -578,153 +578,18 @@ namespace iba.Controls
         }
 
         private void m_btnOpenPDO_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                string ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-
-                if (!Utility.VersionCheck.CheckVersion(ibaAnalyzerExe, "7.1.0"))
-                {
-                    MessageBox.Show(this, string.Format(Properties.Resources.logAnalyzerVersionError, "7.1.0"), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-				string localFile = "";
-				if (!string.IsNullOrEmpty(m_pdoFilePath))
-				{
-
-					if (!Program.RemoteFileLoader.DownloadFile(m_pdoFilePath, out localFile, out string error))
-					{
-						MessageBox.Show(this, error, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						return;
-					}
-
-					string copyForInteractiveEdit = localFile.Replace(".pdo", "_(ibaDatCoordinator).pdo");
-
-					try
-					{
-						if (!File.Exists(copyForInteractiveEdit) || File.GetLastWriteTime(copyForInteractiveEdit) < File.GetLastWriteTime(localFile))
-							File.Copy(localFile, copyForInteractiveEdit, true);
-						if (File.Exists(copyForInteractiveEdit))
-							localFile = copyForInteractiveEdit;
-					}
-					catch
-					{
-					}
-				}
-                using (Process ibaProc = new Process())
-                {
-                    ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = ibaAnalyzerExe;
-                    ibaProc.StartInfo.Arguments = "\"" + localFile + "\"";
-                    ibaProc.Start();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+		{
+			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFilePath);
+		}
 
         void UploadPdoFile(bool messageOnNoChanges)
         {
-            if (Disposing || IsDisposed)
-                return;
+			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(messageOnNoChanges, this, m_pdoFilePath, m_analyzerManager, m_data.ParentConfigurationData);
+			UpdateSources();
+			loadAnalyzerTreeDataTask();
+		}
 
-            if (InvokeRequired)
-            {
-                Invoke(new Action<bool>(UploadPdoFile), messageOnNoChanges);
-                return;
-            }
-
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-			{
-                string localFile = Program.RemoteFileLoader.GetLocalPath(m_pdoFilePath);
-				string copyForInteractiveEdit = localFile.Replace(".pdo", "_(ibaDatCoordinator).pdo");
-				string toDelete = "";
-				if (File.Exists(copyForInteractiveEdit) && (!File.Exists(localFile) || File.GetLastWriteTime(copyForInteractiveEdit) > File.GetLastWriteTime(localFile)))
-				{
-					if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-					{ //copy locally
-						m_analyzerManager.UnLoadAnalysis();
-						try
-						{
-							File.Copy(copyForInteractiveEdit, localFile, true);
-							toDelete = copyForInteractiveEdit;
-						}
-						catch
-						{
-
-						}
-					}
-					else
-					{
-						localFile = copyForInteractiveEdit;
-						toDelete = copyForInteractiveEdit;
-					}
-				}
-
-				if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, m_pdoFilePath))
-				{
-					if (MessageBox.Show(this, Program.RunsWithService==Program.ServiceEnum.NOSERVICE? Properties.Resources.FileChanged_UploadStandalone:Properties.Resources.FileChanged_Upload, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-						return;
-
-					Cursor = Cursors.WaitCursor;
-
-					if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
-					{ //unload ibaAnalyzer from trees
-						m_analyzerManager.UnLoadAnalysis();
-					}
-
-					try
-					{
-						bool bStarted = TaskManager.Manager.IsJobStarted(m_data.ParentConfigurationData.Guid);
-						if (bStarted)
-							TaskManager.Manager.StopAndWaitForConfiguration(m_data.ParentConfigurationData);
-
-						if (!Program.RemoteFileLoader.UploadFile(localFile, m_pdoFilePath, true, out string error))
-							throw new Exception(error);
-
-						if (bStarted)
-							TaskManager.Manager.StartConfiguration(m_data.ParentConfigurationData);
-
-						Cursor = Cursors.Default;
-					}
-					catch (Exception ex)
-					{
-						Cursor = Cursors.Default;
-						MessageBox.Show(this, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-
-					if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
-					{ //unload ibaAnalyzer from trees
-						m_analyzerManager.ReopenAnalysis();
-					}
-					UpdateSources();
-					loadAnalyzerTreeDataTask();
-
-				}
-				else if (messageOnNoChanges)
-				{
-					MessageBox.Show(this, Properties.Resources.FileChanged_UploadNoChanges, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					toDelete = "";
-				}
-				if (!String.IsNullOrEmpty(toDelete))
-				{
-					try
-					{
-						File.Delete(toDelete);
-					}
-					catch
-					{
-					}
-				}
-			}
-        }
-
-        private void DatTextChanged(object sender, EventArgs e)
+		private void DatTextChanged(object sender, EventArgs e)
         {
             m_datFilePath = m_tbDAT.Text;
             UpdateSources();
@@ -770,53 +635,13 @@ namespace iba.Controls
 
         private void m_btnBrowsePDO_Click(object sender, EventArgs e)
         {
-            bool bLocal = false;
-            DialogResult result = DialogResult.Abort;
-            string path = m_pdoFilePath;
-            if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE && !Program.ServiceIsLocal)
-            {
-                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                {
-                    using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
-                    {
-                        fd.FixedDrivesOnly = false;
-                        fd.ShowFiles = true;
-                        fd.SelectedPath = path;
-                        fd.Filter = Properties.Resources.PdoFileFilter;
-                        result = fd.ShowDialog(this);
-                        path = fd.SelectedPath;
-                    }
-                }
-                else
-                    MessageBox.Show(this, Properties.Resources.HDEventTask_PDOConnectionRequired, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                bLocal = true;
-                using (var dlg = new OpenFileDialog())
-                {
-                    dlg.CheckFileExists = true;
-                    dlg.FileName = "";
-                    dlg.Filter = Properties.Resources.PdoFileFilter;
-                    if (File.Exists(path))
-                        dlg.FileName = Path.GetFileName(path);
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        string dir = Path.GetDirectoryName(path);
-                        if (Directory.Exists(dir))
-                            dlg.InitialDirectory = dir;
-                    }
-                    result = dlg.ShowDialog(this);
-                    path = dlg.FileName;
-                }
-            }
-            if (result == DialogResult.OK)
-            {
-                m_pdoFilePath = path;
-                m_tbPDO.Text = bLocal ? path : Path.GetFileName(path);
+			string localPath;
+			if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref m_pdoFilePath, out localPath))
+			{
+                m_tbPDO.Text = localPath;
                 UpdateSources();
                 loadAnalyzerTreeDataTask();
-            }
+			}
         }
 
         void m_viewPulse_RowCellStyle(object sender, RowCellStyleEventArgs e)

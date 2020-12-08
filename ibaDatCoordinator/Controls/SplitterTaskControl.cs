@@ -59,11 +59,9 @@ namespace iba.Controls
             }
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                m_testButton.Enabled = m_executeIBAAButton.Enabled = true; //we'll give a warning when not allowed ...
+                m_testButton.Enabled = true;
             else
             {
-                m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                    File.Exists(ibaAnalyzerExe);
                 m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
             }
 
@@ -111,57 +109,19 @@ namespace iba.Controls
         #endregion
 
         private void m_browsePDOFileButton_Click(object sender, EventArgs e)
-        {
-            string path = m_pdoFileTextBox.Text;
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-            {
-                using (iba.Controls.ServerFolderBrowser fd = new iba.Controls.ServerFolderBrowser(true))
-                {
-                    fd.FixedDrivesOnly = false;
-                    fd.ShowFiles = true;
-                    fd.SelectedPath = path;
-                    fd.Filter = Properties.Resources.PdoFileFilter;
-                    if (fd.ShowDialog(this) == DialogResult.OK)
-                    {
-                        m_pdoFileTextBox.Text = fd.SelectedPath;
-                    }
-                }
-            }
-            else
-            {
-                m_openFileDialog.Filter = Properties.Resources.PdoFileFilter;
-                if (System.IO.File.Exists(path))
-                    m_openFileDialog.FileName = path;
-                else if (System.IO.Directory.Exists(path))
-                    m_openFileDialog.InitialDirectory = path;
-                DialogResult result = m_openFileDialog.ShowDialog();
-                if (result == DialogResult.OK)
-                    m_pdoFileTextBox.Text = m_openFileDialog.FileName;
-            }
-        }
+		{
+			string path = m_pdoFileTextBox.Text;
+			string localPath;
+			if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref path, out localPath))
+			{
+				m_pdoFileTextBox.Text = path;
+			}
+		}
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
-        {
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-            {
-                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceRemoteAnalyserNotSupported, Program.ServiceHost), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            try
-            {
-                using (Process ibaProc = new Process())
-                {
-                    ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = ibaAnalyzerExe;
-                    ibaProc.StartInfo.Arguments = "\"" + m_pdoFileTextBox.Text + "\"";
-                    ibaProc.Start();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+		{
+			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFileTextBox.Text);
+		}
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
@@ -185,19 +145,7 @@ namespace iba.Controls
                 dlg.ShowDialog();
         }
 
-        private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                m_testButton.Enabled = m_executeIBAAButton.Enabled = true; //we'll give a warning when not allowed ...
-            else
-            {
-                m_executeIBAAButton.Enabled = File.Exists(m_pdoFileTextBox.Text) &&
-                    File.Exists(ibaAnalyzerExe);
-                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
-            }
-        }
-
-        private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+		private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
                 m_testButton.Enabled = true; //we'll give a warning when not allowed ...
@@ -205,5 +153,10 @@ namespace iba.Controls
                 m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                     File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
-    }
+
+		private void m_btnUploadPDO_Click(object sender, EventArgs e)
+		{
+			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
+		}
+	}
 }

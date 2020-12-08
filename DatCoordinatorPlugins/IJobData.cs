@@ -15,5 +15,6 @@ namespace iba.Plugins
         string Username { get; set; }
         string FileEncryptionPassword { get; }
 		bool DatTriggered { get; }
+		Guid Guid { get; set; }
 	}
 }

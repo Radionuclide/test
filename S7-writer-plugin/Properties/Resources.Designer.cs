@@ -89,11 +89,31 @@ namespace S7_writer_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ibaAnalyzer_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("ibaAnalyzer_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have version {0} of ibaAnalyzer installed. The minimum required version is 6.5.0. Version 6.7.0 or later is recommended..
         /// </summary>
         internal static string ibaAnalyzerVersionError {
             get {
                 return ResourceManager.GetString("ibaAnalyzerVersionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_pdo_upload {
+            get {
+                object obj = ResourceManager.GetObject("img_pdo_upload", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

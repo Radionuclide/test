@@ -1829,4 +1829,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="HdRisingEdgeAvg" xml:space="preserve">
     <value>on rising edge (Avg)</value>
   </data>
+  <data name="AnalysisDoesNotExist" xml:space="preserve">
+    <value>Specified analysis file does not exist. Do you want to start ibaAnalyzer without it?</value>
+  </data>
 </root>

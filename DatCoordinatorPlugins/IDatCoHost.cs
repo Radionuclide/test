@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
+using iba.Data;
 
 namespace iba.Plugins
 {
@@ -61,5 +63,17 @@ namespace iba.Plugins
 		/// <param name="filename">On return the selected file, On input where to open the browser dialog</param>
 		/// <returns>True if file was selected, false if the dialog was cancelled;
 		bool BrowseForDatFile(ref string datFile, IJobData data);
+
+		/// <summary>
+		/// start ibaAnalyzer with selected .pdo file or show warning if path is unreachable
+		/// </summary>
+		/// <param name="pdoFile">Path to file</param>
+		void OpenPDO(string pdoFile);
+
+		bool BrowseForPdoFile(ref string m_pdoFilePath, out string localPath);
+
+
+		void UploadPdoFile(bool messageOnNoChanges, Control form, string m_pdoFilePath, IAnalyzerManagerUpdateSource analyzerManager, IJobData m_data);
+
 	}
 }

@@ -40,6 +40,7 @@ namespace iba.Controls
 			this.m_browseFileButton = new System.Windows.Forms.Button();
 			this.m_executeIBAAButton = new System.Windows.Forms.Button();
 			this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
+			this.m_btnUploadPDO = new System.Windows.Forms.Button();
 			this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -102,7 +103,6 @@ namespace iba.Controls
 			// 
 			resources.ApplyResources(this.m_pdoFileTextBox, "m_pdoFileTextBox");
 			this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-			this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
 			// 
 			// m_browseFileButton
 			// 
@@ -115,7 +115,7 @@ namespace iba.Controls
 			// m_executeIBAAButton
 			// 
 			resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-			this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer;
+			this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
 			this.m_executeIBAAButton.Name = "m_executeIBAAButton";
 			this.m_executeIBAAButton.UseVisualStyleBackColor = true;
 			this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -123,11 +123,20 @@ namespace iba.Controls
 			// groupBox1
 			// 
 			resources.ApplyResources(this.groupBox1, "groupBox1");
+			this.groupBox1.Controls.Add(this.m_btnUploadPDO);
 			this.groupBox1.Controls.Add(this.m_executeIBAAButton);
 			this.groupBox1.Controls.Add(this.m_browseFileButton);
 			this.groupBox1.Controls.Add(this.m_pdoFileTextBox);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.TabStop = false;
+			// 
+			// m_btnUploadPDO
+			// 
+			resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+			this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
+			this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+			this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+			this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
 			// 
 			// m_monitorGroup
 			// 
@@ -243,6 +252,6 @@ namespace iba.Controls
         private System.Windows.Forms.CheckBox m_cbTime;
         private System.Windows.Forms.CheckBox m_cbMemory;
         private System.Windows.Forms.CheckBox m_cbImageSubDirs;
-
-    }
+		private System.Windows.Forms.Button m_btnUploadPDO;
+	}
 }

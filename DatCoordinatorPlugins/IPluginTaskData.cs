@@ -80,6 +80,10 @@ namespace iba.Plugins
 		/// Use this method to set .pdo and .dat files to Analyzer tree
 		/// </summary>
 		void UpdateSource(string pdoFile, string datFile, string datFilePassword);
+
+		void UnLoadAnalysis();
+
+		void ReopenAnalysis();
 	}
 
 

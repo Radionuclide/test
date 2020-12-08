@@ -67,7 +67,7 @@ namespace AM_OSPC_plugin
 
 			m_channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 			dataGrid.RepositoryItems.Add(m_channelEditor);
-			expressionColumn.ColumnEdit = m_channelEditor;
+			gridColumn6.ColumnEdit = m_channelEditor;
 
 			m_ospcHost.Text = m_data.OspcServerHost;
             m_ospcUsername.Text = m_data.OspcServerUser;
@@ -119,38 +119,19 @@ namespace AM_OSPC_plugin
 			e.Info.DisplayText = strRowNumber;
 		}
 		private void m_browsePDOFileButton_Click(object sender, EventArgs e)
-        {
-            m_openFileDialog.CheckFileExists = true;
-            m_openFileDialog.Filter = Properties.Resources.PdoFileFilter;
-            DialogResult result = m_openFileDialog.ShowDialog();
-            if(result == DialogResult.OK)
-                m_pdoFileTextBox.Text = m_openFileDialog.FileName;
-        }
+		{
+			string path = m_pdoFileTextBox.Text;
+			string localPath;
+			if (m_datcoHost.BrowseForPdoFile(ref path, out localPath))
+			{
+				m_pdoFileTextBox.Text = path;
+			}
+		}
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                using(Process ibaProc = new Process())
-                {
-                    ibaProc.EnableRaisingEvents = false;
-                    ibaProc.StartInfo.FileName = ibaAnalyzerExe;
-                    bool d = !string.IsNullOrEmpty(m_datFileTextBox.Text);
-                    bool p = !string.IsNullOrEmpty(m_pdoFileTextBox.Text);
-                    if (p&d)
-                        ibaProc.StartInfo.Arguments = "\"" + m_datFileTextBox.Text + "\" \"" + m_pdoFileTextBox.Text + "\"";
-                    else if (p)
-                        ibaProc.StartInfo.Arguments = "\"" + m_pdoFileTextBox.Text + "\"";
-                    else if (d)
-                        ibaProc.StartInfo.Arguments = "\"" + m_datFileTextBox.Text + "\"";
-                    ibaProc.Start();
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+			m_datcoHost.OpenPDO(m_pdoFileTextBox.Text);
+		}
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
@@ -296,10 +277,10 @@ namespace AM_OSPC_plugin
             e.Graphics.DrawString(strRowNumber, this.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));   
         }
 
-        private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
-        {
-            UpdateButtons();
-        }
+		private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
+		{
+			UpdateButtons();
+		}
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -308,11 +289,6 @@ namespace AM_OSPC_plugin
 
         private void UpdateButtons()
         {
-            bool enabled = File.Exists(ibaAnalyzerExe);
-            if (enabled) enabled = string.IsNullOrEmpty(m_pdoFileTextBox.Text);// || File.Exists(m_pdoFileTextBox.Text);
-            if (enabled) enabled = string.IsNullOrEmpty(m_datFileTextBox.Text);// || File.Exists(m_datFileTextBox.Text);
-            m_executeIBAAButton.Enabled = enabled;
-
 			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
 		internal void SetAnalyzerControl(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
@@ -320,10 +296,17 @@ namespace AM_OSPC_plugin
 			m_channelEditor = e;
 			m_analyzerManager = analyzer;
 		}
+
+		private void m_btnUploadPDO_Click(object sender, EventArgs e)
+		{
+			m_datcoHost.UploadPdoFile(true, this, m_pdoFileTextBox.Text, m_analyzerManager, m_data.m_parentJob);
+			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+		}
+
 	}
 
-    /// </summary>
-    internal class WindowsAPI
+	/// </summary>
+	internal class WindowsAPI
     {
         #region Shlwapi.dll functions
         [DllImport("Shlwapi.dll")]

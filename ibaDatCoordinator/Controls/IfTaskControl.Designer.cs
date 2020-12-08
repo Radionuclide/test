@@ -29,6 +29,7 @@ namespace iba.Controls
         private void InitializeComponent()
         {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IfTaskControl));
+			this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.m_XTypeComboBox = new System.Windows.Forms.ComboBox();
@@ -43,7 +44,6 @@ namespace iba.Controls
 			this.label3 = new System.Windows.Forms.Label();
 			this.m_datFileTextBox = new System.Windows.Forms.TextBox();
 			this.m_browseDatFileButton = new System.Windows.Forms.Button();
-			this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
@@ -51,6 +51,7 @@ namespace iba.Controls
 			this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
 			this.m_cbTime = new System.Windows.Forms.CheckBox();
 			this.m_cbMemory = new System.Windows.Forms.CheckBox();
+			this.m_btnUploadPDO = new System.Windows.Forms.Button();
 			this.groupBox2.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.m_monitorGroup.SuspendLayout();
@@ -61,6 +62,7 @@ namespace iba.Controls
 			// groupBox2
 			// 
 			resources.ApplyResources(this.groupBox2, "groupBox2");
+			this.groupBox2.Controls.Add(this.m_btnUploadPDO);
 			this.groupBox2.Controls.Add(this.label4);
 			this.groupBox2.Controls.Add(this.m_XTypeComboBox);
 			this.groupBox2.Controls.Add(this.label2);
@@ -102,7 +104,6 @@ namespace iba.Controls
 			// 
 			resources.ApplyResources(this.m_pdoFileTextBox, "m_pdoFileTextBox");
 			this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-			this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
 			// 
 			// m_browsePDOFileButton
 			// 
@@ -115,7 +116,7 @@ namespace iba.Controls
 			// m_executeIBAAButton
 			// 
 			resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-			this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer;
+			this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
 			this.m_executeIBAAButton.Name = "m_executeIBAAButton";
 			this.m_executeIBAAButton.UseVisualStyleBackColor = true;
 			this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -230,6 +231,14 @@ namespace iba.Controls
 			this.m_cbMemory.Name = "m_cbMemory";
 			this.m_cbMemory.UseVisualStyleBackColor = true;
 			// 
+			// m_btnUploadPDO
+			// 
+			resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+			this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
+			this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+			this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+			this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
+			// 
 			// IfTaskControl
 			// 
 			resources.ApplyResources(this, "$this");
@@ -274,5 +283,6 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudMemory;
         private System.Windows.Forms.CheckBox m_cbTime;
         private System.Windows.Forms.CheckBox m_cbMemory;
-    }
+		private System.Windows.Forms.Button m_btnUploadPDO;
+	}
 }

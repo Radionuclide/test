@@ -53,6 +53,7 @@ namespace iba.Controls
 			this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
 			this.m_cbTime = new System.Windows.Forms.CheckBox();
 			this.m_cbMemory = new System.Windows.Forms.CheckBox();
+			this.m_btnUploadPDO = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.groupBox3.SuspendLayout();
 			this.m_panelFile.SuspendLayout();
@@ -80,6 +81,7 @@ namespace iba.Controls
 			// groupBox1
 			// 
 			resources.ApplyResources(this.groupBox1, "groupBox1");
+			this.groupBox1.Controls.Add(this.m_btnUploadPDO);
 			this.groupBox1.Controls.Add(this.m_executeIBAAButton);
 			this.groupBox1.Controls.Add(this.m_browseFileButton);
 			this.groupBox1.Controls.Add(this.m_pdoFileTextBox);
@@ -89,7 +91,7 @@ namespace iba.Controls
 			// m_executeIBAAButton
 			// 
 			resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-			this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer;
+			this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
 			this.m_executeIBAAButton.Name = "m_executeIBAAButton";
 			this.m_executeIBAAButton.UseVisualStyleBackColor = true;
 			this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -106,7 +108,6 @@ namespace iba.Controls
 			// 
 			resources.ApplyResources(this.m_pdoFileTextBox, "m_pdoFileTextBox");
 			this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-			this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
 			// 
 			// groupBox3
 			// 
@@ -259,6 +260,14 @@ namespace iba.Controls
 			this.m_cbMemory.Name = "m_cbMemory";
 			this.m_cbMemory.UseVisualStyleBackColor = true;
 			// 
+			// m_btnUploadPDO
+			// 
+			resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+			this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
+			this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+			this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+			this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
+			// 
 			// ExtractControl
 			// 
 			resources.ApplyResources(this, "$this");
@@ -309,5 +318,6 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbTDMS;
         private System.Windows.Forms.RadioButton m_rbParquet;
 		private System.Windows.Forms.RadioButton m_rbMatLab;
+		private System.Windows.Forms.Button m_btnUploadPDO;
 	}
 }
