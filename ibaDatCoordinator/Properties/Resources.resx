@@ -1815,13 +1815,13 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Update the PDO file</value>
   </data>
   <data name="HdFallingEdge" xml:space="preserve">
-    <value>on falling edge (Point)</value>
+    <value>on falling edge (Value)</value>
   </data>
   <data name="HdNoEdge" xml:space="preserve">
     <value>never</value>
   </data>
   <data name="HdRisingEdge" xml:space="preserve">
-    <value>on rising edge (Point)</value>
+    <value>on rising edge (Value)</value>
   </data>
   <data name="HdFallingEdgeAvg" xml:space="preserve">
     <value>on falling edge (Avg)</value>

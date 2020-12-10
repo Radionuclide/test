@@ -55,7 +55,7 @@ namespace iba.Controls
             m_ctrlServer.AllowCurrentWindowsUser = false;
             m_analyzerManager = new AnalyzerManager();
 
-            m_pulseEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital);
+            m_pulseEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Expressions);
             m_pulseEditor.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
             m_pulseEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 

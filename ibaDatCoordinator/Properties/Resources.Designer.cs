@@ -1399,7 +1399,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on falling edge (Point).
+        ///   Looks up a localized string similar to on falling edge (Value).
         /// </summary>
         internal static string HdFallingEdge {
             get {
@@ -1435,7 +1435,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on rising edge (Point).
+        ///   Looks up a localized string similar to on rising edge (Value).
         /// </summary>
         internal static string HdRisingEdge {
             get {
