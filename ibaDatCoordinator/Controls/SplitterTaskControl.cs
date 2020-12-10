@@ -42,8 +42,8 @@ namespace iba.Controls
         {
             m_manager = manager;
             m_data = datasource as SplitterTaskData;
-            m_expressionTextBox.Text = m_data.Expression;
-            m_splitTypeCBox.SelectedIndex = (int)m_data.EdgeConditionType;
+			channelTreeEdit1.SetText(m_data.Expression);
+			m_splitTypeCBox.SelectedIndex = (int)m_data.EdgeConditionType;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
 
@@ -86,8 +86,8 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
-            m_data.Expression = m_expressionTextBox.Text;
-            m_data.EdgeConditionType = m_splitTypeCBox.SelectedIndex == 1 ? SplitterTaskData.EdgeConditionTypeEnum.RISINGTOFALLING : SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING;
+			m_data.Expression = channelTreeEdit1.text;
+			m_data.EdgeConditionType = m_splitTypeCBox.SelectedIndex == 1 ? SplitterTaskData.EdgeConditionTypeEnum.RISINGTOFALLING : SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING;
             
             m_uncControl.SaveData();
             m_data.UpdateUNC();
@@ -147,7 +147,8 @@ namespace iba.Controls
 
 		private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
                 m_testButton.Enabled = true; //we'll give a warning when not allowed ...
             else
                 m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
@@ -157,6 +158,11 @@ namespace iba.Controls
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
 			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
+		}
+
+		private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
+		{
+			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
 	}
 }

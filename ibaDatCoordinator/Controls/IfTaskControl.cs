@@ -30,7 +30,7 @@ namespace iba.Controls
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
             WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
-        }
+		}
 
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
@@ -41,10 +41,9 @@ namespace iba.Controls
         {
             m_manager = manager;
             m_data = datasource as IfTaskData;
-            m_expressionTextBox.Text = m_data.Expression;
+			channelTreeEdit1.SetText(m_data.Expression);
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
-
 
             try
             {
@@ -84,8 +83,8 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
-            m_data.Expression = m_expressionTextBox.Text;
-            m_data.XType = (IfTaskData.XTypeEnum) m_XTypeComboBox.SelectedIndex;
+			m_data.Expression = channelTreeEdit1.text;
+			m_data.XType = (IfTaskData.XTypeEnum) m_XTypeComboBox.SelectedIndex;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;
@@ -135,9 +134,9 @@ namespace iba.Controls
             {
                 string pass = m_data.ParentConfigurationData.FileEncryptionPassword;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                    f = Program.CommunicationObject.TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                    f = Program.CommunicationObject.TestCondition(channelTreeEdit1.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
                 else
-                    f = TestCondition(m_expressionTextBox.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                    f = TestCondition(channelTreeEdit1.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
             }
             if (float.IsNaN(f) || float.IsInfinity(f))
                 MessageBox.Show(errorMessage, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -189,17 +188,22 @@ namespace iba.Controls
             return f;
         }
 
-        private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+        private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                m_testButton.Enabled = true; //we'll give a warning when not allowed ...
-            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
+			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+        }
+
+        private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+		{
+			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
+			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, channelTreeEdit1.analyzerManager, m_data.ParentConfigurationData);
+			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
 	}
 }

@@ -31,11 +31,12 @@ namespace iba.Controls
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IfTaskControl));
 			this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
+			this.m_btnUploadPDO = new System.Windows.Forms.Button();
+			this.channelTreeEdit1 = new iba.Controls.ChannelTreeEdit();
 			this.label4 = new System.Windows.Forms.Label();
 			this.m_XTypeComboBox = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
-			this.m_expressionTextBox = new System.Windows.Forms.TextBox();
 			this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
 			this.m_browsePDOFileButton = new System.Windows.Forms.Button();
 			this.m_executeIBAAButton = new System.Windows.Forms.Button();
@@ -51,8 +52,8 @@ namespace iba.Controls
 			this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
 			this.m_cbTime = new System.Windows.Forms.CheckBox();
 			this.m_cbMemory = new System.Windows.Forms.CheckBox();
-			this.m_btnUploadPDO = new System.Windows.Forms.Button();
 			this.groupBox2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.channelTreeEdit1.Properties)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.m_monitorGroup.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
@@ -63,16 +64,31 @@ namespace iba.Controls
 			// 
 			resources.ApplyResources(this.groupBox2, "groupBox2");
 			this.groupBox2.Controls.Add(this.m_btnUploadPDO);
+			this.groupBox2.Controls.Add(this.channelTreeEdit1);
 			this.groupBox2.Controls.Add(this.label4);
 			this.groupBox2.Controls.Add(this.m_XTypeComboBox);
 			this.groupBox2.Controls.Add(this.label2);
 			this.groupBox2.Controls.Add(this.label1);
-			this.groupBox2.Controls.Add(this.m_expressionTextBox);
 			this.groupBox2.Controls.Add(this.m_pdoFileTextBox);
 			this.groupBox2.Controls.Add(this.m_browsePDOFileButton);
 			this.groupBox2.Controls.Add(this.m_executeIBAAButton);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.TabStop = false;
+			// 
+			// m_btnUploadPDO
+			// 
+			resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+			this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
+			this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+			this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+			this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
+			// 
+			// channelTreeEdit1
+			// 
+			resources.ApplyResources(this.channelTreeEdit1, "channelTreeEdit1");
+			this.channelTreeEdit1.Name = "channelTreeEdit1";
+			this.channelTreeEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("channelTreeEdit1.Properties.Buttons"))))});
 			// 
 			// label4
 			// 
@@ -95,15 +111,11 @@ namespace iba.Controls
 			resources.ApplyResources(this.label1, "label1");
 			this.label1.Name = "label1";
 			// 
-			// m_expressionTextBox
-			// 
-			resources.ApplyResources(this.m_expressionTextBox, "m_expressionTextBox");
-			this.m_expressionTextBox.Name = "m_expressionTextBox";
-			// 
 			// m_pdoFileTextBox
 			// 
 			resources.ApplyResources(this.m_pdoFileTextBox, "m_pdoFileTextBox");
 			this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
+			this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
 			// 
 			// m_browsePDOFileButton
 			// 
@@ -231,14 +243,6 @@ namespace iba.Controls
 			this.m_cbMemory.Name = "m_cbMemory";
 			this.m_cbMemory.UseVisualStyleBackColor = true;
 			// 
-			// m_btnUploadPDO
-			// 
-			resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
-			this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
-			this.m_btnUploadPDO.Name = "m_btnUploadPDO";
-			this.m_btnUploadPDO.UseVisualStyleBackColor = true;
-			this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
-			// 
 			// IfTaskControl
 			// 
 			resources.ApplyResources(this, "$this");
@@ -249,6 +253,7 @@ namespace iba.Controls
 			this.Name = "IfTaskControl";
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.channelTreeEdit1.Properties)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.m_monitorGroup.ResumeLayout(false);
@@ -266,7 +271,6 @@ namespace iba.Controls
         private System.Windows.Forms.Button m_browsePDOFileButton;
         private System.Windows.Forms.Button m_executeIBAAButton;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox m_expressionTextBox;
         private System.Windows.Forms.Label label2;
         private iba.Utility.CollapsibleGroupBox groupBox1;
         private System.Windows.Forms.Button m_testButton;
@@ -284,5 +288,6 @@ namespace iba.Controls
         private System.Windows.Forms.CheckBox m_cbTime;
         private System.Windows.Forms.CheckBox m_cbMemory;
 		private System.Windows.Forms.Button m_btnUploadPDO;
+		private ChannelTreeEdit channelTreeEdit1;
 	}
 }

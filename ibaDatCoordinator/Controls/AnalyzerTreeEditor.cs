@@ -254,10 +254,10 @@ namespace iba.Controls
         public event Action<AnalyzerTreeControl, string> CustomDoubleClick;
 
         public bool IsLoading => iState == Loading;
-        #endregion
+		#endregion
 
-        #region Initialize
-        public AnalyzerTreeControl(AnalyzerManager manager, ChannelTreeFilter filter)
+		#region Initialize
+		public AnalyzerTreeControl(AnalyzerManager manager, ChannelTreeFilter filter)
         {
             this.manager = manager;
             this.filter = filter;
@@ -770,8 +770,6 @@ namespace iba.Controls
             if (Disposing || IsDisposed)
                 return true;
 
-
-
             int prevState = Interlocked.CompareExchange(ref iState, Loading, Unloaded);
             if (prevState == Loading || prevState == Loaded)
                 return true;
@@ -1215,20 +1213,29 @@ namespace iba.Controls
                     return selected;
             }
         }
-
+		AnalyzerTreeControl tree
+		{
+			get
+			{
+				if (ChannelTreeProperties.ChannelTree is null)
+				{
+					return ((ChannelTreeEdit)OwnerEdit).control;
+				}
+				return ChannelTreeProperties.ChannelTree;
+			}
+		}
+			
         RepositoryItemChannelTreeEdit ChannelTreeProperties
         {
             get { return (RepositoryItemChannelTreeEdit)base.Properties; }
         }
 
-        public bool IsLoading => ChannelTreeProperties.ChannelTree.IsLoading;
+        public bool IsLoading => tree.IsLoading;
 
         #region popup
 
         protected override void OnBeforeShowPopup()
         {
-            AnalyzerTreeControl tree = ChannelTreeProperties.ChannelTree;
-
             if (tree != null)
             {
                 while (!tree.Load()) ;
@@ -1259,7 +1266,6 @@ namespace iba.Controls
 
         public override void HidePopupForm()
         {
-            AnalyzerTreeControl tree = ChannelTreeProperties.ChannelTree;
             if (tree != null)
             {
                 tree.AfterSelect -= tree_AfterSelect;
@@ -1274,9 +1280,18 @@ namespace iba.Controls
             if ((MouseButtons & MouseButtons.Right) == MouseButtons.Right)
                 return; //ignore opening of context menu
 
-            if (sender != null && id != null)
+			SetText(id, sender);
+
+			if (sender != null && id != null)
                 ClosePopup(PopupCloseMode.Normal);
         }
+
+		public void SetText(string id, AnalyzerTreeControl sender = null)
+		{
+			if (sender is null)
+				sender = tree;
+			((ChannelTreeEdit)OwnerEdit).SetText(id, sender);
+		}
 
         #endregion
 
@@ -1318,7 +1333,13 @@ namespace iba.Controls
 
             DoUpdateBounds();
             resizedSize = ClientSize;
-        }
+			if (tree != null)
+			{
+				var s = Size;
+				s.Height -= 20;
+				tree.Size = s;
+			}
+		}
 
         #endregion
     }
@@ -1333,6 +1354,12 @@ namespace iba.Controls
         {
             RepositoryItemChannelTreeEdit.RegisterChannelTreeEdit();
         }
+
+		public ChannelTreeEdit() : base ()
+		{
+			analyzerManager = new AnalyzerManager();
+			control = new AnalyzerTreeControl((AnalyzerManager)analyzerManager, ChannelTreeFilter.Expressions | ChannelTreeFilter.Analog | ChannelTreeFilter.Digital);
+		}
 
         public override string EditorTypeName
         {
@@ -1351,7 +1378,18 @@ namespace iba.Controls
 
             base.DoClosePopup(closeMode);
         }
-    }
+		internal void SetText(string text, AnalyzerTreeControl control = null)
+		{
+			this.text = text;
+			if (control != null)
+				this.control = control;
+			EditValue = this;
+		}
+
+		internal AnalyzerTreeControl control;
+		public string text;
+		public IAnalyzerManagerUpdateSource analyzerManager;
+	}
 
     #endregion
 
@@ -1363,7 +1401,11 @@ namespace iba.Controls
         {
             PopupBaseEditViewInfo vi = info.ViewInfo as PopupBaseEditViewInfo;
 
-            string id = vi.EditValue as string;
+			string id = null;
+			if (vi.EditValue is string str)
+				id = str;
+			else if (vi.EditValue is ChannelTreeEdit edit)
+				id = edit.text;
             RepositoryItemChannelTreeEdit item = vi.Item as RepositoryItemChannelTreeEdit;
 
             if (!string.IsNullOrEmpty(id))
@@ -1380,8 +1422,11 @@ namespace iba.Controls
                 else
                 {
                     AnalyzerTreeControl tree = item.ChannelTree;
-                    text = tree.GetDisplayName(id) ?? id;
-                    image = tree.GetImage(id);
+					if (tree is null)
+						tree = (vi.EditValue as ChannelTreeEdit).control;
+
+					text = tree.GetDisplayName(id) ?? id;
+					image = tree.GetImage(id);
                     /*if (image == null)
                     {
                         SpecialNode unassigned = item.GetSpecialNodeFromValue("*UNASSIGNED*");
@@ -1405,5 +1450,5 @@ namespace iba.Controls
         }
     }
 
-    #endregion
+	#endregion
 }
