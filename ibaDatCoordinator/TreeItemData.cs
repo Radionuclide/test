@@ -549,10 +549,18 @@ namespace iba
             Control ctrl = manager.PropertyPanes[id] as Control;
             if (ctrl == null)
             {
-                if (m_cust is CustomTaskDataUNC)
-                    ctrl = new CommonTaskControl(new CustomUNCTaskControl(m_cust.Plugin.GetControl() as iba.Plugins.IPluginControlUNC));
-                else
-                    ctrl = new CommonTaskControl(m_cust.Plugin.GetControl() as Control);
+				if (m_cust is CustomTaskDataUNC)
+					ctrl = new CommonTaskControl(new CustomUNCTaskControl(m_cust.Plugin.GetControl() as iba.Plugins.IPluginControlUNC));
+				else
+				{
+					var plugin = m_cust.Plugin;
+					if (plugin is Plugins.IGridAnalyzer)
+					{
+						var analyzer = new AnalyzerManager();
+						(plugin as Plugins.IGridAnalyzer).SetGridAnalyzer(new RepositoryItemChannelTreeEdit(analyzer, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields), analyzer);
+					}
+					ctrl = new CommonTaskControl(plugin.GetControl() as Control);
+				}
                 manager.PropertyPanes[id] = ctrl;
             }
             return ctrl;

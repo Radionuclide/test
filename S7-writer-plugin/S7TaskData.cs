@@ -10,8 +10,8 @@ using S7_writer;
 namespace S7_writer_plugin
 {
     [Serializable]
-    public class S7TaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer
-    {
+    public class S7TaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer, IGridAnalyzer
+	{
 
         #region IPluginTaskData Members
 
@@ -105,7 +105,6 @@ namespace S7_writer_plugin
 
         private string m_nameInfo;
 
-		private bool m_datTriggered;
 
         private void InitData(string name, IDatCoHost host, IJobData parentJob)
         {
@@ -121,8 +120,6 @@ namespace S7_writer_plugin
             m_s7ConnPars = new S7ConnectionParameters();
             m_bAllowErrors = false;
             m_monitorData = new iba.Data.MonitorData();
-
-			m_datTriggered = parentJob.DatTriggered;
         }
 
         public bool IsSame(IPluginTaskDataIsSame data)
@@ -411,11 +408,11 @@ namespace S7_writer_plugin
             m_worker.SetIbaAnalyzer(Analyzer, Monitor);
         }
 
-		public void SetAnalyzerControl(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
 		{
 			if (m_control == null)
 				m_control = new S7TaskControl(m_datcoHost);
-			m_control.SetAnalyzerControl(e, analyzer);
+			m_control.SetGridAnalyzer(e, analyzer);
 		}
 
 		#endregion
@@ -427,14 +424,6 @@ namespace S7_writer_plugin
             get { return !string.IsNullOrEmpty(m_pdoFile); }
         }
 
-		public bool DatTriggered
-		{
-			get
-			{
-				return m_datTriggered;
-			}
-		}
-
 		private iba.Data.MonitorData m_monitorData;
 
 		public iba.Data.MonitorData MonitorData
@@ -444,5 +433,4 @@ namespace S7_writer_plugin
 
         #endregion
     }
-
 }

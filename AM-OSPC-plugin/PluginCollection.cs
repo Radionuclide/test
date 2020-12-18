@@ -46,7 +46,7 @@ namespace AM_OSPC_plugin
             if(taskname == "OSPC")
 			{
 				var td = new OSPCTaskData(taskname, DatCoordinatorHost, parentjob);
-				td.SetAnalyzerControl(m_channelEditor, m_analyzer);
+				td.SetGridAnalyzer(m_channelEditor, m_analyzer);
 				return td;
 			}
             else

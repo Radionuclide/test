@@ -46,7 +46,7 @@ namespace S7_writer_plugin
 			if (taskname == "S7 Writer")
 			{
 				var td = new S7TaskData(taskname, DatCoordinatorHost, parentjob);
-				td.SetAnalyzerControl(m_channelEditor, m_analyzer);
+				td.SetGridAnalyzer(m_channelEditor, m_analyzer);
 				return td;
 			}
 			else

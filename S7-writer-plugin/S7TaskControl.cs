@@ -13,8 +13,8 @@ using DevExpress.XtraGrid.Views.Grid;
 
 namespace S7_writer_plugin
 {
-	public partial class S7TaskControl : UserControl, IPluginControl
-    {
+	public partial class S7TaskControl : UserControl, IPluginControl, IGridAnalyzer
+	{
         private IDatCoHost m_datcoHost;
 		[NonSerialized]
 		private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
@@ -318,7 +318,7 @@ namespace S7_writer_plugin
 			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
 
-		internal void SetAnalyzerControl(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
 		{
 			m_channelEditor = e;
 			m_analyzerManager = analyzer;

@@ -15,8 +15,8 @@ using DevExpress.XtraGrid.Views.Grid;
 
 namespace AM_OSPC_plugin
 {
-    public partial class OSPCTaskControl : UserControl, IPluginControl
-    {
+    public partial class OSPCTaskControl : UserControl, IPluginControl, IGridAnalyzer
+	{
         private IDatCoHost m_datcoHost;
 		[NonSerialized]
 		private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
@@ -291,7 +291,7 @@ namespace AM_OSPC_plugin
         {
 			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
-		internal void SetAnalyzerControl(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
 		{
 			m_channelEditor = e;
 			m_analyzerManager = analyzer;
