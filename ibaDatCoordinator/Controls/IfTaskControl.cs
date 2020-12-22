@@ -41,7 +41,7 @@ namespace iba.Controls
         {
             m_manager = manager;
             m_data = datasource as IfTaskData;
-			channelTreeEdit1.SetText(m_data.Expression);
+			channelTreeEdit1.EditValue = m_data.Expression;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
 
@@ -83,7 +83,7 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
-			m_data.Expression = channelTreeEdit1.text;
+			m_data.Expression = (string)channelTreeEdit1.EditValue;
 			m_data.XType = (IfTaskData.XTypeEnum) m_XTypeComboBox.SelectedIndex;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;

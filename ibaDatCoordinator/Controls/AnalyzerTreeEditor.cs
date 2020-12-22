@@ -1088,7 +1088,7 @@ namespace iba.Controls
             bOriginalInstance = false;
             channelTree = null;
             specialNodes = new List<SpecialNode>();
-            TextEditStyle = TextEditStyles.DisableTextEditor;
+            TextEditStyle = TextEditStyles.Standard;
             DrawImages = true;
 
             CloseOnLostFocus = false;
@@ -1280,19 +1280,11 @@ namespace iba.Controls
             if ((MouseButtons & MouseButtons.Right) == MouseButtons.Right)
                 return; //ignore opening of context menu
 
-			SetText(id, sender);
+			((ChannelTreeEdit)OwnerEdit).EditValue = id;
 
 			if (sender != null && id != null)
                 ClosePopup(PopupCloseMode.Normal);
         }
-
-		public void SetText(string id, AnalyzerTreeControl sender = null)
-		{
-			if (sender is null)
-				sender = tree;
-			((ChannelTreeEdit)OwnerEdit).SetText(id, sender);
-		}
-
         #endregion
 
         #region resize
@@ -1378,16 +1370,8 @@ namespace iba.Controls
 
             base.DoClosePopup(closeMode);
         }
-		internal void SetText(string text, AnalyzerTreeControl control = null)
-		{
-			this.text = text;
-			if (control != null)
-				this.control = control;
-			EditValue = this;
-		}
 
 		internal AnalyzerTreeControl control;
-		public string text;
 		public IAnalyzerManagerUpdateSource analyzerManager;
 	}
 
@@ -1401,11 +1385,8 @@ namespace iba.Controls
         {
             PopupBaseEditViewInfo vi = info.ViewInfo as PopupBaseEditViewInfo;
 
-			string id = null;
-			if (vi.EditValue is string str)
-				id = str;
-			else if (vi.EditValue is ChannelTreeEdit edit)
-				id = edit.text;
+			string id = vi.EditValue as string;
+
             RepositoryItemChannelTreeEdit item = vi.Item as RepositoryItemChannelTreeEdit;
 
             if (!string.IsNullOrEmpty(id))

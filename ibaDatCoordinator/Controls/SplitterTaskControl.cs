@@ -42,7 +42,7 @@ namespace iba.Controls
         {
             m_manager = manager;
             m_data = datasource as SplitterTaskData;
-			channelTreeEdit1.SetText(m_data.Expression);
+			channelTreeEdit1.EditValue = m_data.Expression;
 			m_splitTypeCBox.SelectedIndex = (int)m_data.EdgeConditionType;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
@@ -86,7 +86,7 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
-			m_data.Expression = channelTreeEdit1.text;
+			m_data.Expression = (string)channelTreeEdit1.EditValue;
 			m_data.EdgeConditionType = m_splitTypeCBox.SelectedIndex == 1 ? SplitterTaskData.EdgeConditionTypeEnum.RISINGTOFALLING : SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING;
             
             m_uncControl.SaveData();
