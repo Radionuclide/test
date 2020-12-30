@@ -66,7 +66,7 @@ namespace iba.Processing
                     {
                         if (m_currentNumberOfRunningTasks > 0)
                         {
-                            MaxNumberOfRunningTasks = m_currentNumberOfRunningTasks;
+                            MaxNumberOfRunningTasks = m_currentNumberOfRunningTasks-1;
                             Leave();
                             tryAgain = true;
                             Log(iba.Logging.Level.Exception, string.Format(iba.Properties.Resources.errIbaAnalyzerDecrease, m_currentNumberOfRunningTasks), cd);
@@ -237,12 +237,30 @@ namespace iba.Processing
         {
              //start the com object
             IbaAnalyzer.IbaAnalyzer analyzer = null;
+            int maxRetry = 5;
+            int retry = 0;
             try
             {
                 switch (ibaAnalyzerServerStatus)
                 {
                     case IbaAnalyzerServerStatus.NONINTERACTIVE:
-                        analyzer = new IbaAnalyzer.IbaAnalysisNonInteractive();
+                        for (retry = 0; retry < maxRetry && analyzer == null; retry++) //try up to 5 times...
+                        {
+                            try
+                            {
+                                analyzer = new IbaAnalyzer.IbaAnalysisNonInteractive();
+                            }
+                            catch (Exception ex2)
+                            {
+                                if (ex2.Message.Contains("E_ACCESSDENIED")) //
+                                {
+                                    analyzer = null;
+                                    System.Threading.Thread.Sleep(1000);
+                                }
+                                else
+                                    throw;
+                            }
+                        }
                         break;
                     case IbaAnalyzerServerStatus.CLASSIC:
                         analyzer = new IbaAnalyzer.IbaAnalysis();

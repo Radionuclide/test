@@ -327,3 +327,5 @@ LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_GERMAN}  "The following applicat
 LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_GERMAN}  "Clicking Ignore will force the applications to exit"
 LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_FRENCH}  "The following applications need to be closed before installation can proceed:"
 LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_FRENCH}  "Clicking Ignore will force the applications to exit"
+LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_SPANISH} "The following applications need to be closed before installation can proceed:"
+LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_SPANISH} "Clicking Ignore will force the applications to exit"

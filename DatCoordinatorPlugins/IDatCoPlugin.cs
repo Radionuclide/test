@@ -26,4 +26,6 @@ namespace iba.Plugins
         /// <returns>The plugin data object</returns>
         IPluginTaskData CreateTask(string taskname, IJobData parentjob);
     }
+
+
 }
