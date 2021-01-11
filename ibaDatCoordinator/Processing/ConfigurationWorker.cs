@@ -258,10 +258,17 @@ namespace iba.Processing
                         }
                     }
 
-                    if (m_toUpdate.ReprocessErrorsTimeInterval < m_cd.ReprocessErrorsTimeInterval && !m_toUpdate.OnetimeJob)
+                    if (!m_toUpdate.OnetimeJob && m_toUpdate.ReprocessErrors)
                     {
-                        if (reprocessErrorsTimer == null) reprocessErrorsTimer = new System.Threading.Timer(OnReprocessErrorsTimerTick);
-                        reprocessErrorsTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
+                        if (reprocessErrorsTimer == null)
+                        {
+                            reprocessErrorsTimer = new System.Threading.Timer(OnReprocessErrorsTimerTick);
+                            reprocessErrorsTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
+                        }
+                        else if (m_toUpdate.ReprocessErrorsTimeInterval < m_cd.ReprocessErrorsTimeInterval || !m_cd.ReprocessErrors)
+                        {
+                            reprocessErrorsTimer.Change(m_toUpdate.ReprocessErrorsTimeInterval, TimeSpan.Zero);
+                        }
                     }
                     else if (m_toUpdate.OnetimeJob) //disable reprocess errors
                     {
@@ -636,8 +643,17 @@ namespace iba.Processing
                 m_notifyTimer = null;
                 try
                 {
-                    reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
-                    reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
+                    if (reprocessErrorsTimer != null)
+                    {
+                        reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        reprocessErrorsTimer.Dispose();
+                        reprocessErrorsTimer = null;
+                    }
+                    if (m_cd.ReprocessErrors && !m_cd.OnetimeJob)
+                    {
+                        reprocessErrorsTimer = new System.Threading.Timer(new TimerCallback(OnReprocessErrorsTimerTick));
+                        reprocessErrorsTimer.Change(m_cd.ReprocessErrorsTimeInterval, TimeSpan.Zero);
+                    }
 
                     if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled)
                     {
