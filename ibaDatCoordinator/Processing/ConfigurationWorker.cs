@@ -670,6 +670,7 @@ namespace iba.Processing
                     {
                         m_hdEventMonitor = new HDEventMonitor();
                         m_hdEventMonitor.UpdateConfiguration(m_cd.EventData, m_cd.Name);
+                        TaskManager.Manager.ReplaceConfiguration(m_cd);
                         m_hdEventMonitor.Start();
                         m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null, intervalProcessNewEvents, Timeout.Infinite);
                     }
@@ -796,6 +797,9 @@ namespace iba.Processing
                     }
                     if (m_hdEventMonitor != null)
                     {
+                        var stopTimes = m_hdEventMonitor.GetLastReceivedHistoricalTimeStamps();
+                        TaskManager.Manager.SetOneTimeEventEndTimes(m_cd.Guid, stopTimes);
+
                         m_hdEventMonitor.Dispose();
                         m_hdEventMonitor = null;
                     }

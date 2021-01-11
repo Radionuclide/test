@@ -106,6 +106,9 @@ namespace iba.Controls
             for (int i = 0; i < n; i++)
                 m_cbTimeBase.Items.Add(new TimeCbItem(itemStrs[i], m_timeBases[i]));
 
+            dtStartTimeHdQuery.Value = DateTime.Now;
+            dtStopTimeHdQuery.Value = DateTime.Now;
+
             UpdateStoreTree();
 
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
@@ -140,11 +143,11 @@ namespace iba.Controls
             m_manager = manager;
             m_confData = datasource as ConfigurationData;
             m_eventData = m_confData.EventData; //should not be null
-            
+
             //options of ConfData
-            if(m_failTimeUpDown.Minimum > (decimal)m_confData.ReprocessErrorsTimeInterval.TotalMinutes)
+            if (m_failTimeUpDown.Minimum > (decimal)m_confData.ReprocessErrorsTimeInterval.TotalMinutes)
                 m_confData.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double)m_failTimeUpDown.Minimum);
-            else if(m_failTimeUpDown.Maximum < (decimal)m_confData.ReprocessErrorsTimeInterval.TotalMinutes)
+            else if (m_failTimeUpDown.Maximum < (decimal)m_confData.ReprocessErrorsTimeInterval.TotalMinutes)
                 m_confData.ReprocessErrorsTimeInterval = TimeSpan.FromMinutes((double)m_failTimeUpDown.Maximum);
 
             m_cbInitialScanEnabled.Checked = m_confData.InitialScanEnabled;
@@ -192,6 +195,14 @@ namespace iba.Controls
             m_currStores = new List<string>(m_eventData.HDStores);
             SetHDServerSettings(m_eventData.HDServer, m_eventData.HDPort, m_eventData.HDUsername, m_eventData.HDPassword);
             ChangeHDServer(m_eventData.HDServer, m_eventData.HDPort, m_eventData.HDUsername, m_eventData.HDPassword, SelectServer);
+
+            m_hdQueryEnabled.Checked = m_eventData.HdQueryEnabled;
+            m_hdQueryEndTimeEnabled.Checked = m_eventData.HdQueryUseEndTime;
+            if (m_eventData.HdQueryEnabled)
+            {
+                dtStartTimeHdQuery.Value = m_eventData.StartTimeHdQuery != DateTime.MaxValue ? m_eventData.StartTimeHdQuery : DateTime.Now;
+                dtStopTimeHdQuery.Value = m_eventData.StopTimeHdQuery != DateTime.MaxValue ? m_eventData.StopTimeHdQuery : DateTime.Now;
+            }
         }
 
         public void SaveData()
@@ -238,6 +249,24 @@ namespace iba.Controls
 
             // event selection
             m_eventData.EventIDs = new List<string>(m_currEvents);
+            m_eventData.HdQueryUseEndTime = m_hdQueryEndTimeEnabled.Checked;
+
+            if (m_hdQueryEnabled.Checked)
+            {
+                bool eventQueryChanged = m_eventData.StartTimeHdQuery != dtStartTimeHdQuery.Value || m_eventData.StopTimeHdQuery != dtStopTimeHdQuery.Value || m_hdQueryEnabled.Checked != m_eventData.HdQueryEnabled;
+                m_eventData.HdQueryEnabled = true;
+                m_eventData.StartTimeHdQuery = dtStartTimeHdQuery.Value;
+                m_eventData.StopTimeHdQuery = dtStopTimeHdQuery.Value;
+
+                m_eventData.HdQueryTimeSpanChanged = TaskManager.Manager.GetOneTimeEventConfigurationChanged(m_confData.Guid) || eventQueryChanged;
+            }
+            else
+            {
+                m_eventData.StartTimeHdQuery = DateTime.MaxValue;
+                m_eventData.StopTimeHdQuery = DateTime.MaxValue;
+                m_eventData.HdQueryTimeSpanChanged = false;
+                m_eventData.HdQueryEnabled = false;
+            }
         }
         #endregion
 
@@ -249,6 +278,20 @@ namespace iba.Controls
         private void m_cbRetry_CheckedChanged(object sender, EventArgs e)
         {
             m_retryUpDown.Enabled = m_cbRetry.Checked;
+        }
+
+        private void QueryEndTimeEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_hdQueryEndTimeEnabled.Checked)
+                dtStopTimeHdQuery.Enabled = m_hdQueryEnabled.Enabled;
+            else
+                dtStopTimeHdQuery.Enabled = false;
+        }
+
+        private void m_hdQueryEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            dtStartTimeHdQuery.Enabled = m_hdQueryEnabled.Checked;
+            dtStopTimeHdQuery.Enabled = m_hdQueryEnabled.Checked && m_hdQueryEndTimeEnabled.Checked;
         }
 
         #region Event HD server

@@ -33,6 +33,14 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
+            this.m_hdQueryEndTimeEnabled = new System.Windows.Forms.CheckBox();
+            this.m_hdQueryEnabled = new System.Windows.Forms.CheckBox();
+            this.dtStopTimeHdQuery = new System.Windows.Forms.DateTimePicker();
+            this.label7 = new System.Windows.Forms.Label();
+            this.dtStartTimeHdQuery = new System.Windows.Forms.DateTimePicker();
+            this.label6 = new System.Windows.Forms.Label();
+            this.m_tbUsername = new System.Windows.Forms.TextBox();
+            this.btnChangeUser = new System.Windows.Forms.Button();
             this.m_pnlEvents = new System.Windows.Forms.Panel();
             this.btnHdServer = new System.Windows.Forms.Button();
             this.m_tbEventServer = new System.Windows.Forms.TextBox();
@@ -87,9 +95,6 @@
             this.m_nudHoursPre = new System.Windows.Forms.NumericUpDown();
             this.m_nudDaysPre = new System.Windows.Forms.NumericUpDown();
             this.m_cbPreTrigger = new System.Windows.Forms.CheckBox();
-            this.btnChangeUser = new System.Windows.Forms.Button();
-            this.m_tbUsername = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.gbGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
@@ -239,6 +244,11 @@
             // gbTriggers
             // 
             resources.ApplyResources(this.gbTriggers, "gbTriggers");
+            this.gbTriggers.Controls.Add(this.m_hdQueryEndTimeEnabled);
+            this.gbTriggers.Controls.Add(this.m_hdQueryEnabled);
+            this.gbTriggers.Controls.Add(this.dtStopTimeHdQuery);
+            this.gbTriggers.Controls.Add(this.label7);
+            this.gbTriggers.Controls.Add(this.dtStartTimeHdQuery);
             this.gbTriggers.Controls.Add(this.label6);
             this.gbTriggers.Controls.Add(this.m_tbUsername);
             this.gbTriggers.Controls.Add(this.btnChangeUser);
@@ -251,6 +261,55 @@
             this.gbTriggers.Controls.Add(this.label1);
             this.gbTriggers.Name = "gbTriggers";
             this.gbTriggers.TabStop = false;
+            // 
+            // m_hdQueryEndTimeEnabled
+            // 
+            resources.ApplyResources(this.m_hdQueryEndTimeEnabled, "m_hdQueryEndTimeEnabled");
+            this.m_hdQueryEndTimeEnabled.Name = "m_hdQueryEndTimeEnabled";
+            this.m_hdQueryEndTimeEnabled.UseVisualStyleBackColor = true;
+            this.m_hdQueryEndTimeEnabled.CheckedChanged += new System.EventHandler(this.QueryEndTimeEnabled_CheckedChanged);
+            // 
+            // m_hdQueryEnabled
+            // 
+            resources.ApplyResources(this.m_hdQueryEnabled, "m_hdQueryEnabled");
+            this.m_hdQueryEnabled.Name = "m_hdQueryEnabled";
+            this.m_hdQueryEnabled.UseVisualStyleBackColor = true;
+            this.m_hdQueryEnabled.CheckedChanged += new System.EventHandler(this.m_hdQueryEnabled_CheckedChanged);
+            // 
+            // dtStopTimeHdQuery
+            // 
+            resources.ApplyResources(this.dtStopTimeHdQuery, "dtStopTimeHdQuery");
+            this.dtStopTimeHdQuery.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtStopTimeHdQuery.Name = "dtStopTimeHdQuery";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // dtStartTimeHdQuery
+            // 
+            resources.ApplyResources(this.dtStartTimeHdQuery, "dtStartTimeHdQuery");
+            this.dtStartTimeHdQuery.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtStartTimeHdQuery.Name = "dtStartTimeHdQuery";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // m_tbUsername
+            // 
+            resources.ApplyResources(this.m_tbUsername, "m_tbUsername");
+            this.m_tbUsername.Name = "m_tbUsername";
+            this.m_tbUsername.ReadOnly = true;
+            // 
+            // btnChangeUser
+            // 
+            resources.ApplyResources(this.btnChangeUser, "btnChangeUser");
+            this.btnChangeUser.Name = "btnChangeUser";
+            this.btnChangeUser.UseVisualStyleBackColor = true;
+            this.btnChangeUser.Click += new System.EventHandler(this.btnChangeUser_Click);
             // 
             // m_pnlEvents
             // 
@@ -435,6 +494,7 @@
             this.m_lvStores.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.m_lvStores.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.m_lvStores.HideSelection = false;
             this.m_lvStores.Name = "m_lvStores";
             this.m_lvStores.UseCompatibleStateImageBehavior = false;
             this.m_lvStores.View = System.Windows.Forms.View.Details;
@@ -670,24 +730,6 @@
             this.m_cbPreTrigger.UseVisualStyleBackColor = true;
             this.m_cbPreTrigger.CheckedChanged += new System.EventHandler(this.m_cbPreTrigger_CheckedChanged);
             // 
-            // btnChangeUser
-            // 
-            resources.ApplyResources(this.btnChangeUser, "btnChangeUser");
-            this.btnChangeUser.Name = "btnChangeUser";
-            this.btnChangeUser.UseVisualStyleBackColor = true;
-            this.btnChangeUser.Click += new System.EventHandler(this.btnChangeUser_Click);
-            // 
-            // m_tbUsername
-            // 
-            resources.ApplyResources(this.m_tbUsername, "m_tbUsername");
-            this.m_tbUsername.Name = "m_tbUsername";
-            this.m_tbUsername.ReadOnly = true;
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
             // PanelEventJob
             // 
             resources.ApplyResources(this, "$this");
@@ -798,5 +840,10 @@
         private System.Windows.Forms.Button btnChangeUser;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox m_tbUsername;
+        private System.Windows.Forms.DateTimePicker dtStartTimeHdQuery;
+        private System.Windows.Forms.CheckBox m_hdQueryEnabled;
+        private System.Windows.Forms.DateTimePicker dtStopTimeHdQuery;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox m_hdQueryEndTimeEnabled;
     }
 }

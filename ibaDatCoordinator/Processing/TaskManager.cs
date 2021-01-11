@@ -69,6 +69,7 @@ namespace iba.Processing
 
                 if (m_workers.TryGetValue(data, out cw))
                 {
+                    UpdateConfigurationOneTimeEvents(data);
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
                                             // new data with same ID
                     m_workers.Add(data, cw);
@@ -87,6 +88,7 @@ namespace iba.Processing
                 ConfigurationWorker cw;
                 if (m_workers.TryGetValue(data, out cw))
                 {
+                    UpdateConfigurationOneTimeEvents(data);
                     m_workers.Remove(data); //data sorted on ID, remove it as we'll insert a
                     // new data with same ID
                     m_workers.Add(data, cw);
@@ -126,6 +128,7 @@ namespace iba.Processing
             {
                 try
                 {
+                    UpdateConfigurationOneTimeEvents(data);
                     ConfigurationWorker cw = m_workers[data];
                     cw.ConfigurationToUpdate = data;
                     m_workers.Remove(data);
@@ -1556,6 +1559,51 @@ namespace iba.Processing
         {
             return PluginManager.Manager.CheckPluginsAvailable(plugins);
         }
+
+        void UpdateConfigurationOneTimeEvents(ConfigurationData newData)
+        {
+            if (newData.JobType == ConfigurationData.JobTypeEnum.Event && !newData.EventData.HdQueryTimeSpanChanged && newData.EventData.HdQueryEnabled)
+            {
+                ConfigurationData oldData = GetConfiguration(newData.Guid);
+
+                if (oldData == null)
+                    return;
+
+                newData.EventData.LastReceivedHistoricalTimeStamp = oldData.EventData.LastReceivedHistoricalTimeStamp;
+            }
+        }
+
+        ConfigurationData GetConfiguration(Guid guid)
+        {
+            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
+            {
+                if (kvp.Key.Guid == guid)
+                {
+                    return kvp.Key;
+                }
+            }
+            return null;
+        }
+
+        public virtual bool GetOneTimeEventConfigurationChanged(Guid guid)
+        {
+            ConfigurationData config = GetConfiguration(guid);
+
+            return config?.EventData?.HdQueryTimeSpanChanged ?? false;
+        }
+
+        public virtual void SetOneTimeEventEndTimes(Guid guid, Dictionary<string, long> endTime)
+        {
+            lock (m_workers)
+            {
+                ConfigurationData config = GetConfiguration(guid);
+
+                if (config == null || config.EventData == null)
+                    return;
+
+                config.EventData.LastReceivedHistoricalTimeStamp = endTime;
+            }
+        }
     }
 
 
@@ -2045,6 +2093,19 @@ namespace iba.Processing
             {
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return Manager.GetMinimalStatus(guid, permanentError);
+            }
+        }
+
+        public override bool GetOneTimeEventConfigurationChanged(Guid guid)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.GetOneTimeEventConfigurationChanged(guid);
+            }
+            catch (Exception ex)
+            {
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+                return Manager.GetOneTimeEventConfigurationChanged(guid);
             }
         }
 

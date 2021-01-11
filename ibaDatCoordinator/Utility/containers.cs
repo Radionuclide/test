@@ -127,7 +127,14 @@ namespace iba.Utility
 
             public int Compare(ComparablePair<TFirst, TSecond> x, ComparablePair<TFirst, TSecond> y)
             {
-                return x._First.CompareTo(y._First);
+                try
+                {
+                    return x._First.CompareTo(y._First);
+                }
+                catch (Exception e)
+                {
+                    return 1;
+                }
             }
 
             #endregion

@@ -23,6 +23,9 @@ namespace iba.Processing
         HDCreateEventTaskData m_data;
 
         IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer;
+        IHdWriterManager writerManager = null;
+        IHdWriter writer = null;
+        IEnumerable<HdWriterConfig> cfgs = null;
         string m_dataFile;
 
         public HDCreateEventTaskWorker(HDCreateEventTaskData localData)
@@ -532,53 +535,87 @@ namespace iba.Processing
 
         public IEnumerable<HdValidationMessage> WriteEvents(IEnumerable<string> storeNames, Dictionary<string,EventWriterData> eventData, HdValidatorMulti validator)
         {
-            IHdWriterManager writerManager = null;
             IHdWriterSummary summary = null;
             try
             {
-                IEnumerable<HdWriterConfig> cfgs = CreateHDWriterConfig(m_data, storeNames);
+                IEnumerable<HdWriterConfig> newCfgs = CreateHDWriterConfig(m_data, storeNames);
 
-                writerManager = HdClient.CreateWriterManager();
+                bool same = cfgs != null && cfgs.Count() == newCfgs.Count();
+
+                if (same)
+                {
+                    foreach (HdWriterConfig config in cfgs)
+                    {
+                        bool found = false;
+                        foreach (HdWriterConfig newConfig in newCfgs)
+                        {
+                            if (config.Equals(newConfig))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                            same = false;
+                            break;
+                        }
+                    }
+                }
+
+                cfgs = newCfgs;
+
+                if (writerManager == null)
+                    writerManager = HdClient.CreateWriterManager();
+
+                if (!same || writer == null)
+                {
+                    foreach (HdWriterConfig cfg in cfgs)
+                    {
+                        writerManager.StartConfig();
+
+                        summary = writerManager.SetConfig(cfg, null, validator);
+                        while (summary.Result == WriterConfigResult.Conflict)
+                        {
+                            foreach (var cflt in summary.Conflicts)
+                                cflt.Solution = HdWriterSolution.Append;
+
+                            summary = writerManager.SetConfig(cfg, summary, validator);
+                        }
+
+                        writerManager.EndConfig();
+
+                        if (summary.Result != WriterConfigResult.Valid)
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            if (summary.Errors != null && summary.Errors.Count > 0)
+                            {
+                                foreach (var err in summary.Errors)
+                                    sb.Append(" ").Append(err.Text).Append(",");
+
+                                sb.Remove(sb.Length - 1, 1);
+                            }
+
+                            throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
+                        }
+
+                        writerManager.StartCreate();
+                        writer = writerManager.CreateWriter(summary, true, validator);
+                        writerManager.EndCreate();
+
+
+                    }
+                }
 
                 foreach (HdWriterConfig cfg in cfgs)
                 {
-                    writerManager.StartConfig();
-
-                    summary = writerManager.SetConfig(cfg, null, validator);
-                    while (summary.Result == WriterConfigResult.Conflict)
-                    {
-                        foreach (var cflt in summary.Conflicts)
-                            cflt.Solution = HdWriterSolution.Append;
-
-                        summary = writerManager.SetConfig(cfg, summary, validator);
-                    }
-
-                    writerManager.EndConfig();
-
-                    if (summary.Result != WriterConfigResult.Valid)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        if (summary.Errors != null && summary.Errors.Count > 0)
-                        {
-                            foreach (var err in summary.Errors)
-                                sb.Append(" ").Append(err.Text).Append(",");
-
-                            sb.Remove(sb.Length - 1, 1);
-                        }
-
-                        throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
-                    }
-
-                    writerManager.StartCreate();
-                    IHdWriter writer = writerManager.CreateWriter(summary, true, validator);
-                    writerManager.EndCreate();
-
                     if (eventData != null && eventData.ContainsKey(cfg.StoreId.StoreName))
                         writer.Write(eventData[cfg.StoreId.StoreName]);
                 }
-
             }
-            finally
+            catch (Exception e)
+            { }
+/*            finally
             {
                 if (writerManager != null)
                 {
@@ -590,6 +627,7 @@ namespace iba.Processing
                     { }
                 }
             }
+*/
             return summary?.Errors;
         }
 

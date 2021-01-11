@@ -183,6 +183,63 @@ namespace iba.Data
             set { m_bPreferredTimeBaseIsAuto = value; }
         }
 
+        private DateTime m_StartTimeHdQuery;
+        public DateTime StartTimeHdQuery
+        {
+            get { return m_StartTimeHdQuery; }
+            set { m_StartTimeHdQuery = value; }
+        }
+
+        public long StartTimeHdQueryTicks
+        {
+            get { return m_StartTimeHdQuery.Ticks; }
+            set { m_StartTimeHdQuery = new DateTime(value); }
+        }
+
+        private DateTime m_StopTimeHdQuery;
+        public DateTime StopTimeHdQuery
+        {
+            get { return m_StopTimeHdQuery; }
+            set { m_StopTimeHdQuery = value; }
+        }
+
+        public long StopTimeHdQueryTicks
+        {
+            get { return m_StopTimeHdQuery.Ticks; }
+            set { m_StopTimeHdQuery = new DateTime(value); }
+        }
+
+        [NonSerialized]
+        private Dictionary<string, long> m_lastReceivedHistoricalTimeStamp;
+
+        [XmlIgnore]
+        public Dictionary<string, long> LastReceivedHistoricalTimeStamp
+        {
+            get { return m_lastReceivedHistoricalTimeStamp; }
+            set { m_lastReceivedHistoricalTimeStamp = value; }
+        }
+
+        private bool m_bHdQueryTimeSpanChanged;
+        public bool HdQueryTimeSpanChanged
+        {
+            get { return m_bHdQueryTimeSpanChanged; }
+            set { m_bHdQueryTimeSpanChanged = value; }
+        }
+
+        private bool m_bHdQueryEnabled;
+        public bool HdQueryEnabled
+        {
+            get { return m_bHdQueryEnabled; }
+            set { m_bHdQueryEnabled = value; }
+        }
+
+        private bool m_bHdQueryUseEndTime;
+        public bool HdQueryUseEndTime
+        {
+            get { return m_bHdQueryUseEndTime; }
+            set { m_bHdQueryUseEndTime = value; }
+        }
+
         public object Clone()
         {
             EventJobData nejd = new EventJobData();
@@ -200,6 +257,12 @@ namespace iba.Data
             nejd.m_enablePostTrigger = m_enablePostTrigger;
             nejd.m_bPreferredTimeBaseIsAuto = m_bPreferredTimeBaseIsAuto;
             nejd.m_preferredTimeBaseTicks = m_preferredTimeBaseTicks;
+            nejd.m_lastReceivedHistoricalTimeStamp = m_lastReceivedHistoricalTimeStamp;
+            nejd.m_bHdQueryTimeSpanChanged = m_bHdQueryTimeSpanChanged;
+            nejd.m_StartTimeHdQuery = m_StartTimeHdQuery;
+            nejd.m_StopTimeHdQuery = m_StopTimeHdQuery;
+            nejd.HdQueryEnabled = HdQueryEnabled;
+            nejd.HdQueryUseEndTime = HdQueryUseEndTime;
             return nejd;
         }
 

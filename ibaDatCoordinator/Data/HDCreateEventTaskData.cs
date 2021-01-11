@@ -137,6 +137,7 @@ namespace iba.Data
                 m_triggerMode = HDEventTriggerEnum.PerFile;
                 m_pulseSignal = UnassignedExpression;
                 m_timeSignal = EndTime;
+                m_timeSignalOutgoing = UnassignedExpression;
             }
 
             public object Clone()

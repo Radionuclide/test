@@ -614,7 +614,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;gbGeneral.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbGeneral.Parent" xml:space="preserve">
     <value>$this</value>
@@ -625,8 +625,155 @@
   <data name="gbTriggers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_hdQueryEndTimeEnabled.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_hdQueryEndTimeEnabled.Location" type="System.Drawing.Point, System.Drawing">
+    <value>304, 301</value>
+  </data>
+  <data name="m_hdQueryEndTimeEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 17</value>
+  </data>
+  <data name="m_hdQueryEndTimeEnabled.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
+  <data name="m_hdQueryEndTimeEnabled.Text" xml:space="preserve">
+    <value>Query endtime:</value>
+  </data>
+  <data name="&gt;&gt;m_hdQueryEndTimeEnabled.Name" xml:space="preserve">
+    <value>m_hdQueryEndTimeEnabled</value>
+  </data>
+  <data name="&gt;&gt;m_hdQueryEndTimeEnabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_hdQueryEndTimeEnabled.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;m_hdQueryEndTimeEnabled.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_hdQueryEnabled.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_hdQueryEnabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdQueryEnabled.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 278</value>
+  </data>
+  <data name="m_hdQueryEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 17</value>
+  </data>
+  <data name="m_hdQueryEnabled.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
+  </data>
+  <data name="m_hdQueryEnabled.Text" xml:space="preserve">
+    <value>Enable ibaHD query</value>
+  </data>
+  <data name="&gt;&gt;m_hdQueryEnabled.Name" xml:space="preserve">
+    <value>m_hdQueryEnabled</value>
+  </data>
+  <data name="&gt;&gt;m_hdQueryEnabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_hdQueryEnabled.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;m_hdQueryEnabled.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="dtStopTimeHdQuery.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="dtStopTimeHdQuery.CustomFormat" xml:space="preserve">
+    <value>dd/MM/yyyy HH:mm:ss</value>
+  </data>
+  <data name="dtStopTimeHdQuery.Location" type="System.Drawing.Point, System.Drawing">
+    <value>413, 299</value>
+  </data>
+  <data name="dtStopTimeHdQuery.Size" type="System.Drawing.Size, System.Drawing">
+    <value>153, 20</value>
+  </data>
+  <data name="dtStopTimeHdQuery.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="&gt;&gt;dtStopTimeHdQuery.Name" xml:space="preserve">
+    <value>dtStopTimeHdQuery</value>
+  </data>
+  <data name="&gt;&gt;dtStopTimeHdQuery.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dtStopTimeHdQuery.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;dtStopTimeHdQuery.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 301</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 13</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Query start time:</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="dtStartTimeHdQuery.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="dtStartTimeHdQuery.CustomFormat" xml:space="preserve">
+    <value>dd/MM/yyyy HH:mm:ss</value>
+  </data>
+  <data name="dtStartTimeHdQuery.Location" type="System.Drawing.Point, System.Drawing">
+    <value>133, 299</value>
+  </data>
+  <data name="dtStartTimeHdQuery.Size" type="System.Drawing.Size, System.Drawing">
+    <value>153, 20</value>
+  </data>
+  <data name="dtStartTimeHdQuery.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="&gt;&gt;dtStartTimeHdQuery.Name" xml:space="preserve">
+    <value>dtStartTimeHdQuery</value>
+  </data>
+  <data name="&gt;&gt;dtStartTimeHdQuery.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dtStartTimeHdQuery.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;dtStartTimeHdQuery.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 51</value>
@@ -650,7 +797,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="m_tbUsername.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 48</value>
@@ -671,7 +818,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbUsername.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="btnChangeUser.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -704,13 +851,13 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;btnChangeUser.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="m_pnlEvents.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_pnlEvents.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 93</value>
+    <value>16, 97</value>
   </data>
   <data name="m_pnlEvents.Size" type="System.Drawing.Size, System.Drawing">
     <value>713, 175</value>
@@ -728,7 +875,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_pnlEvents.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="btnHdServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -758,7 +905,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;btnHdServer.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="m_tbEventServer.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 19</value>
@@ -782,7 +929,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbEventServer.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>10</value>
   </data>
   <data name="m_tbEventServerPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>313, 19</value>
@@ -809,7 +956,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbEventServerPort.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>11</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -839,7 +986,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>12</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -869,7 +1016,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>13</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -881,7 +1028,7 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 77</value>
+    <value>13, 78</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
@@ -902,13 +1049,13 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>14</value>
   </data>
   <data name="gbTriggers.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 125</value>
   </data>
   <data name="gbTriggers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 274</value>
+    <value>734, 326</value>
   </data>
   <data name="gbTriggers.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -920,7 +1067,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;gbTriggers.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbTriggers.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2195,7 +2342,7 @@
     <value>35</value>
   </data>
   <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 405</value>
+    <value>0, 457</value>
   </data>
   <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>734, 437</value>
@@ -2210,7 +2357,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;gbOutput.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbOutput.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2228,7 +2375,7 @@
     <value>0, 845</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 845</value>
+    <value>734, 897</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>
