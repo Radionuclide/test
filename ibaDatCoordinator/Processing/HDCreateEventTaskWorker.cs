@@ -603,6 +603,10 @@ namespace iba.Processing
                         writer = writerManager.CreateWriter(summary, true, validator);
                         writerManager.EndCreate();
 
+                        if (eventData == null)
+                        {
+                            writer.Dispose();
+                        }
 
                     }
                 }
@@ -614,7 +618,9 @@ namespace iba.Processing
                 }
             }
             catch (Exception e)
-            { }
+            {
+                Logging.ibaLogger.Log(e);
+            }
 /*            finally
             {
                 if (writerManager != null)
