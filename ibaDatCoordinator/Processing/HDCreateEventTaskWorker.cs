@@ -36,6 +36,20 @@ namespace iba.Processing
             m_data = localData;
         }
 
+        public void Dispose()
+        {
+            try
+            {
+                writerManager?.Dispose();
+                writerManager = null;
+                writer = null;
+            }
+            catch (Exception e)
+            {
+                Logging.ibaLogger.Log(e);
+            }
+        }
+
         bool TryGetUTCTimes(string filename, out DateTime startTime, out DateTime endTime)
         {
             startTime = endTime = DateTime.MinValue;

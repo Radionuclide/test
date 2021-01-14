@@ -60,6 +60,9 @@ namespace iba.Processing
                             Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                     }
                 }
+
+                ClearHDCreateEventTaskWorkers();
+
                 NotifyClientsOfStop();
             }
         }
@@ -4679,9 +4682,20 @@ namespace iba.Processing
             return stores;
         }
 
+        private Dictionary<HDCreateEventTaskData, HDCreateEventTaskWorker> hDCreateEventTaskWorkers;
+
         private void HDCreateEventTask(string filename, HDCreateEventTaskData task)
         {
-            HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(task);
+            HDCreateEventTaskWorker worker;
+            if (hDCreateEventTaskWorkers == null)
+                hDCreateEventTaskWorkers = new Dictionary<HDCreateEventTaskData, HDCreateEventTaskWorker>();
+
+            if (!hDCreateEventTaskWorkers.TryGetValue(task, out worker))
+            {
+                RemoveOutDatedHDCreateEventTaskWorkers(task);
+                worker = new HDCreateEventTaskWorker(task);
+                hDCreateEventTaskWorkers.Add(task, worker);
+            }
 
             // Generate events
             Dictionary<string,EventWriterData> eventData = null;
@@ -4771,6 +4785,44 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
                 }
+            }
+        }
+
+        //Updating an existing configuration can lead to multiple entries per task
+        private void RemoveOutDatedHDCreateEventTaskWorkers(HDCreateEventTaskData newData)
+        {
+            if (hDCreateEventTaskWorkers != null)
+            {
+                List<HDCreateEventTaskData> toRemove = new List<HDCreateEventTaskData>();
+                foreach (var key in hDCreateEventTaskWorkers.Keys)
+                {
+                    if (key != newData && newData.Name == key.Name)
+                    {
+                        toRemove.Add(key);
+                    }
+                }
+
+                foreach (var old in toRemove)
+                {
+                    hDCreateEventTaskWorkers[old]?.Dispose();
+                    hDCreateEventTaskWorkers.Remove(old);
+                }
+            }
+        }
+
+        private void ClearHDCreateEventTaskWorkers()
+        {
+            if (hDCreateEventTaskWorkers != null)
+            {
+                foreach (var kvp in hDCreateEventTaskWorkers)
+                {
+                    if (kvp.Value != null)
+                    {
+                        kvp.Value.Dispose();
+                    }
+                }
+
+                hDCreateEventTaskWorkers.Clear();
             }
         }
 
@@ -4903,7 +4955,6 @@ namespace iba.Processing
                 }
             }
         }
-
 
         private void UpdateDataTask(string filename, UpdateDataTaskData task)
         {
