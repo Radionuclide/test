@@ -125,6 +125,17 @@ namespace iba.Controls
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
+
+
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
+                Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(false, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
+            }
+            else if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(false, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
+            }
         }
 
         public void LeaveCleanup() { }

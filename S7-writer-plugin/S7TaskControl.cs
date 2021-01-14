@@ -106,6 +106,8 @@ namespace S7_writer_plugin
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;
             m_data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
             m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
+
+            m_btnUploadPDO_Click(null, null);
         }
 
         public void LeaveCleanup()
@@ -326,7 +328,7 @@ namespace S7_writer_plugin
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
-			m_datcoHost.UploadPdoFile(true, this, m_pdoFileTextBox.Text, m_analyzerManager, m_data.m_parentJob);
+			m_datcoHost.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, m_analyzerManager, m_data.m_parentJob);
 			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
 	}
