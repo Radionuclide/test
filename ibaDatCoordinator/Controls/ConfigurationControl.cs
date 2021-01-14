@@ -631,7 +631,8 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             SaveData();
             TaskManager.Manager.UpdateConfiguration(m_data);
-            m_data.EventData.HdQueryTimeSpanChanged = false;
+            if (m_data.EventData != null)
+                m_data.EventData.HdQueryTimeSpanChanged = false;
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 Program.CommunicationObject.SaveConfigurations();
         }
