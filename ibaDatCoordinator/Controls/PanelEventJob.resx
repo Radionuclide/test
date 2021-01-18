@@ -614,7 +614,7 @@
     <value>gbGeneral</value>
   </data>
   <data name="&gt;&gt;gbGeneral.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbGeneral.Parent" xml:space="preserve">
     <value>$this</value>
@@ -688,6 +688,9 @@
   <data name="dtStopTimeHdQuery.CustomFormat" xml:space="preserve">
     <value>dd/MM/yyyy HH:mm:ss</value>
   </data>
+  <data name="dtStopTimeHdQuery.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="dtStopTimeHdQuery.Location" type="System.Drawing.Point, System.Drawing">
     <value>413, 299</value>
   </data>
@@ -747,6 +750,9 @@
   </data>
   <data name="dtStartTimeHdQuery.CustomFormat" xml:space="preserve">
     <value>dd/MM/yyyy HH:mm:ss</value>
+  </data>
+  <data name="dtStartTimeHdQuery.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="dtStartTimeHdQuery.Location" type="System.Drawing.Point, System.Drawing">
     <value>133, 299</value>
@@ -1067,7 +1073,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;gbTriggers.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbTriggers.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2357,7 +2363,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;gbOutput.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbOutput.Parent" xml:space="preserve">
     <value>$this</value>
