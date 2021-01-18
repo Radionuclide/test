@@ -502,7 +502,7 @@ namespace iba.Controls
                         }
                     }
 
-                    if (!storeExists)
+                    if (!storeExists && !string.IsNullOrEmpty(name))
                     {
                         ListViewItem item = m_lvStores.Items.Add(name, HdTreeNodes.GetImageIndex(HdStoreType.Unknown, false, false));
                         item.Checked = true;

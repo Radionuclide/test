@@ -604,6 +604,9 @@ namespace iba.Processing
                                     if (m_ejd.RangeCenter == EventJobRangeCenter.Outgoing && !data.TriggerOut)
                                         continue;
 
+                                    if (!m_bSkipChecks && data.UtcTicks < m_startTimeTicks)
+                                        continue;
+
                                     if (m_liveDataSet.Add(data))
                                     {
                                         string id = CreateEventID(data.Store, data.Id);

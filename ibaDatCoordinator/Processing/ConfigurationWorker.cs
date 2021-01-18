@@ -673,7 +673,7 @@ namespace iba.Processing
                     {
                         m_hdEventMonitor = new HDEventMonitor();
                         m_hdEventMonitor.UpdateConfiguration(m_cd.EventData, m_cd.Name);
-                        TaskManager.Manager.ReplaceConfiguration(m_cd);
+                        TaskManager.Manager.OneTimeEventsSetTimespanChanged(m_cd);
                         m_hdEventMonitor.Start();
                         m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null, intervalProcessNewEvents, Timeout.Infinite);
                     }

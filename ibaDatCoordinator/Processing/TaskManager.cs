@@ -1573,6 +1573,19 @@ namespace iba.Processing
             }
         }
 
+        internal void OneTimeEventsSetTimespanChanged(ConfigurationData configData)
+        {
+            if (configData.JobType == ConfigurationData.JobTypeEnum.Event)
+            {
+                ConfigurationData oldData = GetConfiguration(configData.Guid);
+
+                if (oldData == null || oldData.JobType != ConfigurationData.JobTypeEnum.Event)
+                    return;
+
+                oldData.EventData.HdQueryTimeSpanChanged = configData.EventData.HdQueryTimeSpanChanged;
+            }
+        }
+
         ConfigurationData GetConfiguration(Guid guid)
         {
             foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
