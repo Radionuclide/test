@@ -306,7 +306,10 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data);
         }
 
-        public void LeaveCleanup() {}
+        public void LeaveCleanup()
+        {
+            m_panel.LeaveCleanup();
+        }
 
         #endregion
 
