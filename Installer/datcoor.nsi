@@ -1393,16 +1393,16 @@ LangString TEXT_SERVICEACCOUNT_SUBTITLE   ${LANG_SPANISH} "Seleccione la cuenta 
 LangString DESC_DATCOOR_NOSERVICE         ${LANG_SPANISH} "ibaDatCoordinator"
 LangString DESC_DATCOOR_SERVICE           ${LANG_SPANISH} "Servidor/Cliente ibaDatCoordinator"
 LangString DESC_DATCOOR_CLIENT           ${LANG_SPANISH} "Cliente ibaDatCoordinator"
-LangString TEXT_OS_NOT_SUPPORTED          ${LANG_SPANISH} "No se pudo instalar el ibaDatCoordinator: El sistema operativo no es compatible”.
-LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_SPANISH} "Este sistema operativo ya no es compatible. ¿Desea continuar con la instalación de todas formas?
-LangString TEXT_NOT_ADMINISTRATOR         ${LANG_SPANISH} "No posee suficientes privilegios para completar la instalación para todos los usuarios de la máquina.  Inicie sesión como administrador e intente nuevamente la instalación.”
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_SPANISH} "La versión 4.8 del .NET framework no está instalada. Por favor, instale esto antes de ejecutar el instalador del ibaPDA. El .NET framework puede encontrarse en el DVD $\"iba Software & Manuals$\” o se puede descargar mediante la actualización de Windows.”
+LangString TEXT_OS_NOT_SUPPORTED          ${LANG_SPANISH} "No se pudo instalar el ibaDatCoordinator: El sistema operativo no es compatible."
+LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_SPANISH} "Este sistema operativo ya no es compatible. ¿Desea continuar con la instalación de todas formas?"
+LangString TEXT_NOT_ADMINISTRATOR         ${LANG_SPANISH} "No posee suficientes privilegios para completar la instalación para todos los usuarios de la máquina.  Inicie sesión como administrador e intente nuevamente la instalación."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_SPANISH} "La versión 4.8 del .NET framework no está instalada. Por favor, instale esto antes de ejecutar el instalador del ibaPDA. El .NET framework puede encontrarse en el DVD $\"iba Software & Manuals$\” o se puede descargar mediante la actualización de Windows."
 LangString TEXT_UNINSTALL                 ${LANG_SPANISH} "Desinstalar ${PRODUCT_NAME}"
-LangString TEXT_ALREADY_INSTALLED         ${LANG_SPANISH} "${PRODUCT_NAME} v${PRODUCT_VERSION} ya está instalado. ¿Desea reinstalarlo?”
+LangString TEXT_ALREADY_INSTALLED         ${LANG_SPANISH} "${PRODUCT_NAME} v${PRODUCT_VERSION} ya está instalado. ¿Desea reinstalarlo?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_SPANISH} "Está instalada una versión anterior de ${PRODUCT_NAME}. ¿Desea actualizar a la versión ${PRODUCT_VERSION}?"
 LangString TEXT_NEWER_INSTALLED           ${LANG_SPANISH} "Se ha instalado una nueva versión de ${PRODUCT_NAME}."
 LangString TEXT_PREV_UNINSTALLING         ${LANG_SPANISH} "Eliminando la versión anterior de  ${PRODUCT_NAME}"
-LangString TEXT_STILL_RUNNING             ${LANG_SPANISH} "No se puede borrar la aplicación que intenta eliminar. Tal vez aún se esté ejecutando. Si es así, por favor ciérrela e intente nuevamente.”
+LangString TEXT_STILL_RUNNING             ${LANG_SPANISH} "No se puede borrar la aplicación que intenta eliminar. Tal vez aún se esté ejecutando. Si es así, por favor ciérrela e intente nuevamente."
 LangString DESC_REMAINING                 ${LANG_SPANISH} " (%d %s%s restante)"
 LangString DESC_PROGRESS                  ${LANG_SPANISH} "%dkB (%d%%) of %dkB @ %d.%01dkB/s" ;"%d.%01dkB/s" ;"%dkB (%d%%) of %dkB @ %d.%01dkB/s"
 LangString DESC_PLURAL                    ${LANG_SPANISH} "s"
@@ -1421,11 +1421,11 @@ LangString TEXT_INSTALLSERVICE            ${LANG_SPANISH} "Instale el servidor y
 LangString TEXT_INSTALLSTANDALONE         ${LANG_SPANISH} "Instale el ibaDatCoordinator como un ejecutable autónomo"
 LangString TEXT_INSTALLCLIENT         ${LANG_SPANISH} "Instale solo el cliente ibaDatCooridnator"
 LangString TEXT_LOG_FILES                 ${LANG_SPANISH} "archivos de registro"
-LangString TEXT_CLOSE_STATUS              ${LANG_SPANISH} "El estado del servidor ibaDatCoordinator se está ejecutando. Por favor, cierre el programa de estado del servidor ibaDatCoordinator antes de continuar con la instalación.”
-LangString TEXT_STATUS_STOP               ${LANG_SPANISH} "Deteniendo el estado del servidor ibaDatCoordinator”
+LangString TEXT_CLOSE_STATUS              ${LANG_SPANISH} "El estado del servidor ibaDatCoordinator se está ejecutando. Por favor, cierre el programa de estado del servidor ibaDatCoordinator antes de continuar con la instalación."
+LangString TEXT_STATUS_STOP               ${LANG_SPANISH} "Deteniendo el estado del servidor ibaDatCoordinator"
 LangString TEXT_CONFIGURE_FIREWALL        ${LANG_SPANISH} "Configurar firewall"
-LangString TEXT_CLOSE_CLIENT              ${LANG_SPANISH} "El cliente ibaDatCoordinator se está ejecutando. Por favor, cierre el cliente ibaDatCoordinator antes de continuar con la instalación.”
+LangString TEXT_CLOSE_CLIENT              ${LANG_SPANISH} "El cliente ibaDatCoordinator se está ejecutando. Por favor, cierre el cliente ibaDatCoordinator antes de continuar con la instalación."
 LangString TEXT_UPDATEINFO				  ${LANG_SPANISH} "Por favor, regístrese aquí para obtener información regular sobre las actualizaciones de los productos"
 LangString TEXT_UPDATEINFO_LINK			  ${LANG_SPANISH} "https://www.iba-ag.com/en/subscribe-to-regular-product-information/"
-LangString TEXT_MPI_NOT_SUPPORTED         ${LANG_SPANISH} "Esta versión de ${PRODUCT_NAME} requiere una actualización de firmaware del dongle conectado. Por favor contacte a su soporte de iba más cercano y solicite una actualización de firmware del dongle para una licencia $LicenseNr.$\r$\n$\r$\nLa instalación de ${PRODUCT_NAME} será cancelada.”
+LangString TEXT_MPI_NOT_SUPPORTED         ${LANG_SPANISH} "Esta versión de ${PRODUCT_NAME} requiere una actualización de firmaware del dongle conectado. Por favor contacte a su soporte de iba más cercano y solicite una actualización de firmware del dongle para una licencia $LicenseNr.$\r$\n$\r$\nLa instalación de ${PRODUCT_NAME} será cancelada."
 
