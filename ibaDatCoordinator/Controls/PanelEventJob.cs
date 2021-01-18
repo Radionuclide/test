@@ -283,7 +283,7 @@ namespace iba.Controls
         private void QueryEndTimeEnabled_CheckedChanged(object sender, EventArgs e)
         {
             if (m_hdQueryEndTimeEnabled.Checked)
-                dtStopTimeHdQuery.Enabled = m_hdQueryEnabled.Enabled;
+                dtStopTimeHdQuery.Enabled = m_hdQueryEnabled.Enabled && m_hdQueryEnabled.Checked;
             else
                 dtStopTimeHdQuery.Enabled = false;
         }
