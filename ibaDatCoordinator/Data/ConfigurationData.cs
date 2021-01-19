@@ -548,7 +548,7 @@ namespace iba.Data
 
             string dir = Path.GetDirectoryName(path);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-            using (StreamWriter sw = new StreamWriter(path, false))
+            using (StreamWriter sw = new StreamWriter(path, false,Encoding.UTF8))
             {
                 //Add a section per store because ibaAnalyzer can't handle multiple stores in one hdq file
                 for (int i = 0; i < lStores.Length; i++)

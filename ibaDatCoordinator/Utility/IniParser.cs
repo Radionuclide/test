@@ -24,7 +24,7 @@ namespace iba.Utility
             string currentSection = "";
             try
             {
-                using(StreamReader reader = new StreamReader(m_fileName))
+                using(StreamReader reader = new StreamReader(m_fileName,true))
                 {
                     while(reader.Peek() >= 0)
                     {
@@ -55,7 +55,7 @@ namespace iba.Utility
 
         public void Write()
         {
-            using(StreamWriter writer = new StreamWriter(m_fileName, false))
+            using(StreamWriter writer = new StreamWriter(m_fileName, false,Encoding.UTF8))
             {
                 foreach (var section in Sections)
                 {
