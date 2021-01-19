@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UNCTaskControl));
 			this.m_subfolderGroupBox = new System.Windows.Forms.GroupBox();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -89,7 +88,7 @@
 			this.m_lblInfoStart = new System.Windows.Forms.Label();
 			this.m_nudInfoLength = new System.Windows.Forms.NumericUpDown();
 			this.m_nudInfoStart = new System.Windows.Forms.NumericUpDown();
-			this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.m_toolTip = new System.Windows.Forms.ToolTip();
 			this.m_subfolderGroupBox.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.panel2.SuspendLayout();

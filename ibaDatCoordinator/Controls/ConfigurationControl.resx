@@ -487,10 +487,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_testNotification.Location" type="System.Drawing.Point, System.Drawing">
-    <value>632, 63</value>
+    <value>631, 74</value>
   </data>
   <data name="m_testNotification.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>44, 46</value>
   </data>
   <data name="m_testNotification.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -769,7 +769,7 @@
     <value>gbNotifications</value>
   </data>
   <data name="&gt;&gt;gbNotifications.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbNotifications.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1126,7 +1126,7 @@
     <value>gbNewTask</value>
   </data>
   <data name="&gt;&gt;gbNewTask.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbNewTask.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1210,7 +1210,7 @@
     <value>gbJobName</value>
   </data>
   <data name="&gt;&gt;gbJobName.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbJobName.Parent" xml:space="preserve">
     <value>$this</value>

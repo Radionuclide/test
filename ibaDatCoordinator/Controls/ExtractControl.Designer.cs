@@ -32,6 +32,7 @@ namespace iba.Controls
 			this.m_rbTextFile = new System.Windows.Forms.RadioButton();
 			this.m_rbBinaryFile = new System.Windows.Forms.RadioButton();
 			this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
+			this.m_btnUploadPDO = new System.Windows.Forms.Button();
 			this.m_executeIBAAButton = new System.Windows.Forms.Button();
 			this.m_browseFileButton = new System.Windows.Forms.Button();
 			this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
@@ -53,7 +54,6 @@ namespace iba.Controls
 			this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
 			this.m_cbTime = new System.Windows.Forms.CheckBox();
 			this.m_cbMemory = new System.Windows.Forms.CheckBox();
-			this.m_btnUploadPDO = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.groupBox3.SuspendLayout();
 			this.m_panelFile.SuspendLayout();
@@ -87,6 +87,14 @@ namespace iba.Controls
 			this.groupBox1.Controls.Add(this.m_pdoFileTextBox);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.TabStop = false;
+			// 
+			// m_btnUploadPDO
+			// 
+			resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+			this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
+			this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+			this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+			this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
 			// 
 			// m_executeIBAAButton
 			// 
@@ -259,14 +267,6 @@ namespace iba.Controls
 			resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
 			this.m_cbMemory.Name = "m_cbMemory";
 			this.m_cbMemory.UseVisualStyleBackColor = true;
-			// 
-			// m_btnUploadPDO
-			// 
-			resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
-			this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
-			this.m_btnUploadPDO.Name = "m_btnUploadPDO";
-			this.m_btnUploadPDO.UseVisualStyleBackColor = true;
-			this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
 			// 
 			// ExtractControl
 			// 

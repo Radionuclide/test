@@ -32,8 +32,6 @@ namespace iba.Controls
 			this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
 			this.channelTreeEdit1 = new iba.Controls.ChannelTreeEdit();
-			this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
-			this.panelOut = new System.Windows.Forms.Panel();
 			this.m_btnUploadPDO = new System.Windows.Forms.Button();
 			this.label4 = new System.Windows.Forms.Label();
 			this.m_splitTypeCBox = new System.Windows.Forms.ComboBox();
@@ -42,6 +40,8 @@ namespace iba.Controls
 			this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
 			this.m_browsePDOFileButton = new System.Windows.Forms.Button();
 			this.m_executeIBAAButton = new System.Windows.Forms.Button();
+			this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
+			this.panelOut = new System.Windows.Forms.Panel();
 			this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
 			this.m_testButton = new System.Windows.Forms.Button();
 			this.label3 = new System.Windows.Forms.Label();
@@ -84,18 +84,6 @@ namespace iba.Controls
 			this.channelTreeEdit1.Name = "channelTreeEdit1";
 			this.channelTreeEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("channelTreeEdit1.Properties.Buttons"))))});
-			// 
-			// m_gbTarget
-			// 
-			resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
-			this.m_gbTarget.Controls.Add(this.panelOut);
-			this.m_gbTarget.Name = "m_gbTarget";
-			this.m_gbTarget.TabStop = false;
-			// 
-			// panelOut
-			// 
-			resources.ApplyResources(this.panelOut, "panelOut");
-			this.panelOut.Name = "panelOut";
 			// 
 			// m_btnUploadPDO
 			// 
@@ -151,6 +139,18 @@ namespace iba.Controls
 			this.m_executeIBAAButton.Name = "m_executeIBAAButton";
 			this.m_executeIBAAButton.UseVisualStyleBackColor = true;
 			this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
+			// 
+			// m_gbTarget
+			// 
+			resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
+			this.m_gbTarget.Controls.Add(this.panelOut);
+			this.m_gbTarget.Name = "m_gbTarget";
+			this.m_gbTarget.TabStop = false;
+			// 
+			// panelOut
+			// 
+			resources.ApplyResources(this.panelOut, "panelOut");
+			this.panelOut.Name = "panelOut";
 			// 
 			// groupBox1
 			// 

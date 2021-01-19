@@ -132,16 +132,13 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>921, 60</value>
-  </data>
-  <data name="m_btnTest.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>691, 50</value>
   </data>
   <data name="m_btnTest.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
   </data>
   <data name="m_btnTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 30</value>
+    <value>24, 24</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnTest.TabIndex" type="System.Int32, mscorlib">
@@ -169,16 +166,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnUploadPDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>961, 23</value>
-  </data>
-  <data name="m_btnUploadPDO.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>721, 20</value>
   </data>
   <data name="m_btnUploadPDO.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
   </data>
   <data name="m_btnUploadPDO.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 30</value>
+    <value>24, 24</value>
   </data>
   <data name="m_btnUploadPDO.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -196,13 +190,10 @@
     <value>1</value>
   </data>
   <data name="m_tbPwdDAT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>237, 101</value>
-  </data>
-  <data name="m_tbPwdDAT.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>178, 82</value>
   </data>
   <data name="m_tbPwdDAT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+    <value>130, 20</value>
   </data>
   <data name="m_tbPwdDAT.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -226,13 +217,10 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 105</value>
-  </data>
-  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 85</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 17</value>
+    <value>142, 13</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -259,16 +247,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnOpenPDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>921, 23</value>
-  </data>
-  <data name="m_btnOpenPDO.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>691, 20</value>
   </data>
   <data name="m_btnOpenPDO.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
   </data>
   <data name="m_btnOpenPDO.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 30</value>
+    <value>24, 24</value>
   </data>
   <data name="m_btnOpenPDO.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -292,16 +277,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnBrowseDAT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>881, 60</value>
-  </data>
-  <data name="m_btnBrowseDAT.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>661, 50</value>
   </data>
   <data name="m_btnBrowseDAT.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
   </data>
   <data name="m_btnBrowseDAT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 30</value>
+    <value>24, 24</value>
   </data>
   <data name="m_btnBrowseDAT.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -325,16 +307,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnBrowsePDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>881, 23</value>
-  </data>
-  <data name="m_btnBrowsePDO.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>661, 20</value>
   </data>
   <data name="m_btnBrowsePDO.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 1, 1, 1</value>
   </data>
   <data name="m_btnBrowsePDO.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 30</value>
+    <value>24, 24</value>
   </data>
   <data name="m_btnBrowsePDO.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -355,13 +334,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbDAT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>237, 64</value>
-  </data>
-  <data name="m_tbDAT.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>178, 52</value>
   </data>
   <data name="m_tbDAT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>635, 22</value>
+    <value>477, 20</value>
   </data>
   <data name="m_tbDAT.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -382,13 +358,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbPDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>237, 27</value>
-  </data>
-  <data name="m_tbPDO.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>178, 22</value>
   </data>
   <data name="m_tbPDO.Size" type="System.Drawing.Size, System.Drawing">
-    <value>635, 22</value>
+    <value>477, 20</value>
   </data>
   <data name="m_tbPDO.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -412,13 +385,10 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 68</value>
-  </data>
-  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 55</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>126, 17</value>
+    <value>94, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -445,13 +415,10 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 31</value>
-  </data>
-  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 25</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 17</value>
+    <value>49, 13</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -474,14 +441,8 @@
   <data name="gbDataSource.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="gbDataSource.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="gbDataSource.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="gbDataSource.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1256, 133</value>
+    <value>942, 108</value>
   </data>
   <data name="gbDataSource.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -493,7 +454,7 @@
     <value>gbDataSource</value>
   </data>
   <data name="&gt;&gt;gbDataSource.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbDataSource.Parent" xml:space="preserve">
     <value>$this</value>
@@ -508,16 +469,16 @@
     <value>Fill</value>
   </data>
   <data name="m_ctrlEvent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 121</value>
+    <value>3, 99</value>
   </data>
   <data name="m_ctrlEvent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_ctrlEvent.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>800, 369</value>
+    <value>600, 300</value>
   </data>
   <data name="m_ctrlEvent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1248, 867</value>
+    <value>936, 704</value>
   </data>
   <data name="m_ctrlEvent.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -526,7 +487,7 @@
     <value>m_ctrlEvent</value>
   </data>
   <data name="&gt;&gt;m_ctrlEvent.Type" xml:space="preserve">
-    <value>iba.HD.Client.ControlEventConfig, hdClient, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.HD.Client.ControlEventConfig, hdClient, Version=2.6.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ctrlEvent.Parent" xml:space="preserve">
     <value>gbEvent</value>
@@ -534,26 +495,11 @@
   <data name="&gt;&gt;m_ctrlEvent.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_ctrlServer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_ctrlServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 19</value>
-  </data>
-  <data name="m_ctrlServer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_ctrlServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1240, 79</value>
-  </data>
-  <data name="m_ctrlServer.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;m_ctrlServer.Name" xml:space="preserve">
     <value>m_ctrlServer</value>
   </data>
   <data name="&gt;&gt;m_ctrlServer.Type" xml:space="preserve">
-    <value>iba.HD.Client.ControlServerSelection, hdClient, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.HD.Client.ControlServerSelection, hdClient, Version=2.6.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_ctrlServer.Parent" xml:space="preserve">
     <value>gbStoreSelection</value>
@@ -565,16 +511,10 @@
     <value>Top</value>
   </data>
   <data name="gbStoreSelection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 19</value>
-  </data>
-  <data name="gbStoreSelection.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="gbStoreSelection.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 16</value>
   </data>
   <data name="gbStoreSelection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1248, 102</value>
+    <value>936, 83</value>
   </data>
   <data name="gbStoreSelection.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -595,16 +535,10 @@
     <value>1</value>
   </data>
   <data name="gbEvent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 135</value>
-  </data>
-  <data name="gbEvent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="gbEvent.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>0, 110</value>
   </data>
   <data name="gbEvent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1256, 992</value>
+    <value>942, 806</value>
   </data>
   <data name="gbEvent.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -616,7 +550,7 @@
     <value>gbEvent</value>
   </data>
   <data name="&gt;&gt;gbEvent.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gbEvent.Parent" xml:space="preserve">
     <value>$this</value>
@@ -624,8 +558,131 @@
   <data name="&gt;&gt;gbEvent.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_ctrlServer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_ctrlServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="m_ctrlServer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="m_ctrlServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>930, 64</value>
+  </data>
+  <data name="m_ctrlServer.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_ctrlServer.Name" xml:space="preserve">
+    <value>m_ctrlServer</value>
+  </data>
+  <data name="&gt;&gt;m_ctrlServer.Type" xml:space="preserve">
+    <value>iba.HD.Client.ControlServerSelection, hdClient, Version=2.6.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_ctrlServer.Parent" xml:space="preserve">
+    <value>gbStoreSelection</value>
+  </data>
+  <data name="&gt;&gt;m_ctrlServer.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Name" xml:space="preserve">
+    <value>m_nudTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Name" xml:space="preserve">
+    <value>m_nudMemory</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_nudMemory.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Name" xml:space="preserve">
+    <value>m_cbTime</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cbTime.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Name" xml:space="preserve">
+    <value>m_cbMemory</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.Parent" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_cbMemory.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 922</value>
+  </data>
+  <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>942, 73</value>
+  </data>
+  <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_monitorGroup.Text" xml:space="preserve">
+    <value>Monitor ibaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Name" xml:space="preserve">
+    <value>m_monitorGroup</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -634,13 +691,10 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>549, 53</value>
-  </data>
-  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>412, 43</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 17</value>
+    <value>101, 13</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -667,13 +721,10 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>549, 25</value>
-  </data>
-  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>412, 20</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 17</value>
+    <value>92, 13</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -697,13 +748,10 @@
     <value>Left</value>
   </data>
   <data name="m_nudTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>437, 50</value>
-  </data>
-  <data name="m_nudTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>328, 41</value>
   </data>
   <data name="m_nudTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 22</value>
+    <value>78, 20</value>
   </data>
   <data name="m_nudTime.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -724,13 +772,10 @@
     <value>Left</value>
   </data>
   <data name="m_nudMemory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>437, 22</value>
-  </data>
-  <data name="m_nudMemory.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>328, 18</value>
   </data>
   <data name="m_nudMemory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 22</value>
+    <value>78, 20</value>
   </data>
   <data name="m_nudMemory.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -754,13 +799,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 52</value>
-  </data>
-  <data name="m_cbTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>15, 42</value>
   </data>
   <data name="m_cbTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>355, 21</value>
+    <value>266, 17</value>
   </data>
   <data name="m_cbTime.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -787,13 +829,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbMemory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 23</value>
-  </data>
-  <data name="m_cbMemory.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>15, 19</value>
   </data>
   <data name="m_cbMemory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>413, 21</value>
+    <value>307, 17</value>
   </data>
   <data name="m_cbMemory.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -813,50 +852,17 @@
   <data name="&gt;&gt;m_cbMemory.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 1135</value>
-  </data>
-  <data name="m_monitorGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="m_monitorGroup.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1256, 90</value>
-  </data>
-  <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_monitorGroup.Text" xml:space="preserve">
-    <value>Monitor ibaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Name" xml:space="preserve">
-    <value>m_monitorGroup</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 16</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>6, 13</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 1225</value>
+    <value>0, 995</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1256, 1225</value>
+    <value>942, 995</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>

@@ -28,11 +28,10 @@ namespace iba.Controls
         /// </summary>
         private void InitializeComponent()
         {
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatchFileControl));
 			this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.m_saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-			this.m_tooltip = new System.Windows.Forms.ToolTip(this.components);
+			this.m_tooltip = new System.Windows.Forms.ToolTip();
 			this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
 			this.m_newButton = new System.Windows.Forms.Button();
 			this.m_textEditor = new ICSharpCode.TextEditor.TextEditorControl();

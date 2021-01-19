@@ -640,6 +640,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\TestSplitterTaskDialog.resx">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>

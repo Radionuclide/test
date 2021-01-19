@@ -427,7 +427,7 @@
     <value>gb_GlobalCleanup</value>
   </data>
   <data name="&gt;&gt;gb_GlobalCleanup.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_GlobalCleanup.Parent" xml:space="preserve">
     <value>$this</value>
@@ -622,7 +622,7 @@
     <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;gb_Password.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_Password.Parent" xml:space="preserve">
     <value>$this</value>
@@ -787,7 +787,7 @@
     <value>78, 27</value>
   </data>
   <data name="m_tbAnalyzerExe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>555, 20</value>
+    <value>589, 20</value>
   </data>
   <data name="m_tbAnalyzerExe.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -811,10 +811,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>639, 19</value>
+    <value>672, 25</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -880,7 +880,7 @@
     <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;gb_IbaAnalyzer.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_IbaAnalyzer.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1042,7 +1042,7 @@
     <value>gb_Processing</value>
   </data>
   <data name="&gt;&gt;gb_Processing.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_Processing.Parent" xml:space="preserve">
     <value>$this</value>

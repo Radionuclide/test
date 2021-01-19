@@ -943,7 +943,7 @@
     <value>Left</value>
   </data>
   <data name="m_nudQuota.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 3</value>
+    <value>147, 2</value>
   </data>
   <data name="m_nudQuota.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 20</value>
@@ -1105,7 +1105,7 @@
     <value>Left</value>
   </data>
   <data name="m_nudFree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 3</value>
+    <value>147, 2</value>
   </data>
   <data name="m_nudFree.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 20</value>
@@ -1348,10 +1348,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_browseFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>557, 3</value>
+    <value>572, 12</value>
   </data>
   <data name="m_browseFolderButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_browseFolderButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1405,7 +1405,7 @@
     <value>96, 14</value>
   </data>
   <data name="m_targetFolderTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>455, 20</value>
+    <value>469, 20</value>
   </data>
   <data name="m_targetFolderTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1429,10 +1429,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>378, 42</value>
+    <value>602, 12</value>
   </data>
   <data name="m_checkPathButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_checkPathButton.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>

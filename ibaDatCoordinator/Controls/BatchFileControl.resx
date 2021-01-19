@@ -138,10 +138,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_newButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>513, 20</value>
+    <value>561, 29</value>
   </data>
   <data name="m_newButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_newButton.TabIndex" type="System.Int32, mscorlib">
@@ -190,7 +190,7 @@
     <value>16, 31</value>
   </data>
   <data name="m_batchFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>491, 20</value>
+    <value>540, 20</value>
   </data>
   <data name="m_batchFileTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -214,10 +214,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_browseBATCHFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>559, 20</value>
+    <value>591, 29</value>
   </data>
   <data name="m_browseBATCHFileButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_browseBATCHFileButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -241,10 +241,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_saveButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>605, 20</value>
+    <value>621, 29</value>
   </data>
   <data name="m_saveButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_saveButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -280,7 +280,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -405,24 +405,6 @@
   <data name="&gt;&gt;m_lblTestSide.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_rbServerSide.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbServerSide.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_rbServerSide.Location" type="System.Drawing.Point, System.Drawing">
-    <value>116, 6</value>
-  </data>
-  <data name="m_rbServerSide.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 17</value>
-  </data>
-  <data name="m_rbServerSide.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_rbServerSide.Text" xml:space="preserve">
-    <value>server side</value>
-  </data>
   <data name="&gt;&gt;m_rbServerSide.Name" xml:space="preserve">
     <value>m_rbServerSide</value>
   </data>
@@ -434,24 +416,6 @@
   </data>
   <data name="&gt;&gt;m_rbServerSide.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_rbClientSide.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_rbClientSide.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_rbClientSide.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 6</value>
-  </data>
-  <data name="m_rbClientSide.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 17</value>
-  </data>
-  <data name="m_rbClientSide.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_rbClientSide.Text" xml:space="preserve">
-    <value>client side</value>
   </data>
   <data name="&gt;&gt;m_rbClientSide.Name" xml:space="preserve">
     <value>m_rbClientSide</value>
@@ -586,10 +550,10 @@ e.g.: file1
     <value>NoControl</value>
   </data>
   <data name="m_browseDatFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>559, 154</value>
+    <value>591, 163</value>
   </data>
   <data name="m_browseDatFileButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_browseDatFileButton.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -761,7 +725,7 @@ filename without extension</value>
     <value>103, 165</value>
   </data>
   <data name="m_datFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>450, 20</value>
+    <value>483, 20</value>
   </data>
   <data name="m_datFileTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -785,10 +749,10 @@ filename without extension</value>
     <value>NoControl</value>
   </data>
   <data name="m_executeBatchFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>605, 154</value>
+    <value>621, 163</value>
   </data>
   <data name="m_executeBatchFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_executeBatchFile.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -821,12 +785,72 @@ filename without extension</value>
     <value>m_executeGroupBox</value>
   </data>
   <data name="&gt;&gt;m_executeGroupBox.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_executeGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_executeGroupBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbServerSide.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbServerSide.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbServerSide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>116, 6</value>
+  </data>
+  <data name="m_rbServerSide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 17</value>
+  </data>
+  <data name="m_rbServerSide.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbServerSide.Text" xml:space="preserve">
+    <value>server side</value>
+  </data>
+  <data name="&gt;&gt;m_rbServerSide.Name" xml:space="preserve">
+    <value>m_rbServerSide</value>
+  </data>
+  <data name="&gt;&gt;m_rbServerSide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbServerSide.Parent" xml:space="preserve">
+    <value>m_panelSide</value>
+  </data>
+  <data name="&gt;&gt;m_rbServerSide.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rbClientSide.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbClientSide.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbClientSide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 6</value>
+  </data>
+  <data name="m_rbClientSide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 17</value>
+  </data>
+  <data name="m_rbClientSide.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rbClientSide.Text" xml:space="preserve">
+    <value>client side</value>
+  </data>
+  <data name="&gt;&gt;m_rbClientSide.Name" xml:space="preserve">
+    <value>m_rbClientSide</value>
+  </data>
+  <data name="&gt;&gt;m_rbClientSide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbClientSide.Parent" xml:space="preserve">
+    <value>m_panelSide</value>
+  </data>
+  <data name="&gt;&gt;m_rbClientSide.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

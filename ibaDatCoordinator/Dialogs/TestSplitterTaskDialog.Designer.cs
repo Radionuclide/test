@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestSplitterTaskDialog));
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -45,7 +44,7 @@
 			this.colStop = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.label3 = new System.Windows.Forms.Label();
 			this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-			this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.m_toolTip = new System.Windows.Forms.ToolTip();
 			this.m_progressBar = new System.Windows.Forms.ProgressBar();
 			this.m_lblProgress = new System.Windows.Forms.Label();
 			this.m_bgwSplit = new System.ComponentModel.BackgroundWorker();

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(S7TaskControl));
 			this.label2 = new System.Windows.Forms.Label();
 			this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
@@ -38,7 +37,7 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.m_datFileTextBox = new System.Windows.Forms.TextBox();
 			this.m_testButton = new System.Windows.Forms.Button();
-			this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.m_toolTip = new System.Windows.Forms.ToolTip();
 			this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.m_monitorGroup = new System.Windows.Forms.GroupBox();
 			this.label4 = new System.Windows.Forms.Label();
@@ -303,7 +302,6 @@
 			// dataGrid
 			// 
 			resources.ApplyResources(this.dataGrid, "dataGrid");
-			this.dataGrid.EmbeddedNavigator.Margin = ((System.Windows.Forms.Padding)(resources.GetObject("dataGrid.EmbeddedNavigator.Margin")));
 			this.dataGrid.MainView = this.dataGV;
 			this.dataGrid.Name = "dataGrid";
 			this.dataGrid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {

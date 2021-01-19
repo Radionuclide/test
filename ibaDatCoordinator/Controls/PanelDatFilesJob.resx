@@ -666,7 +666,7 @@
     <value>groupBox3</value>
   </data>
   <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>$this</value>
@@ -684,7 +684,7 @@
     <value>171, 97</value>
   </data>
   <data name="m_tbFilePwd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 20</value>
+    <value>386, 20</value>
   </data>
   <data name="m_tbFilePwd.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
@@ -738,10 +738,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_browseDatFilesButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>654, 15</value>
+    <value>640, 17</value>
   </data>
   <data name="m_browseDatFilesButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_browseDatFilesButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -765,7 +765,7 @@
     <value>171, 71</value>
   </data>
   <data name="m_tbPass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 20</value>
+    <value>386, 20</value>
   </data>
   <data name="m_tbPass.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -819,7 +819,7 @@
     <value>171, 45</value>
   </data>
   <data name="m_tbUserName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 20</value>
+    <value>386, 20</value>
   </data>
   <data name="m_tbUserName.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -873,10 +873,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_checkPathButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>516, 45</value>
+    <value>670, 17</value>
   </data>
   <data name="m_checkPathButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_checkPathButton.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -900,10 +900,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_browseFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>607, 15</value>
+    <value>610, 17</value>
   </data>
   <data name="m_browseFolderButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_browseFolderButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -927,7 +927,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_subMapsCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>564, 61</value>
+    <value>562, 46</value>
   </data>
   <data name="m_subMapsCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 17</value>
@@ -957,7 +957,7 @@
     <value>171, 19</value>
   </data>
   <data name="m_datDirTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>431, 20</value>
+    <value>434, 20</value>
   </data>
   <data name="m_datDirTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1023,7 +1023,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>

@@ -471,14 +471,17 @@
   <data name="m_btBrowseServer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_btBrowseServer.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
   <data name="m_btBrowseServer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btBrowseServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>357, 40</value>
+    <value>345, 49</value>
   </data>
   <data name="m_btBrowseServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>24, 24</value>
   </data>
   <data name="m_btBrowseServer.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -499,7 +502,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 51</value>
+    <value>82, 51</value>
   </data>
   <data name="m_tbServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>258, 20</value>
@@ -758,6 +761,9 @@
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 675</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 675</value>

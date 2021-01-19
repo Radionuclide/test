@@ -15,9 +15,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HDEventCreationTaskControl));
-			this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.m_toolTip = new System.Windows.Forms.ToolTip();
 			this.gbDataSource = new iba.Utility.CollapsibleGroupBox();
 			this.m_btnTest = new System.Windows.Forms.Button();
 			this.m_btnUploadPDO = new System.Windows.Forms.Button();
@@ -27,6 +26,7 @@
 			this.m_btnBrowseDAT = new System.Windows.Forms.Button();
 			this.m_btnBrowsePDO = new System.Windows.Forms.Button();
 			this.m_tbDAT = new System.Windows.Forms.TextBox();
+			this.m_tbPDO = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.gbEvent = new iba.Utility.CollapsibleGroupBox();
@@ -40,7 +40,6 @@
 			this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
 			this.m_cbTime = new System.Windows.Forms.CheckBox();
 			this.m_cbMemory = new System.Windows.Forms.CheckBox();
-			this.m_tbPDO = new System.Windows.Forms.TextBox();
 			this.gbDataSource.SuspendLayout();
 			this.gbEvent.SuspendLayout();
 			this.gbStoreSelection.SuspendLayout();
@@ -123,6 +122,12 @@
 			this.m_tbDAT.Name = "m_tbDAT";
 			this.m_tbDAT.Leave += new System.EventHandler(this.DatTextChanged);
 			// 
+			// m_tbPDO
+			// 
+			resources.ApplyResources(this.m_tbPDO, "m_tbPDO");
+			this.m_tbPDO.Name = "m_tbPDO";
+			this.m_tbPDO.Leave += new System.EventHandler(this.PDOTextChanged);
+			// 
 			// label3
 			// 
 			resources.ApplyResources(this.label3, "label3");
@@ -164,6 +169,7 @@
 			// m_ctrlServer
 			// 
 			this.m_ctrlServer.AllowBackups = true;
+			this.m_ctrlServer.AllowCurrentWindowsUser = false;
 			this.m_ctrlServer.AllowDatFiles = true;
 			resources.ApplyResources(this.m_ctrlServer, "m_ctrlServer");
 			this.m_ctrlServer.Name = "m_ctrlServer";
@@ -241,12 +247,6 @@
 			resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
 			this.m_cbMemory.Name = "m_cbMemory";
 			this.m_cbMemory.UseVisualStyleBackColor = true;
-			// 
-			// m_tbPDO
-			// 
-			resources.ApplyResources(this.m_tbPDO, "m_tbPDO");
-			this.m_tbPDO.Name = "m_tbPDO";
-			this.m_tbPDO.Leave += new System.EventHandler(this.PDOTextChanged);
 			// 
 			// HDEventCreationTaskControl
 			// 

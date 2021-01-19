@@ -22,7 +22,8 @@ namespace iba.Controls
             InitializeComponent();
             m_oneTimeJob = oneTimeJob;
 
-            m_browseDatFilesButton.Image = Bitmap.FromHicon(iba.Properties.Resources.dat_file.Handle);
+			var b = Bitmap.FromHicon(iba.Properties.Resources.dat_file.Handle);
+			m_browseDatFilesButton.Image = new Bitmap(b, new Size(16, 16));
 
             if(oneTimeJob) //make this a onetime job dialog
             {

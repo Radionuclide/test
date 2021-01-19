@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelDatFilesJob));
-			this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.m_toolTip = new System.Windows.Forms.ToolTip();
 			this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
 			this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox3 = new iba.Utility.CollapsibleGroupBox();
