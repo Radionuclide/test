@@ -625,20 +625,59 @@
   <data name="gbTriggers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="label8.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 318</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>236, 13</value>
+  </data>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>41</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>One time (this will be reset after the job is started)</value>
+  </data>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>gbTriggers</value>
+  </data>
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_hdQueryEndTimeEnabled.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
   <data name="m_hdQueryEndTimeEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_hdQueryEndTimeEnabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_hdQueryEndTimeEnabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>304, 301</value>
+    <value>304, 296</value>
   </data>
   <data name="m_hdQueryEndTimeEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 17</value>
+    <value>42, 17</value>
   </data>
   <data name="m_hdQueryEndTimeEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
   </data>
   <data name="m_hdQueryEndTimeEnabled.Text" xml:space="preserve">
-    <value>Query endtime:</value>
+    <value>To:</value>
   </data>
   <data name="&gt;&gt;m_hdQueryEndTimeEnabled.Name" xml:space="preserve">
     <value>m_hdQueryEndTimeEnabled</value>
@@ -650,7 +689,10 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_hdQueryEndTimeEnabled.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="m_hdQueryEnabled.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="m_hdQueryEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -659,16 +701,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdQueryEnabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 278</value>
+    <value>19, 273</value>
   </data>
   <data name="m_hdQueryEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 17</value>
+    <value>137, 17</value>
   </data>
   <data name="m_hdQueryEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
   </data>
   <data name="m_hdQueryEnabled.Text" xml:space="preserve">
-    <value>Enable ibaHD query</value>
+    <value>Process existing events</value>
   </data>
   <data name="&gt;&gt;m_hdQueryEnabled.Name" xml:space="preserve">
     <value>m_hdQueryEnabled</value>
@@ -680,7 +722,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_hdQueryEnabled.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="dtStopTimeHdQuery.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -692,7 +734,7 @@
     <value>False</value>
   </data>
   <data name="dtStopTimeHdQuery.Location" type="System.Drawing.Point, System.Drawing">
-    <value>413, 299</value>
+    <value>401, 294</value>
   </data>
   <data name="dtStopTimeHdQuery.Size" type="System.Drawing.Size, System.Drawing">
     <value>153, 20</value>
@@ -710,7 +752,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;dtStopTimeHdQuery.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="label7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -722,16 +764,16 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>21, 301</value>
+    <value>21, 296</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 13</value>
+    <value>33, 13</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>Query start time:</value>
+    <value>From:</value>
   </data>
   <data name="&gt;&gt;label7.Name" xml:space="preserve">
     <value>label7</value>
@@ -743,7 +785,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="dtStartTimeHdQuery.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -755,7 +797,7 @@
     <value>False</value>
   </data>
   <data name="dtStartTimeHdQuery.Location" type="System.Drawing.Point, System.Drawing">
-    <value>133, 299</value>
+    <value>130, 294</value>
   </data>
   <data name="dtStartTimeHdQuery.Size" type="System.Drawing.Size, System.Drawing">
     <value>153, 20</value>
@@ -773,7 +815,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;dtStartTimeHdQuery.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -803,7 +845,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_tbUsername.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 48</value>
@@ -824,7 +866,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbUsername.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="btnChangeUser.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -857,13 +899,13 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;btnChangeUser.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_pnlEvents.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_pnlEvents.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 97</value>
+    <value>16, 92</value>
   </data>
   <data name="m_pnlEvents.Size" type="System.Drawing.Size, System.Drawing">
     <value>713, 175</value>
@@ -881,7 +923,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_pnlEvents.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="btnHdServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -911,7 +953,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;btnHdServer.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_tbEventServer.Location" type="System.Drawing.Point, System.Drawing">
     <value>108, 19</value>
@@ -935,7 +977,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbEventServer.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_tbEventServerPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>313, 19</value>
@@ -962,7 +1004,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;m_tbEventServerPort.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -992,7 +1034,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1022,7 +1064,7 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1034,7 +1076,7 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 78</value>
+    <value>13, 73</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
@@ -1055,13 +1097,13 @@
     <value>gbTriggers</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="gbTriggers.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 125</value>
   </data>
   <data name="gbTriggers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 326</value>
+    <value>734, 339</value>
   </data>
   <data name="gbTriggers.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2348,7 +2390,7 @@
     <value>35</value>
   </data>
   <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 457</value>
+    <value>0, 470</value>
   </data>
   <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>734, 437</value>
@@ -2378,10 +2420,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 845</value>
+    <value>0, 900</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 897</value>
+    <value>734, 910</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>

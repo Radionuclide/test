@@ -1562,7 +1562,7 @@ namespace iba.Processing
 
         void UpdateConfigurationOneTimeEvents(ConfigurationData newData)
         {
-            if (newData.JobType == ConfigurationData.JobTypeEnum.Event && !newData.EventData.HdQueryTimeSpanChanged && newData.EventData.HdQueryEnabled)
+            if (newData.JobType == ConfigurationData.JobTypeEnum.Event && !newData.EventData.HdQueryTimeSpanChanged)
             {
                 ConfigurationData oldData = GetConfiguration(newData.Guid);
 

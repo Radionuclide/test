@@ -196,7 +196,7 @@ namespace iba.Controls
             SetHDServerSettings(m_eventData.HDServer, m_eventData.HDPort, m_eventData.HDUsername, m_eventData.HDPassword);
             ChangeHDServer(m_eventData.HDServer, m_eventData.HDPort, m_eventData.HDUsername, m_eventData.HDPassword, SelectServer);
 
-            m_hdQueryEnabled.Checked = m_eventData.HdQueryEnabled;
+            m_hdQueryEnabled.Checked = m_eventData.HdQueryEnabled && TaskManager.Manager.GetOneTimeEventConfigurationChanged(m_confData.Guid);
             m_hdQueryEndTimeEnabled.Checked = m_eventData.HdQueryUseEndTime;
             if (m_eventData.HdQueryEnabled)
             {
@@ -790,5 +790,6 @@ namespace iba.Controls
             }
         }
         #endregion
+
     }
 }

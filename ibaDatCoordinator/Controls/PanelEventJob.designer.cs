@@ -33,6 +33,7 @@
             this.m_failTimeUpDown = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.gbTriggers = new iba.Utility.CollapsibleGroupBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.m_hdQueryEndTimeEnabled = new System.Windows.Forms.CheckBox();
             this.m_hdQueryEnabled = new System.Windows.Forms.CheckBox();
             this.dtStopTimeHdQuery = new System.Windows.Forms.DateTimePicker();
@@ -244,6 +245,7 @@
             // gbTriggers
             // 
             resources.ApplyResources(this.gbTriggers, "gbTriggers");
+            this.gbTriggers.Controls.Add(this.label8);
             this.gbTriggers.Controls.Add(this.m_hdQueryEndTimeEnabled);
             this.gbTriggers.Controls.Add(this.m_hdQueryEnabled);
             this.gbTriggers.Controls.Add(this.dtStopTimeHdQuery);
@@ -261,6 +263,11 @@
             this.gbTriggers.Controls.Add(this.label1);
             this.gbTriggers.Name = "gbTriggers";
             this.gbTriggers.TabStop = false;
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
             // 
             // m_hdQueryEndTimeEnabled
             // 
@@ -845,5 +852,6 @@
         private System.Windows.Forms.DateTimePicker dtStopTimeHdQuery;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox m_hdQueryEndTimeEnabled;
+        private System.Windows.Forms.Label label8;
     }
 }
