@@ -17,9 +17,17 @@ namespace iba.Controls
 {
     public partial class IfTaskControl : UserControl, IPropertyPane
     {
+        private ChannelTreeEdit channelTreeEdit;
         public IfTaskControl()
         {
             InitializeComponent();
+
+            channelTreeEdit = new iba.Controls.ChannelTreeEdit();
+            channelTreeEdit.Size = channelTreeEditPlaceholder.Size;
+            channelTreeEdit.Location = channelTreeEditPlaceholder.Location;
+            channelTreeEdit.Anchor = channelTreeEditPlaceholder.Anchor;
+            this.groupBox2.Controls.Add(this.channelTreeEdit);
+
             m_XTypeComboBox.Items.AddRange(new object[]{
                 iba.Properties.Resources.XTime,
                 iba.Properties.Resources.XLength,
@@ -41,7 +49,7 @@ namespace iba.Controls
         {
             m_manager = manager;
             m_data = datasource as IfTaskData;
-			channelTreeEdit1.EditValue = m_data.Expression;
+			channelTreeEdit.EditValue = m_data.Expression;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
 
@@ -83,7 +91,7 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
-			m_data.Expression = (string)channelTreeEdit1.EditValue;
+			m_data.Expression = (string)channelTreeEdit.EditValue;
 			m_data.XType = (IfTaskData.XTypeEnum) m_XTypeComboBox.SelectedIndex;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
@@ -141,9 +149,9 @@ namespace iba.Controls
             {
                 string pass = m_data.ParentConfigurationData.FileEncryptionPassword;
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                    f = Program.CommunicationObject.TestCondition(channelTreeEdit1.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                    f = Program.CommunicationObject.TestCondition(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
                 else
-                    f = TestCondition(channelTreeEdit1.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                    f = TestCondition(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
             }
             if (float.IsNaN(f) || float.IsInfinity(f))
                 MessageBox.Show(errorMessage, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -197,20 +205,20 @@ namespace iba.Controls
 
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
-			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
 		{
-			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 			m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, channelTreeEdit1.analyzerManager, m_data.ParentConfigurationData);
-			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
 	}
 }

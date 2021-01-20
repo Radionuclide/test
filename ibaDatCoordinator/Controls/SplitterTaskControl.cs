@@ -18,9 +18,17 @@ namespace iba.Controls
 {
     public partial class SplitterTaskControl : UserControl, IPropertyPane
     {
+        private ChannelTreeEdit channelTreeEdit;
         public SplitterTaskControl()
         {
             InitializeComponent();
+
+            channelTreeEdit = new iba.Controls.ChannelTreeEdit();
+            channelTreeEdit.Size = channelTreeEditPlaceholder.Size;
+            channelTreeEdit.Location = channelTreeEditPlaceholder.Location;
+            channelTreeEdit.Anchor = channelTreeEditPlaceholder.Anchor;
+            this.groupBox2.Controls.Add(this.channelTreeEdit);
+
             ((Bitmap)m_executeIBAAButton.Image).MakeTransparent(Color.Magenta);
             WindowsAPI.SHAutoComplete(m_pdoFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
@@ -42,7 +50,7 @@ namespace iba.Controls
         {
             m_manager = manager;
             m_data = datasource as SplitterTaskData;
-			channelTreeEdit1.EditValue = m_data.Expression;
+			channelTreeEdit.EditValue = m_data.Expression;
 			m_splitTypeCBox.SelectedIndex = (int)m_data.EdgeConditionType;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
@@ -86,7 +94,7 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
-			m_data.Expression = (string)channelTreeEdit1.EditValue;
+			m_data.Expression = (string)channelTreeEdit.EditValue;
 			m_data.EdgeConditionType = m_splitTypeCBox.SelectedIndex == 1 ? SplitterTaskData.EdgeConditionTypeEnum.RISINGTOFALLING : SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING;
             
             m_uncControl.SaveData();
@@ -154,7 +162,7 @@ namespace iba.Controls
 
 		private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
-			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
                 m_testButton.Enabled = true; //we'll give a warning when not allowed ...
             else
@@ -169,7 +177,7 @@ namespace iba.Controls
 
 		private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
 		{
-			channelTreeEdit1.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
 	}
 }
