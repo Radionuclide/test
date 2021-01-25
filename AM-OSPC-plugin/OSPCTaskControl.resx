@@ -187,7 +187,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_browsePDOFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>633, 112</value>
+    <value>633, 113</value>
   </data>
   <data name="m_browsePDOFileButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -232,7 +232,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>673, 112</value>
+    <value>673, 113</value>
   </data>
   <data name="m_executeIBAAButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -265,13 +265,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_browseDatFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>630, 354</value>
+    <value>673, 364</value>
   </data>
   <data name="m_browseDatFileButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="m_browseDatFileButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 49</value>
+    <value>32, 30</value>
   </data>
   <data name="m_browseDatFileButton.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -337,7 +337,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="m_datFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 22</value>
+    <value>518, 22</value>
   </data>
   <data name="m_datFileTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -361,13 +361,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_testButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>692, 354</value>
+    <value>712, 364</value>
   </data>
   <data name="m_testButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="m_testButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 49</value>
+    <value>32, 30</value>
   </data>
   <data name="m_testButton.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -865,7 +865,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnUploadPDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>713, 112</value>
+    <value>713, 113</value>
   </data>
   <data name="m_btnUploadPDO.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>

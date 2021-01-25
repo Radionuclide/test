@@ -79,6 +79,42 @@ namespace AM_OSPC_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer Expression.
+        /// </summary>
+        internal static string ExprTblExpression {
+            get {
+                return ResourceManager.GetString("ExprTblExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OSPC Process Name.
+        /// </summary>
+        internal static string ExprTblProcessName {
+            get {
+                return ResourceManager.GetString("ExprTblProcessName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Value.
+        /// </summary>
+        internal static string ExprTblTestVal {
+            get {
+                return ResourceManager.GetString("ExprTblTestVal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OSPC Variable Name.
+        /// </summary>
+        internal static string ExprTblVarName {
+            get {
+                return ResourceManager.GetString("ExprTblVarName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ibaAnalyzer {

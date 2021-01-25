@@ -157,4 +157,22 @@
   <data name="img_pdo_upload" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_pdo_upload.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ExprTblAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="ExprTblBit" xml:space="preserve">
+    <value>Bit</value>
+  </data>
+  <data name="ExprTblDataType" xml:space="preserve">
+    <value>S7 Data Type</value>
+  </data>
+  <data name="ExprTblDB" xml:space="preserve">
+    <value>DB</value>
+  </data>
+  <data name="ExprTblExpression" xml:space="preserve">
+    <value>ibaAnalyzer Expression</value>
+  </data>
+  <data name="ExprTblTestValue" xml:space="preserve">
+    <value>Test Value</value>
+  </data>
 </root>

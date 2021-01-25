@@ -28,7 +28,14 @@ namespace S7_writer_plugin
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
 			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;
 			dataGV.IndicatorWidth = 50;
-		}
+
+            gridColumn6.Caption = Properties.Resources.ExprTblExpression;
+            gridColumn7.Caption = Properties.Resources.ExprTblDB;
+            gridColumn8.Caption = Properties.Resources.ExprTblAddress;
+            gridColumn9.Caption = Properties.Resources.ExprTblBit;
+            gridColumn10.Caption = Properties.Resources.ExprTblDataType;
+            gridColumn11.Caption = Properties.Resources.ExprTblTestValue;
+        }
 
 		protected override void OnLoad(EventArgs e)
         {

@@ -79,6 +79,60 @@ namespace S7_writer_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        internal static string ExprTblAddress {
+            get {
+                return ResourceManager.GetString("ExprTblAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bit.
+        /// </summary>
+        internal static string ExprTblBit {
+            get {
+                return ResourceManager.GetString("ExprTblBit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to S7 Data Type.
+        /// </summary>
+        internal static string ExprTblDataType {
+            get {
+                return ResourceManager.GetString("ExprTblDataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DB.
+        /// </summary>
+        internal static string ExprTblDB {
+            get {
+                return ResourceManager.GetString("ExprTblDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer Expression.
+        /// </summary>
+        internal static string ExprTblExpression {
+            get {
+                return ResourceManager.GetString("ExprTblExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Value.
+        /// </summary>
+        internal static string ExprTblTestValue {
+            get {
+                return ResourceManager.GetString("ExprTblTestValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ibaAnalyzer {

@@ -30,7 +30,12 @@ namespace AM_OSPC_plugin
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
 			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;
 			dataGV.IndicatorWidth = 50;
-		}
+
+            gridColumn6.Caption = Properties.Resources.ExprTblExpression;
+            gridColumn7.Caption = Properties.Resources.ExprTblProcessName;
+            gridColumn8.Caption = Properties.Resources.ExprTblVarName;
+            gridColumn9.Caption = Properties.Resources.ExprTblTestVal;
+        }
 
         protected override void OnLoad(EventArgs e)
         {
