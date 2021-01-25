@@ -1832,4 +1832,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="AnalysisDoesNotExist" xml:space="preserve">
     <value>Specified analysis file does not exist. Do you want to start ibaAnalyzer without it?</value>
   </data>
+  <data name="PluginIsOutdated" xml:space="preserve">
+    <value>Plugin "{0}" is outdated, please install latest version.</value>
+  </data>
 </root>

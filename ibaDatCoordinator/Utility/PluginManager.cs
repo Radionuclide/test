@@ -83,9 +83,9 @@ namespace iba.Utility
                         if (requiredInterface.IsAssignableFrom(t))
                         {
                             IDatCoPlugin plugin = Activator.CreateInstance(t) as IDatCoPlugin;
-                            plugin.DatCoordinatorHost = DatCoordinatorHostImpl.Host;
                             if (plugin != null)
                             {
+                                plugin.DatCoordinatorHost = DatCoordinatorHostImpl.Host;
                                 foreach (PluginTaskInfo pti in plugin.GetTasks())
                                 {
                                     if (!Program.IsServer && wrapper!= null && !wrapper.HasPlugin(pti.Name))
@@ -93,8 +93,15 @@ namespace iba.Utility
                                     m_pluginInfos.Add(pti);
                                     m_plugins.Add(pti.Name, plugin);
 
-                                    ibaLogger.DebugFormat("Successfully loaded plugin {0} v{1} from assembly {2}", pti.Name,
-                                        assembly.GetName().Version, assembly.Location);
+									if (!(plugin is IDatCoPlugin2))
+									{
+										pti.IsOutdated = true;
+										ibaLogger.DebugFormat("Plugin {0} v{1} from assembly {2} is outdated", pti.Name,
+											assembly.GetName().Version, assembly.Location);
+									}
+									else
+										ibaLogger.DebugFormat("Successfully loaded plugin {0} v{1} from assembly {2}", pti.Name,
+											assembly.GetName().Version, assembly.Location);
                                 }
                             }
                         }

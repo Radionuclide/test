@@ -21,6 +21,7 @@ namespace iba.Plugins
             m_name = name;
             m_description = description;
             m_icon = icon;
+			m_isOutdated = false;
         }
 
         private string m_name;
@@ -53,7 +54,17 @@ namespace iba.Plugins
             get { return m_icon; }
             set { m_icon = value; }
         }
-    }
+
+		/// <summary>
+		/// This plugin cannot be used and must be updated to newer version
+		/// </summary>
+		private bool m_isOutdated;
+		public bool IsOutdated
+		{
+			get { return m_isOutdated; }
+			set { m_isOutdated = value; }
+		}
+	}
 
     /// <summary>
     /// Class containing information about a taskdata plugin is the case it is an UNC plugin

@@ -15,6 +15,7 @@ using iba.Processing;
 using iba.Plugins;
 using Microsoft.Win32;
 using iba.Dialogs;
+using iba.Logging;
 
 namespace iba.Controls
 {
@@ -578,6 +579,14 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
             if (!TestTaskCount())
                 return;
             PluginTaskInfo info = (PluginTaskInfo)(((ToolStripButton)sender).Tag);
+			if (info.IsOutdated)
+			{
+				if (Program.IsServer)
+					ibaLogger.Log(Level.Exception, String.Format(iba.Properties.Resources.PluginIsOutdated, info.Name));
+				else
+					MessageBox.Show(String.Format(iba.Properties.Resources.PluginIsOutdated, info.Name), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
             TaskData cust;
             if (info is PluginTaskInfoUNC)
                 cust = new CustomTaskDataUNC(m_data, info);
