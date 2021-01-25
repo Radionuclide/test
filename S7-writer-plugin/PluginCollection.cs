@@ -5,9 +5,9 @@ using iba.Plugins;
 
 namespace S7_writer_plugin
 {
-    class PluginCollection : IDatCoPlugin, IGridAnalyzer
+    class PluginCollection : IDatCoPlugin2, IGridAnalyzer
 	{
-        #region IDatCoPlugin Members
+        #region IDatCoPlugin2 Members
 
         PluginTaskInfo m_info;
         public PluginTaskInfo[] GetTasks()

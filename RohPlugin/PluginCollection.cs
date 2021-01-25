@@ -6,9 +6,9 @@ using iba.Plugins;
 
 namespace Alunorf_roh_plugin
 {
-    class PluginCollection : IDatCoPlugin
+    class PluginCollection : IDatCoPlugin2
     {
-        #region IDatCoPlugin Members
+        #region IDatCoPlugin2 Members
 
         PluginTaskInfo m_info;
         public PluginTaskInfo[] GetTasks()

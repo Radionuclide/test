@@ -5,9 +5,9 @@ using iba.Plugins;
 
 namespace iba.TKS_XML_Plugin
 {
-    class PluginXML : IDatCoPlugin
+    class PluginXML : IDatCoPlugin2
     {
-        #region IDatCoPlugin Members
+        #region IDatCoPlugin2 Members
 
         PluginTaskInfo m_info;
         public PluginTaskInfo[] GetTasks()

@@ -5,9 +5,9 @@ using iba.Plugins;
 
 namespace Alunorf_sinec_h1_plugin
 {
-    class PluginCollection : IDatCoPlugin
+    class PluginCollection : IDatCoPlugin2
     {
-        #region IDatCoPlugin Members
+        #region IDatCoPlugin2 Members
 
         PluginTaskInfo m_info;
         public PluginTaskInfo[] GetTasks()
