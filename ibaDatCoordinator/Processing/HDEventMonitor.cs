@@ -269,7 +269,7 @@ namespace iba.Processing
                     }
                     else
                     {
-                        queryStoreData.ReceiveTime = m_ejd.StopTimeHdQueryTicks;
+                        queryStoreData.ReceiveTime = m_ejd.StopTimeHdQueryTicksUTC;
                     }
                 }
 
@@ -693,9 +693,9 @@ namespace iba.Processing
                     {
                         TimeRangeUtc range;
                         if (m_ejd.LastReceivedHistoricalTimeStamp != null && !m_ejd.HdQueryTimeSpanChanged && m_ejd.LastReceivedHistoricalTimeStamp.TryGetValue(storeData.Subset.StoreName, out long endTime))
-                            range = new TimeRangeUtc(m_ejd.StartTimeHdQueryTicks, endTime, true);
+                            range = new TimeRangeUtc(m_ejd.StartTimeHdQueryTicksUTC, endTime, true);
                         else if (m_ejd.HdQueryTimeSpanChanged)
-                            range = new TimeRangeUtc(m_ejd.StartTimeHdQueryTicks, m_ejd.HdQueryUseEndTime ? m_ejd.StopTimeHdQueryTicks : DateTime.Now.Ticks, true);
+                            range = new TimeRangeUtc(m_ejd.StartTimeHdQueryTicksUTC, m_ejd.HdQueryUseEndTime ? m_ejd.StopTimeHdQueryTicksUTC : DateTime.Now.Ticks, true);
                         else
                             continue;
 
@@ -783,7 +783,7 @@ namespace iba.Processing
                                     if (m_ejd.RangeCenter == EventJobRangeCenter.Outgoing && !data.TriggerOut)
                                         continue;
 
-                                    if (!m_bSkipChecks && data.UtcTicks < m_ejd.StartTimeHdQueryTicks)
+                                    if (!m_bSkipChecks && data.UtcTicks < m_ejd.StartTimeHdQueryTicksUTC)
                                         continue;
 
                                     if (m_liveDataSet.Add(data))

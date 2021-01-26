@@ -190,10 +190,9 @@ namespace iba.Data
             set { m_StartTimeHdQuery = value; }
         }
 
-        public long StartTimeHdQueryTicks
+        public long StartTimeHdQueryTicksUTC
         {
-            get { return m_StartTimeHdQuery.Ticks; }
-            set { m_StartTimeHdQuery = new DateTime(value); }
+            get { return m_StartTimeHdQuery.ToUniversalTime().Ticks; }
         }
 
         private DateTime m_StopTimeHdQuery;
@@ -203,10 +202,9 @@ namespace iba.Data
             set { m_StopTimeHdQuery = value; }
         }
 
-        public long StopTimeHdQueryTicks
+        public long StopTimeHdQueryTicksUTC
         {
-            get { return m_StopTimeHdQuery.Ticks; }
-            set { m_StopTimeHdQuery = new DateTime(value); }
+            get { return m_StopTimeHdQuery.ToUniversalTime().Ticks; }
         }
 
         [NonSerialized]
