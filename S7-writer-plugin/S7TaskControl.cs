@@ -275,6 +275,7 @@ namespace S7_writer_plugin
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
                 }
             }
+            dataGV.RefreshData();
         }
 
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
