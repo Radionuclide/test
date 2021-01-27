@@ -1325,6 +1325,14 @@
             Validation message types
             </summary>
         </member>
+        <member name="F:iba.HD.Common.HdValidationMessage.indention">
+            <summary>
+            Relative indentation compared to previous member:
+            1: go one level deeper
+            0: remain at the same indentation
+            -1: go one indentation level up
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.HdValidationMessage.Type">
             <summary>
             Message type
