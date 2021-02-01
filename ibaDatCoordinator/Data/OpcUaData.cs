@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
+using iba.Utility;
 using Opc.Ua;
 
 namespace iba.Data
@@ -101,7 +102,28 @@ namespace iba.Data
 
         public string UserName { get; set; } = "User1";
 
+        [XmlIgnore]
         public string Password { get; set; } = "User1";
+
+        //In old configurations the password was present in plain text
+        [XmlElement("Password")]
+        public string OldPasswordPlainText
+        {
+            get => null; //return null so that this won't be written in the configuration anymore
+            set
+            {
+                //If password hasn't been replaced then use it from the old config
+                if(Password == "User1")
+                    Password = value;
+            }
+        }
+
+        //Encrypted password used when saving password in configuration file.
+        public string PasswordCrypted
+        {
+            get => Crypt.Encrypt(Password);
+            set => Password = Crypt.Decrypt(value);
+        }
 
         public bool HasSecurityNone { get; set; } = false; 
         public bool HasSecurityBasic128 { get; set; } = false;
