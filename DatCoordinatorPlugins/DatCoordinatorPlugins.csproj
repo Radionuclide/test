@@ -67,6 +67,7 @@
     <Compile Include="ICommonTaskControl.cs" />
     <Compile Include="IDatCoHost.cs" />
     <Compile Include="IDatCoPlugin.cs" />
+    <Compile Include="IEncryptionService.cs" />
     <Compile Include="IJobData.cs" />
     <Compile Include="IIbaAnalyzerMonitor.cs" />
     <Compile Include="MonitorData.cs" />

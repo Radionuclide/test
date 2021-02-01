@@ -326,6 +326,7 @@
     <Compile Include="Utility\Components\BackgroundWorker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Utility\EncryptionService.cs" />
     <Compile Include="Utility\EventJobTestGenerator.cs" />
     <Compile Include="Utility\ExtensionMethods.cs" />
     <Compile Include="Utility\LanguageHelper.cs" />

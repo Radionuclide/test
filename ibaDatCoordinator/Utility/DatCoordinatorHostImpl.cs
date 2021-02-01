@@ -16,7 +16,18 @@ namespace iba.Utility
 	class DatCoordinatorHostImpl : IDatCoHost
 	{
 
-		private DatCoordinatorHostImpl() { }
+		private DatCoordinatorHostImpl() 
+		{
+			services = new Dictionary<Type, object>();
+			services.Add(typeof(IEncryptionService), new EncryptionService(
+				new byte[] { 12, 34, 179, 69, 231, 92 },
+				new byte[] {
+                    0x2F, 0xB8, 0xB4, 0xAB, 0x01, 0xB6, 0xE3, 0xD9,
+					0x9D, 0x5C, 0xAB, 0xD2, 0x64, 0xB2, 0x0B, 0xF5,
+					0x69, 0x07, 0x14, 0x98, 0x0B, 0x34, 0x94, 0xF8,
+					0x9F, 0xD7, 0x6E, 0x46, 0x58, 0xD5, 0x48, 0x3B
+                }));
+		}
 
 		private static DatCoordinatorHostImpl m_instance = null;
 
@@ -323,5 +334,15 @@ namespace iba.Utility
 				}
 			}
 		}
+
+		Dictionary<Type, object> services;
+
+		public T GetService<T>() where T : class
+        {
+			if (services.TryGetValue(typeof(T), out object service))
+				return service as T;
+			else
+				return null;
+        }
 	}
 }

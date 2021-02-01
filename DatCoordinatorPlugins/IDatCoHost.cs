@@ -75,5 +75,13 @@ namespace iba.Plugins
 
 		void UploadPdoFile(bool messageOnNoChanges, Control form, string m_pdoFilePath, IAnalyzerManagerUpdateSource analyzerManager, IJobData m_data);
 
-	}
+        /// <summary>
+        /// Get service from host.
+        /// </summary>
+        /// <typeparam name="T">The type of the requested service. The following services are supported:
+        /// - IEncryptionService
+        /// </typeparam>
+        /// <returns>The service instance or null.</returns>
+        T GetService<T>() where T : class;
+    }
 }

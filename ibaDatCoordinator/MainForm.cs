@@ -57,6 +57,18 @@ namespace iba
 
         private QuitForm m_quitForm;
 
+        static MainForm()
+        {
+            Crypt.InitializeKeys(
+                new byte[] { 12, 34, 179, 69, 231, 92 },
+                new byte[] {
+                    0xC4, 0x52, 0xC0, 0xC4, 0x9B, 0x80, 0xA6, 0xE8,
+                    0x51, 0xCA, 0xE1, 0x24, 0x40, 0x6D, 0xBE, 0x89,
+                    0xEF, 0xFA, 0xB1, 0x7B, 0x45, 0x0F, 0x13, 0x54,
+                    0xE9, 0x8F, 0x84, 0xD0, 0x45, 0x81, 0x24, 0xF7
+               });
+        }
+
         public MainForm()
         {
             m_firstConnectToService = true;
@@ -183,9 +195,8 @@ namespace iba
                     e.Cancel = true;
                     return;
                 }
-                string s1 = TextFromLoad();
-                string s2 = TextToSave();
-                if (!string.IsNullOrEmpty(s2) && s1 != s2)
+
+                if (IsConfigModified())
                 {
                     DialogResult res = MessageBox.Show(this, iba.Properties.Resources.saveQuestion,
                             iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, 
@@ -202,6 +213,7 @@ namespace iba
                             break;
                     }
                 }
+
                 TaskManager.Manager.StopAllGlobalCleanups();
                 using (StopWaitDialog waiter = new StopWaitDialog())
                 {
@@ -1925,15 +1937,19 @@ namespace iba
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (sender != null && !Utility.Crypt.CheckPassword(this)) return;
+            if (sender != null && !Utility.Crypt.CheckPassword(this)) 
+                return;
+
             if (m_filename == null)
             {
                 saveAsToolStripMenuItem_Click(null, e);
+                return;
             }
-            else using (WaitCursor wait = new WaitCursor())
+
+            using (WaitCursor wait = new WaitCursor())
             {
                 SaveRightPaneControl();
-                XmlSerializer mySerializer = null;    
+                XmlSerializer mySerializer = null;
                 try
                 {
                     mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
@@ -1948,12 +1964,14 @@ namespace iba
                 // To write to a file, create a StreamWriter object.
                 try
                 {
+                    ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(TaskManager.Manager);
+
                     using (StreamWriter myWriter = new StreamWriter(m_filename))
                     {
-                        ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(TaskManager.Manager);
                         mySerializer.Serialize(myWriter, dat);
-                        StoreHDChanges(dat);
                     }
+
+                    SaveConfigForModifiedCheck(dat, mySerializer);
                 }
                 catch (Exception ex)
                 {
@@ -1966,52 +1984,47 @@ namespace iba
             }
         }
 
-        private void StoreHDChanges(ibaDatCoordinatorData dat)
-        {
-            //HdConfigProxy proxyCfg = new HD.Client.HdConfigProxy(server, port);
-        }
+        private string savedConfigAsText;
 
-        private string TextToSave()
+        private bool IsConfigModified()
         {
+            string currentConfig = null;
             try
             {
+                ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(TaskManager.Manager);
                 XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
-                StringBuilder sb = new StringBuilder(); 
-                using (StringWriter myWriter = new StringWriter(sb))
-                {
-                    ibaDatCoordinatorData dat = ibaDatCoordinatorData.Create(TaskManager.Manager);
-                    mySerializer.Serialize(myWriter, dat);
-                }
-                string s = sb.ToString();
-                s = s.Remove(0, s.IndexOf(Environment.NewLine));
-                return s.Remove(0, s.IndexOf('<'));
+                currentConfig = SaveConfigForModifiedCheck(dat, mySerializer);
+
+                return currentConfig != savedConfigAsText;
             }
-            catch
+            catch(Exception)
             {
-                return String.Empty;
+                return false;
             }
         }
 
-        private string TextFromLoad()
+        private string SaveConfigForModifiedCheck(ibaDatCoordinatorData dat, XmlSerializer ser)
         {
-            if (m_filename == null) return String.Empty;
-            try
+            StringBuilder sb = new StringBuilder();
+            using (StringWriter myWriter = new StringWriter(sb))
             {
-                using (StreamReader reader = (new FileInfo(m_filename).OpenText()))
+                EncryptionService.UseFixedIV.Value = true;
+                try
                 {
-                    reader.ReadLine(); //not interested in headerline
-                    return reader.ReadToEnd();
+                    ser.Serialize(myWriter, dat);
+                }
+                finally
+                {
+                    EncryptionService.UseFixedIV.Value = false;
                 }
             }
-            catch 
-            {
-                return String.Empty;
-            }
+            return sb.ToString();
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (sender != null && !Utility.Crypt.CheckPassword(this)) return;
+
             m_saveFileDialog.CreatePrompt = false;
             m_saveFileDialog.OverwritePrompt = true;
             if (String.IsNullOrEmpty(m_filename))
@@ -2034,6 +2047,7 @@ namespace iba
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Utility.Crypt.CheckPassword(this)) return;
+
             m_openFileDialog.CheckFileExists = true;
             m_openFileDialog.Filter = "XML files (*.xml)|*.xml";
             m_openFileDialog.FileName = "";
@@ -2054,13 +2068,6 @@ namespace iba
             {
                 using (WaitCursor wait = new WaitCursor())
                 {
-                    //XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
-
-                    //using (FileStream myFileStream = new FileStream(filename, FileMode.Open))
-                    //{
-                    //    ibaDatCoordinatorData dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
-                    //    confs = dat.ApplyToManager(TaskManager.Manager, Program.ClientName);
-                    //}
                     ibaDatCoordinatorData data = ibaDatCoordinatorData.SerializeFromFile(filename);
 
                     List<string> missingPlugins = TaskManager.Manager.CheckPluginsAvailable(data.PluginList());
@@ -2071,11 +2078,13 @@ namespace iba
                         return false;
                     }
 
-
-                    List<ConfigurationData> confs = data.ApplyToManager(TaskManager.Manager, Program.ClientName); ;
+                    List<ConfigurationData> confs = data.ApplyToManager(TaskManager.Manager, Program.ClientName);
 
                     m_filename = filename;
                     this.Text = m_filename + " - ibaDatCoordinator v" + DatCoVersion.GetVersion();
+
+                    savedConfigAsText = SaveConfigForModifiedCheck(data, new XmlSerializer(typeof(ibaDatCoordinatorData)));
+
                     foreach (ConfigurationData dat in confs)
                     {
                         dat.relinkChildData();
@@ -2089,6 +2098,7 @@ namespace iba
                             waiter.ShowDialog(this);
                         }
                     }
+
                     try
                     {
                         TaskManager.Manager.Configurations = confs;
@@ -2101,6 +2111,7 @@ namespace iba
 
                         return false;
                     }
+
                     if (Program.RunsWithService != Program.ServiceEnum.DISCONNECTED)
                     {
                         TaskManager.Manager.StartAllEnabledGlobalCleanups();
@@ -2115,7 +2126,10 @@ namespace iba
             {
                 if (ex.InnerException != null && ex.InnerException is ApplicationException)
                     ex = ex.InnerException;
-                if (!beSilent) MessageBox.Show(iba.Properties.Resources.OpenFileProblem + "  " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                if (!beSilent) 
+                    MessageBox.Show(iba.Properties.Resources.OpenFileProblem + "  " + ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 return false;
             }
             return true;
@@ -2123,11 +2137,12 @@ namespace iba
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Utility.Crypt.CheckPassword(this)) return;
+            if (!Utility.Crypt.CheckPassword(this)) 
+                return;
+
             SaveRightPaneControl();
-            string s1 = TextFromLoad();
-            string s2 = TextToSave();
-            if (!string.IsNullOrEmpty(s2) && s1 != s2)
+
+            if (IsConfigModified())
             {
                 DialogResult res = MessageBox.Show(this, iba.Properties.Resources.saveQuestion,
                         iba.Properties.Resources.closing, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
@@ -2142,7 +2157,10 @@ namespace iba
                         break;
                 }
             }
+
             m_filename = null;
+            savedConfigAsText = null;
+
             clearAllConfigurations();
             this.Text = "ibaDatCoordinator v" + DatCoVersion.GetVersion();
             m_navBar.SelectedPane = m_configPane;

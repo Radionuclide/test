@@ -131,7 +131,7 @@ namespace iba.Utility
                 {
                     return x._First.CompareTo(y._First);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return 1;
                 }
