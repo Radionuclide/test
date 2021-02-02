@@ -782,9 +782,9 @@ namespace iba.Controls
                     return;
                 }
 
-                if (server != m_server || port != m_port || username != m_hdReader.UserLoginInfo.UserName || password != m_hdReader.UserLoginInfo.Password)
+                if (String.Compare(server, m_server, true) != 0)
                 {
-                    //also clear on new user credentials because the new user might not have read access for certain stores
+                    //Clear selected stores when changing server
                     m_currStores.Clear();
                 }
 

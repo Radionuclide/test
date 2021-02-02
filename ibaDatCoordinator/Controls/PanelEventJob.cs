@@ -77,8 +77,8 @@ namespace iba.Controls
 
             m_hdReader.UserLoginInfo.UserName = m_username;
             m_hdReader.UserLoginInfo.Password = m_password;
-            m_hdReader.UserLoginInfo.AllowSavePassword = false;
             m_hdReader.UserLoginInfo.SavePassword = true;
+            m_hdReader.UserLoginInfo.AllowSavePassword = false;
             m_hdReader.UserLoginInfo.AllowCurrentWindowsUser = false;
             m_hdReader.UserLoginOptions = HdUserLoginOptions.Never;
 
@@ -382,9 +382,9 @@ namespace iba.Controls
                     return;
                 }
 
-                if (server != m_server || port != m_port || username != m_hdReader.UserLoginInfo.UserName || password != m_hdReader.UserLoginInfo.Password)
+                if (String.Compare(server, m_server, true) != 0)
                 {
-                    //also clear on new user credentials because the new user might not have read access for certain stores
+                    //Clear selected events and stores when changing server
                     m_currEvents.Clear();
                     m_currStores.Clear();
                 }
