@@ -446,8 +446,13 @@ namespace iba.Processing
                                 throw new HDCreateEventException(Properties.Resources.logHDEventTaskPulseSignalError);
                             // Determine intervals
                             bool bInPulse = false;
+                            bool bGenerateIncomming = false;
+
+                            if (pulseValues.Length > 0)
+                                bInPulse = pulseValues[0] > 0.0;
+
                             double currStart = 0.0;
-                            List<Tuple<double, double>> intervals = new List<Tuple<double, double>>();
+                            List<Tuple<double, double, bool, bool>> intervals = new List<Tuple<double, double, bool, bool>>();
 
                             for (int i = 0; i < pulseValues.Length; i++)
                             {
@@ -456,15 +461,18 @@ namespace iba.Processing
                                     continue;
 
                                 if (bAboveZero)
+                                {
                                     currStart = xoffset + i * timebase;
+                                    bGenerateIncomming = true;
+                                }
                                 else
-                                    intervals.Add(Tuple.Create(currStart, xoffset + i * timebase));
+                                    intervals.Add(Tuple.Create(currStart, xoffset + i * timebase, bGenerateIncomming, true));
 
                                 bInPulse = bAboveZero;
                             }
 
                             if (bInPulse)
-                                intervals.Add(Tuple.Create(currStart, xoffset + (pulseValues.Length - 1) * timebase));
+                                intervals.Add(Tuple.Create(currStart, xoffset + (pulseValues.Length - 1) * timebase, bGenerateIncomming, false));
 
                             // Create events
                             foreach (var interval in intervals)
@@ -477,32 +485,38 @@ namespace iba.Processing
 
                                 double from = avg ? interval.Item1 : stamp;
                                 double to = avg ? interval.Item2 : stamp;
-                                
+
                                 //Generate the incoming event
-                                incoming = GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, true);
+                                if (interval.Item3)
+                                {
+                                    incoming = GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, true);
 
-                                // Add the incoming event to the list of generated events
-                                if (generated.ContainsKey(eventData.StoreName))
-                                    generated[eventData.StoreName].Items.Add(incoming);
-                                else
-                                    generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { incoming });
+                                    // Add the incoming event to the list of generated events
+                                    if (generated.ContainsKey(eventData.StoreName))
+                                        generated[eventData.StoreName].Items.Add(incoming);
+                                    else
+                                        generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { incoming });
+                                }
 
-                                // Generate and add the outgoing event if it exists
-                                avg = eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.Falling || eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.RisingFalling;
+                                if (interval.Item4)
+                                {
+                                    // Generate and add the outgoing event if it exists
+                                    avg = eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.Falling || eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.RisingFalling;
 
-                                if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling)
-                                    stamp = interval.Item2;
-                                else if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
-                                    stamp = interval.Item1;
-                                else
-                                    stamp = double.NaN;
+                                    if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling)
+                                        stamp = interval.Item2;
+                                    else if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
+                                        stamp = interval.Item1;
+                                    else
+                                        stamp = double.NaN;
 
-                                from = avg ? interval.Item1 : double.NaN;
-                                to = avg ? interval.Item2 : double.NaN;
+                                    from = avg ? interval.Item1 : double.NaN;
+                                    to = avg ? interval.Item2 : double.NaN;
 
-                                if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling || eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
-                                    generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, false));
+                                    if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling || eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
+                                        generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, false));
 
+                                }
                                 //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
                             }
                         }
