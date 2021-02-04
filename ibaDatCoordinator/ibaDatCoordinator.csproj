@@ -143,6 +143,9 @@
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Zyan.SafeDeserializationHelpers">
+      <HintPath>..\Dependencies\Zyan.SafeDeserializationHelpers.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -797,7 +800,10 @@
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <Content Include="Resources\img_file.png" />
+    <None Include="Resources\img_lock.png" />
+    <None Include="Resources\img_networkError.ico" />
     <Content Include="Resources\img_pdo_upload.png" />
+    <None Include="Resources\img_unlock.png" />
     <Content Include="Resources\img_warning.png" />
     <None Include="Resources\opcUaServer_icon.png" />
     <None Include="Resources\remove.png" />

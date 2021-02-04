@@ -154,6 +154,10 @@ namespace iba
                 this.Icon = iba.Properties.Resources.standalone;
             }
             m_navBar.SelectedPane = m_configPane;
+
+            statusImgConnectedInsecure = Properties.Resources.img_unlock;
+            statusImgConnectedSecure = Properties.Resources.img_lock;
+            statusImgDisconnected = Properties.Resources.img_networkError.ToBitmap();
         }
 
         protected override void OnHandleCreated(EventArgs e)
@@ -2861,14 +2865,16 @@ namespace iba
             {
                 if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
-                    CommunicationObject com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), Program.CommObjectString);
-                    CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper(com);
+                    CommunicationObjectWrapper wrapper = new CommunicationObjectWrapper();
 
                     try
                     {
 
                         //Let's try connecting, this will throw in case the connection fails
-                        int serverVersion = wrapper.Connect();
+                        int serverVersion = wrapper.Connect(Program.ServiceHost, Program.ServicePortNr);
+
+                        LogData.Data.Logger.Log(Logging.Level.Debug, String.Format("Successfully connected to ibaDatCoordinator service at {0} (v{1} {2})",
+                            Program.ServiceHost, wrapper.ServerVersion, wrapper.IsSecure ? "encrypted" : "unencrypted"));
 
                         if (PluginManager.Manager.PluginActionsOnConnect(wrapper))
                         {
@@ -2958,7 +2964,7 @@ namespace iba
                     catch (Exception connEx)
                     {
                         Program.RunsWithService = Program.ServiceEnum.DISCONNECTED;
-                        LogData.Data.Logger.Log(Logging.Level.Debug, String.Format("Failed to connect to {0} with error {1}", Program.CommObjectString, connEx.Message));
+                        LogData.Data.Logger.Log(Logging.Level.Debug, String.Format("Failed to connect to {0}:{1} with error {2}", Program.ServiceHost, Program.ServicePortNr, connEx.Message));
                         if (bInteractive)
                             MessageBox.Show(connEx.Message, String.Format(Properties.Resources.ErrorServerConnect, Program.ServiceHost), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -3006,14 +3012,30 @@ namespace iba
 
         public delegate void InvokeHandler();
 
+        Image statusImgConnectedInsecure;
+        Image statusImgConnectedSecure;
+        Image statusImgDisconnected;
+
         public void UpdateConnectionStatus()
         {
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                m_statusBarStripLabelConnection.Text = string.Format(iba.Properties.Resources.ConnectedTo, Program.ServiceHost);
+            {
+                if (!String.IsNullOrEmpty(Program.CommunicationObject.ServerVersion))
+                    m_statusBarStripLabelConnection.Text = string.Format(iba.Properties.Resources.ConnectedToWithVersion, Program.ServiceHost, Program.CommunicationObject.ServerVersion);
+                else
+                    m_statusBarStripLabelConnection.Text = string.Format(iba.Properties.Resources.ConnectedTo, Program.ServiceHost);
+                m_statusBarStripLabelConnection.Image = Program.CommunicationObject.IsSecure ? statusImgConnectedSecure : statusImgConnectedInsecure;
+            }
             else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            {
                 m_statusBarStripLabelConnection.Text = string.Format(iba.Properties.Resources.Disconnected, Program.ServiceHost);
+                m_statusBarStripLabelConnection.Image = statusImgDisconnected;
+            }
             else
+            {
                 m_statusBarStripLabelConnection.Text = Properties.Resources.StandaloneText;
+                m_statusBarStripLabelConnection.Image = null;
+            }
         }
 
         private void ReloadClient()

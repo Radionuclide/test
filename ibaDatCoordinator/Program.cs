@@ -29,14 +29,6 @@ namespace iba
             set { m_comWrapper = value; }
         }
 
-        static public string CommObjectString
-        {
-            get
-            {
-                return String.Format("gtcp://{0}:{1}/IbaDatCoordinatorCommunicationObject", ServiceHost, ServicePortNr);
-            }
-        }
-
         static public string ClientName
         {
             get

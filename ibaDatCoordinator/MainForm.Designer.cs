@@ -140,8 +140,8 @@ namespace iba
             // 
             // m_statusBarStripLabel
             // 
-            this.m_statusBarStripLabel.Name = "m_statusBarStripLabel";
             resources.ApplyResources(this.m_statusBarStripLabel, "m_statusBarStripLabel");
+            this.m_statusBarStripLabel.Name = "m_statusBarStripLabel";
             this.m_statusBarStripLabel.Spring = true;
             // 
             // m_statusBarStripLabelConnection

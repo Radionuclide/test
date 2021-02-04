@@ -416,6 +416,7 @@ Section -Common
   File "..\Dependencies\PowerCollections.dll"
   File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\GenuineChannels.dll"
+  File "..\Dependencies\Zyan.SafeDeserializationHelpers.dll"
   File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
   File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
   File "..\Dependencies\DevExpress.Data.v16.1.dll"
@@ -848,6 +849,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\ibaUser.Forms.dll"
   Delete "$INSTDIR\PowerCollections.dll"
   Delete "$INSTDIR\GenuineChannels.dll"
+  Delete "$INSTDIR\Zyan.SafeDeserializationHelpers.dll"
 
   Delete "$INSTDIR\ibaSnmpLib.dll"  
   Delete "$INSTDIR\Opc.Ua.Configuration.dll"

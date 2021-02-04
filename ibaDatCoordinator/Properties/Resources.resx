@@ -1283,6 +1283,9 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ConnectedTo" xml:space="preserve">
     <value>Connected to {0}</value>
   </data>
+  <data name="ConnectedToWithVersion" xml:space="preserve">
+    <value>Connected to {0} ({1})</value>
+  </data>
   <data name="Disconnected" xml:space="preserve">
     <value>Disconnected from {0}</value>
   </data>
@@ -1834,5 +1837,14 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="PluginIsOutdated" xml:space="preserve">
     <value>Plugin "{0}" is outdated, please install latest version.</value>
+  </data>
+  <data name="img_lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_networkError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_networkError.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

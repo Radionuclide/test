@@ -18,6 +18,8 @@ namespace iba.Remoting
         static ITransportContext serverChannel;
         static System.Collections.Concurrent.ConcurrentDictionary<string, string> clients = new System.Collections.Concurrent.ConcurrentDictionary<string, string>();
 
+        internal static string SecureChannelName => "Sec";
+
         public static void SetupRemoting(CommunicationObject commObj, int portNr)
         {
             GenuineGlobalEventProvider.GenuineChannelsGlobalEvent += OnGenuineChannelsGlobalEvent;
@@ -35,11 +37,16 @@ namespace iba.Remoting
             props["MaxTotalSize"] = 20000000;
             props["MaxQueuedItems"] = 250;
             props["CloseNamedConnectionAfterInactivity"] = 120000; //120s
-            props["ReconnectionTries"] = 0;//(int ^) 0; //This disables the reconnection mechanism
-            props["TcpReadRequestBeforeProcessing"] = false;//(bool ^) false;   //Increases performance, remove this line when you want to use DXM
-            props["TcpDisableNagling"] = true;		//Increase responsiveness
+            props["ReconnectionTries"] = 0; //This disables the reconnection mechanism
+            props["TcpReadRequestBeforeProcessing"] = false; //Increases performance, remove this line when you want to use DXM
+            props["TcpDisableNagling"] = true;  //Increase responsiveness
+            props["TcpDualSocketMode"] = false; //Don't allow IP v6
 
             GenuineTcpChannel tcpChannel = new GenuineTcpChannel(props, null, null);
+
+            //Prepare secure channel
+            tcpChannel.ITransportContext.IKeyStore.SetKey(SecureChannelName, new Belikov.GenuineChannels.Security.KeyProvider_SelfEstablishingSymmetric());
+
             ChannelServices.RegisterChannel(tcpChannel, false);
             serverChannel = tcpChannel.ITransportContext;
 
@@ -48,14 +55,25 @@ namespace iba.Remoting
             Log(Logging.Level.Debug, "Remoting config OK");
         }
 
-        public static string RegisterClient(string clientName)
+        public static string RegisterClient(string clientName, out bool bSecure)
         {
+            bSecure = false;
+
             try
             {
                 HostInformation hi = GenuineUtility.CurrentSession as HostInformation;
                 string remoteEp = hi.PhysicalAddress.ToString();
                 if(!String.IsNullOrEmpty(remoteEp))
                     clients.TryAdd(remoteEp, clientName);
+
+                //Check if secure
+                Belikov.GenuineChannels.Security.SecuritySession secSession = GenuineUtility.CurrentInvocationSecuritySession;
+                bSecure = secSession != null && secSession.Name == SecureChannelName;
+
+                //If secure then set security session parameters on host information so that all callbacks will also use encryption
+                if (bSecure)
+                    hi.SecuritySessionParameters = GenuineUtility.CurrentInvocationSecuritySessionParameters;
+
                 return remoteEp;
             }
             catch (Exception)

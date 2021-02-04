@@ -19,7 +19,7 @@ namespace iba.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -472,6 +472,15 @@ namespace iba.Properties {
         internal static string ConnectedTo {
             get {
                 return ResourceManager.GetString("ConnectedTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected to {0} ({1}).
+        /// </summary>
+        internal static string ConnectedToWithVersion {
+            get {
+                return ResourceManager.GetString("ConnectedToWithVersion", resourceCulture);
             }
         }
         
@@ -1723,6 +1732,26 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap img_lock {
+            get {
+                object obj = ResourceManager.GetObject("img_lock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon img_networkError {
+            get {
+                object obj = ResourceManager.GetObject("img_networkError", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap img_opcuaclient_cert {
             get {
                 object obj = ResourceManager.GetObject("img_opcuaclient_cert", resourceCulture);
@@ -1766,6 +1795,16 @@ namespace iba.Properties {
         internal static System.Drawing.Bitmap img_shldred {
             get {
                 object obj = ResourceManager.GetObject("img_shldred", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_unlock {
+            get {
+                object obj = ResourceManager.GetObject("img_unlock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

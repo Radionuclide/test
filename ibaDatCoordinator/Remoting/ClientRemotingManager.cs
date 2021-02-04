@@ -15,7 +15,8 @@ namespace iba.Remoting
 {
     public class ClientRemotingManager
     {
-        static ITransportContext channel;
+        static ITransportContext remoteChannel;
+        static ITransportContext secureRemoteChannel;
 
         public static void SetupRemoting()
         {
@@ -24,8 +25,8 @@ namespace iba.Remoting
             GenuineThreadPool.GenuineThreadPoolStrategy = GenuineThreadPoolStrategy.AlwaysNative;
             GenuineThreadPool.UnsafeQueuing = true;
 
+            // Creating common properties
             System.Collections.IDictionary props = new System.Collections.Hashtable();
-            props["name"] = "RemoteChannel";
             props["InvocationTimeout"] = 60000;
             //props["MaxTimeSpanToReconnect"] = 1000;
             props["ConnectTimeout"] = 10000;
@@ -34,13 +35,27 @@ namespace iba.Remoting
             props["MaxTotalSize"] = 20000000;
             props["MaxQueuedItems"] = 250;
             props["CloseNamedConnectionAfterInactivity"] = 120000; //120s
-            props["ReconnectionTries"] = 0;//(int ^) 0; //This disables the reconnection mechanism
-            props["TcpReadRequestBeforeProcessing"] = false;//(bool ^) false;   //Increases performance, remove this line when you want to use DXM
-            props["TcpDisableNagling"] = true;		//Increase responsiveness
+            props["ReconnectionTries"] = 0; //This disables the reconnection mechanism
+            props["TcpReadRequestBeforeProcessing"] = false; //Increases performance, remove this line when you want to use DXM
+            props["TcpDisableNagling"] = true;	//Increase responsiveness
+            props["TcpDualSocketMode"] = false; //Don't allow IP v6
 
+            //Registering unsecure channel
+            props["name"] = "RemoteChannel";
             GenuineTcpChannel tcpChannel = new GenuineTcpChannel(props, null, null);
             ChannelServices.RegisterChannel(tcpChannel, false);
-            channel = tcpChannel.ITransportContext;
+            remoteChannel = tcpChannel.ITransportContext;
+
+            //Registering secure channel
+            System.Collections.Hashtable secureProps = new System.Collections.Hashtable(props);
+            secureProps["name"] = "SecureRemoteChanel";
+            secureProps["prefix"] = "gstcp";
+            GenuineTcpChannel secureChannel = new GenuineTcpChannel(secureProps, null, null);
+            ChannelServices.RegisterChannel(secureChannel, false);
+            secureRemoteChannel = secureChannel.ITransportContext;
+            secureRemoteChannel.IKeyStore.SetKey(ServerRemotingManager.SecureChannelName, new Belikov.GenuineChannels.Security.KeyProvider_SelfEstablishingSymmetric());
+            secureRemoteChannel.SecuritySessionParameters = new Belikov.GenuineChannels.Security.SecuritySessionParameters(ServerRemotingManager.SecureChannelName);
+
 
             //Log(Logging.Level.Debug, "Registered channel");
         }
@@ -49,12 +64,33 @@ namespace iba.Remoting
         {
             try
             {
-                HostInformation hi = GenuineUtility.FetchHostInformationFromMbr(mbr);
-                if (hi != null)
-                    hi.ITransportContext.KnownHosts.ReleaseHostResources(hi, ex);
+                GetHostInformation(mbr, out ITransportContext tp, out HostInformation hi);
+                if (tp != null && hi != null)
+                    tp.KnownHosts.ReleaseHostResources(hi, ex);
             }
             catch(Exception)
             {
+            }
+        }
+
+        //Replacement for GenuineUtility.FetchHostInformationFromMbr because it doesn't seem to work for secure channels
+        static void GetHostInformation(MarshalByRefObject serverManager, out ITransportContext tp, out HostInformation hi)
+        {
+            //First try the normal way 
+            hi = GenuineUtility.FetchHostInformationFromMbr(serverManager);
+            if (hi != null)
+            {
+                tp = GenuineUtility.FetchTransportContextFromMbr(serverManager);
+                return;
+            }
+
+            //Try again with the secure channel forced
+            string uri;
+            GenuineUtility.FetchChannelUriFromMbr(serverManager, out uri, out tp);
+            if (uri != null)
+            {
+                tp = secureRemoteChannel;
+                hi = tp.KnownHosts.Get(GenuineUtility.Parse(uri, out _));
             }
         }
 

@@ -133,9 +133,9 @@ namespace iba
         public int Connect(string clientName, int clientVersion, string userName, string password)
         {
             //We allow all clients
-            string remoteEp = Remoting.ServerRemotingManager.RegisterClient(clientName);
-            LogData.Data.Log(Logging.Level.Debug, String.Format("Client {0} (version {1}) is trying to connect from {2}.", clientName, 
-                DatCoVersion.FormatVersion(clientVersion), remoteEp));
+            string remoteEp = Remoting.ServerRemotingManager.RegisterClient(clientName, out bool bSecure);
+            LogData.Data.Log(Logging.Level.Debug, String.Format("Client {0} (version {1}) is trying to establish an {2} connection from {3}.", clientName, 
+                DatCoVersion.FormatVersion(clientVersion), bSecure ? "encrypted" : "unencrypted", remoteEp));
             LogData.Data.Log(Logging.Level.Info, String.Format(Properties.Resources.ClientConnected, clientName));
 
             return DatCoVersion.CurrentVersion();
@@ -420,18 +420,48 @@ namespace iba
     public class CommunicationObjectWrapper
     {
         private CommunicationObject m_com;
+        private bool bIsSecure;
+        private string serverVersion;
 
-        public CommunicationObjectWrapper(CommunicationObject com)
+        public CommunicationObjectWrapper()
         {
-            m_com = com;
+            m_com = null;
         }
 
         //This will return the server version when connection is ok and throw if it isn't
-        public int Connect()
+        public int Connect(string address, int port)
         {
             try
             {
-                return m_com.Connect(Program.ClientName, DatCoVersion.CurrentVersion(), "admin", "");
+                bIsSecure = false;
+                serverVersion = null;
+
+                string channelPrefix = "gstcp"; //First try secure channel
+                do
+                {
+                    string url = $"{channelPrefix}://{address}:{port}/IbaDatCoordinatorCommunicationObject";
+                    m_com = (CommunicationObject)Activator.GetObject(typeof(CommunicationObject), url);
+
+                    try
+                    {
+                        int serverVer = m_com.Connect(Program.ClientName, DatCoVersion.CurrentVersion(), "admin", "");
+                        serverVersion = DatCoVersion.FormatVersion(serverVer);
+                        bIsSecure = channelPrefix == "gstcp";
+                        return serverVer;
+                    }
+                    catch (Belikov.GenuineChannels.GenuineExceptions.IncorrectData)
+                    {
+                        //Secure channel failed -> try with insecure channel
+                        if (channelPrefix == "gstcp")
+                        {
+                            channelPrefix = "gtcp";
+                            continue;
+                        }
+
+                        throw;
+                    }
+                }
+                while (true);
             }
             catch(Exception ex)
             {
@@ -440,10 +470,16 @@ namespace iba
             }
         }
 
+        public string ServerVersion => serverVersion;
+        public bool IsSecure => bIsSecure;
+
         public bool TestConnection()
         {
             try
             {
+                if (m_com == null)
+                    return false;
+
                 m_com.TestConnection();
                 if (m_com.Manager.Version >= 2000000)
                     return true;
