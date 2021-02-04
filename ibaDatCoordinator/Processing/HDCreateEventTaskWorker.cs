@@ -479,12 +479,10 @@ namespace iba.Processing
                             {
                                 EventWriterItem incoming;
 
-                                bool avg = eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.Rising || eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.RisingFalling;
-
                                 double stamp = (eventData.Slope == HDCreateEventTaskData.TriggerSlope.Rising || eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling) ? interval.Item1 : interval.Item2;
 
-                                double from = avg ? interval.Item1 : stamp;
-                                double to = avg ? interval.Item2 : stamp;
+                                double from = stamp;
+                                double to = stamp;
 
                                 //Generate the incoming event
                                 if (interval.Item3)
@@ -501,8 +499,6 @@ namespace iba.Processing
                                 if (interval.Item4)
                                 {
                                     // Generate and add the outgoing event if it exists
-                                    avg = eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.Falling || eventData.AvgSlope == HDCreateEventTaskData.AvgSlope.RisingFalling;
-
                                     if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling)
                                         stamp = interval.Item2;
                                     else if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
@@ -510,8 +506,8 @@ namespace iba.Processing
                                     else
                                         stamp = double.NaN;
 
-                                    from = avg ? interval.Item1 : double.NaN;
-                                    to = avg ? interval.Item2 : double.NaN;
+                                    from = stamp;
+                                    to = stamp;
 
                                     if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling || eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
                                         generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, false));

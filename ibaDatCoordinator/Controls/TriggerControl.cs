@@ -67,9 +67,6 @@ namespace iba.Controls
             timeSignals = new BindingList<PulseSignal>();
             timeSignalsOut = new BindingList<PulseSignal>();
 
-            comboEventIn.Items.AddRange(new string[] { Properties.Resources.HdRisingEdge, Properties.Resources.HdRisingEdgeAvg, Properties.Resources.HdFallingEdge, Properties.Resources.HdFallingEdgeAvg });
-            comboEventOut.Items.AddRange(new string[] { Properties.Resources.HdNoEdge, Properties.Resources.HdFallingEdge, Properties.Resources.HdFallingEdgeAvg }); //Required for designer
-
             SetDataSource(GrPulse, pulseSignals);
             SetDataSource(GrTime, timeSignals);
             SetDataSource(GrTimeOut, timeSignalsOut);
@@ -122,6 +119,11 @@ namespace iba.Controls
             RaisePropertyChanged("Trigger");
         }
 
+        public void TriggerSlopeChanged(object sender, EventArgs eventArgs)
+        {
+            RaisePropertyChanged("Trigger");
+        }
+
         public void SetActive(bool active)
         {
             SetActive(active ? CheckState.Checked : CheckState.Unchecked);
@@ -146,7 +148,7 @@ namespace iba.Controls
                 else
                     TriggerBySignal = true;
 
-                SetSlope(m_data.Slope, m_data.AvgSlope);
+                SetSlope(m_data.Slope);
             }
             else
             {
@@ -154,7 +156,7 @@ namespace iba.Controls
                 timeSignals.Add(new PulseSignal(HDCreateEventTaskData.EndTime));
                 timeSignalsOut.Add(new PulseSignal(HDCreateEventTaskData.UnassignedExpression));
 
-                SetSlope(HDCreateEventTaskData.TriggerSlope.RisingFalling, HDCreateEventTaskData.AvgSlope.None);
+                SetSlope(HDCreateEventTaskData.TriggerSlope.RisingFalling);
 
                 TriggerPerFile = true;
             }
@@ -187,7 +189,6 @@ namespace iba.Controls
                 m_data.TriggerMode = HDCreateEventTaskData.HDEventTriggerEnum.PerSignalPulse;
 
             m_data.Slope = GetSlope();
-            m_data.AvgSlope = GetAvgSlope();
 
             localEventData.Tag = m_data;
             localEventData.Active = Active;
@@ -207,89 +208,46 @@ namespace iba.Controls
             set { m_rbTriggerBySignal.Checked = value; }
         }
 
-        void SetSlope(HDCreateEventTaskData.TriggerSlope slope, HDCreateEventTaskData.AvgSlope avg)
+        void SetSlope(HDCreateEventTaskData.TriggerSlope slope)
         {
             if (slope == HDCreateEventTaskData.TriggerSlope.Rising)
             {
-                comboEventIn.SelectedIndex = 0;
-                comboEventOut.SelectedIndex = 0;
+                cbInverted.Checked = false;
+                cbFallingEdge.Checked = false;
             }
             else if (slope == HDCreateEventTaskData.TriggerSlope.Falling)
             {
-                comboEventIn.SelectedIndex = 1;
-                comboEventOut.SelectedIndex = 0;
+                cbInverted.Checked = true;
+                cbFallingEdge.Checked = false;
             }
             else if (slope == HDCreateEventTaskData.TriggerSlope.RisingFalling)
             {
-                comboEventIn.SelectedIndex = 0;
-                comboEventOut.SelectedIndex = 1;
+                cbInverted.Checked = false;
+                cbFallingEdge.Checked = true;
             }
             else if (slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
             {
-                comboEventIn.SelectedIndex = 1;
-                comboEventOut.SelectedIndex = 1;
+                cbInverted.Checked = true;
+                cbFallingEdge.Checked = true;
             }
-
-            if (avg == HDCreateEventTaskData.AvgSlope.Rising || avg == HDCreateEventTaskData.AvgSlope.RisingFalling)
-                comboEventIn.SelectedIndex += 1;
-            if (avg == HDCreateEventTaskData.AvgSlope.Falling || avg == HDCreateEventTaskData.AvgSlope.RisingFalling)
-                comboEventOut.SelectedIndex += 1;
         }
 
         HDCreateEventTaskData.TriggerSlope GetSlope()
         {
-            if (comboEventIn.SelectedIndex == 0 || comboEventIn.SelectedIndex == 1)
+            if (cbFallingEdge.Checked)
             {
-                if (comboEventOut.SelectedIndex == 0)
-                    return HDCreateEventTaskData.TriggerSlope.Rising;
+                if (cbInverted.Checked)
+                    return HDCreateEventTaskData.TriggerSlope.FallingRising;
                 else
                     return HDCreateEventTaskData.TriggerSlope.RisingFalling;
             }
             else
             {
-                if (comboEventOut.SelectedIndex == 0)
+                if (cbInverted.Checked)
                     return HDCreateEventTaskData.TriggerSlope.Falling;
                 else
-                    return HDCreateEventTaskData.TriggerSlope.FallingRising;
+                    return HDCreateEventTaskData.TriggerSlope.Rising;
             }
-        }
-
-        HDCreateEventTaskData.AvgSlope GetAvgSlope()
-        {
-            if (comboEventIn.SelectedIndex == 0 || comboEventIn.SelectedIndex == 2)
-            {
-                if (comboEventOut.SelectedIndex == 0 || comboEventOut.SelectedIndex == 1)
-                    return HDCreateEventTaskData.AvgSlope.None;
-                else
-                    return HDCreateEventTaskData.AvgSlope.Falling;
-            }
-            else
-            {
-                if (comboEventOut.SelectedIndex == 2)
-                    return HDCreateEventTaskData.AvgSlope.RisingFalling;
-                else
-                    return HDCreateEventTaskData.AvgSlope.Rising;
-            }
-        }
-
-        void comboEventIn_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int iOut = comboEventOut.SelectedIndex;
-
-            if (comboEventIn.SelectedIndex == 0 || comboEventIn.SelectedIndex == 1)
-            {
-                comboEventOut.Items.Clear();
-                comboEventOut.Items.AddRange(new string[] { Properties.Resources.HdNoEdge, Properties.Resources.HdFallingEdge, Properties.Resources.HdFallingEdgeAvg });
-            }
-            else
-            {
-                comboEventOut.Items.Clear();
-                comboEventOut.Items.AddRange(new string[] { Properties.Resources.HdNoEdge, Properties.Resources.HdRisingEdge, Properties.Resources.HdRisingEdgeAvg });
-            }
-
-            comboEventOut.SelectedIndex = Math.Max(0, iOut);
-
-            RaisePropertyChanged("Trigger");
         }
 
         void comboEventOut_SelectedIndexChanged(object sender, EventArgs e)

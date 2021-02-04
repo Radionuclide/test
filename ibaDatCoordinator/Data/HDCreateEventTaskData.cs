@@ -20,8 +20,6 @@ namespace iba.Data
 
         public enum TriggerSlope { Rising, Falling, RisingFalling, FallingRising };
 
-        public enum AvgSlope { None, Rising, Falling, RisingFalling };
-
         [Serializable]
         public class EventData : ICloneable, IEquatable<EventData>
         {
@@ -116,13 +114,6 @@ namespace iba.Data
                 set { slope = value; }
             }
 
-            private AvgSlope avgSlope;
-            public AvgSlope AvgSlope
-            {
-                get { return avgSlope; }
-                set { avgSlope = value; }
-            }
-
             private string m_timeSignalOutgoing;
             public string TimeSignalOutgoing { get => m_timeSignalOutgoing; set => m_timeSignalOutgoing = value; }
 
@@ -155,7 +146,6 @@ namespace iba.Data
                 cpy.m_timeSignal = m_timeSignal;
                 cpy.m_timeSignalOutgoing = m_timeSignalOutgoing;
                 cpy.slope = slope;
-                cpy.AvgSlope = avgSlope;
                 return cpy;
             }
 
@@ -175,7 +165,6 @@ namespace iba.Data
                     && m_timeSignal == other.m_timeSignal
                     && m_timeSignalOutgoing == other.m_timeSignalOutgoing
                     && slope == other.slope
-                    && AvgSlope == other.avgSlope
                     && m_numericFields.SequenceEqual(other.m_numericFields)
                     && m_textFields.SequenceEqual(other.m_textFields)
                     && m_blobFields.SequenceEqual(other.m_blobFields);

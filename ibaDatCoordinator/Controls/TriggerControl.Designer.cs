@@ -39,14 +39,12 @@
             this.m_colTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.label2 = new System.Windows.Forms.Label();
             this.ckActive = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboEventIn = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.comboEventOut = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.m_grTimeOut = new DevExpress.XtraGrid.GridControl();
             this.m_viewTimeOut = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.m_colTimeOut = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.cbFallingEdge = new System.Windows.Forms.CheckBox();
+            this.cbInverted = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.m_grPulse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_viewPulse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_grTime)).BeginInit();
@@ -154,30 +152,6 @@
             this.ckActive.UseVisualStyleBackColor = true;
             this.ckActive.CheckedChanged += new System.EventHandler(this.ckActive_CheckedChanged);
             // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // comboEventIn
-            // 
-            this.comboEventIn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            resources.ApplyResources(this.comboEventIn, "comboEventIn");
-            this.comboEventIn.Name = "comboEventIn";
-            this.comboEventIn.SelectedIndexChanged += new System.EventHandler(this.comboEventIn_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
-            // comboEventOut
-            // 
-            this.comboEventOut.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            resources.ApplyResources(this.comboEventOut, "comboEventOut");
-            this.comboEventOut.Name = "comboEventOut";
-            this.comboEventOut.SelectedIndexChanged += new System.EventHandler(this.comboEventOut_SelectedIndexChanged);
-            // 
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
@@ -218,16 +192,28 @@
             this.m_colTimeOut.FieldName = "PulseID";
             this.m_colTimeOut.Name = "m_colTimeOut";
             // 
+            // cbFallingEdge
+            // 
+            resources.ApplyResources(this.cbFallingEdge, "cbFallingEdge");
+            this.cbFallingEdge.Name = "cbFallingEdge";
+            this.cbFallingEdge.UseVisualStyleBackColor = true;
+            this.cbFallingEdge.CheckedChanged += new System.EventHandler(this.TriggerSlopeChanged);
+            // 
+            // cbInverted
+            // 
+            resources.ApplyResources(this.cbInverted, "cbInverted");
+            this.cbInverted.Name = "cbInverted";
+            this.cbInverted.UseVisualStyleBackColor = true;
+            this.cbInverted.CheckedChanged += new System.EventHandler(this.TriggerSlopeChanged);
+            // 
             // TriggerControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cbInverted);
+            this.Controls.Add(this.cbFallingEdge);
             this.Controls.Add(this.m_grTimeOut);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.comboEventOut);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.comboEventIn);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.ckActive);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.m_grTime);
@@ -257,13 +243,11 @@
         private DevExpress.XtraGrid.Columns.GridColumn m_colTime;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox ckActive;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboEventIn;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboEventOut;
         private System.Windows.Forms.Label label5;
         private DevExpress.XtraGrid.GridControl m_grTimeOut;
         private DevExpress.XtraGrid.Views.Grid.GridView m_viewTimeOut;
         private DevExpress.XtraGrid.Columns.GridColumn m_colTimeOut;
+        private System.Windows.Forms.CheckBox cbFallingEdge;
+        private System.Windows.Forms.CheckBox cbInverted;
     }
 }
