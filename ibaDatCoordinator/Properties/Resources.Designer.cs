@@ -1782,6 +1782,16 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap img_server {
+            get {
+                object obj = ResourceManager.GetObject("img_server", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap img_shldgreen {
             get {
                 object obj = ResourceManager.GetObject("img_shldgreen", resourceCulture);

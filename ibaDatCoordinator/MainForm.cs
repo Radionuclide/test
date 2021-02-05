@@ -158,6 +158,7 @@ namespace iba
             statusImgConnectedInsecure = Properties.Resources.img_unlock;
             statusImgConnectedSecure = Properties.Resources.img_lock;
             statusImgDisconnected = Properties.Resources.img_networkError.ToBitmap();
+            statusImgStandalone = Properties.Resources.img_server;
         }
 
         protected override void OnHandleCreated(EventArgs e)
@@ -3015,6 +3016,7 @@ namespace iba
         Image statusImgConnectedInsecure;
         Image statusImgConnectedSecure;
         Image statusImgDisconnected;
+        Image statusImgStandalone;
 
         public void UpdateConnectionStatus()
         {
@@ -3034,7 +3036,7 @@ namespace iba
             else
             {
                 m_statusBarStripLabelConnection.Text = Properties.Resources.StandaloneText;
-                m_statusBarStripLabelConnection.Image = null;
+                m_statusBarStripLabelConnection.Image = statusImgStandalone;
             }
         }
 

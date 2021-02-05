@@ -804,6 +804,7 @@
     <None Include="Resources\img_networkError.ico" />
     <Content Include="Resources\img_pdo_upload.png" />
     <None Include="Resources\img_unlock.png" />
+    <None Include="Resources\img_server.png" />
     <Content Include="Resources\img_warning.png" />
     <None Include="Resources\opcUaServer_icon.png" />
     <None Include="Resources\remove.png" />
