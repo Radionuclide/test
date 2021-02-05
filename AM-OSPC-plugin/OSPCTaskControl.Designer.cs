@@ -231,7 +231,6 @@
             // dataGrid
             // 
             resources.ApplyResources(this.dataGrid, "dataGrid");
-            this.dataGrid.EmbeddedNavigator.Margin = ((System.Windows.Forms.Padding)(resources.GetObject("dataGrid.EmbeddedNavigator.Margin")));
             this.dataGrid.MainView = this.dataGV;
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
