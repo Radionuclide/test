@@ -2013,6 +2013,7 @@ namespace iba
             StringBuilder sb = new StringBuilder();
             using (StringWriter myWriter = new StringWriter(sb))
             {
+                //Force encryption to use a fixed IV so that the encrypted data will not change
                 EncryptionService.UseFixedIV.Value = true;
                 try
                 {
