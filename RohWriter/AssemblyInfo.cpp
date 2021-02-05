@@ -13,27 +13,5 @@ using namespace System::Security::Permissions;
 //
 [assembly:AssemblyTitleAttribute("RohWriter library")];
 [assembly:AssemblyDescriptionAttribute("")];
-[assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("iba AG")];
-[assembly:AssemblyProductAttribute("ibaDatCoordinator")];
-[assembly:AssemblyCopyrightAttribute("© iba AG. All rights reserved")];
-[assembly:AssemblyTrademarkAttribute("")];
-[assembly:AssemblyCultureAttribute("")];
 
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the value or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
-
-[assembly:AssemblyVersionAttribute("1.0.*")];
-
-[assembly:ComVisible(false)];
-
-[assembly:CLSCompliantAttribute(true)];
 

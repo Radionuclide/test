@@ -15,7 +15,7 @@
     <RootNamespace>RohWriter</RootNamespace>
     <Keyword>ManagedCProj</Keyword>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
-	<TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -116,6 +116,7 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</Comman
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\CommonAssemblyInfo.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="RohWriter.cpp" />
     <ClCompile Include="Stdafx.cpp">
@@ -130,6 +131,7 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</Comman
   </ItemGroup>
   <ItemGroup>
     <None Include="app.ico" />
+    <None Include="app.rc2" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

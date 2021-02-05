@@ -96,6 +96,7 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</Comman
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\CommonAssemblyInfo.cpp" />
     <ClCompile Include="AM-OSPC-protocol.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Stdafx.cpp">
@@ -105,6 +106,7 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"</Comman
   </ItemGroup>
   <ItemGroup>
     <None Include="app.ico" />
+    <None Include="app.rc2" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

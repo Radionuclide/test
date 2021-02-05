@@ -123,6 +123,7 @@ copy "$(SolutionDir)Dependencies\Wmknt.dll" "$(SolutionDir)ibaDatCoordinator\bin
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\CommonAssemblyInfo.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="ByteStream.cpp" />
     <ClCompile Include="H1Protocol.cpp" />
@@ -140,6 +141,7 @@ copy "$(SolutionDir)Dependencies\Wmknt.dll" "$(SolutionDir)ibaDatCoordinator\bin
   <ItemGroup>
     <None Include="app.ico" />
     <None Include="..\DatCoordinatorPlugins\DatcoHost.cs" />
+    <None Include="app.rc2" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -77,6 +77,9 @@
     <ClCompile Include="AGLink\AGLink40.cpp">
       <Filter>AGLink</Filter>
     </ClCompile>
+    <ClCompile Include="..\CommonAssemblyInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
@@ -87,5 +90,10 @@
     <Image Include="app.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -165,6 +165,7 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\CommonAssemblyInfo.cpp" />
     <ClCompile Include="AGLink\AGLink40.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -184,6 +185,9 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

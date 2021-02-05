@@ -11,28 +11,5 @@ using namespace System::Security::Permissions;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute(L"S7 Writer ibaDatCoordinator plugin")];
-[assembly:AssemblyDescriptionAttribute(L"")];
-[assembly:AssemblyConfigurationAttribute(L"")];
-[assembly:AssemblyCompanyAttribute(L"iba AG")];
-[assembly:AssemblyProductAttribute(L"ibaDatCoordinator")];
-[assembly:AssemblyCopyrightAttribute(L"© iba AG. All rights reserved")];
-[assembly:AssemblyTrademarkAttribute(L"")];
-[assembly:AssemblyCultureAttribute(L"")];
-
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the value or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
-
-[assembly:AssemblyVersionAttribute("2.1.1.0")];
-
-[assembly:ComVisible(false)];
-
-[assembly:CLSCompliantAttribute(true)];
+[assembly:AssemblyTitleAttribute("S7 Writer ibaDatCoordinator plugin")];
+[assembly:AssemblyDescriptionAttribute("")];
