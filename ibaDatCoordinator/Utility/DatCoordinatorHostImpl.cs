@@ -16,7 +16,7 @@ namespace iba.Utility
 	class DatCoordinatorHostImpl : IDatCoHost
 	{
 
-		private DatCoordinatorHostImpl() 
+		static DatCoordinatorHostImpl() 
 		{
 			services = new Dictionary<Type, object>();
 			services.Add(typeof(IEncryptionService), new EncryptionService(
@@ -335,7 +335,8 @@ namespace iba.Utility
 			}
 		}
 
-		Dictionary<Type, object> services;
+		//This should be static otherwise this gets serialized between client and server
+		static Dictionary<Type, object> services;
 
 		public T GetService<T>() where T : class
         {
