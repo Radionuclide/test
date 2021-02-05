@@ -473,9 +473,8 @@ namespace iba.Data
         {
             get
             {
-                if (!((new OpcUaData()).Clone() is OpcUaData data))
-                    return null;
-                data.Endpoints = new List<OpcUaEndPoint> { DefaultEndPoint };
+                OpcUaData data = new OpcUaData();
+                data.Endpoints.Add(DefaultEndPoint);
                 return data;
             }
         }
