@@ -6,7 +6,7 @@
 
  Beschreibung   : Definition der öffentlichen Datentypen
 
- Copyright      : (c) 1998-2017
+ Copyright      : (c) 1998-2019
                   DELTALOGIC Automatisierungstechnik GmbH
                   Stuttgarter Str. 3
                   73525 Schwäbisch Gmünd
@@ -16,7 +16,7 @@
 
  Erstellt       : 23.03.2004  RH
 
- Geändert       : 16.12.2016  RH
+ Geändert       : 29.08.2019  RH
 
  *******************************************************************************/
 
@@ -66,7 +66,9 @@ enum PLC_ClassEx
   ePLCEx_Simotion = 12,
   ePLCEx_1200_TIA = 20,
   ePLCEx_1200_GE_V4_TIA = 21,
+  ePLCEx_1200_GE_V4_2_TIA = 22,
   ePLCEx_1500_TIA = 30,
+  ePLCEx_1500_GE_V2_TIA = 31,
   ePLCEx_AUTO_TIA = 40
 };
 
@@ -303,6 +305,16 @@ typedef struct tagDATA_RW40_RK
 } DATA_RW40_RK, *LPDATA_RW40_RK;
 
 
+typedef struct tagADAPTER_INFO
+{
+  agl_char8_t   AdapterName[MAX_ADAPTER_NAME_LENGTH + 4];         // Name der Netzwerkkarte
+  agl_char8_t   Description[MAX_ADAPTER_DESCRIPTION_LENGTH + 4];  // Beschreibung der Netzwerkkarte
+  agl_char8_t   IPAddress[MAX_IPV4ADDR_LENGTH];                   // IP-Adresse der Netzwerkkarte 
+  agl_uint8_t   MacAddress[MAX_ADAPTER_ADDRESS_LENGTH];           // MAC-Adresse der Netzwerkkarte
+} ADAPTER_INFO, *LPADAPTER_INFO;
+
+
+
 /*******************************************************************************
 
  Definition der Geräteparameter
@@ -329,7 +341,7 @@ typedef struct tagS7_PROJ_1
   agl_uint8_t         bID;                                // Nur zur internen Verwendung bestimmt
   agl_uint8_t         bReserve[2];                        // Man weiß ja nie ...
 
-  agl_ulong32_t        dwReserve[4];                       // Future extension
+  agl_ulong32_t       dwReserve[4];                       // Future extension
 } S7_PROJ_1, *LPS7_PROJ_1;
 
 
@@ -398,7 +410,7 @@ typedef struct tagS7CONN_IE_1
   //
   // Sonstiges
   //
-  agl_long32_t         lReserve[5];                        // Man weiß ja nie ...
+  agl_long32_t        lReserve[5];                        // Man weiß ja nie ...
 } S7CONN_IE_1, *LPS7CONN_IE_1;
 
 
@@ -437,19 +449,19 @@ typedef struct tagS7_TCPIP_1
     agl_uint8_t       bIs200;                             // Flag ob es sich um eine Verbindung zu einer 200er handelt (alt)
     agl_uint8_t       bPLCClass;                          // Enum der SPS-Klasse (neu)
   };
-  agl_long32_t         lReserveL4[3];                      // Man weiß ja nie ...
+  agl_long32_t        lReserveL4[3];                      // Man weiß ja nie ...
   //
   // Parameter für L2
   //
   agl_char8_t         Address[64];                        // TCP/IP-Adresse bzw. Namen der SPS
-  agl_long32_t         Flags;                              // Flags für weitere Optionen (future extension, derzeit immer 0)
+  agl_long32_t        Flags;                              // Flags für weitere Optionen (future extension, derzeit immer 0)
   agl_uint16_t        wPortNr;                            // PortNr wenn PAT erforderlich ist
   agl_uint16_t        wOwnPortNr;                         // Eigene Portnummer wenn notwendig
-  agl_ulong32_t        dwOwnAddress;                       // Adresse der gewünschten Netzwerkkarte
+  agl_ulong32_t       dwOwnAddress;                       // Adresse der gewünschten Netzwerkkarte
   //
   // Sonstiges
   //
-  agl_long32_t         lReserve[5];                        // Man weiß ja nie ...
+  agl_long32_t        lReserve[5];                        // Man weiß ja nie ...
 } S7_TCPIP_1, *LPS7_TCPIP_1;
 
 
@@ -487,10 +499,10 @@ typedef struct tagS7_TCPIP_TIA_1
   // Parameter für L2
   //
   agl_char8_t         Address[64];                        // TCP/IP-Adresse bzw. Namen der SPS
-  agl_long32_t         Flags;                              // Flags für weitere Optionen (future extension, derzeit immer 0)
+  agl_long32_t        Flags;                              // Flags für weitere Optionen (future extension, derzeit immer 0)
   agl_uint16_t        wPortNr;                            // PortNr wenn PAT erforderlich ist
   agl_uint16_t        wOwnPortNr;                         // Eigene Portnummer wenn notwendig
-  agl_ulong32_t        dwOwnAddress;                       // Adresse der gewünschten Netzwerkkarte
+  agl_ulong32_t       dwOwnAddress;                       // Adresse der gewünschten Netzwerkkarte
   //
   // Sonstiges
   //
@@ -512,9 +524,9 @@ typedef struct tagS7_TCPIP_TIA
 
 typedef struct tagIPCONN
 {
-  agl_long32_t         LenLoc;                             // Länge Local-TSAP
+  agl_long32_t        LenLoc;                             // Länge Local-TSAP
   agl_char8_t         Local[16];                          // Local-TSAP (max. 8 Bytes Nutzdaten laut INAT)
-  agl_long32_t         LenRem;                             // Länge Remote-TSAP
+  agl_long32_t        LenRem;                             // Länge Remote-TSAP
   agl_char8_t         Rem[16];                            // Remote-TSAP (max. 8 Bytes Nutzdaten laut INAT)
   agl_int32_t         PortNr;                             // Portnummer für Verbindungen ohne RFC 1006
 } IPCONN, *LPIPCONN;
@@ -531,10 +543,10 @@ typedef struct tagS5_TCPIP_1
   //
   // Parameter für L4
   //
-  agl_int32_t         boNoRFC1006;                        // Flag ob RFC 1006 nicht verwendet wird (nicht empfohlen)
-  IPCONN              Send;                               // Einstellungen für Send
-  IPCONN              Recv;                               // Einstellungen für Receive
-  agl_long32_t        lReserveL4[3];                      // Man weiß ja nie ...
+  agl_int32_t          boNoRFC1006;                        // Flag ob RFC 1006 nicht verwendet wird (nicht empfohlen)
+  IPCONN               Send;                               // Einstellungen für Send
+  IPCONN               Recv;                               // Einstellungen für Receive
+  agl_long32_t         lReserveL4[3];                      // Man weiß ja nie ...
   //
   // Parameter für L2
   //
@@ -552,6 +564,97 @@ typedef struct tagS5_TCPIP
 {
   S5_TCPIP_1          Conn[MAX_PLCS];                     // Verbindungen je Device (/2 da 2 IP-Verbindungen pro Verbindung notwendig sind)
 } S5_TCPIP, *LPS5_TCPIP;
+
+
+//
+// Struktur für die ISO-Verbindungs-Parameter
+//
+
+typedef struct tagISOCONN
+{
+  agl_long32_t        LenLoc;                             // Länge Local-TSAP
+  agl_char8_t         Local[16];                          // Local-TSAP (max. 8 Bytes Nutzdaten laut INAT)
+  agl_long32_t        LenRem;                             // Länge Remote-TSAP
+  agl_char8_t         Rem[16];                            // Remote-TSAP (max. 8 Bytes Nutzdaten laut INAT)
+  agl_long32_t        lReserve[4];                        // Man weiß ja nie ...
+} ISOCONN, *LPISOCONN;
+
+
+//
+// Struktur für die S5-ISO-Verbindungs-Parameter
+//
+
+typedef struct tagS5_ISO_1
+{
+  //
+  // Parameter für L5
+  //
+  agl_long32_t        lTimeOut;                           // Standard-Timeout für Kommunikation
+  agl_long32_t        lPlcNr;                             // Zum logischen Mappen (future extension)
+  agl_long32_t        lReserveL5[2];                      // Man weiß ja nie ...
+  //
+  // Parameter für L4
+  //
+  ISOCONN             Send;                               // Einstellungen für Send
+  ISOCONN             Recv;                               // Einstellungen für Receive
+  agl_long32_t        lReserveL4[8];                      // Man weiß ja nie ...
+  //
+  // Parameter für L2
+  //
+  agl_char8_t         DestMAC[24];                        // MAC-Adresse der SPS im Format 00:00:00:00:00:00
+  agl_long32_t        Flags;                              // Flags für weitere Optionen (future extension, derzeit immer 0)
+  agl_long32_t        lReserveL2[3];                      // Man weiß ja nie ...
+  //
+  // Sonstiges
+  //
+  agl_long32_t        lReserve[4];                        // Man weiß ja nie ...
+} S5_ISO_1, *LPS5_ISO_1;
+
+
+typedef struct tagS5_ISO
+{
+  agl_char8_t         SrcMAC[24];                         // MAC-Adresse der Netzwerkkarte, über die kommuniziert wird, hat Vorrang vor NameOrDesc, wenn leer wird NameOrDesc verwendet
+  agl_char8_t         NameOrDesc[256];                    // Name oder Beschreibung der Netzwerkkarte über die kommuniziert wird, wenn ebenfalls leer wird die erste Netzwerkkarte verwendet
+  S5_ISO_1            Conn[MAX_PLCS];                     // Verbindungen je Device (/2 da 2 IP-Verbindungen pro Verbindung notwendig sind)
+} S5_ISO, *LPS5_ISO;
+
+
+//
+// Struktur für die S7-ISO-Verbindungs-Parameter
+//
+
+typedef struct tagS7_ISO_1
+{
+  //
+  // Parameter für L5
+  //
+  agl_long32_t        lTimeOut;                           // Standard-Timeout für Kommunikation
+  agl_long32_t        lPlcNr;                             // Zum logischen Mappen (future extension)
+  agl_long32_t        lReserveL5[2];                      // Man weiß ja nie ...
+  //
+  // Parameter für L4
+  //
+  ISOCONN             SendRecv;                           // Einstellungen für Send und Receive
+  agl_long32_t        lReserveL4[4];                      // Man weiß ja nie ...
+  //
+  // Parameter für L2
+  //
+  agl_char8_t         DestMAC[24];                        // MAC-Adresse der SPS im Format 00:00:00:00:00:00
+  agl_long32_t        Flags;                              // Flags für weitere Optionen (future extension, derzeit immer 0)
+  agl_long32_t        lReserveL2[3];                      // Man weiß ja nie ...
+  //
+  // Sonstiges
+  //
+  agl_long32_t        lReserve[4];                        // Man weiß ja nie ...
+} S7_ISO_1, *LPS7_ISO_1;
+
+
+typedef struct tagS7_ISO
+{
+  agl_char8_t         SrcMAC[24];                         // MAC-Adresse der Netzwerkkarte, über die kommuniziert wird, hat Vorrang vor NameOrDesc, wenn leer wird NameOrDesc verwendet
+  agl_char8_t         NameOrDesc[256];                    // Name oder Beschreibung der Netzwerkkarte über die kommuniziert wird, wenn ebenfalls leer wird die erste Netzwerkkarte verwendet
+  S7_ISO_1            Conn[MAX_PLCS];                     // Verbindungen je Device
+} S7_ISO, *LPS7_ISO;
 
 
 //
@@ -1454,6 +1557,26 @@ typedef struct tagS7_ALARM                                // Alarm-Ergebnisstruk
   S7_ALARM_ADD_VALUE  AlarmAddVal[S7_ALARM_MAX_ADD_VALUES]; // Damit wir für die Zukunft gerüstet sind gleich so viele in die Struktur aufnehmen
 } S7_ALARM, *LPS7_ALARM;
 
+typedef struct tagS7_ALARM_ADD_VALUE_TIA                      // Einzelner Begleitwert für Alarm-Wert
+{
+  agl_int32_t         DataType;                               // Datentyp des Zusatzwertes
+  agl_int32_t         DataLen;                                // Länge der Daten in Bytes
+  agl_uint8_t         Data[S7_ALARM_MAX_ADD_VALUE_LEN_TIA];   // Daten als Bytearray
+} S7_ALARM_ADD_VALUE_TIA, *LPS7_ALARM_ADD_VALUE_TIA;
+
+
+typedef struct tagS7_ALARM_TIA                                // Alarm-Ergebnisstruktur
+{                                                             
+  agl_int8_t            MsgType;                              // Art der Meldung (-1 = Alarm Acknowledged Meldung, 1 = Ack Alarm Meldung, 2 = Non Ack Alarm Meldung)
+  agl_uint8_t           Priority;                             // Prioritaet der Meldung
+  agl_uint8_t           State;                                // Bitflags fuer verschiedene States (z.B. Bit0: 0=Going 1=Coming, Bit1: 1=Acknowledged)
+  agl_uint64_t          CPUAlarmId;                           // Meldungsnummer aus SPS
+  agl_uint32_t          ClientAlarmId;                        // Meldungsnummer aus Projektierung
+  agl_uint64_t          Timestamp;                            // Zeitstempel der Alarmmeldung
+  agl_int32_t           AnzAddValues;                         // Anzahl der zusätzlichen Werte
+  S7_ALARM_ADD_VALUE_TIA  AlarmAddVal[S7_ALARM_MAX_ADD_VALUES_TIA]; // Damit wir für die Zukunft gerüstet sind gleich so viele in die Struktur aufnehmen
+} S7_ALARM_TIA, *LPS7_ALARM_TIA;
+
 
 typedef struct tagS7_MSG_STATE
 {
@@ -1629,6 +1752,24 @@ typedef struct tagDATA_ALARM40
 
   DATA_RW40           SCANAddValue[ AGLSYM_ALARM_ADDVALUE_NUM ]; // SCAN-Begleitwerte 1..10
 } DATA_ALARM40, *LPDATA_ALARM40;
+
+typedef struct tagDATA_ALARM40_TIA
+{
+  agl_char8_t Name[AGLSYM_ALARM_NAME_LEN_TIA];    // Meldebezeichner [UTF-8]
+  agl_char8_t Type[AGLSYM_ALARM_NAME_LEN_TIA];    // Meldungstyp [UTF-8]
+  agl_char8_t Path[AGLSYM_ALARM_NAME_LEN_TIA];    // Pfad zum FB  [UTF-8] (bei Multiinstanz-FBs, sonst identisch zu Name)
+  agl_char8_t ClassDisplayName[AGLSYM_ALARM_NAME_LEN_TIA];
+                                                  
+  agl_char8_t Text[AGLSYM_ALARM_TEXT_LEN_TIA];    // Meldungstext  [UTF-8] (in der eingestellten Sprache)
+  agl_char8_t Info[AGLSYM_ALARM_TEXT_LEN_TIA];    // Info-Text [UTF-8]
+  agl_char8_t AddText[AGLSYM_ALARM_ADDTEXT_NUM][AGLSYM_ALARM_TEXT_LEN_TIA];  // Zusatz-Texte 1..9 [UTF-8]
+
+  agl_int32_t MsgClass;                           // Meldeklasse
+  agl_int32_t Priority;                           // Priorität
+  agl_int32_t AckGroup;                           // Quittiergruppe
+  agl_int8_t  Acknowledge;                        // mit Quittierung
+  agl_int8_t  InfoReport;                         // nur Information
+} DATA_ALARM40_TIA, *LPDATA_ALARM40_TIA;
 
 
 typedef struct tagDATA_DECLARATION

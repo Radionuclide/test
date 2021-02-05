@@ -42,8 +42,10 @@
    *******************************************************************************/
   #define _kbhit kbhit
   #define _getch getch
+  #define _putch putch
 
   #define getch getchar
+  #define putch putchar
   
   /*******************************************************************************
    Nachbildung von kbhit()
@@ -58,7 +60,16 @@
 
   #if !defined( VXWORKS ) && !defined( KBHIT_NO_INIT )
 
-    int init_kbhit(int init)
+    class kbhit_init
+    {
+      public:
+        kbhit_init(void) { init_kbhit(1); };
+       ~kbhit_init(void) { init_kbhit(0); };
+      protected:
+        static int init_kbhit(int init);
+    };
+
+    /*static*/ int kbhit_init::init_kbhit(int init)
     {
       static struct termios ttyd_save;
              struct termios ttyd;
@@ -70,6 +81,7 @@
            perror("tcgetattr");
            return(-1);
         }
+
         ttyd_save = ttyd;
 
         /* set input mode: no_signal at break, no strip */
@@ -100,13 +112,6 @@
 
       return(0);
     }
-
-    class kbhit_init
-    {
-      public:
-        kbhit_init(void) { init_kbhit(1); };
-       ~kbhit_init(void) { init_kbhit(0); };
-    };
 
     static class kbhit_init s_kbhit_initializer;
   

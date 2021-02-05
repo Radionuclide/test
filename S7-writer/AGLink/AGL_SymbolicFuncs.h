@@ -69,12 +69,26 @@ agl_int32_t AGL_API AGL_Symbolic_WriteMixEx( agl_int32_t ConnNr, SymbolicRW_t* S
 // Ausgangspunkt für alle weiteren Funktionen.
 // *******************************
 // Eingabe:
-//  ProjectFile - Pfad auf eine TIA Projektdatei (ap11, ap12, ap13, ap14)
+//  ProjectFile - Pfad auf eine TIA Projektdatei (.ap*, .als*)
 //  AutoExpand - Wenn dieser Parameter auf 1 steht werden Kind-Knoten von Arrays automatisch bei Zugriff expandiert - ansonsten muss die Funktion AGL_Symbolic_Expand verwendet werden
 //  Große Arrays mit vielen Knoten (Hundertausende, Millionen) können mit aktiviertem AutoExpand und einem direkten Knotenzugriff auf solche Arrays zu einem sofortigem sehr hohem Speicherverbrauch und Ladezeit führen.
 // Ausgabe:
 //  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes - das ist der Startpunkt für alle Knoten Funktionen
-agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, agl_int32_t AutoExpand = 1);
+agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, agl_int32_t AutoExpand);
+
+// *******************************
+// Öffnen eines TIA Projektes mit Filter
+// Ausgangspunkt für alle weiteren Funktionen.
+// *******************************
+// Eingabe:
+//  ProjectFile - Pfad auf eine TIA Projektdatei ab TIA Portal V14 (.ap*, .als*)
+//  SymbolFilter   - Parameter wird in dieser Version noch nicht verwendet
+//  Flags          - Zusaetzliche Filter Flags. Kombinationen aus define TIA_FILTER_FLAGS_* (AGL_Defines.h)
+//  ErrorLine      - Parameter wird in dieser Version noch nicht verwendet
+//  ErrorPos       - Parameter wird in dieser Version noch nicht verwendet
+// Ausgabe:
+//  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes - das ist der Startpunkt für alle Knoten Funktionen
+agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbolsWithFilter(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
 
 
 // *******************************
@@ -89,6 +103,17 @@ agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const P
 agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, HandleType* const RootNodeHandle);
 
 // *******************************
+// Laden von Symbolen aus einer PLC
+// *******************************
+// Eingabe:
+//  ConnNr - aktive Verbindung zu einer S7-1200(FW 2.2-4.x) oder S7-1500
+// Ausgabe:
+//  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes
+// Hinweis: Im Gegensatz zur Funktion AGL_Symbolic_LoadAGLinkSymbolsFromPLC wird bei dieser Funktion der Projektierte SPS Name verwendet
+//
+agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags);
+
+// *******************************
 // Speichern von Symbolen in einer AGLink Symbolformat Datei
 // *******************************
 // Eingabe:
@@ -96,6 +121,19 @@ agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, Ha
 //  TIASymbolsFile - Datei in welche die Symboldaten gespeichert werden
 //  Hinweis: Der Zielorder muss bereits existieren und wird nicht automatisch erstellt
 agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFile(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile);
+
+// *******************************
+// Speichern von Symbolen in einer AGLink Symbolformat Datei mit Filter
+// *******************************
+// Eingabe:
+//  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes
+//  TIASymbolsFile - Datei in welche die Symboldaten gespeichert werden
+//  SymbolFilter   - Filter fuer PLCs/DBs/UDTs/Tags/Symbole. Angabe wie Symbolpfad (UTF-8), getrennt mit Newline. Siehe Dokumentation.
+//  Flags          - Zusaetzliche Filter Flags. Kombinationen sind moeglich. Siehe define AGL_FILTER_FLAGS* (AGL_Defines.h)
+//  ErrorLine      - Bei einem fehlerhaften Filterstring steht hier die Zeile des Fehlers. Zeile beginnt bei 0
+//  ErrorPos       - Bei einem fehlerhaften Filterstring steht hier die Position des Fehlers. Position beginnt bei 0
+//  Hinweis: Der Zielorder muss bereits existieren und wird nicht automatisch erstellt
+agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
 
 // *******************************
 // Laden von Symbolen aus einer AGLink Symbolformat Datei
@@ -600,7 +638,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString16(const HandleType Access
 // Eingabe: Systemtypspezifisch
 agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_DTLParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint32_t Nanoseconds);
 agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t TimeBase, const agl_uint16_t TimeValue);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint32_t Milliseconds, const agl_int32_t Round = 1);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint32_t Milliseconds, const agl_int32_t Round);
 agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Counter(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Value);
 agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint16_t Milliseconds);
 
@@ -783,6 +821,38 @@ agl_int32_t AGL_API AGL_Symbolic_GetS7PlcFamily(const HandleType NodeHandle, S7P
 agl_int32_t AGL_API AGL_Symbolic_SaveSingleValueAccessSymbolsToFile(const HandleType RootHandle, const agl_cstr8_t const SingleValueFilterFile, const agl_cstr8_t const LogFile, const agl_cstr8_t const AglinkSingleValueAccessSymbolFile);
 agl_int32_t AGL_API AGL_Symbolic_LoadSingleValueAccessSymbolsFromFile(const agl_cstr8_t const AglinkSingleValueAccessSymbolsFile, HandleType* const SingleValueAccessSymbolsHandle);
 agl_int32_t AGL_API AGL_Symbolic_CreateAccessFromSingleValueAccessSymbols(const HandleType SingleValueAccessSymbolsHandle, const agl_cstr8_t const Symbol, HandleType* const AccessHandle);
+agl_int32_t AGL_API AGL_Symbolic_GetSingleValueAccessSymbolCount(const HandleType SingleValueAccessSymbolsHandle, agl_int32_t* const SymbolCount);
+agl_int32_t AGL_API AGL_Symbolic_GetSingleValueAccessSymbolPath(const HandleType SingleValueAccessSymbolsHandle, const agl_int32_t Index, agl_cstr8_t const PathBuffer, const agl_int32_t PathBufferLen, agl_int32_t* const PathLen);
+
+// *******************************
+// Symbolic Alarm Funktionen
+// *******************************
+
+//Alarminformation aus Symboldaten extrahieren
+agl_int32_t AGL_API AGL_Symbolic_FindFirstAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr);
+agl_int32_t AGL_API AGL_Symbolic_FindNextAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr);
+agl_int32_t AGL_API AGL_Symbolic_FindCloseAlarmData(const HandleType PlcNodeHandle);
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmData(const HandleType PlcNodeHandle, agl_uint32_t AlarmNr, const agl_int32_t Language, LPDATA_ALARM40_TIA Buff);
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmText(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmInfo(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmAddText(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, agl_int32_t Index, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
+
+//Alarminformation formatiert als Text
+agl_int32_t AGL_API AGL_Symbolic_FormatAlarmMessage(const LPS7_ALARM_TIA AlarmData, const HandleType PlcNodeHandle, const agl_int32_t Language, const agl_cstr8_t const AlarmText, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
+
+//aktuell anstehende Alarme abfragen
+agl_int32_t AGL_API AGL_Symbolic_ReadOpenMsg(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t AlarmCount, agl_int32_t* const NeededAlarmCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+
+//an Alarm-Meldungen der SPS anmelden
+agl_int32_t AGL_API AGL_Symbolic_InitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+agl_int32_t AGL_API AGL_Symbolic_ExitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmMsg(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+
+//Alarm quittieren
+agl_int32_t AGL_API AGL_Symbolic_AckMsg(const agl_int32_t ConnNr, const agl_uint64_t CPUAlarmID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+
+agl_int32_t AGL_API AGL_Symbolic_GetCurrentProtectionLevel(const agl_int32_t ConnNr, agl_uint32_t* const CurrentProtectionLevel, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+
 
 //
 // Simotion Symbols (STI Export eines Simotion Scout Projektes)
@@ -797,7 +867,7 @@ agl_int32_t AGL_API AGL_Symbolic_CreateAccessFromSingleValueAccessSymbols(const 
 //  FlatArrays - Arrays werden flach ausgeprägt. (Zerlegen wird noch nicht unterstützt)
 // Ausgabe:
 //  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes - das ist der Startpunkt für alle Knoten Funktionen
-agl_int32_t AGL_API AGL_Simotion_LoadSTISymbols(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, agl_bool_t FlatArrays = AGL_TRUE);
+agl_int32_t AGL_API AGL_Simotion_LoadSTISymbols(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, agl_bool_t FlatArrays);
 
 // *******************************
 // Gibt den Speicher für den angegebenen Knoten frei.
@@ -835,6 +905,17 @@ agl_int32_t AGL_API AGL_Simotion_GetHierarchyType(const HandleType NodeHandle, H
 // Ausgabe:
 //   ValueType - Der Werttyp
 agl_int32_t AGL_API AGL_Simotion_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* ValueType);
+
+
+// *******************************
+// Bestimmt den notwendigen SPS-Systemdatentyp
+// *******************************
+// Eingabe:
+//   NodeHandle - Knoten im Baum
+// Ausgabe:
+//   SystemType - Systemtyp z.B. auf einer Simotion, z.b. Time, DateAndTime, TOD.
+agl_int32_t AGL_API AGL_Simotion_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* SystemType);
+
 
 // *******************************
 // Gibt zurück ob ein Knoten Gelesen und/oder Geschrieben werden kann

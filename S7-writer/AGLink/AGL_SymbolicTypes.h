@@ -367,6 +367,8 @@ struct SystemType_t
     st_S7_IF_CONF_TS_IF_v4        =      1170,
     st_S7_TCON_Phone              =      1171,
     st_S7_TCON_WDC                =      1172,
+    st_S7_TDiag_StatusExt         =      1173,
+    st_S7_TI_classic              =      1174,
     
     //---
     //Siemens Sinumerik 840D PL/SL
@@ -507,6 +509,7 @@ struct SystemType_t
     S7_TCON_Param                 =      st_S7_TCON_Param,
     S7_TCON_Phone                 =      st_S7_TCON_Phone,
     S7_TDiag_Status               =      st_S7_TDiag_Status,
+    S7_TDiag_StatusExt            =      st_S7_TDiag_StatusExt,
     S7_DiagnosticDetail           =      st_S7_DiagnosticDetail,
     S7_AssocValue_0               =      st_S7_AssocValue_0,
     S7_VAREF                      =      st_S7_VAREF,
@@ -533,6 +536,7 @@ struct SystemType_t
     S7_SI_Ipo                     =      st_S7_SI_Ipo,
     S7_SI_Startup                 =      st_S7_SI_Startup,
     S7_SI_ProgIOAccesError        =      st_S7_SI_ProgIOAccesError,
+    S7_TI_classic                 =      st_S7_TI_classic,
     S7_TCON_Configured            =      st_S7_TCON_Configured,
     S7_TCON_IP_RFC                =      st_S7_TCON_IP_RFC,
     S7_TSelector                  =      st_S7_TSelector,
@@ -680,6 +684,20 @@ struct DatablockTypes_t
   };
 };
 
+
+struct AreaTypes_t
+{
+  enum enum_t
+  {
+    at_UNDEFINED = 0,
+    at_DB        = 1,
+    at_IN        = 2,
+    at_OUT       = 3,
+    at_DATA      = 4,
+    at_TIMER     = 5,
+    at_COUNTER   = 6
+  };
+};
 /*******************************************************************************
 
  Strukturen für die 1200, 1500 Symbolik-Funktionen - Ende

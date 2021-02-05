@@ -65,6 +65,7 @@ agl_int32_t   AGL_API AGL_GetPCCPConnNames               ( agl_cstr8_t Names, ag
 agl_int32_t   AGL_API AGL_GetPCCPProtocol                ( agl_cstr8_t Name );
 agl_int32_t   AGL_API AGL_GetTapiModemNames              ( agl_cstr8_t Names, agl_int32_t Len );
 agl_int32_t   AGL_API AGL_GetLocalIPAddresses            ( agl_ulong32_t* Addresses, agl_ulong32_t NumAddresses );
+agl_int32_t   AGL_API AGL_GetAdaptersInfo                ( LPADAPTER_INFO p_pAdapterInfo, agl_uint32_t MaxAdapters );
 
 //
 // Zeitinformationen ermitteln
@@ -211,7 +212,8 @@ agl_int32_t   AGL_API AGL_GetExtModuleInfo               ( agl_int32_t ConnNr, L
 agl_int32_t   AGL_API AGL_ReadSzl                        ( agl_int32_t ConnNr, agl_int32_t SzlId, agl_int32_t Index, agl_uint8_t* Buff, agl_int32_t* BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
 
 agl_int32_t   AGL_API AGL_IsPasswordReq                  ( agl_int32_t ConnNr, agl_int32_t* IsPWReq, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
-agl_int32_t   AGL_API AGL_SetPassword                    ( agl_int32_t ConnNr, agl_cstr8_t  PW, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
+agl_int32_t   AGL_API AGL_SetPassword                    ( agl_int32_t ConnNr, agl_cstr8_t PW, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
+agl_int32_t   AGL_API AGL_SetPasswordEx                  ( agl_int32_t ConnNr, const agl_cstr8_t const PW, agl_uint32_t* NewProtectionLevel, const agl_int32_t Timeout, agl_ptrdiff_t UserVal );
 agl_int32_t   AGL_API AGL_UnSetPassword                  ( agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
 
 agl_int32_t   AGL_API AGL_ReadDiagBufferEntrys           ( agl_int32_t ConnNr, agl_int32_t* Entrys, agl_int32_t Timeout, agl_ptrdiff_t UserVal );

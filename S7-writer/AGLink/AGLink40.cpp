@@ -2,7 +2,7 @@
 Projekt        : AGLink-Bibliothek
 Dateiname      : AGLink40.cpp
 Beschreibung   : Dynamisches Laden der öffentlichen Funktionen
-Copyright      : (c) 1998-2017
+Copyright      : (c) 1998-2019
                  DELTALOGIC Automatisierungstechnik GmbH
                  Stuttgarter Str. 3
                  73525 Schwäbisch Gmünd
@@ -89,6 +89,7 @@ typedef agl_int32_t (AGL_API * LPFN_AGL_GetPCCPConnNames)(agl_cstr8_t Names, agl
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetPCCPProtocol)(agl_cstr8_t Name);
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetTapiModemNames)(agl_cstr8_t Names, agl_int32_t Len);
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetLocalIPAddresses)(agl_ulong32_t* Addresses, agl_ulong32_t NumAddresses);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetAdaptersInfo)(LPADAPTER_INFO p_pAdapterInfo, agl_uint32_t MaxAdapters);
 typedef agl_ulong32_t (AGL_API * LPFN_AGL_GetTickCount)(void);
 typedef agl_ulong32_t (AGL_API * LPFN_AGL_GetMicroSecs)(void);
 typedef void (AGL_API * LPFN_AGL_UnloadDyn)(void);
@@ -159,7 +160,8 @@ typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS7LED)(agl_int32_t ConnNr, LPS7_LED 
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetExtModuleInfo)(agl_int32_t ConnNr, LPEXT_MODULE_INFO pInfo, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_ReadSzl)(agl_int32_t ConnNr, agl_int32_t SzlId, agl_int32_t Index, agl_uint8_t* Buff, agl_int32_t* BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_IsPasswordReq)(agl_int32_t ConnNr, agl_int32_t* IsPWReq, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetPassword)(agl_int32_t ConnNr, agl_cstr8_t  PW, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetPassword)(agl_int32_t ConnNr, agl_cstr8_t PW, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetPasswordEx)(agl_int32_t ConnNr, const agl_cstr8_t const PW, agl_uint32_t* NewProtectionLevel, const agl_int32_t Timeout, agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_UnSetPassword)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDiagBufferEntrys)(agl_int32_t ConnNr, agl_int32_t* Entrys, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDiagBuffer)(agl_int32_t ConnNr, agl_int32_t* Entrys, agl_uint8_t* pDiagBuff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
@@ -474,8 +476,11 @@ typedef agl_int32_t (AGL_API * LPFN_AGL_Compress)(agl_int32_t ConnNr, agl_int32_
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_ReadMixEx)(agl_int32_t ConnNr, SymbolicRW_t* SymbolicRW, agl_int32_t Num, agl_int32_t* SError, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_WriteMixEx)(agl_int32_t ConnNr, SymbolicRW_t* SymbolicRW, agl_int32_t Num, agl_int32_t* SError, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadTIAProjectSymbols)(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, agl_int32_t AutoExpand);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadTIAProjectSymbolsWithFilter)(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLC)(agl_int32_t ConnNr, HandleType* const RootNodeHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx)(agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFile)(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter)(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromFile)(const agl_cstr8_t const AGLinkSymbolsFile, HandleType* const RootNodeHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FreeHandle)(const HandleType Handle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetChildCount)(const HandleType NodeHandle, agl_int32_t* const ChildCount);
@@ -579,11 +584,28 @@ typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetS7PlcFamily)(const HandleTyp
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SaveSingleValueAccessSymbolsToFile)(const HandleType RootHandle, const agl_cstr8_t const SingleValueFilterFile, const agl_cstr8_t const LogFile, const agl_cstr8_t const AglinkSingleValueAccessSymbolFile);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadSingleValueAccessSymbolsFromFile)(const agl_cstr8_t const AglinkSingleValueAccessSymbolsFile, HandleType* const SingleValueAccessSymbolsHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_CreateAccessFromSingleValueAccessSymbols)(const HandleType SingleValueAccessSymbolsHandle, const agl_cstr8_t const Symbol, HandleType* const AccessHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSingleValueAccessSymbolCount)(const HandleType SingleValueAccessSymbolsHandle, agl_int32_t* const SymbolCount);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSingleValueAccessSymbolPath)(const HandleType SingleValueAccessSymbolsHandle, const agl_int32_t Index, agl_cstr8_t const PathBuffer, const agl_int32_t PathBufferLen, agl_int32_t* const PathLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FindFirstAlarmData)(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FindNextAlarmData)(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FindCloseAlarmData)(const HandleType PlcNodeHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmData)(const HandleType PlcNodeHandle, agl_uint32_t AlarmNr, const agl_int32_t Language, LPDATA_ALARM40_TIA Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmText)(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmInfo)(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmAddText)(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, agl_int32_t Index, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FormatAlarmMessage)(const LPS7_ALARM_TIA AlarmData, const HandleType PlcNodeHandle, const agl_int32_t Language, const agl_cstr8_t const AlarmText, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_ReadOpenMsg)(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t AlarmCount, agl_int32_t* const NeededAlarmCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_InitAlarmMsg)(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_ExitAlarmMsg)(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmMsg)(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_AckMsg)(const agl_int32_t ConnNr, const agl_uint64_t CPUAlarmID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetCurrentProtectionLevel)(const agl_int32_t ConnNr, agl_uint32_t* const CurrentProtectionLevel, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_LoadSTISymbols)(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, agl_bool_t FlatArrays);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_FreeHandle)(const HandleType RootNodeHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetName)(const HandleType NodeHandle, agl_cstr8_t const NameBuffer, const agl_int32_t NameBufferLen);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetHierarchyType)(const HandleType NodeHandle, HierarchyType_t::enum_t* HierarchyType);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetValueType)(const HandleType NodeHandle, ValueType_t::enum_t* ValueType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetSystemType)(const HandleType NodeHandle, SystemType_t::enum_t* SystemType);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetPermissionType)(const HandleType NodeHandle, PermissionType_t::enum_t* PermissionType);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetChildCount)(const HandleType NodeHandle, agl_int32_t* const ChildCount);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetChild)(const HandleType NodeHandle, const agl_int32_t ChildIndex, HandleType* const ChildNodeHandle);
@@ -614,6 +636,7 @@ LPFN_AGL_GetPCCPConnNames pAGL_GetPCCPConnNames = 0;
 LPFN_AGL_GetPCCPProtocol pAGL_GetPCCPProtocol = 0;
 LPFN_AGL_GetTapiModemNames pAGL_GetTapiModemNames = 0;
 LPFN_AGL_GetLocalIPAddresses pAGL_GetLocalIPAddresses = 0;
+LPFN_AGL_GetAdaptersInfo pAGL_GetAdaptersInfo = 0;
 LPFN_AGL_GetTickCount pAGL_GetTickCount = 0;
 LPFN_AGL_GetMicroSecs pAGL_GetMicroSecs = 0;
 LPFN_AGL_UnloadDyn pAGL_UnloadDyn = 0;
@@ -685,6 +708,7 @@ LPFN_AGL_GetExtModuleInfo pAGL_GetExtModuleInfo = 0;
 LPFN_AGL_ReadSzl pAGL_ReadSzl = 0;
 LPFN_AGL_IsPasswordReq pAGL_IsPasswordReq = 0;
 LPFN_AGL_SetPassword pAGL_SetPassword = 0;
+LPFN_AGL_SetPasswordEx pAGL_SetPasswordEx = 0;
 LPFN_AGL_UnSetPassword pAGL_UnSetPassword = 0;
 LPFN_AGL_ReadDiagBufferEntrys pAGL_ReadDiagBufferEntrys = 0;
 LPFN_AGL_ReadDiagBuffer pAGL_ReadDiagBuffer = 0;
@@ -999,8 +1023,11 @@ LPFN_AGL_Compress pAGL_Compress = 0;
 LPFN_AGL_Symbolic_ReadMixEx pAGL_Symbolic_ReadMixEx = 0;
 LPFN_AGL_Symbolic_WriteMixEx pAGL_Symbolic_WriteMixEx = 0;
 LPFN_AGL_Symbolic_LoadTIAProjectSymbols pAGL_Symbolic_LoadTIAProjectSymbols = 0;
+LPFN_AGL_Symbolic_LoadTIAProjectSymbolsWithFilter pAGL_Symbolic_LoadTIAProjectSymbolsWithFilter = 0;
 LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLC pAGL_Symbolic_LoadAGLinkSymbolsFromPLC = 0;
+LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx pAGL_Symbolic_LoadAGLinkSymbolsFromPLCEx = 0;
 LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFile pAGL_Symbolic_SaveAGLinkSymbolsToFile = 0;
+LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter pAGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter = 0;
 LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromFile pAGL_Symbolic_LoadAGLinkSymbolsFromFile = 0;
 LPFN_AGL_Symbolic_FreeHandle pAGL_Symbolic_FreeHandle = 0;
 LPFN_AGL_Symbolic_GetChildCount pAGL_Symbolic_GetChildCount = 0;
@@ -1104,11 +1131,28 @@ LPFN_AGL_Symbolic_GetS7PlcFamily pAGL_Symbolic_GetS7PlcFamily = 0;
 LPFN_AGL_Symbolic_SaveSingleValueAccessSymbolsToFile pAGL_Symbolic_SaveSingleValueAccessSymbolsToFile = 0;
 LPFN_AGL_Symbolic_LoadSingleValueAccessSymbolsFromFile pAGL_Symbolic_LoadSingleValueAccessSymbolsFromFile = 0;
 LPFN_AGL_Symbolic_CreateAccessFromSingleValueAccessSymbols pAGL_Symbolic_CreateAccessFromSingleValueAccessSymbols = 0;
+LPFN_AGL_Symbolic_GetSingleValueAccessSymbolCount pAGL_Symbolic_GetSingleValueAccessSymbolCount = 0;
+LPFN_AGL_Symbolic_GetSingleValueAccessSymbolPath pAGL_Symbolic_GetSingleValueAccessSymbolPath = 0;
+LPFN_AGL_Symbolic_FindFirstAlarmData pAGL_Symbolic_FindFirstAlarmData = 0;
+LPFN_AGL_Symbolic_FindNextAlarmData pAGL_Symbolic_FindNextAlarmData = 0;
+LPFN_AGL_Symbolic_FindCloseAlarmData pAGL_Symbolic_FindCloseAlarmData = 0;
+LPFN_AGL_Symbolic_GetAlarmData pAGL_Symbolic_GetAlarmData = 0;
+LPFN_AGL_Symbolic_GetAlarmText pAGL_Symbolic_GetAlarmText = 0;
+LPFN_AGL_Symbolic_GetAlarmInfo pAGL_Symbolic_GetAlarmInfo = 0;
+LPFN_AGL_Symbolic_GetAlarmAddText pAGL_Symbolic_GetAlarmAddText = 0;
+LPFN_AGL_Symbolic_FormatAlarmMessage pAGL_Symbolic_FormatAlarmMessage = 0;
+LPFN_AGL_Symbolic_ReadOpenMsg pAGL_Symbolic_ReadOpenMsg = 0;
+LPFN_AGL_Symbolic_InitAlarmMsg pAGL_Symbolic_InitAlarmMsg = 0;
+LPFN_AGL_Symbolic_ExitAlarmMsg pAGL_Symbolic_ExitAlarmMsg = 0;
+LPFN_AGL_Symbolic_GetAlarmMsg pAGL_Symbolic_GetAlarmMsg = 0;
+LPFN_AGL_Symbolic_AckMsg pAGL_Symbolic_AckMsg = 0;
+LPFN_AGL_Symbolic_GetCurrentProtectionLevel pAGL_Symbolic_GetCurrentProtectionLevel = 0;
 LPFN_AGL_Simotion_LoadSTISymbols pAGL_Simotion_LoadSTISymbols = 0;
 LPFN_AGL_Simotion_FreeHandle pAGL_Simotion_FreeHandle = 0;
 LPFN_AGL_Simotion_GetName pAGL_Simotion_GetName = 0;
 LPFN_AGL_Simotion_GetHierarchyType pAGL_Simotion_GetHierarchyType = 0;
 LPFN_AGL_Simotion_GetValueType pAGL_Simotion_GetValueType = 0;
+LPFN_AGL_Simotion_GetSystemType pAGL_Simotion_GetSystemType = 0;
 LPFN_AGL_Simotion_GetPermissionType pAGL_Simotion_GetPermissionType = 0;
 LPFN_AGL_Simotion_GetChildCount pAGL_Simotion_GetChildCount = 0;
 LPFN_AGL_Simotion_GetChild pAGL_Simotion_GetChild = 0;
@@ -1266,6 +1310,15 @@ agl_int32_t AGL_API AGL_GetLocalIPAddresses(agl_ulong32_t* Addresses, agl_ulong3
   if( Loaded(pAGL_GetLocalIPAddresses))
   {
     return pAGL_GetLocalIPAddresses(Addresses, NumAddresses);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_GetAdaptersInfo(LPADAPTER_INFO p_pAdapterInfo, agl_uint32_t MaxAdapters)
+{
+  if( Loaded(pAGL_GetAdaptersInfo))
+  {
+    return pAGL_GetAdaptersInfo(p_pAdapterInfo, MaxAdapters);
   }
   return AGL40_DYN_DLL_ERROR;
 }
@@ -1891,11 +1944,20 @@ agl_int32_t AGL_API AGL_IsPasswordReq(agl_int32_t ConnNr, agl_int32_t* IsPWReq, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetPassword(agl_int32_t ConnNr, agl_cstr8_t  PW, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_SetPassword(agl_int32_t ConnNr, agl_cstr8_t PW, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_SetPassword))
   {
     return pAGL_SetPassword(ConnNr, PW, Timeout, UserVal);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_SetPasswordEx(agl_int32_t ConnNr, const agl_cstr8_t const PW, agl_uint32_t* NewProtectionLevel, const agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+{
+  if( Loaded(pAGL_SetPasswordEx))
+  {
+    return pAGL_SetPasswordEx(ConnNr, PW, NewProtectionLevel, Timeout, UserVal);
   }
   return AGL40_DYN_DLL_ERROR;
 }
@@ -4700,6 +4762,15 @@ agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const P
   return AGL40_DYN_DLL_ERROR;
 }
 
+agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbolsWithFilter(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos)
+{
+  if( Loaded(pAGL_Symbolic_LoadTIAProjectSymbolsWithFilter))
+  {
+    return pAGL_Symbolic_LoadTIAProjectSymbolsWithFilter(ProjectFile, RootNodeHandle, SymbolFilter, Flags, ErrorLine, ErrorPos);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
 agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, HandleType* const RootNodeHandle)
 {
   if( Loaded(pAGL_Symbolic_LoadAGLinkSymbolsFromPLC))
@@ -4709,11 +4780,29 @@ agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, Ha
   return AGL40_DYN_DLL_ERROR;
 }
 
+agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags)
+{
+  if( Loaded(pAGL_Symbolic_LoadAGLinkSymbolsFromPLCEx))
+  {
+    return pAGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(ConnNr, RootNodeHandle, Flags);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
 agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFile(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile)
 {
   if( Loaded(pAGL_Symbolic_SaveAGLinkSymbolsToFile))
   {
     return pAGL_Symbolic_SaveAGLinkSymbolsToFile(RootNodeHandle, AGLinkSymbolsFile);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos)
+{
+  if( Loaded(pAGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter))
+  {
+    return pAGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter(RootNodeHandle, AGLinkSymbolsFile, SymbolFilter, Flags, ErrorLine, ErrorPos);
   }
   return AGL40_DYN_DLL_ERROR;
 }
@@ -5645,6 +5734,150 @@ agl_int32_t AGL_API AGL_Symbolic_CreateAccessFromSingleValueAccessSymbols(const 
   return AGL40_DYN_DLL_ERROR;
 }
 
+agl_int32_t AGL_API AGL_Symbolic_GetSingleValueAccessSymbolCount(const HandleType SingleValueAccessSymbolsHandle, agl_int32_t* const SymbolCount)
+{
+  if( Loaded(pAGL_Symbolic_GetSingleValueAccessSymbolCount))
+  {
+    return pAGL_Symbolic_GetSingleValueAccessSymbolCount(SingleValueAccessSymbolsHandle, SymbolCount);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_GetSingleValueAccessSymbolPath(const HandleType SingleValueAccessSymbolsHandle, const agl_int32_t Index, agl_cstr8_t const PathBuffer, const agl_int32_t PathBufferLen, agl_int32_t* const PathLen)
+{
+  if( Loaded(pAGL_Symbolic_GetSingleValueAccessSymbolPath))
+  {
+    return pAGL_Symbolic_GetSingleValueAccessSymbolPath(SingleValueAccessSymbolsHandle, Index, PathBuffer, PathBufferLen, PathLen);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_FindFirstAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr)
+{
+  if( Loaded(pAGL_Symbolic_FindFirstAlarmData))
+  {
+    return pAGL_Symbolic_FindFirstAlarmData(PlcNodeHandle, AlarmNr);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_FindNextAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr)
+{
+  if( Loaded(pAGL_Symbolic_FindNextAlarmData))
+  {
+    return pAGL_Symbolic_FindNextAlarmData(PlcNodeHandle, AlarmNr);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_FindCloseAlarmData(const HandleType PlcNodeHandle)
+{
+  if( Loaded(pAGL_Symbolic_FindCloseAlarmData))
+  {
+    return pAGL_Symbolic_FindCloseAlarmData(PlcNodeHandle);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmData(const HandleType PlcNodeHandle, agl_uint32_t AlarmNr, const agl_int32_t Language, LPDATA_ALARM40_TIA Buff)
+{
+  if( Loaded(pAGL_Symbolic_GetAlarmData))
+  {
+    return pAGL_Symbolic_GetAlarmData(PlcNodeHandle, AlarmNr, Language, Buff);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmText(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen)
+{
+  if( Loaded(pAGL_Symbolic_GetAlarmText))
+  {
+    return pAGL_Symbolic_GetAlarmText(PlcNodeHandle, AlarmNr, Language, TextBuff, BuffLen, NeededBuffLen);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmInfo(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen)
+{
+  if( Loaded(pAGL_Symbolic_GetAlarmInfo))
+  {
+    return pAGL_Symbolic_GetAlarmInfo(PlcNodeHandle, AlarmNr, Language, TextBuff, BuffLen, NeededBuffLen);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmAddText(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, agl_int32_t Index, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen)
+{
+  if( Loaded(pAGL_Symbolic_GetAlarmAddText))
+  {
+    return pAGL_Symbolic_GetAlarmAddText(PlcNodeHandle, AlarmNr, Index, Language, TextBuff, BuffLen, NeededBuffLen);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_FormatAlarmMessage(const LPS7_ALARM_TIA AlarmData, const HandleType PlcNodeHandle, const agl_int32_t Language, const agl_cstr8_t const AlarmText, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen)
+{
+  if( Loaded(pAGL_Symbolic_FormatAlarmMessage))
+  {
+    return pAGL_Symbolic_FormatAlarmMessage(AlarmData, PlcNodeHandle, Language, AlarmText, TextBuff, BuffLen, NeededBuffLen);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_ReadOpenMsg(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t AlarmCount, agl_int32_t* const NeededAlarmCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
+{
+  if( Loaded(pAGL_Symbolic_ReadOpenMsg))
+  {
+    return pAGL_Symbolic_ReadOpenMsg(ConnNr, AlarmData, AlarmCount, NeededAlarmCount, Timeout, UserVal);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_InitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+{
+  if( Loaded(pAGL_Symbolic_InitAlarmMsg))
+  {
+    return pAGL_Symbolic_InitAlarmMsg(ConnNr, Timeout, UserVal);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_ExitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+{
+  if( Loaded(pAGL_Symbolic_ExitAlarmMsg))
+  {
+    return pAGL_Symbolic_ExitAlarmMsg(ConnNr, Timeout, UserVal);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_GetAlarmMsg(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
+{
+  if( Loaded(pAGL_Symbolic_GetAlarmMsg))
+  {
+    return pAGL_Symbolic_GetAlarmMsg(ConnNr, AlarmData, Timeout, UserVal);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_AckMsg(const agl_int32_t ConnNr, const agl_uint64_t CPUAlarmID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
+{
+  if( Loaded(pAGL_Symbolic_AckMsg))
+  {
+    return pAGL_Symbolic_AckMsg(ConnNr, CPUAlarmID, Timeout, UserVal);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Symbolic_GetCurrentProtectionLevel(const agl_int32_t ConnNr, agl_uint32_t* const CurrentProtectionLevel, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
+{
+  if( Loaded(pAGL_Symbolic_GetCurrentProtectionLevel))
+  {
+    return pAGL_Symbolic_GetCurrentProtectionLevel(ConnNr, CurrentProtectionLevel, Timeout, UserVal);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
 agl_int32_t AGL_API AGL_Simotion_LoadSTISymbols(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, agl_bool_t FlatArrays)
 {
   if( Loaded(pAGL_Simotion_LoadSTISymbols))
@@ -5686,6 +5919,15 @@ agl_int32_t AGL_API AGL_Simotion_GetValueType(const HandleType NodeHandle, Value
   if( Loaded(pAGL_Simotion_GetValueType))
   {
     return pAGL_Simotion_GetValueType(NodeHandle, ValueType);
+  }
+  return AGL40_DYN_DLL_ERROR;
+}
+
+agl_int32_t AGL_API AGL_Simotion_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* SystemType)
+{
+  if( Loaded(pAGL_Simotion_GetSystemType))
+  {
+    return pAGL_Simotion_GetSystemType(NodeHandle, SystemType);
   }
   return AGL40_DYN_DLL_ERROR;
 }
@@ -5792,6 +6034,7 @@ void AGL_API AGL_UnloadDyn()
   pAGL_GetPCCPProtocol = 0;
   pAGL_GetTapiModemNames = 0;
   pAGL_GetLocalIPAddresses = 0;
+  pAGL_GetAdaptersInfo = 0;
   pAGL_GetTickCount = 0;
   pAGL_GetMicroSecs = 0;
   pAGL_UnloadDyn = 0;
@@ -5863,6 +6106,7 @@ void AGL_API AGL_UnloadDyn()
   pAGL_ReadSzl = 0;
   pAGL_IsPasswordReq = 0;
   pAGL_SetPassword = 0;
+  pAGL_SetPasswordEx = 0;
   pAGL_UnSetPassword = 0;
   pAGL_ReadDiagBufferEntrys = 0;
   pAGL_ReadDiagBuffer = 0;
@@ -6177,8 +6421,11 @@ void AGL_API AGL_UnloadDyn()
   pAGL_Symbolic_ReadMixEx = 0;
   pAGL_Symbolic_WriteMixEx = 0;
   pAGL_Symbolic_LoadTIAProjectSymbols = 0;
+  pAGL_Symbolic_LoadTIAProjectSymbolsWithFilter = 0;
   pAGL_Symbolic_LoadAGLinkSymbolsFromPLC = 0;
+  pAGL_Symbolic_LoadAGLinkSymbolsFromPLCEx = 0;
   pAGL_Symbolic_SaveAGLinkSymbolsToFile = 0;
+  pAGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter = 0;
   pAGL_Symbolic_LoadAGLinkSymbolsFromFile = 0;
   pAGL_Symbolic_FreeHandle = 0;
   pAGL_Symbolic_GetChildCount = 0;
@@ -6282,11 +6529,28 @@ void AGL_API AGL_UnloadDyn()
   pAGL_Symbolic_SaveSingleValueAccessSymbolsToFile = 0;
   pAGL_Symbolic_LoadSingleValueAccessSymbolsFromFile = 0;
   pAGL_Symbolic_CreateAccessFromSingleValueAccessSymbols = 0;
+  pAGL_Symbolic_GetSingleValueAccessSymbolCount = 0;
+  pAGL_Symbolic_GetSingleValueAccessSymbolPath = 0;
+  pAGL_Symbolic_FindFirstAlarmData = 0;
+  pAGL_Symbolic_FindNextAlarmData = 0;
+  pAGL_Symbolic_FindCloseAlarmData = 0;
+  pAGL_Symbolic_GetAlarmData = 0;
+  pAGL_Symbolic_GetAlarmText = 0;
+  pAGL_Symbolic_GetAlarmInfo = 0;
+  pAGL_Symbolic_GetAlarmAddText = 0;
+  pAGL_Symbolic_FormatAlarmMessage = 0;
+  pAGL_Symbolic_ReadOpenMsg = 0;
+  pAGL_Symbolic_InitAlarmMsg = 0;
+  pAGL_Symbolic_ExitAlarmMsg = 0;
+  pAGL_Symbolic_GetAlarmMsg = 0;
+  pAGL_Symbolic_AckMsg = 0;
+  pAGL_Symbolic_GetCurrentProtectionLevel = 0;
   pAGL_Simotion_LoadSTISymbols = 0;
   pAGL_Simotion_FreeHandle = 0;
   pAGL_Simotion_GetName = 0;
   pAGL_Simotion_GetHierarchyType = 0;
   pAGL_Simotion_GetValueType = 0;
+  pAGL_Simotion_GetSystemType = 0;
   pAGL_Simotion_GetPermissionType = 0;
   pAGL_Simotion_GetChildCount = 0;
   pAGL_Simotion_GetChild = 0;
@@ -6360,6 +6624,7 @@ agl_int32_t LoadFunctions() {
   pAGL_GetPCCPProtocol = (LPFN_AGL_GetPCCPProtocol)GetProcAddress( (HMODULE)hLib, __DLT("AGL_GetPCCPProtocol") );
   pAGL_GetTapiModemNames = (LPFN_AGL_GetTapiModemNames)GetProcAddress( (HMODULE)hLib, __DLT("AGL_GetTapiModemNames") );
   pAGL_GetLocalIPAddresses = (LPFN_AGL_GetLocalIPAddresses)GetProcAddress( (HMODULE)hLib, __DLT("AGL_GetLocalIPAddresses") );
+  pAGL_GetAdaptersInfo = (LPFN_AGL_GetAdaptersInfo)GetProcAddress( (HMODULE)hLib, __DLT("AGL_GetAdaptersInfo") );
   pAGL_GetTickCount = (LPFN_AGL_GetTickCount)GetProcAddress( (HMODULE)hLib, __DLT("AGL_GetTickCount") );
   pAGL_GetMicroSecs = (LPFN_AGL_GetMicroSecs)GetProcAddress( (HMODULE)hLib, __DLT("AGL_GetMicroSecs") );
   pAGL_UnloadDyn = (LPFN_AGL_UnloadDyn)GetProcAddress( (HMODULE)hLib, __DLT("AGL_UnloadDyn") );
@@ -6431,6 +6696,7 @@ agl_int32_t LoadFunctions() {
   pAGL_ReadSzl = (LPFN_AGL_ReadSzl)GetProcAddress( (HMODULE)hLib, __DLT("AGL_ReadSzl") );
   pAGL_IsPasswordReq = (LPFN_AGL_IsPasswordReq)GetProcAddress( (HMODULE)hLib, __DLT("AGL_IsPasswordReq") );
   pAGL_SetPassword = (LPFN_AGL_SetPassword)GetProcAddress( (HMODULE)hLib, __DLT("AGL_SetPassword") );
+  pAGL_SetPasswordEx = (LPFN_AGL_SetPasswordEx)GetProcAddress( (HMODULE)hLib, __DLT("AGL_SetPasswordEx") );
   pAGL_UnSetPassword = (LPFN_AGL_UnSetPassword)GetProcAddress( (HMODULE)hLib, __DLT("AGL_UnSetPassword") );
   pAGL_ReadDiagBufferEntrys = (LPFN_AGL_ReadDiagBufferEntrys)GetProcAddress( (HMODULE)hLib, __DLT("AGL_ReadDiagBufferEntrys") );
   pAGL_ReadDiagBuffer = (LPFN_AGL_ReadDiagBuffer)GetProcAddress( (HMODULE)hLib, __DLT("AGL_ReadDiagBuffer") );
@@ -6661,8 +6927,11 @@ agl_int32_t LoadFunctions() {
   pAGL_Symbolic_ReadMixEx = (LPFN_AGL_Symbolic_ReadMixEx)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_ReadMixEx") );
   pAGL_Symbolic_WriteMixEx = (LPFN_AGL_Symbolic_WriteMixEx)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_WriteMixEx") );
   pAGL_Symbolic_LoadTIAProjectSymbols = (LPFN_AGL_Symbolic_LoadTIAProjectSymbols)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_LoadTIAProjectSymbols") );
+  pAGL_Symbolic_LoadTIAProjectSymbolsWithFilter = (LPFN_AGL_Symbolic_LoadTIAProjectSymbolsWithFilter)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_LoadTIAProjectSymbolsWithFilter") );
   pAGL_Symbolic_LoadAGLinkSymbolsFromPLC = (LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLC)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_LoadAGLinkSymbolsFromPLC") );
+  pAGL_Symbolic_LoadAGLinkSymbolsFromPLCEx = (LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx") );
   pAGL_Symbolic_SaveAGLinkSymbolsToFile = (LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFile)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_SaveAGLinkSymbolsToFile") );
+  pAGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter = (LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter") );
   pAGL_Symbolic_LoadAGLinkSymbolsFromFile = (LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromFile)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_LoadAGLinkSymbolsFromFile") );
   pAGL_Symbolic_FreeHandle = (LPFN_AGL_Symbolic_FreeHandle)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_FreeHandle") );
   pAGL_Symbolic_GetChildCount = (LPFN_AGL_Symbolic_GetChildCount)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetChildCount") );
@@ -6766,11 +7035,28 @@ agl_int32_t LoadFunctions() {
   pAGL_Symbolic_SaveSingleValueAccessSymbolsToFile = (LPFN_AGL_Symbolic_SaveSingleValueAccessSymbolsToFile)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_SaveSingleValueAccessSymbolsToFile") );
   pAGL_Symbolic_LoadSingleValueAccessSymbolsFromFile = (LPFN_AGL_Symbolic_LoadSingleValueAccessSymbolsFromFile)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_LoadSingleValueAccessSymbolsFromFile") );
   pAGL_Symbolic_CreateAccessFromSingleValueAccessSymbols = (LPFN_AGL_Symbolic_CreateAccessFromSingleValueAccessSymbols)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_CreateAccessFromSingleValueAccessSymbols") );
+  pAGL_Symbolic_GetSingleValueAccessSymbolCount = (LPFN_AGL_Symbolic_GetSingleValueAccessSymbolCount)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetSingleValueAccessSymbolCount") );
+  pAGL_Symbolic_GetSingleValueAccessSymbolPath = (LPFN_AGL_Symbolic_GetSingleValueAccessSymbolPath)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetSingleValueAccessSymbolPath") );
+  pAGL_Symbolic_FindFirstAlarmData = (LPFN_AGL_Symbolic_FindFirstAlarmData)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_FindFirstAlarmData") );
+  pAGL_Symbolic_FindNextAlarmData = (LPFN_AGL_Symbolic_FindNextAlarmData)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_FindNextAlarmData") );
+  pAGL_Symbolic_FindCloseAlarmData = (LPFN_AGL_Symbolic_FindCloseAlarmData)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_FindCloseAlarmData") );
+  pAGL_Symbolic_GetAlarmData = (LPFN_AGL_Symbolic_GetAlarmData)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetAlarmData") );
+  pAGL_Symbolic_GetAlarmText = (LPFN_AGL_Symbolic_GetAlarmText)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetAlarmText") );
+  pAGL_Symbolic_GetAlarmInfo = (LPFN_AGL_Symbolic_GetAlarmInfo)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetAlarmInfo") );
+  pAGL_Symbolic_GetAlarmAddText = (LPFN_AGL_Symbolic_GetAlarmAddText)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetAlarmAddText") );
+  pAGL_Symbolic_FormatAlarmMessage = (LPFN_AGL_Symbolic_FormatAlarmMessage)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_FormatAlarmMessage") );
+  pAGL_Symbolic_ReadOpenMsg = (LPFN_AGL_Symbolic_ReadOpenMsg)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_ReadOpenMsg") );
+  pAGL_Symbolic_InitAlarmMsg = (LPFN_AGL_Symbolic_InitAlarmMsg)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_InitAlarmMsg") );
+  pAGL_Symbolic_ExitAlarmMsg = (LPFN_AGL_Symbolic_ExitAlarmMsg)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_ExitAlarmMsg") );
+  pAGL_Symbolic_GetAlarmMsg = (LPFN_AGL_Symbolic_GetAlarmMsg)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetAlarmMsg") );
+  pAGL_Symbolic_AckMsg = (LPFN_AGL_Symbolic_AckMsg)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_AckMsg") );
+  pAGL_Symbolic_GetCurrentProtectionLevel = (LPFN_AGL_Symbolic_GetCurrentProtectionLevel)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Symbolic_GetCurrentProtectionLevel") );
   pAGL_Simotion_LoadSTISymbols = (LPFN_AGL_Simotion_LoadSTISymbols)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_LoadSTISymbols") );
   pAGL_Simotion_FreeHandle = (LPFN_AGL_Simotion_FreeHandle)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_FreeHandle") );
   pAGL_Simotion_GetName = (LPFN_AGL_Simotion_GetName)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_GetName") );
   pAGL_Simotion_GetHierarchyType = (LPFN_AGL_Simotion_GetHierarchyType)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_GetHierarchyType") );
   pAGL_Simotion_GetValueType = (LPFN_AGL_Simotion_GetValueType)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_GetValueType") );
+  pAGL_Simotion_GetSystemType = (LPFN_AGL_Simotion_GetSystemType)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_GetSystemType") );
   pAGL_Simotion_GetPermissionType = (LPFN_AGL_Simotion_GetPermissionType)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_GetPermissionType") );
   pAGL_Simotion_GetChildCount = (LPFN_AGL_Simotion_GetChildCount)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_GetChildCount") );
   pAGL_Simotion_GetChild = (LPFN_AGL_Simotion_GetChild)GetProcAddress( (HMODULE)hLib, __DLT("AGL_Simotion_GetChild") );
