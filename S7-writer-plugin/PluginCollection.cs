@@ -21,7 +21,9 @@ namespace S7_writer_plugin
             return new PluginTaskInfo[] { m_info };
         }
 
-        IDatCoHost m_host;
+        static IDatCoHost m_host;
+        internal static IDatCoHost Host => m_host;
+
         public IDatCoHost DatCoordinatorHost
         {
             get
@@ -45,7 +47,7 @@ namespace S7_writer_plugin
         {
 			if (taskname == "S7 Writer")
 			{
-				var td = new S7TaskData(taskname, DatCoordinatorHost, parentjob);
+				var td = new S7TaskData(taskname, parentjob);
 				td.SetGridAnalyzer(m_channelEditor, m_analyzer);
 				return td;
 			}

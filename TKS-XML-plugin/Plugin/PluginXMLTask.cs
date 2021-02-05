@@ -11,22 +11,19 @@ namespace iba.TKS_XML_Plugin
     {
         public PluginXMLTask()
         {
-            InitData(null, null, null);
+            InitData(null, null);
         }
 
-        public PluginXMLTask(string name, IDatCoHost host, IJobData parentJob)
+        public PluginXMLTask(string name, IJobData parentJob)
         {
-            InitData(name, host, parentJob);
+            InitData(name, parentJob);
         }
 
-        private void InitData(string name, IDatCoHost host, IJobData parentJob)
+        private void InitData(string name, IJobData parentJob)
         {
             m_parentJob = parentJob;
-            m_datcoHost = host;
             m_nameInfo = name;
         }
-
-        private IDatCoHost m_datcoHost;
 
         #region IPluginTaskDataUNC Members
 
@@ -77,7 +74,6 @@ namespace iba.TKS_XML_Plugin
 
         public void Reset(IDatCoHost host)
         {
-            m_datcoHost = host;
         }
 
         private IJobData m_parentJob;
@@ -132,7 +128,7 @@ namespace iba.TKS_XML_Plugin
 
         public object Clone()
         {
-            PluginXMLTask xt = new PluginXMLTask(m_nameInfo, m_datcoHost, m_parentJob);
+            PluginXMLTask xt = new PluginXMLTask(m_nameInfo, m_parentJob);
             xt.StandOrt = StandOrt;
             xt.IdField = IdField;
             xt.AndererStandort = AndererStandort;

@@ -36,8 +36,8 @@ namespace Alunorf_roh_plugin
 
         public string FtpPasswordCrypted
         {
-            get { return m_datcoHost.GetService<IEncryptionService>().Encrypt(m_ftpPass); }
-            set { m_ftpPass = m_datcoHost.GetService<IEncryptionService>().Decrypt(value); }
+            get { return PluginCollection.Host.GetService<IEncryptionService>().Encrypt(m_ftpPass); }
+            set { m_ftpPass = PluginCollection.Host.GetService<IEncryptionService>().Decrypt(value); }
         }
 
         private string m_ftpHost;
@@ -65,7 +65,8 @@ namespace Alunorf_roh_plugin
         private PluginRohControl m_control;
         public IPluginControl GetControl()
         {
-            if (m_control == null) m_control = new PluginRohControl(m_datcoHost);
+            if (m_control == null) 
+                m_control = new PluginRohControl();
             return m_control;
         }
 
@@ -73,7 +74,8 @@ namespace Alunorf_roh_plugin
         private PluginRohWorker m_worker;
         public IPluginTaskWorker GetWorker()
         {
-            if (m_worker == null) m_worker = new PluginRohWorker(this);
+            if (m_worker == null) 
+                m_worker = new PluginRohWorker(this);
             return m_worker;
         }
 
@@ -98,8 +100,6 @@ namespace Alunorf_roh_plugin
             } 
         }
 
-        private IDatCoHost m_datcoHost;
-
         private string m_nameInfo;
 
         public string NameInfo
@@ -110,7 +110,6 @@ namespace Alunorf_roh_plugin
 
         public void Reset(IDatCoHost host)
         {
-            m_datcoHost = host;
         }
 
         internal IJobData m_parentJob;
@@ -125,7 +124,7 @@ namespace Alunorf_roh_plugin
 
         public object Clone()
         {
-            PluginRohTask rt = new PluginRohTask(m_nameInfo, m_datcoHost, null);
+            PluginRohTask rt = new PluginRohTask(m_nameInfo, null);
             rt.FtpDirectory = FtpDirectory;
             rt.FtpHost = FtpHost;
             rt.FtpUser = FtpUser;
@@ -146,18 +145,17 @@ namespace Alunorf_roh_plugin
 
         public PluginRohTask()
         {
-            InitData(null, null, null);
+            InitData(null, null);
         }
 
-        public PluginRohTask(string name, IDatCoHost host, IJobData parentJob)
+        public PluginRohTask(string name, IJobData parentJob)
         {
-            InitData(name, host, parentJob);
+            InitData(name, parentJob);
         }
 
-        private void InitData(string name, IDatCoHost host, IJobData parentJob)
+        private void InitData(string name, IJobData parentJob)
         {
             m_parentJob = parentJob;
-            m_datcoHost = host;
             m_nameInfo = name;
             m_selectedTab = 0;
             m_rohInput = new iba.RohWriterInput();

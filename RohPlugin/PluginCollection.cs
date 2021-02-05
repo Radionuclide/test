@@ -22,7 +22,9 @@ namespace Alunorf_roh_plugin
             return new PluginTaskInfo[] { m_info };
         }
 
-        IDatCoHost m_host;
+        static IDatCoHost m_host;
+        internal static IDatCoHost Host => m_host;
+
         public IDatCoHost DatCoordinatorHost
         {
             get
@@ -38,7 +40,7 @@ namespace Alunorf_roh_plugin
         public IPluginTaskData CreateTask(string taskname, IJobData parentjob)
         {
             if (taskname == "ROH")
-                return new PluginRohTask(taskname, DatCoordinatorHost, parentjob);
+                return new PluginRohTask(taskname, parentjob);
             else return null;
         }
 

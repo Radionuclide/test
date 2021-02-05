@@ -21,7 +21,9 @@ namespace AM_OSPC_plugin
             return new PluginTaskInfo[] { m_info };
         }
 
-        IDatCoHost m_host;
+        static IDatCoHost m_host;
+        internal static IDatCoHost Host => m_host;
+
         public IDatCoHost DatCoordinatorHost
         {
             get
@@ -45,7 +47,7 @@ namespace AM_OSPC_plugin
         {
             if(taskname == "OSPC")
 			{
-				var td = new OSPCTaskData(taskname, DatCoordinatorHost, parentjob);
+				var td = new OSPCTaskData(taskname, parentjob);
 				td.SetGridAnalyzer(m_channelEditor, m_analyzer);
 				return td;
 			}

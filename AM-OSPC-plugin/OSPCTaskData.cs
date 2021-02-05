@@ -17,7 +17,8 @@ namespace AM_OSPC_plugin
         private OSPCTaskControl m_control;
         public IPluginControl GetControl()
         {
-            if(m_control == null) m_control = new OSPCTaskControl(m_datcoHost);
+            if(m_control == null) 
+                m_control = new OSPCTaskControl();
             return m_control;
         }
 
@@ -26,7 +27,8 @@ namespace AM_OSPC_plugin
 
         public IPluginTaskWorker GetWorker()
         {
-            if(m_worker == null) m_worker = new OSPCTaskWorker(this);
+            if(m_worker == null) 
+                m_worker = new OSPCTaskWorker(this);
             return m_worker;
         }
 
@@ -43,7 +45,7 @@ namespace AM_OSPC_plugin
 
         public OSPCTaskData()
         {
-            InitData(null, null, null);
+            InitData(null, null);
         }
 
         public int DongleBitPos
@@ -56,7 +58,6 @@ namespace AM_OSPC_plugin
 
         public void Reset(IDatCoHost host)
         {
-            m_datcoHost = host;
         }
 
         public void SetParentJob(IJobData data)
@@ -70,7 +71,7 @@ namespace AM_OSPC_plugin
 
         public object Clone()
         {
-            OSPCTaskData res = new OSPCTaskData(m_nameInfo, m_datcoHost, m_parentJob);
+            OSPCTaskData res = new OSPCTaskData(m_nameInfo, m_parentJob);
             res.m_testDatFile = m_testDatFile;
             res.m_pdoFile = m_pdoFile;
             for(int i = 0; i < m_records.Length; i++)
@@ -84,7 +85,7 @@ namespace AM_OSPC_plugin
 
         #endregion
 
-        public OSPCTaskData(string name, IDatCoHost host, IJobData parentJob)
+        public OSPCTaskData(string name, IJobData parentJob)
         {
             //try
             //{
@@ -97,18 +98,16 @@ namespace AM_OSPC_plugin
             //    m_ownAddress = new Byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
             //}
 
-            InitData(name, host, parentJob);
+            InitData(name, parentJob);
         }
 
-        private IDatCoHost m_datcoHost;
         internal IJobData m_parentJob;
 
         private string m_nameInfo;
 
-        private void InitData(string name, IDatCoHost host, IJobData parentJob)
+        private void InitData(string name, IJobData parentJob)
         {
             m_parentJob = parentJob;
-            m_datcoHost = host;
             m_nameInfo = name;
 
             m_testDatFile = "";
@@ -269,8 +268,8 @@ namespace AM_OSPC_plugin
 
         public string OspcServerPasswordCrypted
         {
-            get { return m_datcoHost.GetService<IEncryptionService>().Encrypt(m_ospcServerPass); }
-            set { m_ospcServerPass = m_datcoHost.GetService<IEncryptionService>().Decrypt(value); }
+            get { return PluginCollection.Host.GetService<IEncryptionService>().Encrypt(m_ospcServerPass); }
+            set { m_ospcServerPass = PluginCollection.Host.GetService<IEncryptionService>().Decrypt(value); }
         }
 
         private string m_ospcServerHost;
@@ -284,7 +283,7 @@ namespace AM_OSPC_plugin
 		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
 		{
 			if (m_control == null)
-				m_control = new OSPCTaskControl(m_datcoHost);
+				m_control = new OSPCTaskControl();
 			m_control.SetGridAnalyzer(e, analyzer);
 		}
 

@@ -21,12 +21,19 @@ namespace iba.TKS_XML_Plugin
             return new PluginTaskInfo[] { m_info };
         }
 
-        public IDatCoHost DatCoordinatorHost { get; set; }
+        static IDatCoHost m_host;
+        internal static IDatCoHost Host => m_host;
+
+        public IDatCoHost DatCoordinatorHost 
+        {
+            get => m_host;
+            set => m_host = value;
+        }
 
         public IPluginTaskData CreateTask(string taskname, IJobData parentjob)
         {
             if (taskname == "TKS-XML")
-                return new PluginXMLTask(taskname, DatCoordinatorHost, parentjob);
+                return new PluginXMLTask(taskname, parentjob);
             else return null;
         }
 

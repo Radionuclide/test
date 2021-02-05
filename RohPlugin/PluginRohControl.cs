@@ -15,9 +15,9 @@ namespace Alunorf_roh_plugin
     public partial class PluginRohControl : UserControl, IPluginControl
     {
         private IDatCoHost m_datcoHost;
-        public PluginRohControl(IDatCoHost host)
+        public PluginRohControl()
         {
-            m_datcoHost = host;
+            m_datcoHost = PluginCollection.Host;
             InitializeComponent();
             DataGridView[] grids = { m_datagvStich, m_datagvKopf, m_datagvSchluss };
             foreach (DataGridView grid in grids)

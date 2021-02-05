@@ -23,9 +23,9 @@ namespace Alunorf_sinec_h1_plugin
 
         private SinecH1ConnectionParams m_sinecH1Params;
         private TCPIPConnectionParams m_tcpipParams;
-        public PluginH1TaskControl(IDatCoHost host)
+        public PluginH1TaskControl()
         {
-            m_datcoHost = host;
+            m_datcoHost = PluginCollection.Host;
             InitializeComponent();
             this.m_datagvMessages.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 

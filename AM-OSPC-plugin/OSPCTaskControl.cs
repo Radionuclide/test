@@ -23,9 +23,9 @@ namespace AM_OSPC_plugin
 		[NonSerialized]
 		private IAnalyzerManagerUpdateSource m_analyzerManager;
 
-		public OSPCTaskControl(IDatCoHost datcoHost)
+		public OSPCTaskControl()
         {
-            m_datcoHost = datcoHost;
+            m_datcoHost = PluginCollection.Host;
             InitializeComponent();
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
 			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;

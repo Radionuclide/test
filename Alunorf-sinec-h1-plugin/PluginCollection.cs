@@ -21,7 +21,9 @@ namespace Alunorf_sinec_h1_plugin
             return new PluginTaskInfo[] { m_info };
         }
 
-        IDatCoHost m_host;
+        static IDatCoHost m_host;
+        internal static IDatCoHost Host => m_host;
+
         public IDatCoHost DatCoordinatorHost
         {
             get
@@ -37,7 +39,7 @@ namespace Alunorf_sinec_h1_plugin
         public IPluginTaskData CreateTask(string taskname, IJobData parentjob)
         {
             if (taskname == "SINEC-H1")
-                return new PluginH1Task(taskname, DatCoordinatorHost, parentjob);
+                return new PluginH1Task(taskname, parentjob);
             else return null;
         }
 

@@ -16,14 +16,15 @@ namespace S7_writer_plugin
 	public partial class S7TaskControl : UserControl, IPluginControl, IGridAnalyzer
 	{
         private IDatCoHost m_datcoHost;
-		[NonSerialized]
+
 		private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
-		[NonSerialized]
+
 		private IAnalyzerManagerUpdateSource m_analyzerManager;
 
-		public S7TaskControl(IDatCoHost datcoHost)
+		public S7TaskControl()
         {
-            m_datcoHost = datcoHost;
+            m_datcoHost = PluginCollection.Host;
+
             InitializeComponent();
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
 			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;

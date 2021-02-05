@@ -12,11 +12,10 @@ using iba.Data;
 
 namespace iba.Utility
 {
-	[Serializable]
 	class DatCoordinatorHostImpl : IDatCoHost
 	{
 
-		static DatCoordinatorHostImpl() 
+		private DatCoordinatorHostImpl() 
 		{
 			services = new Dictionary<Type, object>();
 			services.Add(typeof(IEncryptionService), new EncryptionService(
@@ -335,8 +334,7 @@ namespace iba.Utility
 			}
 		}
 
-		//This should be static otherwise this gets serialized between client and server
-		static Dictionary<Type, object> services;
+		Dictionary<Type, object> services;
 
 		public T GetService<T>() where T : class
         {

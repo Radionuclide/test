@@ -194,7 +194,7 @@ namespace Alunorf_sinec_h1_plugin
         private PluginH1TaskControl m_control;
         public IPluginControl GetControl()
         {
-            if (m_control == null) m_control = new PluginH1TaskControl(m_datcoHost);
+            if (m_control == null) m_control = new PluginH1TaskControl();
             return m_control;
         }
 
@@ -211,8 +211,6 @@ namespace Alunorf_sinec_h1_plugin
             m_worker = worker as PluginH1TaskWorker;
         }
 
-        private IDatCoHost m_datcoHost;
-
         private string m_nameInfo;
 
         public string NameInfo
@@ -223,7 +221,6 @@ namespace Alunorf_sinec_h1_plugin
 
         public void Reset(IDatCoHost host)
         {
-            m_datcoHost = host;
         }
 
         private IJobData m_parentJob;
@@ -237,10 +234,10 @@ namespace Alunorf_sinec_h1_plugin
         
         public PluginH1Task()
         {
-            InitData(null, null, null);
+            InitData(null, null);
         }
 
-        public PluginH1Task(string name, IDatCoHost host, IJobData parentJob)
+        public PluginH1Task(string name, IJobData parentJob)
         {
             //try
             //{
@@ -253,10 +250,10 @@ namespace Alunorf_sinec_h1_plugin
             //    m_ownAddress = new Byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
             //}
 
-            InitData(name, host, parentJob);
+            InitData(name, parentJob);
         }
 
-        private void InitData(string name, IDatCoHost host, IJobData parentJob)
+        private void InitData(string name, IJobData parentJob)
         {
             m_TCPIP = false;
             m_portNr1 = 8000;
@@ -275,7 +272,6 @@ namespace Alunorf_sinec_h1_plugin
             m_ackTimeOut = 10;
 
             m_parentJob = parentJob;
-            m_datcoHost = host;
             m_nameInfo = name;
             m_lastSelectedTelegram = -1;
             m_telegrams = new List<Telegram>();
@@ -293,7 +289,7 @@ namespace Alunorf_sinec_h1_plugin
 
         public object Clone()
         {
-            PluginH1Task ht = new PluginH1Task(m_nameInfo, m_datcoHost, null);
+            PluginH1Task ht = new PluginH1Task(m_nameInfo, null);
             ht.m_TCPIP = m_TCPIP;
             ht.m_portNr1 = m_portNr1;
             ht.m_portNr2 = m_portNr2;

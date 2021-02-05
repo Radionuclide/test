@@ -20,7 +20,7 @@ namespace S7_writer_plugin
         public IPluginControl GetControl()
         {
             if(m_control == null)
-                m_control = new S7TaskControl(m_datcoHost);
+                m_control = new S7TaskControl();
             return m_control;
         }
 
@@ -46,7 +46,7 @@ namespace S7_writer_plugin
 
         public S7TaskData()
         {
-            InitData(null, null, null);
+            InitData(null, null);
         }
 
         public int DongleBitPos
@@ -59,7 +59,7 @@ namespace S7_writer_plugin
 
         public void Reset(IDatCoHost host)
         {
-            m_datcoHost = host;
+            //No longer necessary
         }
 
         public void SetParentJob(IJobData data)
@@ -73,7 +73,7 @@ namespace S7_writer_plugin
 
         public object Clone()
         {
-            S7TaskData res = new S7TaskData(m_nameInfo, m_datcoHost, m_parentJob);
+            S7TaskData res = new S7TaskData(m_nameInfo, m_parentJob);
             res.m_testDatFile = m_testDatFile;
             res.m_pdoFile = m_pdoFile;
 
@@ -95,21 +95,19 @@ namespace S7_writer_plugin
 
         #endregion
 
-        public S7TaskData(string name, IDatCoHost host, IJobData parentJob)
+        public S7TaskData(string name, IJobData parentJob)
         {
-            InitData(name, host, parentJob);
+            InitData(name, parentJob);
         }
 
-        private IDatCoHost m_datcoHost;
         internal IJobData m_parentJob;
 
         private string m_nameInfo;
 
 
-        private void InitData(string name, IDatCoHost host, IJobData parentJob)
+        private void InitData(string name, IJobData parentJob)
         {
             m_parentJob = parentJob;
-            m_datcoHost = host;
             m_nameInfo = name;
 
             m_testDatFile = "";
@@ -411,7 +409,7 @@ namespace S7_writer_plugin
 		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
 		{
 			if (m_control == null)
-				m_control = new S7TaskControl(m_datcoHost);
+				m_control = new S7TaskControl();
 			m_control.SetGridAnalyzer(e, analyzer);
 		}
 
