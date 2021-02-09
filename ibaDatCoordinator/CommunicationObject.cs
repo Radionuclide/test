@@ -132,10 +132,19 @@ namespace iba
         //This function is called by a client when connecting to the server
         public int Connect(string clientName, int clientVersion, string userName, string password)
         {
-            //We allow all clients
+            //Check client version
+            int minClientVersion = DatCoVersion.MinimumClientVersion();
+            if(clientVersion < minClientVersion)
+            {
+                LogData.Data.Log(Logging.Level.Debug, $"Connection from {clientName} refused because client version {DatCoVersion.FormatVersion(clientVersion)} is not compatible. Minimum client version is {DatCoVersion.FormatVersion(minClientVersion)}.");
+                throw new Exception(String.Format(Properties.Resources.IncompatibleClientVersion, DatCoVersion.FormatVersion(minClientVersion)));
+            }
+
+            //Register client
             string remoteEp = Remoting.ServerRemotingManager.RegisterClient(clientName, out bool bSecure);
-            LogData.Data.Log(Logging.Level.Debug, String.Format("Client {0} (version {1}) is trying to establish an {2} connection from {3}.", clientName, 
+            LogData.Data.Log(Logging.Level.Debug, String.Format("Client {0} (version {1}) is established an {2} connection from {3}.", clientName,
                 DatCoVersion.FormatVersion(clientVersion), bSecure ? "encrypted" : "unencrypted", remoteEp));
+
             LogData.Data.Log(Logging.Level.Info, String.Format(Properties.Resources.ClientConnected, clientName));
 
             return DatCoVersion.CurrentVersion();
@@ -446,6 +455,13 @@ namespace iba
                     {
                         int serverVer = m_com.Connect(Program.ClientName, DatCoVersion.CurrentVersion(), "admin", "");
                         serverVersion = DatCoVersion.FormatVersion(serverVer);
+
+                        if (serverVer < DatCoVersion.MinimumServerVersion())
+                        {
+                            throw new Exception(String.Format(Properties.Resources.IncompatibleServerVersion, serverVersion,
+                                DatCoVersion.FormatVersion(DatCoVersion.MinimumServerVersion())));
+                        }
+                                                
                         bIsSecure = channelPrefix == "gstcp";
                         return serverVer;
                     }

@@ -1850,4 +1850,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="img_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_server.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IncompatibleClientVersion" xml:space="preserve">
+    <value>Incompatible client version. It should have version {0} or higher. Please upgrade the client.</value>
+  </data>
+  <data name="IncompatibleServerVersion" xml:space="preserve">
+    <value>Incompatible server version. Server has version {0}. It should have version {1} or higher. Please upgrade the server or downgrade the client.</value>
+  </data>
 </root>

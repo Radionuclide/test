@@ -37,8 +37,15 @@ namespace iba
 
         public static int MinimumClientVersion()
         {
-            ///modify this if eventually a real minimum client is necessary (because features have been added)
-            Version v = new Version(2,3,0,0);
+            ///modify this if minimum client is necessary (because features have been added)
+            Version v = new Version(2, 4, 0, 0);
+            return ((v.Major * 1000) + v.Minor) * 1000 + v.Build;
+        }
+
+        public static int MinimumServerVersion()
+        {
+            ///modify this if minimum server is necessary (because features have been added)
+            Version v = new Version(2, 4, 0, 0);
             return ((v.Major * 1000) + v.Minor) * 1000 + v.Build;
         }
 
