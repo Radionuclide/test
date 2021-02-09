@@ -579,7 +579,7 @@ namespace iba.Controls
 
         private void m_btnOpenPDO_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFilePath);
+			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFilePath, m_datFilePath);
 		}
 
         void UploadPdoFile(bool messageOnNoChanges)

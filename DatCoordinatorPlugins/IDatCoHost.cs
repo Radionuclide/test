@@ -68,7 +68,7 @@ namespace iba.Plugins
 		/// start ibaAnalyzer with selected .pdo file or show warning if path is unreachable
 		/// </summary>
 		/// <param name="pdoFile">Path to file</param>
-		void OpenPDO(string pdoFile);
+		void OpenPDO(string pdoFile, string datFile);
 
 		bool BrowseForPdoFile(ref string m_pdoFilePath, out string localPath);
 

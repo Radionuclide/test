@@ -137,7 +137,7 @@ namespace AM_OSPC_plugin
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
-			m_datcoHost.OpenPDO(m_pdoFileTextBox.Text);
+			m_datcoHost.OpenPDO(m_pdoFileTextBox.Text, m_datFileTextBox.Text);
 		}
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)

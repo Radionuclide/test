@@ -134,7 +134,7 @@ namespace iba.Utility
 				else return false;
 			}
 		}
-		public void OpenPDO(string pdoFile)
+		public void OpenPDO(string pdoFile, string datFile = "")
 		{
 			try
 			{
@@ -179,7 +179,9 @@ namespace iba.Utility
 					ibaProc.EnableRaisingEvents = false;
 					ibaProc.StartInfo.FileName = ibaAnalyzerExe;
 					ibaProc.StartInfo.Arguments = "\"" + localFile + "\"";
-					ibaProc.Start();
+                    if (!String.IsNullOrEmpty(datFile) && File.Exists(datFile))
+                        ibaProc.StartInfo.Arguments += " \"" + datFile;
+                    ibaProc.Start();
 				}
 			}
 			catch (Exception ex)

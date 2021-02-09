@@ -135,7 +135,7 @@ namespace iba.Controls
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFileTextBox.Text);
+			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFileTextBox.Text, m_datFileTextBox.Text);
 		}
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
