@@ -105,7 +105,7 @@ namespace iba.Utility
 					fd.ShowFiles = true;
 					fd.SelectedPath = datFile;
 					bool isDat = data?.DatTriggered ?? true;
-					fd.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
+					fd.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqDatFileFilter;
 					if (fd.ShowDialog() == DialogResult.OK)
 					{
 						datFile = fd.SelectedPath;
@@ -121,7 +121,7 @@ namespace iba.Utility
 				if (!string.IsNullOrEmpty(datFile))
 					dlg.FileName = datFile;
 				bool isDat = data?.DatTriggered ?? true;
-				dlg.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqFileFilter;
+				dlg.Filter = isDat ? Properties.Resources.DatFileFilter : Properties.Resources.HdqDatFileFilter;
 				if (!string.IsNullOrEmpty(datFile) && System.IO.File.Exists(datFile))
 					dlg.FileName = datFile;
 				else if (System.IO.Directory.Exists(datFile))

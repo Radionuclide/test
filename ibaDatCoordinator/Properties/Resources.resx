@@ -1631,8 +1631,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="logHDEventTaskDATError" xml:space="preserve">
     <value>Test DAT file could not be found</value>
   </data>
-  <data name="HdqFileFilter" xml:space="preserve">
-    <value>iba HDQ files (*.hdq)|*.hdq</value>
+  <data name="HdqDatFileFilter" xml:space="preserve">
+    <value>iba HDQ files (*.hdq)|*.hdq|iba dat files (*.dat)|*.dat</value>
   </data>
   <data name="HDEventTask_ToolTip_OpenPDO" xml:space="preserve">
     <value>Open the PDO file with ibaAnalyzer</value>

@@ -618,7 +618,7 @@ namespace iba.Controls
                 Cursor = Cursors.WaitCursor;
 
                 HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
-                Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, null);
+                Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(m_analyzerManager.Analyzer, m_datFilePath);
 
                 //worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData, HdValidationMessage.Ignore);
 
