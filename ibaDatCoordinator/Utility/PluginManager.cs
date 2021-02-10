@@ -192,12 +192,12 @@ namespace iba.Utility
 			else
 			{
 				var plugin = m_plugins[name];
-				if (plugin is IGridAnalyzer)
-				{
-					var analyzer = new AnalyzerManager();
-					(plugin as IGridAnalyzer).SetGridAnalyzer(new RepositoryItemChannelTreeEdit(analyzer, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields), analyzer);
-				}
-				return plugin.CreateTask(name, parentjob);
+                if (plugin is IGridAnalyzer)
+                {
+                    var analyzer = new AnalyzerManager();
+                    (plugin as IGridAnalyzer).SetGridAnalyzer(new RepositoryItemChannelTreeEdit(analyzer, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields), analyzer);
+                }
+                return plugin.CreateTask(name, parentjob);
 			}
         }
 
@@ -333,6 +333,29 @@ namespace iba.Utility
             return data.Except(m_plugins.Keys).ToList<string>();
         }
 
+        public bool IsPluginOutdated(ref string name, Assembly assembly)
+        {
+            if (m_pluginInfos == null || m_pluginInfos.Count == 0)
+                return false;
+
+            if(String.IsNullOrEmpty(name))
+            {
+                //Older configurations didn't save the name of the plugin so we have to look it up via the assembly
+                foreach (var kvp in m_plugins)
+                {
+                    if (kvp.Value.GetType().Assembly == assembly)
+                    {
+                        name = kvp.Key;
+                        break;
+                    }
+                }
+            }
+
+            string nameToCheck = name;
+            return m_pluginInfos.FirstOrDefault(info => info.Name == nameToCheck)?.IsOutdated ?? false;
+        }
+        
+
         public List<string> FullNames(List<string> plugins)
         {
             List<string> res = new List<string>();
@@ -341,6 +364,16 @@ namespace iba.Utility
                 res.Add(m_pluginInfos.Find(item => item.Name == name).Description);
             }
             return res;
+        }
+
+        public int GetCustomTaskImageIndex(ICustomTaskData cust)
+        {
+            string name = cust.Plugin.NameInfo;
+            int index = PluginInfos.FindIndex(ti => ti.Name == name);
+            if (index < 0)
+                return MainForm.UNKNOWNTASK_INDEX;
+
+            return MainForm.CUSTOMTASK_INDEX + index;
         }
     }
 }

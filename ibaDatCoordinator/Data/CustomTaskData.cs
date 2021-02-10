@@ -12,7 +12,6 @@ namespace iba.Data
         IPluginTaskData Plugin
         {
             get;
-            set;
         }
 
         Guid Guid
@@ -26,31 +25,33 @@ namespace iba.Data
             get;
             set;
         }
+
     }
 
     [Serializable]
     public class CustomTaskData : TaskData, ICustomTaskData
     {
-        private IPluginTaskData m_plugin;
+        private PluginTaskDataWrapper m_wrapper;
         
         [XmlIgnore]
         public IPluginTaskData Plugin
         {
-            get { return m_plugin; }
-            set { m_plugin = value; }
+            get { return m_wrapper.PluginData; }
         }
 
-        public XmlWrapper PluginXML
+        [XmlElement("PluginXML")]
+        public PluginTaskDataWrapper PluginWrapper
         {
-            get 
+            get => m_wrapper;
+            set => m_wrapper = value;
+        }
+
+        public override bool Enabled
+        {
+            get
             {
-                return new XmlWrapper(m_plugin);
-            }
-            set 
-            {
-                m_plugin = value.ObjectToSerialize as IPluginTaskData;
-                string name = m_plugin.NameInfo;
-                m_plugin.Reset(DatCoordinatorHostImpl.Host);
+                //Disable in case the plugin couldn't be loaded.
+                return base.Enabled && !(Plugin is ErrorPluginTaskData);
             }
         }
 
@@ -58,15 +59,20 @@ namespace iba.Data
             : base(parent)
         {
             m_name = plugin.Name;
-            m_plugin = PluginManager.Manager.CreateTask(m_name, parent);
+            m_wrapper = new PluginTaskDataWrapper();
+            m_wrapper.PluginData = PluginManager.Manager.CreateTask(m_name, parent);
         }
 
-        public CustomTaskData() : base(null) {}
+        public CustomTaskData() : base(null) 
+        {
+
+        }
 
         public override TaskData CloneInternal()
         {
             CustomTaskData pd = new CustomTaskData();
-            pd.m_plugin = m_plugin.Clone() as IPluginTaskData;
+            pd.m_wrapper = m_wrapper.Clone();
+
             return pd;
         }
 
@@ -77,47 +83,45 @@ namespace iba.Data
             set
             {
                 m_parentCD = value;
-                m_plugin.SetParentJob(value);
+                Plugin.SetParentJob(value);
             }
         }
 
         public override bool IsSameInternal(TaskData taskData)
         {
             CustomTaskData other = taskData as CustomTaskData;
-            if (other == null) return false;
-            if (other == this) return true;
-            if (other.m_plugin.GetType() != m_plugin.GetType()) return false;
-            if (m_plugin is IPluginTaskDataIsSame)
-            {
-                return (m_plugin as IPluginTaskDataIsSame).IsSame(other.m_plugin as IPluginTaskDataIsSame);
-            }
-            else return Utility.SerializableObjectsCompare.Compare(m_plugin, other.m_plugin);
+            if (other == null) 
+                return false;
+            if (other == this) 
+                return true;
+
+            return m_wrapper.IsSame(other.m_wrapper);
         }
     }
 
     [Serializable]
     public class CustomTaskDataUNC : TaskDataUNC, ICustomTaskData
     {
-        private IPluginTaskDataUNC m_plugin;
+        private PluginTaskDataWrapper m_wrapper;
 
         [XmlIgnore]
         public IPluginTaskData Plugin
         {
-            get { return m_plugin; }
-            set { m_plugin = value as IPluginTaskDataUNC; }
+            get => m_wrapper.PluginData;
         }
 
-        public XmlWrapper PluginXML
+        [XmlElement("PluginXML")]
+        public PluginTaskDataWrapper PluginWrapper
+        {
+            get => m_wrapper;
+            set => m_wrapper = value;
+        }
+        public override bool Enabled
         {
             get
             {
-                return new XmlWrapper(m_plugin);
-            }
-            set
-            {
-                m_plugin = value.ObjectToSerialize as IPluginTaskDataUNC;
-                string name = m_plugin.NameInfo;
-                m_plugin.Reset(DatCoordinatorHostImpl.Host);
+                //Disable in case the plugin couldn't be loaded.
+                return base.Enabled && !(Plugin is ErrorPluginTaskData);
             }
         }
 
@@ -125,7 +129,9 @@ namespace iba.Data
             : base(parent)
         {
             m_name = plugin.Name;
-            m_plugin = PluginManager.Manager.CreateTask(m_name, parent) as IPluginTaskDataUNC;
+
+            m_wrapper = new PluginTaskDataWrapper();
+            m_wrapper.PluginData = PluginManager.Manager.CreateTask(m_name, parent) as IPluginTaskData;
         }
 
         public CustomTaskDataUNC() : base(null) { }
@@ -134,7 +140,8 @@ namespace iba.Data
         {
             CustomTaskDataUNC pd = new CustomTaskDataUNC();
             CopyUNCData(pd);
-            pd.m_plugin = m_plugin.Clone() as IPluginTaskDataUNC;
+            pd.m_wrapper = m_wrapper.Clone();
+
             return pd;
         }
 
@@ -145,22 +152,22 @@ namespace iba.Data
             set
             {
                 m_parentCD = value;
-                m_plugin.SetParentJob(value);
+                Plugin.SetParentJob(value);
             }
         }
 
         public override bool IsSameInternal(TaskData taskData)
         {
             CustomTaskDataUNC other = taskData as CustomTaskDataUNC;
-            if (other == null) return false;
-            if (other == this) return true;
-            if (other.m_plugin.GetType() != m_plugin.GetType()) return false;
-            if (!UNCDataIsSame(other)) return false;
-            if (m_plugin is IPluginTaskDataIsSame)
-            {
-                return (m_plugin as IPluginTaskDataIsSame).IsSame(other.m_plugin as IPluginTaskDataIsSame);
-            }
-            else return Utility.SerializableObjectsCompare.Compare(m_plugin, other.m_plugin);
+            if (other == null) 
+                return false;
+            if (other == this) 
+                return true;
+
+            if (!UNCDataIsSame(other)) 
+                return false;
+
+            return m_wrapper.IsSame(other.m_wrapper);
         }
     }
 }

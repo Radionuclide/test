@@ -33,7 +33,6 @@ namespace iba.Plugins
         string NameInfo
         {
             get;
-            set;
         }
 
         /// <summary>

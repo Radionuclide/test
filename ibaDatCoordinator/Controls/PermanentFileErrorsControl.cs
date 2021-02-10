@@ -210,6 +210,16 @@ namespace iba.Controls
             return combinedBitmap;
         }
 
+        private Bitmap GetImageForCustomTaskData(ICustomTaskData cust, DatFileStatus.State state)
+        {
+            string name = cust.Plugin.NameInfo;
+            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate (PluginTaskInfo ii) { return ii.Name == name; });
+            if (index >= 0)
+                return m_customtaskIcons[index][state];
+            else
+                return Properties.Resources.img_question;
+        }
+
         private ConfigurationData m_cd;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
@@ -354,13 +364,8 @@ namespace iba.Controls
                             bitmap = m_splitIcons[value];
                         else if (task is HDCreateEventTaskData)
                             bitmap = m_hdCreateEventIcons[value];
-                        else if (task is ICustomTaskData)
-                        {
-                            ICustomTaskData cust = (ICustomTaskData)task;
-                            string name = cust.Plugin.NameInfo;
-                            int index = PluginManager.Manager.PluginInfos.FindIndex(delegate (PluginTaskInfo ii) { return ii.Name == name; });
-                            bitmap = m_customtaskIcons[index][value];
-                        }
+                        else if (task is ICustomTaskData cust)
+                            bitmap = GetImageForCustomTaskData(cust, value);
 						else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc
 							bitmap = m_cleanupIcons[value];
 

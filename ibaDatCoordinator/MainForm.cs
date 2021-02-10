@@ -48,11 +48,12 @@ namespace iba
         public static readonly int SPLITTERTASK_INDEX = 12;
         public static readonly int HDEVENTTASK_INDEX = 13;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int NEWCONF_INDEX = 14;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 15;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 16;
-        public static readonly int NEW_EVENT_CONF_INDEX = 17;
-        public static readonly int CUSTOMTASK_INDEX = 18;
+        public static readonly int UNKNOWNTASK_INDEX = 14;
+        public static readonly int NEWCONF_INDEX = 15;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 16;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 17;
+        public static readonly int NEW_EVENT_CONF_INDEX = 18;
+        public static readonly int CUSTOMTASK_INDEX = 19;
         public static readonly int NR_TASKS = 10;
 
         private QuitForm m_quitForm;
@@ -126,6 +127,7 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.broom);
             confsImageList.Images.Add(iba.Properties.Resources.SplitDat);
             confsImageList.Images.Add(iba.Properties.Resources.img_computed_values);
+            confsImageList.Images.Add(iba.Properties.Resources.img_question);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
             confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
@@ -610,13 +612,16 @@ namespace iba
                     taskNode = new TreeNode(task.Name, SPLITTERTASK_INDEX, SPLITTERTASK_INDEX);
                     taskNode.Tag = new SplitterTaskTreeItemData(this, task as SplitterTaskData);
                 }
+                else if(task is ICustomTaskData cust)
+                {
+                    int index = GetCustomTaskImageIndex(cust);
+                    taskNode = new TreeNode(cust.Name, index, index);
+                    taskNode.Tag = new CustomTaskTreeItemData(this, cust);
+                }
                 else
                 {
-                    ICustomTaskData cust = task as ICustomTaskData;
-                    string name = cust.Plugin.NameInfo;
-                    int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name == name; });
-                    taskNode = new TreeNode(cust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
-                    taskNode.Tag = new CustomTaskTreeItemData(this, cust);
+                    Debug.Assert(false, "Unknown task type");
+                    throw new Exception($"Unknown task type: {task.GetType()}");
                 }
 
                 MainForm.strikeOutNodeText(taskNode, !task.Enabled);
@@ -1195,12 +1200,10 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, SPLITTERTASK_INDEX, SPLITTERTASK_INDEX);
                     taskNode.Tag = new SplitterTaskTreeItemData(this, m_task_copy as SplitterTaskData);
                 }
-                else if (m_task_copy is ICustomTaskData)
+                else if (m_task_copy is ICustomTaskData cust)
                 {
-                    ICustomTaskData cust = (ICustomTaskData) m_task_copy;
-                    string name = cust.Plugin.NameInfo;
-                    int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name== name; });
-                    taskNode = new TreeNode(m_task_copy.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+                    int index = GetCustomTaskImageIndex(cust);
+                    taskNode = new TreeNode(m_task_copy.Name, index, index);
                     taskNode.Tag = new CustomTaskTreeItemData(this,cust);
                 }
 
@@ -1287,12 +1290,10 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, SPLITTERTASK_INDEX, SPLITTERTASK_INDEX);
                     taskNode.Tag = new SplitterTaskTreeItemData(this, m_task_copy as SplitterTaskData);
                 }
-                else if (m_task_copy is ICustomTaskData)
+                else if (m_task_copy is ICustomTaskData cust)
                 {
-                    ICustomTaskData cust = (ICustomTaskData)m_task_copy;
-                    string name = cust.Plugin.NameInfo;
-                    int index = PluginManager.Manager.PluginInfos.FindIndex(delegate(PluginTaskInfo i) { return i.Name == name; });
-                    taskNode = new TreeNode(m_task_copy.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+                    int index = GetCustomTaskImageIndex(cust);
+                    taskNode = new TreeNode(m_task_copy.Name, index, index);
                     taskNode.Tag = new CustomTaskTreeItemData(this, cust);
                 }
 
@@ -1389,7 +1390,11 @@ namespace iba
 
             for (int i = 0; i < customcount; i++)
             {
-                string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, PluginManager.Manager.PluginInfos[i].Name);
+                PluginTaskInfo info = PluginManager.Manager.PluginInfos[i];
+                if (info.IsOutdated)
+                    continue;
+
+                string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, info.Name);
                 m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new ToolStripMenuItem(title, menuImages.Images[NR_TASKS+3+i], new EventHandler(OnNewCustomTaskMenuItem));
             }
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown = new ContextMenuStrip();
@@ -1406,7 +1411,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
             for (int i = 0; i < customcount; i++)
             {
-                m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[i + (int)MenuItemsEnum.NewCustomTask]);
+                var item = m_menuItems[i + (int)MenuItemsEnum.NewCustomTask];
+                if (item != null)
+                    m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(item);
             }
         }
 
@@ -1817,11 +1824,15 @@ namespace iba
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(icust.Name, CUSTOMTASK_INDEX + index, CUSTOMTASK_INDEX + index);
+
+            int imageIndex = GetCustomTaskImageIndex(icust);
+            TreeNode newNode = new TreeNode(icust.Name, imageIndex, imageIndex);
             newNode.Tag = new CustomTaskTreeItemData(this, icust);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            if (confData.AdjustDependencies()) 
+                AdjustFrontIcons(confData);
         }
 
         static public int DataToRootNodeIndex(ConfigurationData data)
@@ -2511,7 +2522,16 @@ namespace iba
             m_configTreeView.Update();
         }
 
-        
+        private int GetCustomTaskImageIndex(ICustomTaskData cust)
+        {
+            string name = cust.Plugin.NameInfo;
+            int index = PluginManager.Manager.PluginInfos.FindIndex(ti => ti.Name == name);
+            if (index < 0)
+                return UNKNOWNTASK_INDEX;
+
+            return CUSTOMTASK_INDEX + index;
+        }
+
         public ToolStripStatusLabel StatusBarLabelErrors
         {
             get {return m_statusBarStripLabel;}

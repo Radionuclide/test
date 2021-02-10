@@ -2432,28 +2432,27 @@ namespace iba.Processing
         {
             lock (m_sd.DatFileStates)
             {
-                if (task.Enabled == false)
+                if (!task.Enabled)
                     return false;
-                else
-                {
-                    bool completed = m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
-                            m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_TRUE ||
-                                m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_FALSE;
-                    if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE)
-                        return !completed;
-                    else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES)
-                        return !completed && 
-                            (m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_SUCCESFULY
-                                || m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_TRUE);
-                    else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_FAILURE)
-                        return DatFileStatus.IsError(m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]])
-                            || (m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FALSE
-                                && !completed);
-                    else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE_DAT)
-                        return !completed
-                            && (DatFileStatus.IsError(m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]])
-                            || m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FALSE);
-                }
+
+                bool completed = m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_SUCCESFULY ||
+                        m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_TRUE ||
+                            m_sd.DatFileStates[filename].States[task] == DatFileStatus.State.COMPLETED_FALSE;
+                if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES_OR_FAILURE)
+                    return !completed;
+                else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_SUCCES)
+                    return !completed &&
+                        (m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_SUCCESFULY
+                            || m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_TRUE);
+                else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_FAILURE)
+                    return DatFileStatus.IsError(m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]])
+                        || (m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FALSE
+                            && !completed);
+                else if (task.WhenToExecute == TaskData.WhenToDo.AFTER_1st_FAILURE_DAT)
+                    return !completed
+                        && (DatFileStatus.IsError(m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]])
+                        || m_sd.DatFileStates[filename].States[m_cd.Tasks[task.Index - 1]] == DatFileStatus.State.COMPLETED_FALSE);
+
                 return false;
             }
         }
@@ -3041,10 +3040,7 @@ namespace iba.Processing
                 DoCustomTask(DatFile, task as CustomTaskData);
 
                 // added by kolesnik - begin
-                memoryUsed =
-                    (((CustomTaskData) task).Plugin as IPluginTaskDataIbaAnalyzer)?.
-                        MonitorData.MemoryUsed
-                    ?? 0;
+                memoryUsed = (((CustomTaskData) task).Plugin as IPluginTaskDataIbaAnalyzer)?.MonitorData.MemoryUsed ?? 0;
                 // added by kolesnik - end
 
             }

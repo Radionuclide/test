@@ -1782,6 +1782,16 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap img_question {
+            get {
+                object obj = ResourceManager.GetObject("img_question", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap img_server {
             get {
                 object obj = ResourceManager.GetObject("img_server", resourceCulture);
@@ -3803,11 +3813,20 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plugin &quot;{0}&quot; not installed, please contact iba Support.
+        ///   Looks up a localized string similar to Plugin &quot;{0}&quot; is not installed. Please contact iba Support to acquire this plugin..
         /// </summary>
         internal static string PluginNotInstalled {
             get {
                 return ResourceManager.GetString("PluginNotInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plugin &quot;{0}&quot; version {1} is not compatible with this version of ibaDatCoordinator. Please contact iba Support for an updated plugin version..
+        /// </summary>
+        internal static string PluginOutdated {
+            get {
+                return ResourceManager.GetString("PluginOutdated", resourceCulture);
             }
         }
         

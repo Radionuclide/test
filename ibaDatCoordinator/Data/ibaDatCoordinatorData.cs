@@ -232,11 +232,9 @@ namespace iba.Data
             {
                 foreach(TaskData task in cd.Tasks)
                 {
-                    CustomTaskData ctd = task as CustomTaskData;
+                    ICustomTaskData ctd = task as ICustomTaskData;
                     if (ctd != null)
-                    {
                         plugins.Add(ctd.Plugin.NameInfo);
-                    }
                 }
             }
             return new List<string>(plugins);

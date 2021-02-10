@@ -578,20 +578,15 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
+
             PluginTaskInfo info = (PluginTaskInfo)(((ToolStripButton)sender).Tag);
-			if (info.IsOutdated)
-			{
-				if (Program.IsServer)
-					ibaLogger.Log(Level.Exception, String.Format(iba.Properties.Resources.PluginIsOutdated, info.Name));
-				else
-					MessageBox.Show(String.Format(iba.Properties.Resources.PluginIsOutdated, info.Name), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return;
-			}
+
             TaskData cust;
             if (info is PluginTaskInfoUNC)
                 cust = new CustomTaskDataUNC(m_data, info);
             else
                 cust = new CustomTaskData(m_data, info);
+
             ICustomTaskData icust = (ICustomTaskData)cust;
             bool IsLicensed = false;
             try
@@ -603,6 +598,7 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
             catch
             {
             }
+
             if (!IsLicensed)
             {
                 MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
@@ -615,13 +611,17 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
  
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
-            int index = PluginManager.Manager.PluginInfos.FindIndex(i => i.Name == info.Name);
-            TreeNode newNode = new TreeNode(icust.Name, MainForm.CUSTOMTASK_INDEX + index, MainForm.CUSTOMTASK_INDEX + index);
+
+            int index = PluginManager.Manager.GetCustomTaskImageIndex(icust);
+            TreeNode newNode = new TreeNode(icust.Name, index, index);
             newNode.Tag = new CustomTaskTreeItemData(m_manager, icust);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+
             newNode.EnsureVisible();
             m_manager.LeftTree.SelectedNode = newNode;
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+
+            if (m_data.AdjustDependencies()) 
+                Program.MainForm.AdjustFrontIcons(m_data);
         }
 
         private void m_rbImmediate_CheckedChanged(object sender, EventArgs e)
@@ -707,6 +707,9 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
 
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
             {
+                if (info.IsOutdated)
+                    continue;
+
                 ToolStripButton bt = new ToolStripButton();
                 bt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
                 bt.AutoSize = false;

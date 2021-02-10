@@ -81,6 +81,10 @@
 mkdir "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
 copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
 copy "$(SolutionDir)Dependencies\Wmknt.dll" "$(SolutionDir)ibaDatCoordinator\bin\debug\plugins"
+
+mkdir "$(SolutionDir)ibaDatCoordinatorService\bin\debug\plugins"
+copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinatorService\bin\debug\plugins"
+copy "$(SolutionDir)Dependencies\Wmknt.dll" "$(SolutionDir)ibaDatCoordinatorService\bin\debug\plugins"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

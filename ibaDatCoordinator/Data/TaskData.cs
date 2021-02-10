@@ -55,7 +55,7 @@ namespace iba.Data
             get { return m_parentCD.Tasks.IndexOf(this); }
         }
 
-        public bool Enabled
+        public virtual bool Enabled
         {
             get { return m_wtodo != WhenToDo.DISABLED; }
         }

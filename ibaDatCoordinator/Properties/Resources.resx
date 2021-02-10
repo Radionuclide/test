@@ -1386,7 +1386,10 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>The target system cannot be accessed:</value>
   </data>
   <data name="PluginNotInstalled" xml:space="preserve">
-    <value>Plugin "{0}" not installed, please contact iba Support</value>
+    <value>Plugin "{0}" is not installed. Please contact iba Support to acquire this plugin.</value>
+  </data>
+  <data name="PluginOutdated" xml:space="preserve">
+    <value>Plugin "{0}" version {1} is not compatible with this version of ibaDatCoordinator. Please contact iba Support for an updated plugin version.</value>
   </data>
   <data name="uploadFileProblem" xml:space="preserve">
     <value>There was an issue uploading the file to the server :</value>
@@ -1855,5 +1858,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="IncompatibleServerVersion" xml:space="preserve">
     <value>Incompatible server version. Server has version {0}. It should have version {1} or higher. Please upgrade the server or downgrade the client.</value>
+  </data>
+  <data name="img_question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
