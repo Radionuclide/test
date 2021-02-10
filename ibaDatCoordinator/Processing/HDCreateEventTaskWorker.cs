@@ -644,6 +644,8 @@ namespace iba.Processing
             catch (Exception e)
             {
                 Logging.ibaLogger.Log(e);
+                writerManager.Dispose();
+                writerManager = null;
             }
 /*            finally
             {
