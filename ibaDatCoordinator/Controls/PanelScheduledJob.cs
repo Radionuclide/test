@@ -245,7 +245,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            m_hdReader.Disconnect();
+            Task.Run(() => m_hdReader.Disconnect()); // Could result into deadlocks when executing on the GUI thread
         }
 
         private void m_cbRetry_CheckedChanged(object sender, EventArgs e)
