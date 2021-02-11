@@ -706,7 +706,7 @@
             Expands all tree nodes
             </summary>
             <param name="maxDepth">
-            If negative, nodes expand untill signals are visible
+            If negative, nodes expand until signals are visible
             </param>
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CollapseAll">
@@ -736,7 +736,7 @@
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UncheckAll">
             <summary>
-            Unchecks all signals
+            Uncheck all signals
             </summary>
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CheckSignalIds(System.Collections.Generic.IEnumerable{System.String})">

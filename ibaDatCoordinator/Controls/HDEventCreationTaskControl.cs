@@ -338,7 +338,7 @@ namespace iba.Controls
         public void LeaveCleanup()
         {
             m_ctrlEvent.ReleaseEditRightsServer();
-            m_ctrlServer.Reader.Disconnect();
+            Task.Run(() => m_ctrlServer.Reader?.Disconnect()); // Could result into deadlocks when executing on the GUI thread when login form needs to be shown
             ResetChannelTrees();
         }
 

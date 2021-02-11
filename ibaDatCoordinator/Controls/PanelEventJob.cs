@@ -272,7 +272,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            Task.Run( () => m_hdReader.Disconnect()); // Could result into deadlocks when executing on the GUI thread
+            Task.Run(() => m_hdReader?.Disconnect()); // Could result into deadlocks when executing on the GUI thread when login form needs to be shown
         }
 
         private void m_cbRetry_CheckedChanged(object sender, EventArgs e)
