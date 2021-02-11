@@ -101,7 +101,7 @@ namespace iba
                 }
 
                 //take a backup
-                RegExport(true);
+                RegExport(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), true);
 
                 //modify:
                 action = 2;
@@ -148,17 +148,17 @@ namespace iba
             }
         }
 
-        public static void RegExport(bool backup)
+        public static void RegExport(string targetDir, bool backup)
         {
             string key1 = @"HKLM\System\CurrentControlSet\Control\Session Manager\SubSystems";
             string key2 = @"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows";
-            string filename1 = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), backup ? "subsystems_backup.reg" : "subsystems_current.reg");
-            string filename2 = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), backup ? "handles_backup.reg" : "handles_current.reg");
-            RegExport(key1, filename1);
-            RegExport(key2, filename2);
+            string filename1 = Path.Combine(targetDir, backup ? "subsystems_backup.reg" : "subsystems_current.reg");
+            string filename2 = Path.Combine(targetDir, backup ? "handles_backup.reg" : "handles_current.reg");
+            RegExportFile(key1, filename1);
+            RegExportFile(key2, filename2);
         }
 
-        private static void RegExport(string key, string filename)
+        private static void RegExportFile(string key, string filename)
         {
             try
             {

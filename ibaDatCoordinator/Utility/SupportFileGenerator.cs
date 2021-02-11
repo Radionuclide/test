@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Processing;
 using iba.Remoting;
 using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.Win32;
 
 namespace iba.Utility
 {
@@ -17,64 +20,91 @@ namespace iba.Utility
         {
             this.parent = parent;
             this.fileNameClientConfiguration = m_filename;
-            SaveInformation();
         }
 
-        private void SaveInformation()
+        public void SaveInformation()
         {
             ZipFile zip = null;
             string host = iba.Properties.Resources.ThisSystem;
+            string supportFileName = "";
+
             try
             {
                 if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
-                    //Warn that ibaPDA server is not connected
+                    //Warn that ibaDatCoordinator server is not connected
                     if (MessageBox.Show(parent, String.Format(iba.Properties.Resources.SupportFileServerNotConnected, Program.ServiceHost),
                         Program.MainForm.saveInformationToolStripMenuItem.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
                         return;
                 }
 
-                string supportFileName = GetSupportFileName();
+                supportFileName = GetSupportFileName();
                 if (String.IsNullOrEmpty(supportFileName))
                     return;
+
                 destDir = Path.GetDirectoryName(supportFileName);
-                string clientFile = Path.Combine(destDir, "client.zip");
-                string serverFile = Path.Combine(destDir, "server.zip");
-                GenerateClientZipFile(Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? supportFileName : clientFile);
-                bool generated = false;
-                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject.TestConnection())
+
+                string clientFile = null;
+                if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE)
                 {
+                    clientFile = Path.Combine(destDir, "client.zip");
+                    GenerateClientZipFile(clientFile);
+                }
+
+
+                string serverFile = null;
+                if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                {
+                    serverFile = Path.Combine(destDir, "standalone.zip");
+                    GenerateServerZipFile(serverFile, fileNameClientConfiguration);
+                }
+                else if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject.TestConnection())
+                {
+                    serverFile = Path.Combine(destDir, "server.zip");
                     GetServerZipFile(serverFile);
                     host = Program.ServiceHost;
-                    generated = File.Exists(serverFile);
-				}
+                }
 
-				if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-                    return;
-                else
-                    using (WaitCursor wait = new WaitCursor())
-                    {
-                        zip = ZipFile.Create(supportFileName);
-                        zip.BeginUpdate();
-                        zip.Add(clientFile,"client.zip");
-                        if (generated) zip.Add(serverFile,"server.zip");
-                        zip.CommitUpdate();
-                        zip.Close();
+                using (WaitCursor wait = new WaitCursor())
+                {
+                    zip = ZipFile.Create(supportFileName);
+                    zip.BeginUpdate();
+
+                    if (clientFile != null && File.Exists(clientFile))
+                        zip.Add(clientFile, Path.GetFileName(clientFile));
+
+                    if (serverFile != null && File.Exists(serverFile))
+                        zip.Add(serverFile, Path.GetFileName(serverFile));
+
+                    zip.CommitUpdate();
+                    zip.Close();
+
+                    if (clientFile != null && File.Exists(clientFile))
                         File.Delete(clientFile);
-                        if (generated) File.Delete(serverFile);
-                    }
-                MessageBox.Show(parent, String.Format(iba.Properties.Resources.SupportFileSuccess, host, supportFileName),
-                    Program.MainForm.saveInformationToolStripMenuItem.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    if (serverFile != null && File.Exists(serverFile))
+                        File.Delete(serverFile);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(parent, String.Format(iba.Properties.Resources.SupportFileError, host, ex.Message),
+                MessageBox.Show(parent, String.Format(iba.Properties.Resources.SupportFilesError, supportFileName, ex.Message),
                     Program.MainForm.saveInformationToolStripMenuItem.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
             finally
             {
                 if (zip != null)
                     zip.Close();
+            }
+
+            if (MessageBox.Show(parent, String.Format(Properties.Resources.SupportFilesOk, supportFileName),
+                Program.MainForm.saveInformationToolStripMenuItem.Text, MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+            {
+                Regex cleanupRegex = new Regex(@"[\\/]+");
+                string filePath = cleanupRegex.Replace(supportFileName, @"\");
+                Process.Start("explorer.exe", String.Format("/select, \"{0}\"", filePath));
             }
         }
 
@@ -94,7 +124,7 @@ namespace iba.Utility
 
                 DateTime dtNow = DateTime.Now;
                 string initialPath = "";
-                Profiler.ProfileString(true,"Client", "SupportFileDir", ref initialPath, "");
+                Profiler.ProfileString(true, "Client", "SupportFileDir", ref initialPath, "");
                 if (!String.IsNullOrEmpty(initialPath))
                     fd.InitialDirectory = initialPath;
 
@@ -117,7 +147,7 @@ namespace iba.Utility
             sb.AppendLine("Customer: " + licInfo.Customer);
         }
 
-        static private void GenerateInfo(ZipFile zip,string targetDir)
+        static private void GenerateInfo(ZipFile zip, string targetDir, string targetFile)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -127,7 +157,7 @@ namespace iba.Utility
                 sb.AppendLine(DatCoVersion.GetVersion());
             }
             catch
-            {}
+            { }
 
             try
             {
@@ -137,7 +167,7 @@ namespace iba.Utility
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(MyIbaAnalyzer);
             }
             catch
-            {}
+            { }
 
             try
             {
@@ -146,10 +176,10 @@ namespace iba.Utility
                 sb.AppendLine(myIbaFile.GetType().Assembly.GetName().Version.ToString());
                 sb.Append("ibaFiles Version (GetVersion): ");
                 sb.AppendLine(myIbaFile.GetVersion());
-                myIbaFile.Dispose(); 
+                myIbaFile.Dispose();
             }
             catch
-            {}
+            { }
 
 
             try
@@ -157,19 +187,19 @@ namespace iba.Utility
                 GetDongleInfo(sb);
             }
             catch
-            {}
+            { }
 
             try
             {
-                string infoFile = Path.Combine(targetDir, "info.txt");
-                SystemInfoCollector.SaveSystemInfo(sb.ToString(), "", infoFile);
+                string fullPath = Path.Combine(targetDir, targetFile);
+                SystemInfoCollector.SaveSystemInfo(sb.ToString(), "", fullPath);
                 zip.BeginUpdate();
-                zip.Add(infoFile, @"info.txt");
+                zip.Add(fullPath, targetFile);
                 zip.CommitUpdate();
-                File.Delete(infoFile);
+                File.Delete(fullPath);
             }
             catch
-            {}
+            { }
         }
 
         private void GenerateClientZipFile(string target)
@@ -177,34 +207,26 @@ namespace iba.Utility
             using (WaitCursor wait = new WaitCursor())
             {
                 ZipFile zip = ZipFile.Create(target);
-                GenerateInfo(zip,Path.GetDirectoryName(target));
 
+                GenerateInfo(zip, Path.GetDirectoryName(target), "clientinfo.txt");
 
                 try
                 {
-                    string outFile;
-                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject.TestConnection())
+                    string outFile = Path.Combine(destDir, "ibaAnalyzer.reg");
+                    if (RegistryExporter.ExportIbaAnalyzerKey(outFile))
                     {
-                        outFile = Program.CommunicationObject.GetIbaAnalyzerRegKey();
-                    }
-                    else
-                    {
-                        outFile = Path.Combine(destDir, "ibaAnalyzer.reg");
-                        Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
-                    }
-                    zip.BeginUpdate();
-                    zip.Add(outFile, "ibaAnalyzer.reg");
-                    zip.CommitUpdate();
-                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                        Program.CommunicationObject.DeleteFile(outFile);
-                    else
-                        File.Delete(outFile);
-                }
-				catch
-				{
-				}
+                        zip.BeginUpdate();
+                        zip.Add(outFile, "ibaAnalyzer.reg");
+                        zip.CommitUpdate();
 
-				try
+                        File.Delete(outFile);
+                    }
+                }
+                catch
+                {
+                }
+
+                try
                 {
                     //logfiles, local
                     string logdir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -230,60 +252,6 @@ namespace iba.Utility
                 {
                 }
 
-
-                if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-                {
-                    string programdir = Path.GetDirectoryName(typeof(MainForm).Assembly.Location);
-                    try
-                    { //exception.txt
-                        string file = Path.Combine(programdir, "exception.txt");
-                        if (File.Exists(file))
-                        {
-                            zip.BeginUpdate();
-                            zip.Add(file, "exception.txt");
-                            zip.CommitUpdate();
-                        }
-                    }
-                    catch
-                    {
-                    }
-
-                    try
-                    {
-                        RegistryOptimizer.RegExport(false);
-                        string[] regFiles = Directory.GetFiles(programdir, "*.reg");
-                        foreach (string file in regFiles)
-                        {
-                            try
-                            {
-                                zip.BeginUpdate();
-                                zip.Add(file, Path.GetFileName(file));
-                                zip.CommitUpdate();
-                            }
-                            catch
-                            {
-                            }
-                        }
-
-                        try
-                        {
-                            var myList = TaskManager.Manager.AdditionalFileNames();
-                            foreach (var p in myList)
-                            {
-                                zip.BeginUpdate();
-                                zip.Add(p.Key, p.Value);
-                                zip.CommitUpdate();
-                            }
-                        }
-                        catch
-                        {
-                        }
-                    }
-                    catch
-                    {
-                    }
-                }
-
                 try
                 {
                     //localconf //if exists
@@ -297,6 +265,39 @@ namespace iba.Utility
                 catch
                 {
                 }
+
+                // Create list of installed software
+                try
+                {
+                    string softwareInfoFile = Path.Combine(destDir, "software_info.txt");
+                    SystemInfoCollector.SaveInstalledSoftware(softwareInfoFile);
+                    
+                    zip.BeginUpdate();
+                    zip.Add(softwareInfoFile, Path.GetFileName(softwareInfoFile));
+                    zip.CommitUpdate();
+
+                    File.Delete(softwareInfoFile);
+                }
+                catch
+                { }
+
+                //Export installation history files
+                try
+                {
+                    string installHistoryX86;
+                    string installHistoryX64;
+                    SystemInfoCollector.GetInstallHistoryFiles(out installHistoryX86, out installHistoryX64);
+                    
+                    zip.BeginUpdate();
+                    if (installHistoryX86 != null && File.Exists(installHistoryX86))
+                        zip.Add(installHistoryX86, "InstallHistory_x86.txt");
+                    if (installHistoryX64 != null && File.Exists(installHistoryX64))
+                        zip.Add(installHistoryX64, "InstallHistory_x64.txt");
+                    zip.CommitUpdate();
+                }
+                catch
+                { }
+
                 zip.Close();
                 zip = null;
             }
@@ -304,43 +305,75 @@ namespace iba.Utility
 
         private void GetServerZipFile(string target)
         {
-			//if (Program.ServiceIsLocal)
-			//{
-			//	using (WaitCursor wait = new WaitCursor())
-			//	{
-			//		GenerateServerZipFile(target);
-			//	}
-			//	return;
-			//}
-			//else
-			//{
-				ServerFileInfo inf;
-                using (WaitCursor wait = new WaitCursor())
+            //if (Program.ServiceIsLocal)
+            //{
+            //	using (WaitCursor wait = new WaitCursor())
+            //	{
+            //		GenerateServerZipFile(target);
+            //	}
+            //	return;
+            //}
+            //else
+            //{
+            ServerFileInfo inf;
+            using (WaitCursor wait = new WaitCursor())
+            {
+                inf = Program.CommunicationObject.GenerateSupportZipFile();
+                if (inf == null)
                 {
-                    inf = Program.CommunicationObject.GenerateSupportZipFile();
-					if (inf == null)
-					{
-						return;
-					};
-                }
-                using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(new ServerFileInfo[] {inf}, target, Program.CommunicationObject.GetServerSideFileHandler(), true))
-                {
-                    downloadForm.ShowDialog(parent);
-                }
-				Program.CommunicationObject.DeleteFile(inf.LocalFileName);
-			//}
-		}
+                    return;
+                };
+            }
+            using (FilesDownloaderForm downloadForm = new FilesDownloaderForm(new ServerFileInfo[] { inf }, target, Program.CommunicationObject.GetServerSideFileHandler(), true))
+            {
+                downloadForm.ShowDialog(parent);
+            }
+            Program.CommunicationObject.DeleteFile(inf.LocalFileName);
+            //}
+        }
 
-        public static void GenerateServerZipFile(string target)
+        //This is running on the server!
+        public static void GenerateServerZipFile(string target, string serverConfigFile)
         {
             ZipFile zip = ZipFile.Create(target);
+            string destDir = Path.GetDirectoryName(target);
 
-            GenerateInfo(zip, Path.GetDirectoryName(target));
+            GenerateInfo(zip, destDir, "serverinfo.txt");
+
+            // Create list of installed software
+            try
+            {
+                string softwareInfoFile = Path.Combine(destDir, "software_info.txt");
+                SystemInfoCollector.SaveInstalledSoftware(softwareInfoFile);
+
+                zip.BeginUpdate();
+                zip.Add(softwareInfoFile, Path.GetFileName(softwareInfoFile));
+                zip.CommitUpdate();
+
+                File.Delete(softwareInfoFile);
+            }
+            catch
+            { }
+
+            //Export installation history files
+            try
+            {
+                string installHistoryX86;
+                string installHistoryX64;
+                SystemInfoCollector.GetInstallHistoryFiles(out installHistoryX86, out installHistoryX64);
+
+                zip.BeginUpdate();
+                if (installHistoryX86 != null && File.Exists(installHistoryX86))
+                    zip.Add(installHistoryX86, "InstallHistory_x86.txt");
+                if (installHistoryX64 != null && File.Exists(installHistoryX64))
+                    zip.Add(installHistoryX64, "InstallHistory_x64.txt");
+                zip.CommitUpdate();
+            }
+            catch
+            { }
 
             try
             {
-                //TODO retrieve log files from server instead
-
                 //logfiles, server
                 string logdir = DataPath.Folder();
                 if (Directory.Exists(logdir))
@@ -380,8 +413,19 @@ namespace iba.Utility
 
             try
             {
-                RegistryOptimizer.RegExport(false);
-                string[] regFiles = Directory.GetFiles(programdir, "*.reg");
+                string tempDir = Path.Combine(DataPath.Folder(), "Temp");
+                if(!Directory.Exists(tempDir))
+                    Directory.CreateDirectory(tempDir);
+
+                //ibaAnalyzer registry settings
+                string analyzerRegFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
+                RegistryExporter.ExportIbaAnalyzerKey(analyzerRegFile);
+
+                //System registry settings
+                RegistryOptimizer.RegExport(tempDir, false);
+
+                //Zip all generated .reg files
+                string[] regFiles = Directory.GetFiles(tempDir, "*.reg");
                 foreach (string file in regFiles)
                 {
                     try
@@ -389,6 +433,8 @@ namespace iba.Utility
                         zip.BeginUpdate();
                         zip.Add(file, Path.GetFileName(file));
                         zip.CommitUpdate();
+
+                        File.Delete(file);
                     }
                     catch
                     {
@@ -401,11 +447,13 @@ namespace iba.Utility
 
             try
             { //serverconf if exists
-                string file = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "lastsaved.xml");
-                if (!String.IsNullOrEmpty(file) && File.Exists(file))
+                if(String.IsNullOrEmpty(serverConfigFile))
+                    serverConfigFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "lastsaved.xml");
+
+                if (File.Exists(serverConfigFile))
                 {
                     zip.BeginUpdate();
-                    zip.Add(file,Path.GetFileName(file));
+                    zip.Add(serverConfigFile, Path.GetFileName(serverConfigFile));
                     zip.CommitUpdate();
                 }
             }
@@ -413,23 +461,41 @@ namespace iba.Utility
             {
             }
 
-                var myList = TaskManager.Manager.AdditionalFileNames();
-				foreach (var p in myList)
-				{
-					try
-					{
-						zip.BeginUpdate();
-						zip.Add(p.Key, p.Value);
-						zip.CommitUpdate();
-					}
-					catch
-					//catch (Exception ex)
-					{
-						//MessageBox.Show(ex.Message);
-					}
-				}
+            var myList = TaskManager.Manager.AdditionalFileNames();
+            foreach (var p in myList)
+            {
+                try
+                {
+                    zip.BeginUpdate();
+                    zip.Add(p.Key, p.Value);
+                    zip.CommitUpdate();
+                }
+                catch
+                //catch (Exception ex)
+                {
+                    //MessageBox.Show(ex.Message);
+                }
+            }
+
+            //Save dongle info
+            string dongleFile = Path.Combine(destDir, "dongle.vwr");
+            if (SystemInfoCollector.ExportDongleInfo(dongleFile))
+            {
+                try
+                {
+                    zip.BeginUpdate();
+                    zip.Add(dongleFile, Path.GetFileName(dongleFile));
+                    zip.CommitUpdate();
+
+                    File.Delete(dongleFile);
+                }
+                catch
+                { }
+            }
+
             zip.Close();
             zip = null;
         }
+
     }
 }

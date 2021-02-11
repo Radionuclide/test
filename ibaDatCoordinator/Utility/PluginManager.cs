@@ -361,7 +361,11 @@ namespace iba.Utility
             List<string> res = new List<string>();
             foreach(string name in plugins)
             {
-                res.Add(m_pluginInfos.Find(item => item.Name == name).Description);
+                var info = m_pluginInfos.Find(item => item.Name == name);
+                if (info != null)
+                    res.Add(info.Description);
+                else
+                    res.Add(name);
             }
             return res;
         }

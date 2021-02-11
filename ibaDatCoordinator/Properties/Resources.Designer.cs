@@ -4681,11 +4681,12 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There was an error generating the support file for {0} : {1}.
+        ///   Looks up a localized string similar to An error occurred while generating support zip file at {0}:
+        ///{1}.
         /// </summary>
-        internal static string SupportFileError {
+        internal static string SupportFilesError {
             get {
-                return ResourceManager.GetString("SupportFileError", resourceCulture);
+                return ResourceManager.GetString("SupportFilesError", resourceCulture);
             }
         }
         
@@ -4699,11 +4700,11 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Support file generatated successfully for {0}; saved to  {1}.
+        ///   Looks up a localized string similar to Successfully generated support zip file at {0}. Do you wish to navigate to this file?.
         /// </summary>
-        internal static string SupportFileSuccess {
+        internal static string SupportFilesOk {
             get {
-                return ResourceManager.GetString("SupportFileSuccess", resourceCulture);
+                return ResourceManager.GetString("SupportFilesOk", resourceCulture);
             }
         }
         

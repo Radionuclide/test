@@ -1322,11 +1322,12 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="SupportFileServerNotConnected" xml:space="preserve">
     <value>The ibaDatCoordinator server {0} is not connected. The support file will not contain any information about the ibaDatCoordinator server. Do you wish to generate the support file anyway?</value>
   </data>
-  <data name="SupportFileError" xml:space="preserve">
-    <value>There was an error generating the support file for {0} : {1}</value>
+  <data name="SupportFilesError" xml:space="preserve">
+    <value>An error occurred while generating support zip file at {0}:
+{1}</value>
   </data>
-  <data name="SupportFileSuccess" xml:space="preserve">
-    <value>Support file generatated successfully for {0}; saved to  {1}</value>
+  <data name="SupportFilesOk" xml:space="preserve">
+    <value>Successfully generated support zip file at {0}. Do you wish to navigate to this file?</value>
   </data>
   <data name="ThisSystem" xml:space="preserve">
     <value>this system</value>

@@ -388,7 +388,7 @@ namespace iba
         {
             string tempDir = System.IO.Path.GetTempPath();
             string tempZipfile = Path.Combine(tempDir, "server.zip");
-            SupportFileGenerator.GenerateServerZipFile(tempZipfile);
+            SupportFileGenerator.GenerateServerZipFile(tempZipfile, null);
             return new ServerFileInfo(tempZipfile);
         }
 
