@@ -119,6 +119,7 @@ namespace iba.Controls
                             m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
                         else if (!m_ctrlServer.Reader.UserManager.IsActive() || user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
                             m_ctrlEvent.StoreFilter = null;
+                        m_ctrlEvent.RequestEditRightsHDServer(m_ctrlEvent.GetStoreNames());
                     }
                 }
                 else
