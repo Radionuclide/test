@@ -17,26 +17,28 @@ namespace iba.Controls
         public ErrorPluginTaskControl()
         {
             InitializeComponent();
+
+            lbError.Font = new Font(lbError.Font.FontFamily, lbError.Font.SizeInPoints + 2, FontStyle.Bold);
         }
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             ICustomTaskData data = datasource as ICustomTaskData;
             ErrorPluginTaskData errorData = data?.Plugin as ErrorPluginTaskData;
-            if (!String.IsNullOrEmpty(errorData?.ErrorMessage))
-                lbError.Text = errorData.ErrorMessage;
-            else
+            if (String.IsNullOrEmpty(errorData?.ErrorMessage))
+            {
                 lbError.Text = "Something unknown went wrong here";
+                return;
+            }
+
+            string text = errorData.ErrorMessage;
+            text = text.Replace(". ", ".\r\n"); //New line after each sentence
+            lbError.Text = text;
         }
 
         public void LoadData(object datasource, ICommonTaskControl parentcontrol)
         {
             //This won't be called because we are not part of the CommonTaskControl
-            //ErrorPluginTaskData data = datasource as ErrorPluginTaskData;
-            //if (!String.IsNullOrEmpty(data?.ErrorMessage))
-            //    lbError.Text = data.ErrorMessage;
-            //else
-            //    lbError.Text = "Something unknown went wrong here";
         }
 
         public void SaveData()

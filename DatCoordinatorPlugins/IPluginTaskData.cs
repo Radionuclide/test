@@ -88,13 +88,13 @@ namespace iba.Plugins
 
 	/// <summary>
 	/// Interface implemented by a plugin task, data part in the case that the plugin needs
-	/// to use the datcoordinator network shares handling functionallity
+	/// to use the datcoordinator network shares handling functionality
 	/// Implementation must have the Serializable attribute
 	/// </summary>
 	public interface IPluginTaskDataUNC : IPluginTaskData
     {
         /// <summary>
-        /// Extention of the generated output file, e.g.: ".xml"
+        /// Extension of the generated output file, e.g.: ".xml"
         /// </summary>
         string Extension
         {
