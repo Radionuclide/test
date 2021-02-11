@@ -48,7 +48,7 @@ namespace iba.Remoting
 
             //Registering secure channel
             System.Collections.Hashtable secureProps = new System.Collections.Hashtable(props);
-            secureProps["name"] = "SecureRemoteChanel";
+            secureProps["name"] = "SecureRemoteChannel";
             secureProps["prefix"] = "gstcp";
             GenuineTcpChannel secureChannel = new GenuineTcpChannel(secureProps, null, null);
             ChannelServices.RegisterChannel(secureChannel, false);

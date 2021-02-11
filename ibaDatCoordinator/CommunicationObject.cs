@@ -10,6 +10,7 @@ using iba.Remoting;
 using System.Runtime.Remoting.Lifetime;
 using iba.Dialogs;
 using System.Threading;
+using Belikov.GenuineChannels.Security;
 
 /**
  * Description: class used to communicate with the service
@@ -489,6 +490,17 @@ namespace iba
         public string ServerVersion => serverVersion;
         public bool IsSecure => bIsSecure;
 
+        private string SecuritySessionName
+        {
+            get
+            {
+                if (bIsSecure)
+                    return ServerRemotingManager.SecureChannelName;
+                else
+                    return SecuritySessionServices.DefaultContext.Name;
+            }
+        }
+
         public bool TestConnection()
         {
             try
@@ -515,7 +527,14 @@ namespace iba
         {
             try
             {
-                return m_com.GenerateSupportZipFile();
+                //This can take a long time
+                SecuritySessionParameters par = new SecuritySessionParameters(
+                        SecuritySessionName,
+                        SecuritySessionAttributes.None, TimeSpan.FromMinutes(3));
+                using (new SecurityContextKeeper(par))
+                {
+                    return m_com.GenerateSupportZipFile();
+                }
             }
             catch (Exception ex)
             {

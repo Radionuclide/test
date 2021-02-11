@@ -558,20 +558,60 @@ namespace iba.Utility
 
         public static void GetInstallHistoryFiles(out string installHistoryX86, out string installHistoryX64)
         {
-            installHistoryX86 = null;
-            installHistoryX64 = null;
-
-            installHistoryX86 = Path.GetDirectoryName(typeof(SystemInfoCollector).Assembly.Location);
-            installHistoryX86 = Path.Combine(installHistoryX86, "..\\..\\InstallHistory.txt");
-            if (!File.Exists(installHistoryX86))
-                installHistoryX86 = null;
-
-            if (Environment.Is64BitOperatingSystem && (installHistoryX86 != null))
+            //Try the default for x86
+            installHistoryX86 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "iba\\InstallHistory.txt");
+            if(!File.Exists(installHistoryX86))
             {
-                installHistoryX64 = installHistoryX86.Replace(" (x86)", "");
-                if ((installHistoryX64 == installHistoryX86) || !File.Exists(installHistoryX64))
-                    installHistoryX64 = null;
+                installHistoryX86 = null;
+                if (!Environment.Is64BitProcess)
+                {
+                    //Try relative to the installation directory
+                    string installDir = Path.GetDirectoryName(typeof(SystemInfoCollector).Assembly.Location);
+                    installHistoryX86 = FindFileInParentDirectories(installDir, "InstallHistory.txt");
+                }
             }
+
+            if(!Environment.Is64BitOperatingSystem)
+            {
+                installHistoryX64 = null;
+                return;
+            }
+
+            //Get 64 bit program files directory
+            string programFiles64 = Environment.Is64BitProcess ? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) : Environment.GetEnvironmentVariable("ProgramW6432");
+            if(programFiles64 == null)
+            {
+                installHistoryX64 = null;
+                return;
+            }
+
+            //Try the default for x64
+            installHistoryX64 = Path.Combine(programFiles64, "iba\\InstallHistory.txt");
+            if(!File.Exists(installHistoryX64))
+            {
+                installHistoryX64 = null;
+                if (Environment.Is64BitProcess)
+                {
+                    //Try relative to the installation directory
+                    string installDir = Path.GetDirectoryName(typeof(SystemInfoCollector).Assembly.Location);
+                    installHistoryX64 = FindFileInParentDirectories(installDir, "InstallHistory.txt");
+                }
+            }
+        }
+
+        private static string FindFileInParentDirectories(string dirName, string fileName)
+        {
+            DirectoryInfo dirInfo = Directory.GetParent(dirName);
+            while (dirInfo != null)
+            {
+                string fileToTest = Path.Combine(dirInfo.FullName, fileName);
+                if (File.Exists(fileToTest))
+                    return fileToTest;
+
+                dirInfo = dirInfo.Parent;
+            }
+
+            return null;
         }
 
         private static void LogIbaProductsVersionInfo(StreamWriter writer)
