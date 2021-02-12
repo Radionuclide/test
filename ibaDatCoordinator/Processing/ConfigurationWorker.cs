@@ -4689,7 +4689,7 @@ namespace iba.Processing
             if (!hDCreateEventTaskWorkers.TryGetValue(task, out worker))
             {
                 RemoveOutDatedHDCreateEventTaskWorkers(task);
-                worker = new HDCreateEventTaskWorker(task);
+                worker = new HDCreateEventTaskWorker(task, this);
                 hDCreateEventTaskWorkers.Add(task, worker);
             }
 

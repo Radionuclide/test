@@ -19,7 +19,7 @@ namespace iba.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -1290,6 +1290,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to generate float field {0}: {1}.
+        /// </summary>
+        internal static string GenerateFloatFieldFailed {
+            get {
+                return ResourceManager.GetString("GenerateFloatFieldFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to generate text field {0}: {1}.
+        /// </summary>
+        internal static string GenerateTextFieldFailed {
+            get {
+                return ResourceManager.GetString("GenerateTextFieldFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon greenarrow {
@@ -2363,7 +2381,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pulse signal was not found.
+        ///   Looks up a localized string similar to {0}: Pulse signal was not found.
         /// </summary>
         internal static string logHDEventTaskPulseSignalError {
             get {

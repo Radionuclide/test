@@ -15,6 +15,7 @@ using Crownwood.DotNetMagic.Controls;
 using iba.Client.Archiver;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace iba.Controls
 {
@@ -389,7 +390,7 @@ namespace iba.Controls
                             storeNames.Add(config.StoreName);
                         }
 
-                        HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
+                        HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data, null);
                         worker.WriteEvents(storeNames, null, validationForm.AddRange);
 
                     }
@@ -504,6 +505,27 @@ namespace iba.Controls
             return priorities;
         }
 
+        void CheckLocalEventData(LocalEventData localEventData, EventWriterSignal serverData)
+        {
+            // Check synchronisation between numeric/text fields between ibaHD data and local data.
+            if (localEventData == null || serverData == null || serverData.FloatFields == null || serverData.TextFields == null)
+                return;
+
+            for (int i = localEventData.NumericChannels.Count - 1; i >= 0; i--)
+            {
+                Tuple<string, string> numericField = localEventData.NumericChannels[i];
+                if (!serverData.FloatFields.Contains(numericField.Item1))
+                    localEventData.NumericChannels.RemoveAt(i);
+            }
+
+            for (int i = localEventData.TextChannels.Count - 1; i >= 0; i--)
+            {
+                Tuple<string, string> textField = localEventData.TextChannels[i];
+                if (!serverData.TextFields.Contains(textField.Item1))
+                    localEventData.TextChannels.RemoveAt(i);
+            }
+        }
+
         void Get(NodeCollection nodes, List<string> path, List<HDCreateEventTaskData.EventData> localSignals, string store)
         {
             foreach (Node node in nodes)
@@ -538,10 +560,12 @@ namespace iba.Controls
                     {
                         if (localEventData.Tag != null && localEventData.Tag is HDCreateEventTaskData.EventData)
                             eventData = (HDCreateEventTaskData.EventData)localEventData.Tag;
-                        
+
                         eventData.ID = sigNode.id;
                         eventData.Name = eventWriterSignal.Name;
                         eventData.StoreName = store;
+
+                        CheckLocalEventData(localEventData, eventWriterSignal);
 
                         eventData.NumericFields = localEventData?.NumericChannels;
 
@@ -618,7 +642,7 @@ namespace iba.Controls
             {
                 Cursor = Cursors.WaitCursor;
 
-                HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data);
+                HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data, null);
                 Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(m_analyzerManager.Analyzer, m_datFilePath);
 
                 //worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData, HdValidationMessage.Ignore);

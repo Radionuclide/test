@@ -26,13 +26,14 @@ namespace iba.Processing
         IHdWriterManager writerManager = null;
         IHdWriter writer = null;
         IEnumerable<HdWriterConfig> cfgs = null;
+        ConfigurationWorker m_configWorker;
         string m_dataFile;
 
-        public HDCreateEventTaskWorker(HDCreateEventTaskData localData)
+        public HDCreateEventTaskWorker(HDCreateEventTaskData localData, ConfigurationWorker configWorker)
         {
             m_ibaAnalyzer = null;
             m_dataFile = null;
-
+            m_configWorker = configWorker;
             m_data = localData;
         }
 
@@ -424,7 +425,15 @@ namespace iba.Processing
 
                             object oStamps = null;
                             object oValues = null;
-                            mon.Execute(delegate () { m_ibaAnalyzer.EvaluateToStringArray(textField.Item2, 0, out oStamps, out oValues); });
+
+                            try
+                            {
+                                mon.Execute(delegate () { m_ibaAnalyzer.EvaluateToStringArray(textField.Item2, 0, out oStamps, out oValues); });
+                            }
+                            catch (Exception e)
+                            {
+                                m_configWorker?.Log(Logging.Level.Warning, string.Format(Properties.Resources.GenerateTextFieldFailed, textField.Item2, e), dataFile);
+                            }                            
 
                             double[] stamps = oStamps as double[];
                             string[] values = oValues as string[];
@@ -439,11 +448,18 @@ namespace iba.Processing
                             double timebase = 0;
                             double xoffset = 0;
                             object data = null;
-                            mon.Execute(() => { m_ibaAnalyzer.EvaluateToArray(eventData.PulseSignal, 0, out timebase, out xoffset, out data); });
+                            try
+                            {
+                                mon.Execute(() => { m_ibaAnalyzer.EvaluateToArray(eventData.PulseSignal, 0, out timebase, out xoffset, out data); });
+                            }
+                            catch (Exception e)
+                            {
+                                throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskPulseSignalError + $": {e}", eventData.Name));
+                            }
 
                             double[] pulseValues = data as double[];
                             if (pulseValues == null || pulseValues.Length == 0)
-                                throw new HDCreateEventException(Properties.Resources.logHDEventTaskPulseSignalError);
+                                throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskPulseSignalError, eventData.Name));
                             // Determine intervals
                             bool bInPulse = false;
                             bool bGenerateIncomming = false;
