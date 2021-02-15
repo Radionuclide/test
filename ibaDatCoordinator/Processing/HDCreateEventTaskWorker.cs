@@ -494,6 +494,7 @@ namespace iba.Processing
                             foreach (var interval in intervals)
                             {
                                 EventWriterItem incoming;
+                                EventWriterItem outgoing;
 
                                 double stamp = (eventData.Slope == HDCreateEventTaskData.TriggerSlope.Rising || eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling) ? interval.Item1 : interval.Item2;
 
@@ -526,8 +527,15 @@ namespace iba.Processing
                                     to = stamp;
 
                                     if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling || eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
-                                        generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, false));
+                                    {
+                                        outgoing = GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, false);
 
+                                        // Add the outgoing event to the list of generated events
+                                        if (generated.ContainsKey(eventData.StoreName))
+                                            generated[eventData.StoreName].Items.Add(outgoing);
+                                        else
+                                            generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { outgoing });
+                                    }
                                 }
                                 //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults, interval.Item1, interval.Item2));
                             }
