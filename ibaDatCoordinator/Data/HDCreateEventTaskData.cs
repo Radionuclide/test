@@ -243,8 +243,8 @@ namespace iba.Data
 
         public string EncryptedEventPassword
         {
-            get { return Crypt.Decrypt(m_password); }
-            set { m_password = Crypt.Encrypt(value); }
+            get { return Crypt.Encrypt(m_password); }
+            set { m_password = Crypt.Decrypt(value); }
         }
 
         private Dictionary<string, string> m_fullEventConfig;
