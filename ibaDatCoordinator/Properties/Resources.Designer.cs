@@ -970,6 +970,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to connect to the ibaHD-Server.
+        /// </summary>
+        internal static string ErrorConnectIbaHD {
+            get {
+                return ResourceManager.GetString("ErrorConnectIbaHD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No next trigger scheduled! Job will be halted. Please review your trigger settings..
         /// </summary>
         internal static string ErrorScheduleNextTrigger {
@@ -984,6 +993,15 @@ namespace iba.Properties {
         internal static string ErrorServerConnect {
             get {
                 return ResourceManager.GetString("ErrorServerConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to write events.
+        /// </summary>
+        internal static string ErrorWriteEvents {
+            get {
+                return ResourceManager.GetString("ErrorWriteEvents", resourceCulture);
             }
         }
         

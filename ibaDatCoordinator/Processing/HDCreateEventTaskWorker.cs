@@ -613,6 +613,20 @@ namespace iba.Processing
 
                 cfgs = newCfgs;
 
+                // Check the connection status of the existing writer and try to reconnect if needed
+                if (writer != null && writer.Status != HdWriterStatus.Open)
+                {
+                    Logging.ibaLogger.Log(Logging.Level.Debug, $"Connection the the ibaHD-server was lost: Reconnecting");
+                    writer.Reconnect();
+
+                    if (writer.Status != HdWriterStatus.Open)
+                    {
+                        Logging.ibaLogger.Log(Logging.Level.Debug, $"Failed to reconnect the ibaHD writer. Status: {writer.Status}");
+                        writer.Dispose();
+                        writer = null;
+                    }
+                }
+
                 if (writerManager == null)
                     writerManager = HdClient.CreateWriterManager();
 
@@ -657,6 +671,14 @@ namespace iba.Processing
                         }
 
                     }
+
+                    if (writer.Status != HdWriterStatus.Open)
+                    {
+                        m_configWorker?.Log(Logging.Level.Exception, Properties.Resources.ErrorConnectIbaHD);
+                        writer.Dispose();
+                        writer = null;
+                        return summary?.Errors;
+                    }
                 }
 
                 foreach (HdWriterConfig cfg in cfgs)
@@ -667,23 +689,12 @@ namespace iba.Processing
             }
             catch (Exception e)
             {
+                m_configWorker?.Log(Logging.Level.Exception, Properties.Resources.ErrorWriteEvents);
                 Logging.ibaLogger.Log(e);
                 writerManager.Dispose();
                 writerManager = null;
             }
-/*            finally
-            {
-                if (writerManager != null)
-                {
-                    try
-                    {
-                        writerManager.Dispose();
-                    }
-                    catch
-                    { }
-                }
-            }
-*/
+
             return summary?.Errors;
         }
 

@@ -1869,4 +1869,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="GenerateTextFieldFailed" xml:space="preserve">
     <value>Failed to generate text field {0}: {1}</value>
   </data>
+  <data name="ErrorConnectIbaHD" xml:space="preserve">
+    <value>Failed to connect to the ibaHD-Server</value>
+  </data>
+  <data name="ErrorWriteEvents" xml:space="preserve">
+    <value>Failed to write events</value>
+  </data>
 </root>
