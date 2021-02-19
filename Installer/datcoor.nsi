@@ -399,6 +399,21 @@ Section -PreInstall
   
 SectionEnd
 
+!macro InstallLanguageCommon LANGPREFIX LANGDISPLAY
+
+  DetailPrint "Installing ${LANGDISPLAY} common files"
+
+  ;Copy files
+  SetOutPath "$INSTDIR\${LANGPREFIX}"
+  File "..\Passolo\${LANGPREFIX}\ibaDatCoordinator.resources.dll"
+  File "..\InstallFiles\Obfuscated\${LANGPREFIX}\hdClient.resources.dll"
+  File "..\InstallFiles\Obfuscated\${LANGPREFIX}\hdClientFiles.resources.dll"
+  File "..\Dependencies\${LANGPREFIX}\hdCommon.resources.dll"
+  File "..\Dependencies\${LANGPREFIX}\hd_plugin.resources.dll"
+  File "..\Dependencies\${LANGPREFIX}\ibaUser*.resources.dll"
+
+!macroend
+
 ;Installation steps that are common for client, server and standalone version
 Section -Common
   SetOverwrite on
@@ -471,28 +486,15 @@ Section -Common
   ;help files
   File "..\iDatCo_HTML_Help\*.chm"
   
-  ;localisation
-  SetOutPath "$INSTDIR\de"
-  File "..\Passolo\de\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\de\hdClient.resources.dll"
-  File "..\InstallFiles\Obfuscated\de\hdClientFiles.resources.dll"
-  File "..\Dependencies\de\hdCommon.resources.dll"
-  File "..\Dependencies\de\hd_plugin.resources.dll"
-  File "..\Dependencies\de\ibaUser*.resources.dll"
-  SetOutPath "$INSTDIR\fr"
-  File "..\Passolo\fr\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\fr\hdClient.resources.dll"
-  File "..\InstallFiles\Obfuscated\fr\hdClientFiles.resources.dll"
-  File "..\Dependencies\fr\hdCommon.resources.dll"
-  File "..\Dependencies\fr\hd_plugin.resources.dll"
-  File "..\Dependencies\fr\ibaUser*.resources.dll"
-  SetOutPath "$INSTDIR\es"
-  File "..\Passolo\es\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\es\hdClient.resources.dll"
-  File "..\InstallFiles\Obfuscated\es\hdClientFiles.resources.dll"
-  File "..\Dependencies\es\hdCommon.resources.dll"
-  File "..\Dependencies\es\hd_plugin.resources.dll"
-  File "..\Dependencies\es\ibaUser*.resources.dll"
+  ;Copy resources
+  !insertmacro InstallLanguageCommon "de" "German"
+  !insertmacro InstallLanguageCommon "fr" "French"
+  !insertmacro InstallLanguageCommon "es" "Spanish"
+  ;!insertmacro InstallLanguageCommon "it" "Italian"
+  ;!insertmacro InstallLanguageCommon "ru" "Russian"
+  ;!insertmacro InstallLanguageCommon "zh-Hans" "Chinese"
+  ;!insertmacro InstallLanguageCommon "ja" "Japanese"
+  ;!insertmacro InstallLanguageCommon "pt" "Portuguese"
   
   ;plugins
   SetOutPath "$INSTDIR\plugins"
@@ -519,6 +521,16 @@ Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   
 SectionEnd
 
+!macro InstallLanguageService LANGPREFIX LANGDISPLAY
+
+  DetailPrint "Installing ${LANGDISPLAY} service files"
+
+  ;Copy files
+  SetOutPath "$INSTDIR\${LANGPREFIX}"
+  File "..\Passolo\${LANGPREFIX}\ibaDatCoordinatorStatus.resources.dll"
+
+!macroend
+
 Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   SetOverwrite on
   
@@ -528,13 +540,15 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
 
-  ;localisation
-  SetOutPath "$INSTDIR\de"
-  File "..\Passolo\de\ibaDatCoordinatorStatus.resources.dll"
-  SetOutPath "$INSTDIR\fr"
-  File "..\Passolo\fr\ibaDatCoordinatorStatus.resources.dll"
-  SetOutPath "$INSTDIR\es"
-  File "..\Passolo\es\ibaDatCoordinatorStatus.resources.dll"
+  ;Copy resources
+  !insertmacro InstallLanguageService "de" "German"
+  !insertmacro InstallLanguageService "fr" "French"
+  !insertmacro InstallLanguageService "es" "Spanish"
+  ;!insertmacro InstallLanguageService "it" "Italian"
+  ;!insertmacro InstallLanguageService "ru" "Russian"
+  ;!insertmacro InstallLanguageService "zh-Hans" "Chinese"
+  ;!insertmacro InstallLanguageService "ja" "Japanese"
+  ;!insertmacro InstallLanguageService "pt" "Portuguese"
 
   ;Install service
   DetailPrint $(TEXT_SERVICE_INSTALL)
@@ -817,6 +831,21 @@ Section Uninstall
   SetAutoClose true
 SectionEnd
 
+!macro UnInstallLanguageCommon LANGPREFIX LANGDISPLAY
+
+  DetailPrint "Uninstalling ${LANGDISPLAY} common files"
+
+  Delete "$INSTDIR\${LANGPREFIX}\ibaDatCoordinator.resources.dll"
+  Delete "$INSTDIR\${LANGPREFIX}\hdClient.resources.dll"
+  Delete "$INSTDIR\${LANGPREFIX}\hdClientFiles.resources.dll"
+  Delete "$INSTDIR\${LANGPREFIX}\hdCommon.resources.dll"
+  Delete "$INSTDIR\${LANGPREFIX}\hd_plugin.resources.dll"
+  Delete "$INSTDIR\${LANGPREFIX}\ibaUser*.resources.dll"
+
+  RMDir "$INSTDIR\${LANGPREFIX}"
+
+!macroend
+
 
 Function un.UninstallTasks
 
@@ -880,34 +909,33 @@ Function un.UninstallTasks
 
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"
-  ;resources
-  Delete "$INSTDIR\de\ibaDatCoordinator.resources.dll"
-  Delete "$INSTDIR\de\hdClient.resources.dll"
-  Delete "$INSTDIR\de\hdClientFiles.resources.dll"
-  Delete "$INSTDIR\de\hdCommon.resources.dll"
-  Delete "$INSTDIR\de\hd_plugin.resources.dll"
-  Delete "$INSTDIR\de\ibaUser*.resources.dll"
-  RMDir "$INSTDIR\de"
-  Delete "$INSTDIR\fr\ibaDatCoordinator.resources.dll"
-  Delete "$INSTDIR\fr\hdClient.resources.dll"
-  Delete "$INSTDIR\fr\hdClientFiles.resources.dll"
-  Delete "$INSTDIR\fr\hdCommon.resources.dll"
-  Delete "$INSTDIR\fr\hd_plugin.resources.dll"
-  Delete "$INSTDIR\fr\ibaUser*.resources.dll"
-  RMDir "$INSTDIR\fr"
-  Delete "$INSTDIR\es\ibaDatCoordinator.resources.dll"
-  Delete "$INSTDIR\es\hdClient.resources.dll"
-  Delete "$INSTDIR\es\hdClientFiles.resources.dll"
-  Delete "$INSTDIR\es\hdCommon.resources.dll"
-  Delete "$INSTDIR\es\hd_plugin.resources.dll"
-  Delete "$INSTDIR\es\ibaUser*.resources.dll"
-  RMDir "$INSTDIR\es"
+  
+  ;Remove resources
+  !insertmacro UnInstallLanguageCommon "de" "German"
+  !insertmacro UnInstallLanguageCommon "fr" "French"
+  !insertmacro UnInstallLanguageCommon "es" "Spanish"
+  ;!insertmacro UnInstallLanguageCommon "it" "Italian"
+  ;!insertmacro UnInstallLanguageCommon "ru" "Russian"
+  ;!insertmacro UnInstallLanguageCommon "zh-Hans" "Chinese"
+  ;!insertmacro UnInstallLanguageCommon "ja" "Japanese"
+  ;!insertmacro UnInstallLanguageCommon "pt" "Portuguese"
+
   ;plugins
   Delete "$INSTDIR\plugins\hd_plugin.dll"
   RMDir "$INSTDIR\plugins"
   ;Remove install dir
   RMDir "$INSTDIR"
 FunctionEnd
+
+!macro UnInstallLanguageService LANGPREFIX LANGDISPLAY
+
+  DetailPrint "Uninstalling ${LANGDISPLAY} service files"
+
+  Delete "$INSTDIR\${LANGPREFIX}\ibaDatCoordinatorStatus.resources.dll"
+
+  RMDir "$INSTDIR\${LANGPREFIX}"
+
+!macroend
 
 Function un.UninstallService
   ;Trigger close of all server status instances
@@ -934,9 +962,15 @@ Function un.UninstallService
     Quit
   okStatus:
   
-  Delete "$INSTDIR\de\ibaDatCoordinatorStatus.resources.dll"
-  Delete "$INSTDIR\fr\ibaDatCoordinatorStatus.resources.dll"
-  Delete "$INSTDIR\es\ibaDatCoordinatorStatus.resources.dll"
+  ;Remove resources
+  !insertmacro UnInstallLanguageService "de" "German"
+  !insertmacro UnInstallLanguageService "fr" "French"
+  !insertmacro UnInstallLanguageService "es" "Spanish"
+  ;!insertmacro UnInstallLanguageService "it" "Italian"
+  ;!insertmacro UnInstallLanguageService "ru" "Russian"
+  ;!insertmacro UnInstallLanguageService "zh-Hans" "Chinese"
+  ;!insertmacro UnInstallLanguageService "ja" "Japanese"
+  ;!insertmacro UnInstallLanguageService "pt" "Portuguese"
 
   ;Clear uninstall is busy flag
   WriteRegDWORD HKLM "SOFTWARE\iba\ibaPDA\Uninstall" "isBusy" 0
