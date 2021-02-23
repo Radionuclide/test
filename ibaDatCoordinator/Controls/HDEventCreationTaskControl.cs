@@ -275,7 +275,7 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
 
-            m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, false, m_data.Username, m_data.Password, "");
+            m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, false, m_data.Username, m_data.HDPassword, "");
 
             if (m_ctrlServer.Reader.IsConnected())
                 m_ctrlEvent.ReadOnly = false;
@@ -386,7 +386,7 @@ namespace iba.Controls
                         List<string> storeNames = new List<string>();
                         foreach (EventConfig config in changedConfigs)
                         {
-                            m_data.FullEventConfig.Add(config.StoreName, m_ctrlEvent.SerialzeServerEvents(config.StoreName, m_ctrlServer.Server, m_ctrlServer.Port, m_data.Guid, m_data.Name, m_data.Username, m_data.Password));
+                            m_data.FullEventConfig.Add(config.StoreName, m_ctrlEvent.SerialzeServerEvents(config.StoreName, m_ctrlServer.Server, m_ctrlServer.Port, m_data.Guid, m_data.Name, m_data.Username, m_data.HDPassword));
                             storeNames.Add(config.StoreName);
                         }
 
@@ -420,7 +420,7 @@ namespace iba.Controls
             m_data.Server = m_ctrlServer.Server;
             m_data.ServerPort = m_ctrlServer.Port;
             m_data.Username = m_ctrlServer.Username;
-            m_data.Password = m_ctrlServer.Password;
+            m_data.HDPassword = m_ctrlServer.Password;
 
             List<HDCreateEventTaskData.EventData> eventData = m_data.EventSettings;
             bool bSaveEventSettings = m_ctrlServer.Reader.IsConnected()
@@ -428,7 +428,7 @@ namespace iba.Controls
                                         || m_ctrlServer.Server != m_data.Server
                                         || m_ctrlServer.Port != m_data.ServerPort
                                         || m_ctrlServer.Username != m_data.Username
-                                        || m_ctrlServer.Password != m_data.Password;
+                                        || m_ctrlServer.Password != m_data.HDPassword;
 
             if (bSaveEventSettings && !m_ctrlEvent.ReadOnly)
             {
@@ -460,7 +460,7 @@ namespace iba.Controls
                                 m_data.FullEventConfig.Clear();
                                 foreach (string storeName in storeNames)
                                 {
-                                    m_data.FullEventConfig[storeName] = m_ctrlEvent.SerialzeServerEvents(storeName, m_data.Server, m_data.ServerPort, m_data.Guid, m_data.Name, m_data.Username, m_data.Password);
+                                    m_data.FullEventConfig[storeName] = m_ctrlEvent.SerialzeServerEvents(storeName, m_data.Server, m_data.ServerPort, m_data.Guid, m_data.Name, m_data.Username, m_data.HDPassword);
                                 }
                             }
                             break;
