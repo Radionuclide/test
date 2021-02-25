@@ -30,6 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HDEventWizard));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbOutgoing = new System.Windows.Forms.ComboBox();
+            this.lbOutgoing = new System.Windows.Forms.Label();
+            this.cbIncoming = new System.Windows.Forms.ComboBox();
+            this.lbIncoming = new System.Windows.Forms.Label();
+            this.chkOutgoing = new System.Windows.Forms.CheckBox();
+            this.chkInverted = new System.Windows.Forms.CheckBox();
             this.cbPriority = new System.Windows.Forms.ComboBox();
             this.cbTriggerMode = new System.Windows.Forms.ComboBox();
             this.cbEventText = new System.Windows.Forms.ComboBox();
@@ -49,6 +55,12 @@
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.cbOutgoing);
+            this.groupBox1.Controls.Add(this.lbOutgoing);
+            this.groupBox1.Controls.Add(this.cbIncoming);
+            this.groupBox1.Controls.Add(this.lbIncoming);
+            this.groupBox1.Controls.Add(this.chkOutgoing);
+            this.groupBox1.Controls.Add(this.chkInverted);
             this.groupBox1.Controls.Add(this.cbPriority);
             this.groupBox1.Controls.Add(this.cbTriggerMode);
             this.groupBox1.Controls.Add(this.cbEventText);
@@ -59,6 +71,42 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // cbOutgoing
+            // 
+            this.cbOutgoing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOutgoing.FormattingEnabled = true;
+            resources.ApplyResources(this.cbOutgoing, "cbOutgoing");
+            this.cbOutgoing.Name = "cbOutgoing";
+            // 
+            // lbOutgoing
+            // 
+            resources.ApplyResources(this.lbOutgoing, "lbOutgoing");
+            this.lbOutgoing.Name = "lbOutgoing";
+            // 
+            // cbIncoming
+            // 
+            this.cbIncoming.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbIncoming.FormattingEnabled = true;
+            resources.ApplyResources(this.cbIncoming, "cbIncoming");
+            this.cbIncoming.Name = "cbIncoming";
+            // 
+            // lbIncoming
+            // 
+            resources.ApplyResources(this.lbIncoming, "lbIncoming");
+            this.lbIncoming.Name = "lbIncoming";
+            // 
+            // chkOutgoing
+            // 
+            resources.ApplyResources(this.chkOutgoing, "chkOutgoing");
+            this.chkOutgoing.Name = "chkOutgoing";
+            this.chkOutgoing.UseVisualStyleBackColor = true;
+            // 
+            // chkInverted
+            // 
+            resources.ApplyResources(this.chkInverted, "chkInverted");
+            this.chkInverted.Name = "chkInverted";
+            this.chkInverted.UseVisualStyleBackColor = true;
             // 
             // cbPriority
             // 
@@ -72,6 +120,7 @@
             this.cbTriggerMode.FormattingEnabled = true;
             resources.ApplyResources(this.cbTriggerMode, "cbTriggerMode");
             this.cbTriggerMode.Name = "cbTriggerMode";
+            this.cbTriggerMode.SelectedIndexChanged += new System.EventHandler(this.cbTriggerMode_SelectedIndexChanged);
             // 
             // cbEventText
             // 
@@ -170,5 +219,11 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TreeView dummyTree;
         private System.Windows.Forms.ComboBox cbPriority;
+        private System.Windows.Forms.CheckBox chkOutgoing;
+        private System.Windows.Forms.CheckBox chkInverted;
+        private System.Windows.Forms.ComboBox cbOutgoing;
+        private System.Windows.Forms.Label lbOutgoing;
+        private System.Windows.Forms.ComboBox cbIncoming;
+        private System.Windows.Forms.Label lbIncoming;
     }
 }
