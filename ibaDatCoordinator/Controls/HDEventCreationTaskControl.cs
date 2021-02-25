@@ -29,7 +29,6 @@ namespace iba.Controls
         RepositoryItemChannelTreeEdit m_pulseEditor, m_timeEditor, m_timeEditorOut, m_channelEditor, m_textEditor;
         TriggerControl triggerControl;
 
-        string m_pdoFilePath, m_datFilePath;
         AnalyzerTreeControl channelTree;
         AnalyzerTreeControl numericTree;
 
@@ -41,8 +40,6 @@ namespace iba.Controls
         public HDEventCreationTaskControl()
         {
             InitializeComponent();
-
-            m_pdoFilePath = m_datFilePath = "";
 
             ImageList list = new ImageList();
             list.ImageSize = new System.Drawing.Size(16, 16);
@@ -289,28 +286,21 @@ namespace iba.Controls
             else
                 m_ctrlEvent.StoreFilter = null;      // Set the storeFilter to null as all dataStores should be shown. This will also request edit locks on all hd event stores.
 
-            m_pdoFilePath = m_data.AnalysisFile;
-            m_tbPDO.Text = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? m_data.AnalysisFile : Path.GetFileName(m_data.AnalysisFile);
-
-            m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
+            m_tbPDO.Text = m_data.AnalysisFile;
 
             if (Environment.MachineName != m_data.DatFileHost)
             {
-                m_datFilePath = "";
                 m_tbDAT.Text = "";
-                m_tbPwdDAT.Text = "";
             }
             else
             {
-                m_datFilePath = m_data.DatFile;
-                m_tbDAT.Text = m_datFilePath;
-                m_tbPwdDAT.Text = "";
+                m_tbDAT.Text = m_data.DatFile;
             }
 
+            m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
+            m_tbPwdDAT.Text = "";
             m_tbPwdDAT.TextChanged += m_tbPwdDAT_TextChanged;
-
-            UpdateSources();
-
+            
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
             m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
@@ -413,9 +403,9 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            m_data.AnalysisFile = m_pdoFilePath;
+            m_data.AnalysisFile = m_tbPDO.Text;
             m_data.DatFileHost = Environment.MachineName;
-            m_data.DatFile = m_datFilePath;
+            m_data.DatFile = m_tbDAT.Text;
             m_data.DatFilePassword = m_tbPwdDAT.Text;
             m_data.Server = m_ctrlServer.Server;
             m_data.ServerPort = m_ctrlServer.Port;
@@ -583,7 +573,7 @@ namespace iba.Controls
 
         void UpdateSources()
         {
-            m_analyzerManager.UpdateSource(m_pdoFilePath, m_datFilePath, m_tbPwdDAT.Text);
+            m_analyzerManager.UpdateSource(m_tbPDO.Text, m_tbDAT.Text, m_tbPwdDAT.Text);
         }
 
         private void m_tbPwdDAT_TextChanged(object sender, EventArgs e)
@@ -597,36 +587,30 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
 			{
 				m_tbDAT.Text = datFile;
-				UpdateSources();
-				loadAnalyzerTreeDataTask();
 			}
         }
 
         private void m_btnOpenPDO_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFilePath, m_datFilePath);
+			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_tbPDO.Text, m_tbDAT.Text);
 		}
 
         void UploadPdoFile(bool messageOnNoChanges)
         {
-			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(messageOnNoChanges, this, m_pdoFilePath, m_analyzerManager, m_data.ParentConfigurationData);
+			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(messageOnNoChanges, this, m_tbPDO.Text, m_analyzerManager, m_data.ParentConfigurationData);
 			UpdateSources();
 			loadAnalyzerTreeDataTask();
 		}
 
 		private void DatTextChanged(object sender, EventArgs e)
         {
-            m_datFilePath = m_tbDAT.Text;
             UpdateSources();
-
             loadAnalyzerTreeDataTask();
         }
 
         private void PDOTextChanged(object sender, EventArgs e)
         {
-            m_pdoFilePath = m_tbPDO.Text;
             UpdateSources();
-
             loadAnalyzerTreeDataTask();
         }
 
@@ -643,7 +627,7 @@ namespace iba.Controls
                 Cursor = Cursors.WaitCursor;
 
                 HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data, null);
-                Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(m_analyzerManager.Analyzer, m_datFilePath);
+                Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(m_analyzerManager.Analyzer, m_tbDAT.Text);
 
                 //worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData, HdValidationMessage.Ignore);
 
@@ -661,11 +645,10 @@ namespace iba.Controls
         private void m_btnBrowsePDO_Click(object sender, EventArgs e)
         {
 			string localPath;
-			if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref m_pdoFilePath, out localPath))
+            string pdoFilePath = m_tbPDO.Text;
+            if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref pdoFilePath, out localPath))
 			{
-                m_tbPDO.Text = localPath;
-                UpdateSources();
-                loadAnalyzerTreeDataTask();
+                m_tbPDO.Text = pdoFilePath;
 			}
         }
 
