@@ -81,7 +81,7 @@ namespace iba.Processing
                     DateTime dtStart = new DateTime();
                     int microSeconds = 0;
                     m_ibaAnalyzer.GetStartTime(ref dtStart, ref microSeconds);                    
-                    dtStart.AddTicks(microSeconds * 10);
+                    dtStart = dtStart.AddTicks(microSeconds * 10);
 
                     if (sfi.UtcOffsetValid)
                     {
