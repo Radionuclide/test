@@ -122,13 +122,172 @@
     <value>Top, Bottom, Left</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="cbOutgoing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 266</value>
+  </data>
+  <data name="cbOutgoing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>297, 21</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cbOutgoing.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;cbOutgoing.Name" xml:space="preserve">
+    <value>cbOutgoing</value>
+  </data>
+  <data name="&gt;&gt;cbOutgoing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbOutgoing.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;cbOutgoing.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lbOutgoing.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbOutgoing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 246</value>
+  </data>
+  <data name="lbOutgoing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 13</value>
+  </data>
+  <data name="lbOutgoing.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="lbOutgoing.Text" xml:space="preserve">
+    <value>Outgoing event:</value>
+  </data>
+  <data name="&gt;&gt;lbOutgoing.Name" xml:space="preserve">
+    <value>lbOutgoing</value>
+  </data>
+  <data name="&gt;&gt;lbOutgoing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbOutgoing.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;lbOutgoing.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="cbIncoming.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 222</value>
+  </data>
+  <data name="cbIncoming.Size" type="System.Drawing.Size, System.Drawing">
+    <value>297, 21</value>
+  </data>
+  <data name="cbIncoming.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;cbIncoming.Name" xml:space="preserve">
+    <value>cbIncoming</value>
+  </data>
+  <data name="&gt;&gt;cbIncoming.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbIncoming.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;cbIncoming.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lbIncoming.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbIncoming.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbIncoming.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 202</value>
+  </data>
+  <data name="lbIncoming.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 13</value>
+  </data>
+  <data name="lbIncoming.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="lbIncoming.Text" xml:space="preserve">
+    <value>Incoming event:</value>
+  </data>
+  <data name="&gt;&gt;lbIncoming.Name" xml:space="preserve">
+    <value>lbIncoming</value>
+  </data>
+  <data name="&gt;&gt;lbIncoming.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbIncoming.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;lbIncoming.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="chkOutgoing.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkOutgoing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkOutgoing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 224</value>
+  </data>
+  <data name="chkOutgoing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>275, 17</value>
+  </data>
+  <data name="chkOutgoing.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="chkOutgoing.Text" xml:space="preserve">
+    <value>Additionally generate outgoing events on falling edge</value>
+  </data>
+  <data name="&gt;&gt;chkOutgoing.Name" xml:space="preserve">
+    <value>chkOutgoing</value>
+  </data>
+  <data name="&gt;&gt;chkOutgoing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkOutgoing.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;chkOutgoing.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="chkInverted.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkInverted.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 201</value>
+  </data>
+  <data name="chkInverted.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 17</value>
+  </data>
+  <data name="chkInverted.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="chkInverted.Text" xml:space="preserve">
+    <value>Use an inverted trigger pulse</value>
+  </data>
+  <data name="&gt;&gt;chkInverted.Name" xml:space="preserve">
+    <value>chkInverted</value>
+  </data>
+  <data name="&gt;&gt;chkInverted.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkInverted.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;chkInverted.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="cbPriority.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 130</value>
   </data>
   <data name="cbPriority.Size" type="System.Drawing.Size, System.Drawing">
     <value>297, 21</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cbPriority.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
@@ -142,7 +301,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;cbPriority.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>6</value>
   </data>
   <data name="cbTriggerMode.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 174</value>
@@ -163,7 +322,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;cbTriggerMode.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
   <data name="cbEventText.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 84</value>
@@ -184,7 +343,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;cbEventText.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>8</value>
   </data>
   <data name="cbEventName.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 44</value>
@@ -205,7 +364,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;cbEventName.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>9</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -232,7 +391,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>10</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -259,7 +418,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>11</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -286,7 +445,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>12</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -313,7 +472,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>13</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>

@@ -38,6 +38,23 @@ namespace iba.Client.Archiver
                 Properties.Resources.TriggerPerPulse
             });
 
+            cbOutgoing.DisplayMember = "Text";
+            cbOutgoing.ValueMember = "Value";
+
+            cbOutgoing.DataSource = new[] {
+                new { Text = Properties.Resources.HDEventTask_ChannelUnassigned, Value = HDCreateEventTaskData.UnassignedExpression },
+                new { Text = Properties.Resources.EndTime, Value = HDCreateEventTaskData.EndTime },
+                new { Text = Properties.Resources.StartTime, Value = HDCreateEventTaskData.StartTime}
+            };
+
+            cbIncoming.DisplayMember = "Text";
+            cbIncoming.ValueMember = "Value";
+
+            cbIncoming.DataSource = new[] {
+                new { Text = Properties.Resources.EndTime, Value = HDCreateEventTaskData.EndTime },
+                new { Text = Properties.Resources.StartTime, Value = HDCreateEventTaskData.StartTime}
+            };
+
             template = new HDEventTemplate();
 
             //Load template settings
@@ -66,6 +83,25 @@ namespace iba.Client.Archiver
        private void btAdd_Click(object sender, EventArgs e)
         {
             template.TriggerMode = cbTriggerMode.SelectedIndex == 0 ? HDCreateEventTaskData.HDEventTriggerEnum.PerFile : HDCreateEventTaskData.HDEventTriggerEnum.PerSignalPulse;
+            template.TimeSignalOutgoing = (string)cbOutgoing.SelectedValue;
+            template.TimeSignalIncoming = (string)cbIncoming.SelectedValue;
+
+            // Determine the slopes for the trigger 
+            if (chkOutgoing.Checked)
+            {
+                if (chkInverted.Checked)
+                    template.Slope = HDCreateEventTaskData.TriggerSlope.FallingRising;
+                else
+                    template.Slope = HDCreateEventTaskData.TriggerSlope.RisingFalling;
+            }
+            else
+            {
+                if (chkInverted.Checked)
+                    template.Slope = HDCreateEventTaskData.TriggerSlope.Falling;
+                else
+                    template.Slope = HDCreateEventTaskData.TriggerSlope.Rising;
+            }
+
             template.Priority = cbPriority.Text;
             DialogResult = DialogResult.OK;
         }
@@ -98,7 +134,7 @@ namespace iba.Client.Archiver
         private void Tree_AfterCheck(TreeControl tc, NodeEventArgs e)
         {
 
-            if (e.Node.Tag is IbaAnalyzer.ISignalTreeNode)
+            if (e.Node.Tag is IbaAnalyzer.ISignalTreeNode && e.Node.Nodes.Count == 0)
             {
                 IbaAnalyzer.ISignalTreeNode signal = (IbaAnalyzer.ISignalTreeNode)e.Node.Tag;
                 if (e.Node.Checked)
@@ -145,10 +181,16 @@ namespace iba.Client.Archiver
         {
             for (int i = selectedSignals.Count - 1; i >= 0; i--)
             {
-                Node node = signalTree.GetSignalNode(selectedSignals[i].channelId);
+                Node node = null;
+                try
+                {
+                    node = signalTree.GetSignalNode(selectedSignals[i]?.channelId);
+                }
+                catch (Exception) { }
                 if (node != null)
                     node.Checked = false;
             }
+            selectedSignals.Clear();
         }
 
         public void SetSignals(List<string> ids)
@@ -176,7 +218,33 @@ namespace iba.Client.Archiver
         {
             throw new NotImplementedException();
         }
-        #endregion*/
+        #endregion
+
+        private void cbTriggerMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int iMode = cbTriggerMode.SelectedIndex;
+
+            if (iMode == 0) // Use per file trigger
+            {
+                cbIncoming.Show();
+                cbOutgoing.Show();
+                lbIncoming.Show();
+                lbOutgoing.Show();
+
+                chkOutgoing.Hide();
+                chkInverted.Hide();
+            }
+            else // Use per signal pulse trigger
+            {
+                cbIncoming.Hide();
+                cbOutgoing.Hide();
+                lbIncoming.Hide();
+                lbOutgoing.Hide();
+
+                chkInverted.Show();
+                chkOutgoing.Show();
+            }
+        }
     }
 
     class HDEventTemplate
@@ -203,6 +271,9 @@ namespace iba.Client.Archiver
         public NameOption EventComment2;
         public NameOption EventText;
         public HDCreateEventTaskData.HDEventTriggerEnum TriggerMode;
+        public string TimeSignalIncoming;
+        public string TimeSignalOutgoing;
+        public HDCreateEventTaskData.TriggerSlope Slope;
 
         public string Priority;
         
@@ -213,6 +284,9 @@ namespace iba.Client.Archiver
 
             eventConfig.PulseSignal = signal.channelId;
             eventConfig.TriggerMode = TriggerMode;
+            eventConfig.TimeSignal = TimeSignalIncoming;
+            eventConfig.TimeSignalOutgoing = TimeSignalOutgoing;
+            eventConfig.Slope = Slope;
             LocalEventData localEvent = new LocalEventData("", "");
             localEvent.Tag = eventConfig;
             ControlEventTreeData controlEventTreeData = new ControlEventTreeData(eventServerConfig);

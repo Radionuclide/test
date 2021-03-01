@@ -1166,6 +1166,11 @@
             Size (in memory) for a single data block
             </summary>
         </member>
+        <member name="M:iba.HD.Common.HdWriterData.DumpDebugInfo">
+            <summary>
+            Creates some information about this data. Should only be used when debugging errors.
+            </summary>
+        </member>
         <member name="M:iba.HD.Common.TimeWriterSlice.#ctor(iba.HD.Common.DataType,System.Int32,System.Byte[],System.Byte[])">
             <param name="x_data">x data</param>
             <param name="y_data">y data</param>

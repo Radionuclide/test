@@ -207,7 +207,7 @@ namespace iba.Data
             set { m_datFilePassword = value; }
         }
 
-        public string EncryptedPassword
+        public string EncryptedDatFilePassword
         {
             get { return Crypt.Encrypt(m_datFilePassword); }
             set { m_datFilePassword = Crypt.Decrypt(value); }
@@ -235,13 +235,13 @@ namespace iba.Data
 
         private string m_password;
         [XmlIgnore]
-        public string Password
+        public string HDPassword
         {
             get { return m_password; }
             set { m_password = value; }
         }
 
-        public string EncryptedEventPassword
+        public string EncryptedHDPassword
         {
             get { return Crypt.Encrypt(m_password); }
             set { m_password = Crypt.Decrypt(value); }

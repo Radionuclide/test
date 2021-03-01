@@ -81,7 +81,7 @@ namespace iba.Processing
                     DateTime dtStart = new DateTime();
                     int microSeconds = 0;
                     m_ibaAnalyzer.GetStartTime(ref dtStart, ref microSeconds);                    
-                    dtStart.AddTicks(microSeconds * 10);
+                    dtStart = dtStart.AddTicks(microSeconds * 10);
 
                     if (sfi.UtcOffsetValid)
                     {
@@ -286,7 +286,7 @@ namespace iba.Processing
                 }
             }
             SlimEventWriterConfig config = new SlimEventWriterConfig(hdWriterOrigin, storeId, writerSignalConfigs.ToArray(), true);
-            config.Password = task.Password;
+            config.Password = task.HDPassword;
             config.Username = task.Username;
             return config;
         }
@@ -302,7 +302,7 @@ namespace iba.Processing
                 {
                     EventWriterConfig config = new EventWriterConfig(hdWriterOrigin, storeId, new EventWriterSignal[] { }, true);
                     config.Username = task.Username;
-                    config.Password = task.Password;
+                    config.Password = task.HDPassword;
                     config.ServerEventWriterConfig = task.FullEventConfig[store];
                     writerConfigs.Add(config);
                 }
