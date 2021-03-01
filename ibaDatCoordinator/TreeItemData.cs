@@ -612,10 +612,52 @@ namespace iba
             return ctrl;
         }
     }
-    #endregion
+	#endregion
 
-    #region StatusTreeItemData
-    public class StatusTreeItemData : TreeItemData
+
+	#region OPCUAWriterTaskTreeItemData
+	public class OPCUAWriterTaskTreeItemData : TreeItemData
+	{
+		public OPCUAWriterTaskTreeItemData(IPropertyPaneManager propManager, OPCUAWriterTaskData tdc)
+			: base(propManager)
+		{
+			m_tdc = tdc;
+		}
+
+		public override string What
+		{
+			get { return "OPCUAWriterTask"; }
+		}
+
+		protected OPCUAWriterTaskData m_tdc;
+
+		public override object DataSource
+		{
+			get
+			{
+				return m_tdc;
+			}
+			set
+			{
+				m_tdc = value as OPCUAWriterTaskData;
+			}
+		}
+
+		public override Control CreateControl()
+		{
+			Control ctrl = manager.PropertyPanes["OPCUAWriterTaskControl"] as Control;
+			if (ctrl == null)
+			{
+				ctrl = new CommonTaskControl(new OPCUAWriterTaskControl());
+				manager.PropertyPanes["OPCUAWriterTaskControl"] = ctrl;
+			}
+			return ctrl;
+		}
+	}
+	#endregion
+
+	#region StatusTreeItemData
+	public class StatusTreeItemData : TreeItemData
     {
         public StatusTreeItemData(IPropertyPaneManager propManager, ConfigurationData dat)
             : base(propManager)

@@ -91,6 +91,9 @@ namespace iba.Data
         /// <summary> SNMP: PrSpecific.5 </summary>
         public readonly ExtMonFolder FolderEventBasedJobs;
 
+        /// <summary> SNMP: PrSpecific.5 </summary>
+        public readonly ExtMonFolder FolderComputedValues;
+
         #endregion
 
 
@@ -136,6 +139,47 @@ namespace iba.Data
                 FolderEventBasedJobs = new ExtMonFolder(FolderRoot,
                 @"Event jobs", @"eventJobs", @"EventJobs",
                 @"List of all event jobs.", new IbaSnmpOid(5)));
+
+            FolderRoot.Children.Add(
+                FolderComputedValues = new ExtMonFolder(FolderRoot,
+                @"Computed values", @"computedValues", @"ComputedValues",
+                @"List of all computed values.", new IbaSnmpOid(6)));
+        }
+		
+		public void RebuildComputedValuesFolder(OPCUAWriterTaskData data)
+		{
+            RemoveComputedValuesFolder(data);
+
+            var group = new ComputedValuesInfo(FolderComputedValues, (uint)FolderComputedValues.Children.Count + 1, data);
+            FolderComputedValues.Children.Add(group);
+
+            // check consistency between mib name and oid
+            //Debug.Assert(jobInfo.SnmpLeastId == indexWithinFolder);
+            //Debug.Assert(jobInfo.SnmpFullMibName.Contains($"Job{jobInfo.SnmpLeastId}"));
+        }
+        public void UpdateComputedValuesFolderValues(OPCUAWriterTaskData data)
+        {
+            foreach (var task in FolderComputedValues.Children)
+            {
+                if (task is ComputedValuesInfo info)
+                    if (info.dataId == data.Guid)
+                    {
+                        info.Update(data);
+                        return;
+                    }
+            }
+        }
+        public void RemoveComputedValuesFolder(OPCUAWriterTaskData data)
+        {
+            FolderComputedValues.Children.RemoveAll
+                (
+                    (ExtMonNode node) => 
+                    {
+                        if (node is ComputedValuesInfo info)
+                            return (info.dataId == data.Guid);
+                        return false;
+                    }                
+                );
         }
 
         public void Reset()
@@ -208,6 +252,8 @@ namespace iba.Data
                 // it will be rebuilt either:
                 //  * on first request to any existing node
                 //  * or automatically on tick of _treeValidatorTimer
+
+                Debug.WriteLine("ACHTUNG!!1  IsStructureValid = false");
                 IsStructureValid = false;
             };
 
@@ -1724,16 +1770,78 @@ namespace iba.Data
             }
         }
 
+        static int ind = 0;
+        public class ComputedValuesInfo : ExtMonGroup
+        {
+            public Guid dataId {get; private set;}
 
-        #endregion
+			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OPCUAWriterTaskData data)
+				: base(parent, JobAgeThreshold, snmpLeastId)
+			{
+                dataId = data.Guid;
+				Caption = data.FolderName ?? System.IO.Path.GetFileName(data.AnalysisFile);
+				SnmpFullMibName = $@"eventJob{{{data.Guid}}}";
+				Description = $@"Properties of event job OPC UA.";               
+
+                foreach (var record in data.Records)
+				{
+                    string name = "AAAA" + ind.ToString();
+                    ind++;
+                    if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Number)
+					    AddChildVariable<double>(
+                            record.Name, name,
+						    "Computed value",
+						    SNMP_AUTO_LEAST_ID);
+                    else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
+                        AddChildVariable<string>(
+                            record.Name, record.Name, 
+                            "Computed value",
+                            SNMP_AUTO_LEAST_ID);
+                    else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
+                        AddChildVariable<bool>(
+                            record.Name, record.Name,
+                            "Computed value",
+                            SNMP_AUTO_LEAST_ID);
+                    else
+                        System.Diagnostics.Debug.Assert(false);
+                }
+                Update(data);
+			}
+
+			private void PrivateReset()
+			{
+                //TODO nothing to do?
+			}
+            public void Update(OPCUAWriterTaskData data)
+            {
+                if (Children.Count != data.Records.Count)
+                   Debug.Assert(false);
+                for (int i = 0; i < Children.Count; i++)
+                {
+                    if (Children[i] is ExtMonVariable<double> childd && data.Records[i].Value is double vald && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Number)
+                        childd.Value = vald;
+                    else if (Children[i] is ExtMonVariable<string> childs && data.Records[i].Value is string vals && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
+                        childs.Value = vals;
+                    else if (Children[i] is ExtMonVariable<bool> childb && data.Records[i].Value is double valb && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
+                        childb.Value = valb != 0;
+                    else
+                        Debug.Assert(false);
+                }
+            }
+			public void Reset()
+			{
+				PrivateReset();
+			}
+		}
+
+		#endregion
+
+		#endregion
 
 
-        #endregion
+		#region Enums handling
 
-
-        #region Enums handling
-
-        public struct EnumDescription
+		public struct EnumDescription
         {
             /// <summary> Enum value description; this is needed because in-code enum item names are
             /// sometimes not so self-descriptive or not so user-friendly, to be shown in GUI and MIB

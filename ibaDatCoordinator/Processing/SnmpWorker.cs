@@ -314,6 +314,8 @@ namespace iba.Processing
                     // ibaRoot.DatCoord.Product.5 - Event jobs
                     BuildFolderRecursively(ExtMonInstance.FolderEventBasedJobs);
 
+                    BuildFolderRecursively(ExtMonInstance.FolderComputedValues);
+
                     ExtMonData.DebugWriteLine(nameof(SnmpWorker), "RebuildTree (success)");
                     return true; // rebuilt successfully
                 }

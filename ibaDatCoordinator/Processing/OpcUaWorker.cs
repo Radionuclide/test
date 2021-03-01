@@ -1229,10 +1229,14 @@ namespace iba.Processing
                             case ExtMonData.GlobalCleanupDriveInfo driveInfo:
                                 bSuccess = man.ExtMonRefreshGlobalCleanupDriveInfo(driveInfo);
                                 break;
-                            case ExtMonData.JobInfoBase jobInfo:
-                                bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
-                                break;
-                            default:
+							case ExtMonData.JobInfoBase jobInfo:
+								bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
+								break;
+							case ExtMonData.ComputedValuesInfo jobInfo:
+                                // it updates itself
+                                bSuccess = true;
+								break;
+							default:
                                 // should not happen
                                 bSuccess = false;
                                 Debug.Assert(false);

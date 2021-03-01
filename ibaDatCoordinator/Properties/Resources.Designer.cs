@@ -742,6 +742,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the OPC UA Computed values options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteOPCUATastQuestion {
+            get {
+                return ResourceManager.GetString("deleteOPCUATastQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the Pause options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deletePauseTaskQuestion {
@@ -3548,6 +3557,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon OPCUAIcon {
+            get {
+                object obj = ResourceManager.GetObject("OPCUAIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap opcUaServer_icon {
@@ -3644,6 +3663,24 @@ namespace iba.Properties {
         internal static string opcUaTitle {
             get {
                 return ResourceManager.GetString("opcUaTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add a new OPC-UA Writer Task.
+        /// </summary>
+        internal static string opcUaWriterTaskButton {
+            get {
+                return ResourceManager.GetString("opcUaWriterTaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA writer.
+        /// </summary>
+        internal static string opcUaWriterTaskTitle {
+            get {
+                return ResourceManager.GetString("opcUaWriterTaskTitle", resourceCulture);
             }
         }
         
@@ -4759,6 +4796,16 @@ namespace iba.Properties {
         internal static string SwitchLanguageRestartRequiredStandAlone {
             get {
                 return ResourceManager.GetString("SwitchLanguageRestartRequiredStandAlone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sychronizeList {
+            get {
+                object obj = ResourceManager.GetObject("sychronizeList", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

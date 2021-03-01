@@ -59,6 +59,10 @@ namespace iba.Processing
                         if (!w.OnStop())
                             Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                     }
+                    else if (t is OPCUAWriterTaskData data)
+                    {
+                        data.Remove();
+                    }
                 }
 
                 ClearHDCreateEventTaskWorkers();
@@ -457,7 +461,10 @@ namespace iba.Processing
                             if (!w.OnApply(c_new.Plugin, m_cd))
                                 Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                         }
-
+                        else if (t is OPCUAWriterTaskData data)
+                        {
+                            data.UpdateStructure();
+                        }
 
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
@@ -698,6 +705,10 @@ namespace iba.Processing
                             IPluginTaskWorker w = c.Plugin.GetWorker();
                             if (!w.OnStart())
                                 Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                        }
+                        else if (t is OPCUAWriterTaskData data)
+                        {
+                            data.UpdateStructure();
                         }
                     }
 
@@ -3035,6 +3046,10 @@ namespace iba.Processing
             {
                 DoCleanupTask(DatFile, task as TaskWithTargetDirData);
             }
+			else if (task is OPCUAWriterTaskData)
+			{
+				DoOPCUAWriterTask(DatFile, task as OPCUAWriterTaskData);
+			}
             else if (task is CustomTaskData)
             {
                 DoCustomTask(DatFile, task as CustomTaskData);
@@ -5111,6 +5126,11 @@ namespace iba.Processing
                 m_sd.DatFileStates[filename].OutputFiles[task] = outfile;
             }
             Log(Logging.Level.Info, iba.Properties.Resources.logUDTaskSuccess + " - " + iba.Properties.Resources.logUDTCreationTime + " " + worker.Created.ToString(), filename, task);
+        }
+        private void DoOPCUAWriterTask(string filename, OPCUAWriterTaskData task)
+        {
+            task.EvaluateValues(filename);
+            Log(Logging.Level.Info, "task data updated", filename, task); // TODO
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 
