@@ -313,7 +313,7 @@ namespace iba.Processing
                     BuildFolderRecursively(ExtMonInstance.FolderOneTimeJobs);
                     // ibaRoot.DatCoord.Product.5 - Event jobs
                     BuildFolderRecursively(ExtMonInstance.FolderEventBasedJobs);
-
+                    // ibaRoot.DatCoord.Product.6 - Computed values
                     BuildFolderRecursively(ExtMonInstance.FolderComputedValues);
 
                     ExtMonData.DebugWriteLine(nameof(SnmpWorker), "RebuildTree (success)");

@@ -5130,7 +5130,7 @@ namespace iba.Processing
         private void DoOPCUAWriterTask(string filename, OPCUAWriterTaskData task)
         {
             task.EvaluateValues(filename);
-            Log(Logging.Level.Info, "task data updated", filename, task); // TODO
+            Log(Logging.Level.Info, "data updated", filename, task);
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 

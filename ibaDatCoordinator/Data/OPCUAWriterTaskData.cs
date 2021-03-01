@@ -12,6 +12,7 @@ namespace iba.Data
     public class OPCUAWriterTaskData : TaskData
     {
         internal AnalyzerManager m_analyzerManager;
+        public StringWrapper lastDatFile = new StringWrapper();
         public List<Record> Records;
 
         public OPCUAWriterTaskData(ConfigurationData parent)
@@ -21,8 +22,13 @@ namespace iba.Data
         }
         public OPCUAWriterTaskData() : this(null) { }
 
+        public class StringWrapper
+        {
+            public string path;
+        }
+
         [Serializable]
-        public class Record : ICloneable
+        public class Record : ICloneable//, IComparable<Record>
         {
 
             public static readonly string[] dataTypes =
@@ -84,6 +90,28 @@ namespace iba.Data
                 }
             }
 
+            //[XmlElement(ElementName = "DataType")]
+            //public string DataTypeAsString
+            //{
+            //    get { return dataTypes[(int)DataType]; }
+            //    set
+            //    {
+            //        if (value == null)
+            //            return;
+
+            //        string newVal = value.ToUpper();
+            //        for (int i = 0; i < dataTypes.Length; i++)
+            //        {
+            //            if (newVal == dataTypes[i].name)
+            //            {
+            //                m_dataType = (S7DataTypeEnum)i;
+            //                return;
+            //            }
+            //        }
+
+            //        //Unknown data type -> don't change
+            //    }
+            //}
             public Record()
             {
                 Name = "";
@@ -122,6 +150,7 @@ namespace iba.Data
         {
             Evaluate(datFile, false);
             ExtMonData.Instance.UpdateComputedValuesFolderValues(this);
+            lastDatFile.path = datFile;
         }
 
         public void UpdateStructure()
@@ -132,6 +161,7 @@ namespace iba.Data
                 if (record.Name.Length == 0)
                     record.Name = record.Expression;
             }
+            Evaluate(lastDatFile.path, false);
             ExtMonData.Instance.RebuildComputedValuesFolder(this);
         }
 
@@ -147,6 +177,7 @@ namespace iba.Data
             d.m_analyzerManager = m_analyzerManager;
             d.AnalysisFile = AnalysisFile;
             d.TestDatFile = TestDatFile;
+            d.lastDatFile = lastDatFile;
             return d;
         }
         public override bool IsSameInternal(TaskData taskData)

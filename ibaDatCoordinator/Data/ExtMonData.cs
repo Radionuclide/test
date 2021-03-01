@@ -91,7 +91,7 @@ namespace iba.Data
         /// <summary> SNMP: PrSpecific.5 </summary>
         public readonly ExtMonFolder FolderEventBasedJobs;
 
-        /// <summary> SNMP: PrSpecific.5 </summary>
+        /// <summary> SNMP: PrSpecific.6 </summary>
         public readonly ExtMonFolder FolderComputedValues;
 
         #endregion
@@ -252,8 +252,6 @@ namespace iba.Data
                 // it will be rebuilt either:
                 //  * on first request to any existing node
                 //  * or automatically on tick of _treeValidatorTimer
-
-                Debug.WriteLine("ACHTUNG!!1  IsStructureValid = false");
                 IsStructureValid = false;
             };
 
@@ -1808,10 +1806,6 @@ namespace iba.Data
                 Update(data);
 			}
 
-			private void PrivateReset()
-			{
-                //TODO nothing to do?
-			}
             public void Update(OPCUAWriterTaskData data)
             {
                 if (Children.Count != data.Records.Count)
@@ -1828,13 +1822,10 @@ namespace iba.Data
                         Debug.Assert(false);
                 }
             }
-			public void Reset()
-			{
-				PrivateReset();
-			}
 		}
 
 		#endregion
+
 
 		#endregion
 
