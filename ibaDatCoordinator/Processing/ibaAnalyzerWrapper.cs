@@ -364,7 +364,19 @@ namespace iba.Processing
 
         }
 
-		public void EvaluateToArray(string expression, int XType, out double pTimebase, out double xoffset, out object pData)
+        public void SetHDCredentialsEx(int useCurrentWindowsUser, string username, string password)
+        {
+            try
+            {
+                analyzer.SetHDCredentialsEx(useCurrentWindowsUser, username, password);
+            }
+            catch //might be older version than analyzer V7.3.0;
+            {
+
+            }
+        }
+
+        public void EvaluateToArray(string expression, int XType, out double pTimebase, out double xoffset, out object pData)
 		{
 			analyzer.EvaluateToArray(expression, XType, out pTimebase, out xoffset, out pData);
 		}
