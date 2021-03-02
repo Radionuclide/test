@@ -69,6 +69,7 @@ namespace iba
                 }
                 if (SingletonApp.CheckIfRunning("ibaDatCoordinatorClientCloseForm"))
                     return;
+
                 switch (PluginManager.Manager.CopyPluginCache())
                 {
                     case 0: break; //

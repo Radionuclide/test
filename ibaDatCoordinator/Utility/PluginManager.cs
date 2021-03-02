@@ -118,6 +118,23 @@ namespace iba.Utility
 
         internal int CopyPluginCache() //0, ok, 1, could not copy, 2, could not delete
         {
+            //First try to delete current dlls in plugin path
+            if (Directory.Exists(m_pluginPath))
+            {
+                var currentDlls = Directory.GetFiles(m_pluginPath, "*.dll", SearchOption.AllDirectories);
+                foreach (var dll in currentDlls)
+                {
+                    try
+                    {
+                        File.Delete(dll);
+                    }
+                    catch
+                    {
+                        return 2;
+                    }
+                }
+            }
+
             var files = Directory.GetFiles(m_cachePath, "*.*", SearchOption.AllDirectories);
             foreach (string file in files)
             {
@@ -166,7 +183,7 @@ namespace iba.Utility
 
         internal bool CopyCacheNeeded()
         {
-            return (Directory.Exists(m_cachePath));
+            return Directory.Exists(m_cachePath);
         }
 
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -248,29 +265,37 @@ namespace iba.Utility
             }
         }
 
-        //called from client side, filter plugins to installed plugins
-        public ServerFileInfo[] FilterPlugins(ServerFileInfo[] onServer, string basePath) 
+        //Called from client side to check if client plugins match server plugins
+        public bool ArePluginsUpToDate(ServerFileInfo[] onServer, string basePath) 
         {
             List<ServerFileInfo> result = new List<ServerFileInfo>();
 
             string serverPluginPath = basePath;
             string clientPluginPath = m_pluginPath;
-            if (!clientPluginPath.EndsWith("\\")) clientPluginPath += "\\";
+            if (!clientPluginPath.EndsWith("\\")) 
+                clientPluginPath += "\\";
+
+            //Check if the files on the server also exist on the client
             foreach (ServerFileInfo serverInfo in onServer)
             {
                 string clientFile = serverInfo.LocalFileName.Replace(serverPluginPath, clientPluginPath);
                 if (!File.Exists(clientFile))
-                    result.Add(serverInfo);
-                else
-                {
-                    FileInfo clientInfo = new FileInfo(clientFile);
-                    if (clientInfo.LastWriteTimeUtc != serverInfo.LastWriteTimeUtc || clientInfo.Length != serverInfo.FileSize)
-                    {
-                        result.Add(serverInfo);
-                    }
-                }
+                    return false;
+                                
+                FileInfo clientInfo = new FileInfo(clientFile);
+                if (clientInfo.LastWriteTimeUtc != serverInfo.LastWriteTimeUtc || clientInfo.Length != serverInfo.FileSize)
+                    return false;
             }
-            return result.ToArray();
+            
+            //Check that there are no extra (plugin) dlls on the client
+            foreach(string file in Directory.EnumerateFiles(clientPluginPath, "*.dll"))
+            {
+                string serverFile = file.Replace(clientPluginPath, serverPluginPath);
+                if (!onServer.Any(f => String.Compare(f.LocalFileName, serverFile, true) == 0))
+                    return false;
+            }
+            
+            return true;
         }
 
         //returns true if restart is required.
@@ -278,11 +303,14 @@ namespace iba.Utility
         {
             var list = wrapper.GetPluginFiles();
             string basePath = wrapper.GetPluginPath();
-            if (list == null || string.IsNullOrEmpty(basePath)) return false; //error in connecton, no need to restart
-            if (!basePath.EndsWith("\\")) basePath += "\\";
-            list = FilterPlugins(list, basePath);
+            
+            if (list == null || string.IsNullOrEmpty(basePath)) 
+                return false; //error in connecton, no need to restart
 
-            if (list == null || list.Length == 0)
+            if (!basePath.EndsWith("\\")) 
+                basePath += "\\";
+
+            if(ArePluginsUpToDate(list, basePath))
                 return false;
 
             bool failed = false;
