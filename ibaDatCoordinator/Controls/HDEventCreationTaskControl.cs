@@ -287,6 +287,8 @@ namespace iba.Controls
                 m_ctrlEvent.StoreFilter = null;      // Set the storeFilter to null as all dataStores should be shown. This will also request edit locks on all hd event stores.
 
             m_tbPDO.Text = m_data.AnalysisFile;
+            m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
+            m_tbPwdDAT.Text = "";
 
             if (Environment.MachineName != m_data.DatFileHost)
             {
@@ -294,11 +296,10 @@ namespace iba.Controls
             }
             else
             {
+                m_tbPwdDAT.Text = m_data.DatFilePassword;
                 m_tbDAT.Text = m_data.DatFile;
             }
 
-            m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
-            m_tbPwdDAT.Text = "";
             m_tbPwdDAT.TextChanged += m_tbPwdDAT_TextChanged;
             
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -627,12 +628,30 @@ namespace iba.Controls
                 Cursor = Cursors.WaitCursor;
 
                 HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data, null);
-                Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(m_analyzerManager.Analyzer, m_tbDAT.Text);
 
-                //worker.WriteEvents(m_ctrlEvent.GetStoreNames(), eventData, HdValidationMessage.Ignore);
+                string datFile = m_tbDAT.Text;
+                string error = "";
+                bool ok = true;
+                if (string.IsNullOrEmpty(datFile) || !File.Exists(datFile))
+                {
+                    error = Properties.Resources.logHDEventTaskDATError;
+                    ok = false;
+                }
+
+                if (ok)
+                {
+                    Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, m_tbDAT.Text);
+
+                    m_analyzerManager.Analyzer.CloseDataFiles(); //works both with hdq and .dat
+
+                    MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(this, error, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 Cursor = Cursors.Default;
-                MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
