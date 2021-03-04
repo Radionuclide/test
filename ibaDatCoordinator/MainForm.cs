@@ -1366,7 +1366,8 @@ namespace iba
             foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
                 menuImages.Images.Add(info.Icon);
 
-            int customcount = PluginManager.Manager.PluginInfos.Count;
+            List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
+            int customcount = filteredPlugins.Count;
             m_menuItems = new ToolStripMenuItem[16 + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
             m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
@@ -1388,12 +1389,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewSplitterTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSplitterTaskTitle, menuImages.Images[11], new EventHandler(OnNewSplitterTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(iba.Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], new EventHandler(OnNewHDCreateEventTaskMenuItem));
 
-            for (int i = 0; i < customcount; i++)
+            for (int i = 0; i < filteredPlugins.Count; i++)
             {
-                PluginTaskInfo info = PluginManager.Manager.PluginInfos[i];
-                if (info.IsOutdated)
-                    continue;
-
+                PluginTaskInfo info = filteredPlugins[i];
                 string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, info.Name);
                 m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new ToolStripMenuItem(title, menuImages.Images[NR_TASKS+3+i], new EventHandler(OnNewCustomTaskMenuItem));
             }
@@ -1409,9 +1407,10 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewCleanupTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSplitterTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
-            for (int i = 0; i < customcount; i++)
+            for (int i = 0; i < filteredPlugins.Count; i++)
             {
                 var item = m_menuItems[i + (int)MenuItemsEnum.NewCustomTask];
+                item.Tag = new Pair<TreeNode, PluginTaskInfo>(null, filteredPlugins[i]);
                 if (item != null)
                     m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(item);
             }
@@ -1510,15 +1509,13 @@ namespace iba
                 mc.Tag = node;
                 m_popupMenu.Items.Add(mc);
                 if (item == MenuItemsEnum.NewTask)
-                {
-                    int index = PluginManager.Manager.PluginInfos.Count - mc.DropDown.Items.Count;
+                {                   
                     foreach(ToolStripMenuItem mc2 in mc.DropDown.Items)
                     {
-                        if (index < 0)
-                            mc2.Tag = node;
+                        if (mc2.Tag is Pair<TreeNode, PluginTaskInfo> pair)
+                            pair.First = node;
                         else
-                            mc2.Tag = new Pair<TreeNode, int>(node, index);
-                        index++;
+                            mc2.Tag = node;
                     }
                 }
             }
@@ -1788,11 +1785,10 @@ namespace iba
         private void OnNewCustomTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            Pair<TreeNode, int> p = mc.Tag as Pair<TreeNode, int>;
+            Pair<TreeNode, PluginTaskInfo> p = mc.Tag as Pair<TreeNode, PluginTaskInfo>;
             TreeNode node = p.First;
-            int index = p.Second;
+            PluginTaskInfo info = p.Second;
             
-            PluginTaskInfo info = PluginManager.Manager.PluginInfos[index];
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
