@@ -979,6 +979,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file-tree could not be loaded from ibaAnalyzer. This could e.g. be caused by a wrong file password. {0}.
+        /// </summary>
+        internal static string ErrorDatFileOpen {
+            get {
+                return ResourceManager.GetString("ErrorDatFileOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No next trigger scheduled! Job will be halted. Please review your trigger settings..
         /// </summary>
         internal static string ErrorScheduleNextTrigger {
@@ -3755,6 +3764,15 @@ namespace iba.Properties {
         internal static string PdoFileFilter {
             get {
                 return ResourceManager.GetString("PdoFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to open PDO file {0}: .
+        /// </summary>
+        internal static string PDOOpenFailed {
+            get {
+                return ResourceManager.GetString("PDOOpenFailed", resourceCulture);
             }
         }
         

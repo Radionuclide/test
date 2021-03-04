@@ -359,7 +359,14 @@ namespace iba.Processing
                     if (!string.IsNullOrEmpty(m_data.DatFilePassword))
                         m_ibaAnalyzer.SetFilePassword("", m_data.DatFilePassword);
 
-                    m_ibaAnalyzer.OpenDataFile(0, m_data.DatFile);
+                    try
+                    {
+                        m_ibaAnalyzer.OpenDataFile(0, m_data.DatFile);
+                    }
+                    catch
+                    {
+                        throw new HDCreateEventException(string.Format(Properties.Resources.ErrorDatFileOpen, m_data.DatFile));
+                    }
                     m_dataFile = m_data.DatFile;
                 }
                 
@@ -371,7 +378,14 @@ namespace iba.Processing
 
                 using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, m_data.MonitorData))
                 {
-                    mon.Execute(delegate () { m_ibaAnalyzer.OpenAnalysis(pdoFile); });
+                    try
+                    {
+                        mon.Execute(delegate () { m_ibaAnalyzer.OpenAnalysis(pdoFile); });
+                    }
+                    catch (Exception e)
+                    {
+                        throw new HDCreateEventException(string.Format(Properties.Resources.PDOOpenFailed, pdoFile) + e.Message);
+                    }
 
                     Dictionary<string, Tuple<string[], double[]>> textResults = new Dictionary<string, Tuple<string[], double[]>>();
                     List<EventWriterItem> events = new List<EventWriterItem>();

@@ -1875,4 +1875,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ErrorWriteEvents" xml:space="preserve">
     <value>Failed to write events</value>
   </data>
+  <data name="PDOOpenFailed" xml:space="preserve">
+    <value>Failed to open PDO file {0}: </value>
+  </data>
+  <data name="ErrorDatFileOpen" xml:space="preserve">
+    <value>The file-tree could not be loaded from ibaAnalyzer. This could e.g. be caused by a wrong file password. {0}</value>
+  </data>
 </root>

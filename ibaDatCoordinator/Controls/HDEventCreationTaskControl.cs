@@ -33,6 +33,7 @@ namespace iba.Controls
         AnalyzerTreeControl numericTree;
 
         bool bLoadingChannelTree;
+        bool bReloadChannelTree;
         bool bResetChannelTree;
         bool bDisposeChannelTree;
         #endregion
@@ -236,32 +237,45 @@ namespace iba.Controls
         #region IPropertyPane
         private void loadAnalyzerTreeDataTask()
         {
-            bLoadingChannelTree = true;
 
-            Task.Factory.StartNew(() =>
+            if (bLoadingChannelTree)
+                bReloadChannelTree = true;
+            else
             {
-                while (!bResetChannelTree && !bDisposeChannelTree && channelTree != null && !channelTree.Load()) ;
-                int i = 0;
-                while (!bResetChannelTree && !bDisposeChannelTree && m_analyzerManager != null && !m_analyzerManager.IsOpened && i < 40)
+                bLoadingChannelTree = true;
+
+                Task.Factory.StartNew(() =>
                 {
-                    i++;
-                    Thread.Sleep(500);
-                }
-                while (!bResetChannelTree && !bDisposeChannelTree && numericTree != null && !numericTree.Load()) ;
-                while (!bResetChannelTree && !bDisposeChannelTree && m_pulseEditor != null && !m_pulseEditor.ChannelTree.Load()) ;
-                while (!bResetChannelTree && !bDisposeChannelTree && m_timeEditor != null && !m_timeEditor.ChannelTree.Load()) ;
-                while (!bResetChannelTree && !bDisposeChannelTree && m_timeEditorOut != null && !m_timeEditorOut.ChannelTree.Load()) ;
-                while (!bResetChannelTree && !bDisposeChannelTree && m_textEditor != null && !m_textEditor.ChannelTree.Load()) ;
+                    while (!bResetChannelTree && !bReloadChannelTree && !bDisposeChannelTree && channelTree != null && !channelTree.Load()) ;
+                    int i = 0;
+                    while (!bResetChannelTree && !bReloadChannelTree && !bDisposeChannelTree && m_analyzerManager != null && !m_analyzerManager.IsOpened && i < 40)
+                    {
+                        i++;
+                        Thread.Sleep(500);
+                    }
+                    while (!bResetChannelTree && !bReloadChannelTree && !bDisposeChannelTree && numericTree != null && !numericTree.Load()) ;
+                    while (!bResetChannelTree && !bReloadChannelTree && !bDisposeChannelTree && m_pulseEditor != null && !m_pulseEditor.ChannelTree.Load()) ;
+                    while (!bResetChannelTree && !bReloadChannelTree && !bDisposeChannelTree && m_timeEditor != null && !m_timeEditor.ChannelTree.Load()) ;
+                    while (!bResetChannelTree && !bReloadChannelTree && !bDisposeChannelTree && m_timeEditorOut != null && !m_timeEditorOut.ChannelTree.Load()) ;
+                    while (!bResetChannelTree && !bReloadChannelTree && !bDisposeChannelTree && m_textEditor != null && !m_textEditor.ChannelTree.Load()) ;
 
-                bLoadingChannelTree = false;
+                    bLoadingChannelTree = false;
 
-                if (bResetChannelTree)
-                    ResetChannelTrees();
+                    if (bReloadChannelTree)
+                    {
+                        bReloadChannelTree = false;
+                        loadAnalyzerTreeDataTask();
+                    }
 
-                if (bDisposeChannelTree)
-                    Dispose(true);
+                    if (bResetChannelTree)
+                        ResetChannelTrees();
 
-            });
+                    if (bDisposeChannelTree)
+                        Dispose(true);
+
+                });
+            }
+
         }
 
 
@@ -580,6 +594,7 @@ namespace iba.Controls
         private void m_tbPwdDAT_TextChanged(object sender, EventArgs e)
         {
             UpdateSources();
+            loadAnalyzerTreeDataTask();
         }
 
         private void m_btnBrowseDAT_Click(object sender, EventArgs e)
