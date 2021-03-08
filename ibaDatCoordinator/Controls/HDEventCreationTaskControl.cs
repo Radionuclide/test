@@ -308,7 +308,7 @@ namespace iba.Controls
                 m_ctrlEvent.StoreFilter = null;      // Set the storeFilter to null as all dataStores should be shown. This will also request edit locks on all hd event stores.
 
             m_tbPDO.Text = m_data.AnalysisFile;
-            m_tbPwdDAT.TextChanged -= m_tbPwdDAT_TextChanged;
+            m_tbPwdDAT.Leave -= m_tbPwdDAT_TextChanged;
             m_tbPwdDAT.Text = "";
 
             if (Environment.MachineName != m_data.DatFileHost)
@@ -321,7 +321,7 @@ namespace iba.Controls
                 m_tbDAT.Text = m_data.DatFile;
             }
 
-            m_tbPwdDAT.TextChanged += m_tbPwdDAT_TextChanged;
+            m_tbPwdDAT.Leave += m_tbPwdDAT_TextChanged;
             
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
@@ -329,6 +329,7 @@ namespace iba.Controls
             m_nudTime.Value = (decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
 
 
+            UpdateSources();
             LoadLocalData(m_data);
             loadAnalyzerTreeDataTask();
         }
@@ -610,7 +611,8 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
 			{
 				m_tbDAT.Text = datFile;
-			}
+                UpdateSources();
+            }
         }
 
         private void m_btnOpenPDO_Click(object sender, EventArgs e)
@@ -690,7 +692,8 @@ namespace iba.Controls
             if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref pdoFilePath, out localPath))
 			{
                 m_tbPDO.Text = pdoFilePath;
-			}
+                UpdateSources();
+            }
         }
 
         void m_viewPulse_RowCellStyle(object sender, RowCellStyleEventArgs e)

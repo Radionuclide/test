@@ -130,7 +130,8 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref path, out localPath))
 			{
 				m_pdoFileTextBox.Text = path;
-			}
+                UpdateSources();
+            }
 		}
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
@@ -144,7 +145,8 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
 			{
 				m_datFileTextBox.Text = datFile;
-			}
+                UpdateSources();
+            }
 		}
 
         private void m_testButton_Click(object sender, EventArgs e)
@@ -162,7 +164,7 @@ namespace iba.Controls
 
 		private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+            UpdateSources(); 
 			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
                 m_testButton.Enabled = true; //we'll give a warning when not allowed ...
             else
@@ -173,11 +175,17 @@ namespace iba.Controls
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
 			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
-		}
+            UpdateSources();
+        }
 
 		private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
 		{
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+            UpdateSources();
 		}
-	}
+
+        private void UpdateSources()
+        {
+            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+        }
+    }
 }

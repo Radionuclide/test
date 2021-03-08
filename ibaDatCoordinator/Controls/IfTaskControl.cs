@@ -83,6 +83,7 @@ namespace iba.Controls
                 m_monitorGroup.Enabled = false;
             }
 
+            UpdateSources();
             m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
             File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
@@ -124,7 +125,8 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref path, out localPath))
 			{
 				m_pdoFileTextBox.Text = path;
-			}
+                UpdateSources();
+            }
 		}
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
@@ -138,7 +140,8 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data?.ParentConfigurationData))
 			{
 				m_datFileTextBox.Text = datFile;
-			}
+                UpdateSources();
+            }
         }
 
         private void m_testButton_Click(object sender, EventArgs e)
@@ -203,22 +206,27 @@ namespace iba.Controls
             return f;
         }
 
+        private void UpdateSources()
+        {
+            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+        }
+
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+            UpdateSources();
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
-		{
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
-			m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
+        {
+            UpdateSources();
+            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
 			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
-		}
+            UpdateSources();
+        }
 	}
 }

@@ -89,7 +89,7 @@ namespace S7_writer_plugin
 
 			ckAllowErrors.Checked = m_data.AllowErrors;
 
-			UpdateButtons();
+			UpdateSource();
 
 			m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
 			m_cbTime.Checked = m_data.MonitorData.MonitorTime;
@@ -149,7 +149,8 @@ namespace S7_writer_plugin
 			if (m_datcoHost.BrowseForPdoFile(ref path, out localPath))
 			{
 				m_pdoFileTextBox.Text = path;
-			}
+                UpdateSource();
+            }
 		}
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
@@ -163,7 +164,8 @@ namespace S7_writer_plugin
 			if (m_datcoHost.BrowseForDatFile(ref datFile, m_data.m_parentJob))
 			{
 				m_datFileTextBox.Text = datFile;
-			}
+                UpdateSource();
+            }
 		}
 
         private void m_testButton_Click(object sender, EventArgs e)
@@ -281,12 +283,12 @@ namespace S7_writer_plugin
 
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
-            UpdateButtons();
+            UpdateSource();
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
-            UpdateButtons();
+            UpdateSource();
 		}
 		private void buttonEndpointAdd_Click(object sender, EventArgs e)
 		{
@@ -324,7 +326,7 @@ namespace S7_writer_plugin
 			dataGrid.RefreshDataSource();
 		}
 
-		private void UpdateButtons()
+		private void UpdateSource()
         {
 			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
@@ -338,7 +340,7 @@ namespace S7_writer_plugin
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
 			m_datcoHost.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, m_analyzerManager, m_data.m_parentJob);
-			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+            UpdateSource();
 		}
 	}
 

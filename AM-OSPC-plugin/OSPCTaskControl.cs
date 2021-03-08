@@ -77,7 +77,7 @@ namespace AM_OSPC_plugin
 			m_ospcHost.Text = m_data.OspcServerHost;
             m_ospcUsername.Text = m_data.OspcServerUser;
             m_ospcPassword.Text = m_data.OspcServerPassword;
-            UpdateButtons();
+            UpdateSources();
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
@@ -132,7 +132,8 @@ namespace AM_OSPC_plugin
 			if (m_datcoHost.BrowseForPdoFile(ref path, out localPath))
 			{
 				m_pdoFileTextBox.Text = path;
-			}
+                UpdateSources();
+            }
 		}
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
@@ -146,7 +147,8 @@ namespace AM_OSPC_plugin
 			if (m_datcoHost.BrowseForDatFile(ref datFile, m_data.m_parentJob))
 			{
 				m_datFileTextBox.Text = datFile;
-			}
+                UpdateSources();
+            }
 		}
 
         private void m_testButton_Click(object sender, EventArgs e)
@@ -286,15 +288,15 @@ namespace AM_OSPC_plugin
 
 		private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
 		{
-			UpdateButtons();
+			UpdateSources();
 		}
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
-            UpdateButtons();
+            UpdateSources();
         }
 
-        private void UpdateButtons()
+        private void UpdateSources()
         {
 			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
 		}
@@ -307,9 +309,8 @@ namespace AM_OSPC_plugin
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
 			m_datcoHost.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, m_analyzerManager, m_data.m_parentJob);
-			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
-		}
-
+            UpdateSources();
+        }
 	}
 
 	/// </summary>

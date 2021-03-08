@@ -75,7 +75,7 @@
             // 
             resources.ApplyResources(this.m_pdoFileTextBox, "m_pdoFileTextBox");
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-            this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
+            this.m_pdoFileTextBox.Leave += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
             // 
             // m_browsePDOFileButton
             // 
@@ -112,7 +112,7 @@
             // 
             resources.ApplyResources(this.m_datFileTextBox, "m_datFileTextBox");
             this.m_datFileTextBox.Name = "m_datFileTextBox";
-            this.m_datFileTextBox.TextChanged += new System.EventHandler(this.m_datFileTextBox_TextChanged);
+            this.m_datFileTextBox.Leave += new System.EventHandler(this.m_datFileTextBox_TextChanged);
             // 
             // m_testButton
             // 
