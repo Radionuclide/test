@@ -16,6 +16,7 @@ using iba.Client.Archiver;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using iba.Utility;
 
 namespace iba.Controls
 {
@@ -129,6 +130,12 @@ namespace iba.Controls
             };
             m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), null, false);
             m_ctrlEvent.EventWizard = new HDEventWizard(m_analyzerManager, GetPriorities());
+
+            WindowsAPI.SHAutoComplete(m_tbPDO.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+            WindowsAPI.SHAutoComplete(m_tbDAT.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
+            SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
+
 
             bLoadingChannelTree = false;
             bResetChannelTree = false;
