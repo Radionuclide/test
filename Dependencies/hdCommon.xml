@@ -4,6 +4,11 @@
         <name>hdCommon</name>
     </assembly>
     <members>
+        <member name="F:iba.HD.Common.HdCertificate.Password">
+            <summary>
+            Encrypted password of the certificate
+            </summary>
+        </member>
         <member name="M:iba.HD.Common.IHdConfigContract.IsValidVersion(System.String)">
             <summary>
             Checks service version
@@ -398,6 +403,23 @@
             <summary>
               Looks up a localized string similar to Maximal HD store acquisition signal count ({0}) exceeded by {1} signals.
             </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdCertificateContract.ExportCertificate(System.String,iba.HD.Common.ExportFormat,System.String)">
+            <summary>
+            Export a certificate from the ibaHD certificate manager
+            </summary>
+            <param name="thumbprint">The thumbprint of the requested certificate </param>
+            <param name="format">The export format of the certificate </param>
+            <param name="password">The certificate password for protecting the private key </param>
+            <returns>A keyvaluepair containing the exported certificate encrypted and an error message in case the export has failed.</returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdCertificateContract.ImportCertificate(System.String,System.String)">
+            <summary>
+            import a certificate into the ibaHD certificate manager
+            </summary>
+            <param name="certificate">The encrypted certificate. First converted to base64, then UncCrypt.EncryptStrong</param>
+            <param name="password">The certificate password for protecting the private key. This is encrypted using UncCrypt.EncrytStrong </param>
+            <returns>The thumbPrint of the imported certificate</returns>
         </member>
         <member name="M:iba.HD.Common.BackupTrigger.Calculate(System.DateTime)">
             <exception cref="T:System.InvalidOperationException">
