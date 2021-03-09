@@ -11,15 +11,15 @@ using System.Linq;
 
 namespace iba.Utility
 {
-	[System.Reflection.Obfuscation]
-	public enum CrashDumpMode
-	{
-		None = 0,
-		Complete = 1,
-		Kernel = 2,
-		Minidump = 3,
-		Autodump = 7
-	}
+    [System.Reflection.Obfuscation]
+    public enum CrashDumpMode
+    {
+        None = 0,
+        Complete = 1,
+        Kernel = 2,
+        Minidump = 3,
+        Autodump = 7
+    }
 
     public class SystemInfoCollector
     {
@@ -38,9 +38,9 @@ namespace iba.Utility
                 DateTime currentUtcTime = DateTime.UtcNow;
                 DateTime currentTime = currentUtcTime.ToLocalTime();
                 TimeSpan utcOffset = currentTime - currentUtcTime;
-                writer.WriteLine(String.Format("Current time: {0} (UTC{1}:{2})", currentTime.ToString("yyyy-MM-dd HH:mm:ss"), 
+                writer.WriteLine(String.Format("Current time: {0} (UTC{1}:{2})", currentTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     utcOffset.Hours.ToString("+00;-00"), utcOffset.Minutes.ToString("00")));
-                
+
                 writer.WriteLine("Current user: " + Environment.UserName);
                 writer.WriteLine("PC name: " + Environment.MachineName);
 
@@ -59,7 +59,7 @@ namespace iba.Utility
                         int domainRole = Convert.ToUInt16(obj.GetPropertyValue("DomainRole"));
                         string domainRoleStr = "UNKNOWN";
 
-                        switch(domainRole)
+                        switch (domainRole)
                         {
                             case 0:
                                 domainRoleStr = "Standalone Workstation";
@@ -146,7 +146,7 @@ namespace iba.Utility
                 try
                 {
                     //Retrieve memory usage
-                    writer.WriteLine($"Bytes in all heaps: {GC.GetTotalMemory(true)/(1024*1024)} MB");
+                    writer.WriteLine($"Bytes in all heaps: {GC.GetTotalMemory(true) / (1024 * 1024)} MB");
 
                     using (Process curProcess = Process.GetCurrentProcess())
                     {
@@ -156,7 +156,7 @@ namespace iba.Utility
                 }
                 catch (System.Exception)
                 {
-                	
+
                 }
 
                 try
@@ -203,7 +203,7 @@ namespace iba.Utility
 
                 //Retrieve motherboard settings
                 MotherboardInfo mbInfo = GetMotherboardInfo();
-                if(mbInfo != null)
+                if (mbInfo != null)
                 {
                     writer.WriteLine();
                     writer.WriteLine("Motherboard");
@@ -234,65 +234,65 @@ namespace iba.Utility
 
                 LogIbaProductsVersionInfo(writer);
 
-				// Log BSOD info
-				
-				string minidumpDir;
-				string fullDumpFile;
-				CrashDumpMode dumpMode;
+                // Log BSOD info
 
-				writer.WriteLine();
-				writer.WriteLine("System memory dumps");
-				writer.WriteLine("*******************");
-				writer.WriteLine();
+                string minidumpDir;
+                string fullDumpFile;
+                CrashDumpMode dumpMode;
 
-				if (GetCrashDumpSettings(true, out dumpMode, out minidumpDir, out fullDumpFile))
-				{
-					writer.WriteLine($"Crash dump mode: {dumpMode.ToString()}");
-					writer.WriteLine();
+                writer.WriteLine();
+                writer.WriteLine("System memory dumps");
+                writer.WriteLine("*******************");
+                writer.WriteLine();
 
-					try
-					{
-						if (!string.IsNullOrEmpty(fullDumpFile))
-						{
-							FileInfo memDmpFile = new FileInfo(fullDumpFile);
-							if (memDmpFile.Exists)
-							{
-								writer.WriteLine($"Full memory dump ({fullDumpFile}):");
-								writer.WriteLine(string.Format("{0,-18}   {1,-11}   {2}", memDmpFile.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"), (memDmpFile.Length / 1024).ToString() + " kB", memDmpFile.Name));
-								writer.WriteLine();
-							}
-						}
+                if (GetCrashDumpSettings(true, out dumpMode, out minidumpDir, out fullDumpFile))
+                {
+                    writer.WriteLine($"Crash dump mode: {dumpMode.ToString()}");
+                    writer.WriteLine();
 
-						if (!string.IsNullOrEmpty(minidumpDir))
-						{
-							DirectoryInfo miniDmpInfo = new DirectoryInfo(minidumpDir);
-							if (miniDmpInfo.Exists)
-							{
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(fullDumpFile))
+                        {
+                            FileInfo memDmpFile = new FileInfo(fullDumpFile);
+                            if (memDmpFile.Exists)
+                            {
+                                writer.WriteLine($"Full memory dump ({fullDumpFile}):");
+                                writer.WriteLine(string.Format("{0,-18}   {1,-11}   {2}", memDmpFile.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"), (memDmpFile.Length / 1024).ToString() + " KB", memDmpFile.Name));
+                                writer.WriteLine();
+                            }
+                        }
 
-								StringBuilder miniDumpSb = new StringBuilder();
-								foreach (FileInfo fileInfo in miniDmpInfo.EnumerateFiles())
-								{
-									miniDumpSb.AppendLine(string.Format("{0,-18}   {1,-11}   {2}", fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"), (fileInfo.Length / 1024).ToString() + " kB", fileInfo.Name));
-								}
+                        if (!string.IsNullOrEmpty(minidumpDir))
+                        {
+                            DirectoryInfo miniDmpInfo = new DirectoryInfo(minidumpDir);
+                            if (miniDmpInfo.Exists)
+                            {
 
-						if (miniDumpSb.Length > 0)
-								{
-									writer.WriteLine($"Minidump files ({minidumpDir}):");
-									writer.WriteLine(miniDumpSb.ToString());
-									writer.WriteLine();
-								}
-							}
-						}
-					}
-					catch (Exception ex)
-					{
-						writer.WriteLine($"Error getting system memory dump information: {ex.Message}");
-					}
-				}
-				else
-				{
-					writer.WriteLine("Failed to retrieve crash dump settings");
-				}
+                                StringBuilder miniDumpSb = new StringBuilder();
+                                foreach (FileInfo fileInfo in miniDmpInfo.EnumerateFiles())
+                                {
+                                    miniDumpSb.AppendLine(string.Format("{0,-18}   {1,-11}   {2}", fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"), (fileInfo.Length / 1024).ToString() + " KB", fileInfo.Name));
+                                }
+
+                                if (miniDumpSb.Length > 0)
+                                {
+                                    writer.WriteLine($"Minidump files ({minidumpDir}):");
+                                    writer.WriteLine(miniDumpSb.ToString());
+                                    writer.WriteLine();
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        writer.WriteLine($"Error getting system memory dump information: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    writer.WriteLine("Failed to retrieve crash dump settings");
+                }
 
                 try
                 {
@@ -353,7 +353,7 @@ namespace iba.Utility
                 writer.WriteLine("------------------------");
 
                 List<string> instSw = GetInstalledSoftware(false);
-                if(instSw != null)
+                if (instSw != null)
                 {
                     instSw.Sort();
 
@@ -381,8 +381,8 @@ namespace iba.Utility
                     }
                 }
 
-				writer.WriteLine();
-				/*
+                writer.WriteLine();
+                /*
 				 * Collect information about installed updates
 				 * 
 				 * For Windows 10/Windows Server 2016 on, all updates are cumulative updates.
@@ -394,40 +394,40 @@ namespace iba.Utility
 				 * to the Windows update history, which can be retrieved fast.
 				 * 
 				 */
-				if (Environment.OSVersion.Version.Major >= 10)
-				{
-					// Versions of Windows from 10 or Server 2016 onwards
-					writer.WriteLine("Installed Windows updates");
-					writer.WriteLine("-------------------------");
+                if (Environment.OSVersion.Version.Major >= 10)
+                {
+                    // Versions of Windows from 10 or Server 2016 onwards
+                    writer.WriteLine("Installed Windows updates");
+                    writer.WriteLine("-------------------------");
 
-					try
-					{
-						foreach (var windowsUpdate in GetInstalledWindowsUpdates())
-							writer.WriteLine(windowsUpdate);
-					}
-					catch
-					{
-						writer.WriteLine("Failed to fetch windows updates");
-					}
-				}
-				else
-				{
-					// Versions of Windows earlier than 10 or Server 2016
-				writer.WriteLine("Windows Update history");
-				writer.WriteLine("----------------------");
+                    try
+                    {
+                        foreach (var windowsUpdate in GetInstalledWindowsUpdates())
+                            writer.WriteLine(windowsUpdate);
+                    }
+                    catch
+                    {
+                        writer.WriteLine("Failed to fetch windows updates");
+                    }
+                }
+                else
+                {
+                    // Versions of Windows earlier than 10 or Server 2016
+                    writer.WriteLine("Windows Update history");
+                    writer.WriteLine("----------------------");
 
-				try
-				{
-					foreach (var windowsUpdate in GetWindowsUpdateHistory())
-						writer.WriteLine(windowsUpdate);
-				}
-				catch
-				{
-					writer.WriteLine("Failed to fetch further windows updates");
-				}
-			}
-		}
-		}
+                    try
+                    {
+                        foreach (var windowsUpdate in GetWindowsUpdateHistory())
+                            writer.WriteLine(windowsUpdate);
+                    }
+                    catch
+                    {
+                        writer.WriteLine("Failed to fetch further windows updates");
+                    }
+                }
+            }
+        }
 
         private static bool RunProcessWithLogging(string cmd, string args, int timeoutInMs, StreamWriter writer)
         {
@@ -560,7 +560,7 @@ namespace iba.Utility
         {
             //Try the default for x86
             installHistoryX86 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "iba\\InstallHistory.txt");
-            if(!File.Exists(installHistoryX86))
+            if (!File.Exists(installHistoryX86))
             {
                 installHistoryX86 = null;
                 if (!Environment.Is64BitProcess)
@@ -571,7 +571,7 @@ namespace iba.Utility
                 }
             }
 
-            if(!Environment.Is64BitOperatingSystem)
+            if (!Environment.Is64BitOperatingSystem)
             {
                 installHistoryX64 = null;
                 return;
@@ -579,7 +579,7 @@ namespace iba.Utility
 
             //Get 64 bit program files directory
             string programFiles64 = Environment.Is64BitProcess ? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) : Environment.GetEnvironmentVariable("ProgramW6432");
-            if(programFiles64 == null)
+            if (programFiles64 == null)
             {
                 installHistoryX64 = null;
                 return;
@@ -587,7 +587,7 @@ namespace iba.Utility
 
             //Try the default for x64
             installHistoryX64 = Path.Combine(programFiles64, "iba\\InstallHistory.txt");
-            if(!File.Exists(installHistoryX64))
+            if (!File.Exists(installHistoryX64))
             {
                 installHistoryX64 = null;
                 if (Environment.Is64BitProcess)
@@ -733,7 +733,7 @@ namespace iba.Utility
                     string location = licKey.GetValue("ImagePath") as string;
                     if (location != null)
                     {
-                        if(location.StartsWith("\""))
+                        if (location.StartsWith("\""))
                         {
                             int endQuote = location.IndexOf('"', 1);
                             if (endQuote > 0)
@@ -758,7 +758,7 @@ namespace iba.Utility
         static void LogIbaProductVersion(StreamWriter writer, string productName, string keyName, bool bSearchInUserKeys)
         {
             RegistryKey key = OpenRegistryKey("Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + keyName, bSearchInUserKeys, true);
-            if(key == null)
+            if (key == null)
                 key = OpenRegistryKey("Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + keyName, bSearchInUserKeys, false);
 
             if (key != null)
@@ -822,7 +822,7 @@ namespace iba.Utility
                     RegistryKey regKey = hklmKey.OpenSubKey(keyName, false);
                     if (regKey != null)
                         return regKey;
-                }                 
+                }
 
                 if (bSearchInUserKeys)
                 {
@@ -919,118 +919,122 @@ namespace iba.Utility
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             { }
 
             return instSw;
         }
 
-		/// <summary>
-		/// Finds the history of Windows updates on the local machine. Should in principle be run in an STA thread.
-		/// </summary>
-		/// <returns>Windows update history descriptions in string format</returns>
-		private static IEnumerable<string> GetWindowsUpdateHistory()
-		{
-				// Create IUpdateSession type from COM interface
-				// Microsoft.Update.Session is the Windows Update Agent COM
-				var sessionType = Type.GetTypeFromProgID("Microsoft.Update.Session");
-				// Create a new instance of the COM class IUpdateSession, along with a .NET wrapper
-				// use dynamic typing to work with COM interface wrappers
-				dynamic session = Activator.CreateInstance(sessionType); // instead of `UpdateSession session = new IUpdateSession`
-				dynamic searcher = session.CreateUpdateSearcher(); // instead of `UpdateSearcher searcher = ...`
-				int historyCount = searcher.GetTotalHistoryCount();
-			if (historyCount > 0)
-			{
-				dynamic history = searcher.QueryHistory(0, historyCount);
-				for (int i = 0; i < historyCount; i++)
-				{
-					dynamic historyItem = history.Item(i);
-					if (historyItem.HResult == 0) // Show only successful installations
-					{
-						DateTime date = historyItem.Date; // installation date
-						string title = historyItem.Title; // the title, which usually contains the KB number that can be googled
+        /// <summary>
+        /// Finds the history of Windows updates on the local machine. Should in principle be run in an STA thread.
+        /// </summary>
+        /// <returns>Windows update history descriptions in string format</returns>
+        private static IEnumerable<string> GetWindowsUpdateHistory()
+        {
+            // Create IUpdateSession type from COM interface
+            // Microsoft.Update.Session is the Windows Update Agent COM
+            var sessionType = Type.GetTypeFromProgID("Microsoft.Update.Session");
+            // Create a new instance of the COM class IUpdateSession, along with a .NET wrapper
+            // use dynamic typing to work with COM interface wrappers
+            dynamic session = Activator.CreateInstance(sessionType); // instead of `UpdateSession session = new IUpdateSession`
+            dynamic searcher = session.CreateUpdateSearcher(); // instead of `UpdateSearcher searcher = ...`
+            int historyCount = searcher.GetTotalHistoryCount();
+            if (historyCount > 0)
+            {
+                dynamic history = searcher.QueryHistory(0, historyCount);
+                for (int i = 0; i < historyCount; i++)
+                {
+                    dynamic historyItem = history.Item(i);
+                    if (historyItem.HResult == 0) // Show only successful installations
+                    {
+                        DateTime date = historyItem.Date; // installation date
+                        string title = historyItem.Title; // the title, which usually contains the KB number that can be googled
 
-						yield return $"[{date:yyyy-MM-dd HH:mm}] {title}";
-					}
-					// clean up COM references to the current history item (set reference count to 0)
-					System.Runtime.InteropServices.Marshal.FinalReleaseComObject(historyItem); // Set reference count to COM interface to 0
-				}
-				// clean up all references to COM components after enumerating the results (set reference counts to 0)
-				System.Runtime.InteropServices.Marshal.FinalReleaseComObject(history);
-			}
-				System.Runtime.InteropServices.Marshal.FinalReleaseComObject(searcher);
-				System.Runtime.InteropServices.Marshal.FinalReleaseComObject(session);
-		}
+                        yield return $"[{date:yyyy-MM-dd HH:mm}] {title}";
+                    }
+                    // clean up COM references to the current history item (set reference count to 0)
+                    System.Runtime.InteropServices.Marshal.FinalReleaseComObject(historyItem); // Set reference count to COM interface to 0
+                }
+                // clean up all references to COM components after enumerating the results (set reference counts to 0)
+                System.Runtime.InteropServices.Marshal.FinalReleaseComObject(history);
+            }
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(searcher);
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(session);
+        }
 
-		/// <summary>
-		/// Finds installed Windows updates on the local machine.
-		/// </summary>
-		/// <returns>Windows update history descriptions in string format</returns>
-		private static IEnumerable<string> GetInstalledWindowsUpdates()
-		{
-			try
-			{
-				ManagementObjectSearcher objMOS = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_QuickFixEngineering");
-				List<string> res = new List<string>();
-				foreach (ManagementObject obj in objMOS.Get())
-				{
-					string supportUrl = obj.GetPropertyValue("Caption")?.ToString();
-					string description = obj.GetPropertyValue("Description")?.ToString();
-					string installed = obj.GetPropertyValue("InstalledOn")?.ToString();
-					string kb = obj.GetPropertyValue("HotFixID")?.ToString();
-					res.Add($"[{installed:yyyy-MM-dd HH:mm}] {kb} ({description}) - {supportUrl}");
-				}
-				return res;
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine("WMI query failed with error: {0}", ex);
-			}
-			return Enumerable.Empty<string>();
-		}
+        /// <summary>
+        /// Finds installed Windows updates on the local machine.
+        /// </summary>
+        /// <returns>Windows update history descriptions in string format</returns>
+        private static IEnumerable<string> GetInstalledWindowsUpdates()
+        {
+            try
+            {
+                ManagementObjectSearcher objMOS = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_QuickFixEngineering");
+                List<string> res = new List<string>();
+                foreach (ManagementObject obj in objMOS.Get())
+                {
+                    string supportUrl = obj.GetPropertyValue("Caption")?.ToString();
+                    string description = obj.GetPropertyValue("Description")?.ToString();
+                    string kb = obj.GetPropertyValue("HotFixID")?.ToString();
 
-		/// <summary>
-		/// Retrieve system crash dump settings
-		/// </summary>
-		/// <param name="bExpand">When true, environment variables in the minidump directory and full memory dump file name are expanded</param>
-		/// <param name="mode"></param>
-		/// <param name="miniDumpDir"></param>
-		/// <param name="fullDumpFile"></param>
-		/// <returns></returns>
-		public static bool GetCrashDumpSettings(bool bExpand, out CrashDumpMode mode, out string miniDumpDir, out string fullDumpFile)
-		{
-			miniDumpDir = "";
-			fullDumpFile = "";
-			mode = CrashDumpMode.None;
+                    string installed = obj.GetPropertyValue("InstalledOn")?.ToString();
+                    if (!String.IsNullOrEmpty(installed) && DateTime.TryParse(installed, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime installDate))
+                        installed = installDate.ToString("yyyy-MM-dd");
 
-			try
-			{
-				using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\CrashControl"))
-				{
-					if (key != null)
-					{
-						miniDumpDir = (string)key.GetValue("MinidumpDir", "");
-						fullDumpFile = (string)key.GetValue("DumpFile", "");
-						mode = (CrashDumpMode)key.GetValue("CrashDumpEnabled", 0);
-					}
-				}
-			}
-			catch
-			{
-				return false;
-			}
+                    res.Add($"[{installed}] {kb} ({description}) - {supportUrl}");
+                }
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("WMI query failed with error: {0}", ex);
+            }
+            return Enumerable.Empty<string>();
+        }
 
-			if(bExpand)
-			{
-				if (!string.IsNullOrEmpty(miniDumpDir))
-					miniDumpDir = Environment.ExpandEnvironmentVariables(miniDumpDir);
+        /// <summary>
+        /// Retrieve system crash dump settings
+        /// </summary>
+        /// <param name="bExpand">When true, environment variables in the minidump directory and full memory dump file name are expanded</param>
+        /// <param name="mode"></param>
+        /// <param name="miniDumpDir"></param>
+        /// <param name="fullDumpFile"></param>
+        /// <returns></returns>
+        public static bool GetCrashDumpSettings(bool bExpand, out CrashDumpMode mode, out string miniDumpDir, out string fullDumpFile)
+        {
+            miniDumpDir = "";
+            fullDumpFile = "";
+            mode = CrashDumpMode.None;
 
-				if (!string.IsNullOrEmpty(fullDumpFile))
-					fullDumpFile = Environment.ExpandEnvironmentVariables(fullDumpFile);
-			}
+            try
+            {
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\CrashControl"))
+                {
+                    if (key != null)
+                    {
+                        miniDumpDir = (string)key.GetValue("MinidumpDir", "");
+                        fullDumpFile = (string)key.GetValue("DumpFile", "");
+                        mode = (CrashDumpMode)key.GetValue("CrashDumpEnabled", 0);
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
 
-			return true;
-		}
+            if (bExpand)
+            {
+                if (!string.IsNullOrEmpty(miniDumpDir))
+                    miniDumpDir = Environment.ExpandEnvironmentVariables(miniDumpDir);
+
+                if (!string.IsNullOrEmpty(fullDumpFile))
+                    fullDumpFile = Environment.ExpandEnvironmentVariables(fullDumpFile);
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Export the dongle information by using the installed ibaDongleViewer
