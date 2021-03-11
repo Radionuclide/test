@@ -237,11 +237,11 @@ namespace iba.Processing
             return true;
         }
 
-        public List<double> GetPoints(string filename = null, ISplitterTaskProgress progress =null)
+        public List<double> GetPoints(string filename = null, ISplitterTaskProgress progress =null, string pass = null)
         {
             if (points != null) return points;
             if (filename==null) filename = m_task.TestDatFile;
-            string pass = m_task.ParentConfigurationData.FileEncryptionPassword;
+            if (pass == null) pass = m_task.ParentConfigurationData.FileEncryptionPassword;
             if (progress == null && m_confWorker != null)
                 progress = new ConfigurationStopListener(m_confWorker);
             try

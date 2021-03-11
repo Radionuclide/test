@@ -1,6 +1,8 @@
+using iba.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace iba.Data
 {
@@ -19,6 +21,21 @@ namespace iba.Data
         {
             get { return m_testDatFile; }
             set { m_testDatFile = value; }
+        }
+
+
+        private string m_datFilePassword;
+        [XmlIgnore]
+        public string DatFilePassword
+        {
+            get { return m_datFilePassword; }
+            set { m_datFilePassword = value; }
+        }
+
+        public string EncryptedDatFilePassword
+        {
+            get { return Crypt.Encrypt(m_datFilePassword); }
+            set { m_datFilePassword = Crypt.Decrypt(value); }
         }
 
         public enum XTypeEnum 
@@ -44,6 +61,7 @@ namespace iba.Data
             m_expression = String.Empty;
             m_xtype = 0;
             m_monitorData = new MonitorData();
+            m_datFilePassword = String.Empty;
         }
 
         public IfTaskData()
@@ -67,6 +85,7 @@ namespace iba.Data
             ifd.m_testDatFile = m_testDatFile;
             ifd.m_expression = m_expression;
             ifd.m_monitorData = (MonitorData) m_monitorData.Clone();
+            ifd.m_datFilePassword = m_datFilePassword;
             return ifd;
         }
 
@@ -79,6 +98,7 @@ namespace iba.Data
             other.m_xtype == m_xtype &&
             other.m_pdoFile == m_pdoFile &&
             other.m_testDatFile == m_testDatFile &&
+            other.m_datFilePassword == m_datFilePassword &&
             other.m_expression == m_expression &&
             other.m_monitorData.IsSame(m_monitorData);
         }

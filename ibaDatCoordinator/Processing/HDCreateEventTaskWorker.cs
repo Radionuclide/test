@@ -134,24 +134,17 @@ namespace iba.Processing
             double[] stamps = oStamps as double[];
             string[] strings = oValues as string[];
 
-            if (strings == null)
+            if (strings == null || stamps == null || stamps.Length != strings.Length)
                 return null;
 
-            if (stamps.Length != 0)
+            for (int j = 0; j < stamps.Length; j++)
             {
-                if (double.IsNaN(from))
-                {
-                    return stamps[0] > 0.0 ? "" : strings[0];
-                }
-
-                int j = 0;
-                while (j < stamps.Length && stamps[j] <= from)
-                    j++;
-
-                return j == 0 ? "" : strings[j - 1];
+                if (!double.IsNaN(from) && stamps[j] < from) continue;
+                if (!double.IsNaN(to) && stamps[j] > to) break;
+                if (string.IsNullOrEmpty(strings[j])) continue;
+                return strings[j];
             }
-            else
-                return "";
+            return "";
         }
 
         EventWriterItem GenerateEvent(HDCreateEventTaskData.EventData eventData, int index, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<string[], double[]>> textValues, double stamp = double.NaN, double from = double.NaN, double to = double.NaN, bool bIncoming = true)
@@ -356,6 +349,11 @@ namespace iba.Processing
                     bDisposeAnalyzer = true;
                     m_ibaAnalyzer = new ibaAnalyzerWrapper(new IbaAnalyzer.IbaAnalysisNonInteractive());
 
+                    if (Path.GetExtension(m_data.DatFile)==".hdq")
+                    {
+                        IbaAnalyzerCollection.TrySetHDCredentials(m_ibaAnalyzer, m_data.ParentConfigurationData);
+                    }
+                    else 
                     if (!string.IsNullOrEmpty(m_data.DatFilePassword))
                         m_ibaAnalyzer.SetFilePassword("", m_data.DatFilePassword);
 

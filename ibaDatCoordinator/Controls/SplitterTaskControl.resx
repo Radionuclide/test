@@ -433,7 +433,7 @@
     <value>0</value>
   </data>
   <data name="m_gbTarget.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 214</value>
+    <value>0, 224</value>
   </data>
   <data name="m_gbTarget.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 488</value>
@@ -459,6 +459,87 @@
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_btTakeParentPass.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_btTakeParentPass.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btTakeParentPass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>321, 48</value>
+  </data>
+  <data name="m_btTakeParentPass.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 23</value>
+  </data>
+  <data name="m_btTakeParentPass.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="m_btTakeParentPass.Text" xml:space="preserve">
+    <value>Copy from parent Job</value>
+  </data>
+  <data name="&gt;&gt;m_btTakeParentPass.Name" xml:space="preserve">
+    <value>m_btTakeParentPass</value>
+  </data>
+  <data name="&gt;&gt;m_btTakeParentPass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btTakeParentPass.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_btTakeParentPass.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbPwdDAT.Location" type="System.Drawing.Point, System.Drawing">
+    <value>185, 50</value>
+  </data>
+  <data name="m_tbPwdDAT.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 20</value>
+  </data>
+  <data name="m_tbPwdDAT.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;m_tbPwdDAT.Name" xml:space="preserve">
+    <value>m_tbPwdDAT</value>
+  </data>
+  <data name="&gt;&gt;m_tbPwdDAT.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPwdDAT.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;m_tbPwdDAT.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 53</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 13</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>DAT file password (optional):</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="m_testButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -466,7 +547,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_testButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>622, 29</value>
+    <value>622, 19</value>
   </data>
   <data name="m_testButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 24</value>
@@ -487,7 +568,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_testButton.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -496,7 +577,7 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 34</value>
+    <value>13, 24</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 13</value>
@@ -517,13 +598,13 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="m_datFileTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_datFileTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 31</value>
+    <value>103, 21</value>
   </data>
   <data name="m_datFileTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>484, 20</value>
@@ -541,7 +622,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="m_browseDatFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -550,7 +631,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_browseDatFileButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>592, 29</value>
+    <value>592, 19</value>
   </data>
   <data name="m_browseDatFileButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 24</value>
@@ -568,13 +649,13 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 136</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>665, 72</value>
+    <value>665, 82</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -766,7 +847,7 @@
     <value>5</value>
   </data>
   <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 708</value>
+    <value>0, 718</value>
   </data>
   <data name="m_monitorGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>666, 73</value>
@@ -796,10 +877,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 784</value>
+    <value>0, 800</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 784</value>
+    <value>666, 800</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog.Name" xml:space="preserve">
     <value>m_openFileDialog</value>

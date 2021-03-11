@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iba.Utility;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
@@ -22,6 +23,20 @@ namespace iba.Data
             set { m_testDatFile = value; }
         }
 
+        private string m_datFilePassword;
+        [XmlIgnore]
+        public string DatFilePassword
+        {
+            get { return m_datFilePassword; }
+            set { m_datFilePassword = value; }
+        }
+
+        public string EncryptedDatFilePassword
+        {
+            get { return Crypt.Encrypt(m_datFilePassword); }
+            set { m_datFilePassword = Crypt.Decrypt(value); }
+        }
+
         private MonitorData m_monitorData;
         public MonitorData MonitorData
         {
@@ -34,7 +49,7 @@ namespace iba.Data
             m_name = iba.Properties.Resources.splitterTaskTitle;
             m_monitorData = new MonitorData();
             m_edgeConditionType = EdgeConditionTypeEnum.RISINGTORISING;
-            m_testDatFile = m_expression = String.Empty;
+            m_datFilePassword = m_testDatFile = m_expression = String.Empty;
         }
 
         public SplitterTaskData() : this(null)
@@ -58,6 +73,7 @@ namespace iba.Data
             std.m_expression = m_expression;
             std.m_monitorData = (MonitorData) m_monitorData.Clone();
             std.m_edgeConditionType = m_edgeConditionType;
+            std.m_datFilePassword = m_datFilePassword;
             return std;
         }
 
@@ -71,6 +87,7 @@ namespace iba.Data
                 other.m_testDatFile == m_testDatFile &&
                 other.m_expression == m_expression &&
                 other.m_edgeConditionType == m_edgeConditionType &&
+                other.m_datFilePassword == m_datFilePassword &&
                 other.m_monitorData.IsSame(m_monitorData);
         }
     }

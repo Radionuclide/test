@@ -289,9 +289,9 @@ namespace iba.Controls
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.RunsWithService == Program.ServiceEnum.CONNECTED;
-
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
+            m_btTakeParentPass.Enabled = m_tbPwdDAT.Enabled = m_data.ParentConfigurationData.DatTriggered;
 
             m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, false, m_data.Username, m_data.HDPassword, "");
 
@@ -637,6 +637,21 @@ namespace iba.Controls
         {
             UpdateSources();
             loadAnalyzerTreeDataTask();
+        }
+
+        private void m_btTakeParentPass_Click(object sender, EventArgs e)
+        {
+            m_tbPwdDAT.Text = m_data.ParentConfigurationData.FileEncryptionPassword;
+        }
+
+        private void m_tbPwdDAT_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void m_btnUploadPDO_Click(object sender, EventArgs e)

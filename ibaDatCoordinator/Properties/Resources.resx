@@ -1881,4 +1881,10 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ErrorDatFileOpen" xml:space="preserve">
     <value>The file-tree could not be loaded from ibaAnalyzer. This could e.g. be caused by a wrong file password. {0}</value>
   </data>
+  <data name="HDQErrorNoStores" xml:space="preserve">
+    <value>No HDstore was specified</value>
+  </data>
+  <data name="HDQErrorStopBeforeStart" xml:space="preserve">
+    <value>Start time is later than Stop time: Start {0} Stop {1}</value>
+  </data>
 </root>

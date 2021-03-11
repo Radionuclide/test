@@ -1489,6 +1489,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No HDstore was specified.
+        /// </summary>
+        internal static string HDQErrorNoStores {
+            get {
+                return ResourceManager.GetString("HDQErrorNoStores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start time is later than Stop time: Start {0} Stop {1}.
+        /// </summary>
+        internal static string HDQErrorStopBeforeStart {
+            get {
+                return ResourceManager.GetString("HDQErrorStopBeforeStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to on rising edge (Value).
         /// </summary>
         internal static string HdRisingEdge {

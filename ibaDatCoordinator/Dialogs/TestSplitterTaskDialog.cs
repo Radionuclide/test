@@ -185,7 +185,7 @@ namespace iba.Dialogs
         {
             if (IsDisposed)
                 return;
-            List<double> points = m_stw.GetPoints(null,this);
+            List<double> points = m_stw.GetPoints(null,this,m_data.DatFilePassword);
         }
 
         private void m_bgwCalc_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

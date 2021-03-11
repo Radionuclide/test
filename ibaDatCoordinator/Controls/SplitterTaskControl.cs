@@ -55,6 +55,10 @@ namespace iba.Controls
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
 
+            m_datFileTextBox.Text = m_data.TestDatFile;
+            m_tbPwdDAT.Text = m_data.DatFilePassword;
+            m_btTakeParentPass.Enabled = m_tbPwdDAT.Enabled = m_data.ParentConfigurationData.DatTriggered;
+
             try
             {
                 RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
@@ -94,7 +98,8 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
-			m_data.Expression = (string)channelTreeEdit.EditValue;
+            m_data.DatFilePassword = m_tbPwdDAT.Text;
+            m_data.Expression = (string)channelTreeEdit.EditValue;
 			m_data.EdgeConditionType = m_splitTypeCBox.SelectedIndex == 1 ? SplitterTaskData.EdgeConditionTypeEnum.RISINGTOFALLING : SplitterTaskData.EdgeConditionTypeEnum.RISINGTORISING;
             
             m_uncControl.SaveData();
@@ -186,6 +191,11 @@ namespace iba.Controls
         private void UpdateSources()
         {
             channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+        }
+
+        private void m_btTakeParentPass_Click(object sender, EventArgs e)
+        {
+            m_tbPwdDAT.Text = m_data.ParentConfigurationData.FileEncryptionPassword;
         }
     }
 }

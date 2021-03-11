@@ -31,6 +31,7 @@ namespace iba.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplitterTaskControl));
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
+            this.channelTreeEditPlaceholder = new System.Windows.Forms.TextBox();
             this.m_btnUploadPDO = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.m_splitTypeCBox = new System.Windows.Forms.ComboBox();
@@ -53,7 +54,9 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
-            this.channelTreeEditPlaceholder = new System.Windows.Forms.TextBox();
+            this.m_btTakeParentPass = new System.Windows.Forms.Button();
+            this.m_tbPwdDAT = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.m_gbTarget.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -76,6 +79,11 @@ namespace iba.Controls
             this.groupBox2.Controls.Add(this.m_executeIBAAButton);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // channelTreeEditPlaceholder
+            // 
+            resources.ApplyResources(this.channelTreeEditPlaceholder, "channelTreeEditPlaceholder");
+            this.channelTreeEditPlaceholder.Name = "channelTreeEditPlaceholder";
             // 
             // m_btnUploadPDO
             // 
@@ -147,6 +155,9 @@ namespace iba.Controls
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.m_btTakeParentPass);
+            this.groupBox1.Controls.Add(this.m_tbPwdDAT);
+            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.m_testButton);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.m_datFileTextBox);
@@ -254,10 +265,23 @@ namespace iba.Controls
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
-            // channelTreeEditPlaceholder
+            // m_btTakeParentPass
             // 
-            resources.ApplyResources(this.channelTreeEditPlaceholder, "channelTreeEditPlaceholder");
-            this.channelTreeEditPlaceholder.Name = "channelTreeEditPlaceholder";
+            resources.ApplyResources(this.m_btTakeParentPass, "m_btTakeParentPass");
+            this.m_btTakeParentPass.Name = "m_btTakeParentPass";
+            this.m_btTakeParentPass.UseVisualStyleBackColor = true;
+            this.m_btTakeParentPass.Click += new System.EventHandler(this.m_btTakeParentPass_Click);
+            // 
+            // m_tbPwdDAT
+            // 
+            resources.ApplyResources(this.m_tbPwdDAT, "m_tbPwdDAT");
+            this.m_tbPwdDAT.Name = "m_tbPwdDAT";
+            this.m_tbPwdDAT.UseSystemPasswordChar = true;
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
             // 
             // SplitterTaskControl
             // 
@@ -308,5 +332,8 @@ namespace iba.Controls
         private System.Windows.Forms.Panel panelOut;
 		private System.Windows.Forms.Button m_btnUploadPDO;
         private System.Windows.Forms.TextBox channelTreeEditPlaceholder;
+        private System.Windows.Forms.Button m_btTakeParentPass;
+        private System.Windows.Forms.TextBox m_tbPwdDAT;
+        private System.Windows.Forms.Label label7;
     }
 }

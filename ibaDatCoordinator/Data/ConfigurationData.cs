@@ -524,6 +524,10 @@ namespace iba.Data
 
         public void GenerateHDQFile(DateTime startTime, DateTime stopTime, String path, string comment = "")
         {
+            if (stopTime <= startTime)
+            {
+                throw new Exception(String.Format(Properties.Resources.HDQErrorStopBeforeStart, startTime, stopTime));
+            }
             string lServer = string.Empty;
             int lPort = -1;
             string[] lStores = new string[0];
@@ -545,6 +549,8 @@ namespace iba.Data
                 bPreferredTimeBaseIsAuto = ScheduleData.PreferredTimeBaseIsAuto;
                 lPreferredTimeBase = ScheduleData.PreferredTimeBase;
             }
+            if (lStores.Length == 0)
+                throw new Exception(Properties.Resources.HDQErrorNoStores);
 
             string dir = Path.GetDirectoryName(path);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);

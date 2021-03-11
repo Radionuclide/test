@@ -52,6 +52,8 @@ namespace iba.Controls
 			channelTreeEdit.EditValue = m_data.Expression;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
+            m_tbPwdDAT.Text = m_data.DatFilePassword;
+            m_btTakeParentPass.Enabled = m_tbPwdDAT.Enabled = m_data.ParentConfigurationData.DatTriggered;
 
             try
             {
@@ -83,7 +85,6 @@ namespace iba.Controls
                 m_monitorGroup.Enabled = false;
             }
 
-            UpdateSources();
             m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
             File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
@@ -92,7 +93,8 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.TestDatFile = m_datFileTextBox.Text;
-			m_data.Expression = (string)channelTreeEdit.EditValue;
+            m_data.DatFilePassword = m_tbPwdDAT.Text;
+            m_data.Expression = (string)channelTreeEdit.EditValue;
 			m_data.XType = (IfTaskData.XTypeEnum) m_XTypeComboBox.SelectedIndex;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
@@ -125,8 +127,7 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref path, out localPath))
 			{
 				m_pdoFileTextBox.Text = path;
-                UpdateSources();
-            }
+			}
 		}
 
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
@@ -140,8 +141,7 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data?.ParentConfigurationData))
 			{
 				m_datFileTextBox.Text = datFile;
-                UpdateSources();
-            }
+			}
         }
 
         private void m_testButton_Click(object sender, EventArgs e)
@@ -150,11 +150,45 @@ namespace iba.Controls
             string errorMessage;
             using (new Utility.WaitCursor())
             {
-                string pass = m_data.ParentConfigurationData.FileEncryptionPassword;
-                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                    f = Program.CommunicationObject.TestCondition(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                string pass = m_tbPwdDAT.Text;
+                string user = "";
+                bool doHD = false;
+                if (!String.IsNullOrEmpty(m_datFileTextBox.Text) && Path.GetExtension(m_datFileTextBox.Text) == ".hdq")
+                {
+                    if( m_data.ParentConfigurationData.JobType == ConfigurationData.JobTypeEnum.Event)
+                    {
+                        if (m_data.ParentConfigurationData.EventData != null && !string.IsNullOrEmpty(m_data.ParentConfigurationData.EventData.HDPassword))
+                        {
+                            doHD = true;
+                            pass = m_data.ParentConfigurationData.EventData.HDPassword;
+                            user = m_data.ParentConfigurationData.EventData.HDUsername;
+                        }
+                    }
+                    if (m_data.ParentConfigurationData.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                    {
+                        if (m_data.ParentConfigurationData.ScheduleData != null && !string.IsNullOrEmpty(m_data.ParentConfigurationData.ScheduleData.HDPassword))
+                        {
+                            doHD = true;
+                            pass = m_data.ParentConfigurationData.ScheduleData.HDPassword;
+                            user = m_data.ParentConfigurationData.ScheduleData.HDUsername;
+                        }
+                    }
+                }
+
+                if (doHD)
+                {
+                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                        f = Program.CommunicationObject.TestConditionHD(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, user, pass, out errorMessage);
+                    else
+                        f = TestConditionHD(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, user, pass, out errorMessage);
+                }
                 else
-                    f = TestCondition(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                {
+                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                        f = Program.CommunicationObject.TestCondition(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                    else
+                        f = TestCondition(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                }
             }
             if (float.IsNaN(f) || float.IsInfinity(f))
                 MessageBox.Show(errorMessage, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -165,6 +199,11 @@ namespace iba.Controls
         }
 
         static internal float TestCondition(string expression, int index, string pdo, string datfile, string passwd, out string errorMessage)
+        {
+            return TestConditionHD(expression, index, pdo, datfile, "", passwd, out errorMessage);
+        }
+
+        static internal float TestConditionHD(string expression, int index, string pdo, string datfile, string user, string passwd, out string errorMessage)
         {
             IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
             //register this
@@ -183,7 +222,11 @@ namespace iba.Controls
             try
             {
                 if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(pdo);
-                if (!String.IsNullOrEmpty(passwd))
+                if (!string.IsNullOrEmpty(user)) //actual HD case
+                {
+                    ibaAnalyzer.SetHDCredentials(user, passwd);
+                }
+                else if (!String.IsNullOrEmpty(passwd))
                     ibaAnalyzer.SetFilePassword("", passwd);
                 ibaAnalyzer.OpenDataFile(0, datfile);
                 f = ibaAnalyzer.Evaluate(expression, index);
@@ -202,31 +245,33 @@ namespace iba.Controls
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
                 }
             }
-            errorMessage = (float.IsNaN(f) || float.IsInfinity(f))?iba.Properties.Resources.IfTestBadEvaluation:"";
+            errorMessage = (float.IsNaN(f) || float.IsInfinity(f)) ? iba.Properties.Resources.IfTestBadEvaluation : "";
             return f;
+
         }
 
-        private void UpdateSources()
-        {
-            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
-        }
 
-        private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
+            private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
-            UpdateSources();
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
-        {
-            UpdateSources();
-            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
+		{
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
 			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
-            UpdateSources();
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+		}
+
+        private void m_btTakeParentPass_Click(object sender, EventArgs e)
+        {
+            m_tbPwdDAT.Text = m_data.ParentConfigurationData.FileEncryptionPassword;
         }
-	}
+    }
 }
