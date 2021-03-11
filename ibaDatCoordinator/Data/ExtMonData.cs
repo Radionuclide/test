@@ -171,37 +171,39 @@ namespace iba.Data
             {
 
                 jobFolder = new ExtMonFolder(FolderComputedValues, data.ParentConfigurationData.Name, data.ParentConfigurationData.Name, "", GetLeastFreeId(FolderComputedValues));
+                jobFolder.UaBrowseName = $@"Job{{{data.ParentConfigurationData.Guid}}}";
                 FolderComputedValues.Children.Add(jobFolder);
             }
 
             var group = new ComputedValuesInfo(jobFolder, GetLeastFreeId(jobFolder), data);
             jobFolder.Children.Add(group);
-            // todo
-            // check consistency between mib name and oid
-            //Debug.Assert(jobInfo.SnmpLeastId == indexWithinFolder);
-            //Debug.Assert(jobInfo.SnmpFullMibName.Contains($"Job{jobInfo.SnmpLeastId}"));
+
+            //Debug.Assert(jobFolder.SnmpFullMibName.Contains($"Job{jobFolder.SnmpLeastId}")); // TODO
         }
 
         public void UpdateComputedValuesFolderValues(OPCUAWriterTaskData data)
         {
-            foreach (var task in FolderComputedValues.Children)
+            foreach (var job in FolderComputedValues.Children)
             {
-                if (task is ComputedValuesInfo info)
-                    if (info.dataId == data.Guid)
-                    {
-                        info.Update(data);
-                        return;
-                    }
+                if (job is ExtMonFolder jobFolder)
+                    if (jobFolder.UaBrowseName == $@"Job{{{data.ParentConfigurationData.Guid}}}")
+                        foreach (var task in jobFolder.Children)
+                            if (task is ComputedValuesInfo info)
+                                if (info.dataId == data.Guid)
+                                {
+                                    info.Update(data);
+                                    return;
+                                }
             }
         }
-        public void RemoveComputedValuesFolder(OPCUAWriterTaskData data)
+        public void RemoveComputedValuesJobFolder(OPCUAWriterTaskData data)
         {
             FolderComputedValues.Children.RemoveAll
                 (
                     (ExtMonNode node) =>
                     {
                         if (node is ExtMonFolder jobFolder)
-                            return (jobFolder.Caption == data.ParentConfigurationData.Name); // todo is job name unique?
+                            return (jobFolder.UaBrowseName == $@"Job{{{data.ParentConfigurationData.Guid}}}");
                         return false;
                     }
                 );

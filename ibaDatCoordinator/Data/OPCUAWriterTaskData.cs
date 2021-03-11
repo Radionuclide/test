@@ -148,7 +148,7 @@ namespace iba.Data
 
         public void Remove()
         {
-            ExtMonData.Instance.RemoveComputedValuesFolder(this);
+            ExtMonData.Instance.RemoveComputedValuesJobFolder(this);
         }
 		public override TaskData CloneInternal()
 		{
