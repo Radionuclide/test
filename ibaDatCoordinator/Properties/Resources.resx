@@ -1890,4 +1890,16 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="deleteOPCUATastQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the OPC UA Computed values options "{0}" of Job "{1}" ?</value>
   </data>
+  <data name="logComputedValuesUpdated" xml:space="preserve">
+    <value>computed values updated</value>
+  </data>
+  <data name="logOPCUAWriterEvaluatingTestValue" xml:space="preserve">
+    <value>Error occured while evaluating test value : {0}</value>
+  </data>
+  <data name="logOPCUAWriterStarted" xml:space="preserve">
+    <value>started evaluating computed values</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>Data type</value>
+  </data>
 </root>

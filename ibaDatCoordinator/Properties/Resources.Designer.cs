@@ -597,6 +597,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data type.
+        /// </summary>
+        internal static string DataType {
+            get {
+                return ResourceManager.GetString("DataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drag and drop .dat files or directories from Windows Explorer to here.
         /// </summary>
         internal static string DatDirDragAndDrop {
@@ -2137,6 +2146,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to computed values updated.
+        /// </summary>
+        internal static string logComputedValuesUpdated {
+            get {
+                return ResourceManager.GetString("logComputedValuesUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to started processing configuration.
         /// </summary>
         internal static string logConfigurationStarted {
@@ -2638,6 +2656,24 @@ namespace iba.Properties {
         internal static string logNotificationNotSupported {
             get {
                 return ResourceManager.GetString("logNotificationNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occured while evaluating test value : {0}.
+        /// </summary>
+        internal static string logOPCUAWriterEvaluatingTestValue {
+            get {
+                return ResourceManager.GetString("logOPCUAWriterEvaluatingTestValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to started evaluating computed values.
+        /// </summary>
+        internal static string logOPCUAWriterStarted {
+            get {
+                return ResourceManager.GetString("logOPCUAWriterStarted", resourceCulture);
             }
         }
         

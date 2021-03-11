@@ -148,15 +148,40 @@ namespace iba.Data
 		
 		public void RebuildComputedValuesFolder(OPCUAWriterTaskData data)
 		{
-            RemoveComputedValuesFolder(data);
+            ExtMonFolder jobFolder = null;
+            
+            foreach (ExtMonFolder f in FolderComputedValues.Children)
+            {
+                if (f.SnmpMibNameSuffix == data.ParentConfigurationData.Name)
+                {
+                    jobFolder = f;
+                    jobFolder.Children.RemoveAll
+                        (
+                            (ExtMonNode node) =>
+                            {
+                                if (node is ComputedValuesInfo info)
+                                    return (info.dataId == data.Guid);
+                                return false;
+                            }
+                        );
+                    break;
+                }
+            }
+            if (jobFolder is null)
+            {
 
-            var group = new ComputedValuesInfo(FolderComputedValues, (uint)FolderComputedValues.Children.Count + 1, data);
-            FolderComputedValues.Children.Add(group);
+                jobFolder = new ExtMonFolder(FolderComputedValues, data.ParentConfigurationData.Name, data.ParentConfigurationData.Name, "", GetLeastFreeId(FolderComputedValues));
+                FolderComputedValues.Children.Add(jobFolder);
+            }
 
+            var group = new ComputedValuesInfo(jobFolder, GetLeastFreeId(jobFolder), data);
+            jobFolder.Children.Add(group);
+            // todo
             // check consistency between mib name and oid
             //Debug.Assert(jobInfo.SnmpLeastId == indexWithinFolder);
             //Debug.Assert(jobInfo.SnmpFullMibName.Contains($"Job{jobInfo.SnmpLeastId}"));
         }
+
         public void UpdateComputedValuesFolderValues(OPCUAWriterTaskData data)
         {
             foreach (var task in FolderComputedValues.Children)
@@ -173,13 +198,24 @@ namespace iba.Data
         {
             FolderComputedValues.Children.RemoveAll
                 (
-                    (ExtMonNode node) => 
+                    (ExtMonNode node) =>
                     {
-                        if (node is ComputedValuesInfo info)
-                            return (info.dataId == data.Guid);
+                        if (node is ExtMonFolder jobFolder)
+                            return (jobFolder.Caption == data.ParentConfigurationData.Name); // todo is job name unique?
                         return false;
-                    }                
+                    }
                 );
+        }
+
+        private uint GetLeastFreeId(ExtMonFolder folder)
+        {
+            HashSet<uint> ids = new HashSet<uint>();
+            foreach (var node in folder.Children)
+                ids.Add(node.SnmpLeastId);
+            uint freeId = 1;
+            while (ids.Contains(freeId))
+                freeId++;
+            return freeId;
         }
 
         public void Reset()
@@ -1767,8 +1803,7 @@ namespace iba.Data
                 PrivateReset();
             }
         }
-
-        static int ind = 0;
+        
         public class ComputedValuesInfo : ExtMonGroup
         {
             public Guid dataId {get; private set;}
@@ -1783,11 +1818,12 @@ namespace iba.Data
 
                 foreach (var record in data.Records)
 				{
-                    string name = "AAAA" + ind.ToString();
-                    ind++;
+                    if (record.Name == "")
+                        continue;
+
                     if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Number)
 					    AddChildVariable<double>(
-                            record.Name, name,
+                            record.Name, record.Name,
 						    "Computed value",
 						    SNMP_AUTO_LEAST_ID);
                     else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)

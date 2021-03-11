@@ -469,7 +469,7 @@ namespace iba.Processing
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData ||
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OPCUAWriterTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
 							|| (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
 							|| (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
@@ -3049,7 +3049,9 @@ namespace iba.Processing
 			else if (task is OPCUAWriterTaskData)
 			{
 				DoOPCUAWriterTask(DatFile, task as OPCUAWriterTaskData);
-			}
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                memoryUsed = ((OPCUAWriterTaskData)task).MonitorData.MemoryUsed;
+            }
             else if (task is CustomTaskData)
             {
                 DoCustomTask(DatFile, task as CustomTaskData);
@@ -5129,8 +5131,79 @@ namespace iba.Processing
         }
         private void DoOPCUAWriterTask(string filename, OPCUAWriterTaskData task)
         {
-            task.EvaluateValues(filename);
-            Log(Logging.Level.Info, "data updated", filename, task);
+            bool bUseAnalysis = !String.IsNullOrEmpty(task.AnalysisFile);
+            if (bUseAnalysis && !File.Exists(task.AnalysisFile))
+            {
+                string message = iba.Properties.Resources.AnalysisFileNotFound + task.AnalysisFile;
+                Log(Logging.Level.Exception, message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+                return;
+            }
+            try
+            {
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                }
+                Log(Logging.Level.Info, iba.Properties.Resources.logOPCUAWriterStarted, filename, task);
+
+                using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, task.MonitorData))
+                {
+                    if (bUseAnalysis)
+                        mon.Execute(delegate () { m_ibaAnalyzer.OpenAnalysis(task.AnalysisFile); });
+                    mon.Execute(delegate () { task.EvaluateValues(filename, m_ibaAnalyzer); });
+
+                    Log(Logging.Level.Info, iba.Properties.Resources.logComputedValuesUpdated, filename, task);
+                    lock (m_sd.DatFileStates)
+                    {
+                        m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    }
+                }
+            }
+            catch (IbaAnalyzerExceedingTimeLimitException te)
+            {
+                Log(Logging.Level.Exception, te.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.TIMED_OUT;
+                }
+                RestartIbaAnalyzerAndOpenDatFile(filename);
+            }
+            catch (IbaAnalyzerExceedingMemoryLimitException me)
+            {
+                Log(Logging.Level.Exception, me.Message, filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.MEMORY_EXCEEDED;
+                }
+                RestartIbaAnalyzerAndOpenDatFile(filename);
+            }
+            catch
+            {
+                Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+            finally
+            {
+                if (m_ibaAnalyzer != null && bUseAnalysis)
+                {
+                    try
+                    {
+                        m_ibaAnalyzer.CloseAnalysis();
+                    }
+                    catch
+                    {
+                        Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                        RestartIbaAnalyzer();
+                    }
+                }
+            }
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 

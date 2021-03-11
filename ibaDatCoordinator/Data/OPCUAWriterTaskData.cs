@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace iba.Data
@@ -12,25 +13,20 @@ namespace iba.Data
     public class OPCUAWriterTaskData : TaskData
     {
         internal AnalyzerManager m_analyzerManager;
-        public StringWrapper lastDatFile = new StringWrapper();
         public List<Record> Records;
+        public MonitorData MonitorData { get; set; }
 
         public OPCUAWriterTaskData(ConfigurationData parent)
             : base(parent)
         {
             Records = new List<Record>();
+            MonitorData = new MonitorData();
         }
         public OPCUAWriterTaskData() : this(null) { }
 
-        public class StringWrapper
-        {
-            public string path;
-        }
-
         [Serializable]
-        public class Record : ICloneable//, IComparable<Record>
+        public class Record : ICloneable
         {
-
             public static readonly string[] dataTypes =
             {
                 "Analog",
@@ -90,28 +86,6 @@ namespace iba.Data
                 }
             }
 
-            //[XmlElement(ElementName = "DataType")]
-            //public string DataTypeAsString
-            //{
-            //    get { return dataTypes[(int)DataType]; }
-            //    set
-            //    {
-            //        if (value == null)
-            //            return;
-
-            //        string newVal = value.ToUpper();
-            //        for (int i = 0; i < dataTypes.Length; i++)
-            //        {
-            //            if (newVal == dataTypes[i].name)
-            //            {
-            //                m_dataType = (S7DataTypeEnum)i;
-            //                return;
-            //            }
-            //        }
-
-            //        //Unknown data type -> don't change
-            //    }
-            //}
             public Record()
             {
                 Name = "";
@@ -119,10 +93,7 @@ namespace iba.Data
                 TestValue = Double.NaN;
                 Value = Double.NaN;
             }
-            public bool IsValid()
-            {
-                return !String.IsNullOrEmpty(Expression);
-            }
+
             public object Clone()
             {
                 System.Diagnostics.Debug.Assert(Value is double || Value is string);
@@ -135,10 +106,21 @@ namespace iba.Data
                     DataType = this.DataType
                 };
             }
-
-            public int CompareTo(Record other)
+            public override bool Equals(object obj)
             {
-                throw new NotImplementedException();
+                if (obj == null || !(obj is Record))
+                    return false;
+                var rec = obj as Record;
+                return
+                    (
+                        Expression == rec.Expression &&
+                        Name == rec.Name &&
+                        DataType == rec.DataType
+                    );
+            }
+            public override int GetHashCode()
+            {
+                return Expression.GetHashCode() ^ Name.GetHashCode() ^ DataType.GetHashCode();
             }
         }
 
@@ -146,22 +128,21 @@ namespace iba.Data
 
         public string TestDatFile { get; set; }
 
-        public void EvaluateValues(string datFile)
+        public void EvaluateValues(string datFile, IbaAnalyzer.IbaAnalyzer analyzer)
         {
-            Evaluate(datFile, false);
+            Evaluate(false, analyzer);
             ExtMonData.Instance.UpdateComputedValuesFolderValues(this);
-            lastDatFile.path = datFile;
         }
 
         public void UpdateStructure()
         {
-            foreach (var record in Records)
-            {
-                // TODO must names be unique?
-                if (record.Name.Length == 0)
-                    record.Name = record.Expression;
-            }
-            Evaluate(lastDatFile.path, false);
+            Records.RemoveAll
+            (
+                (Record rec) =>
+                {
+                    return rec.Name == "";
+                }
+            );
             ExtMonData.Instance.RebuildComputedValuesFolder(this);
         }
 
@@ -174,65 +155,78 @@ namespace iba.Data
             OPCUAWriterTaskData d = new OPCUAWriterTaskData(null);
             d.Records = Records.Select(r => (Record)r.Clone()).ToList();
             d.FolderName = FolderName;
-            d.m_analyzerManager = m_analyzerManager;
             d.AnalysisFile = AnalysisFile;
             d.TestDatFile = TestDatFile;
-            d.lastDatFile = lastDatFile;
+            d.MonitorData = (MonitorData)MonitorData.Clone();
             return d;
         }
         public override bool IsSameInternal(TaskData taskData)
 		{
-            System.Diagnostics.Debug.Assert(false);
-			throw new NotImplementedException();
+            var other = taskData as OPCUAWriterTaskData;
+            return
+                (
+                    other != null &&
+                    Records.SequenceEqual(other.Records) &&
+                    FolderName == other.FolderName &&
+                    AnalysisFile == other.AnalysisFile &&
+                    TestDatFile == other.TestDatFile &&
+                    MonitorData == other.MonitorData
+                );
 		}
 
         public void EvaluateTestValues()
         {
-            Evaluate(TestDatFile, true);
+            string err;
+            m_analyzerManager.UpdateSource(AnalysisFile, TestDatFile, "");
+            m_analyzerManager.OpenAnalyzer(out err);
+            if (err.Length > 0)
+            {
+                var msg = string.Format(iba.Properties.Resources.logOPCUAWriterEvaluatingTestValue, err);
+                MessageBox.Show(msg, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Evaluate(true, m_analyzerManager.Analyzer);
         }
 
-        private void Evaluate(string datFile, bool isTest)
+        private void Evaluate(bool isTest, IbaAnalyzer.IbaAnalyzer analyzer)
         {
-            m_analyzerManager.UpdateSource(AnalysisFile, datFile, "");
-            string err;
-            m_analyzerManager.OpenAnalyzer(out err);
-            if (err.Length == 0)
-                foreach (var record in Records)
+            foreach (var record in Records)
+            {
+                if (record.DataType == Record.ExpressionType.Text)
                 {
-                    if (record.DataType == Record.ExpressionType.Text)
-                    {
-                        object oStamps = null;
-                        object oValues = null;
-                        m_analyzerManager.Analyzer.EvaluateToStringArray(record.Expression, 0, out oStamps, out oValues);
+                    object oStamps = null;
+                    object oValues = null;
+                    analyzer.EvaluateToStringArray(record.Expression, 0, out oStamps, out oValues);
 
-                        if (oValues != null)
+                    if (oValues != null)
+                    {
+                        string[] values = oValues as string[];
+                        foreach (string str in values)
                         {
-                            string[] values = oValues as string[];
-                            foreach (string str in values)
+                            if (!string.IsNullOrEmpty(str))
                             {
-                                if (!string.IsNullOrEmpty(str))
-                                {
-                                    if (isTest)
-                                        record.TestValue = str;
-                                    else
-                                        record.Value = str;
-                                    return;
-                                }
+                                if (isTest)
+                                    record.TestValue = str;
+                                else
+                                    record.Value = str;
+                                break;
                             }
                         }
-                        if (isTest)
-                            record.TestValue = "";
-                        else
-                            record.Value = "";
                     }
+                    if (isTest)
+                        record.TestValue = "";
                     else
-                    {
-                        if (isTest)
-                            record.TestValue = m_analyzerManager.Analyzer.EvaluateDouble(record.Expression, 0);
-                        else
-                            record.Value = m_analyzerManager.Analyzer.EvaluateDouble(record.Expression, 0);
-                    }
+                        record.Value = "";
                 }
+                else
+                {
+                    if (isTest)
+                        record.TestValue = analyzer.EvaluateDouble(record.Expression, 0);
+                    else
+                        record.Value = analyzer.EvaluateDouble(record.Expression, 0);
+                }
+            }
         }
     }
 }

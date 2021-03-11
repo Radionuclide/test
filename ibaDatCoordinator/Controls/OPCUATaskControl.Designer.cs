@@ -31,9 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OPCUAWriterTaskControl));
             this.dataGrid = new DevExpress.XtraGrid.GridControl();
             this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnExpression = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemComboBoxS7DataTypes = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             this.buttonEndpointCopy = new System.Windows.Forms.Button();
@@ -50,9 +50,19 @@
             this.label3 = new System.Windows.Forms.Label();
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_testButton = new System.Windows.Forms.Button();
+            this.m_monitorGroup = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.m_nudTime = new System.Windows.Forms.NumericUpDown();
+            this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
+            this.m_cbTime = new System.Windows.Forms.CheckBox();
+            this.m_cbMemory = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemComboBoxS7DataTypes)).BeginInit();
+            this.m_monitorGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGrid
@@ -68,7 +78,7 @@
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemComboBoxS7DataTypes});
-            this.dataGrid.Size = new System.Drawing.Size(705, 140);
+            this.dataGrid.Size = new System.Drawing.Size(733, 140);
             this.dataGrid.TabIndex = 23;
             this.dataGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.dataGV});
@@ -76,9 +86,9 @@
             // dataGV
             // 
             this.dataGV.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn10,
+            this.gridColumnName,
             this.gridColumn11,
-            this.gridColumn6,
+            this.gridColumnExpression,
             this.gridColumn1});
             this.dataGV.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
             this.dataGV.GridControl = this.dataGrid;
@@ -99,14 +109,14 @@
             this.dataGV.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
             this.dataGV.OptionsView.ShowGroupPanel = false;
             // 
-            // gridColumn10
+            // gridColumnName
             // 
-            this.gridColumn10.Caption = "OPC UA variable name";
-            this.gridColumn10.FieldName = "Name";
-            this.gridColumn10.Name = "gridColumn10";
-            this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 1;
-            this.gridColumn10.Width = 93;
+            this.gridColumnName.Caption = "OPC UA variable name";
+            this.gridColumnName.FieldName = "Name";
+            this.gridColumnName.Name = "gridColumnName";
+            this.gridColumnName.Visible = true;
+            this.gridColumnName.VisibleIndex = 1;
+            this.gridColumnName.Width = 93;
             // 
             // gridColumn11
             // 
@@ -119,14 +129,14 @@
             this.gridColumn11.VisibleIndex = 3;
             this.gridColumn11.Width = 113;
             // 
-            // gridColumn6
+            // gridColumnExpression
             // 
-            this.gridColumn6.Caption = "ibaAnalyzer Expression";
-            this.gridColumn6.FieldName = "Expression";
-            this.gridColumn6.Name = "gridColumn6";
-            this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 0;
-            this.gridColumn6.Width = 181;
+            this.gridColumnExpression.Caption = "ibaAnalyzer Expression";
+            this.gridColumnExpression.FieldName = "Expression";
+            this.gridColumnExpression.Name = "gridColumnExpression";
+            this.gridColumnExpression.Visible = true;
+            this.gridColumnExpression.VisibleIndex = 0;
+            this.gridColumnExpression.Width = 181;
             // 
             // gridColumn1
             // 
@@ -159,7 +169,7 @@
             this.buttonEndpointCopy.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonEndpointCopy.Image = ((System.Drawing.Image)(resources.GetObject("buttonEndpointCopy.Image")));
             this.buttonEndpointCopy.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointCopy.Location = new System.Drawing.Point(733, 135);
+            this.buttonEndpointCopy.Location = new System.Drawing.Point(761, 135);
             this.buttonEndpointCopy.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEndpointCopy.Name = "buttonEndpointCopy";
             this.buttonEndpointCopy.Size = new System.Drawing.Size(32, 30);
@@ -174,7 +184,7 @@
             this.buttonEndpointRemove.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonEndpointRemove.Image = ((System.Drawing.Image)(resources.GetObject("buttonEndpointRemove.Image")));
             this.buttonEndpointRemove.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointRemove.Location = new System.Drawing.Point(733, 210);
+            this.buttonEndpointRemove.Location = new System.Drawing.Point(761, 210);
             this.buttonEndpointRemove.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEndpointRemove.Name = "buttonEndpointRemove";
             this.buttonEndpointRemove.Size = new System.Drawing.Size(32, 30);
@@ -189,7 +199,7 @@
             this.buttonEndpointAdd.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonEndpointAdd.Image = ((System.Drawing.Image)(resources.GetObject("buttonEndpointAdd.Image")));
             this.buttonEndpointAdd.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointAdd.Location = new System.Drawing.Point(733, 98);
+            this.buttonEndpointAdd.Location = new System.Drawing.Point(761, 98);
             this.buttonEndpointAdd.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEndpointAdd.Name = "buttonEndpointAdd";
             this.buttonEndpointAdd.Size = new System.Drawing.Size(32, 30);
@@ -203,7 +213,7 @@
             this.m_btnUploadPDO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
             this.m_btnUploadPDO.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_btnUploadPDO.Location = new System.Drawing.Point(733, 38);
+            this.m_btnUploadPDO.Location = new System.Drawing.Point(761, 38);
             this.m_btnUploadPDO.Margin = new System.Windows.Forms.Padding(4);
             this.m_btnUploadPDO.Name = "m_btnUploadPDO";
             this.m_btnUploadPDO.Padding = new System.Windows.Forms.Padding(1);
@@ -230,7 +240,7 @@
             this.m_pdoFileTextBox.Location = new System.Drawing.Point(171, 42);
             this.m_pdoFileTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-            this.m_pdoFileTextBox.Size = new System.Drawing.Size(475, 22);
+            this.m_pdoFileTextBox.Size = new System.Drawing.Size(503, 22);
             this.m_pdoFileTextBox.TabIndex = 29;
             this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
             // 
@@ -239,7 +249,7 @@
             this.m_browsePDOFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browsePDOFileButton.Image = global::iba.Properties.Resources.open;
             this.m_browsePDOFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browsePDOFileButton.Location = new System.Drawing.Point(653, 38);
+            this.m_browsePDOFileButton.Location = new System.Drawing.Point(681, 38);
             this.m_browsePDOFileButton.Margin = new System.Windows.Forms.Padding(4);
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_browsePDOFileButton.Size = new System.Drawing.Size(32, 30);
@@ -252,7 +262,7 @@
             this.m_executeIBAAButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
             this.m_executeIBAAButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_executeIBAAButton.Location = new System.Drawing.Point(693, 38);
+            this.m_executeIBAAButton.Location = new System.Drawing.Point(721, 38);
             this.m_executeIBAAButton.Margin = new System.Windows.Forms.Padding(4);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.Size = new System.Drawing.Size(32, 30);
@@ -276,7 +286,7 @@
             this.m_folderNameTextBox.Location = new System.Drawing.Point(171, 7);
             this.m_folderNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.m_folderNameTextBox.Name = "m_folderNameTextBox";
-            this.m_folderNameTextBox.Size = new System.Drawing.Size(475, 22);
+            this.m_folderNameTextBox.Size = new System.Drawing.Size(503, 22);
             this.m_folderNameTextBox.TabIndex = 35;
             this.m_folderNameTextBox.TextChanged += new System.EventHandler(this.folderNameTextBox_TextChanged);
             // 
@@ -285,7 +295,7 @@
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browseDatFileButton.Image = global::iba.Properties.Resources.open;
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browseDatFileButton.Location = new System.Drawing.Point(653, 257);
+            this.m_browseDatFileButton.Location = new System.Drawing.Point(681, 257);
             this.m_browseDatFileButton.Margin = new System.Windows.Forms.Padding(4);
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_browseDatFileButton.Size = new System.Drawing.Size(32, 30);
@@ -298,7 +308,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(8, 263);
+            this.label3.Location = new System.Drawing.Point(4, 263);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(111, 17);
@@ -312,7 +322,7 @@
             this.m_datFileTextBox.Location = new System.Drawing.Point(151, 260);
             this.m_datFileTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_datFileTextBox.Name = "m_datFileTextBox";
-            this.m_datFileTextBox.Size = new System.Drawing.Size(495, 22);
+            this.m_datFileTextBox.Size = new System.Drawing.Size(523, 22);
             this.m_datFileTextBox.TabIndex = 36;
             this.m_datFileTextBox.TextChanged += new System.EventHandler(this.m_datFileTextBox_TextChanged);
             // 
@@ -321,7 +331,7 @@
             this.m_testButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.m_testButton.Image = global::iba.Properties.Resources.sychronizeList;
             this.m_testButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_testButton.Location = new System.Drawing.Point(693, 257);
+            this.m_testButton.Location = new System.Drawing.Point(721, 257);
             this.m_testButton.Margin = new System.Windows.Forms.Padding(4);
             this.m_testButton.Name = "m_testButton";
             this.m_testButton.Size = new System.Drawing.Size(32, 30);
@@ -329,10 +339,124 @@
             this.m_testButton.UseVisualStyleBackColor = true;
             this.m_testButton.Click += new System.EventHandler(this.m_testButton_Click);
             // 
+            // m_monitorGroup
+            // 
+            this.m_monitorGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_monitorGroup.Controls.Add(this.label4);
+            this.m_monitorGroup.Controls.Add(this.label7);
+            this.m_monitorGroup.Controls.Add(this.m_nudTime);
+            this.m_monitorGroup.Controls.Add(this.m_nudMemory);
+            this.m_monitorGroup.Controls.Add(this.m_cbTime);
+            this.m_monitorGroup.Controls.Add(this.m_cbMemory);
+            this.m_monitorGroup.Location = new System.Drawing.Point(4, 306);
+            this.m_monitorGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.m_monitorGroup.Name = "m_monitorGroup";
+            this.m_monitorGroup.Padding = new System.Windows.Forms.Padding(4);
+            this.m_monitorGroup.Size = new System.Drawing.Size(789, 90);
+            this.m_monitorGroup.TabIndex = 40;
+            this.m_monitorGroup.TabStop = false;
+            this.m_monitorGroup.Text = "Monitor ibaAnalyzer";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label4.Location = new System.Drawing.Point(549, 53);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(134, 17);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "minutes to complete";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label7.Location = new System.Drawing.Point(549, 25);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(123, 17);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "Mbytes of memory";
+            // 
+            // m_nudTime
+            // 
+            this.m_nudTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.m_nudTime.Location = new System.Drawing.Point(437, 54);
+            this.m_nudTime.Margin = new System.Windows.Forms.Padding(4);
+            this.m_nudTime.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.m_nudTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudTime.Name = "m_nudTime";
+            this.m_nudTime.Size = new System.Drawing.Size(104, 22);
+            this.m_nudTime.TabIndex = 1;
+            this.m_nudTime.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // m_nudMemory
+            // 
+            this.m_nudMemory.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.m_nudMemory.Location = new System.Drawing.Point(437, 22);
+            this.m_nudMemory.Margin = new System.Windows.Forms.Padding(4);
+            this.m_nudMemory.Maximum = new decimal(new int[] {
+            4096,
+            0,
+            0,
+            0});
+            this.m_nudMemory.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.m_nudMemory.Name = "m_nudMemory";
+            this.m_nudMemory.Size = new System.Drawing.Size(104, 22);
+            this.m_nudMemory.TabIndex = 0;
+            this.m_nudMemory.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // m_cbTime
+            // 
+            this.m_cbTime.AutoSize = true;
+            this.m_cbTime.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_cbTime.Location = new System.Drawing.Point(20, 52);
+            this.m_cbTime.Margin = new System.Windows.Forms.Padding(4);
+            this.m_cbTime.Name = "m_cbTime";
+            this.m_cbTime.Size = new System.Drawing.Size(355, 21);
+            this.m_cbTime.TabIndex = 3;
+            this.m_cbTime.Text = "Time limit: abort task if ibaAnalyzer takes more than";
+            this.m_cbTime.UseVisualStyleBackColor = true;
+            // 
+            // m_cbMemory
+            // 
+            this.m_cbMemory.AutoSize = true;
+            this.m_cbMemory.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_cbMemory.Location = new System.Drawing.Point(20, 23);
+            this.m_cbMemory.Margin = new System.Windows.Forms.Padding(4);
+            this.m_cbMemory.Name = "m_cbMemory";
+            this.m_cbMemory.Size = new System.Drawing.Size(413, 21);
+            this.m_cbMemory.TabIndex = 0;
+            this.m_cbMemory.Text = "Memory limit: abort task if ibaAnalyzer starts using more than";
+            this.m_cbMemory.UseVisualStyleBackColor = true;
+            // 
             // OPCUAWriterTaskControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_monitorGroup);
             this.Controls.Add(this.m_browseDatFileButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.m_datFileTextBox);
@@ -350,10 +474,14 @@
             this.Controls.Add(this.dataGrid);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "OPCUAWriterTaskControl";
-            this.Size = new System.Drawing.Size(769, 481);
+            this.Size = new System.Drawing.Size(797, 481);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemComboBoxS7DataTypes)).EndInit();
+            this.m_monitorGroup.ResumeLayout(false);
+            this.m_monitorGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -362,8 +490,8 @@
 		#endregion
 		protected DevExpress.XtraGrid.GridControl dataGrid;
 		private DevExpress.XtraGrid.Views.Grid.GridView dataGV;
-		private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
-		private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColumnExpression;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColumnName;
 		private DevExpress.XtraEditors.Repository.RepositoryItemComboBox repositoryItemComboBoxS7DataTypes;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
 		private System.Windows.Forms.Button buttonEndpointCopy;
@@ -381,5 +509,12 @@
         private System.Windows.Forms.TextBox m_datFileTextBox;
         private System.Windows.Forms.Button m_testButton;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private System.Windows.Forms.GroupBox m_monitorGroup;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown m_nudTime;
+        private System.Windows.Forms.NumericUpDown m_nudMemory;
+        private System.Windows.Forms.CheckBox m_cbTime;
+        private System.Windows.Forms.CheckBox m_cbMemory;
     }
 }

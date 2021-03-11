@@ -327,7 +327,7 @@ namespace iba.Controls
                         else if (task is HDCreateEventTaskData)
                             bitmap = m_hdCreateEventIcons[value];
                         else if (task is OPCUAWriterTaskData)
-                            bitmap = m_pauseIcons[value];
+                            bitmap = m_OPCUAWriterIcons[value];
                         else if (task is ICustomTaskData cust)
                             bitmap = GetImageForCustomTaskData(cust, value);
 						else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc
