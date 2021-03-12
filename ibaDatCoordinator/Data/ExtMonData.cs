@@ -8,6 +8,8 @@ using iba.Processing.IbaOpcUa;
 using iba.Utility;
 using IbaSnmpLib;
 using Timer = System.Timers.Timer;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace iba.Data
 {
@@ -148,8 +150,18 @@ namespace iba.Data
 		
 		public void RebuildComputedValuesFolder(OPCUAWriterTaskData data)
 		{
-            ExtMonFolder jobFolder = null;
-            
+            var dups = data.Records.GroupBy(r => r.Name).Where(g => g.Count() > 1).Select(y => y.Key);
+            if (dups.Count() > 0)
+            {
+                string err = String.Format(iba.Properties.Resources.errExprNameNonUnique, dups.First());
+                MessageBox.Show(err, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogExtraData eData = new LogExtraData("", data, data.ParentConfigurationData);
+                LogData.Data.Logger.Log(iba.Logging.Level.Exception, err, eData);
+                return;
+            }
+
+            ExtMonFolder jobFolder = null;            
+
             foreach (ExtMonFolder f in FolderComputedValues.Children)
             {
                 if (f.SnmpMibNameSuffix == data.ParentConfigurationData.Name)
@@ -177,8 +189,6 @@ namespace iba.Data
 
             var group = new ComputedValuesInfo(jobFolder, GetLeastFreeId(jobFolder), data);
             jobFolder.Children.Add(group);
-
-            //Debug.Assert(jobFolder.SnmpFullMibName.Contains($"Job{jobFolder.SnmpLeastId}")); // TODO
         }
 
         public void UpdateComputedValuesFolderValues(OPCUAWriterTaskData data)
@@ -196,6 +206,7 @@ namespace iba.Data
                                 }
             }
         }
+
         public void RemoveComputedValuesJobFolder(OPCUAWriterTaskData data)
         {
             FolderComputedValues.Children.RemoveAll
@@ -1815,8 +1826,8 @@ namespace iba.Data
 			{
                 dataId = data.Guid;
 				Caption = data.FolderName ?? System.IO.Path.GetFileName(data.AnalysisFile);
-				SnmpFullMibName = $@"eventJob{{{data.Guid}}}";
-				Description = $@"Properties of event job OPC UA.";               
+				SnmpFullMibName = parent.SnmpFullMibName + $@"Task{snmpLeastId}";
+                Description = "Computed values";               
 
                 foreach (var record in data.Records)
 				{

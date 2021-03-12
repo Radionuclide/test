@@ -175,7 +175,9 @@ namespace iba.Controls
 		{
             var bindingList = (dataGrid.DataSource as BindingList<OPCUAWriterTaskData.Record>);
 
-            m_data.Records = bindingList.ToList();
+            var l = bindingList.ToList();
+            l.RemoveAll(item => item.Expression == "");
+            m_data.Records = l;
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;

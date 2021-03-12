@@ -942,6 +942,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expression name &quot;{0}&quot; must be unique .
+        /// </summary>
+        internal static string errExprNameNonUnique {
+            get {
+                return ResourceManager.GetString("errExprNameNonUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to create an instance of ibaAnalyzer: .
         /// </summary>
         internal static string errIbaAnalyzerCreate {

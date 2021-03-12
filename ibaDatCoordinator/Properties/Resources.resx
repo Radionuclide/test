@@ -1902,4 +1902,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="DataType" xml:space="preserve">
     <value>Data type</value>
   </data>
+  <data name="errExprNameNonUnique" xml:space="preserve">
+    <value>Expression name "{0}" must be unique </value>
+  </data>
 </root>
