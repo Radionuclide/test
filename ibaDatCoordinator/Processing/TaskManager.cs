@@ -362,6 +362,11 @@ namespace iba.Processing
         /// </summary>
         public event EventHandler<EventArgs> ExtMonConfigurationChanged;
 
+        public void FireExtMonConfigurationChanged()
+        {
+            ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         public bool ExtMonRefreshLicenseInfo(ExtMonData.LicenseInfo licenseInfo)
         {
             licenseInfo.Reset();
@@ -851,6 +856,13 @@ namespace iba.Processing
                         {
                             var jobInfo = od.AddNewJob(cfg.JobType, cfg.Name, cfg.Guid);
                             ExtMonRefreshJobInfo(jobInfo, cfg);
+
+                            foreach (var task in cfg.Tasks)
+                                if (task is OPCUAWriterTaskData data)
+                                    if (!m_workers[cfg].Status.Started)
+                                        data.Remove();
+                                    else
+                                        data.UpdateStructure();
                         }
                     }
                 }

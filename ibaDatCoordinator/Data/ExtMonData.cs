@@ -240,6 +240,7 @@ namespace iba.Data
             FolderScheduledJobs.ClearChildren();
             FolderOneTimeJobs.ClearChildren();
             FolderEventBasedJobs.ClearChildren();
+            FolderComputedValues.ClearChildren();
         }
 
         #endregion

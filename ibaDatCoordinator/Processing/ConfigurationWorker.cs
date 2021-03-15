@@ -60,9 +60,7 @@ namespace iba.Processing
                             Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                     }
                     else if (t is OPCUAWriterTaskData data)
-                    {
-                        data.Remove();
-                    }
+                        TaskManager.Manager.FireExtMonConfigurationChanged();
                 }
 
                 ClearHDCreateEventTaskWorkers();
@@ -461,10 +459,6 @@ namespace iba.Processing
                             if (!w.OnApply(c_new.Plugin, m_cd))
                                 Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                         }
-                        else if (t is OPCUAWriterTaskData data)
-                        {
-                            data.UpdateStructure();
-                        }
 
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
@@ -705,10 +699,6 @@ namespace iba.Processing
                             IPluginTaskWorker w = c.Plugin.GetWorker();
                             if (!w.OnStart())
                                 Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
-                        }
-                        else if (t is OPCUAWriterTaskData data)
-                        {
-                            data.UpdateStructure();
                         }
                     }
 
