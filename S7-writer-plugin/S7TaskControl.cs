@@ -328,8 +328,8 @@ namespace S7_writer_plugin
 
 		private void UpdateSource()
         {
-			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
-		}
+            m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.m_parentJob);
+        }
 
 		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
 		{
@@ -342,9 +342,15 @@ namespace S7_writer_plugin
 			m_datcoHost.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, m_analyzerManager, m_data.m_parentJob);
             UpdateSource();
 		}
-	}
 
-	static class NumericUpDownHelper
+        private void m_btTakeParentPass_Click(object sender, EventArgs e)
+        {
+            m_tbPwdDAT.Text = m_data.m_parentJob.FileEncryptionPassword;
+            m_datFileTextBox_TextChanged(null, null);
+        }
+    }
+
+    static class NumericUpDownHelper
     {
         public static int GetIntValue(this NumericUpDown spinner)
         {

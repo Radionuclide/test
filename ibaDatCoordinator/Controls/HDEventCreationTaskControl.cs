@@ -596,7 +596,7 @@ namespace iba.Controls
 
         void UpdateSources()
         {
-            m_analyzerManager.UpdateSource(m_tbPDO.Text, m_tbDAT.Text, m_tbPwdDAT.Text);
+            m_analyzerManager.UpdateSource(m_tbPDO.Text, m_tbDAT.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
         }
 
         private void m_tbPwdDAT_TextChanged(object sender, EventArgs e)
@@ -642,16 +642,7 @@ namespace iba.Controls
         private void m_btTakeParentPass_Click(object sender, EventArgs e)
         {
             m_tbPwdDAT.Text = m_data.ParentConfigurationData.FileEncryptionPassword;
-        }
-
-        private void m_tbPwdDAT_TextChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
+            DatTextChanged(null, null);
         }
 
         private void m_btnUploadPDO_Click(object sender, EventArgs e)

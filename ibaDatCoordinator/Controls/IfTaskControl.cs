@@ -53,7 +53,6 @@ namespace iba.Controls
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
             m_tbPwdDAT.Text = m_data.DatFilePassword;
-            m_btTakeParentPass.Enabled = m_tbPwdDAT.Enabled = m_data.ParentConfigurationData.DatTriggered;
 
             try
             {
@@ -251,14 +250,14 @@ namespace iba.Controls
         }
 
 
-            private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
+        private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
 		{
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
 			m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
                 File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
         }
@@ -266,7 +265,7 @@ namespace iba.Controls
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
 			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text,m_data.ParentConfigurationData);
 		}
 
         private void m_btTakeParentPass_Click(object sender, EventArgs e)

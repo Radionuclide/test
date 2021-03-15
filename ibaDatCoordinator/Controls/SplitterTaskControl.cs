@@ -190,12 +190,13 @@ namespace iba.Controls
 
         private void UpdateSources()
         {
-            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
         }
 
         private void m_btTakeParentPass_Click(object sender, EventArgs e)
         {
             m_tbPwdDAT.Text = m_data.ParentConfigurationData.FileEncryptionPassword;
+            m_datFileTextBox_TextChanged(null, null);
         }
     }
 }

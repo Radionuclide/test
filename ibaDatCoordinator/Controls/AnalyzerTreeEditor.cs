@@ -33,7 +33,7 @@ namespace iba.Controls
         bool bFilesOpened;
         public bool IsOpened => bFilesOpened;
         DateTime m_dtLastWriteTime;
-        string pdoFile, datFile, datFilePassword;
+        string pdoFile, datFile, datFilePassword, user;
 		string localPdoFile;
 
         public event Action SourceUpdated;
@@ -119,8 +119,16 @@ namespace iba.Controls
 						}
 						if (!string.IsNullOrEmpty(datFile))
                         {
-                            if (!string.IsNullOrEmpty(datFilePassword))
-                                Analyzer.SetFilePassword("", datFilePassword);
+                            if (Path.GetExtension(datFile) == ".hdq")
+                            {
+                                if (!string.IsNullOrEmpty(user))
+                                {
+                                    Analyzer.SetHDCredentials(user, datFilePassword);
+                                }
+                            }
+                            else
+                                if (!string.IsNullOrEmpty(datFilePassword))
+                                    Analyzer.SetFilePassword("", datFilePassword);
 
                             Analyzer.OpenDataFile(0, datFile);
                         }
@@ -166,14 +174,18 @@ namespace iba.Controls
             bFilesOpened = false;
         }
 
-        public void UpdateSource(string pdoFile, string datFile, string datFilePassword)
+        public void UpdateSource(string pdoFile, string datFile, string datFilePassword, IJobData data)
         {
             lock (lockAnalyzer)
             {
                 this.pdoFile = pdoFile;
                 this.datFile = datFile;
-                this.datFilePassword = datFilePassword;
-
+                if (Path.GetExtension(datFile) == ".hdq")
+                {
+                    this.user = data.HdUser;
+                    this.datFilePassword = data.HdPass;
+                }
+                else this.datFilePassword = datFilePassword;
                 UnsafeClose();
             }
 

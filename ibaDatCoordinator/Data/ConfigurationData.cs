@@ -613,7 +613,34 @@ namespace iba.Data
             }
         }
 
-		public bool DatTriggered
+
+        [XmlIgnore]
+        public string HdUser
+        {
+            get
+            {
+                if (JobType == JobTypeEnum.Scheduled)
+                    return m_scheduleData?.HDUsername;
+                else if (JobType == JobTypeEnum.Event)
+                    return m_eventData?.HDUsername;
+                return "";
+            }
+        }
+
+        [XmlIgnore]
+        public string HdPass
+        {
+            get
+            {
+                if (JobType == JobTypeEnum.Scheduled)
+                    return m_scheduleData?.HDPassword;
+                else if (JobType == JobTypeEnum.Event)
+                    return m_eventData?.HDPassword;
+                return "";
+            }
+        }
+
+        public bool DatTriggered
 		{
 			get
 			{

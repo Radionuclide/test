@@ -1399,7 +1399,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HD offline events were generated successfully.
+        ///   Looks up a localized string similar to Test successful.
         /// </summary>
         internal static string HDEventTask_TestSuccess {
             get {

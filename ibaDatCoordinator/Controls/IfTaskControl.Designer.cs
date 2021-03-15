@@ -41,6 +41,7 @@ namespace iba.Controls
             this.m_browsePDOFileButton = new System.Windows.Forms.Button();
             this.m_executeIBAAButton = new System.Windows.Forms.Button();
             this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
+            this.m_btTakeParentPass = new System.Windows.Forms.Button();
             this.m_tbPwdDAT = new System.Windows.Forms.TextBox();
             this.m_testButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
-            this.m_btTakeParentPass = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.m_monitorGroup.SuspendLayout();
@@ -146,11 +146,19 @@ namespace iba.Controls
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
+            // m_btTakeParentPass
+            // 
+            resources.ApplyResources(this.m_btTakeParentPass, "m_btTakeParentPass");
+            this.m_btTakeParentPass.Name = "m_btTakeParentPass";
+            this.m_btTakeParentPass.UseVisualStyleBackColor = true;
+            this.m_btTakeParentPass.Click += new System.EventHandler(this.m_btTakeParentPass_Click);
+            // 
             // m_tbPwdDAT
             // 
             resources.ApplyResources(this.m_tbPwdDAT, "m_tbPwdDAT");
             this.m_tbPwdDAT.Name = "m_tbPwdDAT";
             this.m_tbPwdDAT.UseSystemPasswordChar = true;
+            this.m_tbPwdDAT.Leave += new System.EventHandler(this.m_datFileTextBox_TextChanged);
             // 
             // m_testButton
             // 
@@ -168,6 +176,7 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
+            this.label7.Leave += new System.EventHandler(this.m_datFileTextBox_TextChanged);
             // 
             // m_datFileTextBox
             // 
@@ -256,13 +265,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
-            // 
-            // m_btTakeParentPass
-            // 
-            resources.ApplyResources(this.m_btTakeParentPass, "m_btTakeParentPass");
-            this.m_btTakeParentPass.Name = "m_btTakeParentPass";
-            this.m_btTakeParentPass.UseVisualStyleBackColor = true;
-            this.m_btTakeParentPass.Click += new System.EventHandler(this.m_btTakeParentPass_Click);
             // 
             // IfTaskControl
             // 

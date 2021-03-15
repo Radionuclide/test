@@ -11,6 +11,8 @@ namespace iba.Plugins
         string IbaAnalyzerExe { get; set; }
         string Name { get; set; }
         string Password { get; set; }
+        string HdUser { get;}
+        string HdPass { get;}
         bool SubDirs { get; set; }
         string Username { get; set; }
         string FileEncryptionPassword { get; }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
 		{
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(S7TaskControl));
             this.label2 = new System.Windows.Forms.Label();
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
@@ -38,7 +37,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_testButton = new System.Windows.Forms.Button();
-            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_toolTip = new System.Windows.Forms.ToolTip();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_monitorGroup = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -71,6 +70,9 @@
             this.buttonEndpointRemove = new System.Windows.Forms.Button();
             this.buttonEndpointCopy = new System.Windows.Forms.Button();
             this.m_btnUploadPDO = new System.Windows.Forms.Button();
+            this.m_btTakeParentPass = new System.Windows.Forms.Button();
+            this.m_tbPwdDAT = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.m_monitorGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
@@ -426,10 +428,32 @@
             this.m_btnUploadPDO.UseVisualStyleBackColor = true;
             this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
             // 
+            // m_btTakeParentPass
+            // 
+            resources.ApplyResources(this.m_btTakeParentPass, "m_btTakeParentPass");
+            this.m_btTakeParentPass.Name = "m_btTakeParentPass";
+            this.m_btTakeParentPass.UseVisualStyleBackColor = true;
+            this.m_btTakeParentPass.Click += new System.EventHandler(this.m_btTakeParentPass_Click);
+            // 
+            // m_tbPwdDAT
+            // 
+            resources.ApplyResources(this.m_tbPwdDAT, "m_tbPwdDAT");
+            this.m_tbPwdDAT.Name = "m_tbPwdDAT";
+            this.m_tbPwdDAT.UseSystemPasswordChar = true;
+            this.m_tbPwdDAT.Leave += new System.EventHandler(this.m_datFileTextBox_TextChanged);
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
             // S7TaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_btTakeParentPass);
+            this.Controls.Add(this.m_tbPwdDAT);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.m_btnUploadPDO);
             this.Controls.Add(this.buttonEndpointCopy);
             this.Controls.Add(this.buttonEndpointRemove);
@@ -513,5 +537,8 @@
 		private System.Windows.Forms.Button buttonEndpointCopy;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
 		private System.Windows.Forms.Button m_btnUploadPDO;
-	}
+        private System.Windows.Forms.Button m_btTakeParentPass;
+        private System.Windows.Forms.TextBox m_tbPwdDAT;
+        private System.Windows.Forms.Label label10;
+    }
 }

@@ -108,10 +108,12 @@ Global
 		{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}.Debug|x86 with plugins.ActiveCfg = Debug|Win32
 		{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}.Release|x86.ActiveCfg = Release|Win32
 		{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}.Release|x86 with plugins.ActiveCfg = Release|Win32
+		{56BBE7A6-6D3C-4145-A4E7-84D18806C48C}.Release|x86 with plugins.Build.0 = Release|Win32
 		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Debug|x86 with plugins.ActiveCfg = Debug|Any CPU
 		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Release|x86.ActiveCfg = Release|Any CPU
 		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Release|x86 with plugins.ActiveCfg = Release|Any CPU
+		{FE90F614-BA97-4B9B-83E2-280FA2480B81}.Release|x86 with plugins.Build.0 = Release|Any CPU
 		{4777ACA3-B0C2-484E-BEE1-C2BEDF57E824}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{4777ACA3-B0C2-484E-BEE1-C2BEDF57E824}.Debug|x86 with plugins.ActiveCfg = Debug|Any CPU
 		{4777ACA3-B0C2-484E-BEE1-C2BEDF57E824}.Debug|x86 with plugins.Build.0 = Debug|Any CPU

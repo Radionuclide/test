@@ -206,7 +206,11 @@ namespace AM_OSPC_plugin
                 using(new WaitCursor())
                 {
                     if(bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
-                    if(bUseDatFile) ibaAnalyzer.OpenDataFile(0,m_datFileTextBox.Text);
+                    if (bUseDatFile)
+                    {
+
+                        ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
+                    }
                     OSPCTaskData.Record[] records = (dataGrid.DataSource as IList<OSPCTaskData.Record>).ToArray<OSPCTaskData.Record>();
                     foreach (OSPCTaskData.Record record in records)
                     {
@@ -298,8 +302,9 @@ namespace AM_OSPC_plugin
 
         private void UpdateSources()
         {
-			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+			m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.m_parentJob);
 		}
+
 		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
 		{
 			m_channelEditor = e;
@@ -311,10 +316,17 @@ namespace AM_OSPC_plugin
 			m_datcoHost.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, m_analyzerManager, m_data.m_parentJob);
             UpdateSources();
         }
-	}
 
-	/// </summary>
-	internal class WindowsAPI
+        private void m_btTakeParentPass_Click(object sender, EventArgs e)
+        {
+            m_tbPwdDAT.Text = m_data.m_parentJob.FileEncryptionPassword;
+            m_datFileTextBox_TextChanged(null, null);
+        }
+
+   }
+
+    /// </summary>
+    internal class WindowsAPI
     {
         #region Shlwapi.dll functions
         [DllImport("Shlwapi.dll")]

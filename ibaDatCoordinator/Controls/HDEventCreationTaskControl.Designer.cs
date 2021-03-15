@@ -15,10 +15,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HDEventCreationTaskControl));
-            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_toolTip = new System.Windows.Forms.ToolTip();
             this.gbDataSource = new iba.Utility.CollapsibleGroupBox();
+            this.m_btTakeParentPass = new System.Windows.Forms.Button();
             this.m_btnTest = new System.Windows.Forms.Button();
             this.m_btnUploadPDO = new System.Windows.Forms.Button();
             this.m_tbPwdDAT = new System.Windows.Forms.TextBox();
@@ -41,7 +41,6 @@
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
-            this.m_btTakeParentPass = new System.Windows.Forms.Button();
             this.gbDataSource.SuspendLayout();
             this.gbEvent.SuspendLayout();
             this.gbStoreSelection.SuspendLayout();
@@ -68,6 +67,13 @@
             this.gbDataSource.Name = "gbDataSource";
             this.gbDataSource.TabStop = false;
             // 
+            // m_btTakeParentPass
+            // 
+            resources.ApplyResources(this.m_btTakeParentPass, "m_btTakeParentPass");
+            this.m_btTakeParentPass.Name = "m_btTakeParentPass";
+            this.m_btTakeParentPass.UseVisualStyleBackColor = true;
+            this.m_btTakeParentPass.Click += new System.EventHandler(this.m_btTakeParentPass_Click);
+            // 
             // m_btnTest
             // 
             resources.ApplyResources(this.m_btnTest, "m_btnTest");
@@ -88,14 +94,12 @@
             resources.ApplyResources(this.m_tbPwdDAT, "m_tbPwdDAT");
             this.m_tbPwdDAT.Name = "m_tbPwdDAT";
             this.m_tbPwdDAT.UseSystemPasswordChar = true;
-            this.m_tbPwdDAT.TextChanged += new System.EventHandler(this.m_tbPwdDAT_TextChanged_1);
             this.m_tbPwdDAT.Leave += new System.EventHandler(this.m_tbPwdDAT_TextChanged);
             // 
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // m_btnOpenPDO
             // 
@@ -252,13 +256,6 @@
             resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
-            // 
-            // m_btTakeParentPass
-            // 
-            resources.ApplyResources(this.m_btTakeParentPass, "m_btTakeParentPass");
-            this.m_btTakeParentPass.Name = "m_btTakeParentPass";
-            this.m_btTakeParentPass.UseVisualStyleBackColor = true;
-            this.m_btTakeParentPass.Click += new System.EventHandler(this.m_btTakeParentPass_Click);
             // 
             // HDEventCreationTaskControl
             // 
