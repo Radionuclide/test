@@ -418,7 +418,7 @@
             import a certificate into the ibaHD certificate manager
             </summary>
             <param name="certificate">The encrypted certificate. First converted to base64, then UncCrypt.EncryptStrong</param>
-            <param name="password">The certificate password for protecting the private key. This is encrypted using UncCrypt.EncrytStrong </param>
+            <param name="encryptedPassword">The certificate password for protecting the private key. This is encrypted using UncCrypt.EncrytStrong </param>
             <returns>The thumbPrint of the imported certificate</returns>
         </member>
         <member name="M:iba.HD.Common.BackupTrigger.Calculate(System.DateTime)">
