@@ -140,7 +140,7 @@ namespace iba.Data
             (
                 (Record rec) =>
                 {
-                    return rec.Name == "";
+                    return rec.Name == "" || rec.Expression == "";
                 }
             );
             ExtMonData.Instance.RebuildComputedValuesFolder(this);
