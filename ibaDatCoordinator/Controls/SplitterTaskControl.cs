@@ -57,7 +57,6 @@ namespace iba.Controls
 
             m_datFileTextBox.Text = m_data.TestDatFile;
             m_tbPwdDAT.Text = m_data.DatFilePassword;
-            m_btTakeParentPass.Enabled = m_tbPwdDAT.Enabled = m_data.ParentConfigurationData.DatTriggered;
 
             try
             {

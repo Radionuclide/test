@@ -241,6 +241,7 @@ namespace iba.Processing
             }
 
             long duration = 0;
+
             if (bUseRange)
                 duration = (long)(to - from) * TimeSpan.TicksPerSecond;
             else if (double.IsNaN(from))

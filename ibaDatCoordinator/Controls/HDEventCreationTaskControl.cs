@@ -291,8 +291,6 @@ namespace iba.Controls
             m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.RunsWithService == Program.ServiceEnum.CONNECTED;
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
-            m_btTakeParentPass.Enabled = m_tbPwdDAT.Enabled = m_data.ParentConfigurationData.DatTriggered;
-
             m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, false, m_data.Username, m_data.HDPassword, "");
 
             if (m_ctrlServer.Reader.IsConnected())
