@@ -124,8 +124,6 @@ namespace iba.Data
             }
         }
 
-        public string FolderName { get; set; }
-
         public string TestDatFile { get; set; }
 
         public void EvaluateValues(string datFile, IbaAnalyzer.IbaAnalyzer analyzer)
@@ -154,7 +152,6 @@ namespace iba.Data
 		{
             OPCUAWriterTaskData d = new OPCUAWriterTaskData(null);
             d.Records = Records.Select(r => (Record)r.Clone()).ToList();
-            d.FolderName = FolderName;
             d.AnalysisFile = AnalysisFile;
             d.TestDatFile = TestDatFile;
             d.MonitorData = (MonitorData)MonitorData.Clone();
@@ -167,7 +164,6 @@ namespace iba.Data
                 (
                     other != null &&
                     Records.SequenceEqual(other.Records) &&
-                    FolderName == other.FolderName &&
                     AnalysisFile == other.AnalysisFile &&
                     TestDatFile == other.TestDatFile &&
                     MonitorData == other.MonitorData
@@ -210,7 +206,7 @@ namespace iba.Data
                                     record.TestValue = str;
                                 else
                                     record.Value = str;
-                                break;
+                                return;
                             }
                         }
                     }

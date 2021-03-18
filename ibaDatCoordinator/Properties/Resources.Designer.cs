@@ -226,6 +226,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not evaluate expression for operand {0}.
+        /// </summary>
+        internal static string BadEvaluate {
+            get {
+                return ResourceManager.GetString("BadEvaluate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad Range: Could not determine start of range!.
         /// </summary>
         internal static string BadRangeStart {
@@ -1586,6 +1595,15 @@ namespace iba.Properties {
         internal static string IbaAnalyzerUndeterminedError {
             get {
                 return ResourceManager.GetString("IbaAnalyzerUndeterminedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have version {0} of ibaAnalyzer installed. The minimum required version is 6.5.0. Version 6.7.0 or later is recommended..
+        /// </summary>
+        internal static string ibaAnalyzerVersionError {
+            get {
+                return ResourceManager.GetString("ibaAnalyzerVersionError", resourceCulture);
             }
         }
         
@@ -3344,6 +3362,15 @@ namespace iba.Properties {
         internal static string NoTriggersAfter {
             get {
                 return ResourceManager.GetString("NoTriggersAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer version could not be determined.
+        /// </summary>
+        internal static string NoVersion {
+            get {
+                return ResourceManager.GetString("NoVersion", resourceCulture);
             }
         }
         

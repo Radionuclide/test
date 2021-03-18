@@ -1826,9 +1826,9 @@ namespace iba.Data
 				: base(parent, JobAgeThreshold, snmpLeastId)
 			{
                 dataId = data.Guid;
-				Caption = data.FolderName ?? System.IO.Path.GetFileName(data.AnalysisFile);
+				Caption = System.IO.Path.GetFileName(data.AnalysisFile);
 				SnmpFullMibName = parent.SnmpFullMibName + $@"Task{snmpLeastId}";
-                Description = "Computed values";               
+                Description = "Computed values";
 
                 foreach (var record in data.Records)
 				{
@@ -1864,11 +1864,18 @@ namespace iba.Data
                 {
                     if (Children[i] is ExtMonVariable<double> childd && data.Records[i].Value is double vald && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Number)
                         childd.Value = vald;
-                    else if (Children[i] is ExtMonVariable<string> childs && data.Records[i].Value is string vals && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
-                        childs.Value = vals;
+                    else if (Children[i] is ExtMonVariable<string> childs && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
+                    {
+                        if (data.Records[i].Value is string vals)
+                            childs.Value = vals;
+                        else if (double.IsNaN((double)data.Records[i].Value))
+                            childs.Value = "";
+                        else
+                            Debug.Assert(false);
+                    }
                     else if (Children[i] is ExtMonVariable<bool> childb && data.Records[i].Value is double valb && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
                         childb.Value = valb != 0;
-                    else
+                    else 
                         Debug.Assert(false);
                 }
             }

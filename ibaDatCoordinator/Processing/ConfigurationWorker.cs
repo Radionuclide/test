@@ -59,8 +59,6 @@ namespace iba.Processing
                         if (!w.OnStop())
                             Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
                     }
-                    else if (t is OPCUAWriterTaskData data)
-                        TaskManager.Manager.FireExtMonConfigurationChanged();
                 }
 
                 ClearHDCreateEventTaskWorkers();
