@@ -1914,4 +1914,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="NoVersion" xml:space="preserve">
     <value>ibaAnalyzer version could not be determined</value>
   </data>
+  <data name="logOPCUAServerDisabled" xml:space="preserve">
+    <value>OPC UA server is disabled</value>
+  </data>
 </root>

@@ -181,8 +181,7 @@ namespace iba.Data
             }
             if (jobFolder is null)
             {
-
-                jobFolder = new ExtMonFolder(FolderComputedValues, data.ParentConfigurationData.Name, data.ParentConfigurationData.Name, "", GetLeastFreeId(FolderComputedValues));
+                jobFolder = new ExtMonFolder(FolderComputedValues, data.ParentConfigurationData.Name, data.ParentConfigurationData.Name.Replace(" ", "_"), "", GetLeastFreeId(FolderComputedValues));
                 jobFolder.UaBrowseName = $@"Job{{{data.ParentConfigurationData.Guid}}}";
                 FolderComputedValues.Children.Add(jobFolder);
             }
@@ -1827,7 +1826,7 @@ namespace iba.Data
 			{
                 dataId = data.Guid;
 				Caption = System.IO.Path.GetFileName(data.AnalysisFile);
-				SnmpFullMibName = parent.SnmpFullMibName + $@"Task{snmpLeastId}";
+				SnmpFullMibName = parent.SnmpFullMibName + $@"_Task{snmpLeastId}";
                 Description = "Computed values";
 
                 foreach (var record in data.Records)

@@ -1499,7 +1499,7 @@
     <value>tbPassword</value>
   </data>
   <data name="&gt;&gt;tbPassword.Type" xml:space="preserve">
-    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tbPassword.Parent" xml:space="preserve">
     <value>gbLogon</value>
@@ -1955,7 +1955,7 @@
     <value>tabConfiguration</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.14.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -1988,7 +1988,7 @@
     <value>tabCertificates</value>
   </data>
   <data name="&gt;&gt;tabCertificates.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.14.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabCertificates.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -2021,7 +2021,7 @@
     <value>tabTags</value>
   </data>
   <data name="&gt;&gt;tabTags.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.14.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabTags.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -2300,7 +2300,7 @@
     <value>tabDiag</value>
   </data>
   <data name="&gt;&gt;tabDiag.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.14.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabDiag.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -2312,7 +2312,7 @@
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabControl, DotNetMagic2005, Version=6.1.13.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabControl, DotNetMagic2005, Version=6.1.14.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2728,6 +2728,30 @@
   <data name="&gt;&gt;buttonCertRefresh.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;gridViewEndpoints.Name" xml:space="preserve">
+    <value>gridViewEndpoints</value>
+  </data>
+  <data name="&gt;&gt;gridViewEndpoints.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.Views.Grid.GridView, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;colHostname.Name" xml:space="preserve">
+    <value>colHostname</value>
+  </data>
+  <data name="&gt;&gt;colHostname.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;colPort.Name" xml:space="preserve">
+    <value>colPort</value>
+  </data>
+  <data name="&gt;&gt;colPort.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
+  <data name="&gt;&gt;colURI.Name" xml:space="preserve">
+    <value>colURI</value>
+  </data>
+  <data name="&gt;&gt;colURI.Type" xml:space="preserve">
+    <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
+  </data>
   <data name="&gt;&gt;gridViewSubscriptions.Name" xml:space="preserve">
     <value>gridViewSubscriptions</value>
   </data>
@@ -2780,30 +2804,6 @@
     <value>colSessionLastMsgTime</value>
   </data>
   <data name="&gt;&gt;colSessionLastMsgTime.Type" xml:space="preserve">
-    <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
-  </data>
-  <data name="&gt;&gt;gridViewEndpoints.Name" xml:space="preserve">
-    <value>gridViewEndpoints</value>
-  </data>
-  <data name="&gt;&gt;gridViewEndpoints.Type" xml:space="preserve">
-    <value>DevExpress.XtraGrid.Views.Grid.GridView, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
-  </data>
-  <data name="&gt;&gt;colHostname.Name" xml:space="preserve">
-    <value>colHostname</value>
-  </data>
-  <data name="&gt;&gt;colHostname.Type" xml:space="preserve">
-    <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
-  </data>
-  <data name="&gt;&gt;colPort.Name" xml:space="preserve">
-    <value>colPort</value>
-  </data>
-  <data name="&gt;&gt;colPort.Type" xml:space="preserve">
-    <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
-  </data>
-  <data name="&gt;&gt;colURI.Name" xml:space="preserve">
-    <value>colURI</value>
-  </data>
-  <data name="&gt;&gt;colURI.Type" xml:space="preserve">
     <value>DevExpress.XtraGrid.Columns.GridColumn, DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

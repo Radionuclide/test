@@ -12,6 +12,7 @@ namespace iba.Data
     [Serializable]
     public class OPCUAWriterTaskData : TaskData
     {
+        [NonSerialized]
         internal AnalyzerManager m_analyzerManager;
         public List<Record> Records;
         public MonitorData MonitorData { get; set; }

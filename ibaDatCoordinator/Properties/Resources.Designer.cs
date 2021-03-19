@@ -2687,6 +2687,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OPC UA server is disabled.
+        /// </summary>
+        internal static string logOPCUAServerDisabled {
+            get {
+                return ResourceManager.GetString("logOPCUAServerDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error occured while evaluating test value : {0}.
         /// </summary>
         internal static string logOPCUAWriterEvaluatingTestValue {

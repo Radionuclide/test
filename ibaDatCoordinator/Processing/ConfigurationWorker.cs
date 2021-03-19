@@ -5192,6 +5192,12 @@ namespace iba.Processing
                     }
                 }
             }
+
+            if (!(TaskManager.Manager.OpcUaData?.Enabled ?? false))
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                Log(Logging.Level.Warning, iba.Properties.Resources.logOPCUAServerDisabled, filename, task);
+            }
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 
