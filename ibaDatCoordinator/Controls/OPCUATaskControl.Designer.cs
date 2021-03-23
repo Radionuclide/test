@@ -72,11 +72,11 @@
             this.dataGrid.Location = new System.Drawing.Point(20, 98);
             this.dataGrid.MainView = this.dataGV;
             this.dataGrid.Margin = new System.Windows.Forms.Padding(20, 4, 20, 4);
-            this.dataGrid.MinimumSize = new System.Drawing.Size(0, 100);
+            this.dataGrid.MinimumSize = new System.Drawing.Size(0, 200);
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemComboBoxS7DataTypes});
-            this.dataGrid.Size = new System.Drawing.Size(733, 197);
+            this.dataGrid.Size = new System.Drawing.Size(733, 200);
             this.dataGrid.TabIndex = 23;
             this.dataGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.dataGV});
@@ -182,7 +182,7 @@
             this.buttonEndpointRemove.Font = new System.Drawing.Font("Arial Narrow", 8.25F);
             this.buttonEndpointRemove.Image = ((System.Drawing.Image)(resources.GetObject("buttonEndpointRemove.Image")));
             this.buttonEndpointRemove.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.buttonEndpointRemove.Location = new System.Drawing.Point(761, 265);
+            this.buttonEndpointRemove.Location = new System.Drawing.Point(761, 268);
             this.buttonEndpointRemove.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEndpointRemove.Name = "buttonEndpointRemove";
             this.buttonEndpointRemove.Size = new System.Drawing.Size(32, 30);
@@ -448,6 +448,7 @@
             this.Controls.Add(this.buttonEndpointAdd);
             this.Controls.Add(this.dataGrid);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MinimumSize = new System.Drawing.Size(0, 400);
             this.Name = "OPCUAWriterTaskControl";
             this.Size = new System.Drawing.Size(797, 426);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();

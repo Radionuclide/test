@@ -11,6 +11,7 @@ using System.IO;
 using iba.Logging;
 using iba.Processing.IbaOpcUa;
 using IbaSnmpLib;
+using System.Windows.Forms;
 
 namespace iba.Processing
 {
@@ -852,9 +853,43 @@ namespace iba.Processing
                             var jobInfo = od.AddNewJob(cfg.JobType, cfg.Name, cfg.Guid);
                             ExtMonRefreshJobInfo(jobInfo, cfg);
 
+
+                            ExtMonData.ExtMonFolder jobFolder = null;
+                            uint jobFolderID = 1;
                             foreach (var task in cfg.Tasks)
+                            {
+                                uint taskFolderID = 1;
                                 if (task is OPCUAWriterTaskData data)
-                                     data.UpdateStructure();
+                                {
+                                    if (data.Records.Count == 0)
+                                        continue;
+                                    if (jobFolder is null)
+                                    {
+                                        jobFolder = new ExtMonData.ExtMonFolder(od.FolderComputedValues, data.ParentConfigurationData.Name, 
+                                            data.ParentConfigurationData.Name.Replace(" ", "_"), "", jobFolderID);
+                                        jobFolderID++;
+                                        jobFolder.UaBrowseName = $@"Job{{{data.ParentConfigurationData.Guid}}}";
+                                        jobFolder.Description = $@"Computed values of the job '{data.ParentConfigurationData.Name}'";
+                                        od.FolderComputedValues.Children.Add(jobFolder);
+                                    }
+
+                                    var dups = data.Records.GroupBy(r => r.Name).Where(g => g.Count() > 1).Select(y => y.Key);
+                                    if (dups.Count() > 0)
+                                    {
+                                        string err = String.Format(iba.Properties.Resources.errExprNameNonUnique, dups.First());
+                                        MessageBox.Show(err, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        LogExtraData eData = new LogExtraData("", data, data.ParentConfigurationData);
+                                        LogData.Data.Logger.Log(iba.Logging.Level.Exception, err, eData);
+                                        continue;
+                                    }
+
+
+                                    var group = new ExtMonData.ComputedValuesInfo(jobFolder, taskFolderID, data);
+                                    taskFolderID++;
+                                    jobFolder.Children.Add(group);
+                                }
+                            }
+
                         }
                     }
                 }

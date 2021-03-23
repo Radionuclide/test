@@ -1190,6 +1190,10 @@ namespace iba.Processing
         // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RefreshGroup(ExtMonData.ExtMonGroup xmGroup)
         {
+            // data in this group is always up to date
+            if (xmGroup is ExtMonData.ComputedValuesInfo)
+                return true;
+
             if (Monitor.TryEnter(LockObject, LockTimeout))
             {
                 try
@@ -1231,10 +1235,6 @@ namespace iba.Processing
                                 break;
 							case ExtMonData.JobInfoBase jobInfo:
 								bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
-								break;
-							case ExtMonData.ComputedValuesInfo jobInfo:
-                                // it updates itself
-                                bSuccess = true;
 								break;
 							default:
                                 // should not happen

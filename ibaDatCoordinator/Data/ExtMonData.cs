@@ -147,88 +147,6 @@ namespace iba.Data
                 @"Computed values", @"computedValues", @"ComputedValues",
                 @"List of all computed values.", new IbaSnmpOid(6)));
         }
-		
-		public void RebuildComputedValuesFolder(OPCUAWriterTaskData data)
-		{
-            var dups = data.Records.GroupBy(r => r.Name).Where(g => g.Count() > 1).Select(y => y.Key);
-            if (dups.Count() > 0)
-            {
-                string err = String.Format(iba.Properties.Resources.errExprNameNonUnique, dups.First());
-                MessageBox.Show(err, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LogExtraData eData = new LogExtraData("", data, data.ParentConfigurationData);
-                LogData.Data.Logger.Log(iba.Logging.Level.Exception, err, eData);
-                return;
-            }
-
-            ExtMonFolder jobFolder = null;            
-
-            foreach (ExtMonFolder f in FolderComputedValues.Children)
-            {
-                if (f.SnmpMibNameSuffix == data.ParentConfigurationData.Name)
-                {
-                    jobFolder = f;
-                    jobFolder.Children.RemoveAll
-                        (
-                            (ExtMonNode node) =>
-                            {
-                                if (node is ComputedValuesInfo info)
-                                    return (info.dataId == data.Guid);
-                                return false;
-                            }
-                        );
-                    break;
-                }
-            }
-            if (jobFolder is null)
-            {
-                jobFolder = new ExtMonFolder(FolderComputedValues, data.ParentConfigurationData.Name, data.ParentConfigurationData.Name.Replace(" ", "_"), "", GetLeastFreeId(FolderComputedValues));
-                jobFolder.UaBrowseName = $@"Job{{{data.ParentConfigurationData.Guid}}}";
-                FolderComputedValues.Children.Add(jobFolder);
-            }
-
-            var group = new ComputedValuesInfo(jobFolder, GetLeastFreeId(jobFolder), data);
-            jobFolder.Children.Add(group);
-        }
-
-        public void UpdateComputedValuesFolderValues(OPCUAWriterTaskData data)
-        {
-            foreach (var job in FolderComputedValues.Children)
-            {
-                if (job is ExtMonFolder jobFolder)
-                    if (jobFolder.UaBrowseName == $@"Job{{{data.ParentConfigurationData.Guid}}}")
-                        foreach (var task in jobFolder.Children)
-                            if (task is ComputedValuesInfo info)
-                                if (info.dataId == data.Guid)
-                                {
-                                    info.Update(data);
-                                    return;
-                                }
-            }
-        }
-
-        public void RemoveComputedValuesJobFolder(OPCUAWriterTaskData data)
-        {
-            FolderComputedValues.Children.RemoveAll
-                (
-                    (ExtMonNode node) =>
-                    {
-                        if (node is ExtMonFolder jobFolder)
-                            return (jobFolder.UaBrowseName == $@"Job{{{data.ParentConfigurationData.Guid}}}");
-                        return false;
-                    }
-                );
-        }
-
-        private uint GetLeastFreeId(ExtMonFolder folder)
-        {
-            HashSet<uint> ids = new HashSet<uint>();
-            foreach (var node in folder.Children)
-                ids.Add(node.SnmpLeastId);
-            uint freeId = 1;
-            while (ids.Contains(freeId))
-                freeId++;
-            return freeId;
-        }
 
         public void Reset()
         {
@@ -1825,29 +1743,31 @@ namespace iba.Data
 				: base(parent, JobAgeThreshold, snmpLeastId)
 			{
                 dataId = data.Guid;
-				Caption = System.IO.Path.GetFileName(data.AnalysisFile);
-				SnmpFullMibName = parent.SnmpFullMibName + $@"_Task{snmpLeastId}";
-                Description = "Computed values";
+                Caption = data.Name;
+				SnmpFullMibName =  $@"Task{{{dataId}}}";
+                Description = $@"Computed values of the task '{data.Name}' of the job '{data.ParentConfigurationData.Name}'";
 
                 foreach (var record in data.Records)
 				{
+                    // record.Name is unique within the task
+                    // just for case
                     if (record.Name == "")
                         continue;
 
                     if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Number)
 					    AddChildVariable<double>(
                             record.Name, record.Name,
-						    "Computed value",
+                            $@"Computed value '{record.Name}' for expression '{record.Expression}'",
 						    SNMP_AUTO_LEAST_ID);
                     else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
                         AddChildVariable<string>(
-                            record.Name, record.Name, 
-                            "Computed value",
+                            record.Name, record.Name,
+                            $@"Computed value '{record.Name}' for expression '{record.Expression}'",
                             SNMP_AUTO_LEAST_ID);
                     else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
                         AddChildVariable<bool>(
                             record.Name, record.Name,
-                            "Computed value",
+                            $@"Computed value '{record.Name}' for expression '{record.Expression}'",
                             SNMP_AUTO_LEAST_ID);
                     else
                         System.Diagnostics.Debug.Assert(false);
