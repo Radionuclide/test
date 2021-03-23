@@ -1363,10 +1363,12 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.broom);
             menuImages.Images.Add(iba.Properties.Resources.SplitDat);
             menuImages.Images.Add(iba.Properties.Resources.img_computed_values);
-            foreach (PluginTaskInfo info in PluginManager.Manager.PluginInfos)
+
+            int pluginsStartImageIndex = menuImages.Images.Count;
+            List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
+            foreach (PluginTaskInfo info in filteredPlugins)
                 menuImages.Images.Add(info.Icon);
 
-            List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
             int customcount = filteredPlugins.Count;
             m_menuItems = new ToolStripMenuItem[16 + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
@@ -1393,7 +1395,7 @@ namespace iba
             {
                 PluginTaskInfo info = filteredPlugins[i];
                 string title = String.Format(iba.Properties.Resources.NewCustomTaskTitle, info.Name);
-                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new ToolStripMenuItem(title, menuImages.Images[NR_TASKS+3+i], new EventHandler(OnNewCustomTaskMenuItem));
+                m_menuItems[i + (int)MenuItemsEnum.NewCustomTask] = new ToolStripMenuItem(title, menuImages.Images[pluginsStartImageIndex+i], new EventHandler(OnNewCustomTaskMenuItem));
             }
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown = new ContextMenuStrip();
 
