@@ -310,6 +310,7 @@
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\ExtMonData.cs" />
+    <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
     <Compile Include="Processing\ErrorPluginTaskWorker.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaNodeManager.cs" />

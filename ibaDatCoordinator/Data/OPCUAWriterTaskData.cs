@@ -130,19 +130,6 @@ namespace iba.Data
         public void EvaluateValues(string datFile, IbaAnalyzer.IbaAnalyzer analyzer)
         {
             Evaluate(false, analyzer);
-            ExtMonData od = ExtMonData.Instance;
-            foreach (var job in od.FolderComputedValues.Children)
-            {
-                if (job is ExtMonData.ExtMonFolder jobFolder)
-                    if (jobFolder.UaBrowseName == $@"Job{{{ParentConfigurationData.Guid}}}")
-                        foreach (var task in jobFolder.Children)
-                            if (task is ExtMonData.ComputedValuesInfo info)
-                                if (info.dataId == Guid)
-                                {
-                                    info.Update(this);
-                                    return;
-                                }
-            }
         }
 
 		public override TaskData CloneInternal()
