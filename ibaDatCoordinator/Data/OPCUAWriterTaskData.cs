@@ -59,7 +59,7 @@ namespace iba.Data
                     else if (TestValue is String vals)
                         return vals;
                     else if (TestValue is bool valb)
-                        return valb ? "true" : "false"; // TODO localization
+                        return valb ? "true" : "false";
                     else
                     {
                         System.Diagnostics.Debug.Assert(false);
@@ -129,13 +129,42 @@ namespace iba.Data
 
         public void EvaluateValues(string datFile, IbaAnalyzer.IbaAnalyzer analyzer)
         {
-            Evaluate(false, analyzer);
+            foreach (var record in Records)
+            {
+                if (record.DataType == Record.ExpressionType.Text)
+                {
+                    object oStamps = null;
+                    object oValues = null;
+                    analyzer.EvaluateToStringArray(record.Expression, 0, out oStamps, out oValues);
+
+                    if (oValues != null)
+                    {
+                        string[] values = oValues as string[];
+                        foreach (string str in values)
+                        {
+                            if (!string.IsNullOrEmpty(str))
+                            {
+                                record.Value = str;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                        record.Value = "";
+                }
+                else
+                {
+                    record.Value = analyzer.EvaluateDouble(record.Expression, 0);
+                }
+            }
         }
 
 		public override TaskData CloneInternal()
 		{
             OPCUAWriterTaskData d = new OPCUAWriterTaskData(null);
             d.Records = Records.Select(r => (Record)r.Clone()).ToList();
+            d.Records.Add(new Record());
+            Records.Clear();
             d.AnalysisFile = AnalysisFile;
             d.TestDatFile = TestDatFile;
             d.MonitorData = (MonitorData)MonitorData.Clone();
@@ -153,60 +182,5 @@ namespace iba.Data
                     MonitorData == other.MonitorData
                 );
 		}
-
-        public void EvaluateTestValues()
-        {
-            string err;
-            m_analyzerManager.UpdateSource(AnalysisFile, TestDatFile, "");
-            m_analyzerManager.OpenAnalyzer(out err);
-            if (err.Length > 0)
-            {
-                var msg = string.Format(iba.Properties.Resources.logOPCUAWriterEvaluatingTestValue, err);
-                MessageBox.Show(msg, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            Evaluate(true, m_analyzerManager.Analyzer);
-        }
-
-        private void Evaluate(bool isTest, IbaAnalyzer.IbaAnalyzer analyzer)
-        {
-            foreach (var record in Records)
-            {
-                if (record.DataType == Record.ExpressionType.Text)
-                {
-                    object oStamps = null;
-                    object oValues = null;
-                    analyzer.EvaluateToStringArray(record.Expression, 0, out oStamps, out oValues);
-
-                    if (oValues != null)
-                    {
-                        string[] values = oValues as string[];
-                        foreach (string str in values)
-                        {
-                            if (!string.IsNullOrEmpty(str))
-                            {
-                                if (isTest)
-                                    record.TestValue = str;
-                                else
-                                    record.Value = str;
-                                return;
-                            }
-                        }
-                    }
-                    if (isTest)
-                        record.TestValue = "";
-                    else
-                        record.Value = "";
-                }
-                else
-                {
-                    if (isTest)
-                        record.TestValue = analyzer.EvaluateDouble(record.Expression, 0);
-                    else
-                        record.Value = analyzer.EvaluateDouble(record.Expression, 0);
-                }
-            }
-        }
     }
 }
