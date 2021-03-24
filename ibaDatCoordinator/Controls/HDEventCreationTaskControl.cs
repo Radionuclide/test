@@ -654,10 +654,24 @@ namespace iba.Controls
             try
             {
                 Cursor = Cursors.WaitCursor;
-                string error = TaskManager.Manager.TestOfflineEventTaskDatFile(m_tbDAT.Text, m_data);
-                
-                if (string.IsNullOrEmpty(error))
+
+                HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data, null);
+
+                string datFile = m_tbDAT.Text;
+                string error = "";
+                bool ok = true;
+                if (string.IsNullOrEmpty(datFile) || !File.Exists(datFile))
                 {
+                    error = Properties.Resources.logHDEventTaskDATError;
+                    ok = false;
+                }
+
+                if (ok)
+                {
+                    Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, m_tbDAT.Text);
+
+                    m_analyzerManager.Analyzer.CloseDataFiles(); //works both with hdq and .dat
+
                     MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
