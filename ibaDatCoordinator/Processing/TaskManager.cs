@@ -11,7 +11,6 @@ using System.IO;
 using iba.Logging;
 using iba.Processing.IbaOpcUa;
 using IbaSnmpLib;
-using System.Windows.Forms;
 
 namespace iba.Processing
 {
@@ -877,7 +876,6 @@ namespace iba.Processing
                                     if (dups.Count() > 0)
                                     {
                                         string err = String.Format(iba.Properties.Resources.errExprNameNonUnique, dups.First());
-                                        MessageBox.Show(err, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         LogExtraData eData = new LogExtraData("", data, data.ParentConfigurationData);
                                         LogData.Data.Logger.Log(iba.Logging.Level.Exception, err, eData);
                                         continue;
