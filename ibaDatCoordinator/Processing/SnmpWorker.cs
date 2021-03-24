@@ -615,6 +615,10 @@ namespace iba.Processing
                             case ExtMonData.JobInfoBase jobInfo:
                                 bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
                                 break;
+                            case ExtMonData.ComputedValuesInfo computedValuesInfo:
+                                // we do not need to refresh its values, because they always up to date
+                                bSuccess = true;
+                                break;
                             default:
                                 // should not happen
                                 Debug.Assert(false);

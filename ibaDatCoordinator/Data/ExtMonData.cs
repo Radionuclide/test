@@ -1744,33 +1744,42 @@ namespace iba.Data
 			{
                 dataId = data.Guid;
                 Caption = data.Name;
-				SnmpFullMibName =  $@"Task{{{dataId}}}";
+				SnmpFullMibName = $@"Task{snmpLeastId}";
                 Description = $@"Computed values of the task '{data.Name}' of the job '{data.ParentConfigurationData.Name}'";
+                UaBrowseName = $@"Task{{{dataId}}}";
 
-                foreach (var record in data.Records)
+                for (int i = 0; i < data.Records.Count; i++)
 				{
-                    // record.Name is unique within the task
+                    var record = data.Records[i];
+
                     // just for case
                     if (record.Name == "")
                         continue;
 
+                    // SNMP doesn't support non alphanumeric characters, use index for names
+                    string snmpMibNameSuffix = $@"Value{i+1}";
+
+                    ExtMonVariableBase child = null;
+                    // record.Name is unique within the task
                     if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Number)
-					    AddChildVariable<double>(
-                            record.Name, record.Name,
+					    child = AddChildVariable<double>(
+                            record.Name, snmpMibNameSuffix,
                             $@"Computed value '{record.Name}' for expression '{record.Expression}'",
 						    SNMP_AUTO_LEAST_ID);
                     else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
-                        AddChildVariable<string>(
-                            record.Name, record.Name,
+                        child = AddChildVariable<string>(
+                            record.Name, snmpMibNameSuffix,
                             $@"Computed value '{record.Name}' for expression '{record.Expression}'",
                             SNMP_AUTO_LEAST_ID);
                     else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
-                        AddChildVariable<bool>(
-                            record.Name, record.Name,
+                        child = AddChildVariable<bool>(
+                            record.Name, snmpMibNameSuffix,
                             $@"Computed value '{record.Name}' for expression '{record.Expression}'",
                             SNMP_AUTO_LEAST_ID);
                     else
                         System.Diagnostics.Debug.Assert(false);
+
+                    child.UaBrowseName = record.Name;
                 }
                 Update(data);
 			}
