@@ -273,7 +273,7 @@ namespace iba.Controls
                 {
                     if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if (bUseDatFile) ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
-                    OPCUAWriterTaskData.Record[] records = (dataGrid.DataSource as IList<OPCUAWriterTaskData.Record>).ToArray<OPCUAWriterTaskData.Record>();
+                    var records = dataGrid.DataSource as IList<OPCUAWriterTaskData.Record>;
                     foreach (OPCUAWriterTaskData.Record record in records)
                     {
                         if (string.IsNullOrEmpty(record.Expression)) continue;
@@ -297,39 +297,42 @@ namespace iba.Controls
                                     if (!string.IsNullOrEmpty(str))
                                     {
                                         record.TestValue = str;
-                                        dataGrid.DataSource = records.ToList();
                                         ParentForm.Activate();
-                                        return;
+                                        break;
                                     }
                                 }
                             }
                             else
+                            {
                                 MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Name), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            record.TestValue = "";
+                                record.TestValue = "";
+                            }
                         }
-                        try
-                        {
-                            f = ibaAnalyzer.EvaluateDouble(record.Expression, 0);
-                        }
-                        catch  //might be old ibaAnalyzer
-                        {
-                            f = (double)ibaAnalyzer.Evaluate(record.Expression, 0);
-                        }
-
-                        if (double.IsNaN(f) || double.IsInfinity(f))
-                        {
-                            MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Name), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-
                         else
                         {
-                            if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
-                                record.TestValue = (f == 0.0 ? "false" : "true");
+                            try
+                            {
+                                f = ibaAnalyzer.EvaluateDouble(record.Expression, 0);
+                            }
+                            catch  //might be old ibaAnalyzer
+                            {
+                                f = (double)ibaAnalyzer.Evaluate(record.Expression, 0);
+                            }
+
+                            if (double.IsNaN(f) || double.IsInfinity(f))
+                            {
+                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Name), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+
                             else
-                                record.TestValue = f;
+                            {
+                                if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
+                                    record.TestValue = (f == 0.0 ? "false" : "true");
+                                else
+                                    record.TestValue = f;
+                            }
                         }
                     }
-                    dataGrid.DataSource = records.ToList();
                     ParentForm.Activate();
                 }
             }
@@ -355,6 +358,7 @@ namespace iba.Controls
                     ibaAnalyzer.CloseDataFiles();
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
                 }
+                dataGrid.RefreshDataSource();
             }
         }
 
