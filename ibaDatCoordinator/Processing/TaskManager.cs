@@ -864,8 +864,8 @@ namespace iba.Processing
                                         continue;
                                     if (jobFolder is null)
                                     {
-                                        jobFolder = new ExtMonData.ExtMonFolder(od.FolderComputedValues, data.ParentConfigurationData.Name, 
-                                            data.ParentConfigurationData.Name.Replace(" ", "_"), "", jobFolderID);
+                                        jobFolder = new ExtMonData.ExtMonFolder(od.FolderComputedValues, data.ParentConfigurationData.Name,
+                                            $@"Job{jobFolderID}", "", jobFolderID);
                                         jobFolderID++;
                                         jobFolder.UaBrowseName = $@"Job{{{data.ParentConfigurationData.Guid}}}";
                                         jobFolder.Description = $@"Computed values of the job '{data.ParentConfigurationData.Name}'";
@@ -880,7 +880,6 @@ namespace iba.Processing
                                         LogData.Data.Logger.Log(iba.Logging.Level.Exception, err, eData);
                                         continue;
                                     }
-
 
                                     var group = new ExtMonData.ComputedValuesInfo(jobFolder, taskFolderID, data);
                                     taskFolderID++;
