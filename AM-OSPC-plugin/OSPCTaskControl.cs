@@ -171,6 +171,7 @@ namespace AM_OSPC_plugin
 
             string version = ibaAnalyzer.GetVersion();
             int startindex = version.IndexOf(' ') + 1;
+            if (version[startindex] == 'v') startindex++;
             int stopindex = startindex + 1;
             while(stopindex < version.Length && (char.IsDigit(version[stopindex]) || version[stopindex] == '.'))
                 stopindex++;

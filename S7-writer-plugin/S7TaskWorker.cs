@@ -120,6 +120,8 @@ namespace S7_writer_plugin
         {
             string version = m_analyzer.GetVersion();
             int startindex = version.IndexOf(' ') + 1;
+            if (version[startindex] == 'v') startindex++;
+
             int stopindex = startindex + 1;
             while(stopindex < version.Length && (char.IsDigit(version[stopindex]) || version[stopindex] == '.'))
                 stopindex++;

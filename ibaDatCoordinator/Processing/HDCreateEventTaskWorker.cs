@@ -141,7 +141,7 @@ namespace iba.Processing
             {
                 if (!double.IsNaN(from) && stamps[j] < from) continue;
                 if (!double.IsNaN(to) && stamps[j] > to) break;
-                if (string.IsNullOrEmpty(strings[j])) continue;
+                if (!string.IsNullOrEmpty(strings[j])) continue;
                 return strings[j];
             }
             return "";
