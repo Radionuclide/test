@@ -23,7 +23,7 @@ namespace iba.Controls
             gridColumnExpression.ColumnEdit = m_channelEditor;
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
-            foreach (var t in OpcUaWriterTaskData.Record.dataTypes)
+            foreach (var t in OpcUaWriterTaskData.Record.DataTypes)
                 typeComboBox.Items.Add(t);
             gridColumn1.ColumnEdit = typeComboBox;
             gridColumn1.Caption = Properties.Resources.DataType;

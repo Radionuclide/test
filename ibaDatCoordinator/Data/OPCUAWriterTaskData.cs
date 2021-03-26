@@ -25,7 +25,7 @@ namespace iba.Data
         [Serializable]
         public class Record : ICloneable
         {
-            public static readonly string[] dataTypes =
+            public static readonly string[] DataTypes =
             {
                 "Analog",
                 "Text",
@@ -72,14 +72,14 @@ namespace iba.Data
             }
             public string DataTypeAsString
             {
-                get { return dataTypes[(int)DataType]; }
+                get { return DataTypes[(int)DataType]; }
                 set
                 {
-                    if (value == dataTypes[(int)ExpressionType.Number])
+                    if (value == DataTypes[(int)ExpressionType.Number])
                             DataType = ExpressionType.Number;
-                    else if (value == dataTypes[(int)ExpressionType.Text])
+                    else if (value == DataTypes[(int)ExpressionType.Text])
                         DataType = ExpressionType.Text;
-                    else if (value == dataTypes[(int)ExpressionType.Digital])
+                    else if (value == DataTypes[(int)ExpressionType.Digital])
                         DataType = ExpressionType.Digital;
                 }
             }
