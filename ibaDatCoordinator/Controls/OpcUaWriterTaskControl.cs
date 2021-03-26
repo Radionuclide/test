@@ -65,7 +65,9 @@ namespace iba.Controls
                     return "";
                 sourceAlreadyUpdated = false;
             }
-            name.Replace('\\', '_');
+
+            // left slash is not allowed in our UA Node ID convention
+            name = name.Replace('\\', '_');
 
             var r = list.Count(item => item.Name == name);
             if (r > 1 || (!sourceAlreadyUpdated && r > 0))
