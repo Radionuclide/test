@@ -11,9 +11,9 @@ using Microsoft.Win32;
 
 namespace iba.Controls
 {
-	public partial class OpcUaAWriterTaskControl : UserControl, IPropertyPane
+	public partial class OpcUaWriterTaskControl : UserControl, IPropertyPane
 	{
-		public OpcUaAWriterTaskControl()
+		public OpcUaWriterTaskControl()
 		{
 			InitializeComponent();
             m_analyzerManager = new AnalyzerManager();

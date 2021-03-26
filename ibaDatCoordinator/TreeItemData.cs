@@ -647,7 +647,7 @@ namespace iba
 			Control ctrl = manager.PropertyPanes["OPCUAWriterTaskControl"] as Control;
 			if (ctrl == null)
 			{
-				ctrl = new CommonTaskControl(new OpcUaAWriterTaskControl());
+				ctrl = new CommonTaskControl(new OpcUaWriterTaskControl());
 				manager.PropertyPanes["OPCUAWriterTaskControl"] = ctrl;
 			}
 			return ctrl;

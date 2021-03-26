@@ -1,6 +1,6 @@
 ﻿namespace iba.Controls
 {
-	partial class OpcUaAWriterTaskControl
+	partial class OpcUaWriterTaskControl
 	{
 		/// <summary> 
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpcUaAWriterTaskControl));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpcUaWriterTaskControl));
             this.dataGrid = new DevExpress.XtraGrid.GridControl();
             this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumnName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -449,7 +449,7 @@
             this.Controls.Add(this.dataGrid);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MinimumSize = new System.Drawing.Size(0, 400);
-            this.Name = "OpcUaAWriterTaskControl";
+            this.Name = "OpcUaWriterTaskControl";
             this.Size = new System.Drawing.Size(797, 426);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).EndInit();
