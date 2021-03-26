@@ -604,10 +604,10 @@ namespace iba
                     taskNode = new TreeNode(task.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
                     taskNode.Tag = new HDCreateEventTaskTreeItemData(this, task as HDCreateEventTaskData);
 				}
-				else if (task is OPCUAWriterTaskData)
+				else if (task is OpcUaWriterTaskData)
 				{
 					taskNode = new TreeNode(task.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
-					taskNode.Tag = new OPCUAWriterTaskTreeItemData(this, task as OPCUAWriterTaskData);
+					taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, task as OpcUaWriterTaskData);
 				}
 				else if(task.GetType() == typeof(TaskWithTargetDirData) || task.GetType() == typeof(CleanupTaskData))
                 {
@@ -1036,7 +1036,7 @@ namespace iba
                         msg = String.Format(iba.Properties.Resources.deleteCustomTaskQuestion,
                         (((CustomTaskTreeItemData)(node.Tag)).DataSource as ICustomTaskData).Plugin.NameInfo,
                             node.Text, node.Parent.Text);
-                    else if (node.Tag is OPCUAWriterTaskTreeItemData)
+                    else if (node.Tag is OpcUaWriterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteOPCUATastQuestion, node.Text, node.Parent.Text);
                 }
                 DialogResult res = MessageBox.Show(this, msg,
@@ -1200,10 +1200,10 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
                     taskNode.Tag = new HDCreateEventTaskTreeItemData(this, m_task_copy as HDCreateEventTaskData);
                 }
-                else if (m_task_copy is OPCUAWriterTaskData)
+                else if (m_task_copy is OpcUaWriterTaskData)
                 {
                     taskNode = new TreeNode(m_task_copy.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
-                    taskNode.Tag = new OPCUAWriterTaskTreeItemData(this, m_task_copy as OPCUAWriterTaskData);
+                    taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, m_task_copy as OpcUaWriterTaskData);
                 }
                 else if(m_task_copy.GetType() == typeof(TaskWithTargetDirData))
                 {
@@ -1295,10 +1295,10 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
                     taskNode.Tag = new HDCreateEventTaskTreeItemData(this, m_task_copy as HDCreateEventTaskData);
                 }
-                else if (m_task_copy is OPCUAWriterTaskData)
+                else if (m_task_copy is OpcUaWriterTaskData)
                 {
                     taskNode = new TreeNode(m_task_copy.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
-                    taskNode.Tag = new OPCUAWriterTaskTreeItemData(this, m_task_copy as OPCUAWriterTaskData);
+                    taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, m_task_copy as OpcUaWriterTaskData);
                 }
                 else if(m_task_copy.GetType() == typeof(TaskWithTargetDirData))
                 {
@@ -1778,13 +1778,13 @@ namespace iba
 			ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
 			if (!TestTaskCount(confData))
 				return;
-			OPCUAWriterTaskData createEvent = new OPCUAWriterTaskData(confData);
+			OpcUaWriterTaskData createEvent = new OpcUaWriterTaskData(confData);
 			new SetNextName(createEvent);
 			confData.Tasks.Add(createEvent);
 			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
 				TaskManager.Manager.ReplaceConfiguration(confData);
 			TreeNode newNode = new TreeNode(createEvent.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
-			newNode.Tag = new OPCUAWriterTaskTreeItemData(this, createEvent);
+			newNode.Tag = new OpcUaWriterTaskTreeItemData(this, createEvent);
 			node.Nodes.Add(newNode);
 			newNode.EnsureVisible();
 			if (confData.AdjustDependencies()) AdjustFrontIcons(confData);

@@ -109,7 +109,7 @@ namespace iba.Data
 				m_name = iba.Properties.Resources.HDEventTaskTitle;
 			else if (this is TaskWithTargetDirData)
 				m_name = iba.Properties.Resources.cleanupTaskTitle;
-			else if (this is OPCUAWriterTaskData)
+			else if (this is OpcUaWriterTaskData)
 				m_name = iba.Properties.Resources.opcUaWriterTaskTitle;
 		}
 

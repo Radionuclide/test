@@ -613,12 +613,11 @@ namespace iba
         }
     }
 	#endregion
-
-
+    
 	#region OPCUAWriterTaskTreeItemData
-	public class OPCUAWriterTaskTreeItemData : TreeItemData
+	public class OpcUaWriterTaskTreeItemData : TreeItemData
 	{
-		public OPCUAWriterTaskTreeItemData(IPropertyPaneManager propManager, OPCUAWriterTaskData tdc)
+		public OpcUaWriterTaskTreeItemData(IPropertyPaneManager propManager, OpcUaWriterTaskData tdc)
 			: base(propManager)
 		{
 			m_tdc = tdc;
@@ -629,7 +628,7 @@ namespace iba
 			get { return "OPCUAWriterTask"; }
 		}
 
-		protected OPCUAWriterTaskData m_tdc;
+		protected OpcUaWriterTaskData m_tdc;
 
 		public override object DataSource
 		{
@@ -639,7 +638,7 @@ namespace iba
 			}
 			set
 			{
-				m_tdc = value as OPCUAWriterTaskData;
+				m_tdc = value as OpcUaWriterTaskData;
 			}
 		}
 
@@ -648,7 +647,7 @@ namespace iba
 			Control ctrl = manager.PropertyPanes["OPCUAWriterTaskControl"] as Control;
 			if (ctrl == null)
 			{
-				ctrl = new CommonTaskControl(new OPCUAWriterTaskControl());
+				ctrl = new CommonTaskControl(new OpcUaAWriterTaskControl());
 				manager.PropertyPanes["OPCUAWriterTaskControl"] = ctrl;
 			}
 			return ctrl;

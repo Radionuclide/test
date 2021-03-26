@@ -225,11 +225,11 @@
     <Compile Include="Controls\OpcUaEndpointSelectionForm.Designer.cs">
       <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\OPCUATaskControl.cs">
+    <Compile Include="Controls\OpcUaTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\OPCUATaskControl.Designer.cs">
-      <DependentUpon>OPCUATaskControl.cs</DependentUpon>
+    <Compile Include="Controls\OpcUaTaskControl.Designer.cs">
+      <DependentUpon>OpcUaTaskControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\PanelEventJob.cs">
       <SubType>UserControl</SubType>
@@ -284,7 +284,7 @@
     <Compile Include="Data\GridViewLogger.cs" />
     <Compile Include="Data\HDCreateEventTaskData.cs" />
     <Compile Include="Data\OpcUaData.cs" />
-    <Compile Include="Data\OPCUAWriterTaskData.cs" />
+    <Compile Include="Data\OpcUaWriterTaskData.cs" />
     <Compile Include="Data\PluginTaskDataWrapper.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
     <Compile Include="Dialogs\About.cs">
@@ -608,8 +608,8 @@
       <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\OPCUATaskControl.resx">
-      <DependentUpon>OPCUATaskControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\OpcUaTaskControl.resx">
+      <DependentUpon>OpcUaTaskControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelEventJob.resx">
       <DependentUpon>PanelEventJob.cs</DependentUpon>

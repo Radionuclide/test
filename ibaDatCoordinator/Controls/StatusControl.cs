@@ -326,7 +326,7 @@ namespace iba.Controls
                             bitmap = m_splitIcons[value];
                         else if (task is HDCreateEventTaskData)
                             bitmap = m_hdCreateEventIcons[value];
-                        else if (task is OPCUAWriterTaskData)
+                        else if (task is OpcUaWriterTaskData)
                             bitmap = m_OPCUAWriterIcons[value];
                         else if (task is ICustomTaskData cust)
                             bitmap = GetImageForCustomTaskData(cust, value);

@@ -7,20 +7,20 @@ using System.Xml.Serialization;
 namespace iba.Data
 {
     [Serializable]
-    public class OPCUAWriterTaskData : TaskData
+    public class OpcUaWriterTaskData : TaskData
     {
         [NonSerialized]
         internal AnalyzerManager m_analyzerManager;
         public List<Record> Records;
         public MonitorData MonitorData { get; set; }
 
-        public OPCUAWriterTaskData(ConfigurationData parent)
+        public OpcUaWriterTaskData(ConfigurationData parent)
             : base(parent)
         {
             Records = new List<Record>();
             MonitorData = new MonitorData();
         }
-        public OPCUAWriterTaskData() : this(null) { }
+        public OpcUaWriterTaskData() : this(null) { }
 
         [Serializable]
         public class Record : ICloneable
@@ -157,7 +157,7 @@ namespace iba.Data
 
 		public override TaskData CloneInternal()
 		{
-            OPCUAWriterTaskData d = new OPCUAWriterTaskData(null);
+            OpcUaWriterTaskData d = new OpcUaWriterTaskData(null);
             d.Records = Records.Select(r => (Record)r.Clone()).ToList();
             d.Records.Add(new Record());
             Records.Clear();
@@ -171,7 +171,7 @@ namespace iba.Data
 		{
             return
                 (
-                    taskData is OPCUAWriterTaskData other &&
+                    taskData is OpcUaWriterTaskData other &&
                     Records.SequenceEqual(other.Records) &&
                     AnalysisFile == other.AnalysisFile &&
                     TestDatFile == other.TestDatFile &&

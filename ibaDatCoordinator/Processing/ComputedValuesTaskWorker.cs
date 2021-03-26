@@ -11,10 +11,10 @@ namespace iba.Processing
     class ComputedValuesTaskWorker
     {
         private ConfigurationWorker m_confWorker;
-        private OPCUAWriterTaskData m_task;
+        private OpcUaWriterTaskData m_task;
         private StatusData m_sd;
         private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer;
-        internal ComputedValuesTaskWorker(ConfigurationWorker worker, OPCUAWriterTaskData task)
+        internal ComputedValuesTaskWorker(ConfigurationWorker worker, OpcUaWriterTaskData task)
         {
             m_confWorker = worker;
             m_task = task;

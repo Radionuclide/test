@@ -855,10 +855,11 @@ namespace iba.Processing
 
                             ExtMonData.ExtMonFolder jobFolder = null;
                             uint jobFolderID = 1;
+
                             foreach (var task in cfg.Tasks)
                             {
                                 uint taskFolderID = 1;
-                                if (task is OPCUAWriterTaskData data)
+                                if (task is OpcUaWriterTaskData data)
                                 {
                                     if (data.Records.Count == 0)
                                         continue;
@@ -900,6 +901,8 @@ namespace iba.Processing
                 return false; // error
             }
         }
+
+
 
         /// <summary> Gets Server host name (can be different from client's one if is run in c/s mode) </summary>
         public virtual string GetServerHostName()

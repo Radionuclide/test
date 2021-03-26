@@ -1739,7 +1739,7 @@ namespace iba.Data
         {
             public Guid dataId {get; private set;}
 
-			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OPCUAWriterTaskData data)
+			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OpcUaWriterTaskData data)
 				: base(parent, JobAgeThreshold, snmpLeastId)
 			{
                 dataId = data.Guid;
@@ -1761,17 +1761,17 @@ namespace iba.Data
 
                     ExtMonVariableBase child = null;
                     // record.Name is unique within the task
-                    if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Number)
+                    if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Number)
 					    child = AddChildVariable<double>(
                             record.Name, snmpMibNameSuffix,
                             $@"Computed value '{record.Name}' for expression '{record.Expression}'",
 						    SNMP_AUTO_LEAST_ID);
-                    else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
+                    else if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Text)
                         child = AddChildVariable<string>(
                             record.Name, snmpMibNameSuffix,
                             $@"Computed value '{record.Name}' for expression '{record.Expression}'",
                             SNMP_AUTO_LEAST_ID);
-                    else if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
+                    else if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
                         child = AddChildVariable<bool>(
                             record.Name, snmpMibNameSuffix,
                             $@"Computed value '{record.Name}' for expression '{record.Expression}'",
@@ -1784,15 +1784,15 @@ namespace iba.Data
                 Update(data);
 			}
 
-            public void Update(OPCUAWriterTaskData data)
+            public void Update(OpcUaWriterTaskData data)
             {
                 if (Children.Count != data.Records.Count)
                    Debug.Assert(false);
                 for (int i = 0; i < Children.Count; i++)
                 {
-                    if (Children[i] is ExtMonVariable<double> childd && data.Records[i].Value is double vald && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Number)
+                    if (Children[i] is ExtMonVariable<double> childd && data.Records[i].Value is double vald && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Number)
                         childd.Value = vald;
-                    else if (Children[i] is ExtMonVariable<string> childs && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
+                    else if (Children[i] is ExtMonVariable<string> childs && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Text)
                     {
                         if (data.Records[i].Value is string vals)
                             childs.Value = vals;
@@ -1801,7 +1801,7 @@ namespace iba.Data
                         else
                             Debug.Assert(false);
                     }
-                    else if (Children[i] is ExtMonVariable<bool> childb && data.Records[i].Value is double valb && data.Records[i].DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
+                    else if (Children[i] is ExtMonVariable<bool> childb && data.Records[i].Value is double valb && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
                         childb.Value = valb != 0;
                     else 
                         Debug.Assert(false);

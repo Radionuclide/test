@@ -579,12 +579,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            OPCUAWriterTaskData createEvent = new OPCUAWriterTaskData(m_data);
+            OpcUaWriterTaskData createEvent = new OpcUaWriterTaskData(m_data);
             new SetNextName(createEvent);
             m_data.Tasks.Add(createEvent);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(createEvent.Name, MainForm.OPCUA_WRITERTASK_INDEX, MainForm.OPCUA_WRITERTASK_INDEX);
-            newNode.Tag = new OPCUAWriterTaskTreeItemData(m_manager, createEvent);
+            newNode.Tag = new OpcUaWriterTaskTreeItemData(m_manager, createEvent);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)

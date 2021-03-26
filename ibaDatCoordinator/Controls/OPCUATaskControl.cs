@@ -11,9 +11,9 @@ using Microsoft.Win32;
 
 namespace iba.Controls
 {
-	public partial class OPCUAWriterTaskControl : UserControl, IPropertyPane
+	public partial class OpcUaAWriterTaskControl : UserControl, IPropertyPane
 	{
-		public OPCUAWriterTaskControl()
+		public OpcUaAWriterTaskControl()
 		{
 			InitializeComponent();
             m_analyzerManager = new AnalyzerManager();
@@ -23,7 +23,7 @@ namespace iba.Controls
             gridColumnExpression.ColumnEdit = m_channelEditor;
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
-            foreach (var t in OPCUAWriterTaskData.Record.dataTypes)
+            foreach (var t in OpcUaWriterTaskData.Record.dataTypes)
                 typeComboBox.Items.Add(t);
             gridColumn1.ColumnEdit = typeComboBox;
             gridColumn1.Caption = Properties.Resources.DataType;
@@ -57,7 +57,7 @@ namespace iba.Controls
 
         private string EnsureNameUnique(string name, int row, bool sourceAlreadyUpdated = true)
         {
-            var list = (BindingList<OPCUAWriterTaskData.Record>)dataGrid.DataSource;
+            var list = (BindingList<OpcUaWriterTaskData.Record>)dataGrid.DataSource;
             if (name == "")
             {
                 name = dataGV.GetRowCellValue(row, gridColumnExpression).ToString();
@@ -80,12 +80,12 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
 		{
-			m_data = datasource as OPCUAWriterTaskData;
+			m_data = datasource as OpcUaWriterTaskData;
             if (m_data.m_analyzerManager is null)
                 m_data.m_analyzerManager = m_analyzerManager;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
-            BindingList<OPCUAWriterTaskData.Record> list = new BindingList<OPCUAWriterTaskData.Record>(m_data.Records)
+            BindingList<OpcUaWriterTaskData.Record> list = new BindingList<OpcUaWriterTaskData.Record>(m_data.Records)
             {
                 AllowNew = true, 
                 AllowRemove = true
@@ -121,7 +121,7 @@ namespace iba.Controls
         }
 
 
-        OPCUAWriterTaskData m_data;
+        OpcUaWriterTaskData m_data;
         [NonSerialized]
         private AnalyzerManager m_analyzerManager;
         [NonSerialized]
@@ -130,7 +130,7 @@ namespace iba.Controls
 		private void buttonEndpointAdd_Click(object sender, EventArgs e)
 		{
 			var view = dataGrid.MainView as GridView;
-			m_data.Records.Add(new OPCUAWriterTaskData.Record());
+			m_data.Records.Add(new OpcUaWriterTaskData.Record());
 			view.FocusedRowHandle = m_data.Records.Count - 1;
 			view.ShowEditor();
 
@@ -154,9 +154,9 @@ namespace iba.Controls
 			var view = dataGrid.MainView as GridView;
 			if ((view.FocusedRowHandle >= 0) &&
 				(view.FocusedRowHandle < m_data.Records.Count) &&
-				view.GetRow(view.FocusedRowHandle) is OPCUAWriterTaskData.Record oldRow)
+				view.GetRow(view.FocusedRowHandle) is OpcUaWriterTaskData.Record oldRow)
 			{
-                var newRow = oldRow.Clone() as OPCUAWriterTaskData.Record;
+                var newRow = oldRow.Clone() as OpcUaWriterTaskData.Record;
                 string removedNumberSuffix = System.Text.RegularExpressions.Regex.Replace(newRow.Name, "_[0-9]{1,3}$", "");
                 if (removedNumberSuffix.Length > 0)
                     newRow.Name = removedNumberSuffix;
@@ -174,7 +174,7 @@ namespace iba.Controls
 
 		public void SaveData()
 		{
-            var bindingList = (dataGrid.DataSource as BindingList<OPCUAWriterTaskData.Record>);
+            var bindingList = (dataGrid.DataSource as BindingList<OpcUaWriterTaskData.Record>);
 
             var l = bindingList.ToList();
             l.RemoveAll(item => item.Expression == "");
@@ -271,12 +271,12 @@ namespace iba.Controls
                 {
                     if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if (bUseDatFile) ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
-                    var records = dataGrid.DataSource as IList<OPCUAWriterTaskData.Record>;
-                    foreach (OPCUAWriterTaskData.Record record in records)
+                    var records = dataGrid.DataSource as IList<OpcUaWriterTaskData.Record>;
+                    foreach (OpcUaWriterTaskData.Record record in records)
                     {
                         if (string.IsNullOrEmpty(record.Expression)) continue;
 
-                        if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Text)
+                        if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Text)
                         {
                             object oStamps = null;
                             object oValues = null;
@@ -324,7 +324,7 @@ namespace iba.Controls
 
                             else
                             {
-                                if (record.DataType == OPCUAWriterTaskData.Record.ExpressionType.Digital)
+                                if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
                                     record.TestValue = (f == 0.0 ? "false" : "true");
                                 else
                                     record.TestValue = f;
