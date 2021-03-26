@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Data;
 using DevExpress.XtraGrid.Views.Grid;
@@ -30,7 +26,7 @@ namespace iba.Controls
             foreach (var t in OPCUAWriterTaskData.Record.dataTypes)
                 typeComboBox.Items.Add(t);
             gridColumn1.ColumnEdit = typeComboBox;
-            gridColumn1.Caption = iba.Properties.Resources.DataType;
+            gridColumn1.Caption = Properties.Resources.DataType;
 
             gridColumnName.View.CellValueChanged += CellNameChanged;
             gridColumnExpression.View.CellValueChanged += CellExpressionChanged;
@@ -89,21 +85,24 @@ namespace iba.Controls
                 m_data.m_analyzerManager = m_analyzerManager;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
-			BindingList<OPCUAWriterTaskData.Record> list = new BindingList<OPCUAWriterTaskData.Record>(m_data.Records);
-			list.AllowNew = true;
-			list.AllowRemove = true;
-			dataGrid.DataSource = list;
+            BindingList<OPCUAWriterTaskData.Record> list = new BindingList<OPCUAWriterTaskData.Record>(m_data.Records)
+            {
+                AllowNew = true, 
+                AllowRemove = true
+            };
+            dataGrid.DataSource = list;
 
             string ibaAnalyzerExe;
             try
             {
                 RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
+                // ReSharper disable once PossibleNullReferenceException - ok, we use it in try/catch
                 object o = key.GetValue("");
                 ibaAnalyzerExe = Path.GetFullPath(o.ToString());
             }
             catch
             {
-                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
+                ibaAnalyzerExe = Properties.Resources.noIbaAnalyser;
             }
             try
             {
@@ -190,8 +189,7 @@ namespace iba.Controls
 		private void m_browsePDOFileButton_Click(object sender, EventArgs e)
 		{
 			string path = m_pdoFileTextBox.Text;
-			string localPath;
-			if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref path, out localPath))
+            if (DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref path, out string _))
 			{
 				m_pdoFileTextBox.Text = path;
 			}
@@ -199,19 +197,19 @@ namespace iba.Controls
 
 		private void m_executeIBAAButton_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFileTextBox.Text);
+			DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFileTextBox.Text);
 		}
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, m_analyzerManager, null);
+			DatCoordinatorHostImpl.Host.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, m_analyzerManager, null);
             UpdateSource();
         }
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
             string datFile = m_datFileTextBox.Text;
-            if (Utility.DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
+            if (DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
             {
                 m_datFileTextBox.Text = datFile;
             }
@@ -236,11 +234,11 @@ namespace iba.Controls
             }
 
             string version = ibaAnalyzer.GetVersion();
-            int startindex = version.IndexOf(' ') + 1;
-            int stopindex = startindex + 1;
-            while (stopindex < version.Length && (char.IsDigit(version[stopindex]) || version[stopindex] == '.'))
-                stopindex++;
-            string[] nrs = version.Substring(startindex, stopindex - startindex).Split('.');
+            int startIndex = version.IndexOf(' ') + 1;
+            int stopIndex = startIndex + 1;
+            while (stopIndex < version.Length && (char.IsDigit(version[stopIndex]) || version[stopIndex] == '.'))
+                stopIndex++;
+            string[] nrs = version.Substring(startIndex, stopIndex - startIndex).Split('.');
             if (nrs.Length < 3)
             {
                 MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -261,9 +259,9 @@ namespace iba.Controls
                 MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             if (major < 6 || (major == 6 && minor < 5))
-                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startindex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             if (major < 6 || (major == 6 && minor < 7))
-                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startindex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
             bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
             double f = 0;

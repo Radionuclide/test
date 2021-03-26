@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace iba.Data
@@ -109,9 +106,9 @@ namespace iba.Data
             }
             public override bool Equals(object obj)
             {
-                if (obj == null || !(obj is Record))
+                if (!(obj is Record))
                     return false;
-                var rec = obj as Record;
+                var rec = (Record)obj;
                 return
                     (
                         Expression == rec.Expression &&
@@ -119,6 +116,7 @@ namespace iba.Data
                         DataType == rec.DataType
                     );
             }
+
             public override int GetHashCode()
             {
                 return Expression.GetHashCode() ^ Name.GetHashCode() ^ DataType.GetHashCode();
@@ -133,13 +131,11 @@ namespace iba.Data
             {
                 if (record.DataType == Record.ExpressionType.Text)
                 {
-                    object oStamps = null;
-                    object oValues = null;
-                    analyzer.EvaluateToStringArray(record.Expression, 0, out oStamps, out oValues);
+                    analyzer.EvaluateToStringArray(record.Expression, 0, out _, out var oValues);
 
                     if (oValues != null)
                     {
-                        string[] values = oValues as string[];
+                        var values = (string[])oValues;
                         foreach (string str in values)
                         {
                             if (!string.IsNullOrEmpty(str))
@@ -170,12 +166,12 @@ namespace iba.Data
             d.MonitorData = (MonitorData)MonitorData.Clone();
             return d;
         }
+
         public override bool IsSameInternal(TaskData taskData)
 		{
-            var other = taskData as OPCUAWriterTaskData;
             return
                 (
-                    other != null &&
+                    taskData is OPCUAWriterTaskData other &&
                     Records.SequenceEqual(other.Records) &&
                     AnalysisFile == other.AnalysisFile &&
                     TestDatFile == other.TestDatFile &&
