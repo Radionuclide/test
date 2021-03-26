@@ -127,7 +127,7 @@ namespace iba.Controls
         [NonSerialized]
         private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
 
-		private void buttonEndpointAdd_Click(object sender, EventArgs e)
+		private void buttonExpressionAdd_Click(object sender, EventArgs e)
 		{
 			var view = dataGrid.MainView as GridView;
 			m_data.Records.Add(new OpcUaWriterTaskData.Record());
@@ -135,21 +135,21 @@ namespace iba.Controls
 			view.ShowEditor();
 
 			dataGrid.RefreshDataSource();
-			buttonEndpointCopy.Enabled = buttonEndpointRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+			buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
 		}
 
-		private void buttonEndpointRemove_Click(object sender, EventArgs e)
+		private void buttonExpressionRemove_Click(object sender, EventArgs e)
 		{
 			var view = dataGrid.MainView as GridView;
 			if ((view.FocusedRowHandle >= 0) && (view.FocusedRowHandle < m_data.Records.Count))
 			{
 				m_data.Records.RemoveAt(view.FocusedRowHandle);
-				buttonEndpointCopy.Enabled = buttonEndpointRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+				buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
 			}
 			dataGrid.RefreshDataSource();
 		}
 
-		private void buttonEndpointCopy_Click(object sender, EventArgs e)
+		private void buttonExpressionCopy_Click(object sender, EventArgs e)
 		{
 			var view = dataGrid.MainView as GridView;
 			if ((view.FocusedRowHandle >= 0) &&
@@ -165,7 +165,7 @@ namespace iba.Controls
 				view.FocusedRowHandle = m_data.Records.Count - 1;
 				view.ShowEditor();
 
-				buttonEndpointCopy.Enabled = buttonEndpointRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+				buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
 			}
 			dataGrid.RefreshDataSource();
 		}
@@ -375,6 +375,5 @@ namespace iba.Controls
         {
             m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
         }
-
     }
 }
