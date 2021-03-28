@@ -58,9 +58,9 @@ namespace iba.Processing
                                 if (jobFolder.UaBrowseName == $@"Job{{{m_task.ParentConfigurationData.Guid}}}")
                                     foreach (var task in jobFolder.Children)
                                         if (task is ExtMonData.ComputedValuesInfo info)
-                                            if (info.dataId == m_task.Guid)
+                                            if (info.DataId == m_task.Guid)
                                             {
-                                                info.Update(m_task);
+                                                info.UpdateValues(m_task);
                                                 return;
                                             }
                         }

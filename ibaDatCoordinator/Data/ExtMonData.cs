@@ -402,6 +402,34 @@ namespace iba.Data
             return jobInfo;
         }
 
+        public ExtMonFolder AddNewComputedValueJob(string jobName, Guid guid)
+        {
+            ExtMonFolder parentFolder = Instance.FolderComputedValues; // all computed value nodes are grouped here
+            var indexWithinFolder = (uint)parentFolder.Children.Count + 1; // is used for SNMP
+
+            var jobFolder = new ExtMonFolder(
+                parentFolder,
+                jobName,
+                $@"Job{indexWithinFolder}",
+                $@"Computed values of the job '{jobName}'",
+                indexWithinFolder)
+            {
+                UaBrowseName = $@"Job{{{guid}}}"
+            };
+
+            parentFolder.Children.Add(jobFolder);
+
+            return jobFolder;
+        }
+
+        public ComputedValuesInfo AddNewComputedValueTask(ExtMonFolder parentJobFolder, OpcUaWriterTaskData computedValueTaskData)
+        {
+            var indexWithinFolder = (uint)parentJobFolder.Children.Count + 1; // is used for SNMP
+            var taskInfo = new ComputedValuesInfo(parentJobFolder, indexWithinFolder, computedValueTaskData);
+            parentJobFolder.Children.Add(taskInfo);
+            return taskInfo;
+        }
+
         public List<ExtMonNode> GetFlatListOfAllChildren() => FolderRoot.GetFlatListOfAllChildren();
 
         public bool CheckChildParentConsistency(ExtMonFolder folder)
@@ -1735,52 +1763,52 @@ namespace iba.Data
         
         public class ComputedValuesInfo : ExtMonGroup
         {
-            public Guid dataId {get; }
+            public Guid DataId {get; }
 
-			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OpcUaWriterTaskData data)
-				: base(parent, JobAgeThreshold, snmpLeastId, data.Name, $@"Task{snmpLeastId}")
+			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OpcUaWriterTaskData computedValueTaskData)
+				: base(parent, JobAgeThreshold, snmpLeastId, computedValueTaskData.Name, $@"Task{snmpLeastId}")
 			{
-                dataId = data.Guid;
-                Description = $@"Computed values of the task '{data.Name}' of the job '{data.ParentConfigurationData.Name}'";
-                UaBrowseName = $@"Task{{{dataId}}}";
+                DataId = computedValueTaskData.Guid;
+                Description = $@"Computed values of the task '{computedValueTaskData.Name}' of the job '{computedValueTaskData.ParentConfigurationData.Name}'";
+                UaBrowseName = $@"Task{{{DataId}}}";
 
-                for (int i = 0; i < data.Records.Count; i++)
+                for (int i = 0; i < computedValueTaskData.Records.Count; i++)
 				{
-                    var record = data.Records[i];
+                    var record = computedValueTaskData.Records[i];
 
                     // just for case
                     if (record.Name == "")
                         continue;
 
-                    // SNMP doesn't support non alphanumeric characters, use index for names
+                    // SNMP MIB name character set is rather limited, use index for names
                     string snmpMibNameSuffix = $@"Value{i+1}";
+                    string description = $@"Computed value '{record.Name}' for expression '{record.Expression}'";
 
                     ExtMonVariableBase child = null;
-                    // record.Name is unique within the task
-                    if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Number)
-					    child = AddChildVariable<double>(
-                            record.Name, snmpMibNameSuffix,
-                            $@"Computed value '{record.Name}' for expression '{record.Expression}'",
-						    SNMP_AUTO_LEAST_ID);
-                    else if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Text)
-                        child = AddChildVariable<string>(
-                            record.Name, snmpMibNameSuffix,
-                            $@"Computed value '{record.Name}' for expression '{record.Expression}'",
-                            SNMP_AUTO_LEAST_ID);
-                    else if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
-                        child = AddChildVariable<bool>(
-                            record.Name, snmpMibNameSuffix,
-                            $@"Computed value '{record.Name}' for expression '{record.Expression}'",
-                            SNMP_AUTO_LEAST_ID);
-                    else
-                        System.Diagnostics.Debug.Assert(false);
+                    switch (record.DataType) 
+                    {
+                        case OpcUaWriterTaskData.Record.ExpressionType.Number:
+                            child = AddChildVariable<double>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
+                            break;
+                        case OpcUaWriterTaskData.Record.ExpressionType.Text:
+                            child = AddChildVariable<string>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
+                            break;
+                        case OpcUaWriterTaskData.Record.ExpressionType.Digital:
+                            child = AddChildVariable<bool>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
+                            break;
+                        default:
+                            Debug.Assert(false);
+                            break;
+                    }
 
+                    // record.Name is unique within the task
                     child.UaBrowseName = record.Name;
                 }
-                Update(data);
+                
+                UpdateValues(computedValueTaskData);
 			}
 
-            public void Update(OpcUaWriterTaskData data)
+            public void UpdateValues(OpcUaWriterTaskData data)
             {
                 if (Children.Count != data.Records.Count)
                    Debug.Assert(false);

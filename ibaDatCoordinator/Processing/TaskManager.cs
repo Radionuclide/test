@@ -847,47 +847,39 @@ namespace iba.Processing
                         List<ConfigurationData> confs = Configurations;
                         confs.Sort((a, b) => a.TreePosition.CompareTo(b.TreePosition));
 
-                        uint jobFolderID = 1;
                         foreach (ConfigurationData cfg in confs)
                         {
                             var jobInfo = od.AddNewJob(cfg.JobType, cfg.Name, cfg.Guid);
                             ExtMonRefreshJobInfo(jobInfo, cfg);
 
+                            // get all (if any) computedValue tasks of the job
+                            var computedValueTasks = cfg.Tasks.Where(t => t is OpcUaWriterTaskData)
+                                .Cast<OpcUaWriterTaskData>().ToList();
 
-                            ExtMonData.ExtMonFolder jobFolder = null;
-
-                            foreach (var task in cfg.Tasks)
+                            // check if the job has any ComputedValue tasks
+                            if (computedValueTasks.Count != 0)
                             {
-                                uint taskFolderID = 1;
-                                if (task is OpcUaWriterTaskData data)
-                                {
-                                    if (data.Records.Count == 0)
-                                        continue;
-                                    if (jobFolder is null)
-                                    {
-                                        jobFolder = new ExtMonData.ExtMonFolder(od.FolderComputedValues, data.ParentConfigurationData.Name,
-                                            $@"Job{jobFolderID}", "", jobFolderID);
-                                        jobFolderID++;
-                                        jobFolder.UaBrowseName = $@"Job{{{data.ParentConfigurationData.Guid}}}";
-                                        jobFolder.Description = $@"Computed values of the job '{data.ParentConfigurationData.Name}'";
-                                        od.FolderComputedValues.Children.Add(jobFolder);
-                                    }
+                                // first, create a folder for a Job itself
+                                var jobFolder = od.AddNewComputedValueJob(cfg.Name, cfg.Guid);
 
-                                    var dups = data.Records.GroupBy(r => r.Name).Where(g => g.Count() > 1).Select(y => y.Key);
+                                // and then add all tasks to the Job folder
+                                foreach (var cvTask in computedValueTasks)
+                                {
+                                    if (cvTask.Records.Count == 0)
+                                        continue; // don't create task folder if there's no expressions
+
+                                    var dups = cvTask.Records.GroupBy(r => r.Name).Where(g => g.Count() > 1).Select(y => y.Key);
                                     if (dups.Count() > 0)
                                     {
                                         string err = String.Format(iba.Properties.Resources.errExprNameNonUnique, dups.First());
-                                        LogExtraData eData = new LogExtraData("", data, data.ParentConfigurationData);
+                                        LogExtraData eData = new LogExtraData("", cvTask, cvTask.ParentConfigurationData);
                                         LogData.Data.Logger.Log(iba.Logging.Level.Exception, err, eData);
                                         continue;
                                     }
 
-                                    var group = new ExtMonData.ComputedValuesInfo(jobFolder, taskFolderID, data);
-                                    taskFolderID++;
-                                    jobFolder.Children.Add(group);
+                                    od.AddNewComputedValueTask(jobFolder, cvTask);
                                 }
                             }
-
                         }
                     }
                 }
@@ -895,7 +887,7 @@ namespace iba.Processing
                 return true; // success
             }
             catch (Exception ex)
-                            {
+            {
                 LogData.Data.Logger.Log(Level.Exception,
                     $"{nameof(ExtMonRebuildObjectsData)}. Error during rebuilding object data. {ex.Message}.");
                 return false; // error
