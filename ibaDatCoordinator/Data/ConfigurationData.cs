@@ -549,9 +549,7 @@ namespace iba.Data
                 bPreferredTimeBaseIsAuto = ScheduleData.PreferredTimeBaseIsAuto;
                 lPreferredTimeBase = ScheduleData.PreferredTimeBase;
             }
-            if (lStores.Length == 0)
-                throw new Exception(Properties.Resources.HDQErrorNoStores);
-
+            int count = 0;
             string dir = Path.GetDirectoryName(path);
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
             using (StreamWriter sw = new StreamWriter(path, false,Encoding.UTF8))
@@ -559,6 +557,9 @@ namespace iba.Data
                 //Add a section per store because ibaAnalyzer can't handle multiple stores in one hdq file
                 for (int i = 0; i < lStores.Length; i++)
                 {
+                    if (String.IsNullOrEmpty(lStores[i]))
+                        continue;
+                    count++;
                     if (i == 0)
                         sw.WriteLine("[HDQ file]");
                     else
@@ -595,6 +596,8 @@ namespace iba.Data
                         sw.WriteLine("timebase=" + tb.TotalSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
+                if (count == 0)
+                    throw new Exception(Properties.Resources.HDQErrorNoStores);
             }
         }
 

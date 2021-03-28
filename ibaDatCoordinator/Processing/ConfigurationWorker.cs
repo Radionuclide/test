@@ -2526,8 +2526,17 @@ namespace iba.Processing
                 }
                 catch (Exception ex)
                 {
-                    Log(Logging.Level.Exception,ex.Message);
-                    Log(Logging.Level.Debug, ex.ToString());
+                    string errmsg = ex.Message;
+                    try
+                    {
+                        errmsg = m_ibaAnalyzer.GetLastError();
+                    }
+                    catch
+                    {
+
+                    }
+                    Log(Logging.Level.Exception,errmsg);
+                    //Log(Logging.Level.Debug, ex.ToString());
                     if (!m_needIbaAnalyzer) return;
                     try
                     {
