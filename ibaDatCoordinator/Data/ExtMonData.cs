@@ -1735,14 +1735,12 @@ namespace iba.Data
         
         public class ComputedValuesInfo : ExtMonGroup
         {
-            public Guid dataId {get; private set;}
+            public Guid dataId {get; }
 
 			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OpcUaWriterTaskData data)
-				: base(parent, JobAgeThreshold, snmpLeastId)
+				: base(parent, JobAgeThreshold, snmpLeastId, data.Name, $@"Task{snmpLeastId}")
 			{
                 dataId = data.Guid;
-                Caption = data.Name;
-				SnmpFullMibName = $@"Task{snmpLeastId}";
                 Description = $@"Computed values of the task '{data.Name}' of the job '{data.ParentConfigurationData.Name}'";
                 UaBrowseName = $@"Task{{{dataId}}}";
 
