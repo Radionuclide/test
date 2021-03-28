@@ -847,6 +847,7 @@ namespace iba.Processing
                         List<ConfigurationData> confs = Configurations;
                         confs.Sort((a, b) => a.TreePosition.CompareTo(b.TreePosition));
 
+                        uint jobFolderID = 1;
                         foreach (ConfigurationData cfg in confs)
                         {
                             var jobInfo = od.AddNewJob(cfg.JobType, cfg.Name, cfg.Guid);
@@ -854,7 +855,6 @@ namespace iba.Processing
 
 
                             ExtMonData.ExtMonFolder jobFolder = null;
-                            uint jobFolderID = 1;
 
                             foreach (var task in cfg.Tasks)
                             {
