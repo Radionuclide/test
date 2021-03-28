@@ -8,8 +8,6 @@ using iba.Processing.IbaOpcUa;
 using iba.Utility;
 using IbaSnmpLib;
 using Timer = System.Timers.Timer;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace iba.Data
 {
@@ -93,7 +91,7 @@ namespace iba.Data
         /// <summary> SNMP: PrSpecific.5 </summary>
         public readonly ExtMonFolder FolderEventBasedJobs;
 
-        /// <summary> SNMP: PrSpecific.6 </summary>
+        /// <summary> SNMP: PrSpecific.100 </summary>
         public readonly ExtMonFolder FolderComputedValues;
 
         #endregion
@@ -145,7 +143,7 @@ namespace iba.Data
             FolderRoot.Children.Add(
                 FolderComputedValues = new ExtMonFolder(FolderRoot,
                 @"Computed values", @"computedValues", @"ComputedValues",
-                @"List of all computed values.", new IbaSnmpOid(6)));
+                @"List of all computed values.", new IbaSnmpOid(100)));
         }
 
         public void Reset()
