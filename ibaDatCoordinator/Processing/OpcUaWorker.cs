@@ -1138,9 +1138,13 @@ namespace iba.Processing
                     iv.SetCrossReference(xmv);
                     // this node is present in ExtMonData and should NOT be deleted
                     _deletionPendingNodes.Remove(iv);
-                    // Caption and Description theoretically never change for variables
+                    if (iv.Description != xmv.Description)
+                    {
+                        // Descriptions can change for ComputedValue variables (if an Expr is changed without changing its node name);
+                        iv.Description = xmv.Description;
+                    }
+                    // Caption theoretically never change for variables
                     Debug.Assert(iv.DisplayName == xmv.Caption);
-                    Debug.Assert(iv.Description == xmv.Description);
                     return iv;
                 default:
                     // node exists but it's not IbaOpcUaVariable
