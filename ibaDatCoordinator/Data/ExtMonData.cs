@@ -831,6 +831,25 @@ namespace iba.Data
             }
         }
 
+        public enum GroupUpdateMode
+        {
+            /// <summary> Actual values are requested from TaskManager only when external request
+            /// (from SNMP, OPC, etc.) occurs.
+            /// If there are no external requests, data is not updated at all.
+            /// Timestamps are used to track whether data is 'fresh' enough. </summary>
+            /// <remarks> License info, GlobalCleanup are good examples of this mode.
+            /// It makes no sense to actively track e.g. free space of a drive if it is not monitored from outside </remarks>
+            UpdatedOnExternalRequest,
+
+            /// <summary> Is kept up-to-date by workers inside the core of datCo
+            /// independently on whether the data is monitored/requested from outside or not. </summary>
+            /// <remarks> ComputedValues folder is an example of such mode.
+            /// Since we have to calculate expressions for each file anyway, it's easier to update values
+            /// after each calculation, rather than to wait for external requests to do this.
+            /// Timestamps are ignored for this mode. </remarks>
+            UpdatedContinuouslyByTaskManager
+        }
+
         /// <summary>
         /// Group is a special kind of folder.
         /// It has a timestamp of last update, and it's assumed that its items are updated altogether if one of
@@ -838,10 +857,14 @@ namespace iba.Data
         /// </summary>
         public abstract class ExtMonGroup : ExtMonFolder
         {
-            protected ExtMonGroup(ExtMonFolder parent, TimeSpan ageThreshold, uint snmpLeastId,
+            public GroupUpdateMode UpdateMode { get; }
+
+            protected ExtMonGroup(ExtMonFolder parent, GroupUpdateMode updateMode, TimeSpan ageThreshold, uint snmpLeastId,
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
                 : base(parent, caption, snmpMibNameSuffix, description, snmpLeastId)
             {
+                UpdateMode = updateMode;
+
                 if (ageThreshold < MinimalAgeThreshold)
                 {
                     // it makes no sense to set group's threshold to level lower than minimal;
@@ -944,7 +967,7 @@ namespace iba.Data
             public readonly ExtMonVariable<int> DemoTimeLimit;
 
             public LicenseInfo(ExtMonFolder parent) 
-                : base(parent, LicenseAgeThreshold, 0 /*not used*/)
+                : base(parent, GroupUpdateMode.UpdatedOnExternalRequest, LicenseAgeThreshold, 0 /*not used*/)
             {
                 // set Caption, Description, etc.
                 Caption = @"Licensing";
@@ -1027,7 +1050,7 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> RescanTime;
 
             public GlobalCleanupDriveInfo(ExtMonFolder parent, uint snmpLeastId, string driveName) 
-                : base(parent, DriveInfoAgeThreshold, snmpLeastId)
+                : base(parent, GroupUpdateMode.UpdatedOnExternalRequest, DriveInfoAgeThreshold, snmpLeastId)
             {
                 // set Caption, Description, etc.
                 Caption = $@"Drive '{driveName}'";
@@ -1340,7 +1363,7 @@ namespace iba.Data
             public ExtMonVariable<int> Lifebeat;
 
             protected JobInfoBase(ExtMonFolder parent, uint snmpLeastId, string jobName) 
-                : base(parent, JobAgeThreshold, snmpLeastId)
+                : base(parent, GroupUpdateMode.UpdatedOnExternalRequest, JobAgeThreshold, snmpLeastId)
             {
                 Caption = $@"Job '{jobName}'";
                 // SnmpFullMibName = ""; // is set in derived classes
@@ -1766,7 +1789,8 @@ namespace iba.Data
             public Guid DataId {get; }
 
 			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OpcUaWriterTaskData computedValueTaskData)
-				: base(parent, JobAgeThreshold, snmpLeastId, computedValueTaskData.Name, $@"Task{snmpLeastId}")
+				: base(parent, GroupUpdateMode.UpdatedContinuouslyByTaskManager,
+                    JobAgeThreshold, snmpLeastId, computedValueTaskData.Name, $@"Task{snmpLeastId}")
 			{
                 DataId = computedValueTaskData.Guid;
                 Description = $@"Computed values of the task '{computedValueTaskData.Name}' of the job '{computedValueTaskData.ParentConfigurationData.Name}'";

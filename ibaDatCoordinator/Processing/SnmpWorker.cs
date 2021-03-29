@@ -599,7 +599,12 @@ namespace iba.Processing
                     // we should copy it from extMonGroup; 
 
                     // first check if extMonGroup itself is fresh enough
-                    if (!xmGroup.TimeStamp.IsUpToDate)
+                    if (xmGroup.UpdateMode == ExtMonData.GroupUpdateMode.UpdatedContinuouslyByTaskManager)
+                    {
+                        // data inside this extMonGroup is always up-to-date
+                        // no need to request it from TaskManager
+                    }
+                    else if (!xmGroup.TimeStamp.IsUpToDate)
                     {
                         // extMonGroup is not fresh enough;
                         // request fresh data from TaskManager
@@ -615,9 +620,10 @@ namespace iba.Processing
                             case ExtMonData.JobInfoBase jobInfo:
                                 bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
                                 break;
-                            case ExtMonData.ComputedValuesInfo computedValuesInfo:
-                                // we do not need to refresh its values, because they always up to date
-                                bSuccess = true;
+                            case ExtMonData.ComputedValuesInfo _:
+                                // should not happen, because ComputedValuesInfo uses GroupUpdateMode.UpdatedContinuouslyByTaskManager
+                                bSuccess = false;
+                                Debug.Assert(false);
                                 break;
                             default:
                                 // should not happen
