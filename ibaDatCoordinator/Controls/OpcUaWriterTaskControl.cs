@@ -12,8 +12,15 @@ using Microsoft.Win32;
 namespace iba.Controls
 {
 	public partial class OpcUaWriterTaskControl : UserControl, IPropertyPane
-	{
-		public OpcUaWriterTaskControl()
+    {
+        BindingList<OpcUaWriterTaskData.Record> expressionTableData;
+        OpcUaWriterTaskData m_data;
+        [NonSerialized]
+        private AnalyzerManager m_analyzerManager;
+        [NonSerialized]
+        private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
+
+        public OpcUaWriterTaskControl()
 		{
 			InitializeComponent();
             m_analyzerManager = new AnalyzerManager();
@@ -30,6 +37,9 @@ namespace iba.Controls
 
             gridColumnName.View.CellValueChanged += CellNameChanged;
             gridColumnExpression.View.CellValueChanged += CellExpressionChanged;
+
+            expressionTableData = new BindingList<OpcUaWriterTaskData.Record>();
+            dataGrid.DataSource = expressionTableData;
         }
 
         private void CellExpressionChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
@@ -87,12 +97,10 @@ namespace iba.Controls
                 m_data.m_analyzerManager = m_analyzerManager;
             m_pdoFileTextBox.Text = m_data.AnalysisFile;
             m_datFileTextBox.Text = m_data.TestDatFile;
-            BindingList<OpcUaWriterTaskData.Record> list = new BindingList<OpcUaWriterTaskData.Record>(m_data.Records)
-            {
-                AllowNew = true, 
-                AllowRemove = true
-            };
-            dataGrid.DataSource = list;
+
+            expressionTableData.Clear();
+            foreach (var rec in m_data.Records)
+                expressionTableData.Add((OpcUaWriterTaskData.Record)rec.Clone());
 
             string ibaAnalyzerExe;
             try
@@ -123,30 +131,24 @@ namespace iba.Controls
         }
 
 
-        OpcUaWriterTaskData m_data;
-        [NonSerialized]
-        private AnalyzerManager m_analyzerManager;
-        [NonSerialized]
-        private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
-
 		private void buttonExpressionAdd_Click(object sender, EventArgs e)
 		{
 			var view = dataGrid.MainView as GridView;
-			m_data.Records.Add(new OpcUaWriterTaskData.Record());
-			view.FocusedRowHandle = m_data.Records.Count - 1;
+            expressionTableData.Add(new OpcUaWriterTaskData.Record());
+			view.FocusedRowHandle = expressionTableData.Count - 1;
 			view.ShowEditor();
 
 			dataGrid.RefreshDataSource();
-			buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+			buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (expressionTableData.Count > 0);
 		}
 
 		private void buttonExpressionRemove_Click(object sender, EventArgs e)
 		{
 			var view = dataGrid.MainView as GridView;
-			if ((view.FocusedRowHandle >= 0) && (view.FocusedRowHandle < m_data.Records.Count))
+			if ((view.FocusedRowHandle >= 0) && (view.FocusedRowHandle < expressionTableData.Count))
 			{
-				m_data.Records.RemoveAt(view.FocusedRowHandle);
-				buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+                expressionTableData.RemoveAt(view.FocusedRowHandle);
+				buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (expressionTableData.Count > 0);
 			}
 			dataGrid.RefreshDataSource();
 		}
@@ -155,7 +157,7 @@ namespace iba.Controls
 		{
 			var view = dataGrid.MainView as GridView;
 			if ((view.FocusedRowHandle >= 0) &&
-				(view.FocusedRowHandle < m_data.Records.Count) &&
+				(view.FocusedRowHandle < expressionTableData.Count) &&
 				view.GetRow(view.FocusedRowHandle) is OpcUaWriterTaskData.Record oldRow)
 			{
                 var newRow = oldRow.Clone() as OpcUaWriterTaskData.Record;
@@ -163,11 +165,11 @@ namespace iba.Controls
                 if (removedNumberSuffix.Length > 0)
                     newRow.Name = removedNumberSuffix;
                 newRow.Name = EnsureNameUnique(newRow.Name, view.FocusedRowHandle, false);
-				m_data.Records.Add(newRow);
-				view.FocusedRowHandle = m_data.Records.Count - 1;
+                expressionTableData.Add(newRow);
+				view.FocusedRowHandle = expressionTableData.Count - 1;
 				view.ShowEditor();
 
-				buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (m_data.Records.Count > 0);
+				buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (expressionTableData.Count > 0);
 			}
 			dataGrid.RefreshDataSource();
 		}
@@ -175,12 +177,11 @@ namespace iba.Controls
 		public void LeaveCleanup() { }
 
 		public void SaveData()
-		{
-            var bindingList = (dataGrid.DataSource as BindingList<OpcUaWriterTaskData.Record>);
-
-            var l = bindingList.ToList();
-            l.RemoveAll(item => item.Expression == "");
-            m_data.Records = l;
+        {
+            m_data.Records.Clear();
+            foreach (var rec in expressionTableData)
+                if (!String.IsNullOrWhiteSpace(rec.Expression))
+                    m_data.Records.Add(rec);
 
             m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             m_data.MonitorData.MonitorTime = m_cbTime.Checked;
