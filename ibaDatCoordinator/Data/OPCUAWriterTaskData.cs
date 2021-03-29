@@ -159,8 +159,6 @@ namespace iba.Data
 		{
             OpcUaWriterTaskData d = new OpcUaWriterTaskData(null);
             d.Records = Records.Select(r => (Record)r.Clone()).ToList();
-            d.Records.Add(new Record());
-            Records.Clear();
             d.AnalysisFile = AnalysisFile;
             d.TestDatFile = TestDatFile;
             d.MonitorData = (MonitorData)MonitorData.Clone();
