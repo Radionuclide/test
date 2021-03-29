@@ -868,14 +868,8 @@ namespace iba.Processing
                                     if (cvTask.Records.Count == 0)
                                         continue; // don't create task folder if there's no expressions
 
-                                    var dups = cvTask.Records.GroupBy(r => r.Name).Where(g => g.Count() > 1).Select(y => y.Key);
-                                    if (dups.Count() > 0)
-                                    {
-                                        string err = String.Format(iba.Properties.Resources.errExprNameNonUnique, dups.First());
-                                        LogExtraData eData = new LogExtraData("", cvTask, cvTask.ParentConfigurationData);
-                                        LogData.Data.Logger.Log(iba.Logging.Level.Exception, err, eData);
-                                        continue;
-                                    }
+                                    if (!OpcUaWriterTaskData.AssertNoDuplicates(cvTask))
+                                        continue; // duplicate names (IDs) detected - this should not happen 
 
                                     od.AddNewComputedValueTask(jobFolder, cvTask);
                                 }
