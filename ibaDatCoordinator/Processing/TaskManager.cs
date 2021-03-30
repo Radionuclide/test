@@ -745,6 +745,10 @@ namespace iba.Processing
                         taskTypeStr = "UpdateData";
                         //var typedData = taskData as UpdateDataTaskData;
                     }
+                    if (taskData is OpcUaWriterTaskData)
+                    {
+                        taskTypeStr = "OpcUaComputedValues";
+                    }
                 }
                 else
                 // NOT derived from TaskDataUNC (alphabetically):
