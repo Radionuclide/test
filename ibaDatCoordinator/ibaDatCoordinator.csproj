@@ -589,7 +589,9 @@
     <EmbeddedResource Include="Controls\ErrorPluginTaskControl.resx">
       <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
+    <EmbeddedResource Include="Controls\GradientWaitingBar.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\HDEventCreationTaskControl.resx">
       <DependentUpon>HDEventCreationTaskControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -716,6 +718,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\Components\BackgroundWorker.resx">
       <DependentUpon>BackgroundWorker.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Utility\CustomComboBox.resx">
       <DependentUpon>CustomComboBox.cs</DependentUpon>

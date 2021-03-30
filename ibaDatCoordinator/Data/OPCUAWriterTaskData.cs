@@ -182,14 +182,12 @@ namespace iba.Data
         /// <returns> true=ok if there are no duplicates, false=problems if we have duplicates </returns>
         public static bool AssertNoDuplicates(OpcUaWriterTaskData cvTask)
         {
-            var dups = cvTask.Records.GroupBy(r => r.Name).
-                Where(g => g.Count() > 1).Select(y => y.Key);
+            var duplicatedName = cvTask.Records.GroupBy(r => r.Name).
+                Where(g => g.Count() > 1).Select(y => y.Key).FirstOrDefault();
 
-            // todo. kls. for Vladimir to review - use method Any() instead?
-            if (dups.Count() > 0)
+            if (duplicatedName != null)
             {
-                // todo. kls. for Vladimir to review - possible multiple enumeration on .First() ?
-                string err = String.Format(iba.Properties.Resources.errExprNameNonUnique, dups.First());
+                var err = string.Format(iba.Properties.Resources.errExprNameNonUnique, duplicatedName);
                 LogExtraData eData = new LogExtraData("", cvTask, cvTask.ParentConfigurationData);
                 LogData.Data.Logger.Log(iba.Logging.Level.Exception, err, eData);
                 return false; // we have duplicates
