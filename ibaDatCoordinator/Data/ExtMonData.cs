@@ -1850,7 +1850,7 @@ namespace iba.Data
                             Debug.Assert(false);
                     }
                     else if (Children[i] is ExtMonVariable<bool> childb && data.Records[i].Value is double valb && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
-                        childb.Value = valb != 0;
+                        childb.Value = valb >= 0.5;
                     else 
                         Debug.Assert(false);
                 }
