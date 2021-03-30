@@ -108,7 +108,7 @@
             // 
             // gridColumnName
             // 
-            this.gridColumnName.Caption = "OPC UA variable name";
+            this.gridColumnName.Caption = "gridColumnName";
             this.gridColumnName.FieldName = "Name";
             this.gridColumnName.Name = "gridColumnName";
             this.gridColumnName.Visible = true;
@@ -117,7 +117,7 @@
             // 
             // gridColumn11
             // 
-            this.gridColumn11.Caption = "Test Value";
+            this.gridColumn11.Caption = "gridColumn11 (test value)";
             this.gridColumn11.FieldName = "TestValueString";
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
@@ -128,7 +128,7 @@
             // 
             // gridColumnExpression
             // 
-            this.gridColumnExpression.Caption = "ibaAnalyzer Expression";
+            this.gridColumnExpression.Caption = "gridColumnExpression";
             this.gridColumnExpression.FieldName = "Expression";
             this.gridColumnExpression.Name = "gridColumnExpression";
             this.gridColumnExpression.Visible = true;

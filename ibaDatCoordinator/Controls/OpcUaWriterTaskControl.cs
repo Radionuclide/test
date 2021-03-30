@@ -33,7 +33,11 @@ namespace iba.Controls
             foreach (var t in OpcUaWriterTaskData.Record.DataTypes)
                 typeComboBox.Items.Add(t);
             gridColumn1.ColumnEdit = typeComboBox;
+
             gridColumn1.Caption = Properties.Resources.DataType;
+            gridColumnExpression.Caption = Properties.Resources.ibaAnalyzerExpression;
+            gridColumn11.Caption = Properties.Resources.TestValue;
+            gridColumnName.Caption = Properties.Resources.OpcUaVariableName;
 
             gridColumnName.View.CellValueChanged += CellNameChanged;
             gridColumnExpression.View.CellValueChanged += CellExpressionChanged;

@@ -1917,4 +1917,13 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="logOPCUAServerDisabled" xml:space="preserve">
     <value>OPC UA server is disabled</value>
   </data>
+  <data name="ibaAnalyzerExpression" xml:space="preserve">
+    <value>ibaAnalyzer Expression</value>
+  </data>
+  <data name="OpcUaVariableName" xml:space="preserve">
+    <value>OPC UA variable name</value>
+  </data>
+  <data name="TestValue" xml:space="preserve">
+    <value>Test value</value>
+  </data>
 </root>

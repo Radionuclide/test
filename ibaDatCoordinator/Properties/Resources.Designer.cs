@@ -1572,6 +1572,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer Expression.
+        /// </summary>
+        internal static string ibaAnalyzerExpression {
+            get {
+                return ResourceManager.GetString("ibaAnalyzerExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New ibaAnalyzer started with process ID: {0}.
         /// </summary>
         internal static string IbaAnalyzerRestart {
@@ -3748,6 +3757,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OPC UA variable name.
+        /// </summary>
+        internal static string OpcUaVariableName {
+            get {
+                return ResourceManager.GetString("OpcUaVariableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add a new OPC-UA Writer Task.
         /// </summary>
         internal static string opcUaWriterTaskButton {
@@ -4905,6 +4923,15 @@ namespace iba.Properties {
         internal static string testNotifications {
             get {
                 return ResourceManager.GetString("testNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test value.
+        /// </summary>
+        internal static string TestValue {
+            get {
+                return ResourceManager.GetString("TestValue", resourceCulture);
             }
         }
         
