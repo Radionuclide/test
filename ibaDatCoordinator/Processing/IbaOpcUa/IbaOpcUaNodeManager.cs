@@ -268,8 +268,15 @@ namespace iba.Processing.IbaOpcUa
         {
             FormatEnum(ref value);
             var uaType = GetOpcUaType(value);
-            // ReSharper disable once RedundantCast
-            Debug.Assert((NodeId)(uint)uaType == varState.DataType);
+
+            // Opc Ua Writer task can change DataType of its variable "on fly"
+            // So it is possible type will change besides value
+            // ReSharper disable RedundantCast for better readability
+            if ((NodeId)(uint)uaType != varState.DataType)
+            {
+                varState.DataType = (NodeId)(uint)uaType;
+            }
+            // ReSharper restore RedundantCast
 
             object oldValue = varState.Value;
             
