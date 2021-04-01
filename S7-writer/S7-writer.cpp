@@ -204,7 +204,7 @@ namespace S7_writer
 				switch ((S7DataTypeEnum)dataType->type)
 				{
 				case S7DataTypeEnum::S7Bool:
-					buffer[bufferOffset] = val > 0.5 ? 1 : 0;
+					buffer[bufferOffset] = val >= 0.5 ? 1 : 0;
 					break;
 				case S7DataTypeEnum::S7Byte:
 				case S7DataTypeEnum::S7Char:
