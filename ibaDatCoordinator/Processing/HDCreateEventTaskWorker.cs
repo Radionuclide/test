@@ -141,7 +141,7 @@ namespace iba.Processing
             {
                 if (!double.IsNaN(from) && stamps[j] < from) continue;
                 if (!double.IsNaN(to) && stamps[j] > to) break;
-                if (!string.IsNullOrEmpty(strings[j])) continue;
+                if (string.IsNullOrEmpty(strings[j])) continue;
                 return strings[j];
             }
             return "";
@@ -339,7 +339,9 @@ namespace iba.Processing
                 string pdoFile = m_data.AnalysisFile;
                 if (m_ibaAnalyzer == null)
                 {
-                    if (!Program.RemoteFileLoader.DownloadFile(m_data.AnalysisFile, out string localFile, out string error))
+                    if (Program.RemoteFileLoader == null)
+                        pdoFile = m_data.AnalysisFile;
+                    else if (!Program.RemoteFileLoader.DownloadFile(m_data.AnalysisFile, out string localFile, out string error))
                         throw new HDCreateEventException(error);
                     else
                         pdoFile = localFile;
@@ -711,8 +713,31 @@ namespace iba.Processing
             return summary?.Errors;
         }
 
-        // Deprecated do not use. No support for multiple events and multiple stores per task.
-        public void WriteEvents(EventWriterData eventData)
+        public string Test(string datFile)
+        {
+            string error = "";
+            try
+            {
+
+                bool ok = true;
+                if (string.IsNullOrEmpty(datFile) || !File.Exists(datFile))
+                {
+                    error = Properties.Resources.logHDEventTaskDATError;
+                    ok = false;
+                }
+
+                if (ok)
+                    GenerateEvents(null, datFile);
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+            }
+            return error;
+        }
+
+// Deprecated do not use. No support for multiple events and multiple stores per task.
+public void WriteEvents(EventWriterData eventData)
         {
             // Write events
             IHdWriterManager writerManager = null;

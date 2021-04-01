@@ -1147,6 +1147,12 @@ namespace iba.Processing
             return SharesHandler.TestPath(dir, user, pass, out errormessage, createnew, testWrite);
         }
 
+        virtual public string TestOfflineEventTaskDatFile(string datFile, HDCreateEventTaskData data)
+        {
+            HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(data, null);
+            return worker.Test(datFile);
+        }
+
         //singleton construction
         private static TaskManager theTaskManager = null;
         //theTaskmanager has a triple purpose
@@ -2357,6 +2363,20 @@ namespace iba.Processing
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 errormessage = iba.Properties.Resources.CouldNotTestPath;
                 return false;
+            }
+        }
+
+        public override string TestOfflineEventTaskDatFile(string datFile, HDCreateEventTaskData m_data)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.TestOfflineEventTaskDatFile(datFile, m_data);
+            }
+            catch (Exception ex)
+            {
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+                ibaLogger.Log(Level.Debug, ex.Message);
+                return Properties.Resources.Failure;
             }
         }
 
