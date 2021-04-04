@@ -177,7 +177,7 @@ namespace S7_writer_plugin
                 //start the com object
                 try
                 {
-                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                    ibaAnalyzer = m_datcoHost.CreateIbaAnalyzer();
                 }
                 catch(Exception ex2)
                 {
@@ -274,9 +274,7 @@ namespace S7_writer_plugin
             {
                 if(ibaAnalyzer != null && bUseAnalysis)
                 {
-                    ibaAnalyzer.CloseAnalysis();
-                    ibaAnalyzer.CloseDataFiles();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+                    (ibaAnalyzer as IDisposable)>.Dispose();
                 }
             }
             dataGV.RefreshData();

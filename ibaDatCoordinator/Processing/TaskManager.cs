@@ -1147,11 +1147,11 @@ namespace iba.Processing
             return SharesHandler.TestPath(dir, user, pass, out errormessage, createnew, testWrite);
         }
 
-        virtual public string TestOfflineEventTaskDatFile(string datFile, HDCreateEventTaskData data)
-        {
-            HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(data, null);
-            return worker.Test(datFile);
-        }
+        //virtual public string TestOfflineEventTaskDatFile(string datFile, HDCreateEventTaskData data)
+        //{
+        //    HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(data, null);
+        //    return worker.Test(datFile);
+        //}
 
         //singleton construction
         private static TaskManager theTaskManager = null;

@@ -9,6 +9,8 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using iba.Controls;
 using iba.Data;
+using IbaAnalyzer;
+using iba.Remoting;
 
 namespace iba.Utility
 {
@@ -345,5 +347,10 @@ namespace iba.Utility
 			else
 				return null;
         }
-	}
+
+        public IbaAnalyzer.IbaAnalyzer CreateIbaAnalyzer()
+        {
+            return new ibaAnalyzerExt();
+        }
+    }
 }

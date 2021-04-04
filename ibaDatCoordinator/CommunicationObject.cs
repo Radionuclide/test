@@ -11,6 +11,7 @@ using System.Runtime.Remoting.Lifetime;
 using iba.Dialogs;
 using System.Threading;
 using Belikov.GenuineChannels.Security;
+using IbaAnalyzer;
 
 /**
  * Description: class used to communicate with the service
@@ -334,15 +335,17 @@ namespace iba
             return new PdaServerFiles();
         }
 
-        internal float TestCondition(string expression, int index, string pdo, string datfile, string pass, out string errorMessage)
-        {
-            return iba.Controls.IfTaskControl.TestCondition(expression, index, pdo, datfile, pass, out errorMessage);
-        }
+        //internal float TestCondition(string expression, int index, string pdo, string datfile, string pass, out string errorMessage)
+        //{
+        //    return iba.Controls.IfTaskControl.TestCondition(expression, index, pdo, datfile, pass, out errorMessage);
+        //}
 
-        internal float TestConditionHD(string expression, int index, string pdo, string hdqfile, string user, string pass, out string errorMessage)
-        {
-            return iba.Controls.IfTaskControl.TestConditionHD(expression, index, pdo, hdqfile, user, pass, out errorMessage);
-        }
+        //internal float TestConditionHD(string expression, int index, string pdo, string hdqfile, string user, string pass, out string errorMessage)
+        //{
+        //    return iba.Controls.IfTaskControl.TestConditionHD(expression, index, pdo, hdqfile, user, pass, out errorMessage);
+        //}
+
+        
 
         public bool FileExists(string file)
         {
@@ -429,6 +432,11 @@ namespace iba
                 Logging.ibaLogger.LogFormat(Logging.Level.Exception, "CommunicationObject GetFileInfos: {0}", ex.Message);
                 return new ServerFileInfo[0];
             }
+        }
+
+        public ibaAnalyzerExt GetRemoteIbaAnalyzer(bool noninteractive)
+        {
+            return new ibaAnalyzerExt(null, noninteractive); //marshalbyref version...
         }
     }
 
@@ -824,33 +832,33 @@ namespace iba
             }
         }
 
-        internal float TestCondition(string expression, int index, string pdo, string datfile, string pass, out string errorMessage)
-        {
-            try
-            {
-                return m_com.TestCondition(expression,index,pdo,datfile, pass, out errorMessage);
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-                errorMessage = iba.Properties.Resources.connectionLost;
-                return float.NaN;
-            }
-        }
+        //internal float TestCondition(string expression, int index, string pdo, string datfile, string pass, out string errorMessage)
+        //{
+        //    try
+        //    {
+        //        return m_com.TestCondition(expression,index,pdo,datfile, pass, out errorMessage);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleBrokenConnection(ex);
+        //        errorMessage = iba.Properties.Resources.connectionLost;
+        //        return float.NaN;
+        //    }
+        //}
 
-        internal float TestConditionHD(string expression, int index, string pdo, string hdqFile, string user, string pass, out string errorMessage)
-        {
-            try
-            {
-                return m_com.TestConditionHD(expression, index, pdo, hdqFile, user, pass, out errorMessage);
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-                errorMessage = iba.Properties.Resources.connectionLost;
-                return float.NaN;
-            }
-        }
+        //internal float TestConditionHD(string expression, int index, string pdo, string hdqFile, string user, string pass, out string errorMessage)
+        //{
+        //    try
+        //    {
+        //        return m_com.TestConditionHD(expression, index, pdo, hdqFile, user, pass, out errorMessage);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        HandleBrokenConnection(ex);
+        //        errorMessage = iba.Properties.Resources.connectionLost;
+        //        return float.NaN;
+        //    }
+        //}
 
 
         public bool FileExists(string file)
@@ -928,5 +936,17 @@ namespace iba
             }
         }
 
+        public Remoting.ibaAnalyzerExt GetRemoteIbaAnalyzer(bool noninteractive = true)
+        {
+            try
+            {
+                return m_com.GetRemoteIbaAnalyzer(noninteractive);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
     }
 }

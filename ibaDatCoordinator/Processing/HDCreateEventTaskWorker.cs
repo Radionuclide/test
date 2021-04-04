@@ -3,6 +3,7 @@ using iba.HD.Client;
 using iba.HD.Client.Interfaces;
 using iba.HD.Common;
 using iba.ibaFilesLiteDotNet;
+using iba.Remoting;
 using iba.Utility;
 using Microsoft.Win32;
 using System;
@@ -22,7 +23,7 @@ namespace iba.Processing
 
         HDCreateEventTaskData m_data;
 
-        IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer;
+        ibaAnalyzerExt m_ibaAnalyzer;
         IHdWriterManager writerManager = null;
         IHdWriter writer = null;
         IEnumerable<HdWriterConfig> cfgs = null;
@@ -310,7 +311,7 @@ namespace iba.Processing
 
         public Dictionary<string, EventWriterData> GenerateEvents(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, string dataFile)
         {
-            m_ibaAnalyzer = ibaAnalyzer;
+            m_ibaAnalyzer = (ibaAnalyzer as ibaAnalyzerExt)??(new ibaAnalyzerExt());
             m_dataFile = dataFile;
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
@@ -350,7 +351,7 @@ namespace iba.Processing
                         throw new HDCreateEventException(Properties.Resources.logHDEventTaskDATError);
 
                     bDisposeAnalyzer = true;
-                    m_ibaAnalyzer = new ibaAnalyzerWrapper(new IbaAnalyzer.IbaAnalysisNonInteractive());
+                    m_ibaAnalyzer = ibaAnalyzerExt.Create();
 
                     if (Path.GetExtension(m_data.DatFile)==".hdq")
                     {

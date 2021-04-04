@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using iba.Data;
+using iba.Remoting;
+
 namespace iba.Processing
 {
     class IbaAnalyzerCollection : FifoSemaphore
@@ -80,7 +82,7 @@ namespace iba.Processing
                     }
                     else
                     {
-                        ibaAnalyzer = new ibaAnalyzerWrapper(ibaAnalyzer);
+                        ibaAnalyzer = new ibaAnalyzerExt(ibaAnalyzer);
                         if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
                             ibaAnalyzer.SetFilePassword("", cd.FileEncryptionPassword);
                         TrySetHDCredentials(ibaAnalyzer, cd);
@@ -158,9 +160,9 @@ namespace iba.Processing
                 {
                 }
 
-                ibaAnalyzerWrapper wrapper = ibaAnalyzer as ibaAnalyzerWrapper;
+                ibaAnalyzerExt wrapper = ibaAnalyzer as ibaAnalyzerExt;
                 if (wrapper != null)
-                    wrapper.Release();
+                    wrapper.Dispose();
                 else
                 {
                     System.Diagnostics.Debug.Assert(false, "We should be only handling ibaAnalyzer wrappers.");
@@ -196,7 +198,7 @@ namespace iba.Processing
             }
             else
             {
-                ibaAnalyzer = new ibaAnalyzerWrapper(newIbaAnalyzer);
+                ibaAnalyzer = new ibaAnalyzerExt(newIbaAnalyzer);
                 if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
                     ibaAnalyzer.SetFilePassword("", cd.FileEncryptionPassword);
                 TrySetHDCredentials(ibaAnalyzer, cd);

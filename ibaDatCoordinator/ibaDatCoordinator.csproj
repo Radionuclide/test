@@ -309,7 +309,6 @@
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaVariable.cs" />
     <Compile Include="Processing\HDCreateEventTaskWorker.cs" />
     <Compile Include="Processing\HDEventMonitor.cs" />
-    <Compile Include="Processing\ibaAnalyzerWrapper.cs" />
     <Compile Include="Processing\OpcUaWorker.cs" />
     <Compile Include="Processing\SnmpWorker.cs" />
     <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
@@ -325,6 +324,7 @@
     </Compile>
     <Compile Include="Remoting\ClientRemotingManager.cs" />
     <Compile Include="Remoting\FileDownloaderImpl.cs" />
+    <Compile Include="Remoting\ibaAnalyzerExt.cs" />
     <Compile Include="Remoting\RemoteFileLoader.cs" />
     <Compile Include="Remoting\FilesDownloaderForm.cs">
       <SubType>Form</SubType>

@@ -155,11 +155,11 @@ namespace iba.Controls
 
         private void m_testButton_Click(object sender, EventArgs e)
         {
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-            {
-                MessageBox.Show(String.Format(iba.Properties.Resources.ServiceRemoteSplitterNotSupported,Program.ServiceHost), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            //if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+            //{
+            //    MessageBox.Show(String.Format(iba.Properties.Resources.ServiceRemoteSplitterNotSupported,Program.ServiceHost), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
             SaveData();
             TestSplitterTaskDialog dlg = new TestSplitterTaskDialog(m_data);
             if (!dlg.IsDisposed)

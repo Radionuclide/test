@@ -6,6 +6,7 @@ using iba.Data;
 using iba.ibaFilesLiteDotNet;
 using System.IO;
 using iba.Utility;
+using iba.Remoting;
 
 namespace iba.Processing
 {
@@ -68,7 +69,7 @@ namespace iba.Processing
                 {
                     if (m_ibaAnalyzer == null)
                     {
-                        m_ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                        m_ibaAnalyzer = ibaAnalyzerExt.Create();
                         deleteIt = true;
                     }
                     DateTime dt = new DateTime();

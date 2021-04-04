@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using iba.Data;
+using IbaAnalyzer;
 
 namespace iba.Plugins
 {
@@ -83,5 +84,11 @@ namespace iba.Plugins
         /// </typeparam>
         /// <returns>The service instance or null.</returns>
         T GetService<T>() where T : class;
+
+        /// <summary>
+        /// creates an ibaAnalyzer, possible remote
+        /// </summary>
+        /// <returns>ibaAnalyzer</returns>
+        IbaAnalyzer.IbaAnalyzer CreateIbaAnalyzer();
     }
 }

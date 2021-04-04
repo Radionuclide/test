@@ -12,6 +12,7 @@ using iba.Utility;
 using iba.Data;
 using iba.Processing;
 using Microsoft.Win32;
+using iba.Remoting;
 
 namespace iba.Controls
 {
@@ -173,20 +174,17 @@ namespace iba.Controls
                         }
                     }
                 }
-
-                if (doHD)
+                try
                 {
-                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                        f = Program.CommunicationObject.TestConditionHD(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, user, pass, out errorMessage);
-                    else
+                    if (doHD)
                         f = TestConditionHD(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, user, pass, out errorMessage);
-                }
-                else
-                {
-                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                        f = Program.CommunicationObject.TestCondition(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
                     else
                         f = TestCondition(channelTreeEdit.Text, m_XTypeComboBox.SelectedIndex, m_pdoFileTextBox.Text, m_datFileTextBox.Text, pass, out errorMessage);
+                }
+                catch (Exception ex)
+                {
+                    f = float.NaN;
+                    errorMessage = ex.Message;
                 }
             }
             if (float.IsNaN(f) || float.IsInfinity(f))
@@ -204,12 +202,12 @@ namespace iba.Controls
 
         static internal float TestConditionHD(string expression, int index, string pdo, string datfile, string user, string passwd, out string errorMessage)
         {
-            IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
+            ibaAnalyzerExt ibaAnalyzer = null;
             //register this
             //start the com object
             try
             {
-                ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                ibaAnalyzer = ibaAnalyzerExt.Create();
             }
             catch (Exception ex2)
             {
@@ -239,9 +237,7 @@ namespace iba.Controls
             {
                 if (ibaAnalyzer != null)
                 {
-                    if (bUseAnalysis) ibaAnalyzer.CloseAnalysis();
-                    ibaAnalyzer.CloseDataFiles();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+                    ibaAnalyzer.Dispose();
                 }
             }
             errorMessage = (float.IsNaN(f) || float.IsInfinity(f)) ? iba.Properties.Resources.IfTestBadEvaluation : "";

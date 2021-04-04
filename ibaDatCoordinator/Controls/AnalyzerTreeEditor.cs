@@ -9,6 +9,7 @@ using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraEditors.ViewInfo;
 using iba.HD.Client.Interfaces;
 using iba.Plugins;
+using iba.Remoting;
 using iba.Utility;
 using Microsoft.Win32;
 using System;
@@ -28,7 +29,7 @@ namespace iba.Controls
 	{
         #region Members
         object lockAnalyzer;
-        public IbaAnalyzer.IbaAnalyzer Analyzer { get; private set; }
+        public ibaAnalyzerExt Analyzer { get; private set; }
 
         bool bFilesOpened;
         public bool IsOpened => bFilesOpened;
@@ -60,8 +61,7 @@ namespace iba.Controls
                 {
                     if (Analyzer != null)
                     {
-                        UnsafeClose();
-                        Marshal.ReleaseComObject(Analyzer);
+                        Analyzer.Dispose();
                         Analyzer = null;
                     }
                 }
@@ -84,14 +84,13 @@ namespace iba.Controls
                 {
                     if (Analyzer == null)
                     {
-                        RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                        object o = key.GetValue("");
-                        string ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-
-                        if (!VersionCheck.CheckVersion(ibaAnalyzerExe, "7.1.0"))
+                        Analyzer = ibaAnalyzerExt.Create(false); //noninteractive = false because of signal tree images...
+                        if (!Analyzer.CheckVersion("7.1.0"))
+                        {
+                            Analyzer.Dispose();
+                            Analyzer = null;
                             throw new Exception(string.Format(Properties.Resources.logAnalyzerVersionError, "7.1.0"));
-
-                        Analyzer = new IbaAnalyzer.IbaAnalysis(); //TODO eventually replace by NonInteractive when tree images are supported
+                        }
                     }
 
 					FileInfo info;
@@ -652,10 +651,9 @@ namespace iba.Controls
             {
                 ReleaseSignalNodes(node.Nodes);
 
-                if (node.Tag is IbaAnalyzer.ISignalTreeNode sigNode)
+                if (node.Tag is IDisposable)
                 {
-                    node.Tag = null;
-                    Marshal.ReleaseComObject(sigNode);
+                    (node.Tag as IDisposable).Dispose();
                 }
             }
         }
@@ -704,16 +702,17 @@ namespace iba.Controls
             {
                 try
                 {
-                    object treeObj = manager.Analyzer.GetSignalTree((int)filter);
-                    analyzerTree = treeObj as IbaAnalyzer.ISignalTree;
-                    object nodeObj = analyzerTree.GetRootNode();
-                    IbaAnalyzer.ISignalTreeNode node = nodeObj as IbaAnalyzer.ISignalTreeNode;
-                    if (node != null)
+                    using (AnalyzerSignalTreeExt analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as AnalyzerSignalTreeExt)
                     {
-                        Node trnode = new Node(node.Text, node.ImageIndex);
-                        trnode.Tag = node;
-                        tree.Nodes.Add(trnode);
-                        RecursiveAdd(trnode);
+                        object nodeObj = analyzerTree.GetRootNode();
+                        IbaAnalyzer.ISignalTreeNode node = nodeObj as IbaAnalyzer.ISignalTreeNode;
+                        if (node != null)
+                        {
+                            Node trnode = new Node(node.Text, node.ImageIndex);
+                            trnode.Tag = node;
+                            tree.Nodes.Add(trnode);
+                            RecursiveAdd(trnode);
+                        }
                     }
                     tree.ImageList = imageList;
                     Invalidate();

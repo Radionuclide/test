@@ -160,7 +160,7 @@ namespace AM_OSPC_plugin
                 //start the com object
                 try
                 {
-                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                    ibaAnalyzer = m_datcoHost.CreateIbaAnalyzer();
                 }
                 catch(Exception ex2)
                 {
@@ -254,9 +254,7 @@ namespace AM_OSPC_plugin
             {
                 if(ibaAnalyzer != null && bUseAnalysis)
                 {
-                    ibaAnalyzer.CloseAnalysis();
-                    ibaAnalyzer.CloseDataFiles();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+                    (ibaAnalyzer as IDisposable)?.Dispose();
                 }
             }
         }
