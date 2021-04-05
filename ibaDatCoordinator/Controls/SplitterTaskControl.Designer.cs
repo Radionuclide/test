@@ -122,7 +122,8 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_pdoFileTextBox, "m_pdoFileTextBox");
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-            this.m_pdoFileTextBox.Leave += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
+            this.m_pdoFileTextBox.Enter += new System.EventHandler(this.m_pdoFileTextBox_TextEnter);
+            this.m_pdoFileTextBox.Leave += new System.EventHandler(this.m_pdoFileTextBox_TextLeave);
             // 
             // m_browsePDOFileButton
             // 
@@ -177,7 +178,7 @@ namespace iba.Controls
             resources.ApplyResources(this.m_tbPwdDAT, "m_tbPwdDAT");
             this.m_tbPwdDAT.Name = "m_tbPwdDAT";
             this.m_tbPwdDAT.UseSystemPasswordChar = true;
-            this.m_tbPwdDAT.Leave += new System.EventHandler(this.m_datFileTextBox_TextChanged);
+            this.m_tbPwdDAT.Leave += new System.EventHandler(this.m_datFileTextBox_TextLeave);
             // 
             // label7
             // 
@@ -200,7 +201,8 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_datFileTextBox, "m_datFileTextBox");
             this.m_datFileTextBox.Name = "m_datFileTextBox";
-            this.m_datFileTextBox.Leave += new System.EventHandler(this.m_datFileTextBox_TextChanged);
+            this.m_datFileTextBox.Enter += new System.EventHandler(this.m_datFileTextBox_TextEnter);
+            this.m_datFileTextBox.Leave += new System.EventHandler(this.m_datFileTextBox_TextLeave);
             // 
             // m_browseDatFileButton
             // 

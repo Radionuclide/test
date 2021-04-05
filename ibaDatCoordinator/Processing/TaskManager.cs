@@ -2366,19 +2366,19 @@ namespace iba.Processing
             }
         }
 
-        public override string TestOfflineEventTaskDatFile(string datFile, HDCreateEventTaskData m_data)
-        {
-            try
-            {
-                return Program.CommunicationObject.Manager.TestOfflineEventTaskDatFile(datFile, m_data);
-            }
-            catch (Exception ex)
-            {
-                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
-                ibaLogger.Log(Level.Debug, ex.Message);
-                return Properties.Resources.Failure;
-            }
-        }
+        //public override string TestOfflineEventTaskDatFile(string datFile, HDCreateEventTaskData m_data)
+        //{
+        //    try
+        //    {
+        //        return Program.CommunicationObject.Manager.TestOfflineEventTaskDatFile(datFile, m_data);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+        //        ibaLogger.Log(Level.Debug, ex.Message);
+        //        return Properties.Resources.Failure;
+        //    }
+        //}
 
         public override bool DoPostponeProcessing
         {

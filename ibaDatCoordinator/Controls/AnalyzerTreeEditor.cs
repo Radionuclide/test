@@ -259,7 +259,7 @@ namespace iba.Controls
 
         protected Crownwood.DotNetMagic.Controls.TreeControl tree;
 
-        IbaAnalyzer.ISignalTree analyzerTree;
+        AnalyzerSignalTreeExt analyzerTree;
 
         public event Action<AnalyzerTreeControl, string> AfterSelect;
         public event Action<AnalyzerTreeControl, string> CustomDoubleClick;
@@ -556,7 +556,7 @@ namespace iba.Controls
             }
 
             if (analyzerTree != null)
-                Marshal.ReleaseComObject(analyzerTree);
+                analyzerTree.Dispose();
             analyzerTree = null;
             customTreeNodes.Clear();
             pendingSelection = "";
@@ -613,6 +613,7 @@ namespace iba.Controls
             return null;
         }
 
+        byte[] cachedImageBytes;
         unsafe void FillImageList()
         {
             if (manager.Analyzer == null)
@@ -621,8 +622,17 @@ namespace iba.Controls
             for (int i = 0; i < cnt; i++)
             {
                 object myArrayObject = null;
-                manager.Analyzer.SignalTreeImageData(i, out myArrayObject);
-                byte[] thearray = myArrayObject as byte[];
+                byte[] thearray;
+                if (cachedImageBytes != null)
+                {
+                    thearray = cachedImageBytes;
+                }
+                else
+                {
+                    manager.Analyzer.SignalTreeImageData(i, out myArrayObject);
+                    thearray = myArrayObject as byte[];
+                    cachedImageBytes = thearray;
+                }
                 fixed (byte* p = thearray)
                 {
                     IntPtr ptr = (IntPtr)p;
@@ -702,8 +712,9 @@ namespace iba.Controls
             {
                 try
                 {
-                    using (AnalyzerSignalTreeExt analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as AnalyzerSignalTreeExt)
-                    {
+                    analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as AnalyzerSignalTreeExt;
+                    //using (AnalyzerSignalTreeExt analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as AnalyzerSignalTreeExt)
+                    //{
                         object nodeObj = analyzerTree.GetRootNode();
                         IbaAnalyzer.ISignalTreeNode node = nodeObj as IbaAnalyzer.ISignalTreeNode;
                         if (node != null)
@@ -713,7 +724,7 @@ namespace iba.Controls
                             tree.Nodes.Add(trnode);
                             RecursiveAdd(trnode);
                         }
-                    }
+                    //}
                     tree.ImageList = imageList;
                     Invalidate();
                     OnInvalidated(null);
@@ -723,7 +734,9 @@ namespace iba.Controls
                 {
                     error = ex.Message;
                     if (analyzerTree != null)
-                        Marshal.ReleaseComObject(analyzerTree);
+                    {
+                        analyzerTree.Dispose();
+                    }
                     analyzerTree = null;
                     ClearNodes();
                 }

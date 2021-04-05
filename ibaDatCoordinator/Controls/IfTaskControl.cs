@@ -51,8 +51,8 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as IfTaskData;
 			channelTreeEdit.EditValue = m_data.Expression;
-            m_pdoFileTextBox.Text = m_data.AnalysisFile;
-            m_datFileTextBox.Text = m_data.TestDatFile;
+            oldPdo = m_pdoFileTextBox.Text = m_data.AnalysisFile;
+            oldDat = m_datFileTextBox.Text = m_data.TestDatFile;
             m_tbPwdDAT.Text = m_data.DatFilePassword;
 
             try
@@ -245,17 +245,28 @@ namespace iba.Controls
 
         }
 
-
-        private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
+        private string oldPdo;
+        private void m_pdoFileTextBox_TextLeave(object sender, EventArgs e)
         {
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+            string newPdo = m_pdoFileTextBox.Text;
+            if (newPdo != oldPdo)
+            {
+                oldPdo = newPdo;
+                channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+            }
         }
 
-        private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+        private string oldDat;
+        private void m_datFileTextBox_TextLeave(object sender, EventArgs e)
 		{
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
-			m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
-                File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
+            string newDat = m_datFileTextBox.Text;
+            if (oldDat != newDat)
+            {
+                oldDat = newDat;
+                channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+                //m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
+                //    File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
+            }
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
@@ -267,6 +278,16 @@ namespace iba.Controls
         private void m_btTakeParentPass_Click(object sender, EventArgs e)
         {
             m_tbPwdDAT.Text = m_data.ParentConfigurationData.FileEncryptionPassword;
+        }
+
+        private void m_pdoFileTextBox_TextEnter(object sender, EventArgs e)
+        {
+            oldPdo = m_pdoFileTextBox.Text;
+        }
+
+        private void m_datFileTextBox_TextEnter(object sender, EventArgs e)
+        {
+            oldDat = m_datFileTextBox.Text;
         }
     }
 }

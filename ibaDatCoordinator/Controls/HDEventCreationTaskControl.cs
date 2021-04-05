@@ -424,8 +424,8 @@ namespace iba.Controls
 
         public void SaveData()
         {
-            m_data.AnalysisFile = m_tbPDO.Text;
-            m_data.DatFileHost = Environment.MachineName;
+            oldPdo = m_data.AnalysisFile = m_tbPDO.Text;
+            oldDat = m_data.DatFileHost = Environment.MachineName;
             m_data.DatFile = m_tbDAT.Text;
             m_data.DatFilePassword = m_tbPwdDAT.Text;
             m_data.Server = m_ctrlServer.Server;
@@ -625,23 +625,45 @@ namespace iba.Controls
 			loadAnalyzerTreeDataTask();
 		}
 
-		private void DatTextChanged(object sender, EventArgs e)
+        string oldDat = "";
+        private void DatTextEntered(object sender, EventArgs e)
         {
-            UpdateSources();
-            loadAnalyzerTreeDataTask();
+            oldDat = m_tbDAT.Text;
         }
 
-        private void PDOTextChanged(object sender, EventArgs e)
+        private void DatTextLeave(object sender, EventArgs e)
         {
-            UpdateSources();
-            loadAnalyzerTreeDataTask();
+            string newDat = m_tbDAT.Text;
+            if (newDat != oldDat)
+            {
+                UpdateSources();
+                loadAnalyzerTreeDataTask();
+            }
+        }
+
+        string oldPdo = "";
+        private void PDOTextEntered(object sender, EventArgs e)
+        {
+            oldPdo = m_tbPDO.Text;
+        }
+
+        private void PDOTextLeave(object sender, EventArgs e)
+        {
+            string newPdo = m_tbPDO.Text;
+            if (newPdo != oldPdo)
+            {
+                UpdateSources();
+                loadAnalyzerTreeDataTask();
+            }
         }
 
         private void m_btTakeParentPass_Click(object sender, EventArgs e)
         {
             m_tbPwdDAT.Text = m_data.ParentConfigurationData.FileEncryptionPassword;
-            DatTextChanged(null, null);
+            DatTextLeave(null, null);
         }
+
+
 
         private void m_btnUploadPDO_Click(object sender, EventArgs e)
         {

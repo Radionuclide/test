@@ -52,8 +52,8 @@ namespace iba.Controls
             m_data = datasource as SplitterTaskData;
 			channelTreeEdit.EditValue = m_data.Expression;
 			m_splitTypeCBox.SelectedIndex = (int)m_data.EdgeConditionType;
-            m_pdoFileTextBox.Text = m_data.AnalysisFile;
-            m_datFileTextBox.Text = m_data.TestDatFile;
+            oldPdo = m_pdoFileTextBox.Text = m_data.AnalysisFile;
+            oldDat = m_datFileTextBox.Text = m_data.TestDatFile;
 
             m_datFileTextBox.Text = m_data.TestDatFile;
             m_tbPwdDAT.Text = m_data.DatFilePassword;
@@ -166,14 +166,21 @@ namespace iba.Controls
                 dlg.ShowDialog();
         }
 
-		private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+
+        string oldDat;
+        private void m_datFileTextBox_TextEnter(object sender, EventArgs e)
         {
-            UpdateSources(); 
-			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                m_testButton.Enabled = true; //we'll give a warning when not allowed ...
-            else
-                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
-                    File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
+            oldDat = m_datFileTextBox.Text;
+        }
+
+        private void m_datFileTextBox_TextLeave(object sender, EventArgs e)
+        {
+            string newDat = m_datFileTextBox.Text
+            if (oldDat != newDat)
+            {
+                UpdateSources();
+                oldDat = newDat;
+            }
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
@@ -182,9 +189,20 @@ namespace iba.Controls
             UpdateSources();
         }
 
-		private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
+        string oldPdo;
+        private void m_pdoFileTextBox_TextEnter(object sender, EventArgs e)
+        {
+            oldPdo = m_pdoFileTextBox.Text;
+        }
+
+        private void m_pdoFileTextBox_TextLeave(object sender, EventArgs e)
 		{
-            UpdateSources();
+            string newPdo = m_pdoFileTextBox.Text;
+            if (newPdo != oldPdo)
+            {
+                UpdateSources();
+                oldPdo = newPdo;
+            }
 		}
 
         private void UpdateSources()
@@ -195,7 +213,9 @@ namespace iba.Controls
         private void m_btTakeParentPass_Click(object sender, EventArgs e)
         {
             m_tbPwdDAT.Text = m_data.ParentConfigurationData.FileEncryptionPassword;
-            m_datFileTextBox_TextChanged(null, null);
+            m_datFileTextBox_TextLeave(null, null);
         }
+
+
     }
 }

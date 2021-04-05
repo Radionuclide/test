@@ -280,15 +280,37 @@ namespace S7_writer_plugin
             dataGV.RefreshData();
         }
 
-        private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
+        private string oldPdo;
+        private void m_pdoFileTextBox_TextEnter(object sender, EventArgs e)
         {
-            UpdateSource();
+            oldPdo = m_pdoFileTextBox.Text;
+        }
+        private void m_pdoFileTextBox_TextLeave(object sender, EventArgs e)
+        {
+            string newPdo = m_pdoFileTextBox.Text;
+            if (newPdo != oldPdo)
+            {
+                oldPdo = newPdo;
+                UpdateSource();
+            }
         }
 
-        private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+
+        private string oldDat;
+        private void m_datFileTextBox_TextEnter(object sender, EventArgs e)
         {
-            UpdateSource();
+            oldDat= m_datFileTextBox.Text;
+        }
+
+        private void m_datFileTextBox_TextLeave(object sender, EventArgs e)
+        {
+            string newDat = m_datFileTextBox.Text;
+            if (newDat != oldDat)
+            {
+                UpdateSource();
+            }
 		}
+
 		private void buttonEndpointAdd_Click(object sender, EventArgs e)
 		{
 			var view = dataGrid.MainView as GridView;
@@ -345,7 +367,7 @@ namespace S7_writer_plugin
         private void m_btTakeParentPass_Click(object sender, EventArgs e)
         {
             m_tbPwdDAT.Text = m_data.m_parentJob.FileEncryptionPassword;
-            m_datFileTextBox_TextChanged(null, null);
+            m_datFileTextBox_TextLeave(null, null);
         }
     }
 

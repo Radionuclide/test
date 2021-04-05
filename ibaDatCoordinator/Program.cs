@@ -184,9 +184,8 @@ namespace iba
         {
             get
             {
-               // //#if DEBUG
-                            //  return false;
-             //   #else
+                if (Program.RunsWithService == ServiceEnum.NOSERVICE)
+                    return false;
                 try
                 { // get host IP addresses
                     IPAddress[] hostIPs = Dns.GetHostAddresses(ServiceHost);
@@ -211,10 +210,6 @@ namespace iba
                 }
                 catch { }
                 return false;
-
-                //string serviceHost = ServiceHost;
-                //return serviceHost == "localhost" || serviceHost.ToLower() == System.Net.Dns.GetHostName().ToLower() ;
-//#endif
             }
         }
     }

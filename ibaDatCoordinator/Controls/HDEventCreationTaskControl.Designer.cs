@@ -15,8 +15,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HDEventCreationTaskControl));
-            this.m_toolTip = new System.Windows.Forms.ToolTip();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbDataSource = new iba.Utility.CollapsibleGroupBox();
             this.m_btTakeParentPass = new System.Windows.Forms.Button();
             this.m_btnTest = new System.Windows.Forms.Button();
@@ -129,13 +130,15 @@
             // 
             resources.ApplyResources(this.m_tbDAT, "m_tbDAT");
             this.m_tbDAT.Name = "m_tbDAT";
-            this.m_tbDAT.Leave += new System.EventHandler(this.DatTextChanged);
+            this.m_tbDAT.Enter += new System.EventHandler(this.DatTextEntered);
+            this.m_tbDAT.Leave += new System.EventHandler(this.DatTextLeave);
             // 
             // m_tbPDO
             // 
             resources.ApplyResources(this.m_tbPDO, "m_tbPDO");
             this.m_tbPDO.Name = "m_tbPDO";
-            this.m_tbPDO.Leave += new System.EventHandler(this.PDOTextChanged);
+            this.m_tbPDO.Enter += new System.EventHandler(this.PDOTextEntered);
+            this.m_tbPDO.Leave += new System.EventHandler(this.PDOTextLeave);
             // 
             // label3
             // 

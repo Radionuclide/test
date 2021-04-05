@@ -66,8 +66,8 @@ namespace AM_OSPC_plugin
             }
             m_data = datasource as OSPCTaskData; //we'll assume its never null
             m_control = parentcontrol;
-            m_datFileTextBox.Text = m_data.TestDatFile;
-            m_pdoFileTextBox.Text = m_data.AnalysisFile;
+            oldDat = m_datFileTextBox.Text = m_data.TestDatFile;
+            oldPdo = m_pdoFileTextBox.Text = m_data.AnalysisFile;
             dataGrid.DataSource = m_data.Records.ToList();
 
 			m_channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -289,14 +289,37 @@ namespace AM_OSPC_plugin
             e.Graphics.DrawString(strRowNumber, this.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));   
         }
 
-		private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
-		{
-			UpdateSources();
+
+        string oldPdo;
+        private void m_pdoFileTextBox_TextEnter(object sender, EventArgs e)
+        {
+            oldPdo = m_pdoFileTextBox.Text;
+        }
+
+        private void m_pdoFileTextBox_TextLeave(object sender, EventArgs e)
+        {
+            string newPdo = m_pdoFileTextBox.Text;
+            if (oldPdo != newPdo)
+            {
+                oldPdo = newPdo;
+                UpdateSources();
+            }
 		}
 
-        private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+        string oldDat;
+        private void m_datFileTextBox_TextEnter(object sender, EventArgs e)
         {
-            UpdateSources();
+            oldDat = m_datFileTextBox.Text;
+        }
+
+        private void m_datFileTextBox_TextLeave(object sender, EventArgs e)
+        {
+            string newDat = m_datFileTextBox.Text;
+            if (oldDat != newDat)
+            {
+                UpdateSources();
+                oldDat = newDat;
+            }
         }
 
         private void UpdateSources()
@@ -319,10 +342,11 @@ namespace AM_OSPC_plugin
         private void m_btTakeParentPass_Click(object sender, EventArgs e)
         {
             m_tbPwdDAT.Text = m_data.m_parentJob.FileEncryptionPassword;
-            m_datFileTextBox_TextChanged(null, null);
+            m_datFileTextBox_TextLeave(null, null);
         }
 
-   }
+
+    }
 
     /// </summary>
     internal class WindowsAPI

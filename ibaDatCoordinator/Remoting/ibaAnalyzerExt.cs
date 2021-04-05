@@ -301,7 +301,7 @@ namespace iba.Remoting
 
         public static ibaAnalyzerExt Create(bool noninteractive = false) //factory method
         {
-            if (!Program.IsServer && !Program.ServiceIsLocal && Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            if (!Program.IsServer && Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
                 return Program.CommunicationObject.GetRemoteIbaAnalyzer(noninteractive);
             else
                 return new ibaAnalyzerExt(null, noninteractive);
@@ -519,12 +519,16 @@ namespace iba.Remoting
 
         public dynamic GetRootNode()
         {
-            return new AnalyzerSignalTreeNodeExt(tree.GetRootNode());
+            object root = tree.GetRootNode();
+            if (root == null) return null;
+            return new AnalyzerSignalTreeNodeExt(root as IbaAnalyzer.ISignalTreeNode);
         }
 
         public dynamic FindNodeWithID(string channelId)
         {
-            return new AnalyzerSignalTreeNodeExt(tree.FindNodeWithID(channelId));
+            object node = tree.FindNodeWithID(channelId);
+            if (node == null) return null;
+            return new AnalyzerSignalTreeNodeExt(node as IbaAnalyzer.ISignalTreeNode);
         }
 
         #region IDisposable Support
@@ -579,17 +583,23 @@ namespace iba.Remoting
 
         public dynamic GetFirstChildNode()
         {
-            return new AnalyzerSignalTreeNodeExt(this.node.GetFirstChildNode());
+            object newnode = this.node.GetFirstChildNode();
+            if (newnode == null) return null;
+            return new AnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
         }
 
         public dynamic GetSiblingNode()
         {
-            return new AnalyzerSignalTreeNodeExt(this.node.GetSiblingNode());
+            object newnode = this.node.GetSiblingNode();
+            if (newnode == null) return null;
+            return new AnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
         }
 
         public dynamic GetParentNode()
         {
-            return new AnalyzerSignalTreeNodeExt(this.node.GetParentNode());
+            object newnode = this.node.GetParentNode();
+            if (newnode == null) return null;
+            return new AnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
         }
 
         public void Expand()
