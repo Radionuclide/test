@@ -3288,10 +3288,13 @@ namespace iba
 
         public void OnExternalActivate()
         {
-            Show();
-            Activate();
-            WindowState = FormWindowState.Normal;
-            FormStateSerializer.LoadSettings(this, "MainForm", true);
+            if (!IsDisposed)
+            {
+                Show();
+                Activate();
+                WindowState = FormWindowState.Normal;
+                FormStateSerializer.LoadSettings(this, "MainForm", true);
+            }
         }
 
         public void OnExternalClose()

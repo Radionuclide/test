@@ -100,7 +100,7 @@ namespace iba.Remoting
             return newFiles;
         }
 
-        internal bool CheckVersion(string v)
+        public bool CheckVersion(string v)
         {
             RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
             object o = key.GetValue("");
