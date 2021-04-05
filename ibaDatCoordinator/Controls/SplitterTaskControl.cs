@@ -175,7 +175,7 @@ namespace iba.Controls
 
         private void m_datFileTextBox_TextLeave(object sender, EventArgs e)
         {
-            string newDat = m_datFileTextBox.Text
+            string newDat = m_datFileTextBox.Text;
             if (oldDat != newDat)
             {
                 UpdateSources();

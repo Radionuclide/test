@@ -272,9 +272,9 @@ namespace S7_writer_plugin
             }
             finally
             {
-                if(ibaAnalyzer != null && bUseAnalysis)
+                if(ibaAnalyzer != null)
                 {
-                    (ibaAnalyzer as IDisposable)>.Dispose();
+                    (ibaAnalyzer as IDisposable)?.Dispose();
                 }
             }
             dataGV.RefreshData();

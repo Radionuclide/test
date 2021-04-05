@@ -252,7 +252,7 @@ namespace AM_OSPC_plugin
             }
             finally
             {
-                if(ibaAnalyzer != null && bUseAnalysis)
+                if(ibaAnalyzer != null )
                 {
                     (ibaAnalyzer as IDisposable)?.Dispose();
                 }
