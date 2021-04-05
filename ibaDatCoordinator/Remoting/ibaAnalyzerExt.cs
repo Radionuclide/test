@@ -29,8 +29,7 @@ namespace iba.Remoting
                 this.analyzer = analyzer;
         }
 
-        bool m_bRemote;
-        bool m_bAnalyzerOwned;
+		bool m_bAnalyzerOwned;
         IbaAnalyzer.IbaAnalyzer analyzer;
         public string GetVersion()
         {
