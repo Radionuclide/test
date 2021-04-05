@@ -54,7 +54,6 @@ namespace iba.Controls
             oldPdo = m_pdoFileTextBox.Text = m_data.AnalysisFile;
             oldDat = m_datFileTextBox.Text = m_data.TestDatFile;
             m_tbPwdDAT.Text = m_data.DatFilePassword;
-
             try
             {
                 RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
@@ -85,8 +84,11 @@ namespace iba.Controls
                 m_monitorGroup.Enabled = false;
             }
 
-            m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
-            File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_testButton.Enabled = true; //we'll give a warning when not allowed ...
+            else
+                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
+            UpdateSources();
         }
 
         public void SaveData()
@@ -127,6 +129,7 @@ namespace iba.Controls
 			if (Utility.DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref path, out localPath))
 			{
 				m_pdoFileTextBox.Text = path;
+                UpdateSources();
 			}
 		}
 
@@ -142,6 +145,16 @@ namespace iba.Controls
 			{
 				m_datFileTextBox.Text = datFile;
 			}
+            if (datFile != oldDat)
+            {
+                oldDat = datFile;
+                UpdateSources();
+            }
+        }
+
+        private void UpdateSources()
+        {
+            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
         }
 
         private void m_testButton_Click(object sender, EventArgs e)
@@ -252,7 +265,7 @@ namespace iba.Controls
             if (newPdo != oldPdo)
             {
                 oldPdo = newPdo;
-                channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+                UpdateSources();
             }
         }
 
@@ -263,16 +276,14 @@ namespace iba.Controls
             if (oldDat != newDat)
             {
                 oldDat = newDat;
-                channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
-                //m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) &&
-                //    File.Exists(m_data.ParentConfigurationData.IbaAnalyzerExe);
+                UpdateSources();
             }
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
 			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
-			channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text,m_data.ParentConfigurationData);
+            UpdateSources();
 		}
 
         private void m_btTakeParentPass_Click(object sender, EventArgs e)

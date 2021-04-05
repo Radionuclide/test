@@ -29,7 +29,7 @@ namespace iba.Remoting
                 this.analyzer = analyzer;
         }
 
-		bool m_bAnalyzerOwned;
+        bool m_bAnalyzerOwned;
         IbaAnalyzer.IbaAnalyzer analyzer;
         public string GetVersion()
         {
@@ -99,6 +99,7 @@ namespace iba.Remoting
             return newFiles;
         }
 
+        
         public bool CheckVersion(string v)
         {
             RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);

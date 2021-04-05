@@ -91,6 +91,8 @@ namespace iba.Controls
             {
                 m_monitorGroup.Enabled = false;
             }
+
+            UpdateSources();
         }
 
         public void SaveData()

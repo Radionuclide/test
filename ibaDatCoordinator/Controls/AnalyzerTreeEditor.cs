@@ -111,8 +111,7 @@ namespace iba.Controls
 							DateTime dtLastWriteTime = info.LastWriteTimeUtc;
 
 							bErrorFromAnalyzer = true;
-
-							Analyzer.OpenAnalysis(localFile);
+                            Analyzer.OpenAnalysis(pdoFile);
 							m_dtLastWriteTime = dtLastWriteTime;
 							localPdoFile = localFile;
 						}
@@ -613,34 +612,44 @@ namespace iba.Controls
             return null;
         }
 
-        byte[] cachedImageBytes;
+        static List<byte[]> cachedImageBytes = new List<byte[]>(); //use cache as when 
         unsafe void FillImageList()
         {
             if (manager.Analyzer == null)
                 return;
             int cnt = manager.Analyzer.SignalTreeImageCount;
+
+            bool useCache = true;
+            if (cnt != cachedImageBytes.Count)
+            {
+                cachedImageBytes.Clear();
+                useCache = false;
+            }
+
             for (int i = 0; i < cnt; i++)
             {
                 object myArrayObject = null;
                 byte[] thearray;
-                if (cachedImageBytes != null)
+                if (useCache)
                 {
-                    thearray = cachedImageBytes;
+                    thearray = cachedImageBytes[i];
                 }
                 else
                 {
                     manager.Analyzer.SignalTreeImageData(i, out myArrayObject);
                     thearray = myArrayObject as byte[];
-                    cachedImageBytes = thearray;
+                    cachedImageBytes.Add(thearray);
                 }
+
                 fixed (byte* p = thearray)
                 {
                     IntPtr ptr = (IntPtr)p;
                     Bitmap bm = new Bitmap(16, 16, 16 * 4, System.Drawing.Imaging.PixelFormat.Format32bppRgb, ptr);
                     imageList.Images.Add(bm);
-                    var image = imageList.Images[i];
                 }
             }
+            
+
             foreach (string key in new List<string>(customNodesImages.Keys))
             {
                 Tuple<int, Image> val = customNodesImages[key];
@@ -909,7 +918,7 @@ namespace iba.Controls
                 node = bFirstPop && tc.Count > inode.IndexInCollection + customNodes.Count ? tc[inode.IndexInCollection + customNodes.Count] : tc[inode.IndexInCollection];
                 bFirstPop = false;
                 ExpandNode(node);
-                Marshal.ReleaseComObject(inode);
+                (inode as IDisposable)?.Dispose();
                 tc = node.Nodes;
             }
             return node;
