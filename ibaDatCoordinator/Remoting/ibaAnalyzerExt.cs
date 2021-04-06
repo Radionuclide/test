@@ -15,7 +15,7 @@ namespace iba.Remoting
 {
     public class ibaAnalyzerExt : MarshalByRefObject, IDisposable, IbaAnalyzer.IbaAnalyzer
     {
-        public ibaAnalyzerExt(IbaAnalyzer.IbaAnalyzer analyzer = null, bool noninteractieve=true)
+        public ibaAnalyzerExt(IbaAnalyzer.IbaAnalyzer analyzer, bool noninteractieve)
         {
             m_bAnalyzerOwned = analyzer == null;
             if (m_bAnalyzerOwned)
@@ -299,7 +299,7 @@ namespace iba.Remoting
             return analyzer.ReplaceExpression(name, expr);
         }
 
-        public static ibaAnalyzerExt Create(bool noninteractive = false) //factory method
+        public static ibaAnalyzerExt Create(bool noninteractive) //factory method
         {
             if (!Program.IsServer && Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
                 return Program.CommunicationObject.GetRemoteIbaAnalyzer(noninteractive);

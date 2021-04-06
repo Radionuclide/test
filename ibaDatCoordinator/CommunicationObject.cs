@@ -936,7 +936,7 @@ namespace iba
             }
         }
 
-        public Remoting.ibaAnalyzerExt GetRemoteIbaAnalyzer(bool noninteractive = true)
+        public Remoting.ibaAnalyzerExt GetRemoteIbaAnalyzer(bool noninteractive)
         {
             try
             {

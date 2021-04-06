@@ -288,7 +288,7 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.RunsWithService == Program.ServiceEnum.CONNECTED;
+            //m_btnUploadPDO.Enabled = Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.RunsWithService == Program.ServiceEnum.CONNECTED;
             m_manager = manager;
             m_data = datasource as HDCreateEventTaskData;
             m_ctrlServer.LoadData(m_data.Server, m_data.ServerPort, false, m_data.Username, m_data.HDPassword, "");
@@ -329,7 +329,6 @@ namespace iba.Controls
 
             UpdateSources();
             LoadLocalData(m_data);
-            loadAnalyzerTreeDataTask();
         }
 
         private void LoadLocalData(HDCreateEventTaskData data)
@@ -595,12 +594,12 @@ namespace iba.Controls
         void UpdateSources()
         {
             m_analyzerManager.UpdateSource(m_tbPDO.Text, m_tbDAT.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+            loadAnalyzerTreeDataTask();
         }
 
         private void m_tbPwdDAT_TextChanged(object sender, EventArgs e)
         {
             UpdateSources();
-            loadAnalyzerTreeDataTask();
         }
 
         private void m_btnBrowseDAT_Click(object sender, EventArgs e)
@@ -622,7 +621,6 @@ namespace iba.Controls
         {
 			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(messageOnNoChanges, this, m_tbPDO.Text, m_analyzerManager, m_data.ParentConfigurationData);
 			UpdateSources();
-			loadAnalyzerTreeDataTask();
 		}
 
         string oldDat = "";
@@ -637,7 +635,6 @@ namespace iba.Controls
             if (newDat != oldDat)
             {
                 UpdateSources();
-                loadAnalyzerTreeDataTask();
             }
         }
 
@@ -653,7 +650,6 @@ namespace iba.Controls
             if (newPdo != oldPdo)
             {
                 UpdateSources();
-                loadAnalyzerTreeDataTask();
             }
         }
 

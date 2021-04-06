@@ -69,7 +69,7 @@ namespace iba.Processing
                 {
                     if (m_ibaAnalyzer == null)
                     {
-                        m_ibaAnalyzer = ibaAnalyzerExt.Create();
+                        m_ibaAnalyzer = ibaAnalyzerExt.Create(true);
                         deleteIt = true;
                     }
                     DateTime dt = new DateTime();

@@ -35,7 +35,6 @@ namespace iba.Controls
         public bool IsOpened => bFilesOpened;
         DateTime m_dtLastWriteTime;
         string pdoFile, datFile, datFilePassword, user;
-		string localPdoFile;
 
         public event Action SourceUpdated;
         #endregion
@@ -95,26 +94,8 @@ namespace iba.Controls
 
 					FileInfo info;
 
-					if (!String.IsNullOrEmpty(pdoFile))
-					{
-						info = new FileInfo(Program.RemoteFileLoader.GetLocalPath(pdoFile));
-						if (!info.Exists || info.LastWriteTimeUtc != m_dtLastWriteTime)
-							UnsafeClose();
-					}
 					if (!bFilesOpened)
 					{
-						if (!String.IsNullOrEmpty(pdoFile))
-						{
-							if (!Program.RemoteFileLoader.DownloadFile(pdoFile, out string localFile, out error))
-								return false;
-							info = new FileInfo(localFile);
-							DateTime dtLastWriteTime = info.LastWriteTimeUtc;
-
-							bErrorFromAnalyzer = true;
-                            Analyzer.OpenAnalysis(pdoFile);
-							m_dtLastWriteTime = dtLastWriteTime;
-							localPdoFile = localFile;
-						}
 						if (!string.IsNullOrEmpty(datFile))
                         {
                             if (Path.GetExtension(datFile) == ".hdq")
@@ -209,7 +190,7 @@ namespace iba.Controls
 			{
 				if (Analyzer != null)
 				{
-					Analyzer.OpenAnalysis(localPdoFile);
+					Analyzer.OpenAnalysis(pdoFile);
 				}
 			}
 			catch
@@ -252,8 +233,8 @@ namespace iba.Controls
 
         string pendingSelection;
 
-        static ImageList imageList;
-        static Dictionary<string, Tuple<int, Image>> customNodesImages = new Dictionary<string, Tuple<int, Image>> ();
+        ImageList imageList;
+        Dictionary<string, Tuple<int, Image>> customNodesImages = new Dictionary<string, Tuple<int, Image>> ();
         List<CustomNode> customNodes;
 
         protected Crownwood.DotNetMagic.Controls.TreeControl tree;
@@ -613,8 +594,21 @@ namespace iba.Controls
         }
 
         static List<byte[]> cachedImageBytes = new List<byte[]>(); //use cache as when 
-        unsafe void FillImageList()
+
+        void FillImageList()
         {
+            lock (imageList)
+            {
+                lock (cachedImageBytes)
+                {
+                    FillImageListBase();
+                }
+            }
+        }
+
+        unsafe void FillImageListBase()
+        {
+
             if (manager.Analyzer == null)
                 return;
             int cnt = manager.Analyzer.SignalTreeImageCount;
@@ -628,7 +622,6 @@ namespace iba.Controls
 
             for (int i = 0; i < cnt; i++)
             {
-                object myArrayObject = null;
                 byte[] thearray;
                 if (useCache)
                 {
@@ -636,27 +629,25 @@ namespace iba.Controls
                 }
                 else
                 {
-                    manager.Analyzer.SignalTreeImageData(i, out myArrayObject);
+                    object myArrayObject = null;
+                    manager.Analyzer.SignalTreeImageData(i, out myArrayObject); //make sure you always provide "NULL"
                     thearray = myArrayObject as byte[];
                     cachedImageBytes.Add(thearray);
                 }
-
                 fixed (byte* p = thearray)
                 {
                     IntPtr ptr = (IntPtr)p;
                     Bitmap bm = new Bitmap(16, 16, 16 * 4, System.Drawing.Imaging.PixelFormat.Format32bppRgb, ptr);
                     imageList.Images.Add(bm);
                 }
-            }
-            
 
+            }
             foreach (string key in new List<string>(customNodesImages.Keys))
             {
                 Tuple<int, Image> val = customNodesImages[key];
                 customNodesImages[key] = Tuple.Create(imageList.Images.Count, val.Item2);
                 imageList.Images.Add(val.Item2);
             }
-
         }
 
         public Node GetSignalNode(string id)
@@ -687,7 +678,7 @@ namespace iba.Controls
         {
             if (tree.InvokeRequired)
             {
-                tree.Invoke(new Action(UpdateTree));
+                tree.BeginInvoke(new Action(UpdateTree));
                 return;
             }
 
@@ -701,7 +692,7 @@ namespace iba.Controls
 
             if (tree.InvokeRequired)
             {
-                tree.Invoke(new Action<Task<string>>(CreateTree), task);
+                tree.BeginInvoke(new Action<Task<string>>(CreateTree), task);
                 return;
             }
 
@@ -756,7 +747,10 @@ namespace iba.Controls
             {
                 int imgIndex = imageList.Images.Count;
                 errorNode = new Node(error, imgIndex);
-                imageList.Images.Add(Properties.Resources.img_error);
+                lock (imageList)
+                {
+                    imageList.Images.Add(Properties.Resources.img_error);
+                }
             }
 
             foreach (var cstNode in customNodes)
@@ -788,12 +782,15 @@ namespace iba.Controls
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(TreeSetAnalyzerLoading));
+                BeginInvoke(new Action(TreeSetAnalyzerLoading));
                 return;
             }
-            imageList.Images.Clear();
-            ClearNodes();
-            imageList.Images.Add(Properties.Resources.img_warning);
+            lock (imageList)
+            {
+                imageList.Images.Clear();
+                ClearNodes();
+                imageList.Images.Add(Properties.Resources.img_warning);
+            }
             tree.Nodes.Add(new Node(Properties.Resources.AnalyzerTree_Loading, 0));
             UpdateTree();
         }

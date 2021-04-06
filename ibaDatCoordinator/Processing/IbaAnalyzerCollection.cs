@@ -82,7 +82,7 @@ namespace iba.Processing
                     }
                     else
                     {
-                        ibaAnalyzer = new ibaAnalyzerExt(ibaAnalyzer);
+                        ibaAnalyzer = new ibaAnalyzerExt(ibaAnalyzer,true);
                         if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
                             ibaAnalyzer.SetFilePassword("", cd.FileEncryptionPassword);
                         TrySetHDCredentials(ibaAnalyzer, cd);
@@ -198,7 +198,7 @@ namespace iba.Processing
             }
             else
             {
-                ibaAnalyzer = new ibaAnalyzerExt(newIbaAnalyzer);
+                ibaAnalyzer = new ibaAnalyzerExt(newIbaAnalyzer,true);
                 if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
                     ibaAnalyzer.SetFilePassword("", cd.FileEncryptionPassword);
                 TrySetHDCredentials(ibaAnalyzer, cd);

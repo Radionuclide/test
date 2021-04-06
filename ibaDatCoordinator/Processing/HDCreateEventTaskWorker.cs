@@ -311,7 +311,7 @@ namespace iba.Processing
 
         public Dictionary<string, EventWriterData> GenerateEvents(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, string dataFile)
         {
-            m_ibaAnalyzer = (ibaAnalyzer as ibaAnalyzerExt)??(new ibaAnalyzerExt());
+            m_ibaAnalyzer = (ibaAnalyzer as ibaAnalyzerExt)??(ibaAnalyzerExt.Create(true));
             m_dataFile = dataFile;
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
@@ -351,7 +351,7 @@ namespace iba.Processing
                         throw new HDCreateEventException(Properties.Resources.logHDEventTaskDATError);
 
                     bDisposeAnalyzer = true;
-                    m_ibaAnalyzer = ibaAnalyzerExt.Create();
+                    m_ibaAnalyzer = ibaAnalyzerExt.Create(true);
 
                     if (Path.GetExtension(m_data.DatFile)==".hdq")
                     {

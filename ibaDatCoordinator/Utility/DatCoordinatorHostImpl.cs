@@ -350,7 +350,7 @@ namespace iba.Utility
 
         public IbaAnalyzer.IbaAnalyzer CreateIbaAnalyzer()
         {
-            return new ibaAnalyzerExt();
+            return ibaAnalyzerExt.Create(false);
         }
     }
 }

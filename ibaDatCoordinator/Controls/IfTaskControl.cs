@@ -220,7 +220,7 @@ namespace iba.Controls
             //start the com object
             try
             {
-                ibaAnalyzer = ibaAnalyzerExt.Create();
+                ibaAnalyzer = ibaAnalyzerExt.Create(true);
             }
             catch (Exception ex2)
             {
