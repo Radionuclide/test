@@ -1439,7 +1439,6 @@ namespace iba
             NewCustomTask = 16
         }
 
-        private string ibaAnalyzerExe;
 
         private void m_configTreeView_MouseDown(object sender, MouseEventArgs e)
         {

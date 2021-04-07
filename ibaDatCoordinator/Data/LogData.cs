@@ -303,7 +303,7 @@ namespace iba.Data
         {
             string versionLine = "ibaDatCoordinator v" + DatCoVersion.GetVersion() + " (client)";
 
-            string rootPath = Utility.DataPath.Folder(ApplicationState.CLIENTDISCONNECTED);
+            string rootPath = Utility.DataPath.Folder(Program.ApplicationState.CLIENTDISCONNECTED);
             string filename = m_data.m_filename = Path.Combine(rootPath, "ibaDatCoordinatorLog_client.txt");
             FileBackup.Backup(filename, Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), 10, 10);
 

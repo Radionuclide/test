@@ -44,7 +44,6 @@ namespace iba.Controls
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
         private SplitterTaskData m_data;
-        private string ibaAnalyzerExe;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -74,7 +73,7 @@ namespace iba.Controls
 
             try
             {
-                m_monitorGroup.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe, "5.8.1");
+                m_monitorGroup.Enabled = VersionCheck.CheckIbaAnalyzerVersion("5.8.1");
             }
             catch
             {

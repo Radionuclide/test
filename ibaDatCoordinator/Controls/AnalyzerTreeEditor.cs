@@ -83,16 +83,12 @@ namespace iba.Controls
                 {
                     if (Analyzer == null)
                     {
-                        Analyzer = ibaAnalyzerExt.Create(false); //noninteractive = false because of signal tree images...
-                        if (!ibaAnalyzerExt.CheckVersion(Analyzer,"7.1.0"))
-                        {
-                            ((IDisposable)Analyzer)?.Dispose();
-                            Analyzer = null;
+                        if (!VersionCheck.CheckIbaAnalyzerVersion("7.1.0"))
                             throw new Exception(string.Format(Properties.Resources.logAnalyzerVersionError, "7.1.0"));
-                        }
+                        Analyzer = ibaAnalyzerExt.Create(false); //noninteractive = false because of signal tree images...
                     }
 
-					if (!bFilesOpened)
+                    if (!bFilesOpened)
 					{
 						if (!string.IsNullOrEmpty(datFile))
                         {
