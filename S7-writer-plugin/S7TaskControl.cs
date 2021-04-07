@@ -216,8 +216,8 @@ namespace S7_writer_plugin
                 MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startindex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             if(major < 6 || (major == 6 && minor < 7))
                 MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startindex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
-            bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
+            bool bUseAnalysis = m_datcoHost.FileExists(m_pdoFileTextBox.Text);
+            bool bUseDatFile = m_datcoHost.FileExists(m_datFileTextBox.Text);
             double f = 0;
             try
             {

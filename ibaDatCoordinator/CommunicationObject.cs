@@ -110,7 +110,7 @@ namespace iba
         {
             //This is only called on the server where this object must live forever
             Debug.Assert(Program.IsServer);
-            return null;
+            return null; //immortal object
         }
 
         public void Logging_setEventForwarder(IEventForwarder ev, Guid g, string clientName)
@@ -434,9 +434,9 @@ namespace iba
             }
         }
 
-        public ibaAnalyzerExt GetRemoteIbaAnalyzer(bool noninteractive)
+        public ibaAnalyzerExt GetRemoteIbaAnalyzer(bool noninteractive, LifePulse life)
         {
-            return new ibaAnalyzerExt(null, noninteractive); //marshalbyref version...
+            return new ibaAnalyzerExt(null, noninteractive,life); //marshalbyref version...
         }
     }
 
@@ -936,17 +936,33 @@ namespace iba
             }
         }
 
+        static LifePulse pulse = new LifePulse();
+
         public Remoting.ibaAnalyzerExt GetRemoteIbaAnalyzer(bool noninteractive)
         {
             try
             {
-                return m_com.GetRemoteIbaAnalyzer(noninteractive);
+                return m_com.GetRemoteIbaAnalyzer(noninteractive, pulse);
             }
             catch (Exception ex)
             {
                 HandleBrokenConnection(ex);
                 return null;
             }
+        }
+    }
+
+
+    public class LifePulse : MarshalByRefObject
+    {
+        public bool isAlife()
+        {
+            return true;
+        }
+
+        public override object InitializeLifetimeService()
+        {
+            return null; //static on client side, lives forever...
         }
     }
 }

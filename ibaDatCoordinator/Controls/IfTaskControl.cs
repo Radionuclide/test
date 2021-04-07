@@ -65,10 +65,7 @@ namespace iba.Controls
                 ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
             }
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                m_testButton.Enabled = true; //we'll give a warning when not allowed ...
-            else
-                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
+            m_testButton.Enabled = DataPath.FileExists(m_datFileTextBox.Text);
             m_XTypeComboBox.SelectedIndex = (int)m_data.XType;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -215,7 +212,7 @@ namespace iba.Controls
 
         static internal float TestConditionHD(string expression, int index, string pdo, string datfile, string user, string passwd, out string errorMessage)
         {
-            ibaAnalyzerExt ibaAnalyzer = null;
+            IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
             //register this
             //start the com object
             try
@@ -227,7 +224,7 @@ namespace iba.Controls
                 errorMessage = ex2.Message;
                 return float.NaN;
             }
-            bool bUseAnalysis = File.Exists(pdo);
+            bool bUseAnalysis = DataPath.FileExists(pdo);
             float f = 0;
             try
             {
@@ -250,7 +247,7 @@ namespace iba.Controls
             {
                 if (ibaAnalyzer != null)
                 {
-                    ibaAnalyzer.Dispose();
+                    ((IDisposable)ibaAnalyzer)?.Dispose();
                 }
             }
             errorMessage = (float.IsNaN(f) || float.IsInfinity(f)) ? iba.Properties.Resources.IfTestBadEvaluation : "";

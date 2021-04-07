@@ -352,5 +352,10 @@ namespace iba.Utility
         {
             return ibaAnalyzerExt.Create(false);
         }
+
+        public bool FileExists(string file)
+        {
+            return DataPath.FileExists(file);
+        }
     }
 }

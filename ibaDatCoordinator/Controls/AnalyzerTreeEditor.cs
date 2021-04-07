@@ -29,7 +29,7 @@ namespace iba.Controls
 	{
         #region Members
         object lockAnalyzer;
-        public ibaAnalyzerExt Analyzer { get; private set; }
+        public IbaAnalyzer.IbaAnalyzer Analyzer { get; private set; }
 
         bool bFilesOpened;
         public bool IsOpened => bFilesOpened;
@@ -60,7 +60,7 @@ namespace iba.Controls
                 {
                     if (Analyzer != null)
                     {
-                        Analyzer.Dispose();
+                        ((IDisposable)Analyzer)?.Dispose();
                         Analyzer = null;
                     }
                 }
@@ -84,15 +84,13 @@ namespace iba.Controls
                     if (Analyzer == null)
                     {
                         Analyzer = ibaAnalyzerExt.Create(false); //noninteractive = false because of signal tree images...
-                        if (!Analyzer.CheckVersion("7.1.0"))
+                        if (!ibaAnalyzerExt.CheckVersion(Analyzer,"7.1.0"))
                         {
-                            Analyzer.Dispose();
+                            ((IDisposable)Analyzer)?.Dispose();
                             Analyzer = null;
                             throw new Exception(string.Format(Properties.Resources.logAnalyzerVersionError, "7.1.0"));
                         }
                     }
-
-					FileInfo info;
 
 					if (!bFilesOpened)
 					{

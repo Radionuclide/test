@@ -676,7 +676,7 @@ namespace iba.Controls
                 string datFile = m_tbDAT.Text;
                 string error = "";
                 bool ok = true;
-                if (string.IsNullOrEmpty(datFile) || !File.Exists(datFile))
+                if (string.IsNullOrEmpty(datFile) || !DataPath.FileExists(datFile))
                 {
                     error = Properties.Resources.logHDEventTaskDATError;
                     ok = false;

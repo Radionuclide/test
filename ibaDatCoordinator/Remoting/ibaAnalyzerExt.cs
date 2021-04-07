@@ -9,14 +9,17 @@ using System.Threading.Tasks;
 using iba.Data;
 using iba.Logging;
 using iba.Utility;
+using IbaAnalyzer;
 using Microsoft.Win32;
 
 namespace iba.Remoting
 {
-    public class ibaAnalyzerExt : MarshalByRefObject, IDisposable, IbaAnalyzer.IbaAnalyzer
+    public class ibaAnalyzerExt : MarshalByRefObject, ISponsor, IDisposable, IbaAnalyzer.IbaAnalyzer
     {
-        public ibaAnalyzerExt(IbaAnalyzer.IbaAnalyzer analyzer, bool noninteractieve)
+        private LifePulse pulse;
+        public ibaAnalyzerExt(IbaAnalyzer.IbaAnalyzer analyzer, bool noninteractieve, LifePulse pulse = null)
         {
+            this.pulse = pulse;
             m_bAnalyzerOwned = analyzer == null;
             if (m_bAnalyzerOwned)
             {
@@ -99,13 +102,18 @@ namespace iba.Remoting
             return newFiles;
         }
 
-        
+
         public bool CheckVersion(string v)
         {
             RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
             object o = key.GetValue("");
             string ibaAnalyzerExe = Path.GetFullPath(o.ToString());
             return VersionCheck.CheckVersion(ibaAnalyzerExe, v);
+        }
+
+        public static bool CheckVersion(IbaAnalyzer.IbaAnalyzer ana, string v)
+        {
+            return ((ibaAnalyzerExt)ana).CheckVersion(v);
         }
 
         class TempHdqFile
@@ -299,10 +307,10 @@ namespace iba.Remoting
             return analyzer.ReplaceExpression(name, expr);
         }
 
-        public static ibaAnalyzerExt Create(bool noninteractive) //factory method
+        public static IbaAnalyzer.IbaAnalyzer Create(bool noninteractive) //factory method
         {
             if (!Program.IsServer && Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                return Program.CommunicationObject.GetRemoteIbaAnalyzer(noninteractive);
+                return new ibaAnalylerClientWrapper(Program.CommunicationObject.GetRemoteIbaAnalyzer(noninteractive));
             else
                 return new ibaAnalyzerExt(null, noninteractive);
         }
@@ -460,18 +468,6 @@ namespace iba.Remoting
             analyzer.EvaluateToArray(expression, XType, out pTimebase, out xoffset, out pData);
         }
 
-        public override object InitializeLifetimeService()
-        {
-            ILease lease = (ILease)base.InitializeLifetimeService();
-            if (lease.CurrentState == LeaseState.Initial)
-            {
-                lease.InitialLeaseTime = TimeSpan.FromMinutes(5);
-                //lease.SponsorshipTimeout = TimeSpan.FromMinutes(2);
-                lease.RenewOnCallTime = TimeSpan.FromSeconds(2);
-            }
-            return lease;
-        }
-
         #region IDisposable Support
 
         ~ibaAnalyzerExt() => Dispose(false);
@@ -486,6 +482,7 @@ namespace iba.Remoting
         // Protected implementation of Dispose pattern.
         protected virtual void Dispose(bool disposing)
         {
+            pulse = null;
             if (analyzer == null) return; //redundant call;
             if (disposing)
             {
@@ -505,7 +502,43 @@ namespace iba.Remoting
             }
             analyzer = null;
         }
+
         #endregion
+
+        #region remoting
+
+        public override object InitializeLifetimeService()
+        {
+            ILease lease = (ILease)base.InitializeLifetimeService();
+            if (lease.CurrentState == LeaseState.Initial)
+            {
+                lease.InitialLeaseTime = TimeSpan.FromSeconds(100);
+#if DEBUG
+                lease.SponsorshipTimeout = TimeSpan.FromSeconds(300);
+#else
+                lease.SponsorshipTimeout = TimeSpan.FromSeconds(30);
+#endif
+                lease.RenewOnCallTime = TimeSpan.FromSeconds(100);
+                lease.Register(this);
+
+            }
+            return lease;
+
+        }
+
+        public TimeSpan Renewal(ILease lease)
+        {
+            try
+            {
+                if (pulse != null && pulse.isAlife())
+                    return lease.InitialLeaseTime;
+            }
+            catch (Exception)
+            { }
+            //Something went wrong --> Disconnect
+            return new TimeSpan(0);
+        }
+#endregion
     }
 
     public class AnalyzerSignalTreeExt : MarshalByRefObject, IDisposable, IbaAnalyzer.ISignalTree
@@ -531,7 +564,7 @@ namespace iba.Remoting
             return new AnalyzerSignalTreeNodeExt(node as IbaAnalyzer.ISignalTreeNode);
         }
 
-        #region IDisposable Support
+#region IDisposable Support
 
         ~AnalyzerSignalTreeExt() => Dispose(false);
 
@@ -556,7 +589,7 @@ namespace iba.Remoting
             }
             tree = null;
         }
-        #endregion
+#endregion
 
         public override object InitializeLifetimeService()
         {
@@ -639,7 +672,7 @@ namespace iba.Remoting
             }
         }
 
-        #region IDisposable Support
+#region IDisposable Support
 
         ~AnalyzerSignalTreeNodeExt() => Dispose(false);
 
@@ -664,7 +697,7 @@ namespace iba.Remoting
             }
             node = null;
         }
-        #endregion
+#endregion
 
         public override object InitializeLifetimeService()
         {
@@ -678,4 +711,619 @@ namespace iba.Remoting
             return lease;
         }
     }
+
+    public class ibaAnalylerClientWrapper : IDisposable, IbaAnalyzer.IbaAnalyzer
+    {
+        ibaAnalyzerExt remoteIbaAnalyzer;
+        public ibaAnalylerClientWrapper(ibaAnalyzerExt ibaAnalyzer)
+        {
+            remoteIbaAnalyzer = ibaAnalyzer;
+        }
+
+        public string GetVersion()
+        {
+            try
+            {
+                return remoteIbaAnalyzer.GetVersion();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return "";
+            }
+        }
+
+        public void OpenAnalysis(string filename)
+        {
+            try
+            {
+                remoteIbaAnalyzer.OpenAnalysis(filename);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void CloseAnalysis()
+        {
+            try
+            {
+                remoteIbaAnalyzer.CloseAnalysis();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+
+        public string GetLastError()
+        {
+            try
+            {
+                return remoteIbaAnalyzer.GetLastError();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return ex.Message;
+            }
+        }
+
+
+        public void RunInteractive()
+        {
+            try
+            {
+                remoteIbaAnalyzer.RunInteractive();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void GetStartTime(ref DateTime oaStartTime, ref int microSecPart)
+        {
+            try
+            {
+                remoteIbaAnalyzer.GetStartTime(ref oaStartTime, ref microSecPart);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void SaveAnalysis(string filename)
+        {
+            try
+            {
+                remoteIbaAnalyzer.SaveAnalysis(filename);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void OpenDataFile(int index, string filename)
+        {
+            try
+            {
+                remoteIbaAnalyzer.OpenDataFile(index, filename);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void AppendDataFile(int index, string filename)
+        {
+            try
+            {
+                remoteIbaAnalyzer.AppendDataFile(index, filename);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void CloseDataFile(int index)
+        {
+            try
+            {
+                remoteIbaAnalyzer.CloseDataFile(index);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void CloseDataFiles()
+        {
+            try
+            {
+                remoteIbaAnalyzer.CloseDataFiles();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void AddToFileGroup(string filename, int select)
+        {
+            try
+            {
+                remoteIbaAnalyzer.AddToFileGroup(filename, select);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void ClearFileGroup()
+        {
+            try
+            {
+                remoteIbaAnalyzer.ClearFileGroup();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public int RunSqlQuery(string sql, string sync)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.RunSqlQuery(sql, sync);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+        public int RunSqlQueryFromFile(string filename, string sync)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.RunSqlQueryFromFile(filename, sync);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+        public string GetQueryResult(int resultIndex)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.GetQueryResult(resultIndex);
+
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return "";
+            }
+        }
+
+        public void Extract(int fileExtract, string output)
+        {
+            try
+            {
+                remoteIbaAnalyzer.Extract(fileExtract, output);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void Report(string output)
+        {
+            try
+            {
+                remoteIbaAnalyzer.Report(output);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void Print() {
+            try
+            {
+                remoteIbaAnalyzer.Print();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public float Evaluate(string expression, int XType)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.Evaluate(expression, XType);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return float.NaN;
+            }
+        }
+
+        public int GetProcessID()
+        {
+
+            try
+            {
+                return remoteIbaAnalyzer.GetProcessID();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+        public void AddLogical(string name, string expression, int XType)
+        {
+            try
+            {
+                remoteIbaAnalyzer.AddLogical(name, expression, XType);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public bool RemoveLogical(string name)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.RemoveLogical(name);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return false;
+            }
+        }
+
+        public bool ReplaceExpression(string name, string expr)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.ReplaceExpression(name, expr);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return false;
+            }
+        }
+
+        public double EvaluateDouble(string expression, int XType)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.EvaluateDouble(expression, XType);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return double.NaN;
+            }
+        }
+
+        public int EvaluateDataType(string expression, int XType)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.EvaluateDataType(expression, XType);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return -1;
+            }
+        }
+
+        public int RunSqlTrendQuery(string sql, string sync, int append, int microSecond, int overview)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.RunSqlTrendQuery(sql, sync, append, microSecond, overview);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+
+        public int RunSqlTrendQueryFromFile(string filename, string sync, int append, int microSecond, int overview)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.RunSqlTrendQueryFromFile(filename, sync, append, microSecond, overview);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+        public void SaveGraphImage(int graphIndex, string filename, int width, int height)
+        {
+            try {
+                remoteIbaAnalyzer.SaveGraphImage(graphIndex, filename, width, height);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public int GetGraphCount()
+        {
+            try {
+                return remoteIbaAnalyzer.GetGraphCount();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+        public int GetZoomAreaBegin(int XType)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.GetZoomAreaBegin(XType);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+        public int GetZoomAreaEnd(int XType)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.GetZoomAreaEnd(XType);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+        public string GetFileExtractParameters()
+        {
+            try
+            {
+                return remoteIbaAnalyzer.GetFileExtractParameters();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return "";
+            }
+        }
+
+        public void SetFilePassword(string filename, string password)
+        {
+            try
+            {
+                remoteIbaAnalyzer.SetFilePassword(filename, password);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void SetHDCredentials(string userName, string password)
+        {
+            try
+            {
+                remoteIbaAnalyzer.SetHDCredentials(userName, password);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void SetHDCredentialsEx(int useCurrentWindowsUser, string userName, string password)
+        {
+            try
+            {
+                remoteIbaAnalyzer.SetHDCredentialsEx(useCurrentWindowsUser, userName, password);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void EvaluateToArray(string expression, int XType, out double pTimebase, out double xoffset, out object pData)
+        {
+            try
+            {
+                remoteIbaAnalyzer.EvaluateToArray(expression, XType, out pTimebase, out xoffset, out pData);
+            }
+            catch (Exception ex)
+            {
+                pTimebase = xoffset = 0;
+                pData = null;
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public uint GetMarkerColor(int index)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.GetMarkerColor(index);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return 0;
+            }
+        }
+
+        public void UpdateOverlay()
+        {
+            try {
+                remoteIbaAnalyzer.UpdateOverlay();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void EvaluateToStringArray(string expression, int XType, out object pTimeStamps, out object pStrings)
+        {
+            try
+            {
+                remoteIbaAnalyzer.EvaluateToStringArray(expression, XType, out pTimeStamps, out pStrings);
+            }
+            catch (Exception ex)
+            {
+                pTimeStamps = pStrings = null;
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void EvaluateToNEArray(string expression, int XType, out object pTimeStamps, out object pValues)
+        {
+            try
+            {
+                remoteIbaAnalyzer.EvaluateToNEArray(expression, XType, out pTimeStamps, out pValues);
+            }
+            catch (Exception ex)
+            {
+                pTimeStamps = pValues = null;
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public dynamic GetSignalTree(int filter)
+        {
+            try {
+                return remoteIbaAnalyzer.GetSignalTree(filter);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        public void SignalTreeImageData(int index, out object pData)
+        {
+            try
+            {
+                remoteIbaAnalyzer.SignalTreeImageData(index, out pData);
+            }
+            catch (Exception ex)
+            {
+                pData = null;
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                ((IDisposable)remoteIbaAnalyzer).Dispose();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public bool IsVisible
+        {
+            get
+            {
+                try
+                {
+                    return remoteIbaAnalyzer.IsVisible;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return false;
+                }
+            }
+
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+
+        public int SignalTreeImageCount
+        {
+            get
+            {
+                try
+                {
+                    return remoteIbaAnalyzer.SignalTreeImageCount;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return 0;
+                }
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void HandleBrokenConnection(Exception ex)
+        {
+            if (ex.Message.Contains("E_FAIL")) //ordinary ibaAnalyzer excpetion -> rethrow
+                throw ex;
+            else
+                Program.CommunicationObject.HandleBrokenConnection(ex);
+        }
+
+    }
+
 }

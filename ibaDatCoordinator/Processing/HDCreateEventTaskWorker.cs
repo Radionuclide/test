@@ -23,7 +23,7 @@ namespace iba.Processing
 
         HDCreateEventTaskData m_data;
 
-        ibaAnalyzerExt m_ibaAnalyzer;
+        IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer;
         IHdWriterManager writerManager = null;
         IHdWriter writer = null;
         IEnumerable<HdWriterConfig> cfgs = null;
@@ -311,7 +311,7 @@ namespace iba.Processing
 
         public Dictionary<string, EventWriterData> GenerateEvents(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, string dataFile)
         {
-            m_ibaAnalyzer = (ibaAnalyzer as ibaAnalyzerExt)??(ibaAnalyzerExt.Create(true));
+            m_ibaAnalyzer = (ibaAnalyzer)??(ibaAnalyzerExt.Create(true));
             m_dataFile = dataFile;
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
@@ -340,14 +340,7 @@ namespace iba.Processing
                 string pdoFile = m_data.AnalysisFile;
                 if (m_ibaAnalyzer == null)
                 {
-                    if (Program.RemoteFileLoader == null)
-                        pdoFile = m_data.AnalysisFile;
-                    else if (!Program.RemoteFileLoader.DownloadFile(m_data.AnalysisFile, out string localFile, out string error))
-                        throw new HDCreateEventException(error);
-                    else
-                        pdoFile = localFile;
-
-                    if (m_data.DatFileHost != Environment.MachineName || !File.Exists(m_data.DatFile))
+                    if (!DataPath.FileExists(m_data.DatFile))
                         throw new HDCreateEventException(Properties.Resources.logHDEventTaskDATError);
 
                     bDisposeAnalyzer = true;
@@ -372,7 +365,7 @@ namespace iba.Processing
                     m_dataFile = m_data.DatFile;
                 }
                 
-                if (!File.Exists(pdoFile))
+                if (!DataPath.FileExists(pdoFile))
                     throw new HDCreateEventException(iba.Properties.Resources.AnalysisFileNotFound + pdoFile);
 
                 if (!TryGetUTCTimes(m_dataFile, out DateTime startTime, out DateTime endTime))

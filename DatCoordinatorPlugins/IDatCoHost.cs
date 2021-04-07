@@ -90,5 +90,6 @@ namespace iba.Plugins
         /// </summary>
         /// <returns>ibaAnalyzer</returns>
         IbaAnalyzer.IbaAnalyzer CreateIbaAnalyzer();
+        bool FileExists(string text);
     }
 }
