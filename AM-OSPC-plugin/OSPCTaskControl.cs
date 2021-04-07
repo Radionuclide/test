@@ -50,20 +50,9 @@ namespace AM_OSPC_plugin
 
         OSPCTaskData m_data;
         ICommonTaskControl m_control;
-        private string ibaAnalyzerExe;
 
         public void LoadData(object datasource, ICommonTaskControl parentcontrol)
         {
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-            }
-            catch
-            {
-                ibaAnalyzerExe = Properties.Resources.noIbaAnalyser;
-            }
             m_data = datasource as OSPCTaskData; //we'll assume its never null
             m_control = parentcontrol;
             oldDat = m_datFileTextBox.Text = m_data.TestDatFile;

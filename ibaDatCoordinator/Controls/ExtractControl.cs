@@ -65,17 +65,6 @@ namespace iba.Controls
 
             m_uncControl.SetData(m_data);
 
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-            }
-            catch
-            {
-                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
-            }
-
             m_rbFile.Checked = m_data.ExtractToFile;
             m_rbDbase.Checked = !m_data.ExtractToFile;
             m_panelFile.Enabled = m_rbFile.Checked;
@@ -94,15 +83,13 @@ namespace iba.Controls
             m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
             try
             {
-                m_monitorGroup.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe, "5.8.1");
+                m_monitorGroup.Enabled = VersionCheck.CheckIbaAnalyzerVersion("5.8.1");
             }
             catch
             {
                 m_monitorGroup.Enabled = false;
             }
         }
-
-        private String ibaAnalyzerExe;
 
         public void SaveData()
         {

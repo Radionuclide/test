@@ -74,17 +74,6 @@ namespace iba.Controls
             m_extensionComboBox.SelectedIndex = m_extensionComboBox.FindString(m_data.Extension);
             m_cbImageSubDirs.Checked = m_data.CreateSubFolderForImageTypes;
 
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-            }
-            catch
-            {
-                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
-            }
-
             m_panelFile.Enabled = m_rbFile.Checked;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -93,18 +82,9 @@ namespace iba.Controls
             m_nudTime.Value = (Decimal) Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes,1));
 
             m_uncControl.SetData(m_data);
-
-            try
-            {
-                m_monitorGroup.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe, "5.8.1");
-            }
-            catch
-            {
-                m_monitorGroup.Enabled = false;
-            }
+            m_monitorGroup.Enabled = VersionCheck.CheckIbaAnalyzerVersion("5.8.1");
         }
 
-        private String ibaAnalyzerExe;
         private UNCTaskControl m_uncControl;
 
         public void SaveData()

@@ -103,19 +103,6 @@ namespace iba.Remoting
         }
 
 
-        public bool CheckVersion(string v)
-        {
-            RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-            object o = key.GetValue("");
-            string ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-            return VersionCheck.CheckVersion(ibaAnalyzerExe, v);
-        }
-
-        public static bool CheckVersion(IbaAnalyzer.IbaAnalyzer ana, string v)
-        {
-            return ((ibaAnalyzerExt)ana).CheckVersion(v);
-        }
-
         class TempHdqFile
         {
             public string FileName;

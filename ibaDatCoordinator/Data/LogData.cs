@@ -241,7 +241,7 @@ namespace iba.Data
         {
             string versionLine = "ibaDatCoordinator v" + DatCoVersion.GetVersion() + " (service)";
 
-            string rootPath = Utility.DataPath.Folder(ApplicationState.SERVICE);
+            string rootPath = Utility.DataPath.Folder(Program.ApplicationState.SERVICE);
             string filename = m_data.m_filename = Path.Combine(rootPath, "ibaDatCoordinatorLog_service.txt");
             FileBackup.Backup(filename, Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), 10, 10);
 
@@ -348,7 +348,7 @@ namespace iba.Data
         {
             string versionLine = "ibaDatCoordinator v" + DatCoVersion.GetVersion() + " (standalone)";
 
-            string rootPath = Utility.DataPath.Folder(ApplicationState.CLIENTSTANDALONE);
+            string rootPath = Utility.DataPath.Folder(Program.ApplicationState.CLIENTSTANDALONE);
             string filename = m_data.m_filename = Path.Combine(rootPath, "ibaDatCoordinatorLog.txt");
             FileBackup.Backup(filename, Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), 10, 10);
 

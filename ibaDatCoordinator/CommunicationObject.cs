@@ -438,6 +438,11 @@ namespace iba
         {
             return new ibaAnalyzerExt(null, noninteractive,life); //marshalbyref version...
         }
+
+        public bool CheckIbaAnalyzerVersion(string version)
+        {
+            return VersionCheck.CheckIbaAnalyzerVersion(version);
+        }
     }
 
     public class CommunicationObjectWrapper
@@ -948,6 +953,19 @@ namespace iba
             {
                 HandleBrokenConnection(ex);
                 return null;
+            }
+        }
+
+        internal bool CheckIbaAnalyzerVersion(string version)
+        {
+            try
+            {
+                return m_com.CheckIbaAnalyzerVersion(version);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return false;
             }
         }
     }

@@ -144,7 +144,7 @@ namespace iba.Utility
 				object o = key.GetValue("");
 				string ibaAnalyzerExe = Path.GetFullPath(o.ToString());
 
-				if (!Utility.VersionCheck.CheckVersion(ibaAnalyzerExe, "7.1.0"))
+				if (!VersionCheck.CheckVersion(ibaAnalyzerExe, "7.1.0"))
 				{
 					MessageBox.Show(string.Format(Properties.Resources.logAnalyzerVersionError, "7.1.0"), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					return;

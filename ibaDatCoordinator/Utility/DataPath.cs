@@ -7,7 +7,7 @@ namespace iba.Utility
 {
     class DataPath
     {
-        public static string Folder(ApplicationState state)
+        public static string Folder(Program.ApplicationState state)
         {
             string rootPath;
             if (Program.IsServer && IsAdmin)
@@ -52,31 +52,12 @@ namespace iba.Utility
 
         public static string Folder()
         {
-            return Folder(MyState());
-        }
-
-        public static ApplicationState MyState()
-        {
-            if (Program.IsServer)
-                return ApplicationState.SERVICE;
-            else
-            {
-                switch (Program.RunsWithService)
-                {
-                    case Program.ServiceEnum.NOSERVICE:
-                        return ApplicationState.CLIENTSTANDALONE;
-                    case Program.ServiceEnum.CONNECTED:
-                        return ApplicationState.CLIENTCONNECTED;
-                    case Program.ServiceEnum.DISCONNECTED:
-                        return ApplicationState.CLIENTDISCONNECTED;
-                }
-            }
-            return ApplicationState.SERVICE;
+            return Folder(Program.MyState());
         }
 
         public static bool FileExists(string file)
         {
-            if (MyState() == ApplicationState.CLIENTCONNECTED)
+            if (Program.MyState() == Program.ApplicationState.CLIENTCONNECTED)
             {
                 return Program.CommunicationObject.FileExists(file);
             }
@@ -87,7 +68,7 @@ namespace iba.Utility
         public static string ReadFile(string filename)
         {
             string btext = "";
-            if (MyState() == ApplicationState.CLIENTCONNECTED)
+            if (Program.MyState() == Program.ApplicationState.CLIENTCONNECTED)
             {
                 btext = Program.CommunicationObject.ReadFile(filename);
             }
@@ -105,9 +86,9 @@ namespace iba.Utility
 
         public static void WriteFile(string filename, string text)
         {
-            if (MyState() == ApplicationState.CLIENTCONNECTED)
+            if (Program.MyState() == Program.ApplicationState.CLIENTCONNECTED)
             {
-               Program.CommunicationObject.WriteFile(filename,text);
+                Program.CommunicationObject.WriteFile(filename,text);
             }
             else
             {
@@ -120,7 +101,7 @@ namespace iba.Utility
 
         public static bool IsReadOnly(string filename)
         {
-            if (MyState() == ApplicationState.CLIENTCONNECTED)
+            if (Program.MyState() == Program.ApplicationState.CLIENTCONNECTED)
             {
                 return Program.CommunicationObject.IsReadOnly(filename);
             }
@@ -128,9 +109,6 @@ namespace iba.Utility
                 return (new FileInfo(filename)).IsReadOnly;
         }
     }
-
-    public enum ApplicationState { CLIENTDISCONNECTED, CLIENTCONNECTED, CLIENTSTANDALONE, SERVICE };
-
 
 }
 

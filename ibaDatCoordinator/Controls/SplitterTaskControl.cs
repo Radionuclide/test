@@ -58,17 +58,6 @@ namespace iba.Controls
             m_datFileTextBox.Text = m_data.TestDatFile;
             m_tbPwdDAT.Text = m_data.DatFilePassword;
 
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-            }
-            catch
-            {
-                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
-            }
-
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
                 m_testButton.Enabled = true;
             else

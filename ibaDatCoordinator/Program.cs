@@ -212,5 +212,27 @@ namespace iba
                 return false;
             }
         }
+
+
+        public enum ApplicationState { CLIENTDISCONNECTED, CLIENTCONNECTED, CLIENTSTANDALONE, SERVICE };
+
+        public static ApplicationState MyState()
+        {
+            if (Program.IsServer)
+                return ApplicationState.SERVICE;
+            else
+            {
+                switch (Program.RunsWithService)
+                {
+                    case Program.ServiceEnum.NOSERVICE:
+                        return ApplicationState.CLIENTSTANDALONE;
+                    case Program.ServiceEnum.CONNECTED:
+                        return ApplicationState.CLIENTCONNECTED;
+                    case Program.ServiceEnum.DISCONNECTED:
+                        return ApplicationState.CLIENTDISCONNECTED;
+                }
+            }
+            return ApplicationState.SERVICE;
+        }
     }
 }

@@ -315,22 +315,7 @@ namespace iba.Processing
             m_dataFile = dataFile;
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
-            Version versionIbaAnalyzer = null;
-            string ibaAnalyzerExe = "";
-            try
-            {
-                Microsoft.Win32.RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-            }
-            catch
-            {
-                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
-            }
-
-            versionIbaAnalyzer = VersionCheck.GetVersion(ibaAnalyzerExe);
-
-            if (versionIbaAnalyzer == null || versionIbaAnalyzer < new Version(7, 1, 0))
+            if (!VersionCheck.CheckIbaAnalyzerVersion("7.1.0"))
                 throw new HDCreateEventException(string.Format(Properties.Resources.logAnalyzerVersionError, "7.1.0"));
 
             // Generate events

@@ -1469,29 +1469,7 @@ namespace iba
                     pasteToolStripMenuItem.Enabled = m_menuItems[(int)MenuItemsEnum.Paste].Enabled = (m_cd_copy != null || m_task_copy != null) && !started;
                     items.Add(MenuItemsEnum.NewTask);
                     m_menuItems[(int)MenuItemsEnum.NewTask].Enabled = !started;
-
-                    try
-                    {
-                        if (String.IsNullOrEmpty(ibaAnalyzerExe))
-                        {
-                            RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                            object o = key.GetValue("");
-                            ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-                        }
-                    }
-                    catch
-                    {
-                        ibaAnalyzerExe = null;
-                    }
-
-                    try
-                    {
-                        m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = ibaAnalyzerExe != null && VersionCheck.CheckVersion(ibaAnalyzerExe, "5.3.4");
-                    }
-                    catch //version could not be determined
-                    {
-                        m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = false;
-                    }
+                    m_menuItems[(int)MenuItemsEnum.NewIfTask].Enabled = Utility.VersionCheck.CheckIbaAnalyzerVersion("5.3.4");
                 }
                 else if (data is NewConfigurationTreeItemDataBase)
                     pasteToolStripMenuItem.Enabled = m_menuItems[(int)MenuItemsEnum.Paste].Enabled = false;

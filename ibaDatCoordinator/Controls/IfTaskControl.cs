@@ -44,7 +44,6 @@ namespace iba.Controls
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
         private IfTaskData m_data;
-        private string ibaAnalyzerExe;
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
@@ -54,16 +53,7 @@ namespace iba.Controls
             oldPdo = m_pdoFileTextBox.Text = m_data.AnalysisFile;
             oldDat = m_datFileTextBox.Text = m_data.TestDatFile;
             m_tbPwdDAT.Text = m_data.DatFilePassword;
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);
-                object o = key.GetValue("");
-                ibaAnalyzerExe = Path.GetFullPath(o.ToString());
-            }
-            catch
-            {
-                ibaAnalyzerExe = iba.Properties.Resources.noIbaAnalyser;
-            }
+
 
             m_testButton.Enabled = DataPath.FileExists(m_datFileTextBox.Text);
             m_XTypeComboBox.SelectedIndex = (int)m_data.XType;
@@ -72,19 +62,8 @@ namespace iba.Controls
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
             m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
             m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
-            try
-            {
-                m_monitorGroup.Enabled = VersionCheck.CheckVersion(ibaAnalyzerExe, "5.8.1");
-            }
-            catch
-            {
-                m_monitorGroup.Enabled = false;
-            }
-
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                m_testButton.Enabled = true; //we'll give a warning when not allowed ...
-            else
-                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
+            m_monitorGroup.Enabled = VersionCheck.CheckIbaAnalyzerVersion("5.8.1");
+            m_testButton.Enabled = DataPath.FileExists(m_datFileTextBox.Text); 
             UpdateSources();
         }
 
