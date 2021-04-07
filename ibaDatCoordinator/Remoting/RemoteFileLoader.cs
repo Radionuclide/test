@@ -70,7 +70,7 @@ namespace iba.Remoting
         {
             localFile = error = "";
 
-            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || localFile == remoteFile)
             {
                 localFile = remoteFile;
                 return true;
@@ -81,12 +81,6 @@ namespace iba.Remoting
             try
             {
                 filename = Path.GetFileName(remoteFile);
-
-                if (Program.ServiceIsLocal)
-                {
-                    localFile = remoteFile;
-                    return true;
-                }
 
                 if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
                 {
