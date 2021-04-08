@@ -289,10 +289,9 @@ namespace iba.Utility
 
 					form.Cursor = Cursors.WaitCursor;
 
-					if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
-					{ //unload ibaAnalyzer from trees
+					 //unload ibaAnalyzer from trees
 						analyzerManager?.UnLoadAnalysis();
-					}
+					
 
 					try
 					{
@@ -314,10 +313,9 @@ namespace iba.Utility
 						MessageBox.Show(form, ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 
-					if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
-					{ //unload ibaAnalyzer from trees
-						analyzerManager?.ReopenAnalysis();
-					}
+					 //unload ibaAnalyzer from trees
+				     analyzerManager?.ReopenAnalysis();
+					
 
 				}
 				else if (messageOnNoChanges)

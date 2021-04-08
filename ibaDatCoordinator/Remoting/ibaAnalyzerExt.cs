@@ -416,7 +416,7 @@ namespace iba.Remoting
 
         public dynamic GetSignalTree(int filter)
         {
-            return new AnalyzerSignalTreeExt(this.analyzer.GetSignalTree(filter));
+            return new ibaAnalyzerSignalTreeExt(this.analyzer.GetSignalTree(filter));
         }
 
         public void SignalTreeImageData(int index, out object pData)
@@ -525,14 +525,14 @@ namespace iba.Remoting
             //Something went wrong --> Disconnect
             return new TimeSpan(0);
         }
-#endregion
+        #endregion
     }
 
-    public class AnalyzerSignalTreeExt : MarshalByRefObject, IDisposable, IbaAnalyzer.ISignalTree
+    public class ibaAnalyzerSignalTreeExt : MarshalByRefObject, IDisposable, IbaAnalyzer.ISignalTree
     {
         IbaAnalyzer.ISignalTree tree;
 
-        public AnalyzerSignalTreeExt(IbaAnalyzer.ISignalTree tree)
+        public ibaAnalyzerSignalTreeExt(IbaAnalyzer.ISignalTree tree)
         {
             this.tree = tree;
         }
@@ -541,19 +541,19 @@ namespace iba.Remoting
         {
             object root = tree.GetRootNode();
             if (root == null) return null;
-            return new AnalyzerSignalTreeNodeExt(root as IbaAnalyzer.ISignalTreeNode);
+            return new ibaAnalyzerSignalTreeNodeExt(root as IbaAnalyzer.ISignalTreeNode);
         }
 
         public dynamic FindNodeWithID(string channelId)
         {
             object node = tree.FindNodeWithID(channelId);
             if (node == null) return null;
-            return new AnalyzerSignalTreeNodeExt(node as IbaAnalyzer.ISignalTreeNode);
+            return new ibaAnalyzerSignalTreeNodeExt(node as IbaAnalyzer.ISignalTreeNode);
         }
 
-#region IDisposable Support
+        #region IDisposable Support
 
-        ~AnalyzerSignalTreeExt() => Dispose(false);
+        ~ibaAnalyzerSignalTreeExt() => Dispose(false);
 
         // Public implementation of Dispose pattern callable by consumers.
         public void Dispose()
@@ -576,7 +576,7 @@ namespace iba.Remoting
             }
             tree = null;
         }
-#endregion
+        #endregion
 
         public override object InitializeLifetimeService()
         {
@@ -591,11 +591,11 @@ namespace iba.Remoting
         }
     }
 
-    public class AnalyzerSignalTreeNodeExt : MarshalByRefObject, IDisposable, IbaAnalyzer.ISignalTreeNode
+    public class ibaAnalyzerSignalTreeNodeExt : MarshalByRefObject, IDisposable, IbaAnalyzer.ISignalTreeNode
     {
         IbaAnalyzer.ISignalTreeNode node;
 
-        public AnalyzerSignalTreeNodeExt(IbaAnalyzer.ISignalTreeNode node)
+        public ibaAnalyzerSignalTreeNodeExt(IbaAnalyzer.ISignalTreeNode node)
         {
             this.node = node;
 
@@ -605,21 +605,21 @@ namespace iba.Remoting
         {
             object newnode = this.node.GetFirstChildNode();
             if (newnode == null) return null;
-            return new AnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
+            return new ibaAnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
         }
 
         public dynamic GetSiblingNode()
         {
             object newnode = this.node.GetSiblingNode();
             if (newnode == null) return null;
-            return new AnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
+            return new ibaAnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
         }
 
         public dynamic GetParentNode()
         {
             object newnode = this.node.GetParentNode();
             if (newnode == null) return null;
-            return new AnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
+            return new ibaAnalyzerSignalTreeNodeExt(newnode as IbaAnalyzer.ISignalTreeNode);
         }
 
         public void Expand()
@@ -659,9 +659,9 @@ namespace iba.Remoting
             }
         }
 
-#region IDisposable Support
+        #region IDisposable Support
 
-        ~AnalyzerSignalTreeNodeExt() => Dispose(false);
+        ~ibaAnalyzerSignalTreeNodeExt() => Dispose(false);
 
         // Public implementation of Dispose pattern callable by consumers.
         public void Dispose()
@@ -684,7 +684,7 @@ namespace iba.Remoting
             }
             node = null;
         }
-#endregion
+        #endregion
 
         public override object InitializeLifetimeService()
         {
@@ -931,7 +931,8 @@ namespace iba.Remoting
             }
         }
 
-        public void Print() {
+        public void Print()
+        {
             try
             {
                 remoteIbaAnalyzer.Print();
@@ -1062,7 +1063,8 @@ namespace iba.Remoting
 
         public void SaveGraphImage(int graphIndex, string filename, int width, int height)
         {
-            try {
+            try
+            {
                 remoteIbaAnalyzer.SaveGraphImage(graphIndex, filename, width, height);
             }
             catch (Exception ex)
@@ -1073,7 +1075,8 @@ namespace iba.Remoting
 
         public int GetGraphCount()
         {
-            try {
+            try
+            {
                 return remoteIbaAnalyzer.GetGraphCount();
             }
             catch (Exception ex)
@@ -1187,7 +1190,8 @@ namespace iba.Remoting
 
         public void UpdateOverlay()
         {
-            try {
+            try
+            {
                 remoteIbaAnalyzer.UpdateOverlay();
             }
             catch (Exception ex)
@@ -1224,8 +1228,12 @@ namespace iba.Remoting
 
         public dynamic GetSignalTree(int filter)
         {
-            try {
-                return remoteIbaAnalyzer.GetSignalTree(filter);
+            try
+            {
+                var tree = remoteIbaAnalyzer.GetSignalTree(filter);
+                if (tree == null)
+                    return null;
+                return new ibaAnalylerSignalTreeClientWrapper(tree as IbaAnalyzer.ISignalTree);
             }
             catch (Exception ex)
             {
@@ -1311,6 +1319,219 @@ namespace iba.Remoting
                 Program.CommunicationObject.HandleBrokenConnection(ex);
         }
 
+    }
+
+    public class ibaAnalylerSignalTreeClientWrapper : IDisposable, IbaAnalyzer.ISignalTree
+    {
+        IbaAnalyzer.ISignalTree remoteTree;
+        public ibaAnalylerSignalTreeClientWrapper(IbaAnalyzer.ISignalTree tree)
+        {
+            remoteTree = tree;
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                ((IDisposable)remoteTree).Dispose();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public dynamic GetRootNode()
+        {
+            try
+            {
+                var node = remoteTree.GetRootNode();
+                if (node == null) return null;
+                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        public dynamic FindNodeWithID(string channelId)
+        {
+            try
+            {
+                var node = remoteTree.FindNodeWithID(channelId);
+                if (node == null) return null;
+                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        private void HandleBrokenConnection(Exception ex)
+        {
+            if (ex.Message.Contains("E_FAIL")) //ordinary ibaAnalyzer excpetion -> rethrow
+                throw ex;
+            else
+                Program.CommunicationObject.HandleBrokenConnection(ex);
+        }
+    }
+
+    public class ibaAnalylerSignalTreeNodeClientWrapper : IDisposable, IbaAnalyzer.ISignalTreeNode
+    {
+        IbaAnalyzer.ISignalTreeNode  remoteNode;
+        public ibaAnalylerSignalTreeNodeClientWrapper(IbaAnalyzer.ISignalTreeNode node)
+        {
+            remoteNode = node;
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                ((IDisposable)remoteNode).Dispose();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        private void HandleBrokenConnection(Exception ex)
+        {
+            if (ex.Message.Contains("E_FAIL")) //ordinary ibaAnalyzer excpetion -> rethrow
+                throw ex;
+            else
+                Program.CommunicationObject.HandleBrokenConnection(ex);
+        }
+
+        public dynamic GetFirstChildNode()
+        {
+            try
+            {
+                var node = remoteNode.GetFirstChildNode();
+                if (node == null) return null;
+                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        public dynamic GetSiblingNode()
+        {
+            try
+            {
+                var node = remoteNode.GetSiblingNode();
+                if (node == null) return null;
+                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        public dynamic GetParentNode()
+        {
+            try
+            {
+                var node = remoteNode.GetParentNode();
+                if (node == null) return null;
+                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        public void Expand()
+        {
+            try
+            {
+                remoteNode.Expand();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public string Text
+        {
+            get
+            {
+                try
+                {
+                    return remoteNode.Text;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return "";
+                }
+
+            }
+        }
+
+        public string channelId
+        {
+            get
+            {
+                try
+                {
+                    return remoteNode.channelId;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return "";
+                }
+
+            }
+        }
+    
+
+        public int ImageIndex
+        {
+            get
+            {
+                try
+                {
+                    return remoteNode.ImageIndex;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return 0;
+                }
+
+            }
+        }
+
+        public int IndexInCollection
+        {
+            get
+            {
+                try
+                {
+                    return remoteNode.IndexInCollection;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return 0;
+                }
+            }
+        }
     }
 
 }

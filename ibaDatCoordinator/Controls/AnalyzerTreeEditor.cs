@@ -77,8 +77,6 @@ namespace iba.Controls
 
 			lock (lockAnalyzer)
             {
-                bool bErrorFromAnalyzer = false;
-
                 try
                 {
                     if (Analyzer == null)
@@ -90,7 +88,11 @@ namespace iba.Controls
 
                     if (!bFilesOpened)
 					{
-						if (!string.IsNullOrEmpty(datFile))
+                        if (!String.IsNullOrEmpty(pdoFile))
+                        {
+                            Analyzer.OpenAnalysis(pdoFile);
+                        }
+                        if (!string.IsNullOrEmpty(datFile))
                         {
                             if (Path.GetExtension(datFile) == ".hdq")
                             {
@@ -102,7 +104,6 @@ namespace iba.Controls
                             else
                                 if (!string.IsNullOrEmpty(datFilePassword))
                                     Analyzer.SetFilePassword("", datFilePassword);
-
                             Analyzer.OpenDataFile(0, datFile);
                         }
                         bFilesOpened = true;
@@ -114,8 +115,7 @@ namespace iba.Controls
                 {
                     try
                     {
-                        if (bErrorFromAnalyzer)
-                            error = Analyzer?.GetLastError();
+                        error = Analyzer?.GetLastError();
                     }
                     catch
                     { }
@@ -233,7 +233,7 @@ namespace iba.Controls
 
         protected Crownwood.DotNetMagic.Controls.TreeControl tree;
 
-        AnalyzerSignalTreeExt analyzerTree;
+        IbaAnalyzer.ISignalTree analyzerTree;
 
         public event Action<AnalyzerTreeControl, string> AfterSelect;
         public event Action<AnalyzerTreeControl, string> CustomDoubleClick;
@@ -530,7 +530,7 @@ namespace iba.Controls
             }
 
             if (analyzerTree != null)
-                analyzerTree.Dispose();
+                ((IDisposable)analyzerTree).Dispose();
             analyzerTree = null;
             customTreeNodes.Clear();
             pendingSelection = "";
@@ -706,7 +706,7 @@ namespace iba.Controls
             {
                 try
                 {
-                    analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as AnalyzerSignalTreeExt;
+                    analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as IbaAnalyzer.ISignalTree;
                     //using (AnalyzerSignalTreeExt analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as AnalyzerSignalTreeExt)
                     //{
                         object nodeObj = analyzerTree.GetRootNode();
@@ -729,7 +729,7 @@ namespace iba.Controls
                     error = ex.Message;
                     if (analyzerTree != null)
                     {
-                        analyzerTree.Dispose();
+                        ((IDisposable)analyzerTree).Dispose();
                     }
                     analyzerTree = null;
                     ClearNodes();
