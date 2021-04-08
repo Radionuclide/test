@@ -93,7 +93,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            return;
+            channelTreeEdit.analyzerManager.OnLeave();
         }
 
         #endregion

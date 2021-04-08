@@ -1311,14 +1311,30 @@ namespace iba.Remoting
             }
         }
 
+        bool hbcHandled = false;
         private void HandleBrokenConnection(Exception ex)
         {
+            if (hbcHandled)
+                return;
+            hbcHandled = true;
             if (ex.Message.Contains("E_FAIL")) //ordinary ibaAnalyzer excpetion -> rethrow
                 throw ex;
             else
                 Program.CommunicationObject.HandleBrokenConnection(ex);
         }
 
+        public bool TestStale()
+        {
+            try
+            {
+                bool test = remoteIbaAnalyzer.IsVisible;
+            }
+            catch (Exception ex)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 
     public class ibaAnalylerSignalTreeClientWrapper : IDisposable, IbaAnalyzer.ISignalTree
@@ -1396,7 +1412,7 @@ namespace iba.Remoting
             }
             catch (Exception ex)
             {
-                HandleBrokenConnection(ex);
+                //HandleBrokenConnection(ex);
             }
         }
 

@@ -73,12 +73,16 @@ namespace iba.Controls
         public bool OpenAnalyzer(out string error)
         {
             error = "";
-			
-
-			lock (lockAnalyzer)
+            if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+            {
+                error = Properties.Resources.treeErrorNoService;
+                return false;
+            }
+            lock (lockAnalyzer)
             {
                 try
                 {
+
                     if (Analyzer == null)
                     {
                         if (!VersionCheck.CheckIbaAnalyzerVersion("7.1.0"))
@@ -86,8 +90,10 @@ namespace iba.Controls
                         Analyzer = ibaAnalyzerExt.Create(false); //noninteractive = false because of signal tree images...
                     }
 
+
+
                     if (!bFilesOpened)
-					{
+                    {
                         if (!String.IsNullOrEmpty(pdoFile))
                         {
                             Analyzer.OpenAnalysis(pdoFile);
@@ -103,7 +109,7 @@ namespace iba.Controls
                             }
                             else
                                 if (!string.IsNullOrEmpty(datFilePassword))
-                                    Analyzer.SetFilePassword("", datFilePassword);
+                                Analyzer.SetFilePassword("", datFilePassword);
                             Analyzer.OpenDataFile(0, datFile);
                         }
                         bFilesOpened = true;
@@ -190,7 +196,17 @@ namespace iba.Controls
 			catch
 			{ }
 		}
-	}
+
+        public void OnLeave()
+        {
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal) return;
+            if (Analyzer is ibaAnalylerClientWrapper && ((ibaAnalylerClientWrapper)Analyzer).TestStale())
+            {
+                bFilesOpened = false;
+                Analyzer = null;
+            }
+        }
+    }
 
 	[Flags]
     public enum ChannelTreeFilter
@@ -664,7 +680,14 @@ namespace iba.Controls
 
         void ClearNodes()
         {
-            ReleaseSignalNodes(tree.Nodes);
+            try
+            {
+                ReleaseSignalNodes(tree.Nodes);
+            }
+            catch (Exception)
+            {
+
+            }
             tree.Nodes.Clear();
         }
 
@@ -690,25 +713,34 @@ namespace iba.Controls
                 return;
             }
 
-            if (imageList.Images.Count < 2)
-            {
-                imageList.Images.Clear();
-                FillImageList();
-            }
             ClearNodes();
             string error = "";
             if (task != null && (task.IsFaulted || !string.IsNullOrEmpty(task.Result)))
             {
                 error = task.Exception?.Message ?? task.Result ?? Properties.Resources.AnalyzerTree_UnknownError;
+                imageList.Images.Clear();
                 tree.ImageList = imageList;
             }
-            else
+            if (String.IsNullOrEmpty(error))
             {
                 try
                 {
-                    analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as IbaAnalyzer.ISignalTree;
-                    //using (AnalyzerSignalTreeExt analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as AnalyzerSignalTreeExt)
-                    //{
+                    if (imageList.Images.Count < 2)
+                    {
+                        imageList.Images.Clear();
+                        FillImageList();
+                    }
+                    analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as IbaAnalyzer.ISignalTree; //could throw null ref exceptions when disconnected
+                    if (analyzerTree== null) //likely a disconnect
+                    {
+                        if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+                        {
+                            error = Properties.Resources.treeErrorNoService;
+                        }
+                        error = Properties.Resources.treeErrorGeneric;
+                    }
+                    else
+                    { 
                         object nodeObj = analyzerTree.GetRootNode();
                         IbaAnalyzer.ISignalTreeNode node = nodeObj as IbaAnalyzer.ISignalTreeNode;
                         if (node != null)
@@ -718,7 +750,7 @@ namespace iba.Controls
                             tree.Nodes.Add(trnode);
                             RecursiveAdd(trnode);
                         }
-                    //}
+                    }
                     tree.ImageList = imageList;
                     Invalidate();
                     OnInvalidated(null);

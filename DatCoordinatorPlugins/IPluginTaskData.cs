@@ -83,15 +83,17 @@ namespace iba.Plugins
 		void UnLoadAnalysis();
 
 		void ReopenAnalysis();
+
+        void OnLeave(); //call this method on leave -> resets stale ibaAnalyzers...
 	}
 
 
-	/// <summary>
-	/// Interface implemented by a plugin task, data part in the case that the plugin needs
-	/// to use the datcoordinator network shares handling functionality
-	/// Implementation must have the Serializable attribute
-	/// </summary>
-	public interface IPluginTaskDataUNC : IPluginTaskData
+    /// <summary>
+    /// Interface implemented by a plugin task, data part in the case that the plugin needs
+    /// to use the datcoordinator network shares handling functionality
+    /// Implementation must have the Serializable attribute
+    /// </summary>
+    public interface IPluginTaskDataUNC : IPluginTaskData
     {
         /// <summary>
         /// Extension of the generated output file, e.g.: ".xml"

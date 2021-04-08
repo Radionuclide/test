@@ -95,7 +95,7 @@ namespace AM_OSPC_plugin
 
         public void LeaveCleanup()
         {
-            //nothing to do
+            m_analyzerManager.OnLeave();
         }
 
 		#endregion

@@ -109,8 +109,7 @@ namespace S7_writer_plugin
 
         public void LeaveCleanup()
         {
-            //nothing to do
-            //throw new NotImplementedException();
+            m_analyzerManager.OnLeave();
         }
 
 		#endregion

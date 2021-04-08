@@ -5011,6 +5011,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to load signal tree.
+        /// </summary>
+        internal static string treeErrorGeneric {
+            get {
+                return ResourceManager.GetString("treeErrorGeneric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaDatCoordinator Service is disconnected.
+        /// </summary>
+        internal static string treeErrorNoService {
+            get {
+                return ResourceManager.GetString("treeErrorNoService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The item could not be processed within the maximum number of attempts, further processing will not be attempted.
         /// </summary>
         internal static string TriedToManyTimes {

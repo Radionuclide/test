@@ -352,6 +352,7 @@ namespace iba.Controls
             m_ctrlEvent.ReleaseEditRightsServer();
             Task.Run(() => m_ctrlServer.Reader?.Disconnect()); // Could result into deadlocks when executing on the GUI thread when login form needs to be shown
             ResetChannelTrees();
+            m_analyzerManager.OnLeave();
         }
 
         private void ResetChannelTrees()
@@ -361,12 +362,12 @@ namespace iba.Controls
                 BeginInvoke(new Action(ResetChannelTrees));
                 return;
             }
+            if (bLoadingChannelTree)
+            {
+                return;
+            }
 
             bResetChannelTree = true;
-
-            if (bLoadingChannelTree)
-                return;
-
             m_pulseEditor.ResetChannelTree();
             m_timeEditor.ResetChannelTree();
             m_timeEditorOut.ResetChannelTree();
