@@ -1329,7 +1329,7 @@ namespace iba.Remoting
             {
                 bool test = remoteIbaAnalyzer.IsVisible;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return true;
             }
@@ -1410,7 +1410,7 @@ namespace iba.Remoting
             {
                 ((IDisposable)remoteNode).Dispose();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //HandleBrokenConnection(ex);
             }

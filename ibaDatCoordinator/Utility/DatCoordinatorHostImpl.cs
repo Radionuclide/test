@@ -194,7 +194,7 @@ namespace iba.Utility
 
 		public bool BrowseForPdoFile(ref string m_pdoFilePath, out string localPath)
 		{
-			bool bLocal = false;
+            localPath = null; //obsolete...
 			DialogResult result = DialogResult.Abort;
 			string path = m_pdoFilePath;
 			if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE && !Program.ServiceIsLocal)
@@ -216,7 +216,6 @@ namespace iba.Utility
 			}
 			else
 			{
-				bLocal = true;
 				using (var dlg = new OpenFileDialog())
 				{
 					dlg.CheckFileExists = true;
@@ -237,10 +236,8 @@ namespace iba.Utility
 			if (result == DialogResult.OK)
 			{
 				m_pdoFilePath = path;
-				localPath = bLocal ? path : Path.GetFileName(path);
 				return true;
 			}
-			localPath = "";
 			return false;
 		}
 

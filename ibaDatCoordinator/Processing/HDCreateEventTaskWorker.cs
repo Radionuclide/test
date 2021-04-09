@@ -30,12 +30,12 @@ namespace iba.Processing
         ConfigurationWorker m_configWorker;
         string m_dataFile;
 
-        public HDCreateEventTaskWorker(HDCreateEventTaskData localData, ConfigurationWorker configWorker)
+        public HDCreateEventTaskWorker(HDCreateEventTaskData data, ConfigurationWorker configWorker)
         {
             m_ibaAnalyzer = null;
             m_dataFile = null;
             m_configWorker = configWorker;
-            m_data = localData;
+            m_data = data;
         }
 
         public void Dispose()
@@ -565,7 +565,7 @@ namespace iba.Processing
 
                     try
                     {
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(m_ibaAnalyzer);
+                        ((IDisposable)(m_ibaAnalyzer)).Dispose();
                     }
                     catch
                     { }

@@ -1887,6 +1887,9 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="HDQErrorStopBeforeStart" xml:space="preserve">
     <value>Start time is later than Stop time: Start {0} Stop {1}</value>
   </data>
+  <data name="ClientNeedsConnectionForTestTask" xml:space="preserve">
+    <value>The client needs to be connected to the server to test this task.</value>
+  </data>
   <data name="treeErrorGeneric" xml:space="preserve">
     <value>Failed to load signal tree</value>
   </data>

@@ -443,6 +443,11 @@ namespace iba
         {
             return VersionCheck.CheckIbaAnalyzerVersion(version);
         }
+
+        public void TestHDEventCreationTask(HDCreateEventTaskData data)
+        {
+            iba.Controls.HDEventCreationTaskControl.TestTask(data);
+        }
     }
 
     public class CommunicationObjectWrapper
@@ -956,7 +961,7 @@ namespace iba
             }
         }
 
-        internal bool CheckIbaAnalyzerVersion(string version)
+        public bool CheckIbaAnalyzerVersion(string version)
         {
             try
             {
@@ -967,6 +972,11 @@ namespace iba
                 HandleBrokenConnection(ex);
                 return false;
             }
+        }
+
+        public void TestHDEventCreationTask(HDCreateEventTaskData data)
+        {
+            m_com.TestHDEventCreationTask(data);
         }
     }
 

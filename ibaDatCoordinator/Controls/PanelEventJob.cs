@@ -60,6 +60,11 @@ namespace iba.Controls
         public PanelEventJob()
         {
             InitializeComponent();
+
+            //hardcode these, otherwise our translators adapt them
+            dtStartTimeHdQuery.CustomFormat = @"dd/MM/yyyy HH:mm:ss";
+            dtStopTimeHdQuery.CustomFormat = @"dd/MM/yyyy HH:mm:ss";
+
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
 

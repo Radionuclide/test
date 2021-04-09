@@ -410,6 +410,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The client needs to be connected to the server to test this task..
+        /// </summary>
+        internal static string ClientNeedsConnectionForTestTask {
+            get {
+                return ResourceManager.GetString("ClientNeedsConnectionForTestTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closing.
         /// </summary>
         internal static string closing {

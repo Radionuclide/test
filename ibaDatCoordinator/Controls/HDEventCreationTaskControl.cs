@@ -673,7 +673,7 @@ namespace iba.Controls
             try
             {
                 Cursor = Cursors.WaitCursor;
-                HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(m_data, null);
+                
                 string datFile = m_tbDAT.Text;
                 string error = "";
                 bool ok = true;
@@ -684,11 +684,23 @@ namespace iba.Controls
                 }
                 if (ok)
                 {
-                    Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, m_tbDAT.Text);
-                    m_analyzerManager.Analyzer.CloseDataFiles(); //works both with hdq and .dat
-                    MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal)
+                    {
+                        TestTask(m_data);
+                        MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
+                    {
+                        error = Properties.Resources.ClientNeedsConnectionForTestTask;
+                        ok = false;
+                    }
+                    else //connected... because the worker uses ibaFiles and hdq ini parsers, not yet possible to test locally
+                    {
+                        Program.CommunicationObject.TestHDEventCreationTask(m_data);
+                    }
                 }
-                else
+                
+                if (!ok)
                 {
                     MessageBox.Show(this, error, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -702,6 +714,11 @@ namespace iba.Controls
             }
         }
 
+        public static void TestTask(HDCreateEventTaskData dat)
+        {
+            HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(dat, null);
+            Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, m_tbDAT.Text);
+        }
 
         private void m_btnBrowsePDO_Click(object sender, EventArgs e)
         {
