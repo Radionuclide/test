@@ -83,11 +83,11 @@ namespace iba.Controls
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
             {
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
-                Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(false, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
+                Utility.DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(false, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
             }
             else if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
-                Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(false, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
+                Utility.DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(false, this, m_pdoFileTextBox.Text, null, m_data.ParentConfigurationData);
             }
         }
 
@@ -258,7 +258,7 @@ namespace iba.Controls
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
+			Utility.DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
             UpdateSources();
 		}
 

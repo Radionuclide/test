@@ -74,7 +74,7 @@ namespace iba.Plugins
 		bool BrowseForPdoFile(ref string m_pdoFilePath, out string localPath);
 
 
-		void UploadPdoFile(bool messageOnNoChanges, Control form, string m_pdoFilePath, IAnalyzerManagerUpdateSource analyzerManager, IJobData m_data);
+		void UploadPdoFile(bool messageOnNoChanges, Control form, string pdoFilePath, IAnalyzerManagerUpdateSource analyzerManager, IJobData m_data);
 
         /// <summary>
         /// Get service from host.

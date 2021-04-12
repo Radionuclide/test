@@ -620,8 +620,8 @@ namespace iba.Controls
 
         void UploadPdoFile(bool messageOnNoChanges)
         {
-			Utility.DatCoordinatorHostImpl.Host.UploadPdoFile(messageOnNoChanges, this, m_tbPDO.Text, m_analyzerManager, m_data.ParentConfigurationData);
-			UpdateSources();
+			if (Utility.DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(messageOnNoChanges, this, m_tbPDO.Text, m_analyzerManager, m_data.ParentConfigurationData))
+			    UpdateSources();
 		}
 
         string oldDat = "";
@@ -697,6 +697,7 @@ namespace iba.Controls
                     else //connected... because the worker uses ibaFiles and hdq ini parsers, not yet possible to test locally
                     {
                         Program.CommunicationObject.TestHDEventCreationTask(m_data);
+                        MessageBox.Show(this, Properties.Resources.HDEventTask_TestSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 
@@ -717,7 +718,7 @@ namespace iba.Controls
         public static void TestTask(HDCreateEventTaskData dat)
         {
             HDCreateEventTaskWorker worker = new HDCreateEventTaskWorker(dat, null);
-            Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, m_tbDAT.Text);
+            Dictionary<string, EventWriterData> eventData = worker.GenerateEvents(null, dat.DatFile);
         }
 
         private void m_btnBrowsePDO_Click(object sender, EventArgs e)
