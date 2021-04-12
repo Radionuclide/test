@@ -165,7 +165,7 @@
 
 	<div id="hist">
 		<div class="box">
-		<P class="header1">Version 2.4.0 - 2021-03-??</P>
+		<P class="header1">Version 2.4.0 - 2021-04-12</P>
 			<p class="warning">
 				.NET framework 4.8 is required.<br>
 				ibaDatCoordinator client and server connections are only allowed when both client and server have version 2.4.0 or later.<br>
@@ -182,19 +182,21 @@
 				<li>ibaHD Offline event creation task: Trigger options for generating events based on digital signals. #17439</li>
 				<li>ibaHD Offline event creation task: Numeric signals in text fields and text signals in numeric fields are allowed. #17534</li>
 				<li>ibaHD import task: Updated localisations.</li>
-				<li>Improved storing of passwords in the configuration. #18205</li>
+				<li>Improved handling of passwords. #18205</li>
 				<li>Improved handling of missing or incompatible plugins. #18403</li>
 				<li>Support file contains extra information. #18273</li>
 				<li>Added file auto completion for .pdo and example .dat file textboxes in the HD offline events task.</li>
+				<li>When using text-channels in the offline event task the first nonempty text in the signal is used instead of the first entry (which is empty most of the time). #18492</li>
+				<li>ibaDatCoordinator now creates proper UTF8 encoded .hdq files so ibaAnalyzer has no difficulty opening the corresponding HD queries if one of the entries in the .hdq file has nonlatin characters in it. #18121</li>
 			</OL>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
-				<li>ibaHD Offline event creation task: Values from previously configured offline event task are now cleared when adding a new offline event task. #16661</li>
+				<li>ibaHD Offline event creation task: Values from previously configured offline event task are now cleared when adding a new offline event task. #17782</li>
 				<li>ibaHD Offline event creation task: ibaHD password was not stored when saving and restoring the configuration. #18318</li>
 				<li>IbaHD connection of event/scheduled job remained open when selecting another view. #18104</li>
 				<li>Disabling the retrying for errors cycle was not possible. #17863</li>
 				<li>Signals from data files were not displayed in the signal tree in the HD offline events task. #18111</li>
-				<li>Open dat file dialog in Event and Scheduled jobs did not have dat files in its filter.</li>
+				<li>Open dat file dialog in Event and Scheduled jobs did not have .hdq files in its filter. #17540</li>
 				<li>No passwords were set for signal trees in various tasks.</li>
 			</OL>
 			<p>&nbsp; </p>
