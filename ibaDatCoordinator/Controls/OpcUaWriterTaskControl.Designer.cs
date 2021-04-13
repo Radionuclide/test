@@ -308,7 +308,7 @@
             // upButton
             // 
             resources.ApplyResources(this.upButton, "upButton");
-            this.upButton.Image = global::iba.Properties.Resources.up;
+            this.upButton.Image = global::iba.Properties.Resources.up.ToBitmap();
             this.upButton.Name = "upButton";
             this.upButton.UseVisualStyleBackColor = true;
             this.upButton.Click += new System.EventHandler(this.UpButton_Click);
@@ -316,7 +316,7 @@
             // downButton
             // 
             resources.ApplyResources(this.downButton, "downButton");
-            this.downButton.Image = global::iba.Properties.Resources.down;
+            this.downButton.Image = global::iba.Properties.Resources.down.ToBitmap();
             this.downButton.Name = "downButton";
             this.downButton.UseVisualStyleBackColor = true;
             this.downButton.Click += new System.EventHandler(this.DownButton_Click);
