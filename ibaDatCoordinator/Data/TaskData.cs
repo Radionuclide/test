@@ -91,25 +91,27 @@ namespace iba.Data
             m_notify = WhenToDo.DISABLED;
             m_guid = Guid.NewGuid();
             m_resourceIntensive = false;
-            if (this is ReportData)
-                m_name = iba.Properties.Resources.reportTitle;
-            else if (this is ExtractData)
-                m_name = iba.Properties.Resources.extractTitle;
-            else if (this is BatchFileData)
-                m_name = iba.Properties.Resources.batchfileTitle;
-            else if (this is CopyMoveTaskData)
-                m_name = iba.Properties.Resources.copyTitle;
-            else if (this is IfTaskData)
-                m_name = iba.Properties.Resources.iftaskTitle;
-            else if (this is UpdateDataTaskData)
-                m_name = iba.Properties.Resources.updateDataTaskTitle;
-            else if (this is PauseTaskData)
-                m_name = iba.Properties.Resources.pauseTaskTitle;
-            else if (this is HDCreateEventTaskData)
-                m_name = iba.Properties.Resources.HDEventTaskTitle;
-            else if (this is TaskWithTargetDirData)
-                m_name = iba.Properties.Resources.cleanupTaskTitle;
-        }
+			if (this is ReportData)
+				m_name = iba.Properties.Resources.reportTitle;
+			else if (this is ExtractData)
+				m_name = iba.Properties.Resources.extractTitle;
+			else if (this is BatchFileData)
+				m_name = iba.Properties.Resources.batchfileTitle;
+			else if (this is CopyMoveTaskData)
+				m_name = iba.Properties.Resources.copyTitle;
+			else if (this is IfTaskData)
+				m_name = iba.Properties.Resources.iftaskTitle;
+			else if (this is UpdateDataTaskData)
+				m_name = iba.Properties.Resources.updateDataTaskTitle;
+			else if (this is PauseTaskData)
+				m_name = iba.Properties.Resources.pauseTaskTitle;
+			else if (this is HDCreateEventTaskData)
+				m_name = iba.Properties.Resources.HDEventTaskTitle;
+			else if (this is TaskWithTargetDirData)
+				m_name = iba.Properties.Resources.cleanupTaskTitle;
+			else if (this is OpcUaWriterTaskData)
+				m_name = iba.Properties.Resources.opcUaWriterTaskTitle;
+		}
 
         public int CompareTo(TaskData other)
         {

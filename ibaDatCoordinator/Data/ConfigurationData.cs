@@ -84,6 +84,7 @@ namespace iba.Data
         XmlElement(Type = typeof(CleanupTaskData)),
         XmlElement(Type = typeof(SplitterTaskData)),
         XmlElement(Type = typeof(HDCreateEventTaskData)),
+        XmlElement(Type = typeof(OpcUaWriterTaskData)),
         XmlElement(Type = typeof(CustomTaskData)),
         XmlElement(Type = typeof(CustomTaskDataUNC))]
         public List<TaskData> Tasks

@@ -1875,7 +1875,64 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ErrorWriteEvents" xml:space="preserve">
     <value>Failed to write events</value>
   </data>
+  <data name="OPCUAIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
   <data name="PDOOpenFailed" xml:space="preserve">
+    <value>..\Resources\OPCIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="opcUaWriterTaskButton" xml:space="preserve">
+    <value>add a new OPC-UA Writer Task</value>
+  </data>
+  <data name="opcUaWriterTaskTitle" xml:space="preserve">
+    <value>OPC UA writer</value>
+  </data>
+  <data name="sychronizeList" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SychronizeList.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deleteOPCUATastQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the OPC UA Computed values options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="logComputedValuesUpdated" xml:space="preserve">
+    <value>computed values updated</value>
+  </data>
+  <data name="logOPCUAWriterEvaluatingTestValue" xml:space="preserve">
+    <value>Error occured while evaluating test value : {0}</value>
+  </data>
+  <data name="logOPCUAWriterStarted" xml:space="preserve">
+    <value>started evaluating computed values</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>Data type</value>
+  </data>
+  <data name="errExprNameNonUnique" xml:space="preserve">
+    <value>Expression name "{0}" must be unique </value>
+  </data>
+  <data name="BadEvaluate" xml:space="preserve">
+    <value>Could not evaluate expression for operand {0}</value>
+  </data>
+  <data name="ibaAnalyzerVersionError" xml:space="preserve">
+    <value>You have version {0} of ibaAnalyzer installed. The minimum required version is 6.5.0. Version 6.7.0 or later is recommended.</value>
+  </data>
+  <data name="NoVersion" xml:space="preserve">
+    <value>ibaAnalyzer version could not be determined</value>
+  </data>
+  <data name="logOPCUAServerDisabled" xml:space="preserve">
+    <value>OPC UA server is disabled</value>
+  </data>
+  <data name="ibaAnalyzerExpression" xml:space="preserve">
+    <value>ibaAnalyzer Expression</value>
+  </data>
+  <data name="OpcUaVariableName" xml:space="preserve">
+    <value>OPC UA variable name</value>
+  </data>
+  <data name="TestValue" xml:space="preserve">
+    <value>Test value</value>
+  </data>
+  <data name="down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\down.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
     <value>Failed to open PDO file {0}: </value>
   </data>
   <data name="ErrorDatFileOpen" xml:space="preserve">

@@ -784,6 +784,10 @@ namespace iba.Processing
                     {
                         taskTypeStr = "ibaHDCreateEvent";
                     }
+                    if (taskData is OpcUaWriterTaskData)
+                    {
+                        taskTypeStr = "OpcUaComputedValues";
+                    }
                 }
 
                 taskInfo.TaskType.Value = taskTypeStr;
@@ -851,6 +855,29 @@ namespace iba.Processing
                         {
                             var jobInfo = od.AddNewJob(cfg.JobType, cfg.Name, cfg.Guid);
                             ExtMonRefreshJobInfo(jobInfo, cfg);
+
+                            // get all (if any) computedValue tasks of the job
+                            var computedValueTasks = cfg.Tasks.Where(t => t is OpcUaWriterTaskData)
+                                .Cast<OpcUaWriterTaskData>().ToList();
+
+                            // check if the job has any ComputedValue tasks
+                            if (computedValueTasks.Count != 0)
+                            {
+                                // first, create a folder for a Job itself
+                                var jobFolder = od.AddNewComputedValueJob(cfg.Name, cfg.Guid);
+
+                                // and then add all tasks to the Job folder
+                                foreach (var cvTask in computedValueTasks)
+                                {
+                                    if (cvTask.Records.Count == 0)
+                                        continue; // don't create task folder if there's no expressions
+
+                                    if (!OpcUaWriterTaskData.AssertNoDuplicates(cvTask))
+                                        continue; // duplicate names (IDs) detected - this should not happen 
+
+                                    od.AddNewComputedValueTask(jobFolder, cvTask);
+                                }
+                            }
                         }
                     }
                 }
@@ -858,12 +885,14 @@ namespace iba.Processing
                 return true; // success
             }
             catch (Exception ex)
-                            {
+            {
                 LogData.Data.Logger.Log(Level.Exception,
                     $"{nameof(ExtMonRebuildObjectsData)}. Error during rebuilding object data. {ex.Message}.");
                 return false; // error
             }
         }
+
+
 
         /// <summary> Gets Server host name (can be different from client's one if is run in c/s mode) </summary>
         public virtual string GetServerHostName()

@@ -313,6 +313,8 @@ namespace iba.Processing
                     BuildFolderRecursively(ExtMonInstance.FolderOneTimeJobs);
                     // ibaRoot.DatCoord.Product.5 - Event jobs
                     BuildFolderRecursively(ExtMonInstance.FolderEventBasedJobs);
+                    // ibaRoot.DatCoord.Product.6 - Computed values
+                    BuildFolderRecursively(ExtMonInstance.FolderComputedValues);
 
                     ExtMonData.DebugWriteLine(nameof(SnmpWorker), "RebuildTree (success)");
                     return true; // rebuilt successfully
@@ -597,7 +599,12 @@ namespace iba.Processing
                     // we should copy it from extMonGroup; 
 
                     // first check if extMonGroup itself is fresh enough
-                    if (!xmGroup.TimeStamp.IsUpToDate)
+                    if (xmGroup.UpdateMode == ExtMonData.GroupUpdateMode.UpdatedContinuouslyByTaskManager)
+                    {
+                        // data inside this extMonGroup is always up-to-date
+                        // no need to request it from TaskManager
+                    }
+                    else if (!xmGroup.TimeStamp.IsUpToDate)
                     {
                         // extMonGroup is not fresh enough;
                         // request fresh data from TaskManager
@@ -612,6 +619,11 @@ namespace iba.Processing
                                 break;
                             case ExtMonData.JobInfoBase jobInfo:
                                 bSuccess = man.ExtMonRefreshJobInfo(jobInfo);
+                                break;
+                            case ExtMonData.ComputedValuesInfo _:
+                                // should not happen, because ComputedValuesInfo uses GroupUpdateMode.UpdatedContinuouslyByTaskManager
+                                bSuccess = false;
+                                Debug.Assert(false);
                                 break;
                             default:
                                 // should not happen

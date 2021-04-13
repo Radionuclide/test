@@ -91,6 +91,9 @@ namespace iba.Data
         /// <summary> SNMP: PrSpecific.5 </summary>
         public readonly ExtMonFolder FolderEventBasedJobs;
 
+        /// <summary> SNMP: PrSpecific.100 </summary>
+        public readonly ExtMonFolder FolderComputedValues;
+
         #endregion
 
 
@@ -136,6 +139,11 @@ namespace iba.Data
                 FolderEventBasedJobs = new ExtMonFolder(FolderRoot,
                 @"Event jobs", @"eventJobs", @"EventJobs",
                 @"List of all event jobs.", new IbaSnmpOid(5)));
+
+            FolderRoot.Children.Add(
+                FolderComputedValues = new ExtMonFolder(FolderRoot,
+                @"Computed values", @"computedValues", @"ComputedValues",
+                @"List of all computed values.", new IbaSnmpOid(100)));
         }
 
         public void Reset()
@@ -147,6 +155,7 @@ namespace iba.Data
             FolderScheduledJobs.ClearChildren();
             FolderOneTimeJobs.ClearChildren();
             FolderEventBasedJobs.ClearChildren();
+            FolderComputedValues.ClearChildren();
         }
 
         #endregion
@@ -391,6 +400,34 @@ namespace iba.Data
             Debug.Assert(jobInfo.SnmpLeastId == indexWithinFolder);
             Debug.Assert(jobInfo.SnmpFullMibName.Contains($"Job{jobInfo.SnmpLeastId}"));
             return jobInfo;
+        }
+
+        public ExtMonFolder AddNewComputedValueJob(string jobName, Guid guid)
+        {
+            ExtMonFolder parentFolder = Instance.FolderComputedValues; // all computed value nodes are grouped here
+            var indexWithinFolder = (uint)parentFolder.Children.Count + 1; // is used for SNMP
+
+            var jobFolder = new ExtMonFolder(
+                parentFolder,
+                jobName,
+                $@"Job{indexWithinFolder}",
+                $@"Computed values of the job '{jobName}'",
+                indexWithinFolder)
+            {
+                UaBrowseName = $@"Job{{{guid}}}"
+            };
+
+            parentFolder.Children.Add(jobFolder);
+
+            return jobFolder;
+        }
+
+        public ComputedValuesInfo AddNewComputedValueTask(ExtMonFolder parentJobFolder, OpcUaWriterTaskData computedValueTaskData)
+        {
+            var indexWithinFolder = (uint)parentJobFolder.Children.Count + 1; // is used for SNMP
+            var taskInfo = new ComputedValuesInfo(parentJobFolder, indexWithinFolder, computedValueTaskData);
+            parentJobFolder.Children.Add(taskInfo);
+            return taskInfo;
         }
 
         public List<ExtMonNode> GetFlatListOfAllChildren() => FolderRoot.GetFlatListOfAllChildren();
@@ -794,6 +831,25 @@ namespace iba.Data
             }
         }
 
+        public enum GroupUpdateMode
+        {
+            /// <summary> Actual values are requested from TaskManager only when external request
+            /// (from SNMP, OPC, etc.) occurs.
+            /// If there are no external requests, data is not updated at all.
+            /// Timestamps are used to track whether data is 'fresh' enough. </summary>
+            /// <remarks> License info, GlobalCleanup are good examples of this mode.
+            /// It makes no sense to actively track e.g. free space of a drive if it is not monitored from outside </remarks>
+            UpdatedOnExternalRequest,
+
+            /// <summary> Is kept up-to-date by workers inside the core of datCo
+            /// independently on whether the data is monitored/requested from outside or not. </summary>
+            /// <remarks> ComputedValues folder is an example of such mode.
+            /// Since we have to calculate expressions for each file anyway, it's easier to update values
+            /// after each calculation, rather than to wait for external requests to do this.
+            /// Timestamps are ignored for this mode. </remarks>
+            UpdatedContinuouslyByTaskManager
+        }
+
         /// <summary>
         /// Group is a special kind of folder.
         /// It has a timestamp of last update, and it's assumed that its items are updated altogether if one of
@@ -801,10 +857,14 @@ namespace iba.Data
         /// </summary>
         public abstract class ExtMonGroup : ExtMonFolder
         {
-            protected ExtMonGroup(ExtMonFolder parent, TimeSpan ageThreshold, uint snmpLeastId,
+            public GroupUpdateMode UpdateMode { get; }
+
+            protected ExtMonGroup(ExtMonFolder parent, GroupUpdateMode updateMode, TimeSpan ageThreshold, uint snmpLeastId,
                 string caption = null, string snmpMibNameSuffix = null, string description = null)
                 : base(parent, caption, snmpMibNameSuffix, description, snmpLeastId)
             {
+                UpdateMode = updateMode;
+
                 if (ageThreshold < MinimalAgeThreshold)
                 {
                     // it makes no sense to set group's threshold to level lower than minimal;
@@ -907,7 +967,7 @@ namespace iba.Data
             public readonly ExtMonVariable<int> DemoTimeLimit;
 
             public LicenseInfo(ExtMonFolder parent) 
-                : base(parent, LicenseAgeThreshold, 0 /*not used*/)
+                : base(parent, GroupUpdateMode.UpdatedOnExternalRequest, LicenseAgeThreshold, 0 /*not used*/)
             {
                 // set Caption, Description, etc.
                 Caption = @"Licensing";
@@ -990,7 +1050,7 @@ namespace iba.Data
             public readonly ExtMonVariable<uint> RescanTime;
 
             public GlobalCleanupDriveInfo(ExtMonFolder parent, uint snmpLeastId, string driveName) 
-                : base(parent, DriveInfoAgeThreshold, snmpLeastId)
+                : base(parent, GroupUpdateMode.UpdatedOnExternalRequest, DriveInfoAgeThreshold, snmpLeastId)
             {
                 // set Caption, Description, etc.
                 Caption = $@"Drive '{driveName}'";
@@ -1303,7 +1363,7 @@ namespace iba.Data
             public ExtMonVariable<int> Lifebeat;
 
             protected JobInfoBase(ExtMonFolder parent, uint snmpLeastId, string jobName) 
-                : base(parent, JobAgeThreshold, snmpLeastId)
+                : base(parent, GroupUpdateMode.UpdatedOnExternalRequest, JobAgeThreshold, snmpLeastId)
             {
                 Caption = $@"Job '{jobName}'";
                 // SnmpFullMibName = ""; // is set in derived classes
@@ -1723,17 +1783,89 @@ namespace iba.Data
                 PrivateReset();
             }
         }
+        
+        public class ComputedValuesInfo : ExtMonGroup
+        {
+            public Guid DataId {get; }
+
+			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OpcUaWriterTaskData computedValueTaskData)
+				: base(parent, GroupUpdateMode.UpdatedContinuouslyByTaskManager,
+                    JobAgeThreshold, snmpLeastId, computedValueTaskData.Name, $@"Task{snmpLeastId}")
+			{
+                DataId = computedValueTaskData.Guid;
+                Description = $@"Computed values of the task '{computedValueTaskData.Name}' of the job '{computedValueTaskData.ParentConfigurationData.Name}'";
+                UaBrowseName = $@"Task{{{DataId}}}";
+
+                for (int i = 0; i < computedValueTaskData.Records.Count; i++)
+				{
+                    var record = computedValueTaskData.Records[i];
+
+                    // just for case
+                    if (record.Name == "")
+                        continue;
+
+                    // SNMP MIB name character set is rather limited, use index for names
+                    string snmpMibNameSuffix = $@"Value{i+1}";
+                    string description = $@"Computed value '{record.Name}' for expression '{record.Expression}'";
+
+                    ExtMonVariableBase child = null;
+                    switch (record.DataType) 
+                    {
+                        case OpcUaWriterTaskData.Record.ExpressionType.Number:
+                            child = AddChildVariable<double>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
+                            break;
+                        case OpcUaWriterTaskData.Record.ExpressionType.Text:
+                            child = AddChildVariable<string>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
+                            break;
+                        case OpcUaWriterTaskData.Record.ExpressionType.Digital:
+                            child = AddChildVariable<bool>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
+                            break;
+                        default:
+                            Debug.Assert(false);
+                            break;
+                    }
+
+                    // record.Name is unique within the task
+                    child.UaBrowseName = record.Name;
+                }
+                
+                UpdateValues(computedValueTaskData);
+			}
+
+            public void UpdateValues(OpcUaWriterTaskData data)
+            {
+                if (Children.Count != data.Records.Count)
+                   Debug.Assert(false);
+                for (int i = 0; i < Children.Count; i++)
+                {
+                    if (Children[i] is ExtMonVariable<double> childd && data.Records[i].Value is double vald && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Number)
+                        childd.Value = vald;
+                    else if (Children[i] is ExtMonVariable<string> childs && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Text)
+                    {
+                        if (data.Records[i].Value is string vals)
+                            childs.Value = vals;
+                        else if (double.IsNaN((double)data.Records[i].Value))
+                            childs.Value = "";
+                        else
+                            Debug.Assert(false);
+                    }
+                    else if (Children[i] is ExtMonVariable<bool> childb && data.Records[i].Value is double valb && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
+                        childb.Value = valb >= 0.5;
+                    else 
+                        Debug.Assert(false);
+                }
+            }
+		}
+
+		#endregion
 
 
-        #endregion
+		#endregion
 
 
-        #endregion
+		#region Enums handling
 
-
-        #region Enums handling
-
-        public struct EnumDescription
+		public struct EnumDescription
         {
             /// <summary> Enum value description; this is needed because in-code enum item names are
             /// sometimes not so self-descriptive or not so user-friendly, to be shown in GUI and MIB

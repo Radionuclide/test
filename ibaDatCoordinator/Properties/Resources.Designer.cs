@@ -226,6 +226,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not evaluate expression for operand {0}.
+        /// </summary>
+        internal static string BadEvaluate {
+            get {
+                return ResourceManager.GetString("BadEvaluate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bad Range: Could not determine start of range!.
         /// </summary>
         internal static string BadRangeStart {
@@ -606,6 +615,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data type.
+        /// </summary>
+        internal static string DataType {
+            get {
+                return ResourceManager.GetString("DataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drag and drop .dat files or directories from Windows Explorer to here.
         /// </summary>
         internal static string DatDirDragAndDrop {
@@ -751,6 +769,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the OPC UA Computed values options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteOPCUATastQuestion {
+            get {
+                return ResourceManager.GetString("deleteOPCUATastQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the Pause options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deletePauseTaskQuestion {
@@ -861,6 +888,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon down {
+            get {
+                object obj = ResourceManager.GetObject("down", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The download of file {0} was cancelled.
         /// </summary>
         internal static string Download_ErrorCancelled {
@@ -929,6 +966,15 @@ namespace iba.Properties {
         internal static string ErrDownloadingFiles {
             get {
                 return ResourceManager.GetString("ErrDownloadingFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expression name &quot;{0}&quot; must be unique .
+        /// </summary>
+        internal static string errExprNameNonUnique {
+            get {
+                return ResourceManager.GetString("errExprNameNonUnique", resourceCulture);
             }
         }
         
@@ -1572,6 +1618,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer Expression.
+        /// </summary>
+        internal static string ibaAnalyzerExpression {
+            get {
+                return ResourceManager.GetString("ibaAnalyzerExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New ibaAnalyzer started with process ID: {0}.
         /// </summary>
         internal static string IbaAnalyzerRestart {
@@ -1595,6 +1650,15 @@ namespace iba.Properties {
         internal static string IbaAnalyzerUndeterminedError {
             get {
                 return ResourceManager.GetString("IbaAnalyzerUndeterminedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have version {0} of ibaAnalyzer installed. The minimum required version is 6.5.0. Version 6.7.0 or later is recommended..
+        /// </summary>
+        internal static string ibaAnalyzerVersionError {
+            get {
+                return ResourceManager.GetString("ibaAnalyzerVersionError", resourceCulture);
             }
         }
         
@@ -2164,6 +2228,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to computed values updated.
+        /// </summary>
+        internal static string logComputedValuesUpdated {
+            get {
+                return ResourceManager.GetString("logComputedValuesUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to started processing configuration.
         /// </summary>
         internal static string logConfigurationStarted {
@@ -2665,6 +2738,33 @@ namespace iba.Properties {
         internal static string logNotificationNotSupported {
             get {
                 return ResourceManager.GetString("logNotificationNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA server is disabled.
+        /// </summary>
+        internal static string logOPCUAServerDisabled {
+            get {
+                return ResourceManager.GetString("logOPCUAServerDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occured while evaluating test value : {0}.
+        /// </summary>
+        internal static string logOPCUAWriterEvaluatingTestValue {
+            get {
+                return ResourceManager.GetString("logOPCUAWriterEvaluatingTestValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to started evaluating computed values.
+        /// </summary>
+        internal static string logOPCUAWriterStarted {
+            get {
+                return ResourceManager.GetString("logOPCUAWriterStarted", resourceCulture);
             }
         }
         
@@ -3330,6 +3430,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer version could not be determined.
+        /// </summary>
+        internal static string NoVersion {
+            get {
+                return ResourceManager.GetString("NoVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         internal static string OK {
@@ -3584,6 +3693,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon OPCUAIcon {
+            get {
+                object obj = ResourceManager.GetObject("OPCUAIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap opcUaServer_icon {
@@ -3680,6 +3799,33 @@ namespace iba.Properties {
         internal static string opcUaTitle {
             get {
                 return ResourceManager.GetString("opcUaTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA variable name.
+        /// </summary>
+        internal static string OpcUaVariableName {
+            get {
+                return ResourceManager.GetString("OpcUaVariableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add a new OPC-UA Writer Task.
+        /// </summary>
+        internal static string opcUaWriterTaskButton {
+            get {
+                return ResourceManager.GetString("opcUaWriterTaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OPC UA writer.
+        /// </summary>
+        internal static string opcUaWriterTaskTitle {
+            get {
+                return ResourceManager.GetString("opcUaWriterTaskTitle", resourceCulture);
             }
         }
         
@@ -4808,6 +4954,16 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sychronizeList {
+            get {
+                object obj = ResourceManager.GetObject("sychronizeList", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot add the requested task, the maximum amount of tasks for this job has been reached..
         /// </summary>
         internal static string TasksCountExceeded {
@@ -4822,6 +4978,15 @@ namespace iba.Properties {
         internal static string testNotifications {
             get {
                 return ResourceManager.GetString("testNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test value.
+        /// </summary>
+        internal static string TestValue {
+            get {
+                return ResourceManager.GetString("TestValue", resourceCulture);
             }
         }
         
@@ -5143,6 +5308,16 @@ namespace iba.Properties {
         internal static string Untitled {
             get {
                 return ResourceManager.GetString("Untitled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon up {
+            get {
+                object obj = ResourceManager.GetObject("up", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

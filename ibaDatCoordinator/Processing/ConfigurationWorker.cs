@@ -462,7 +462,7 @@ namespace iba.Processing
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData ||
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
 							|| (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
 							|| (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
@@ -3044,6 +3044,12 @@ namespace iba.Processing
             {
                 DoCleanupTask(DatFile, task as TaskWithTargetDirData);
             }
+			else if (task is OpcUaWriterTaskData)
+			{
+				DoOPCUAWriterTask(DatFile, task as OpcUaWriterTaskData);
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                memoryUsed = ((OpcUaWriterTaskData)task).MonitorData.MemoryUsed;
+            }
             else if (task is CustomTaskData)
             {
                 DoCustomTask(DatFile, task as CustomTaskData);
@@ -5120,6 +5126,10 @@ namespace iba.Processing
                 m_sd.DatFileStates[filename].OutputFiles[task] = outfile;
             }
             Log(Logging.Level.Info, iba.Properties.Resources.logUDTaskSuccess + " - " + iba.Properties.Resources.logUDTCreationTime + " " + worker.Created.ToString(), filename, task);
+        }
+        private void DoOPCUAWriterTask(string filename, OpcUaWriterTaskData task)
+        {
+            (new ComputedValuesTaskWorker(this, task)).DoWork(filename);
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 
