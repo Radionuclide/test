@@ -7,27 +7,28 @@ using iba.Data;
 using DevExpress.XtraGrid.Views.Grid;
 using iba.Utility;
 using System.IO;
+using DevExpress.XtraGrid.Views.Base;
 using Microsoft.Win32;
 
 namespace iba.Controls
 {
 	public partial class OpcUaWriterTaskControl : UserControl, IPropertyPane
     {
-        BindingList<OpcUaWriterTaskData.Record> expressionTableData;
-        OpcUaWriterTaskData m_data;
+        readonly BindingList<OpcUaWriterTaskData.Record> _expressionTableData;
+        OpcUaWriterTaskData _data;
         [NonSerialized]
-        private AnalyzerManager m_analyzerManager;
-        [NonSerialized]
-        private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
+        private readonly AnalyzerManager _analyzerManager;
+
+        private readonly GridView _view;
 
         public OpcUaWriterTaskControl()
 		{
-			InitializeComponent();
-            m_analyzerManager = new AnalyzerManager();
-            m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Text);
-            m_channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            dataGrid.RepositoryItems.Add(m_channelEditor);
-            gridColumnExpression.ColumnEdit = m_channelEditor;
+            InitializeComponent();
+            _analyzerManager = new AnalyzerManager();
+            var channelEditor = new RepositoryItemChannelTreeEdit(_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Text);
+            channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            dataGrid.RepositoryItems.Add(channelEditor);
+            gridColumnExpression.ColumnEdit = channelEditor;
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             foreach (var t in OpcUaWriterTaskData.Record.DataTypes)
@@ -42,30 +43,30 @@ namespace iba.Controls
             gridColumnName.View.CellValueChanged += CellNameChanged;
             gridColumnExpression.View.CellValueChanged += CellExpressionChanged;
 
-            expressionTableData = new BindingList<OpcUaWriterTaskData.Record>();
-            dataGrid.DataSource = expressionTableData;
+            _expressionTableData = new BindingList<OpcUaWriterTaskData.Record>();
+            dataGrid.DataSource = _expressionTableData;
+            _view = (GridView)dataGrid.MainView;
+            _view.FocusedRowChanged += (sender, e) => UpdateTableButtons();
         }
 
-        private void CellExpressionChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        private void CellExpressionChanged(object sender, CellValueChangedEventArgs e)
         {
             if (e.Column != gridColumnExpression) return;
-            GridView view = sender as GridView;
             string expression = e.Value.ToString();
 
-            if (view.GetRowCellValue(e.RowHandle, gridColumnName).ToString() == "" && expression != "")
-                view.SetRowCellValue(e.RowHandle, gridColumnName, expression);
+            if (_view.GetRowCellValue(e.RowHandle, gridColumnName).ToString() == "" && expression != "")
+                _view.SetRowCellValue(e.RowHandle, gridColumnName, expression);
         }
 
-        private void CellNameChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        private void CellNameChanged(object sender, CellValueChangedEventArgs e)
         {
             if (e.Column != gridColumnName) return;
-            GridView view = sender as GridView;
             string name = e.Value.ToString();
 
             name = EnsureNameUnique(name, e.RowHandle);
 
             gridColumnName.View.CellValueChanged -= CellNameChanged;
-            view.SetRowCellValue(e.RowHandle, gridColumnName, name);
+            _view.SetRowCellValue(e.RowHandle, gridColumnName, name);
             gridColumnName.View.CellValueChanged += CellNameChanged;
         }
 
@@ -96,15 +97,16 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
 		{
-			m_data = datasource as OpcUaWriterTaskData;
-            if (m_data.m_analyzerManager is null)
-                m_data.m_analyzerManager = m_analyzerManager;
-            m_pdoFileTextBox.Text = m_data.AnalysisFile;
-            m_datFileTextBox.Text = m_data.TestDatFile;
+			_data = (OpcUaWriterTaskData)datasource;
+            if (_data.m_analyzerManager is null)
+                _data.m_analyzerManager = _analyzerManager;
+            m_pdoFileTextBox.Text = _data.AnalysisFile;
+            m_datFileTextBox.Text = _data.TestDatFile;
 
-            expressionTableData.Clear();
-            foreach (var rec in m_data.Records)
-                expressionTableData.Add((OpcUaWriterTaskData.Record)rec.Clone());
+            _expressionTableData.Clear();
+            foreach (var rec in _data.Records)
+                _expressionTableData.Add((OpcUaWriterTaskData.Record)rec.Clone());
+            UpdateTableButtons();
 
             string ibaAnalyzerExe;
             try
@@ -128,69 +130,91 @@ namespace iba.Controls
             }
             UpdateSource();
 
-            m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
-            m_cbTime.Checked = m_data.MonitorData.MonitorTime;
-            m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
-            m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
+            m_cbMemory.Checked = _data.MonitorData.MonitorMemoryUsage;
+            m_cbTime.Checked = _data.MonitorData.MonitorTime;
+            m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, _data.MonitorData.MemoryLimit));
+            m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(_data.MonitorData.TimeLimit.TotalMinutes, 1));
         }
 
 
-		private void buttonExpressionAdd_Click(object sender, EventArgs e)
+		private void ButtonExpressionAdd_Click(object sender, EventArgs e)
 		{
-			var view = dataGrid.MainView as GridView;
-            expressionTableData.Add(new OpcUaWriterTaskData.Record());
-			view.FocusedRowHandle = expressionTableData.Count - 1;
-			view.ShowEditor();
+            _expressionTableData.Add(new OpcUaWriterTaskData.Record());
+			_view.FocusedRowHandle = _expressionTableData.Count - 1;
+			_view.ShowEditor();
 
-			dataGrid.RefreshDataSource();
-			buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (expressionTableData.Count > 0);
+            UpdateTableButtons();
 		}
 
-		private void buttonExpressionRemove_Click(object sender, EventArgs e)
+		private void ButtonExpressionRemove_Click(object sender, EventArgs e)
 		{
-			var view = dataGrid.MainView as GridView;
-			if ((view.FocusedRowHandle >= 0) && (view.FocusedRowHandle < expressionTableData.Count))
+			if ((_view.FocusedRowHandle >= 0) && (_view.FocusedRowHandle < _expressionTableData.Count))
 			{
-                expressionTableData.RemoveAt(view.FocusedRowHandle);
-				buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (expressionTableData.Count > 0);
+                _expressionTableData.RemoveAt(_view.FocusedRowHandle);
+                UpdateTableButtons();
 			}
-			dataGrid.RefreshDataSource();
 		}
 
-		private void buttonExpressionCopy_Click(object sender, EventArgs e)
+		private void ButtonExpressionCopy_Click(object sender, EventArgs e)
 		{
-			var view = dataGrid.MainView as GridView;
-			if ((view.FocusedRowHandle >= 0) &&
-				(view.FocusedRowHandle < expressionTableData.Count) &&
-				view.GetRow(view.FocusedRowHandle) is OpcUaWriterTaskData.Record oldRow)
+			if ((_view.FocusedRowHandle >= 0) &&
+				(_view.FocusedRowHandle < _expressionTableData.Count) &&
+				_view.GetRow(_view.FocusedRowHandle) is OpcUaWriterTaskData.Record oldRow)
 			{
-                var newRow = oldRow.Clone() as OpcUaWriterTaskData.Record;
+                var newRow = (OpcUaWriterTaskData.Record)oldRow.Clone();
                 string removedNumberSuffix = System.Text.RegularExpressions.Regex.Replace(newRow.Name, "_[0-9]{1,3}$", "");
                 if (removedNumberSuffix.Length > 0)
                     newRow.Name = removedNumberSuffix;
-                newRow.Name = EnsureNameUnique(newRow.Name, view.FocusedRowHandle, false);
-                expressionTableData.Add(newRow);
-				view.FocusedRowHandle = expressionTableData.Count - 1;
-				view.ShowEditor();
-
-				buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (view.FocusedRowHandle >= 0) && (expressionTableData.Count > 0);
+                newRow.Name = EnsureNameUnique(newRow.Name, _view.FocusedRowHandle, false);
+                _expressionTableData.Add(newRow);
+				_view.FocusedRowHandle = _expressionTableData.Count - 1;
+				_view.ShowEditor();
+                
+                UpdateTableButtons();
 			}
-			dataGrid.RefreshDataSource();
-		}
+        }
+        private void UpButton_Click(object sender, EventArgs e)
+        {
+            if (_view.FocusedRowHandle <= 0)
+                return;
+            var row = _expressionTableData[_view.FocusedRowHandle];
+            _expressionTableData[_view.FocusedRowHandle] = _expressionTableData[_view.FocusedRowHandle - 1];
+            _expressionTableData[_view.FocusedRowHandle - 1] = row;
+            _view.FocusedRowHandle--;
+            UpdateTableButtons();
+        }
 
-		public void LeaveCleanup() { }
+        private void DownButton_Click(object sender, EventArgs e)
+        {
+            if (_view.FocusedRowHandle >= _view.RowCount - 1)
+                return;
+            var row = _expressionTableData[_view.FocusedRowHandle];
+            _expressionTableData[_view.FocusedRowHandle] = _expressionTableData[_view.FocusedRowHandle + 1];
+            _expressionTableData[_view.FocusedRowHandle + 1] = row;
+            _view.FocusedRowHandle++;
+            UpdateTableButtons();
+        }
+
+        private void UpdateTableButtons()
+        {
+            buttonExpressionCopy.Enabled = buttonExpressionRemove.Enabled = (_view.FocusedRowHandle >= 0);
+            upButton.Enabled = (_view.FocusedRowHandle > 0);
+            downButton.Enabled = (_view.RowCount > 0 && _view.FocusedRowHandle < _view.RowCount - 1);
+        }
+
+        public void LeaveCleanup() { }
 
 		public void SaveData()
         {
-            m_data.Records.Clear();
-            foreach (var rec in expressionTableData)
+            _data.Records.Clear();
+            foreach (var rec in _expressionTableData)
                 if (!String.IsNullOrWhiteSpace(rec.Expression))
-                    m_data.Records.Add(rec);
+                    _data.Records.Add(rec);
 
-            m_data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
-            m_data.MonitorData.MonitorTime = m_cbTime.Checked;
-            m_data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
-            m_data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
+            _data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
+            _data.MonitorData.MonitorTime = m_cbTime.Checked;
+            _data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
+            _data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
         }
 
 		private void m_browsePDOFileButton_Click(object sender, EventArgs e)
@@ -209,22 +233,22 @@ namespace iba.Controls
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
-			DatCoordinatorHostImpl.Host.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, m_analyzerManager, null);
+			DatCoordinatorHostImpl.Host.UploadPdoFile(sender != null, this, m_pdoFileTextBox.Text, _analyzerManager, null);
             UpdateSource();
         }
 
         private void m_browseDatFileButton_Click(object sender, EventArgs e)
         {
             string datFile = m_datFileTextBox.Text;
-            if (DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, m_data.ParentConfigurationData))
+            if (DatCoordinatorHostImpl.Host.BrowseForDatFile(ref datFile, _data.ParentConfigurationData))
             {
                 m_datFileTextBox.Text = datFile;
             }
         }
 
-        private void m_testButton_Click(object sender, EventArgs e)
+        private void TestButton_Click(object sender, EventArgs e)
         {
-            IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
+            IbaAnalyzer.IbaAnalyzer ibaAnalyzer;
             //register this
             using (new WaitCursor())
             {
@@ -250,18 +274,18 @@ namespace iba.Controls
             {
                 MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            int major;
-            if (!Int32.TryParse(nrs[0], out major))
+
+            if (!Int32.TryParse(nrs[0], out var major))
             {
                 MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            int minor;
-            if (!Int32.TryParse(nrs[1], out minor))
+
+            if (!Int32.TryParse(nrs[1], out var minor))
             {
                 MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            int bugfix;
-            if (!Int32.TryParse(nrs[2], out bugfix))
+
+            if (!Int32.TryParse(nrs[2], out _))
             {
                 MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -271,26 +295,24 @@ namespace iba.Controls
                 MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
             bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
-            double f = 0;
             try
             {
                 using (new WaitCursor())
                 {
                     if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if (bUseDatFile) ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
-                    var records = dataGrid.DataSource as IList<OpcUaWriterTaskData.Record>;
+                    var records = (IList<OpcUaWriterTaskData.Record>)dataGrid.DataSource;
                     foreach (OpcUaWriterTaskData.Record record in records)
                     {
                         if (string.IsNullOrEmpty(record.Expression)) continue;
 
                         if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Text)
                         {
-                            object oStamps = null;
                             object oValues = null;
 
                             try
                             {
-                                ibaAnalyzer.EvaluateToStringArray(record.Expression, 0, out oStamps, out oValues);
+                                ibaAnalyzer.EvaluateToStringArray(record.Expression, 0, out _, out oValues);
                             }
                             catch { }
 
@@ -315,13 +337,14 @@ namespace iba.Controls
                         }
                         else
                         {
+                            double f;
                             try
                             {
                                 f = ibaAnalyzer.EvaluateDouble(record.Expression, 0);
                             }
                             catch  //might be old ibaAnalyzer
                             {
-                                f = (double)ibaAnalyzer.Evaluate(record.Expression, 0);
+                                f = ibaAnalyzer.Evaluate(record.Expression, 0);
                             }
 
                             if (double.IsNaN(f) || double.IsInfinity(f))
@@ -370,17 +393,17 @@ namespace iba.Controls
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
             UpdateSource();
-            m_data.AnalysisFile = m_pdoFileTextBox.Text;
+            _data.AnalysisFile = m_pdoFileTextBox.Text;
         }
 
         private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
         {
             UpdateSource();
-            m_data.TestDatFile = m_datFileTextBox.Text;
+            _data.TestDatFile = m_datFileTextBox.Text;
         }
         private void UpdateSource()
         {
-            m_analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
+            _analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, "");
         }
     }
 }

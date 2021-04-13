@@ -55,6 +55,8 @@
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
+            this.upButton = new System.Windows.Forms.Button();
+            this.downButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemComboBoxS7DataTypes)).BeginInit();
@@ -149,7 +151,7 @@
             this.buttonExpressionCopy.Name = "buttonExpressionCopy";
             this.buttonExpressionCopy.TabStop = false;
             this.buttonExpressionCopy.UseVisualStyleBackColor = true;
-            this.buttonExpressionCopy.Click += new System.EventHandler(this.buttonExpressionCopy_Click);
+            this.buttonExpressionCopy.Click += new System.EventHandler(this.ButtonExpressionCopy_Click);
             // 
             // buttonExpressionRemove
             // 
@@ -157,7 +159,7 @@
             this.buttonExpressionRemove.Name = "buttonExpressionRemove";
             this.buttonExpressionRemove.TabStop = false;
             this.buttonExpressionRemove.UseVisualStyleBackColor = true;
-            this.buttonExpressionRemove.Click += new System.EventHandler(this.buttonExpressionRemove_Click);
+            this.buttonExpressionRemove.Click += new System.EventHandler(this.ButtonExpressionRemove_Click);
             // 
             // buttonExpressionAdd
             // 
@@ -165,7 +167,7 @@
             this.buttonExpressionAdd.Name = "buttonExpressionAdd";
             this.buttonExpressionAdd.TabStop = false;
             this.buttonExpressionAdd.UseVisualStyleBackColor = true;
-            this.buttonExpressionAdd.Click += new System.EventHandler(this.buttonExpressionAdd_Click);
+            this.buttonExpressionAdd.Click += new System.EventHandler(this.ButtonExpressionAdd_Click);
             // 
             // m_btnUploadPDO
             // 
@@ -227,7 +229,7 @@
             this.m_testButton.Image = global::iba.Properties.Resources.sychronizeList;
             this.m_testButton.Name = "m_testButton";
             this.m_testButton.UseVisualStyleBackColor = true;
-            this.m_testButton.Click += new System.EventHandler(this.m_testButton_Click);
+            this.m_testButton.Click += new System.EventHandler(this.TestButton_Click);
             // 
             // m_monitorGroup
             // 
@@ -303,10 +305,28 @@
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
+            // upButton
+            // 
+            resources.ApplyResources(this.upButton, "upButton");
+            this.upButton.Image = global::iba.Properties.Resources.up;
+            this.upButton.Name = "upButton";
+            this.upButton.UseVisualStyleBackColor = true;
+            this.upButton.Click += new System.EventHandler(this.UpButton_Click);
+            // 
+            // downButton
+            // 
+            resources.ApplyResources(this.downButton, "downButton");
+            this.downButton.Image = global::iba.Properties.Resources.down;
+            this.downButton.Name = "downButton";
+            this.downButton.UseVisualStyleBackColor = true;
+            this.downButton.Click += new System.EventHandler(this.DownButton_Click);
+            // 
             // OpcUaWriterTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.downButton);
+            this.Controls.Add(this.upButton);
             this.Controls.Add(this.m_monitorGroup);
             this.Controls.Add(this.m_browseDatFileButton);
             this.Controls.Add(this.label3);
@@ -361,5 +381,7 @@
         private System.Windows.Forms.NumericUpDown m_nudMemory;
         private System.Windows.Forms.CheckBox m_cbTime;
         private System.Windows.Forms.CheckBox m_cbMemory;
+        private System.Windows.Forms.Button upButton;
+        private System.Windows.Forms.Button downButton;
     }
 }

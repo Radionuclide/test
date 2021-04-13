@@ -822,6 +822,8 @@
     <Content Include="ibaDatCoordinator.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\up.ico" />
+    <None Include="Resources\down.ico" />
     <Content Include="Resources\img_file.png" />
     <None Include="Resources\img_lock.png" />
     <None Include="Resources\img_networkError.ico" />

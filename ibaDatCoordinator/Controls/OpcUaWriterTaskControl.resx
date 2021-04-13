@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="dataGrid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 98</value>
+    <value>20, 100</value>
   </data>
   <data name="gridColumnName.Caption" xml:space="preserve">
     <value>gridColumnName</value>
@@ -181,7 +181,7 @@
     <value>20, 4, 20, 4</value>
   </data>
   <data name="dataGrid.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 199</value>
+    <value>0, 200</value>
   </data>
   <data name="repositoryItemComboBoxS7DataTypes.AutoHeight" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -215,10 +215,10 @@
     <value>REAL</value>
   </data>
   <data name="dataGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>733, 199</value>
+    <value>733, 201</value>
   </data>
   <data name="dataGrid.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;dataGrid.Name" xml:space="preserve">
     <value>dataGrid</value>
@@ -230,7 +230,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;dataGrid.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="buttonExpressionCopy.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -257,7 +257,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonExpressionCopy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>761, 135</value>
+    <value>761, 138</value>
   </data>
   <data name="buttonExpressionCopy.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -266,7 +266,7 @@
     <value>32, 30</value>
   </data>
   <data name="buttonExpressionCopy.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;buttonExpressionCopy.Name" xml:space="preserve">
     <value>buttonExpressionCopy</value>
@@ -278,7 +278,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;buttonExpressionCopy.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="buttonExpressionRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -304,7 +304,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonExpressionRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>761, 268</value>
+    <value>761, 271</value>
   </data>
   <data name="buttonExpressionRemove.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -313,7 +313,7 @@
     <value>32, 30</value>
   </data>
   <data name="buttonExpressionRemove.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;buttonExpressionRemove.Name" xml:space="preserve">
     <value>buttonExpressionRemove</value>
@@ -325,7 +325,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;buttonExpressionRemove.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="buttonExpressionAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -396,7 +396,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonExpressionAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>761, 98</value>
+    <value>761, 100</value>
   </data>
   <data name="buttonExpressionAdd.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -405,7 +405,7 @@
     <value>32, 30</value>
   </data>
   <data name="buttonExpressionAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;buttonExpressionAdd.Name" xml:space="preserve">
     <value>buttonExpressionAdd</value>
@@ -417,7 +417,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;buttonExpressionAdd.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="m_btnUploadPDO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -438,7 +438,7 @@
     <value>32, 30</value>
   </data>
   <data name="m_btnUploadPDO.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_btnUploadPDO.Name" xml:space="preserve">
     <value>m_btnUploadPDO</value>
@@ -450,7 +450,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnUploadPDO.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -468,7 +468,7 @@
     <value>120, 17</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
+    <value>0</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Optional analysis:</value>
@@ -483,7 +483,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_pdoFileTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -498,7 +498,7 @@
     <value>503, 22</value>
   </data>
   <data name="m_pdoFileTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_pdoFileTextBox.Name" xml:space="preserve">
     <value>m_pdoFileTextBox</value>
@@ -510,7 +510,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pdoFileTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_browsePDOFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -528,7 +528,7 @@
     <value>32, 30</value>
   </data>
   <data name="m_browsePDOFileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_browsePDOFileButton.Name" xml:space="preserve">
     <value>m_browsePDOFileButton</value>
@@ -540,7 +540,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_browsePDOFileButton.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -558,7 +558,7 @@
     <value>32, 30</value>
   </data>
   <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
     <value>m_executeIBAAButton</value>
@@ -570,7 +570,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_browseDatFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -588,7 +588,7 @@
     <value>32, 30</value>
   </data>
   <data name="m_browseDatFileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.Name" xml:space="preserve">
     <value>m_browseDatFileButton</value>
@@ -600,7 +600,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_browseDatFileButton.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -618,7 +618,7 @@
     <value>111, 17</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>38</value>
+    <value>5</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Example .dat file</value>
@@ -633,7 +633,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_datFileTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -648,7 +648,7 @@
     <value>503, 22</value>
   </data>
   <data name="m_datFileTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.Name" xml:space="preserve">
     <value>m_datFileTextBox</value>
@@ -660,7 +660,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_datFileTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_testButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -678,7 +678,7 @@
     <value>32, 30</value>
   </data>
   <data name="m_testButton.TabIndex" type="System.Int32, mscorlib">
-    <value>39</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_testButton.Name" xml:space="preserve">
     <value>m_testButton</value>
@@ -690,7 +690,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_testButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -774,7 +774,7 @@
     <value>104, 22</value>
   </data>
   <data name="m_nudTime.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_nudTime.Name" xml:space="preserve">
     <value>m_nudTime</value>
@@ -801,7 +801,7 @@
     <value>104, 22</value>
   </data>
   <data name="m_nudMemory.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_nudMemory.Name" xml:space="preserve">
     <value>m_nudMemory</value>
@@ -882,7 +882,7 @@
     <value>5</value>
   </data>
   <data name="m_monitorGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 314</value>
+    <value>4, 316</value>
   </data>
   <data name="m_monitorGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -894,7 +894,7 @@
     <value>789, 90</value>
   </data>
   <data name="m_monitorGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>40</value>
+    <value>15</value>
   </data>
   <data name="m_monitorGroup.Text" xml:space="preserve">
     <value>Monitor ibaAnalyzer</value>
@@ -909,6 +909,57 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="upButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="upButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>761, 176</value>
+  </data>
+  <data name="upButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 30</value>
+  </data>
+  <data name="upButton.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;upButton.Name" xml:space="preserve">
+    <value>upButton</value>
+  </data>
+  <data name="&gt;&gt;upButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;upButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;upButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="downButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="downButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="downButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>761, 214</value>
+  </data>
+  <data name="downButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 30</value>
+  </data>
+  <data name="downButton.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;downButton.Name" xml:space="preserve">
+    <value>downButton</value>
+  </data>
+  <data name="&gt;&gt;downButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;downButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;downButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -924,7 +975,7 @@
     <value>0, 400</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>797, 426</value>
+    <value>797, 428</value>
   </data>
   <data name="&gt;&gt;dataGV.Name" xml:space="preserve">
     <value>dataGV</value>
