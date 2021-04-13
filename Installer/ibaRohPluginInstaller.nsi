@@ -3,7 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator Roh Plugin"
 
-!define PRODUCT_VERSION "2.4.0 BETA17"
+!define PRODUCT_VERSION "2.4.0"
 !define PRODUCT_FILE_VERSION "2.4.0.0"
 
 !include "PluginInstaller.nsh"
