@@ -1,0 +1,1651 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>hdCommon</name>
+    </assembly>
+    <members>
+        <member name="F:iba.HD.Common.HdCertificate.Password">
+            <summary>
+            Encrypted password of the certificate
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.IsValidVersion(System.String)">
+            <summary>
+            Checks service version
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.ReloadProjectFiles">
+            <summary>
+            Reloads project files
+            </summary>
+            <returns>
+            Null upon success or error message otherwise
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.GetSupportFiles">
+            <summary>
+            Gets support files
+            </summary>
+            <returns>
+            Tuple.Item1: null if operation succeeds; error message if operation fails
+            Tuple.Item2: zipped data if operation succeeds; null if operation fails
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.GetUserNames(iba.HD.Common.HdUserType)">
+            <summary>
+            Gets names of users with given type
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.SetQueries(System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Boolean)">
+            <summary>
+            Sets the list of configured event queries
+            </summary>
+            <param name="force">
+            Skip out of date check
+            </param>
+            <returns>
+            false if config out of date
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdConfigContract.SetEvents(System.Collections.Generic.List{iba.HD.Common.EventConfig},System.Collections.Generic.List{iba.HD.Common.EventConfig})">
+            <summary>
+            Sets the given config on the HD server.
+            Currently this function is not used.
+            </summary>
+            <param name="oldCfgs"></param>
+            <param name="newCfgs"></param>
+            <returns></returns>
+        </member>
+        <member name="T:iba.HD.Common.Enumeration">
+            <remarks>
+            WCF cannot (de)serialize unknown enum values. Unknown
+            enum values might appear when versioning data contracts.
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.LengthRange.IntersectOrAdd(System.Collections.Generic.IList{iba.HD.Common.LengthRange},iba.HD.Common.LengthRange)">
+            <summary>
+            Intersects each range in the list with the given range. If none intersect, the range is added to the list.
+            </summary>
+            <returns>
+            True if range is added
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.LengthRange.MergeOrAdd(System.Collections.Generic.IList{iba.HD.Common.LengthRange},iba.HD.Common.LengthRange)">
+            <summary>
+            Merges all intersecting ranges in the list with the given range. If none intersect, the range is added to the list.
+            </summary>
+            <returns>
+            True if range is expanded
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.GetADUsers">
+            <summary>
+            Gets all Active Directory users
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.GetADConfig">
+            <summary>
+            Gets the current Active Directory connection configuration
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.SetADConfig(iba.HD.Common.ADConnectionConfig)">
+            <summary>
+            Sets the current Active Directory connection configuration
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.TestADConnection(iba.HD.Common.ADConnectionConfig,System.String@)">
+            <summary>
+            Test connection to Active Directory
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdADUserContract.GetADGroupsForUser(iba.HD.Common.HdUser)">
+            <summary>
+            Get the SIDs of all Active Directory groups this user belongs to
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.GetUserVersion(iba.HD.Common.HdUserType)">
+            <summary>
+            Versioning per user type
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.IsAdminActive">
+            <summary>
+            Is admin user active?
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.LoginUser(iba.HD.Common.HdUserType,System.String,System.String)">
+            <summary>
+            Log in as user with given credentials
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.VerifyUser(iba.HD.Common.HdUserType,System.String,System.String)">
+            <summary>
+            Verify user credentials
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.GetCurrentUser">
+            <summary>
+            Get current user. Null if not logged in.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.GetUsers(iba.HD.Common.HdUserType)">
+            <summary>
+            Gets all users of given type
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.StartEditUser">
+            <summary>
+            Start editing users
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.EditUser(iba.HD.Common.HdUserEditCommand)">
+            <summary>
+            Edit user
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.StopEditUser">
+            <summary>
+            Stop editing users
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdUserContract.ReloadUsers(iba.HD.Common.HdUserType,System.String)">
+            <summary>
+            Reload all users of given type from file at given path
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.DurationDays">
+            <summary>
+              Looks up a localized string similar to days.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.DurationMonths">
+            <summary>
+              Looks up a localized string similar to months.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.DurationWeeks">
+            <summary>
+              Looks up a localized string similar to weeks.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.DurationYears">
+            <summary>
+              Looks up a localized string similar to years.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureAuthentication">
+            <summary>
+              Looks up a localized string similar to Connection authentication.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureNotification">
+            <summary>
+              Looks up a localized string similar to Send and receive notifications.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderADUsers">
+            <summary>
+              Looks up a localized string similar to Active Directory support.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderCleanup">
+            <summary>
+              Looks up a localized string similar to Advance cleanup time.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderComputedValue">
+            <summary>
+              Looks up a localized string similar to Read computed value data from event based store.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderDiagnostic">
+            <summary>
+              Looks up a localized string similar to Read diagnostic data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEvent">
+            <summary>
+              Looks up a localized string similar to Read event based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEventAck">
+            <summary>
+              Looks up a localized string similar to Acknowledge event based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEventNote">
+            <summary>
+              Looks up a localized string similar to Read event based store annotation data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEventQuery">
+            <summary>
+              Looks up a localized string similar to Configure or execute event queries.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderFileTransfer">
+            <summary>
+              Looks up a localized string similar to Transfer files.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderLength">
+            <summary>
+              Looks up a localized string similar to Read length based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderLicense">
+            <summary>
+              Looks up a localized string similar to Acquire license options.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderLicenseRead">
+            <summary>
+              Looks up a localized string similar to Read license options.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTime">
+            <summary>
+              Looks up a localized string similar to Read time based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTimeCut">
+            <summary>
+              Looks up a localized string similar to Cut time based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTimeMax">
+            <summary>
+              Looks up a localized string similar to Limit time based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTimeOffline">
+            <summary>
+              Looks up a localized string similar to Read offline time based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderUpdateSignals">
+            <summary>
+              Looks up a localized string similar to Update signals.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureUserManagement">
+            <summary>
+              Looks up a localized string similar to User authentication and configuration.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureUserManagementVersioning">
+            <summary>
+              Looks up a localized string similar to User management versioning.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterAsync">
+            <summary>
+              Looks up a localized string similar to Apply write configuration asynchronously.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterComputedValue">
+            <summary>
+              Looks up a localized string similar to Write computed value data to event based store.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEvent">
+            <summary>
+              Looks up a localized string similar to Write event based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEventNoop">
+            <summary>
+              Looks up a localized string similar to Write no event data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEventVariable">
+            <summary>
+              Looks up a localized string similar to Write variable amount of event fields.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterLength">
+            <summary>
+              Looks up a localized string similar to Write length based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterLog">
+            <summary>
+              Looks up a localized string similar to Write log messages.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterOffline">
+            <summary>
+              Looks up a localized string similar to Write offline data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterProto">
+            <summary>
+              Looks up a localized string similar to Write data using protocol buffers.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterTime">
+            <summary>
+              Looks up a localized string similar to Write time based store data.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterUserAuthentication">
+            <summary>
+              Looks up a localized string similar to User authentication.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FolderAnnotations">
+            <summary>
+              Looks up a localized string similar to Annotations.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.GB">
+            <summary>
+              Looks up a localized string similar to GB.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.LogicalTypeAnalog">
+            <summary>
+              Looks up a localized string similar to Analog.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.LogicalTypeBitDec">
+            <summary>
+              Looks up a localized string similar to Bit-decoded.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.LogicalTypeCam">
+            <summary>
+              Looks up a localized string similar to Camera.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.LogicalTypeDigital">
+            <summary>
+              Looks up a localized string similar to Digital.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.LogicalTypeText">
+            <summary>
+              Looks up a localized string similar to Text.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.NewValueSignal">
+            <summary>
+              Looks up a localized string similar to &lt;Select signal&gt;.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.NewValueText">
+            <summary>
+              Looks up a localized string similar to &lt;Text value&gt;.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.Unlimited">
+            <summary>
+              Looks up a localized string similar to Unlimited.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.WriterConfigMaxSignals">
+            <summary>
+              Looks up a localized string similar to Maximal HD store acquisition signal count ({0}) exceeded by {1} signals.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdCertificateContract.ExportCertificate(System.String,iba.HD.Common.ExportFormat,System.String)">
+            <summary>
+            Export a certificate from the ibaHD certificate manager
+            </summary>
+            <param name="thumbprint">The thumbprint of the requested certificate </param>
+            <param name="format">The export format of the certificate </param>
+            <param name="password">The certificate password for protecting the private key </param>
+            <returns>A keyvaluepair containing the exported certificate encrypted and an error message in case the export has failed.</returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdCertificateContract.ImportCertificate(System.String,System.String)">
+            <summary>
+            import a certificate into the ibaHD certificate manager
+            </summary>
+            <param name="certificate">The encrypted certificate. First converted to base64, then UncCrypt.EncryptStrong</param>
+            <param name="encryptedPassword">The certificate password for protecting the private key. This is encrypted using UncCrypt.EncrytStrong </param>
+            <returns>The thumbPrint of the imported certificate</returns>
+        </member>
+        <member name="M:iba.HD.Common.BackupTrigger.Calculate(System.DateTime)">
+            <exception cref="T:System.InvalidOperationException">
+            Thrown if <see cref="M:iba.HD.Common.BackupTrigger.IsValid"/> is false
+            </exception>
+        </member>
+        <member name="M:iba.HD.Common.BackupTriggerMonthly.IsMonthSelected(System.Int32)">
+            <param name="index">
+            Allowed range is [1, 13]
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.BackupTriggerMonthly.SetMonthSelected(System.Int32,System.Boolean)">
+            <param name="index">
+            Allowed range is [1, 13]
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.BackupTriggerMonthly.IsMonthDaySelected(System.Int32)">
+            <param name="index">
+            Allowed range is [1, 32]. 32 is last day of month.
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.BackupTriggerMonthly.SetMonthDaySelected(System.Int32,System.Boolean)">
+            <param name="index">
+            Allowed range is [1, 32]. 32 is last day of month.
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.BackupTriggerMonthly.IsWeekNumberSelected(System.Int32)">
+            <param name="index">
+            1 = first, 2 = second, 3 = third, 4 = fourth, 5 = last
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.BackupTriggerMonthly.SetWeekNumberSelected(System.Int32,System.Boolean)">
+            <param name="index">
+            1 = first, 2 = second, 3 = third, 4 = fourth, 5 = last
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.IHdBackupContract.AddBackup(iba.HD.Common.BackupTask)">
+            <summary>
+            Add backup task
+            </summary>
+            <returns>
+            Backup task ID
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdBackupContract.StartBackup(System.Int32,System.Boolean)">
+            <summary>
+            Starts previously added backup task with given ID
+            </summary>
+            <exception cref="T:System.ServiceModel.FaultException">
+            Contains information on failure
+            </exception>
+            <returns>
+            True if backup task started
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdBackupContract.CancelBackup(System.Int32)">
+            <summary>
+            Cancels previously added backup task with given ID
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdBackupContract.GetActiveBackups">
+            <summary>
+            Gets active backup tasks
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdBackupContract.GetBackupHistory(iba.HD.Common.TimeRangeUtc)">
+            <summary>
+            Get backup task results within given time range
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdBackupContract.GetBackupSchedule">
+            <summary>
+            Gets backup task schedule
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdBackupContract.SetBackupSchedule(iba.HD.Common.BackupTaskSchedule)">
+            <summary>
+            Sets a new backup task schedule. Does not stop tasks started by previous schedule.
+            </summary>
+            <exception cref="T:System.ServiceModel.FaultException">
+            Contains information on failure
+            </exception>
+            <returns>
+            True if schedule is used
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.HdSegmentRequest.#ctor(System.String,System.String,iba.HD.Common.TimeRangeUtc)">
+            <param name="storeName">
+            Name of online store
+            </param>
+            <param name="signalId">
+            Asterisk wildcard supported
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.HdSegmentRequest.#ctor(iba.HD.Common.UncPath,System.String,iba.HD.Common.TimeRangeUtc)">
+            <param name="storePath">
+            Unc path where store index can be located
+            </param>
+            <param name="signalId">
+            Asterisk wildcard supported
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.TimeSegmentRequest.#ctor(System.String,System.String,System.Int32,iba.HD.Common.TimeRangeUtc)">
+            <param name="storeName">
+            Name of online store
+            </param>
+            <param name="signalId">
+            Asterisk wildcard supported
+            </param>
+            <param name="level">
+            Negative to search all levels
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.TimeSegmentRequest.#ctor(iba.HD.Common.UncPath,System.String,System.Int32,iba.HD.Common.TimeRangeUtc)">
+            <param name="storePath">
+            Unc path where store index can be located
+            </param>
+            <param name="signalId">
+            Asterisk wildcard supported
+            </param>
+            <param name="level">
+            Negative to search all levels
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.LengthSegmentRequest.#ctor(System.String,System.String,System.String,iba.HD.Common.TimeRangeUtc)">
+            <param name="storeName">
+            Name of online store
+            </param>
+            <param name="location">
+            Asterisk wildcard supported
+            </param>
+            <param name="signalId">
+            Asterisk wildcard supported
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.LengthSegmentRequest.#ctor(iba.HD.Common.UncPath,System.String,System.String,iba.HD.Common.TimeRangeUtc)">
+            <param name="storePath">
+            Unc path where store index can be located
+            </param>
+            <param name="location">
+            Asterisk wildcard supported
+            </param>
+            <param name="signalId">
+            Asterisk wildcard supported
+            </param>
+        </member>
+        <member name="F:iba.HD.Common.TimeRequest.GetLastValue">
+            <summary>
+            When true the server will return the last valid value in case no data is found for the requested time range
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.EventStoreSubset.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a store subset
+            </summary>
+            <param name="storeName">
+            Name of the store
+            </param>
+            <param name="eventIds">
+            List of event ids in the subset. If null, the
+            resulting subset will contain all events in the store.
+            </param>
+        </member>
+        <member name="F:iba.HD.Common.TimeReaderSlice.DataType">
+            <remarks>
+            Deprecated since v1.4.1
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.FileDownloadRequest.#ctor(System.String)">
+            <param name="path">
+            Relative path root is interpreted as install directory
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.IHdTransferContract.AddTransfer(iba.HD.Common.TransferRequest)">
+            <summary>
+            Add file transfer
+            </summary>
+            <returns>
+            Transfer ID
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdTransferContract.StartTransfer(System.Int32)">
+            <summary>
+            Starts previously added transfer with given ID
+            </summary>
+            <exception cref="T:System.ServiceModel.FaultException">
+            Contains information on the start failure
+            </exception>
+            <returns>
+            True if transfer is queued
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdTransferContract.CancelTransfer(System.Int32)">
+            <summary>
+            Cancels previously added trasfer with given ID
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdTransferContract.UploadData(System.Int32,System.Int32,System.Byte[])">
+            <summary>
+            Upload transfer data
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdTransferContract.UploadFinished(System.Int32,System.Int32)">
+            <summary>
+            Upload transfer finished
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.bps">
+            <summary>
+            Bit per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.Kbps">
+            <summary>
+            Kilobit per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.Kibps">
+            <summary>
+            Kibibit per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.Mbps">
+            <summary>
+            Megabit per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.Mibps">
+            <summary>
+            Mebibit per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.Gbps">
+            <summary>
+            Gigabit per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.Gibps">
+            <summary>
+            Gibibit per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.Bps">
+            <summary>
+            Byte per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.KBps">
+            <summary>
+            Kilobyte per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.KiBps">
+            <summary>
+            Kibibyte per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.MBps">
+            <summary>
+            Megabyte per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.MiBps">
+            <summary>
+            Mebibyte per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.GBps">
+            <summary>
+            Gigabyte per second
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Bitrate.GiBps">
+            <summary>
+            Gibibyte per second
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Bitrate.ToString(System.IFormatProvider,System.Int32,System.String,System.Boolean)">
+            <param name="decimals">
+            Number of decimals to print
+            </param>
+            <param name="unit">
+            [ K (kilo) | M (mega) | G (giga) | Ki (kibi) | Mi (mebi) | Gi (gibi) ] + [ b (bits) | B (bytes) ]
+            </param>
+            <param name="forceMetricUnit">
+            Force output to contain metric unit even though calculation might use power of two
+            </param>
+        </member>
+        <member name="T:iba.HD.Common.BitrateCalculator">
+            <summary>
+            Thread safe bitrate calculator
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.BitrateCalculator.Add(System.Single)">
+            <summary>
+            Adds the given number of bytes
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.BitrateCalculator.Clear">
+            <summary>
+            Clears calculator
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.BitrateCalculator.Bitrate">
+            <summary>
+            Gets the rate at which bytes have been added
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdLogEntry.Counter">
+            <summary>
+            Windows application event log stamp accuracy = 1 second. Counter is
+            used to differentiate log entries that are generated within 1 second.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdReaderStore.SignalCount">
+            <summary>
+            Amount of sigals in the store
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdReaderStore.SignalAt(System.Int32)">
+            <summary>
+            Gets signal at given index
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdReaderSignal.AddInfo(System.String,System.String)">
+            <summary>
+            Adds a value to list of values for given key
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdReaderSignal.GetInfoInts(System.String)">
+            <summary>
+            Gets infofield values with given key as integer. Might throw parsing exception.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdReaderSignal.GetInfoFloats(System.String)">
+            <summary>
+            Gets infofield values with given key as float. Might throw parsing exception.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdReaderSignal.GetInfoStrings(System.String)">
+            <summary>
+            Gets infofield values with given key as string. Returs null if not available.
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.HdStoreId">
+            <summary>
+            Identifies a store on a server
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.HdStoreConnection">
+            <summary>
+            Identifies a store on a server including username and password.
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.IHdBrowseContract">
+            <summary>
+            Allows server file system browsing
+            </summary>
+            <remarks>
+            Relative paths are interpreted as install directory
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.IsValidVersion(System.String)">
+            <summary>
+            Checks version
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.GetDrives">
+            <summary>
+            Gets drive info
+            </summary>
+            <returns>
+            null upon failure
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.GetDirectories(System.String)">
+            <summary>
+            Gets all directories at given path
+            </summary>
+            <returns>
+            null upon failure
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.GetFiles(System.String)">
+            <summary>
+            Gets all file names at given path
+            </summary>
+            <returns>
+            null upon failure
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.GetImage(System.String)">
+            <summary>
+            Gets image for file system entry at given path
+            </summary>
+            <returns>
+            null upon failure
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.FileExists(System.String)">
+            <summary>
+            Does file at given path exist?
+            </summary>
+            <param name="path">
+            Relative path root is interpreted as install directory
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.DirExists(System.String)">
+            <summary>
+            Does directory at given path exist?
+            </summary>
+            <param name="path">
+            Relative path root is interpreted as install directory
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.CreateNewDirectory(System.String)">
+            <summary>
+            Creates new directory at given path
+            </summary>
+            <returns>
+            Name of created directory or null upon failure
+            </returns>
+            <exception cref="T:System.ServiceModel.FaultException">
+            </exception>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.Rename(System.String,System.String)">
+            <summary>
+            Renames a file system entry
+            </summary>
+            <returns>
+            false upon failure
+            </returns>
+            <exception cref="T:System.ServiceModel.FaultException">
+            </exception>
+        </member>
+        <member name="M:iba.HD.Common.IHdBrowseContract.Delete(System.String)">
+            <summary>
+            Deletes a file system entry
+            </summary>
+            <returns>
+            false upon failure
+            </returns>
+            <exception cref="T:System.ServiceModel.FaultException">
+            </exception>
+        </member>
+        <member name="T:iba.HD.Common.IHdSessionCallback">
+            <summary>
+            Hd session callback contract
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdSessionCallback.Disconnect(System.String)">
+            <summary>
+            Application level disconnect; initiated at service side
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.IHdSessionContract">
+            <summary>
+            Hd session contract
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdSessionContract.Connect(System.String,System.String)">
+            <summary>
+            Application level connect; initiated at client side
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            version is not supported
+            </exception>
+        </member>
+        <member name="M:iba.HD.Common.IHdSessionContract.GetSupportedFeatures(System.Collections.Generic.List{System.String})">
+            <summary>
+            Sets version information for each service feature
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdSessionContract.Ping">
+            <summary>
+            Application level keep-alive
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdSessionContract.Disconnect">
+            <summary>
+            Application level disconnect; initiated at client side
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdStoreContract.TestStoreConfig(iba.HD.Common.HdStoreConfig,System.String@)">
+            <remarks>
+            Deprecated
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdStoreContract.GetDiskSpace(iba.HD.Common.HdStoreConfig,System.Int64@,System.Int64@)">
+            <remarks>
+            Deprecated
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdStoreContract.GetDiskSpaceEx(iba.HD.Common.HdStoreConfig,System.Int64@,System.Int64@,System.Int64@)">
+            <remarks>
+            Deprecated
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdSegmentContract.GetSegmentFirst(iba.HD.Common.HdSegmentRequest)">
+            <summary>
+            Gets first signal segment. Null if not found.
+            </summary>
+            <remarks>
+            request.Range is ignored;
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdSegmentContract.GetSegmentLast(iba.HD.Common.HdSegmentRequest)">
+            <summary>
+            Gets last signal segment. Null if not found.
+            </summary>
+            <remarks>
+            request.Range is ignored;
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdSegmentContract.GetSegmentRange(iba.HD.Common.HdSegmentRequest)">
+            <summary>
+            Gets all signal segments touching given range
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdSegmentContract.GetFileInfo(iba.HD.Common.UncPath,System.Int64)">
+            <summary>
+            Get info about file with given segment ID in store at given path
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdNotification.#ctor(iba.HD.Common.HdNotificationType)">
+            <summary>
+            Send notification to all clients
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdNotification.#ctor(iba.HD.Common.HdUserType,iba.HD.Common.HdNotificationType)">
+            <summary>
+            Send notification to clients logged in as user of given type
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdNotification.#ctor(iba.HD.Common.HdUserType,System.Collections.Generic.List{System.String},iba.HD.Common.HdNotificationType)">
+            <summary>
+            Send notification to clients logged in as user of given type with one of the given user names
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.DynValueSettings">
+            <remarks>
+            Not used or tested at the moment
+            </remarks>
+        </member>
+        <member name="T:iba.HD.Common.HdWriterSolution">
+            <summary>
+            Solution to writer conflict
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.HdWriterConflict">
+            <summary>
+            Validation conflict that can be solved
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterConflict.BufferId">
+            <summary>
+            Solution must be equal for all conflicts with equal buffer id
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterConflict.Faults">
+            <summary>
+            The conflict detail
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterConflict.Solution">
+            <summary>
+            Currently configured solution for the conflict
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdWriterConflict.Equals(iba.HD.Common.HdWriterConflict)">
+            <summary>
+            Doesn't compare group or solution
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.HdWriterReport">
+            <summary>
+            Configuration process report for a store on a certain server
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.HdWriterReport.StoreName">
+            <summary>
+            Name of the store this report was created for
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.HdWriterReport.Activatable">
+            <summary>
+            Config that resulted in this report can be activated
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.HdWriterReport.Errors">
+            <summary>
+            Validation errors (cannot be solved)
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.HdWriterReport.Conflicts">
+            <summary>
+            Validation conflicts (can be solved)
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.HdWriterReport.Tag">
+            <summary>
+            Additional report info
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdWriterReport.#ctor(System.String)">
+            <summary>
+            Creates an empty validation report
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdWriterReport.Print">
+            <summary>
+            Prints the report to a string
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.IHdWriterCallback">
+            <summary>
+            Hd writer callback
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterCallback.Validate(iba.HD.Common.HdValidationMessage[])">
+            <summary>
+            Used to send validation messages from service to client
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterCallback.SetAsyncReport(iba.HD.Common.HdWriterReport)">
+            <summary>
+            Asynchronous configuration callback
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.IHdWriterContract">
+            <summary>
+            Hd writer contract that provides write connection to a single store on a single server
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.SetConfig(iba.HD.Common.HdWriterConfig,iba.HD.Common.HdWriterReport)">
+            <summary>
+            Sets the given writer configuration to the service, if it is valid
+            </summary>
+            <remarks>
+            Blocks the calling thread while validation messages and report arrive on WCF
+            worker threads. Use the asynchronous version to avoid WCF timeouts.
+            </remarks>
+            <param name="writerConfig">
+            The new writer configuration
+            </param>
+            <param name="report">
+            Report that offers solutions to possible conflicts
+            </param>
+            <returns>
+            Report
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.SetConfigAsync(iba.HD.Common.HdWriterConfig,iba.HD.Common.HdWriterReport)">
+            <summary>
+            Sets the given writer configuration to the service, if it is valid
+            </summary>
+            <remarks>
+            Does not blocks the calling thread
+            </remarks>
+            <param name="writerConfig">
+            The new writer configuration
+            </param>
+            <param name="report">
+            Report that offers solutions to possible conflicts
+            </param>
+            <returns>
+            False if call could not be sent to service
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.ActivateConfig(iba.HD.Common.HdWriterReport,System.Boolean)">
+            <summary>
+            Allows activation of previously set configuration only
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.Write(iba.HD.Common.HdWriterData)">
+            <summary>
+            Writes data to the store
+            </summary>
+            <returns>
+            Buffer percentage
+            </returns>
+            <remarks>
+            Make sure byte size is small enough
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.WriteV2(iba.HD.Common.HdWriterData)">
+            <summary>
+            Writes data to the store using protocol buffer serialization
+            </summary>
+            <returns>
+            Buffer percentage
+            </returns>
+            <remarks>
+            Make sure total byte size is small enough
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.GetBufferPct">
+            <summary>
+            Get buffer percentage
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.Log(iba.HD.Common.HdValidationMessage)">
+            <summary>
+            Write message to server log
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.TimeLevelInfo.LevelFactor">
+            <summary>
+            Leveling factor
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.TimeLevelInfo.MaxLevelTimebase">
+            <summary>
+            Lower limit for largest level timebase
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.TimeLevelInfo.FromRaw(System.Int32)">
+            <summary>
+            Gets required level info for signals with given raw timebase
+            </summary>
+            <remarks>
+            Calls are synchronised
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.TimeLevelInfo.#ctor(System.Int32)">
+            <summary>
+            Creates level info for signals with given raw timebase
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.TimeLevelInfo.LevelCount">
+            <summary>
+            Number of levels; including the raw data level
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.TimeLevelInfo.GetRequiredLevel(System.Int64)">
+            <summary>
+            Gets level index that should be used for requested timebase
+            </summary>
+            <returns>
+            Index of largest level with a timebase smaller than or equal to the requested timebase
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.DataTypeY.#cctor">
+            <remarks>
+            Get types supported by <see cref="M:iba.HD.Common.DataTypeY.GetTypeY``1(System.Boolean)"/> at runtime because these types - defined in hdCore.dll - are obfuscated
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.DataType.CanRepresent(iba.HD.Common.LogicalType)">
+            <summary>
+            Determines the data types that can be used for each of the logical types
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.HdWriterData.MaxByteSize">
+            <summary>
+            Maximal size (in memory) for a single data block. Goal is to make sure that sending
+            a WCF message over a slow network doesn't cause a time-out. This is not a hard limit.
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.HdWriterData.DataFormat">
+            <summary>
+            HD server specific
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterData.ByteSize">
+            <summary>
+            Size (in memory) for a single data block
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdWriterData.DumpDebugInfo">
+            <summary>
+            Creates some information about this data. Should only be used when debugging errors.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.TimeWriterSlice.#ctor(iba.HD.Common.DataType,System.Int32,System.Byte[],System.Byte[])">
+            <param name="x_data">x data</param>
+            <param name="y_data">y data</param>
+            <param name="type">data type</param>
+            <param name="iConfig">index of signal in configuration</param>
+        </member>
+        <member name="M:iba.HD.Common.EventWriterItem.#ctor(System.Int32,System.Int64,System.Boolean,System.Boolean,System.Single[],System.String[],System.Byte[][])">
+            <param name="floats">float values</param>
+            <param name="texts">text values</param>
+            <param name="blobs">blob values</param>
+            <param name="stampUtc">time stamp</param>
+            <param name="inSlope">in slope active</param>
+            <param name="outSlope">out slope active</param>
+            <param name="iConfig">index of event in configuration</param>
+        </member>
+        <member name="M:iba.HD.Common.EventWriterItem.#ctor(System.Int32,System.Int64,System.Int64,System.Boolean,System.Boolean,System.Single[],System.String[],System.Byte[][])">
+            <param name="floats">float values</param>
+            <param name="texts">text values</param>
+            <param name="blobs">blob values</param>
+            <param name="stampUtc">time stamp</param>
+            <param name="duration">duration in ticks</param>
+            <param name="inSlope">in slope active</param>
+            <param name="outSlope">out slope active</param>
+            <param name="iConfig">index of event in configuration</param>
+        </member>
+        <member name="T:iba.HD.Common.RegChangeNotifyFilter">
+            <summary>
+            Filter for notifications reported by <see cref="T:iba.HD.Common.RegistryMonitor"/>.
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.RegChangeNotifyFilter.Key">
+            <summary>Notify the caller if a subkey is added or deleted.</summary>
+        </member>
+        <member name="F:iba.HD.Common.RegChangeNotifyFilter.Attribute">
+            <summary>Notify the caller of changes to the attributes of the key,
+            such as the security descriptor information.</summary>
+        </member>
+        <member name="F:iba.HD.Common.RegChangeNotifyFilter.Value">
+            <summary>Notify the caller of changes to a value of the key. This can
+            include adding or deleting a value, or changing an existing value.</summary>
+        </member>
+        <member name="F:iba.HD.Common.RegChangeNotifyFilter.Security">
+            <summary>Notify the caller of changes to the security descriptor
+            of the key.</summary>
+        </member>
+        <member name="T:iba.HD.Common.RegistryMonitor">
+            <summary>
+            RegistryMonitor allows you to monitor specific registry key.
+            </summary>
+            <remarks>
+            If a monitored registry key changes, an event is fired. You can subscribe to these
+            events by adding a delegate to <see cref="E:iba.HD.Common.RegistryMonitor.RegChanged"/>.
+            <para>The Windows API provides a function
+            <a href="http://msdn.microsoft.com/library/en-us/sysinfo/base/regnotifychangekeyvalue.asp">
+            RegNotifyChangeKeyValue</a>, which is not covered by the
+            <see cref="T:Microsoft.Win32.RegistryKey"/> class. <see cref="T:iba.HD.Common.RegistryMonitor"/> imports
+            that function and encapsulates it in a convenient manner.
+            </para>
+            </remarks>
+        </member>
+        <member name="E:iba.HD.Common.RegistryMonitor.RegChanged">
+            <summary>
+            Occurs when the specified registry key has changed.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.RegistryMonitor.OnRegChanged">
+            <summary>
+            Raises the <see cref="E:iba.HD.Common.RegistryMonitor.RegChanged"/> event.
+            </summary>
+            <remarks>
+            <p>
+            <b>OnRegChanged</b> is called when the specified registry key has changed.
+            </p>
+            <note type="inheritinfo">
+            When overriding <see cref="M:iba.HD.Common.RegistryMonitor.OnRegChanged"/> in a derived class, be sure to call
+            the base class's <see cref="M:iba.HD.Common.RegistryMonitor.OnRegChanged"/> method.
+            </note>
+            </remarks>
+        </member>
+        <member name="E:iba.HD.Common.RegistryMonitor.Error">
+            <summary>
+            Occurs when the access to the registry fails.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.RegistryMonitor.OnError(System.Exception)">
+            <summary>
+            Raises the <see cref="E:iba.HD.Common.RegistryMonitor.Error"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.Exception"/> which occurred while watching the registry.</param>
+            <remarks>
+            <p>
+            <b>OnError</b> is called when an exception occurs while watching the registry.
+            </p>
+            <note type="inheritinfo">
+            When overriding <see cref="M:iba.HD.Common.RegistryMonitor.OnError(System.Exception)"/> in a derived class, be sure to call
+            the base class's <see cref="M:iba.HD.Common.RegistryMonitor.OnError(System.Exception)"/> method.
+            </note>
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.RegistryMonitor.#ctor(Microsoft.Win32.RegistryKey)">
+            <summary>
+            Initializes a new instance of the <see cref="T:iba.HD.Common.RegistryMonitor"/> class.
+            </summary>
+            <param name="registryKey">The registry key to monitor.</param>
+        </member>
+        <member name="M:iba.HD.Common.RegistryMonitor.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:iba.HD.Common.RegistryMonitor"/> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:iba.HD.Common.RegistryMonitor.#ctor(Microsoft.Win32.RegistryHive,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:iba.HD.Common.RegistryMonitor"/> class.
+            </summary>
+            <param name="registryHive">The registry hive.</param>
+            <param name="subKey">The sub key.</param>
+        </member>
+        <member name="M:iba.HD.Common.RegistryMonitor.Dispose">
+            <summary>
+            Disposes this object.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.RegistryMonitor.RegChangeNotifyFilter">
+            <summary>
+            Gets or sets the <see cref="P:iba.HD.Common.RegistryMonitor.RegChangeNotifyFilter">RegChangeNotifyFilter</see>.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.RegistryMonitor.IsMonitoring">
+            <summary>
+            <b>true</b> if this <see cref="T:iba.HD.Common.RegistryMonitor"/> object is currently monitoring;
+            otherwise, <b>false</b>.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.RegistryMonitor.Start">
+            <summary>
+            Start monitoring.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.RegistryMonitor.Stop">
+            <summary>
+            Stops the monitoring thread.
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.HdValidatorSingle">
+            <summary>
+            Used to send a single validation message
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.HdValidatorMulti">
+            <summary>
+            Used to send validation messages
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.HdValidationType">
+            <summary>
+            Validation message types
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.HdValidationMessage.indention">
+            <summary>
+            Relative indentation compared to previous member:
+            1: go one level deeper
+            0: remain at the same indentation
+            -1: go one indentation level up
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdValidationMessage.Type">
+            <summary>
+            Message type
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdValidationMessage.Level">
+            <summary>
+            Message type converted to logger level
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdValidationMessage.Text">
+            <summary>
+            Text to be displayed
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdValidationMessage.Overwrite">
+            <summary>
+            True to overwrite previous message
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdValidationMessage.Indention">
+            <summary>
+            Positive to indent; negative to dedent
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdValidationMessage.Stamp">
+            <summary>
+            Time stamp at which message was generated
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.MulticastServicePublisher">
+            <summary>
+            Advertises a service on the network via UDP multicast groups
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.MulticastServicePublisher.#ctor(System.Guid,System.Net.IPAddress,System.Int32)">
+            <summary>
+            Initializes a new instance of the MulticastServicePublisher class, for the specified service id.
+            </summary>
+            <param name="serviceId">Unique identifer for the client/server protocol being advertised.</param>
+        </member>
+        <member name="M:iba.HD.Common.MulticastServicePublisher.PublishServiceEndpoint(System.Collections.IDictionary)">
+            <summary>
+            Begin advertising the presence of the service.
+            </summary>
+            <param name="endpointProps">Property-bag of protocol-specific connection parameters.</param>
+        </member>
+        <member name="M:iba.HD.Common.MulticastServicePublisher.PublishServiceEndpoint(System.Collections.IDictionary,System.Int32)">
+            <summary>
+            Begin advertising the presence of the service.
+            </summary>
+            <param name="ttl">The number of router-hops to advertise across.</param>
+            <param name="endpointProps">Property-bag of protocol-specific connection parameters.</param>
+        </member>
+        <member name="M:iba.HD.Common.MulticastServicePublisher.StopPublishing">
+            <summary>
+            Stops advertising the service.
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.MulticastServiceLocator">
+            <summary>
+            Searches hosts on the network for a specific service, via UDP multicast groups.
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.MulticastServiceLocator.HostResponse">
+            <summary>
+            This nested-type encapsulates the IPAddress and other response info, from a remote service endpoint.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.MulticastServiceLocator.HostResponse.IPAddress">
+            <summary>
+            Gets the IPAddress of the responding host.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.MulticastServiceLocator.HostResponse.EndpointProperties">
+            <summary>
+            Gets a collection of protocol-specific endpoint info from the responding host.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.MulticastServiceLocator.HostResponse.Equals(System.Object)">
+            <summary>
+            Overridden. Returns a value indicating whether this instance is equal to a specified object.
+            </summary>
+            <param name="obj">An object to compare with this instance.</param>
+            <returns><b>true</b> if <i>obj</i> is an instance of <see cref="T:iba.HD.Common.MulticastServiceLocator.HostResponse"/> and equals the value of this instance; otherwise, <b>false</b>.</returns>
+        </member>
+        <member name="M:iba.HD.Common.MulticastServiceLocator.HostResponse.GetHashCode">
+            <summary>
+            Overridden. Returns the hash code for this instance.
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
+        </member>
+        <member name="M:iba.HD.Common.MulticastServiceLocator.HostResponse.op_Equality(iba.HD.Common.MulticastServiceLocator.HostResponse,iba.HD.Common.MulticastServiceLocator.HostResponse)">
+            <summary>
+            Compares two HostResponse structures, based on the originating IPAddress.
+            </summary>
+            <param name="a">A HostResponse structure.</param>
+            <param name="b">A HostResponse structure.</param>
+            <returns><b>true</b> if the two responses are from the same IP address, <b>false</b> otherwise.</returns>
+        </member>
+        <member name="M:iba.HD.Common.MulticastServiceLocator.HostResponse.op_Inequality(iba.HD.Common.MulticastServiceLocator.HostResponse,iba.HD.Common.MulticastServiceLocator.HostResponse)">
+            <summary>
+            Compares two HostResponse structures, based on the originating IPAddress.
+            </summary>
+            <param name="a">A HostResponse structure.</param>
+            <param name="b">A HostResponse structure.</param>
+            <returns><b>false</b> if the two responses are from the same IP address, <b>true</b> otherwise.</returns>
+        </member>
+        <member name="M:iba.HD.Common.HdWriterOrigin.#ctor(System.Guid,System.String)">
+            <summary>
+            Creates a writer origin
+            </summary>
+            <param name="originName">
+            Non-unique name of the origin
+            </param>
+            <param name="originId">
+            Guid that uniquely identifies the origin within the client process
+            </param>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterConfig.StoreId">
+            <summary>
+            Identifies the HD server store that will be written to
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterConfig.Origin">
+            <summary>
+            Identifies the origin that generates data
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterConfig.ConfigMapId">
+            <summary>
+            Used in HD server to group writer configurations per configuration process. A configuration
+            process is the process in which all the writers for a single HD client instance are configured.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterConfig.ReconnectMapId">
+            <summary>
+            ConfigMapId must equal ReconnectMapId if writer is reconnecting. In
+            this case the configuration is not part of a configuration process.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.HdWriterConfig.InfoKeys">
+            <summary>
+            Gets all linked field keys
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdWriterConfig.AddInfoField(System.String,System.Int32,System.String)">
+            <summary>
+            Adds info field
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdWriterConfig.GetInfoFields(System.String)">
+            <summary>
+            Gets info fields values with given key
+            </summary>
+            <returns>
+            null if key unknown
+            </returns>
+        </member>
+        <member name="M:iba.HD.Common.HdWriterConfig.RemoveInfoFields(System.String)">
+            <summary>
+            Removes info fields for given key
+            </summary>
+        </member>
+        <member name="T:iba.HD.Common.TimeWriterSignal">
+            <summary>
+            Configuration for a time based HD writer signal
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.TimeWriterSignal.#ctor(System.String,iba.HD.Common.LogicalType,iba.HD.Common.DataType,System.Int32,iba.HD.Common.HdSegmentText)">
+            <param name="id">
+            id of the signal
+            </param>
+            <param name="logicType">
+            signal logical type
+            </param>
+            <param name="dataType">
+            signal data type
+            </param>
+            <param name="timebase">
+            signal timebase (in 100 ns); ignored if dataType.X == DataTypeX.NequiTime
+            </param>
+            <param name="text">
+            signal text
+            </param>
+        </member>
+        <member name="P:iba.HD.Common.TimeWriterSignal.Timebase">
+            <summary>
+            Ignored if TypeData.X is not equidistant
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.TimeBitDecoder.Id">
+            <summary>
+            Decoder signal id
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.TimeBitDecoder.TimeBase">
+            <summary>
+            Decoder time base (in 100 ns)
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.TimeBitDecoder.Type">
+            <summary>
+            Determines amount of signals in the decoder
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.TimeBitDecoder.#ctor(System.String,System.Int32,iba.HD.Common.DataTypeY)">
+            <remarks>
+            Timebase must equal time base of data that is sent to HD
+            server. All bit-decoded signals are forced to this timebase.
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Common.TimeWriterBitDecoded.#ctor(System.String,System.Int32,iba.HD.Common.HdSegmentText,iba.HD.Common.TimeBitDecoder,System.Byte,System.Boolean)">
+            <summary>
+            Creates a new time based bit decoded signal for the HD writer configuration
+            </summary>
+            <param name="id">
+            id of the signal
+            </param>
+            <param name="timebase">
+            signal timebase (in 100 ns)
+            </param>
+            <param name="text">
+            signal text
+            </param>
+            <param name="decoder">
+            Decoder that generates the signal
+            </param>
+            <param name="bitIndex">
+            Decoder bit index
+            </param>
+            <param name="active">
+            Both active and invactive bitdecoded signals need to be added to the writer configration
+            </param>
+        </member>
+        <member name="M:iba.HD.Common.LengthWriterSignal.#ctor(System.String,iba.HD.Common.LogicalType,iba.HD.Common.DataType,System.Int32,iba.HD.Common.HdSegmentText)">
+            <param name="id">
+            id of the signal
+            </param>
+            <param name="logicType">
+            signal logical type
+            </param>
+            <param name="dataType">
+            signal data type
+            </param>
+            <param name="lengthbase"
+            >signal lengthbase (in unit/1000)
+            </param>
+            <param name="text">
+            signal text
+            </param>
+        </member>
+        <member name="F:iba.HD.Common.LengthBitDecoder.Id">
+            <summary>
+            Decoder signal id
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.LengthBitDecoder.LengthBase">
+            <summary>
+            Decoder length base (in unit/1000)
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.LengthBitDecoder.Type">
+            <summary>
+            Determines amount of signals in the decoder
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.LengthWriterBitDecoded.#ctor(System.String,iba.HD.Common.HdSegmentText,iba.HD.Common.LengthBitDecoder,System.Byte,System.Boolean)">
+            <summary>
+            Creates a new length based bit decoded signal for the HD writer configuration
+            </summary>
+            <param name="id">
+            id of the signal
+            </param>
+            <param name="text">
+            signal text
+            </param>
+            <param name="decoder">
+            Decoder that generates the signal
+            </param>
+            <param name="bitIndex">
+            Decoder bit index
+            </param>
+            <param name="active">
+            Both active and invactive bitdecoded signals need to be added to the writer configration
+            </param>
+        </member>
+    </members>
+</doc>

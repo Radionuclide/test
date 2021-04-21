@@ -1,0 +1,944 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{03EFD2FC-187D-42A5-B3A7-38232B4FF060}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iba</RootNamespace>
+    <AssemblyName>ibaDatCoordinator</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <StartupObject>
+    </StartupObject>
+    <ApplicationIcon>ibaDatCoordinator.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <PublishUrl>http://localhost/ibaDatCoordinator/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v16.1">
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v16.1.Core, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v16.1.Core, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v16.1">
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraPivotGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v16.1, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DotNetMagic2005, Version=6.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\DotNetMagic2005.dll</HintPath>
+    </Reference>
+    <Reference Include="Eyefinder, Version=1.3.0.1, Culture=neutral, PublicKeyToken=75b7ec17dd7c14c3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Eyefinder.dll</HintPath>
+    </Reference>
+    <Reference Include="GenuineChannels">
+      <HintPath>..\Dependencies\GenuineChannels.dll</HintPath>
+    </Reference>
+    <Reference Include="hdClient, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\hdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="hdClientInterfaces">
+      <HintPath>..\Dependencies\hdClientInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="hdCommon, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\hdCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ibaFilesV7LiteDotNet">
+      <HintPath>..\Dependencies\ibaFilesV7LiteDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.TextEditor, Version=2.2.0.2595, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Opc.Ua.Configuration">
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Core, Version=1.4.353.0, Culture=neutral, PublicKeyToken=bfa7a73c5cf4b6e8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Server">
+      <HintPath>..\Dependencies\OpcUa\Opc.Ua.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Zyan.SafeDeserializationHelpers">
+      <HintPath>..\Dependencies\Zyan.SafeDeserializationHelpers.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationObject.cs" />
+    <Compile Include="Controls\AnalyzerTreeEditor.cs" />
+    <Compile Include="Controls\BatchFileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BatchFileControl.Designer.cs">
+      <DependentUpon>BatchFileControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CleanupTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CleanupTaskControl.Designer.cs">
+      <DependentUpon>CleanupTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ConfigurationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ConfigurationControl.Designer.cs">
+      <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ErrorPluginTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ErrorPluginTaskControl.Designer.cs">
+      <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GradientWaitingBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HDEventCreationTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HDEventCreationTaskControl.Designer.cs">
+      <DependentUpon>HDEventCreationTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaIpAddressSelect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaIpAddressSelect.Designer.cs">
+      <DependentUpon>OpcUaIpAddressSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.Designer.cs">
+      <DependentUpon>OpcUaCertificateEnterPasswordForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateGenerateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaCertificateGenerateForm.Designer.cs">
+      <DependentUpon>OpcUaCertificateGenerateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaControl.Designer.cs">
+      <DependentUpon>OpcUaControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaEndpointSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaEndpointSelectionForm.Designer.cs">
+      <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OpcUaWriterTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\OpcUaWriterTaskControl.Designer.cs">
+      <DependentUpon>OpcUaWriterTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PanelEventJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelEventJob.designer.cs">
+      <DependentUpon>PanelEventJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PasswordEditWithConfirmation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PasswordEditWithConfirmation.Designer.cs">
+      <DependentUpon>PasswordEditWithConfirmation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ServerFolderBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\SnmpControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SnmpControl.Designer.cs">
+      <DependentUpon>SnmpControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SplitterTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SplitterTaskControl.Designer.cs">
+      <DependentUpon>SplitterTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomUNCTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CustomUNCTaskControl.Designer.cs">
+      <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PercentUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HDEventWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\HDEventWizard.Designer.cs">
+      <DependentUpon>HDEventWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TriggerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TriggerControl.Designer.cs">
+      <DependentUpon>TriggerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ErrorPluginTaskData.cs" />
+    <Compile Include="Data\EventJobData.cs" />
+    <Compile Include="Data\GridViewLogger.cs" />
+    <Compile Include="Data\HDCreateEventTaskData.cs" />
+    <Compile Include="Data\OpcUaData.cs" />
+    <Compile Include="Data\OpcUaWriterTaskData.cs" />
+    <Compile Include="Data\PluginTaskDataWrapper.cs" />
+    <Compile Include="Data\RemoteLogger.cs" />
+    <Compile Include="Dialogs\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\About.designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\GenerateEventJobTestFileDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\GenerateEventJobTestFileDlg.Designer.cs">
+      <DependentUpon>GenerateEventJobTestFileDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\PasswordEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\PasswordEditForm.Designer.cs">
+      <DependentUpon>PasswordEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ServerSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Data\SnmpData.cs" />
+    <Compile Include="Data\ExtMonData.cs" />
+    <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
+    <Compile Include="Processing\ErrorPluginTaskWorker.cs" />
+    <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
+    <Compile Include="Processing\IbaOpcUa\IbaOpcUaNodeManager.cs" />
+    <Compile Include="Processing\IbaOpcUa\IbaOpcUaVariable.cs" />
+    <Compile Include="Processing\HDCreateEventTaskWorker.cs" />
+    <Compile Include="Processing\HDEventMonitor.cs" />
+    <Compile Include="Processing\OpcUaWorker.cs" />
+    <Compile Include="Processing\SnmpWorker.cs" />
+    <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TestSplitterTaskDialog.Designer.cs">
+      <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Remoting\ClientRemotingManager.cs" />
+    <Compile Include="Remoting\FileDownloaderImpl.cs" />
+    <Compile Include="Remoting\ibaAnalyzerExt.cs" />
+    <Compile Include="Remoting\RemoteFileLoader.cs" />
+    <Compile Include="Remoting\FilesDownloaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remoting\FilesUploaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remoting\FileUploaderImpl.cs" />
+    <Compile Include="Remoting\ServerRemotingManager.cs" />
+    <Compile Include="Utility\CircularBuffer.cs" />
+    <Compile Include="Utility\Components\BackgroundWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\EncryptionService.cs" />
+    <Compile Include="Utility\EventJobTestGenerator.cs" />
+    <Compile Include="Utility\ExtensionMethods.cs" />
+    <Compile Include="Utility\LanguageHelper.cs" />
+    <Compile Include="Remoting\PdaServerFiles.cs" />
+    <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
+    <Compile Include="Processing\GlobalCleanupManager.cs" />
+    <Compile Include="Processing\SplitterTaskWorker.cs" />
+    <Compile Include="Data\SplitterTaskData.cs" />
+    <Compile Include="Utility\ControlExtensions.cs" />
+    <Compile Include="Utility\CueProvider.cs" />
+    <Compile Include="Utility\DatcoServerDefaults.cs" />
+    <Compile Include="Utility\FlexibleMessageBox.cs" />
+    <Compile Include="Utility\RegistryMonitor.cs" />
+    <Compile Include="Utility\SupportFileGenerator.cs" />
+    <Compile Include="Utility\TaskControl.cs" />
+    <Compile Include="Data\GlobalCleanupData.cs" />
+    <Compile Include="Data\GlobalCleanupTaskData.cs" />
+    <Compile Include="Controls\MonthlyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MonthlyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>MonthlyTriggerSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PanelDatFilesJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelDatFilesJob.Designer.cs">
+      <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PanelScheduledJob.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelScheduledJob.designer.cs">
+      <DependentUpon>PanelScheduledJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WeeklyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WeeklyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ScheduledJobData.cs" />
+    <Compile Include="Dialogs\PasswordConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\PasswordConfirm.Designer.cs">
+      <DependentUpon>PasswordConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PauseTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PauseTaskControl.Designer.cs">
+      <DependentUpon>PauseTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\RemoveMarkingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RemoveMarkingsDialog.Designer.cs">
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PermanentFileErrorsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PermanentFileErrorsControl.Designer.cs">
+      <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CopyControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CopyControl.Designer.cs">
+      <DependentUpon>CopyControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CommonTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CommonTaskControl.Designer.cs">
+      <DependentUpon>CommonTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ExtractControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ExtractControl.Designer.cs">
+      <DependentUpon>ExtractControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IfTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\IfTaskControl.Designer.cs">
+      <DependentUpon>IfTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LogControl.Designer.cs">
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DeleteDatFilesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\DeleteDatFilesDialog.Designer.cs">
+      <DependentUpon>DeleteDatFilesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportControl.Designer.cs">
+      <DependentUpon>ReportControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ServiceSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ServiceSettingsControl.Designer.cs">
+      <DependentUpon>ServiceSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\StatusControl.Designer.cs">
+      <DependentUpon>StatusControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\SpecifyPasswordDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SpecifyPasswordDialog.Designer.cs">
+      <DependentUpon>SpecifyPasswordDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\StopWaitDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\StopWaitDialog.Designer.cs">
+      <DependentUpon>StopWaitDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UNCTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UNCTaskControl.Designer.cs">
+      <DependentUpon>UNCTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UpdateDataTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UpdateDataTaskControl.Designer.cs">
+      <DependentUpon>UpdateDataTaskControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WatchdogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WatchdogControl.Designer.cs">
+      <DependentUpon>WatchdogControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\BatchFileData.cs" />
+    <Compile Include="Data\ConfigurationData.cs" />
+    <Compile Include="Data\CopyMoveTaskData.cs" />
+    <Compile Include="Data\CustomTaskData.cs" />
+    <Compile Include="Data\ExtractData.cs" />
+    <Compile Include="Data\ibaDatCoordinatorData.cs" />
+    <Compile Include="Data\IfTaskData.cs" />
+    <Compile Include="Data\LogData.cs" />
+    <Compile Include="Data\PauseTaskData.cs" />
+    <Compile Include="Data\ReportData.cs" />
+    <Compile Include="Data\StatusData.cs" />
+    <Compile Include="Data\TaskData.cs" />
+    <Compile Include="Data\TaskDataUNC.cs" />
+    <Compile Include="Data\UpdateDataTaskData.cs" />
+    <Compile Include="Data\WatchDogData.cs" />
+    <Compile Include="Dialogs\TestScriptDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TestScriptDlg.Designer.cs">
+      <DependentUpon>TestScriptDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DailyTriggerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DailyTriggerSettingsControl.Designer.cs">
+      <DependentUpon>DailyTriggerSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Processing\ExtractTaskWorker.cs" />
+    <Compile Include="GeneralInterfaces.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Processing\FifoSemaphore.cs" />
+    <Compile Include="Processing\FileProcessing.cs" />
+    <Compile Include="Processing\FileQuotaCleanup.cs" />
+    <Compile Include="Processing\IbaAnalyzerCollection.cs" />
+    <Compile Include="Processing\IbaAnalyzerMonitor.cs" />
+    <Compile Include="Utility\IniParser.cs" />
+    <Compile Include="Processing\Notifier.cs" />
+    <Compile Include="Processing\TCPWatchdog.cs" />
+    <Compile Include="Processing\TriggerCalculator.cs" />
+    <Compile Include="Processing\UpdateDataTaskWorker.cs" />
+    <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.Designer.cs">
+      <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegistryOptimizer.cs" />
+    <Compile Include="Utility\DriveUtil.cs" />
+    <Compile Include="Utility\CollapsibleElementManager.cs" />
+    <Compile Include="Utility\CollapsibleGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\CollapsibleGroupBox.Designer.cs">
+      <DependentUpon>CollapsibleGroupBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\crypt.cs" />
+    <Compile Include="Utility\CustomComboBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\DataPath.cs" />
+    <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
+    <Compile Include="Utility\FastDirectoryEnumerator.cs" />
+    <Compile Include="Utility\Ellipsis.cs" />
+    <Compile Include="Utility\FileSetWithTimeStamps.cs" />
+    <Compile Include="Utility\FormSerializer.cs" />
+    <Compile Include="Utility\GraphicsUtilities.cs" />
+    <Compile Include="Utility\ibaToolStripRenderer.cs" />
+    <Compile Include="Utility\LabelEllipsis.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\nextname.cs" />
+    <Compile Include="Processing\ConfigurationWorker.cs" />
+    <Compile Include="Processing\TaskManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\XmlWrapper.cs" />
+    <EmbeddedResource Include="Controls\CleanupTaskControl.resx">
+      <DependentUpon>CleanupTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ConfigurationControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ErrorPluginTaskControl.resx">
+      <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
+    <EmbeddedResource Include="Controls\HDEventCreationTaskControl.resx">
+      <DependentUpon>HDEventCreationTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaCertificateEnterPasswordForm.resx">
+      <DependentUpon>OpcUaCertificateEnterPasswordForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaCertificateGenerateForm.resx">
+      <DependentUpon>OpcUaCertificateGenerateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaControl.resx">
+      <DependentUpon>OpcUaControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaEndpointSelectionForm.resx">
+      <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\OpcUaWriterTaskControl.resx">
+      <DependentUpon>OpcUaWriterTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelEventJob.resx">
+      <DependentUpon>PanelEventJob.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PasswordEditWithConfirmation.resx">
+      <DependentUpon>PasswordEditWithConfirmation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ServerFolderBrowser.resx">
+      <DependentUpon>ServerFolderBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SnmpControl.resx">
+      <DependentUpon>SnmpControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SplitterTaskControl.resx">
+      <DependentUpon>SplitterTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MonthlyTriggerSettingsControl.resx">
+      <DependentUpon>MonthlyTriggerSettingsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelDatFilesJob.resx">
+      <DependentUpon>PanelDatFilesJob.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelScheduledJob.resx">
+      <DependentUpon>PanelScheduledJob.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StatusControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StatusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HDEventWizard.resx">
+      <DependentUpon>HDEventWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TriggerControl.resx">
+      <DependentUpon>TriggerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WeeklyTriggerSettingsControl.resx">
+      <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\GenerateEventJobTestFileDlg.resx">
+      <DependentUpon>GenerateEventJobTestFileDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\PasswordEditForm.resx">
+      <DependentUpon>PasswordEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ServerSelectionForm.resx">
+      <DependentUpon>ServerSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TestSplitterTaskDialog.resx">
+      <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DailyTriggerSettingsControl.resx">
+      <DependentUpon>DailyTriggerSettingsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="SingletonApplication.cs" />
+    <Compile Include="Utility\algorithms.cs" />
+    <Compile Include="Utility\containers.cs" />
+    <Compile Include="Utility\Path.cs" />
+    <Compile Include="Utility\PathCleaner.cs" />
+    <Compile Include="Utility\PluginManager.cs" />
+    <Compile Include="Utility\Profiler.cs" />
+    <Compile Include="Utility\RegistryExporter.cs" />
+    <Compile Include="Utility\RippleDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\SafeTimer.cs" />
+    <Compile Include="Utility\SerializableObjectsCompare.cs" />
+    <Compile Include="Utility\Shares.cs" />
+    <Compile Include="Utility\SharesHandler.cs" />
+    <Compile Include="Utility\SystemInfoCollector.cs" />
+    <Compile Include="Utility\TextBoxEllipsis.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utility\UdpRendezVous.cs" />
+    <Compile Include="Utility\VersionCheck.cs" />
+    <Compile Include="Utility\WindowsAPI.cs" />
+    <Compile Include="TreeItemData.cs" />
+    <Compile Include="Utility\WaitCursor.cs" />
+    <EmbeddedResource Include="Remoting\FilesDownloaderForm.resx">
+      <DependentUpon>FilesDownloaderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Remoting\FilesUploaderForm.resx">
+      <DependentUpon>FilesUploaderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\Components\BackgroundWorker.resx">
+      <DependentUpon>BackgroundWorker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\CustomComboBox.resx">
+      <DependentUpon>CustomComboBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AboutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BatchFileControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BatchFileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\PasswordConfirm.resx">
+      <DependentUpon>PasswordConfirm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PauseTaskControl.resx">
+      <DependentUpon>PauseTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\RemoveMarkingsDialog.resx">
+      <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PermanentFileErrorsControl.resx">
+      <DependentUpon>PermanentFileErrorsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CopyControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CopyControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CommonTaskControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CommonTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ExtractControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExtractControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\IfTaskControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>IfTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LogControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\DeleteDatFilesDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DeleteDatFilesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ReportControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ReportControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ServiceSettingsControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServiceSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\SpecifyPasswordDialog.resx">
+      <DependentUpon>SpecifyPasswordDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\StopWaitDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StopWaitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UNCTaskControl.resx">
+      <DependentUpon>UNCTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UpdateDataTaskControl.resx">
+      <DependentUpon>UpdateDataTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WatchdogControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WatchdogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TestScriptDlg.resx">
+      <DependentUpon>TestScriptDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\UploadOrDownloadConfigurationsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IbaAnalyzer">
+      <Guid>{13449E7B-9E2F-4C8A-8050-102312D3FC84}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ibaDatCoordinator.ico" />
+    <Content Include="Properties\ibaLogo.ico" />
+    <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\up.ico" />
+    <None Include="Resources\down.ico" />
+    <Content Include="Resources\img_file.png" />
+    <None Include="Resources\img_lock.png" />
+    <None Include="Resources\img_networkError.ico" />
+    <Content Include="Resources\img_pdo_upload.png" />
+    <None Include="Resources\img_unlock.png" />
+    <None Include="Resources\img_server.png" />
+    <None Include="Resources\img_question.png" />
+    <Content Include="Resources\img_warning.png" />
+    <None Include="Resources\sychronizeList.bmp" />
+    <None Include="Resources\OPCIcon.ico" />
+    <None Include="Resources\opcUaServer_icon.png" />
+    <None Include="Resources\remove.png" />
+    <None Include="Resources\img_shldred.png" />
+    <None Include="Resources\img_shldgreen.png" />
+    <None Include="Resources\img_opcuaserver_cert.png" />
+    <None Include="Resources\img_opcuaclient_cert.png" />
+    <None Include="Resources\img_key.png" />
+    <None Include="Resources\img_export.png" />
+    <None Include="Resources\about_background.png" />
+    <None Include="Resources\about80x80.png" />
+    <None Include="Resources\dat-file.ico" />
+    <Content Include="Resources\event_configuration.ico" />
+    <Content Include="Resources\event_configuration_new.ico" />
+    <None Include="Resources\ibaDatCoordinator.ico" />
+    <None Include="Resources\ibaDatCoordinator_dc.ico" />
+    <None Include="Resources\ibaDatCoordinator_start.ico" />
+    <None Include="Resources\ibaDatCoordinator_stopp.ico" />
+    <None Include="Resources\ibaDatCoordinator.png" />
+    <None Include="Resources\ibaDatCoordinator_server.ico" />
+    <None Include="Resources\ibaAnalyzer.png" />
+    <Content Include="Resources\ibaAnalyzer_16x16.png" />
+    <Content Include="Resources\img_computed_values.png" />
+    <Content Include="Resources\img_error.png" />
+    <Content Include="Resources\img_eventjob_range_both.png" />
+    <None Include="Resources\img_add.png" />
+    <None Include="Resources\img_cert.png" />
+    <None Include="Resources\img_dude.png" />
+    <Content Include="Resources\img_eventjob_range_single.png" />
+    <None Include="Resources\snmp_icon.png" />
+    <None Include="Resources\snmp_images.png" />
+    <None Include="Resources\Toolbars16.bmp" />
+    <None Include="Resources\SplitDat.ico" />
+    <None Include="Resources\plus.bmp" />
+    <None Include="Resources\minus.bmp" />
+    <None Include="Resources\scheduled_configuration.ico" />
+    <None Include="Resources\scheduled_configuration_new.ico" />
+    <None Include="Resources\broom.png" />
+    <Content Include="Resources\default.ico" />
+    <EmbeddedResource Include="Controls\CustomUNCTaskControl.resx">
+      <DependentUpon>CustomUNCTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\icons.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">
+      <Project>{4B217D62-C82B-4DE3-A4B0-AF359E4FB562}</Project>
+      <Name>DatCoordinatorPlugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatCoUtil\DatCoUtil.vcxproj">
+      <Project>{3F16623A-6C9F-4D79-8A6B-351A39BF91A9}</Project>
+      <Name>DatCoUtil</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ibaSnmpLib">
+      <Version>1.9.8</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"
+mkdir "$(TargetDir)Plugins"
+move "$(TargetDir)hd_plugin.dll" "$(TargetDir)Plugins"
+copy "$(SolutionDir)Dependencies\PowerCollections.dll" "$(TargetDir)"
+copy "$(SolutionDir)Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" "$(TargetDir)"
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>copy "$(SolutionDir)Dependencies\DevExpress*.dll" "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

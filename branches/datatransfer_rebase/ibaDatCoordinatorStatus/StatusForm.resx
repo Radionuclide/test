@@ -1,0 +1,844 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>397, 17</value>
+  </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_btnClient.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnClient.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_btnClient.Location" type="System.Drawing.Point, System.Drawing">
+    <value>361, 85</value>
+  </data>
+  <data name="m_btnClient.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_btnClient.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="m_btnClient.ToolTip" xml:space="preserve">
+    <value>Start or focus ibaDatCoordinator Client</value>
+  </data>
+  <data name="&gt;&gt;m_btnClient.Name" xml:space="preserve">
+    <value>m_btnClient</value>
+  </data>
+  <data name="&gt;&gt;m_btnClient.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnClient.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btnClient.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>503, 17</value>
+  </metadata>
+  <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Name" xml:space="preserve">
+    <value>m_btTransferAnalyzerSettings</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Name" xml:space="preserve">
+    <value>m_tbAnalyzerExe</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
+    <value>m_executeIBAAButton</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 148</value>
+  </data>
+  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>700, 86</value>
+  </data>
+  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>ibaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 53</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 23</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Text" xml:space="preserve">
+    <value>Transfer ibaAnalyzer settings</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Name" xml:space="preserve">
+    <value>m_btTransferAnalyzerSettings</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbAnalyzerExe.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbAnalyzerExe.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 27</value>
+  </data>
+  <data name="m_tbAnalyzerExe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>498, 20</value>
+  </data>
+  <data name="m_tbAnalyzerExe.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Name" xml:space="preserve">
+    <value>m_tbAnalyzerExe</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_tbAnalyzerExe.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_executeIBAAButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAA7hJREFUWEft
+        l/tPzWEcx8+/0C/+D9eZLko3kkKRxFqXKaFFRUZhSTvJML/YzA81ZWn9wMaEWsvYMhGppE6idBHdTLqe
+        t+f94fvdOTzquHT6xbO9tvN9Ps95vu/v5/bssXAs9vT0UFgVNoVdgXmkX3FJsch4+SJFu0K3eD7hOz0o
+        gGp0C9yBlQLoEp3RHdgoQGdwF/aFFoD/AlwSsMTLCyEREVrb3+KSgIwjR9DV3Y3lPj5O84FhYYhNSsL2
+        +Hh4BwU52VxlTgExCQkYHhmB7fVr0wsHs7PR/PIl7HY7jDEzM4O6x4+xKzX1pz1mY1YBaYcOYfTTJ+Ra
+        rVjq7Y2Vfn64U1WFqakpVFy/jvjdu+EXEiKeSM3MRFVNjYi6UlYmYdPt+SNaAStWr0ZRaSlGRkdlY85x
+        w5r79/F+YAA7EhN/+o8BRY+NjaGopERr/xGtgBfNzXjW2IjQyEhz7lRhoWwcuXOn01od+5UIeoL5obM7
+        ohWQlZMjLjeel6nk45dfuHgRK3x9kXLggGm7XFQkglf5+5tzhN6qrq11mtMxZxKShJQUTE9Pw3fdOsSp
+        uPf09kqY6JWPg4OSfPSYZ0AA9mVkSLLuz8rCl/FxqZyVa9Zo9yUuCThZUIDON2/M55bWVjQ8f47BoSEp
+        weVKzMO6Orzt6sLQ8DCi4+IQsnmzVAfDmJ2bKyJ1vWRWAYePH4d/aKh8aZvNJnM3bt3CpKoCeiR82zaZ
+        Y6wLz59Hwblz8Fu/XuYCNmwQAWFbt2JTdDSO5eWJUGNvA62A2/fuobevT6CAvenp+KwSkLkQFB4OX1V6
+        jHv+mTOyvr6hAQMfPsBn7VpzD4aN5crSpTD2E8PmiFbAUeUybsAX8tkrMFDiaZQk4e++/n5kqi7JBK19
+        8EB6g2EvuXYNj+rr5TdDYD171rQ54lIOkLKKCrS2tUnyGXONTU0Yn5iQHAneuBFPVV7QzeFRUSKYPcFx
+        Dx0uC6B73/X0oFKFx4hlXHIyblZWmp4iFNLR2Ym71dXm3Gy4LIAw6SiCVbBH9QLHXrFKlSA9MajKkoNn
+        xRYXmtZvCSA+wcG4Wl4uXZHnRFNLC161t2NiclJywtbRIQI4mBtzHeO/LcCAX5ycloYT+fmSZDwf6JG8
+        06e/v/7bYDjYwHR7kD8W8Ct4aDH+jqNBdclfdcN/LoDwZU9Ub3Acl4uLtWspYF6uYgxHREwMomJjBfYS
+        3ToK4H1Qa3QD/RTAS6nO6A4uUQBvxgt1OXW6IfOSOt/3ROYbQ06ve1gsFstXqQSMGnlydTQAAAAASUVO
+        RK5CYII=
+</value>
+  </data>
+  <data name="m_executeIBAAButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>636, 16</value>
+  </data>
+  <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
+    <value>m_executeIBAAButton</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 30</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 13</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Executable:</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_gbApp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_cbStartLastSaved.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbStartLastSaved.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbStartLastSaved.Location" type="System.Drawing.Point, System.Drawing">
+    <value>366, 34</value>
+  </data>
+  <data name="m_cbStartLastSaved.Size" type="System.Drawing.Size, System.Drawing">
+    <value>222, 17</value>
+  </data>
+  <data name="m_cbStartLastSaved.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="m_cbStartLastSaved.Text" xml:space="preserve">
+    <value>Start service with last saved configuration</value>
+  </data>
+  <data name="&gt;&gt;m_cbStartLastSaved.Name" xml:space="preserve">
+    <value>m_cbStartLastSaved</value>
+  </data>
+  <data name="&gt;&gt;m_cbStartLastSaved.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbStartLastSaved.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_cbStartLastSaved.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btChange.Location" type="System.Drawing.Point, System.Drawing">
+    <value>230, 100</value>
+  </data>
+  <data name="m_btChange.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 25</value>
+  </data>
+  <data name="m_btChange.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_btChange.Text" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="&gt;&gt;m_btChange.Name" xml:space="preserve">
+    <value>m_btChange</value>
+  </data>
+  <data name="&gt;&gt;m_btChange.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btChange.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btChange.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tbPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 103</value>
+  </data>
+  <data name="m_tbPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 20</value>
+  </data>
+  <data name="m_tbPort.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_tbPort.Name" xml:space="preserve">
+    <value>m_tbPort</value>
+  </data>
+  <data name="&gt;&gt;m_tbPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPort.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_tbPort.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_btnRestart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnRestart.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_btnRestart.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnRestart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnRestart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>573, 57</value>
+  </data>
+  <data name="m_btnRestart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 25</value>
+  </data>
+  <data name="m_btnRestart.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_btnRestart.Text" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="&gt;&gt;m_btnRestart.Name" xml:space="preserve">
+    <value>m_btnRestart</value>
+  </data>
+  <data name="&gt;&gt;m_btnRestart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnRestart.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btnRestart.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_lblServiceStatus.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_lblServiceStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblServiceStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 74</value>
+  </data>
+  <data name="m_lblServiceStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 23</value>
+  </data>
+  <data name="m_lblServiceStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_lblServiceStatus.Text" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="m_lblServiceStatus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;m_lblServiceStatus.Name" xml:space="preserve">
+    <value>m_lblServiceStatus</value>
+  </data>
+  <data name="&gt;&gt;m_lblServiceStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblServiceStatus.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_lblServiceStatus.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_btnStop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnStop.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_btnStop.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnStop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>467, 57</value>
+  </data>
+  <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 25</value>
+  </data>
+  <data name="m_btnStop.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_btnStop.Text" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="&gt;&gt;m_btnStop.Name" xml:space="preserve">
+    <value>m_btnStop</value>
+  </data>
+  <data name="&gt;&gt;m_btnStop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnStop.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_btnStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnStart.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_btnStart.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>361, 57</value>
+  </data>
+  <data name="m_btnStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 25</value>
+  </data>
+  <data name="m_btnStart.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_btnStart.Text" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="&gt;&gt;m_btnStart.Name" xml:space="preserve">
+    <value>m_btnStart</value>
+  </data>
+  <data name="&gt;&gt;m_btnStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnStart.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btnStart.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_lbServPort.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbServPort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbServPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 106</value>
+  </data>
+  <data name="m_lbServPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 13</value>
+  </data>
+  <data name="m_lbServPort.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_lbServPort.Text" xml:space="preserve">
+    <value>Port:</value>
+  </data>
+  <data name="&gt;&gt;m_lbServPort.Name" xml:space="preserve">
+    <value>m_lbServPort</value>
+  </data>
+  <data name="&gt;&gt;m_lbServPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbServPort.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_lbServPort.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="m_lbServStatus.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbServStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbServStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 79</value>
+  </data>
+  <data name="m_lbServStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 13</value>
+  </data>
+  <data name="m_lbServStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_lbServStatus.Text" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="&gt;&gt;m_lbServStatus.Name" xml:space="preserve">
+    <value>m_lbServStatus</value>
+  </data>
+  <data name="&gt;&gt;m_lbServStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbServStatus.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_lbServStatus.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="m_btnOptimize.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnOptimize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 43</value>
+  </data>
+  <data name="m_btnOptimize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>210, 23</value>
+  </data>
+  <data name="m_btnOptimize.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_btnOptimize.Text" xml:space="preserve">
+    <value>Optimize system resources</value>
+  </data>
+  <data name="&gt;&gt;m_btnOptimize.Name" xml:space="preserve">
+    <value>m_btnOptimize</value>
+  </data>
+  <data name="&gt;&gt;m_btnOptimize.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnOptimize.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_btnOptimize.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_comboPriority.Items" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="m_comboPriority.Items1" xml:space="preserve">
+    <value>Below normal</value>
+  </data>
+  <data name="m_comboPriority.Items2" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="m_comboPriority.Items3" xml:space="preserve">
+    <value>Above normal</value>
+  </data>
+  <data name="m_comboPriority.Items4" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="m_comboPriority.Items5" xml:space="preserve">
+    <value>Realtime</value>
+  </data>
+  <data name="m_comboPriority.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 17</value>
+  </data>
+  <data name="m_comboPriority.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 21</value>
+  </data>
+  <data name="m_comboPriority.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_comboPriority.Name" xml:space="preserve">
+    <value>m_comboPriority</value>
+  </data>
+  <data name="&gt;&gt;m_comboPriority.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_comboPriority.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_comboPriority.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_lblPriority.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblPriority.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblPriority.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 20</value>
+  </data>
+  <data name="m_lblPriority.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 13</value>
+  </data>
+  <data name="m_lblPriority.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblPriority.Text" xml:space="preserve">
+    <value>Priority of service:</value>
+  </data>
+  <data name="&gt;&gt;m_lblPriority.Name" xml:space="preserve">
+    <value>m_lblPriority</value>
+  </data>
+  <data name="&gt;&gt;m_lblPriority.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblPriority.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_lblPriority.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_cbAutoStart.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbAutoStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbAutoStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>366, 11</value>
+  </data>
+  <data name="m_cbAutoStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 17</value>
+  </data>
+  <data name="m_cbAutoStart.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_cbAutoStart.Text" xml:space="preserve">
+    <value>Automatically start service when windows starts</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoStart.Name" xml:space="preserve">
+    <value>m_cbAutoStart</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoStart.Parent" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoStart.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="m_gbApp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 5</value>
+  </data>
+  <data name="m_gbApp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>700, 137</value>
+  </data>
+  <data name="m_gbApp.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_gbApp.Text" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="&gt;&gt;m_gbApp.Name" xml:space="preserve">
+    <value>m_gbApp</value>
+  </data>
+  <data name="&gt;&gt;m_gbApp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbApp.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gbApp.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="m_timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>652, 17</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>370</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>724, 243</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>740, 280</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>ibaDatCoordinator Status</value>
+  </data>
+  <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
+    <value>m_toolTip</value>
+  </data>
+  <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_openFileDialog.Name" xml:space="preserve">
+    <value>m_openFileDialog</value>
+  </data>
+  <data name="&gt;&gt;m_openFileDialog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_timer.Name" xml:space="preserve">
+    <value>m_timer</value>
+  </data>
+  <data name="&gt;&gt;m_timer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>StatusForm</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2013 sp1 (x64) (http://www.altova.com) von Struk (ThyssenKrupp Steel Europe AG) bearbeitet -->
+<xsd:schema xmlns="http://www.thyssen.com/xml/schema/qbic" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.thyssen.com/xml/schema/qbic" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- DEV-2_6_1 -->
+	<xsd:element name="Erzeugung" type="ErzeugungType"/>
+	<xsd:complexType name="ErzeugungType">
+
+		<xsd:sequence>
+			<xsd:element name="MaterialHeader" type="MaterialHeaderType"/>
+			<xsd:element name="Messung" type="MessungType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="Einzelwerte" type="EinzelwertComplexType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MaterialHeaderType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="LokalerIdent" type="StringMax10" minOccurs="0"/>
+				<xsd:element name="TKSIdent" type="xsd:unsignedLong" minOccurs="0"/>
+			</xsd:choice>
+			<xsd:element name="Standort" type="StandortType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>BO, DO, DU, SI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaterialArt" type="MaterialArtType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Nur DU:  BR WB KB VZ BB PK</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="StandortType">
+		<xsd:annotation>
+			<xsd:documentation>Gueltige TKS-Standorte.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BO"/>
+			<xsd:enumeration value="DO"/>
+			<xsd:enumeration value="DU"/>
+			<xsd:enumeration value="SI"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="MaterialArtType">
+		<xsd:annotation>
+			<xsd:documentation>Zusaetzliche Kennzeichnung von Duisburger Material.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BR">
+				<xsd:annotation>
+					<xsd:documentation>Bramme</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="WB">
+				<xsd:annotation>
+					<xsd:documentation>Warmband</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KB">
+				<xsd:annotation>
+					<xsd:documentation>Kaltband</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="VZ">
+				<xsd:annotation>
+					<xsd:documentation>verzinktes Material</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BB">
+				<xsd:annotation>
+					<xsd:documentation>bandbeschichtetes Material</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PK">
+				<xsd:annotation>
+					<xsd:documentation>Paket (Material zum Versand)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="MessungType">
+		<xsd:sequence>
+			<xsd:element name="IDMessgeraet" type="StringMax100"/>
+			<xsd:element name="Aggregat" type="StringMax10">
+				<xsd:annotation>
+					<xsd:documentation>z.B. BEFB02</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Bandlaufrichtung" type="BandlaufrichtungEnum"/>
+			<xsd:element name="Endprodukt" type="xsd:boolean"/>
+			<xsd:element name="Gruppe" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>z.B. DICKE__AL</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Messzeitpunkt" type="xsd:dateTime"/>
+			<xsd:element name="Spur" type="SpurType" maxOccurs="unbounded"/>
+			<xsd:element name="LetzteMsgAmDurchsatz" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Voraussichtlich wird keine weitere Messung zu diesem Arbeitsgangdurchsatz folgen.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SpurType" abstract="false">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="Einheit" type="EinheitEnum"/>
+				<xsd:element name="EinheitLokal" type="StringMax100">
+					<xsd:annotation>
+						<xsd:documentation>Nicht verwenden! Temporaere Loesung</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="Bezeichner" type="StringMax100">
+				<xsd:annotation>
+					<xsd:documentation>Name der Messreihe im statischen Modell</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Typ" type="WerteTypeEnum" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Neben den Datenspuren koennen z.B. stat. Daten oder Validitaetsflags vorliegen. Falls fehlend, wird der Typ Daten angenommen.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Statistik" type="StatistikType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Darf weggelassen werden; dann werden die Werte berechnet.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Bezugswert" type="xsd:double" default="0" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Falls Werte relativ sind, kann hier der Bezugswert angegeben werden. Falls die Werte absolut sind, ist der Bezugswert 0.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isAbsolut" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Darf weggelassen werden; dann wird true angenommen.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DimensionX" type="BezugDimensionEnum">
+				<xsd:annotation>
+					<xsd:documentation>Richtung der x-Achse (oder Dimension Zeit, Windungen)  </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Raster1D" type="Raster1DType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Raster1DType">
+		<xsd:sequence>
+			<xsd:element name="AnzahlX" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Anz. der Werte, wird berechnet wenn fehlend.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SegmentgroesseX" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation>Schrittlaenge zwischen zwei Messpunkten, in der spez. x-Richtung und Dimension (Sekunde oder Meter)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SegmentOffsetX" type="xsd:double" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Darf weggelassen werden, dann wird 0 angenommen.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WerteX" type="ListOfDoubleType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EinzelwertComplexType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="Aggregat" type="StringMax10" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>z.B. BEFB02</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="Einzelwert" type="EinzelwertType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="BandlaufrichtungEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="InWalzRichtung"/>
+			<xsd:enumeration value="GegenWalzRichtung"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="EinheitEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="mm"/>
+			<xsd:enumeration value="mikrom"/>
+			<xsd:enumeration value="gradC"/>
+			<xsd:enumeration value="m/min"/>
+			<xsd:enumeration value="kW"/>
+			<xsd:enumeration value="A"/>
+			<xsd:enumeration value="V"/>
+			<xsd:enumeration value="g/qm"/>
+			<xsd:enumeration value="Prozent"/>
+			<xsd:enumeration value="KN"/>
+			<xsd:enumeration value="mbar"/>
+			<xsd:enumeration value="grad"/>
+			<xsd:enumeration value="Keine/1"/>
+			<xsd:enumeration value="min"/>
+			<xsd:enumeration value="m"/>
+			<xsd:enumeration value="Test"/>
+			<xsd:enumeration value="As/qm"/>
+			<xsd:enumeration value="m/qs"/>
+			<xsd:enumeration value="U/min"/>
+			<xsd:enumeration value="MPa"/>
+			<xsd:enumeration value="KNm"/>
+			<xsd:enumeration value="Hz"/>
+			<xsd:enumeration value="gradC/s"/>
+			<xsd:enumeration value="m3/s"/>
+			<xsd:enumeration value="m3/h"/>
+			<xsd:enumeration value="t/h"/>
+			<xsd:enumeration value="mikroS/cm"/>
+			<xsd:enumeration value="N/m2"/>
+			<xsd:enumeration value="m/s"/>
+			<xsd:enumeration value="A/qm"/>
+			<xsd:enumeration value="cm-1"/>
+			<xsd:enumeration value="s"/>
+			<xsd:enumeration value="mikroS"/>
+			<xsd:enumeration value="m3"/>
+			<xsd:enumeration value="ml/min"/>
+			<xsd:enumeration value="lgbar"/>
+			<xsd:enumeration value="g/l"/>
+			<xsd:enumeration value="I-Unit"/>
+			<xsd:enumeration value="pH"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BezugDimensionEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Zeit"/>
+			<xsd:enumeration value="Laenge"/>
+			<xsd:enumeration value="Breite"/>
+			<xsd:enumeration value="Dicke"/>
+			<xsd:enumeration value="Windungen"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StringMax10">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StringMax100">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="WerteTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Daten"/>
+			<xsd:enumeration value="Validitaet"/>
+			<xsd:enumeration value="Minimum"/>
+			<xsd:enumeration value="Maximum"/>
+			<xsd:enumeration value="StdDev"/>
+			<xsd:enumeration value="Test"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ListOfDoubleType">
+		<xsd:list itemType="xsd:double"/>
+	</xsd:simpleType>
+	<xsd:complexType name="EinzelwertType">
+		<xsd:sequence>
+			<xsd:element name="Bezeichner" type="StringMax100">
+				<xsd:annotation>
+					<xsd:documentation>z.B. TemperaturZinkbad</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Wert" type="xsd:string"/>
+			<xsd:element name="Einheit" type="EinheitEnum" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StatistikType">
+		<xsd:sequence>
+			<xsd:element name="Min" type="xsd:double"/>
+			<xsd:element name="Max" type="xsd:double"/>
+			<xsd:element name="Avg" type="xsd:double"/>
+			<xsd:element name="StdDev" type="xsd:double"/>
+			<xsd:element name="Median" type="xsd:double" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

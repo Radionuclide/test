@@ -1,0 +1,1956 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="batchfileTitle" xml:space="preserve">
+    <value>Script</value>
+  </data>
+  <data name="logBatchfileFailed" xml:space="preserve">
+    <value>script failed with exitcode: {0}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pasteTitle" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="newConfigurationName" xml:space="preserve">
+    <value>New Job</value>
+  </data>
+  <data name="logNotificationNetworkError" xml:space="preserve">
+    <value>a general failure occurred in the network hardware </value>
+  </data>
+  <data name="logBatchfileTimeout" xml:space="preserve">
+    <value>script timed out</value>
+  </data>
+  <data name="copydat_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copydat.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DOS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="greenarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logServiceStarted" xml:space="preserve">
+    <value>ibaDatCoordinator service started</value>
+  </data>
+  <data name="logDatDirError" xml:space="preserve">
+    <value>specified .dat folder does not exist</value>
+  </data>
+  <data name="logNotificationNotSupported" xml:space="preserve">
+    <value>this network request is not supported</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>running...</value>
+  </data>
+  <data name="OpenFileProblem" xml:space="preserve">
+    <value>Problem opening file:</value>
+  </data>
+  <data name="WhenToDo2" xml:space="preserve">
+    <value>execute after failure</value>
+  </data>
+  <data name="deleteConfigurationQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete Job "{0}" ?</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>successfully completed</value>
+  </data>
+  <data name="reportTitle" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="status" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\status.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logging" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logging.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewReportTitle" xml:space="preserve">
+    <value>Add Report Task</value>
+  </data>
+  <data name="NotificationFailures" xml:space="preserve">
+    <value>Task "{0}" for job "{1}" failed for the following files :</value>
+  </data>
+  <data name="refreshDatButton" xml:space="preserve">
+    <value>Remove the "already processed" mark from items</value>
+  </data>
+  <data name="logExtractTimeout" xml:space="preserve">
+    <value>extracting timed out</value>
+  </data>
+  <data name="copytaskButton" xml:space="preserve">
+    <value>add a new copy task</value>
+  </data>
+  <data name="statText1" xml:space="preserve">
+    <value>The job is {0}</value>
+  </data>
+  <data name="extract_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\db.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logNotificationAccessDenied" xml:space="preserve">
+    <value>the user does not have access to the requested information</value>
+  </data>
+  <data name="logBatchfileSuccess" xml:space="preserve">
+    <value>script successfully completed</value>
+  </data>
+  <data name="NewExtractTitle" xml:space="preserve">
+    <value>Add Extract Task</value>
+  </data>
+  <data name="redarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\configuration.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logRemoveDirectoryFailed" xml:space="preserve">
+    <value>failed to remove old folder</value>
+  </data>
+  <data name="open" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\open.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="copyTitle" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="logExtractStarted" xml:space="preserve">
+    <value>extractor started</value>
+  </data>
+  <data name="logCopyTaskFailed" xml:space="preserve">
+    <value>failed to copy file</value>
+  </data>
+  <data name="deleteReportQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Report options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="Start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Start.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>timed out! (see logfile)</value>
+  </data>
+  <data name="cutTitle" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="redarrow1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redarrow1.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logConfigurationStopped" xml:space="preserve">
+    <value>stopped processing configuration</value>
+  </data>
+  <data name="noIbaAnalyser" xml:space="preserve">
+    <value>no ibaAnalyzer registered</value>
+  </data>
+  <data name="addConfigurationText" xml:space="preserve">
+    <value>Add .dat-File Triggered Job</value>
+  </data>
+  <data name="connectionLost" xml:space="preserve">
+    <value>The connection to the ibaDatCoordinator service was lost, ibaDatCoordinator will now continue in offline mode. We recommend you save any changes and restart the service and ibaDatCoordinator.</value>
+  </data>
+  <data name="configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Failure" xml:space="preserve">
+    <value>failed! (see logfile)</value>
+  </data>
+  <data name="logCreateDirectoryFailed" xml:space="preserve">
+    <value>failed to create destination folder</value>
+  </data>
+  <data name="logReportFailed" xml:space="preserve">
+    <value>report generator failed</value>
+  </data>
+  <data name="StatusBarError" xml:space="preserve">
+    <value>Error! "{0}" Please examine log </value>
+  </data>
+  <data name="NotificationEmailSubject" xml:space="preserve">
+    <value>ibaDatCoordinator notification</value>
+  </data>
+  <data name="Noaccess" xml:space="preserve">
+    <value>momentarily no access to .dat  file...</value>
+  </data>
+  <data name="logServiceStopped" xml:space="preserve">
+    <value>ibaDatCoordinator service stopped</value>
+  </data>
+  <data name="NewTaskTitle" xml:space="preserve">
+    <value>Add Task</value>
+  </data>
+  <data name="logReportStarted" xml:space="preserve">
+    <value>report generator started</value>
+  </data>
+  <data name="logTitle" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="extractButton" xml:space="preserve">
+    <value>add a new extract task</value>
+  </data>
+  <data name="Aktualisieren" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Aktualisieren.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="niConnected" xml:space="preserve">
+    <value>ibaDatCoordinator (connected)</value>
+  </data>
+  <data name="logCheckingForErrorDatFiles" xml:space="preserve">
+    <value>Scanning for items for which operations failed</value>
+  </data>
+  <data name="statText3" xml:space="preserve">
+    <value>stopped</value>
+  </data>
+  <data name="logCopyTaskSuccess" xml:space="preserve">
+    <value>file successfully copied</value>
+  </data>
+  <data name="extractTitle" xml:space="preserve">
+    <value>Extract</value>
+  </data>
+  <data name="logNoExtractPdo" xml:space="preserve">
+    <value>.pdo file for extractor does not exist</value>
+  </data>
+  <data name="logReportSuccess" xml:space="preserve">
+    <value>report successfully completed</value>
+  </data>
+  <data name="paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\paste.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WhenToDo4" xml:space="preserve">
+    <value>execute after 1st failure</value>
+  </data>
+  <data name="batchfileButton" xml:space="preserve">
+    <value>add a new script task</value>
+  </data>
+  <data name="logMoveTaskFailed" xml:space="preserve">
+    <value>failed to move file</value>
+  </data>
+  <data name="logNotifcationInvalidParameter" xml:space="preserve">
+    <value>a specified parameter is invalid</value>
+  </data>
+  <data name="logFileVersionToLow" xml:space="preserve">
+    <value>this version of ibaDatCoordinator requires ibaAnalyzer version 5.0 or higher</value>
+  </data>
+  <data name="NewCopyTaskTitle" xml:space="preserve">
+    <value>Add Copy Task</value>
+  </data>
+  <data name="batchfile_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\batchfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ServerSaveFileProblem" xml:space="preserve">
+    <value>Problem saving file at server side</value>
+  </data>
+  <data name="deleteTitle" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="saveQuestion" xml:space="preserve">
+    <value>Save current jobs ?</value>
+  </data>
+  <data name="logNotificationFailed" xml:space="preserve">
+    <value>notification failed</value>
+  </data>
+  <data name="report_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\report.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logNextTasksIgnored" xml:space="preserve">
+    <value>file was successfuly moved, subsequent tasks will be ignored</value>
+  </data>
+  <data name="NotificationSuccesses" xml:space="preserve">
+    <value>Task "{0}" for job "{1}" was completed successfully for the following files :</value>
+  </data>
+  <data name="logExtractSuccess" xml:space="preserve">
+    <value>extracting successfully completed</value>
+  </data>
+  <data name="deleteBatchfileQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete  the Script options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="toolTipAutoStart" xml:space="preserve">
+    <value>Automatically run this job on service start or file loading</value>
+  </data>
+  <data name="logMoveTaskSuccess" xml:space="preserve">
+    <value>file successfully moved</value>
+  </data>
+  <data name="logNoReportPdo" xml:space="preserve">
+    <value>.pdo file for report generator does not exist</value>
+  </data>
+  <data name="stopAllConfigurations" xml:space="preserve">
+    <value>Stopping All Jobs </value>
+  </data>
+  <data name="Noaccess2" xml:space="preserve">
+    <value>.dat  file is readonly</value>
+  </data>
+  <data name="logNotificationNameNotFound" xml:space="preserve">
+    <value>the user name could not be found</value>
+  </data>
+  <data name="deleteCopyTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Copy options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="stopButton" xml:space="preserve">
+    <value>Stop this job</value>
+  </data>
+  <data name="deleteExtractQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Extract options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="collapseTitle" xml:space="preserve">
+    <value>Collapse All</value>
+  </data>
+  <data name="Speichern" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Speichern.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="invalidEmail" xml:space="preserve">
+    <value>The recipient e-mail address is invalid or not supplied</value>
+  </data>
+  <data name="toolTipStartAll" xml:space="preserve">
+    <value>Start ALLjobs</value>
+  </data>
+  <data name="stopConfiguration" xml:space="preserve">
+    <value>Stopping Job</value>
+  </data>
+  <data name="niDisconnected" xml:space="preserve">
+    <value>ibaDatCoordinator (disconnected)</value>
+  </data>
+  <data name="startButton" xml:space="preserve">
+    <value>Start this job</value>
+  </data>
+  <data name="logNoBatchfile" xml:space="preserve">
+    <value>scriptfile does not exist</value>
+  </data>
+  <data name="statText2" xml:space="preserve">
+    <value>started</value>
+  </data>
+  <data name="logReportTimeout" xml:space="preserve">
+    <value>reporting timed out</value>
+  </data>
+  <data name="logConfigurationStarted" xml:space="preserve">
+    <value>started processing configuration</value>
+  </data>
+  <data name="SaveFileProblem" xml:space="preserve">
+    <value>Problem saving file:</value>
+  </data>
+  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReadStatusError" xml:space="preserve">
+    <value>Could not read status of the dat-file</value>
+  </data>
+  <data name="reportButton" xml:space="preserve">
+    <value>add a new report task</value>
+  </data>
+  <data name="WhenToDo3" xml:space="preserve">
+    <value>always execute</value>
+  </data>
+  <data name="statText0" xml:space="preserve">
+    <value>This is the statusdata for Job : {0}</value>
+  </data>
+  <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logExtractFailed" xml:space="preserve">
+    <value>extractor failed</value>
+  </data>
+  <data name="WhenToDo1" xml:space="preserve">
+    <value>execute after succes</value>
+  </data>
+  <data name="NewBatchfileTitle" xml:space="preserve">
+    <value>Add Script Task</value>
+  </data>
+  <data name="toolTipStopAll" xml:space="preserve">
+    <value>Stop ALL jobs</value>
+  </data>
+  <data name="logBatchfileStarted" xml:space="preserve">
+    <value>script started</value>
+  </data>
+  <data name="connectionLostCaption" xml:space="preserve">
+    <value>Connection Lost</value>
+  </data>
+  <data name="ibalogo_transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibalogo_transparent.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="watchdog" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\watchdog.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="watchdogTitle" xml:space="preserve">
+    <value>TCP/IP Watchdog</value>
+  </data>
+  <data name="textFileStopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="wdErrorAccept" xml:space="preserve">
+    <value>TCP/IP watchdog : socket exception on accept : {0}</value>
+  </data>
+  <data name="wdErrorConnect" xml:space="preserve">
+    <value>Error occurred while connecting in TCP/IP watchdog : {0}</value>
+  </data>
+  <data name="wdErrorSend" xml:space="preserve">
+    <value>Error sending TCP/IP watchdog : {0} --&gt; Disconnecting</value>
+  </data>
+  <data name="wdErrorStop" xml:space="preserve">
+    <value>Error occurred when stopping TCP/IP watchdog : {0}</value>
+  </data>
+  <data name="wdTcpIpConnected" xml:space="preserve">
+    <value>Connected to {0}</value>
+  </data>
+  <data name="wdTcpIpListening" xml:space="preserve">
+    <value>Listening...</value>
+  </data>
+  <data name="wdTcpIpNotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="applyStartedButton" xml:space="preserve">
+    <value>Apply changes in jobconfiguration to the running job</value>
+  </data>
+  <data name="UpdateHappened" xml:space="preserve">
+    <value>the jobconfiguration was updated</value>
+  </data>
+  <data name="refreshconfs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refreshconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refreshdats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refreshdats.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="closing" xml:space="preserve">
+    <value>Closing</value>
+  </data>
+  <data name="CouldNotTestPath" xml:space="preserve">
+    <value>could not test validity of the directory</value>
+  </data>
+  <data name="FolderDoesNotExist" xml:space="preserve">
+    <value>Specified path does not exist</value>
+  </data>
+  <data name="invalidPath" xml:space="preserve">
+    <value>invalid path</value>
+  </data>
+  <data name="thumbdown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thumbdown.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thumup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thumup.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkPathButton" xml:space="preserve">
+    <value>test path</value>
+  </data>
+  <data name="ConnectionLostFrom" xml:space="preserve">
+    <value>Lost connection to shared network directory '{0}' : "{1}"</value>
+  </data>
+  <data name="ConnectionRestoredTo" xml:space="preserve">
+    <value>Connection restored to shared network directory '{0}'</value>
+  </data>
+  <data name="UNCPathUnavailable" xml:space="preserve">
+    <value>Could not find the UNC path '{0}'</value>
+  </data>
+  <data name="logPluginLoadError" xml:space="preserve">
+    <value>Error loading assembly {0} : '{1}'</value>
+  </data>
+  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\error.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="noaccess1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\noaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="success1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\success.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="timeout1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deleteCustomTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the '{0}' options "{1}" of Job "{2}" ?</value>
+  </data>
+  <data name="NewCustomTaskTitle" xml:space="preserve">
+    <value>Add '{0}' Task</value>
+  </data>
+  <data name="deleteIfTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the condition options "{0}" of Job "{1}" ? (dependent tasks will not be deleted)</value>
+  </data>
+  <data name="iftask" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\iftask.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="iftaskTitle" xml:space="preserve">
+    <value>Condition</value>
+  </data>
+  <data name="NewIfTaskTitle" xml:space="preserve">
+    <value>Add Condition</value>
+  </data>
+  <data name="iftaskButton" xml:space="preserve">
+    <value>add a new condition task</value>
+  </data>
+  <data name="IfTestBadEvaluation" xml:space="preserve">
+    <value>The expression could not be evaluated, this will be treated as FALSE</value>
+  </data>
+  <data name="IfTestNegativeEvaluation" xml:space="preserve">
+    <value>The expression evaluated to FALSE</value>
+  </data>
+  <data name="IfTestPositiveEvaluation" xml:space="preserve">
+    <value>The expression evaluated to TRUE</value>
+  </data>
+  <data name="logIfTaskEvaluatedFalse" xml:space="preserve">
+    <value>condition evaluated as FALSE</value>
+  </data>
+  <data name="logIfTaskEvaluatedTrue" xml:space="preserve">
+    <value>condition evaluated as TRUE</value>
+  </data>
+  <data name="logIfTaskStarted" xml:space="preserve">
+    <value>started evaluating condition</value>
+  </data>
+  <data name="XFrequency" xml:space="preserve">
+    <value>frequency</value>
+  </data>
+  <data name="XInvLength" xml:space="preserve">
+    <value>1/length</value>
+  </data>
+  <data name="XLength" xml:space="preserve">
+    <value>length</value>
+  </data>
+  <data name="XTime" xml:space="preserve">
+    <value>time</value>
+  </data>
+  <data name="IbaAnalyzerUndeterminedError" xml:space="preserve">
+    <value>IbaAnalyzer critical error, ibaAnalyzer will be restarted</value>
+  </data>
+  <data name="logTaskSuccess" xml:space="preserve">
+    <value>'{0}' task succesfully completed </value>
+  </data>
+  <data name="logLicenseNoStart" xml:space="preserve">
+    <value>Cannot start the job because no license was found for one or more custom tasks</value>
+  </data>
+  <data name="logLicenseStopped" xml:space="preserve">
+    <value>Stopped the job because no license was found for one or more custom tasks</value>
+  </data>
+  <data name="logCustomTaskNotLicensed" xml:space="preserve">
+    <value>No license found for custom task '{0}'</value>
+  </data>
+  <data name="logNoOutputPathSpecified" xml:space="preserve">
+    <value>No destination directory specified for the task.</value>
+  </data>
+  <data name="logOutputIsInput" xml:space="preserve">
+    <value>Tasks destination directory is the same as .dat file directory of its parent job.</value>
+  </data>
+  <data name="IbaAnalyzerExecutableDoesNotExist" xml:space="preserve">
+    <value>Specified ibaAnalyzer executable does not exist: </value>
+  </data>
+  <data name="Noaccess3" xml:space="preserve">
+    <value>ibaPDA not yet finished with .dat file</value>
+  </data>
+  <data name="errAnalyzerMemory" xml:space="preserve">
+    <value>IbaAnalyzer exceeded the imposed memory limit</value>
+  </data>
+  <data name="errAnalyzerTime" xml:space="preserve">
+    <value>IbaAnalyzer exceeded the imposed time limit</value>
+  </data>
+  <data name="niRunning" xml:space="preserve">
+    <value>ibaDatCoordinator (running)</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="PriorityApp" xml:space="preserve">
+    <value>Priority of application:</value>
+  </data>
+  <data name="settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\settings.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="settingsTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="AttemptsExceeded" xml:space="preserve">
+    <value>nr of attempts exceeded!</value>
+  </data>
+  <data name="memoryexceeded" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\memoryexceeded.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MemoryExceededTaskText" xml:space="preserve">
+    <value>memory limit exceeded!</value>
+  </data>
+  <data name="tomanytimestried" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tomanytimestried.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TriedToManyTimes" xml:space="preserve">
+    <value>The item could not be processed within the maximum number of attempts, further processing will not be attempted</value>
+  </data>
+  <data name="brokenfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\brokenfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deletedats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deletedats.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deletePermanentErrorFilesButton" xml:space="preserve">
+    <value>Delete selected files</value>
+  </data>
+  <data name="PermanentlyFailedDatFiles" xml:space="preserve">
+    <value>permanently failed .dat files</value>
+  </data>
+  <data name="refreshPermanentErrorFilesButton" xml:space="preserve">
+    <value>Remove markings from selected files so they will be reprocessed.</value>
+  </data>
+  <data name="AskToSaveScript" xml:space="preserve">
+    <value>Script has changed, do you wish to save the scriptfile ?</value>
+  </data>
+  <data name="ScriptNoExist" xml:space="preserve">
+    <value>Scriptfile does not exist</value>
+  </data>
+  <data name="ScriptReadOnly" xml:space="preserve">
+    <value>Scriptfile is readonly</value>
+  </data>
+  <data name="Untitled" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
+  <data name="ScriptArgumentsCouldNotBeParsed" xml:space="preserve">
+    <value>The arguments for the script could not be parsed</value>
+  </data>
+  <data name="NoPreviousOutPutFile" xml:space="preserve">
+    <value>Previous task did not generate a file to use in the script arguments</value>
+  </data>
+  <data name="ICSharpTextEditorUrl" xml:space="preserve">
+    <value>http://www.icsharpcode.net/OpenSource/SD</value>
+  </data>
+  <data name="CleanupDirectoriesFailed" xml:space="preserve">
+    <value>Error cleaning up directories: </value>
+  </data>
+  <data name="Fax" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Fax.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewDocument.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NoPreviousOutPutFileToCopy" xml:space="preserve">
+    <value>Previous task did not generate a file to copy</value>
+  </data>
+  <data name="notifyTestMessage" xml:space="preserve">
+    <value>ibaDatCoordinator notifications test message</value>
+  </data>
+  <data name="testNotifications" xml:space="preserve">
+    <value>Send a test message</value>
+  </data>
+  <data name="tooltipBrowseTestFile" xml:space="preserve">
+    <value>Browse for test file</value>
+  </data>
+  <data name="tooltipExecuteScript" xml:space="preserve">
+    <value>Test script</value>
+  </data>
+  <data name="tooltipNewScript" xml:space="preserve">
+    <value>New script</value>
+  </data>
+  <data name="tooltipOpenScript" xml:space="preserve">
+    <value>Open script from file</value>
+  </data>
+  <data name="tooltipSaveScript" xml:space="preserve">
+    <value>Save script to file</value>
+  </data>
+  <data name="InvalidDatFile" xml:space="preserve">
+    <value>The .dat file is corrupt or is not a valid iba .dat file</value>
+  </data>
+  <data name="logCleanupErrorRemoveDirectory" xml:space="preserve">
+    <value>Error cleaning up files, failed to remove directory '{0}' : {1}</value>
+  </data>
+  <data name="logCleanupErrorRemoveFile" xml:space="preserve">
+    <value>Error cleaning up files, failed to remove old file '{0}' : {1}</value>
+  </data>
+  <data name="logCleanupSuccessRemoveEmptyDirectory" xml:space="preserve">
+    <value>File cleanup: Succesfully removed empty directory '{0}'</value>
+  </data>
+  <data name="logCleanupSuccessRemoveFile" xml:space="preserve">
+    <value>File cleanup: Succesfully removed old file  '{0}'</value>
+  </data>
+  <data name="logCleanupSuccessRemoveOldDirectory" xml:space="preserve">
+    <value>File cleanup: Succesfully removed old directory '{0}'</value>
+  </data>
+  <data name="ibaFileProblem" xml:space="preserve">
+    <value>Problem opening .dat file with ibaFile:</value>
+  </data>
+  <data name="IbaAnalyzerRestart" xml:space="preserve">
+    <value>New ibaAnalyzer started with process ID: {0}</value>
+  </data>
+  <data name="IbaAnalyzerRestart2" xml:space="preserve">
+    <value>New ibaAnalyzer started</value>
+  </data>
+  <data name="FileSystemWatcherProblem" xml:space="preserve">
+    <value>Problem monitoring .dat directory '{0}' : "{1}"</value>
+  </data>
+  <data name="logCheckingForUnprocessedDatFiles" xml:space="preserve">
+    <value>Started scanning directory for unprocessed .dat files</value>
+  </data>
+  <data name="logCheckingForUnprocessedDatFilesFinished" xml:space="preserve">
+    <value>Finished scanning directory for unprocessed .dat files</value>
+  </data>
+  <data name="logDeleteTaskFailed" xml:space="preserve">
+    <value>failed to delete file</value>
+  </data>
+  <data name="logDeleteTaskSuccess" xml:space="preserve">
+    <value>file successfully deleted</value>
+  </data>
+  <data name="determiningQuota" xml:space="preserve">
+    <value>Determining file sizes in the output directory for the quota limitation.</value>
+  </data>
+  <data name="updateDataTaskTitle" xml:space="preserve">
+    <value>Update data</value>
+  </data>
+  <data name="deleteUpdateDataTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Update Data options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewUpdateDataTaskTitle" xml:space="preserve">
+    <value>Add Update Data Task</value>
+  </data>
+  <data name="updatedatatask" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\updatedatatask.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="updatedatataskButton" xml:space="preserve">
+    <value>add a new update data task</value>
+  </data>
+  <data name="deletePauseTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Pause options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="logPauseFailed" xml:space="preserve">
+    <value>failed to determine the time the .dat file was last modified</value>
+  </data>
+  <data name="NewPauseTaskTitle" xml:space="preserve">
+    <value>Add Pause Task</value>
+  </data>
+  <data name="pausetask" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\time.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pausetaskButton" xml:space="preserve">
+    <value>add a new pause task</value>
+  </data>
+  <data name="pauseTaskTitle" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="logNoLicenseFound" xml:space="preserve">
+    <value>could not find license information</value>
+  </data>
+  <data name="logNoLicenseUpdateDataTask" xml:space="preserve">
+    <value>update data task is not licensed</value>
+  </data>
+  <data name="logUDTaskSuccess" xml:space="preserve">
+    <value>update data task successfully completed</value>
+  </data>
+  <data name="logUDTConnectFailed" xml:space="preserve">
+    <value>Update data task failed to connect to database</value>
+  </data>
+  <data name="logUDTIbaFilesFailed" xml:space="preserve">
+    <value>Update data task: Failed to initialize ibaFiles</value>
+  </data>
+  <data name="logCheckingForUnprocessedDatFilesLimitReached" xml:space="preserve">
+    <value>Stopped scanning for unprocessed .dat files because more than 10000 files are ready to be processed</value>
+  </data>
+  <data name="logIbaFilesCouldNotBeCreated" xml:space="preserve">
+    <value>ibaFiles class could not be created</value>
+  </data>
+  <data name="logUDTColumnMissing" xml:space="preserve">
+    <value>column '{0}' is missing from database table</value>
+  </data>
+  <data name="logUDTCreationTime" xml:space="preserve">
+    <value>database data creation time:</value>
+  </data>
+  <data name="logUDTDataBaseError" xml:space="preserve">
+    <value>error retrieving data from database</value>
+  </data>
+  <data name="logUDTFinalFileCopyProblem" xml:space="preserve">
+    <value>could not copy the file to target directory</value>
+  </data>
+  <data name="logUDTibaFilesOpenProblem" xml:space="preserve">
+    <value>ibaFiles could not open the .dat file for updating</value>
+  </data>
+  <data name="logUDTibaFilesWriteProblem" xml:space="preserve">
+    <value>could not write new infofields from database table to .dat file</value>
+  </data>
+  <data name="logUDTMarkProcessedProblem" xml:space="preserve">
+    <value>could not mark the .dat file as processed in the database table</value>
+  </data>
+  <data name="logUDTNoResults" xml:space="preserve">
+    <value>no entry in database table found corresponding to the .dat file</value>
+  </data>
+  <data name="logUDTNotReadyYet" xml:space="preserve">
+    <value>new data not yet marked as ready to process in database table</value>
+  </data>
+  <data name="logUDTStarted" xml:space="preserve">
+    <value>update data task started</value>
+  </data>
+  <data name="logUDTTempFileCopyProblem" xml:space="preserve">
+    <value>could not copy the .dat file to temporary directory</value>
+  </data>
+  <data name="logTaskNotLicensed" xml:space="preserve">
+    <value>No license found for this task. Contact iba for licensing information.</value>
+  </data>
+  <data name="logUDTColumnIsNull" xml:space="preserve">
+    <value>column '{0}' is NULL</value>
+  </data>
+  <data name="logUDTConnectSuccess" xml:space="preserve">
+    <value>Connection with the database was succesfully established.</value>
+  </data>
+  <data name="UnexpectedErrorProcessingDatFile" xml:space="preserve">
+    <value>Unexpected error while processing .dat file : {0}</value>
+  </data>
+  <data name="DatFileCloseFailed" xml:space="preserve">
+    <value>Failed to update .dat file status in the file :</value>
+  </data>
+  <data name="UnexpectedErrorDatFile" xml:space="preserve">
+    <value>Unexpected error while processing .dat File :</value>
+  </data>
+  <data name="alreadyRunningOtherUser" xml:space="preserve">
+    <value>ibaDatCoordinator client already running (perhaps under a different user)</value>
+  </data>
+  <data name="DeleteFilesProblem" xml:space="preserve">
+    <value>Problem deleting  .dat Files:</value>
+  </data>
+  <data name="RemoveMarkingsProblem" xml:space="preserve">
+    <value>Problem removing markings: </value>
+  </data>
+  <data name="deletePermanentErrorFilesWarning" xml:space="preserve">
+    <value>Are you sure you want to permanently delete all selected files ?</value>
+  </data>
+  <data name="refreshDatWarning" xml:space="preserve">
+    <value>Are you sure you want to reprocess all .dat files ?</value>
+  </data>
+  <data name="refreshPermanentErrorFilesWarning" xml:space="preserve">
+    <value>Are you sure you want to reprocess all selected items ?</value>
+  </data>
+  <data name="RegisterIbaAnalyzer" xml:space="preserve">
+    <value>Register this ibaAnalyzer</value>
+  </data>
+  <data name="DirectoryFound" xml:space="preserve">
+    <value>Creation of directory '{0}' detected, monitoring will be restarted...</value>
+  </data>
+  <data name="Register" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\application--pencil.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="addOneTimeConfigurationText" xml:space="preserve">
+    <value>Add One Time Job</value>
+  </data>
+  <data name="addScheduledConfigurationText" xml:space="preserve">
+    <value>Add Scheduled Job</value>
+  </data>
+  <data name="onetimeconfiguration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\onetimeconfiguration.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="onetime_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\onetime_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DatDirDragAndDrop" xml:space="preserve">
+    <value>Drag and drop .dat files or directories from Windows Explorer to here</value>
+  </data>
+  <data name="OnTimeJobDirScanFinished" xml:space="preserve">
+    <value>Finished scanning directory {0} for .dat files, {1} files found</value>
+  </data>
+  <data name="OnTimeJobDirScanStarted" xml:space="preserve">
+    <value>Scanning directory {0} for .dat files</value>
+  </data>
+  <data name="AnalysisFileNotFound" xml:space="preserve">
+    <value>Analysis file not found: </value>
+  </data>
+  <data name="ZipFileFilter" xml:space="preserve">
+    <value>Zip files (*.zip)|*.zip</value>
+  </data>
+  <data name="WriteTimeModificationFailed" xml:space="preserve">
+    <value>Failed to adapt modification time of output file: </value>
+  </data>
+  <data name="ChangeStr" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="ConfirmAndPassDiffer" xml:space="preserve">
+    <value>The confirmation password differs from the specified password.</value>
+  </data>
+  <data name="incorrectPassword" xml:space="preserve">
+    <value>The specified password is incorrect !</value>
+  </data>
+  <data name="PassNotSet" xml:space="preserve">
+    <value>Password is disabled.</value>
+  </data>
+  <data name="PassSet" xml:space="preserve">
+    <value>Password is enabled.</value>
+  </data>
+  <data name="SetStr" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="undoChangesButton" xml:space="preserve">
+    <value>Undo changes in jobconfiguration since last apply</value>
+  </data>
+  <data name="undoconfs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\undoconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WarningInfofieldFailed" xml:space="preserve">
+    <value>Failed to obtain infofield or expression '{0}' from the .dat file. The .dat file filename will be used as output filename.</value>
+  </data>
+  <data name="SameConfCaption" xml:space="preserve">
+    <value>Undo configuration</value>
+  </data>
+  <data name="SameConfMessage" xml:space="preserve">
+    <value>No changes detected since the configuration was last applied.</value>
+  </data>
+  <data name="logJobTerminated" xml:space="preserve">
+    <value>Script terminated because job was stopped</value>
+  </data>
+  <data name="WarningFileTypeMismatch" xml:space="preserve">
+    <value>The specified export file type ({0}) does not match the type specified in the analysis ({1}), the file type in the analysis will be used.</value>
+  </data>
+  <data name="WarningInfofieldDirFailed" xml:space="preserve">
+    <value>Failed to obtain infofield or expression '{0}' from the .dat file. The file will be placed in the 'unresolved' subdirectory.</value>
+  </data>
+  <data name="logCleanupTallyingErrorDir" xml:space="preserve">
+    <value>While tallying the files for cleanup, iterating over the folders caused the following error:</value>
+  </data>
+  <data name="logCleanupTallyingErrorFile" xml:space="preserve">
+    <value>While tallying the files for cleanup, iterating over the files in folder {0} caused the following error:</value>
+  </data>
+  <data name="logCleanupTallyingErrorGeneral" xml:space="preserve">
+    <value>General error while tallying the files for cleanup:</value>
+  </data>
+  <data name="Noaccess4" xml:space="preserve">
+    <value>Candidate .dat file still not finished by ibaPDA after more than one hour</value>
+  </data>
+  <data name="Noaccess5" xml:space="preserve">
+    <value>Candidate .dat file still not accessible after more than one hour</value>
+  </data>
+  <data name="logDatDirError2" xml:space="preserve">
+    <value>error while scanning folder {0}; {1} ; assuming network error</value>
+  </data>
+  <data name="logTaskStarted" xml:space="preserve">
+    <value>'{0}' task started</value>
+  </data>
+  <data name="errIbaAnalyzerCreate" xml:space="preserve">
+    <value>Failed to create an instance of ibaAnalyzer: </value>
+  </data>
+  <data name="errIbaAnalyzerDecrease" xml:space="preserve">
+    <value>Because of the failure to create an instance of ibaAnalyzer, the number of simultaneous ibaAnalyzer instances ibaDatCoordinator will maintain has decreased to {0}.</value>
+  </data>
+  <data name="errIbaAnalyzerDestroy" xml:space="preserve">
+    <value>Could not close an instance of ibaAnalyzer: </value>
+  </data>
+  <data name="errIbaAnalyzersIsZero" xml:space="preserve">
+    <value>Critical failure, ibaDatCoordinator is not succeeding in creating instances of ibaAnalyzer. The job will be stopped.</value>
+  </data>
+  <data name="regOptEveryThingOK" xml:space="preserve">
+    <value>The Windows registry settings are currently sufficient for the purposes of ibaDatCoordinator, no modifications will be made.</value>
+  </data>
+  <data name="regOptRestart" xml:space="preserve">
+    <value>The Windows registry modifications are successfully applied. The system needs to be restarted for the registry modifications to take effect. Do you wish to restart your system now ?</value>
+  </data>
+  <data name="regOptAskProceed" xml:space="preserve">
+    <value>Do you wish to proceed ?</value>
+  </data>
+  <data name="regOptFormatProblem" xml:space="preserve">
+    <value>Windows Registry not formatted as expected, please contact iba support in order to have them assist you in doing the registry changes manually.</value>
+  </data>
+  <data name="regOptListKeys" xml:space="preserve">
+    <value>This action will modify the following Windows registry keys:</value>
+  </data>
+  <data name="regOptReadingProblem" xml:space="preserve">
+    <value>A problem occurred while reading the Windows registry settings: '{0}'</value>
+  </data>
+  <data name="regOptWritingProblem" xml:space="preserve">
+    <value>A problem occurred while modifying the Windows registry settings: '{0}'</value>
+  </data>
+  <data name="ExampleFolder" xml:space="preserve">
+    <value>E.g. '{0}'</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="Fourth" xml:space="preserve">
+    <value>Fourth</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="Second" xml:space="preserve">
+    <value>Second</value>
+  </data>
+  <data name="SelectAllDays" xml:space="preserve">
+    <value>&lt;Select all days&gt;</value>
+  </data>
+  <data name="SelectAllMonths" xml:space="preserve">
+    <value>&lt;Select all months&gt;</value>
+  </data>
+  <data name="Third" xml:space="preserve">
+    <value>Third</value>
+  </data>
+  <data name="scheduled_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scheduled_configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scheduled_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\scheduled_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TimeSelectionChoices" xml:space="preserve">
+    <value>auto ( {0} );1 ms;10 ms;100 ms;1 s;10 s;1 min;10 min;1 hour;1 day</value>
+  </data>
+  <data name="TooltipGreen" xml:space="preserve">
+    <value>Time base ok</value>
+  </data>
+  <data name="TooltipOrange" xml:space="preserve">
+    <value>Time base inadvisable when performing an extensive analysis</value>
+  </data>
+  <data name="TooltipRed" xml:space="preserve">
+    <value>Time base unacceptable due to limited memory resources</value>
+  </data>
+  <data name="minus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\minus.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plus.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OneTimeJobsNodeParent" xml:space="preserve">
+    <value>One Time Jobs</value>
+  </data>
+  <data name="ScheduledJobsNodeParent" xml:space="preserve">
+    <value>Scheduled Jobs</value>
+  </data>
+  <data name="DatTriggeredJobsNodeParent" xml:space="preserve">
+    <value>.dat-File Triggered Jobs</value>
+  </data>
+  <data name="Indefinite" xml:space="preserve">
+    <value>Indefinite</value>
+  </data>
+  <data name="NextNTriggers" xml:space="preserve">
+    <value>Next {0} triggers:</value>
+  </data>
+  <data name="NoTriggers" xml:space="preserve">
+    <value>No triggers are scheduled! Please review your trigger settings.</value>
+  </data>
+  <data name="NoTriggersAfter" xml:space="preserve">
+    <value>No triggers are scheduled after these.</value>
+  </data>
+  <data name="TriggerInfoCaption" xml:space="preserve">
+    <value>Trigger info for job '{0}'</value>
+  </data>
+  <data name="ErrorScheduleNextTrigger" xml:space="preserve">
+    <value>No next trigger scheduled! Job will be halted. Please review your trigger settings.</value>
+  </data>
+  <data name="DeleteDialogTitleScheduled" xml:space="preserve">
+    <value>Deleting triggers</value>
+  </data>
+  <data name="logGlobalCleanupStartCleanup" xml:space="preserve">
+    <value>Cleanup start</value>
+  </data>
+  <data name="PermErrorsColumnHeaderDat" xml:space="preserve">
+    <value>iba .Dat-files</value>
+  </data>
+  <data name="PermErrorsColumnHeaderScheduled" xml:space="preserve">
+    <value>triggers</value>
+  </data>
+  <data name="PermErrorsLabelDat" xml:space="preserve">
+    <value>The following files have been attempted the maximum amount of attempts for job</value>
+  </data>
+  <data name="PermErrorsLabelScheduled" xml:space="preserve">
+    <value>The following triggers have been attempted the maximum amount of attempts for job</value>
+  </data>
+  <data name="UnmarkDialogTitleScheduled" xml:space="preserve">
+    <value>Unmarking triggers</value>
+  </data>
+  <data name="logGlobalCleanupDetermineSizeFinished" xml:space="preserve">
+    <value>Determining file sizes finished {0:0.000}s</value>
+  </data>
+  <data name="logGlobalCleanupFinished" xml:space="preserve">
+    <value>Cleanup finished {0:0.000}s</value>
+  </data>
+  <data name="logGlobalCleanupNextCleanup" xml:space="preserve">
+    <value>Next cleanup at {0:T}</value>
+  </data>
+  <data name="logGlobalCleanupSystemDriveNeedsSubFolder" xml:space="preserve">
+    <value>A sub-directory must be selected for the system drive!</value>
+  </data>
+  <data name="logGlobalCleanupFolderMustBeFolderOfDrive" xml:space="preserve">
+    <value>Working folder must be a sub folder of drive {0}!</value>
+  </data>
+  <data name="logGlobalCleanupStart" xml:space="preserve">
+    <value>Global Cleanup started</value>
+  </data>
+  <data name="logGlobalCleanupStop" xml:space="preserve">
+    <value>Global Cleanup stopped</value>
+  </data>
+  <data name="logGlobalCleanupDriveNotReadyForCleanup" xml:space="preserve">
+    <value>Drive not ready for cleanup</value>
+  </data>
+  <data name="invalidSender" xml:space="preserve">
+    <value>The sender e-mail address is not correctly formatted, invalid or not supplied</value>
+  </data>
+  <data name="refreshPermanentErrorFilesError" xml:space="preserve">
+    <value>This action is not allowed because the files will not be processed.
+Please either start the job or enable scans for .dat files before attempting this action again.</value>
+  </data>
+  <data name="PermanentlyFailedTriggers" xml:space="preserve">
+    <value>permanently failed triggers</value>
+  </data>
+  <data name="logFailDeterminePreviousTrigger" xml:space="preserve">
+    <value>Failed to determine previous trigger, please review trigger settings of Job {0}</value>
+  </data>
+  <data name="logFailDeterminePreviousTrigger2" xml:space="preserve">
+    <value>Previous trigger inside deadband of current trigger, please review trigger settings of Job {0}</value>
+  </data>
+  <data name="broom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\broom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cleanuptaskButton" xml:space="preserve">
+    <value>add new cleanup task</value>
+  </data>
+  <data name="cleanupTaskTitle" xml:space="preserve">
+    <value>Clean up</value>
+  </data>
+  <data name="deleteCleanupTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Cleanup options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewCleanupTaskTitle" xml:space="preserve">
+    <value>Add Cleanup Task</value>
+  </data>
+  <data name="FromDatFileTextForLabel" xml:space="preserve">
+    <value>last time the .dat file was modified</value>
+  </data>
+  <data name="FromTriggerTextForLabel" xml:space="preserve">
+    <value>the trigger fired</value>
+  </data>
+  <data name="BadRangeStart" xml:space="preserve">
+    <value>Bad Range: Could not determine start of range!</value>
+  </data>
+  <data name="BadRangeTextFormatter" xml:space="preserve">
+    <value>Query range: {0} - {1} &lt;- Bad Range! Stop in front of Start!</value>
+  </data>
+  <data name="RangeTextFormatter" xml:space="preserve">
+    <value>Query range: {0} - {1}</value>
+  </data>
+  <data name="browseCleanProcessButton" xml:space="preserve">
+    <value>Browse for .dat file. If necessary, remove the "Already processed" mark and process it.</value>
+  </data>
+  <data name="splitterTaskTitle" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="deleteSplitterTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Splitter options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewSplitterTaskTitle" xml:space="preserve">
+    <value>Add Splitter Task</value>
+  </data>
+  <data name="SplitDat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SplitDat.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="splittertaskButton" xml:space="preserve">
+    <value>add new splitter task</value>
+  </data>
+  <data name="splitterWarningNoResults" xml:space="preserve">
+    <value>The evaluated expression did not have any rising edges, hence the .datfile can't be split.</value>
+  </data>
+  <data name="CancelStr" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SplitDialogTestButtonTooltipText" xml:space="preserve">
+    <value>Generate split .dat files...</value>
+  </data>
+  <data name="logSplitStarted" xml:space="preserve">
+    <value>Splitter task started</value>
+  </data>
+  <data name="logSplitSuccess" xml:space="preserve">
+    <value>Splitter task succesfully completed</value>
+  </data>
+  <data name="logCleanupSkippedNonIbaDatFile" xml:space="preserve">
+    <value>File cleanup: Skipped non iba .dat file  '{0}'</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="StopStr" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Toolbars16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Toolbars16.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AskToUploadToCurrentServer" xml:space="preserve">
+    <value>Local unsaved changes were detected. Do you wish to upload them to the current server before connecting to a new server?</value>
+  </data>
+  <data name="AskSaveLocal" xml:space="preserve">
+    <value>It appears the jobconfigurations on the server side have been modified by another client. Do you wish to save local modifications to file before downloading?</value>
+  </data>
+  <data name="BrowseForFolderOn" xml:space="preserve">
+    <value>Browse for folder on {0}</value>
+  </data>
+  <data name="BrowseForFileOn" xml:space="preserve">
+    <value>Browse for file on {0}</value>
+  </data>
+  <data name="ServiceRemoteAnalyserNotSupported" xml:space="preserve">
+    <value>The ibaDatCoordinator service is running on a remote system. Opening an analysis remotely is currently not supported. Please try this operation on a client on the server system ({0}).</value>
+  </data>
+  <data name="ServiceRemoteSplitterNotSupported" xml:space="preserve">
+    <value>The ibaDatCoordinator service is running on a remote system. Testing the splitter task remotely is currently not supported. Please try this operation on a client on the server system ({0}).</value>
+  </data>
+  <data name="ConnectedTo" xml:space="preserve">
+    <value>Connected to {0}</value>
+  </data>
+  <data name="ConnectedToWithVersion" xml:space="preserve">
+    <value>Connected to {0} ({1})</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>Disconnected from {0}</value>
+  </data>
+  <data name="snmpTitle" xml:space="preserve">
+    <value>SNMP server</value>
+  </data>
+  <data name="Eye" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClientConnected" xml:space="preserve">
+    <value>ibaDatCoordinator client {0} has connected</value>
+  </data>
+  <data name="ErrorServerConnect" xml:space="preserve">
+    <value>Error connecting to {0}</value>
+  </data>
+  <data name="StandaloneText" xml:space="preserve">
+    <value>Standalone</value>
+  </data>
+  <data name="ClientDisconnected" xml:space="preserve">
+    <value>ibaDatCoordinator client {0} has disconnected</value>
+  </data>
+  <data name="PasswordRemoved" xml:space="preserve">
+    <value>The password has been removed by {0}</value>
+  </data>
+  <data name="PasswordSet" xml:space="preserve">
+    <value>A password has been set by {0}</value>
+  </data>
+  <data name="ErrDownloadingFiles" xml:space="preserve">
+    <value>Error downloading files : {0}</value>
+  </data>
+  <data name="ErrUploadingFiles" xml:space="preserve">
+    <value>Error uploading files : {0}</value>
+  </data>
+  <data name="SupportFileServerNotConnected" xml:space="preserve">
+    <value>The ibaDatCoordinator server {0} is not connected. The support file will not contain any information about the ibaDatCoordinator server. Do you wish to generate the support file anyway?</value>
+  </data>
+  <data name="SupportFilesError" xml:space="preserve">
+    <value>An error occurred while generating support zip file at {0}:
+{1}</value>
+  </data>
+  <data name="SupportFilesOk" xml:space="preserve">
+    <value>Successfully generated support zip file at {0}. Do you wish to navigate to this file?</value>
+  </data>
+  <data name="ThisSystem" xml:space="preserve">
+    <value>this system</value>
+  </data>
+  <data name="PluginCopyFailed" xml:space="preserve">
+    <value>Could not copy the required files from {0} to {1}. Please make sure no other ibaDatCoordinator clients are open or other programs have the files in use and start the client again. Alternatively you can copy the files manually and remove the source folder ({0}). The ibaDatCoordinator client will now close.</value>
+  </data>
+  <data name="PluginSourceFailed" xml:space="preserve">
+    <value>Could not remove the folder {0}. Please make sure no other ibaDatCoordinator clients are open or other programs have the files in use and start the client again. Alternatively you can remove folder {0} manually. The ibaDatCoordinator client will now close.</value>
+  </data>
+  <data name="RestartPluginsRequired" xml:space="preserve">
+    <value>The ibaDatCoordinator client will restart in order to properly load the plugins copied from the server side.</value>
+  </data>
+  <data name="snmpCreatedMibFiles" xml:space="preserve">
+    <value>Successfully created the following MIB files: {0}.\r\n\r\nDo you wish to navigate to these files?</value>
+  </data>
+  <data name="snmpCreatedMibFilesTitle" xml:space="preserve">
+    <value>Created MIB files</value>
+  </data>
+  <data name="snmpFailedMibFiles" xml:space="preserve">
+    <value>Failed to create MIB files</value>
+  </data>
+  <data name="snmpQuestionReset" xml:space="preserve">
+    <value>Are you sure you want to reset configuration to default?</value>
+  </data>
+  <data name="snmpQuestionResetTitle" xml:space="preserve">
+    <value>Reset configuration?</value>
+  </data>
+  <data name="snmpStatusDisabled" xml:space="preserve">
+    <value>SNMP server is disabled</value>
+  </data>
+  <data name="snmpStatusError" xml:space="preserve">
+    <value>Starting the SNMP server failed with error: {0}</value>
+  </data>
+  <data name="snmpStatusNotInit" xml:space="preserve">
+    <value>SNMP server is not initialized.</value>
+  </data>
+  <data name="snmpStatusRunningOnPort" xml:space="preserve">
+    <value>SNMP server running on port {0}</value>
+  </data>
+  <data name="snmpStatusRunningRestarted" xml:space="preserve">
+    <value>SNMP agent was successfully restarted. Current status: {0}</value>
+  </data>
+  <data name="snmpStatusRunningStarted" xml:space="preserve">
+    <value>SNMP agent was successfully started. Current status: {0}</value>
+  </data>
+  <data name="snmpStatusStopped" xml:space="preserve">
+    <value>SNMP agent was successfully stopped. Current status: {0}</value>
+  </data>
+  <data name="snmp_images" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\snmp_images.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="snmp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\snmp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cannotAccessTargetSystem" xml:space="preserve">
+    <value>The target system cannot be accessed:</value>
+  </data>
+  <data name="PluginNotInstalled" xml:space="preserve">
+    <value>Plugin "{0}" is not installed. Please contact iba Support to acquire this plugin.</value>
+  </data>
+  <data name="PluginOutdated" xml:space="preserve">
+    <value>Plugin "{0}" version {1} is not compatible with this version of ibaDatCoordinator. Please contact iba Support for an updated plugin version.</value>
+  </data>
+  <data name="uploadFileProblem" xml:space="preserve">
+    <value>There was an issue uploading the file to the server :</value>
+  </data>
+  <data name="missingPlugins" xml:space="preserve">
+    <value>The following plugins are missing: </value>
+  </data>
+  <data name="LangSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="SwitchLanguageRestartRequired" xml:space="preserve">
+    <value>The new language setting will only work after the ibaDatCoordinator client is restarted. Do you wish to restart it now?</value>
+  </data>
+  <data name="SwitchLanguageRestartRequiredStandAlone" xml:space="preserve">
+    <value>The new language setting will only work after ibaDatCoordinator is restarted. Do you wish to restart it now?</value>
+  </data>
+  <data name="WarningInfofieldDirFailed2" xml:space="preserve">
+    <value>Failed to obtain infofield or expression '{0}' from the event. The file will be placed in the 'unresolved' subdirectory.</value>
+  </data>
+  <data name="WarningInfofieldFailed2" xml:space="preserve">
+    <value>Failed to obtain infofield or expression '{0}' from the event. The standard name will be used as output filename.</value>
+  </data>
+  <data name="TasksCountExceeded" xml:space="preserve">
+    <value>Cannot add the requested task, the maximum amount of tasks for this job has been reached.</value>
+  </data>
+  <data name="img_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EventJobsNodeParent" xml:space="preserve">
+    <value>Event Jobs</value>
+  </data>
+  <data name="addEventConfigurationText" xml:space="preserve">
+    <value>Add Event Job</value>
+  </data>
+  <data name="event_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\event_configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="event_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\event_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FromEventTextForLabel" xml:space="preserve">
+    <value>an event occurred</value>
+  </data>
+  <data name="DeleteDialogTitleEvent" xml:space="preserve">
+    <value>Deleting event occurences</value>
+  </data>
+  <data name="PermErrorsColumnHeaderEvent" xml:space="preserve">
+    <value>event occurences</value>
+  </data>
+  <data name="PermErrorsLabelEvent" xml:space="preserve">
+    <value>The following event occurences have been attempted the maximum amount of attempts for job</value>
+  </data>
+  <data name="UnmarkDialogTitleEvent" xml:space="preserve">
+    <value>Unmarking event occurences</value>
+  </data>
+  <data name="EventJob_DefaultHDConnectionErr" xml:space="preserve">
+    <value>Cannot connect to server</value>
+  </data>
+  <data name="EventJob_GenerateTestFile" xml:space="preserve">
+    <value>Generate an HDQ test file</value>
+  </data>
+  <data name="EventJob_GenerateTestFile_Filter" xml:space="preserve">
+    <value>HDQ file|*.hdq</value>
+  </data>
+  <data name="img_eventjob_range_both" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_eventjob_range_both.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_eventjob_range_single" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_eventjob_range_single.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EventJob_TestFile_Canceled" xml:space="preserve">
+    <value>Canceled.</value>
+  </data>
+  <data name="EventJob_TestFile_Error" xml:space="preserve">
+    <value>An error occurred: {0}</value>
+  </data>
+  <data name="EventJob_TestFile_Finished" xml:space="preserve">
+    <value>Finished successfully.</value>
+  </data>
+  <data name="EventJob_TestFile_GeneratingFile" xml:space="preserve">
+    <value>Generating test file...</value>
+  </data>
+  <data name="EventJob_TestFile_NoEventFound" xml:space="preserve">
+    <value>No event occurrences were found. Using current time as time range center instead.</value>
+  </data>
+  <data name="EventJob_TestFile_SearchingEvent" xml:space="preserve">
+    <value>Searching for event occurrences...</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Noaccess6" xml:space="preserve">
+    <value>The file is password protected and no password was provided.</value>
+  </data>
+  <data name="Noaccess7" xml:space="preserve">
+    <value>The file is password protected and an incorrect password was provided.</value>
+  </data>
+  <data name="connectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_stopp.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disconnectedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_dc.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ibaAnalyzer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaAnalyzer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ibaDatCoordinator" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ibaDatCoordinator_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_server.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NoHDServerConnected" xml:space="preserve">
+    <value>No server connected</value>
+  </data>
+  <data name="runningIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator_start.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="standalone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaDatCoordinator.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="about_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about_background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="About_Image_80x80" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about80x80.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dat_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dat-file.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ibaAnalyzer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ibaAnalyzer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HDEventTaskTitle" xml:space="preserve">
+    <value>HD offline events</value>
+  </data>
+  <data name="img_computed_values" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_computed_values.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewHDCreateEventTaskTitle" xml:space="preserve">
+    <value>Add HD Offline Events Task</value>
+  </data>
+  <data name="hdcreateeventtaskButton" xml:space="preserve">
+    <value>add new HD offline events task</value>
+  </data>
+  <data name="logHDEventTaskActivateError" xml:space="preserve">
+    <value>The writer configuration could not be activated</value>
+  </data>
+  <data name="logHDEventTaskConfigError" xml:space="preserve">
+    <value>The following errors were reported while configuring the writer: {0}</value>
+  </data>
+  <data name="logHDEventTaskStarted" xml:space="preserve">
+    <value>Started generating ibaHD events</value>
+  </data>
+  <data name="logHDEventTaskSuccess" xml:space="preserve">
+    <value>ibaHD events were generated successfully</value>
+  </data>
+  <data name="logHDEventTaskTimeError" xml:space="preserve">
+    <value>Unable to determine the start and end time of the processed file</value>
+  </data>
+  <data name="logHDEventTaskPulseSignalError" xml:space="preserve">
+    <value>{0}: Pulse signal was not found</value>
+  </data>
+  <data name="logAnalyzerVersionError" xml:space="preserve">
+    <value>ibaAnalyzer v{0} or higher is required</value>
+  </data>
+  <data name="DatFileFilter" xml:space="preserve">
+    <value>iba dat files (*.dat)|*.dat</value>
+  </data>
+  <data name="HDEventTask_ChannelProcessedFile" xml:space="preserve">
+    <value>Processed filename</value>
+  </data>
+  <data name="HDEventTask_ChannelUnassigned" xml:space="preserve">
+    <value>Unassigned</value>
+  </data>
+  <data name="img_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_file.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AnalyzerTree_Loading" xml:space="preserve">
+    <value>Loading ibaAnalyzer...</value>
+  </data>
+  <data name="AnalyzerTree_UnknownError" xml:space="preserve">
+    <value>Unknown error occurred while loading ibaAnalyzer</value>
+  </data>
+  <data name="Download_ErrorCancelled" xml:space="preserve">
+    <value>The download of file {0} was cancelled</value>
+  </data>
+  <data name="Download_ErrorDisconnected" xml:space="preserve">
+    <value>File {0} could not be downloaded: not connected to a service</value>
+  </data>
+  <data name="Download_ErrorException" xml:space="preserve">
+    <value>An exception occurred while downloading file {0}</value>
+  </data>
+  <data name="Download_ErrorUnknown" xml:space="preserve">
+    <value>File {0} could not be downloaded for an unknown reason</value>
+  </data>
+  <data name="HDEventTask_PDOConnectionRequired" xml:space="preserve">
+    <value>For a remote service, a connection is required to select a PDO file!</value>
+  </data>
+  <data name="PdoFileFilter" xml:space="preserve">
+    <value>ibaAnalyzer PDO files (*.pdo)|*.pdo</value>
+  </data>
+  <data name="Upload_ErrorCancelled" xml:space="preserve">
+    <value>The upload of file {0} was cancelled</value>
+  </data>
+  <data name="Upload_ErrorDisconnected" xml:space="preserve">
+    <value>File {0} could not be uploaded: not connected to a service</value>
+  </data>
+  <data name="Upload_ErrorException" xml:space="preserve">
+    <value>An exception occurred while uploading file {0}</value>
+  </data>
+  <data name="Upload_ErrorNotFound" xml:space="preserve">
+    <value>Unable to upload file {0} because it could not be found</value>
+  </data>
+  <data name="Upload_ErrorUnknown" xml:space="preserve">
+    <value>File {0} could not be uploaded for an unknown reason</value>
+  </data>
+  <data name="FileChanged_ErrorDisconnected" xml:space="preserve">
+    <value>Error while checking changes for file {0}: a connection to the service is required to check for file changes</value>
+  </data>
+  <data name="FileChanged_ErrorException" xml:space="preserve">
+    <value>Error while checking changes for file {0}: {1}</value>
+  </data>
+  <data name="FileChanged_ErrorNotFound" xml:space="preserve">
+    <value>Error while checking changes for file {0}: file not found</value>
+  </data>
+  <data name="FileChanged_Upload" xml:space="preserve">
+    <value>Changes were detected to one or more PDO files. In order to transfer these changes to the service, these files must be uploaded. This might automatically stop and start the corresponding job. Do you wish to upload these files?</value>
+  </data>
+  <data name="FileChanged_UploadNoChanges" xml:space="preserve">
+    <value>No changes to the PDO file were detected</value>
+  </data>
+  <data name="HDEventTask_TestSuccess" xml:space="preserve">
+    <value>Test successful</value>
+  </data>
+  <data name="img_pdo_upload" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_pdo_upload.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logHDEventTaskDATError" xml:space="preserve">
+    <value>Test DAT file could not be found</value>
+  </data>
+  <data name="HdqDatFileFilter" xml:space="preserve">
+    <value>iba HDQ files (*.hdq)|*.hdq|iba dat files (*.dat)|*.dat</value>
+  </data>
+  <data name="HDEventTask_ToolTip_OpenPDO" xml:space="preserve">
+    <value>Open the PDO file with ibaAnalyzer</value>
+  </data>
+  <data name="HDEventTask_ToolTip_Test" xml:space="preserve">
+    <value>Test the event generation (this requires a DAT file)</value>
+  </data>
+  <data name="HDEventTask_ToolTip_UploadPDO" xml:space="preserve">
+    <value>Upload a PDO file to the server</value>
+  </data>
+  <data name="HDEventsChanged" xml:space="preserve">
+    <value>Changes are made to the HD offline events configurations. Do you want to save these changes on the HD server?</value>
+  </data>
+  <data name="UseSignalName" xml:space="preserve">
+    <value>Signal Name</value>
+  </data>
+  <data name="TriggerPerFile" xml:space="preserve">
+    <value>Generate one event per processed file</value>
+  </data>
+  <data name="TriggerPerPulse" xml:space="preserve">
+    <value>Generate an event for every rectangular pulse</value>
+  </data>
+  <data name="opcUaStatusDisabled" xml:space="preserve">
+    <value>OPC UA server is disabled</value>
+  </data>
+  <data name="opcUaStatusError" xml:space="preserve">
+    <value>Starting the OPC UA server failed with error: {0}</value>
+  </data>
+  <data name="opcUaStatusNotInit" xml:space="preserve">
+    <value>OPC UA server is not initialized</value>
+  </data>
+  <data name="opcUaStatusRunning" xml:space="preserve">
+    <value>OPC UA server running</value>
+  </data>
+  <data name="opcUaStatusRunningRestarted" xml:space="preserve">
+    <value>OPC UA agent was successfully restarted. Current status: {0}</value>
+  </data>
+  <data name="opcUaStatusRunningStarted" xml:space="preserve">
+    <value>OPC UA agent was successfully started. Current status: {0}</value>
+  </data>
+  <data name="opcUaStatusStopped" xml:space="preserve">
+    <value>OPC UA agent was successfully stopped. Current status: {0}</value>
+  </data>
+  <data name="opcUaTitle" xml:space="preserve">
+    <value>OPC UA server</value>
+  </data>
+  <data name="img_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_cert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_dude" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_dude.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_export" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_key" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_key.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_opcuaclient_cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_opcuaclient_cert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_opcuaserver_cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_opcuaserver_cert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_shldgreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_shldgreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_shldred" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_shldred.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="opcUaServer_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\opcUaServer_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="opcUaErrorTryingToGetNetworkConfiguration" xml:space="preserve">
+    <value>Error trying to get network configuration from server</value>
+  </data>
+  <data name="opcUaAddCertificate" xml:space="preserve">
+    <value>Add certificate</value>
+  </data>
+  <data name="opcUaErrorFailedToAddCertificate" xml:space="preserve">
+    <value>Failed to add certificate: {0}</value>
+  </data>
+  <data name="opcUaGenerateCertificate" xml:space="preserve">
+    <value>Generate certificate</value>
+  </data>
+  <data name="opcUaErrorFailedToGenerateTheCertificate" xml:space="preserve">
+    <value>Failed to generate the certificate</value>
+  </data>
+  <data name="opcUaDoYouWantUseAsServerCert" xml:space="preserve">
+    <value>Do you want to use the generated certificate as OPC UA Server certificate?</value>
+  </data>
+  <data name="opcUaExportCertificate" xml:space="preserve">
+    <value>Export certificate</value>
+  </data>
+  <data name="opcUaErrorExportingCertificate" xml:space="preserve">
+    <value>Error exporting certificate</value>
+  </data>
+  <data name="opcUaSuccessfullyExportedCertificate" xml:space="preserve">
+    <value>Successfully exported certificate</value>
+  </data>
+  <data name="opcUaSureToDeleteCert" xml:space="preserve">
+    <value>Are you sure you want to delete the certificate permanently?</value>
+  </data>
+  <data name="opcUaErrorCertNoPrivateKey" xml:space="preserve">
+    <value>The selected certificate does not contain a private key</value>
+  </data>
+  <data name="opcUaAdapterAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Adapter = All</comment>
+  </data>
+  <data name="opcUaCertPropAuthentication" xml:space="preserve">
+    <value>Authentication</value>
+    <comment>The certificate can be used for user Authentication</comment>
+  </data>
+  <data name="opcUaCertPropPrivateKey" xml:space="preserve">
+    <value>Private key</value>
+    <comment>The certificate has a private key</comment>
+  </data>
+  <data name="opcUaCertPropRejected" xml:space="preserve">
+    <value>Rejected</value>
+    <comment>The certificate is not trused</comment>
+  </data>
+  <data name="opcUaCertPropServerCert" xml:space="preserve">
+    <value>OPC UA Server certificate</value>
+    <comment>The certificate is used as a Server Certificate</comment>
+  </data>
+  <data name="opcUaCertPropTrusted" xml:space="preserve">
+    <value>Trusted</value>
+    <comment>The certificate is trusted</comment>
+  </data>
+  <data name="opcUaFileLocatedOnRemoteMachine" xml:space="preserve">
+    <value>File is located on remote machine '{0}' at path '{1}'</value>
+  </data>
+  <data name="opcUaErrorPasswordVerificationError" xml:space="preserve">
+    <value>The passwords don't match. Please correct them.</value>
+  </data>
+  <data name="opcUaErrorCertNotTrusted" xml:space="preserve">
+    <value>The configured OPC UA Server certificate is not trusted</value>
+  </data>
+  <data name="opcUaErrorNoCert" xml:space="preserve">
+    <value>OPC UA Server has no configured certificate</value>
+  </data>
+  <data name="opcUaErrorNoEndpoint" xml:space="preserve">
+    <value>At least one endpoint must be configured</value>
+  </data>
+  <data name="opcUaErrorNoLogonPolicy" xml:space="preserve">
+    <value>At least one logon policy must be configured</value>
+  </data>
+  <data name="opcUaErrorNoSecurity" xml:space="preserve">
+    <value>At least one security policy must be configured</value>
+  </data>
+  <data name="deleteCreateEventTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the ibaHD event options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="ReloadHdEvents" xml:space="preserve">
+    <value>The previous save to the ibaHD server of this task failed. Do you wish to reuse this ibaHD configuration? Reusing the previous configuration could result in overwriting changes made in other clients or tasks. Select "No" to use the latest version from the ibaHD server.</value>
+  </data>
+  <data name="ReloadHdEventsCaption" xml:space="preserve">
+    <value>Reload ibaHD events</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="StartTime" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="HDEventTask_ChannelClientId" xml:space="preserve">
+    <value>Client ID</value>
+  </data>
+  <data name="IbaAnalyzerDeletingRemFile" xml:space="preserve">
+    <value>Deleting output file {0} because of task failure.</value>
+  </data>
+  <data name="FileChanged_UploadStandalone" xml:space="preserve">
+    <value>Changes were detected to one or more PDO files. In order to apply these changes,  the source files must be updated. This might automatically stop and start the corresponding job. Do you wish to update these files?</value>
+  </data>
+  <data name="HDEventTask_ToolTip_UploadPDOStandAlone" xml:space="preserve">
+    <value>Update the PDO file</value>
+  </data>
+  <data name="HdFallingEdge" xml:space="preserve">
+    <value>on falling edge (Value)</value>
+  </data>
+  <data name="HdNoEdge" xml:space="preserve">
+    <value>never</value>
+  </data>
+  <data name="HdRisingEdge" xml:space="preserve">
+    <value>on rising edge (Value)</value>
+  </data>
+  <data name="HdFallingEdgeAvg" xml:space="preserve">
+    <value>on falling edge (Avg)</value>
+  </data>
+  <data name="HdRisingEdgeAvg" xml:space="preserve">
+    <value>on rising edge (Avg)</value>
+  </data>
+  <data name="AnalysisDoesNotExist" xml:space="preserve">
+    <value>Specified analysis file does not exist. Do you want to start ibaAnalyzer without it?</value>
+  </data>
+  <data name="PluginIsOutdated" xml:space="preserve">
+    <value>Plugin "{0}" is outdated, please install latest version.</value>
+  </data>
+  <data name="img_lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_networkError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_networkError.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_server.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IncompatibleClientVersion" xml:space="preserve">
+    <value>Incompatible client version. It should have version {0} or higher. Please upgrade the client.</value>
+  </data>
+  <data name="IncompatibleServerVersion" xml:space="preserve">
+    <value>Incompatible server version. Server has version {0}. It should have version {1} or higher. Please upgrade the server or downgrade the client.</value>
+  </data>
+  <data name="img_question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GenerateFloatFieldFailed" xml:space="preserve">
+    <value>Failed to generate float field {0}: {1}</value>
+  </data>
+  <data name="GenerateTextFieldFailed" xml:space="preserve">
+    <value>Failed to generate text field {0}: {1}</value>
+  </data>
+  <data name="ErrorConnectIbaHD" xml:space="preserve">
+    <value>Failed to connect to the ibaHD-Server</value>
+  </data>
+  <data name="ErrorWriteEvents" xml:space="preserve">
+    <value>Failed to write events</value>
+  </data>
+  <data name="OPCUAIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="PDOOpenFailed" xml:space="preserve">
+    <value>..\Resources\OPCIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="opcUaWriterTaskButton" xml:space="preserve">
+    <value>add a new OPC-UA Writer Task</value>
+  </data>
+  <data name="opcUaWriterTaskTitle" xml:space="preserve">
+    <value>OPC UA writer</value>
+  </data>
+  <data name="sychronizeList" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SychronizeList.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deleteOPCUATastQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the OPC UA Computed values options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="logComputedValuesUpdated" xml:space="preserve">
+    <value>computed values updated</value>
+  </data>
+  <data name="logOPCUAWriterEvaluatingTestValue" xml:space="preserve">
+    <value>Error occured while evaluating test value : {0}</value>
+  </data>
+  <data name="logOPCUAWriterStarted" xml:space="preserve">
+    <value>started evaluating computed values</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>Data type</value>
+  </data>
+  <data name="errExprNameNonUnique" xml:space="preserve">
+    <value>Expression name "{0}" must be unique </value>
+  </data>
+  <data name="BadEvaluate" xml:space="preserve">
+    <value>Could not evaluate expression for operand {0}</value>
+  </data>
+  <data name="ibaAnalyzerVersionError" xml:space="preserve">
+    <value>You have version {0} of ibaAnalyzer installed. The minimum required version is 6.5.0. Version 6.7.0 or later is recommended.</value>
+  </data>
+  <data name="NoVersion" xml:space="preserve">
+    <value>ibaAnalyzer version could not be determined</value>
+  </data>
+  <data name="logOPCUAServerDisabled" xml:space="preserve">
+    <value>OPC UA server is disabled</value>
+  </data>
+  <data name="ibaAnalyzerExpression" xml:space="preserve">
+    <value>ibaAnalyzer Expression</value>
+  </data>
+  <data name="OpcUaVariableName" xml:space="preserve">
+    <value>OPC UA variable name</value>
+  </data>
+  <data name="TestValue" xml:space="preserve">
+    <value>Test value</value>
+  </data>
+  <data name="down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\down.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+    <value>Failed to open PDO file {0}: </value>
+  </data>
+  <data name="ErrorDatFileOpen" xml:space="preserve">
+    <value>The file-tree could not be loaded from ibaAnalyzer. This could e.g. be caused by a wrong file password. {0}</value>
+  </data>
+  <data name="HDQErrorNoStores" xml:space="preserve">
+    <value>No HDstore was specified</value>
+  </data>
+  <data name="HDQErrorStopBeforeStart" xml:space="preserve">
+    <value>Start time is later than Stop time: Start {0} Stop {1}</value>
+  </data>
+  <data name="ClientNeedsConnectionForTestTask" xml:space="preserve">
+    <value>The client needs to be connected to the server to test this task.</value>
+  </data>
+  <data name="treeErrorGeneric" xml:space="preserve">
+    <value>Failed to load signal tree</value>
+  </data>
+  <data name="treeErrorNoService" xml:space="preserve">
+    <value>ibaDatCoordinator Service is disconnected</value>
+  </data>
+</root>
