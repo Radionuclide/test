@@ -1990,23 +1990,26 @@ namespace iba.Processing
 					FileAttributes at = File.GetAttributes(filename);
 					if ((at & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
 					{
-						lock (m_candidateNewFiles)
-						{
-							if (m_candidateNewFiles.Find(delegate (Pair<string, DateTime> arg) { return arg.First == filename; }) == null)
-							{
-								Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
-								//Log(Logging.Level.Warning, "Exception at location 4");
-							}
-						}
+                        if (ex.Message.Contains("No valid license"))
+                        {
+                            Log(Logging.Level.Warning, iba.Properties.Resources.ibaFilesNoLicense, filename);
+                        }
+                        else
+                        {
+                            lock (m_candidateNewFiles)
+                            {
+                                if (m_candidateNewFiles.Find(delegate (Pair<string, DateTime> arg) { return arg.First == filename; }) == null)
+                                {
+                                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
+                                    //Log(Logging.Level.Warning, "Exception at location 4");
+                                }
+                            }
+                        }
 					}
 					else
 					{
 						Log(Logging.Level.Exception, iba.Properties.Resources.Noaccess2, filename);
-						return DatFileStatus.State.NO_ACCESS; //no access, try again next time
 					}
-					Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.ToString(), filename);
-                    Log(Logging.Level.Exception, iba.Properties.Resources.ibaFileProblem + ex.Message, filename);
-                    Log(Logging.Level.Warning, iba.Properties.Resources.Noaccess, filename);
                     return DatFileStatus.State.NO_ACCESS; //no access, try again next time
                 }
                 
