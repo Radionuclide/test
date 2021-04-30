@@ -86,7 +86,8 @@ namespace iba.Data
         XmlElement(Type = typeof(HDCreateEventTaskData)),
         XmlElement(Type = typeof(OpcUaWriterTaskData)),
         XmlElement(Type = typeof(CustomTaskData)),
-        XmlElement(Type = typeof(CustomTaskDataUNC))]
+        XmlElement(Type = typeof(CustomTaskDataUNC)),
+        XmlElement(Type = typeof(UploadTaskData))]
         public List<TaskData> Tasks
         {
             get { return m_tasks; }

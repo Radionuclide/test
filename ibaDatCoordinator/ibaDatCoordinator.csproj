@@ -273,6 +273,12 @@
     <Compile Include="Controls\HDEventWizard.Designer.cs">
       <DependentUpon>HDEventWizard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UploadTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UploadTaskControl.Designer.cs">
+      <DependentUpon>UploadTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TriggerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -280,6 +286,7 @@
       <DependentUpon>TriggerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\ErrorPluginTaskData.cs" />
+    <Compile Include="Data\UploadTaskData.cs" />
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
     <Compile Include="Data\HDCreateEventTaskData.cs" />
@@ -292,6 +299,12 @@
     </Compile>
     <Compile Include="Dialogs\About.designer.cs">
       <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\AskForPassphrase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\AskForPassphrase.Designer.cs">
+      <DependentUpon>AskForPassphrase.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\GenerateEventJobTestFileDlg.cs">
       <SubType>Form</SubType>
@@ -349,6 +362,7 @@
     <Compile Include="Utility\EncryptionService.cs" />
     <Compile Include="Utility\EventJobTestGenerator.cs" />
     <Compile Include="Utility\ExtensionMethods.cs" />
+    <Compile Include="Processing\UploadTaskWorker.cs" />
     <Compile Include="Utility\LanguageHelper.cs" />
     <Compile Include="Remoting\PdaServerFiles.cs" />
     <Compile Include="Processing\FileQuotaGlobalCleanup.cs" />
@@ -589,6 +603,10 @@
     <EmbeddedResource Include="Controls\ErrorPluginTaskControl.resx">
       <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UploadTaskControl.resx">
+      <DependentUpon>UploadTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
     <EmbeddedResource Include="Controls\HDEventCreationTaskControl.resx">
       <DependentUpon>HDEventCreationTaskControl.cs</DependentUpon>
@@ -824,6 +842,7 @@
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <None Include="Resources\up.ico" />
     <None Include="Resources\down.ico" />
+    <None Include="Resources\UploadTaskIcon.ico" />
     <Content Include="Resources\img_file.png" />
     <None Include="Resources\img_lock.png" />
     <None Include="Resources\img_networkError.ico" />
@@ -920,6 +939,9 @@
   <ItemGroup>
     <PackageReference Include="ibaSnmpLib">
       <Version>1.9.8</Version>
+    </PackageReference>
+    <PackageReference Include="WinSCP">
+      <Version>5.17.10</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

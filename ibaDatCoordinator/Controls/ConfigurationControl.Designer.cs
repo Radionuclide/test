@@ -65,6 +65,7 @@ namespace iba.Controls
             this.m_newPauseTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newCleanupTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newSplitterTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newUploadTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newHdCreateEventTaskButton = new System.Windows.Forms.ToolStripButton();
             this.gbJobName = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -206,7 +207,6 @@ namespace iba.Controls
             // m_testNotification
             // 
             resources.ApplyResources(this.m_testNotification, "m_testNotification");
-            this.m_testNotification.Image = global::iba.Properties.Resources.Fax;
             this.m_testNotification.Name = "m_testNotification";
             this.m_testNotification.UseVisualStyleBackColor = true;
             this.m_testNotification.Click += new System.EventHandler(this.m_testNotification_Click);
@@ -274,6 +274,7 @@ namespace iba.Controls
             this.m_newExtractButton,
             this.m_newBatchfileButton,
             this.m_newCopyTaskButton,
+            this.m_newUploadTaskButton,
             this.m_newIfTaskButton,
             this.m_newUpdateDataTaskButton,
             this.m_newPauseTaskButton,
@@ -346,6 +347,13 @@ namespace iba.Controls
             this.m_newSplitterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newSplitterTaskButton.Name = "m_newSplitterTaskButton";
             this.m_newSplitterTaskButton.Click += new System.EventHandler(this.m_newSplitterTaskButton_Click);
+            // 
+            // m_newUploadTaskButton
+            // 
+            resources.ApplyResources(this.m_newUploadTaskButton, "m_newUploadTaskButton");
+            this.m_newUploadTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newUploadTaskButton.Name = "m_newUploadTaskButton";
+            this.m_newUploadTaskButton.Click += new System.EventHandler(this.m_newUploadTaskButton_Click);
             // 
             // m_newHdCreateEventTaskButton
             // 
@@ -448,5 +456,6 @@ namespace iba.Controls
         private System.Windows.Forms.ToolStripButton m_newSplitterTaskButton;
         private System.Windows.Forms.ToolStripButton m_newHdCreateEventTaskButton;
         private System.Windows.Forms.ToolStripButton m_newOPCUAWriterTaskButton;
+        private System.Windows.Forms.ToolStripButton m_newUploadTaskButton;
     }
 }

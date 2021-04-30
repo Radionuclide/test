@@ -483,6 +483,24 @@
   <data name="m_testNotification.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_testNotification.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk02AwAAAAAAADYAAAAoAAAAEAAAABAAAAABABgAAAAAAAAAAAASCwAAEgsAAAAAAAAAAAAA/wD//wD/
+        /wD//wD//wD/6ubkjnxuiHVm6OTh/wD//wD//wD//wD//wD//wD//wD//wD//wD//wD/9PLwpZOEkXxr
+        o459c1xKfGhZwLew+vr5/wD//wD//wD//wD//wD//wD//wD/5eDci3Vmp5KC1byq1rehh3Jjnox/iXVn
+        iXdp3tnV/fz8/wD//wD//wD/+fj4ycC5m4V21b6v68u5z62Ypol2inRjkn1vrZ+TppeLgm1fvbSt9PLx
+        /wD//wD/1crEiWtZ7dTH4sm4sZSBp49/1L6xwamZi3Nkm4l6p5eKr6GWmIZ4bVhH+fj3/wD/poNtwqeY
+        69rQmYBvyrSl5tHF6tXK58ezy7GflH1unIh7qpqMtKabs6SZYks74t7beGFQ0bywuaCR4cu+69bJ8OTe
+        s56P39HJ7c2528Cum4Nzk35wrZ2RsKGVjHltfWNSmIJ01sW839TP7+XenIp92se88OTdn4yA7eXh7tfI
+        5869m4FviXNinYp8oIx+cVlHqZeK7ObhtJWE4dfP8O7rl4R32M7H9vPyxrmw9Ork6NrQ17qpspqLinJg
+        hGxaalI/sJ+U0se/0b+3r5GC2MvD9/T0xLqz9vPy8+/t0MC2oId3iW9es5+R1sK1rpSDc1tM4NnUo5CB
+        7ufl0cG4tpyMvKWZ7+vp3NLOs5+RpI5/va6jz8C3iHFfybmtiHZquK6n/wD/2NDKqZeJ7unm3M/IxbCl
+        sZqJtaCR4NjR9vHv7eDX5c/Bzbiqhm5copGF+/v6/wD//f3918/KoY+Auqyi4dvW29DKtJ6O5N3Y+fb0
+        9fHt8ufh7N3U3cq8nIJxloN0/wD//wD//wD/+Pb119DKoo+Bq5uPtqCRy7uv7Obi+fj39vHv9fLu8+3p
+        08W8inNj/wD//wD//wD//wD//wD/9PLw8e7r+Pb0z8C0wbCk5d7a9vX06uTfy7qwppOG2dLM/wD//wD/
+        /wD//wD//wD//wD//wD//wD/9fHv2s3EuaKTyLerspuM2c3G/fz7/wD/
+</value>
+  </data>
   <data name="m_testNotification.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -906,6 +924,36 @@
   <data name="m_newCopyTaskButton.Text" xml:space="preserve">
     <value>toolStripButton2</value>
   </data>
+  <data name="m_newUploadTaskButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_newUploadTaskButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_newUploadTaskButton.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="m_newUploadTaskButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_newUploadTaskButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 46</value>
+  </data>
+  <data name="m_newUploadTaskButton.Text" xml:space="preserve">
+    <value>toolStripButton1</value>
+  </data>
   <data name="m_newIfTaskButton.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -1327,6 +1375,12 @@
     <value>m_newSplitterTaskButton</value>
   </data>
   <data name="&gt;&gt;m_newSplitterTaskButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_newUploadTaskButton.Name" xml:space="preserve">
+    <value>m_newUploadTaskButton</value>
+  </data>
+  <data name="&gt;&gt;m_newUploadTaskButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_newHdCreateEventTaskButton.Name" xml:space="preserve">

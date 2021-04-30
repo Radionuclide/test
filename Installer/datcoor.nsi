@@ -439,6 +439,8 @@ Section -Common
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaSnmpLib.dll"
+  File "..\ibaDatCoordinator\bin\Release\WinSCPnet.dll"
+  File "..\ibaDatCoordinator\bin\Release\WinSCP.exe"
   ;OPC UA
   File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
@@ -880,7 +882,9 @@ Function un.UninstallTasks
   Delete "$INSTDIR\GenuineChannels.dll"
   Delete "$INSTDIR\Zyan.SafeDeserializationHelpers.dll"
 
-  Delete "$INSTDIR\ibaSnmpLib.dll"  
+  Delete "$INSTDIR\ibaSnmpLib.dll"
+  Delete "$INSTDIR\WinSCPnet.dll"
+  Delete "$INSTDIR\WinSCP.exe"
   Delete "$INSTDIR\Opc.Ua.Configuration.dll"
   Delete "$INSTDIR\Opc.Ua.Core.dll"
   Delete "$INSTDIR\Opc.Ua.Server.dll"
@@ -1438,7 +1442,7 @@ LangString DESC_DATCOOR_CLIENT           ${LANG_SPANISH} "Cliente ibaDatCoordina
 LangString TEXT_OS_NOT_SUPPORTED          ${LANG_SPANISH} "No se pudo instalar el ibaDatCoordinator: El sistema operativo no es compatible."
 LangString TEXT_OS_NOT_FULLY_SUPPORTED    ${LANG_SPANISH} "Este sistema operativo ya no es compatible. ¿Desea continuar con la instalación de todas formas?"
 LangString TEXT_NOT_ADMINISTRATOR         ${LANG_SPANISH} "No posee suficientes privilegios para completar la instalación para todos los usuarios de la máquina.  Inicie sesión como administrador e intente nuevamente la instalación."
-LangString TEXT_FRAMEWORK_MISSING         ${LANG_SPANISH} "La versión 4.8 del .NET framework no está instalada. Por favor, instale esto antes de ejecutar el instalador del ibaPDA. El .NET framework puede encontrarse en el DVD $\"iba Software & Manuals$\” o se puede descargar mediante la actualización de Windows."
+LangString TEXT_FRAMEWORK_MISSING         ${LANG_SPANISH} "La versión 4.8 del .NET framework no está instalada. Por favor, instale esto antes de ejecutar el instalador del ibaPDA. El .NET framework puede encontrarse en el DVD $\"iba Software & Manuals$\" o se puede descargar mediante la actualización de Windows."
 LangString TEXT_UNINSTALL                 ${LANG_SPANISH} "Desinstalar ${PRODUCT_NAME}"
 LangString TEXT_ALREADY_INSTALLED         ${LANG_SPANISH} "${PRODUCT_NAME} v${PRODUCT_VERSION} ya está instalado. ¿Desea reinstalarlo?"
 LangString TEXT_OLDER_INSTALLED           ${LANG_SPANISH} "Está instalada una versión anterior de ${PRODUCT_NAME}. ¿Desea actualizar a la versión ${PRODUCT_VERSION}?"

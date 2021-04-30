@@ -1953,4 +1953,25 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="treeErrorNoService" xml:space="preserve">
     <value>ibaDatCoordinator Service is disconnected</value>
   </data>
+  <data name="UploadTaskButton" xml:space="preserve">
+    <value>add new upload task</value>
+  </data>
+  <data name="UploadTaskTitle" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="deleteUploadTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Upload options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewUploadTaskTitle" xml:space="preserve">
+    <value>Add Upload Task</value>
+  </data>
+  <data name="logUploadTaskFailed" xml:space="preserve">
+    <value>failed to upload file</value>
+  </data>
+  <data name="logUploadTaskSuccess" xml:space="preserve">
+    <value>file successfully uploaded</value>
+  </data>
+  <data name="UploadTaskIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UploadTaskIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

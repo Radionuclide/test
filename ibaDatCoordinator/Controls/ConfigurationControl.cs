@@ -88,6 +88,7 @@ namespace iba.Controls
             m_newSplitterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle);
             m_newHdCreateEventTaskButton.Image = iba.Properties.Resources.img_computed_values;
             m_newOPCUAWriterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.OPCUAIcon.Handle);
+            m_newUploadTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle);
 
             m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
@@ -100,6 +101,7 @@ namespace iba.Controls
             m_newSplitterTaskButton.ToolTipText = iba.Properties.Resources.splittertaskButton;
             m_newHdCreateEventTaskButton.ToolTipText = iba.Properties.Resources.hdcreateeventtaskButton;
             m_newOPCUAWriterTaskButton.ToolTipText = iba.Properties.Resources.opcUaWriterTaskButton;
+            m_newUploadTaskButton.ToolTipText = iba.Properties.Resources.UploadTaskButton;
 
             m_taskCount = m_newTaskToolstrip.Items.Count;
             UpdatePlugins();
@@ -585,6 +587,23 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(createEvent.Name, MainForm.OPCUA_WRITERTASK_INDEX, MainForm.OPCUA_WRITERTASK_INDEX);
             newNode.Tag = new OpcUaWriterTaskTreeItemData(m_manager, createEvent);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
+        }
+
+        private void m_newUploadTaskButton_Click(object sender, EventArgs e)
+        {
+            if (!TestTaskCount())
+                return;
+            UploadTaskData upload = new UploadTaskData(m_data);
+            new SetNextName(upload);
+            m_data.Tasks.Add(upload);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(upload.Name, MainForm.UPLOADTASK_INDEX, MainForm.UPLOADTASK_INDEX);
+            newNode.Tag = new UploadTaskTreeItemData(m_manager, upload);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)

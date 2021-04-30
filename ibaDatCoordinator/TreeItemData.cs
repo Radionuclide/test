@@ -228,6 +228,47 @@ namespace iba
     }
     #endregion
 
+    #region UploadTaskTreeItemData
+    public class UploadTaskTreeItemData : TreeItemData
+    {
+        public UploadTaskTreeItemData(IPropertyPaneManager propManager, UploadTaskData cop)
+            : base(propManager)
+        {
+            m_test = cop;
+        }
+
+        public override string What
+        {
+            get { return "UploadTask"; }
+        }
+
+        protected UploadTaskData m_test;
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_test;
+            }
+            set
+            {
+                m_test = value as UploadTaskData;
+            }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["UploadTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new UploadTaskControl());
+                manager.PropertyPanes["UploadTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
     #region ExtractTreeItemData
     public class ExtractTreeItemData : TreeItemData
     {

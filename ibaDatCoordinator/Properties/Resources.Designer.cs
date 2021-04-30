@@ -841,6 +841,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the Upload options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteUploadTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteUploadTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Determining file sizes in the output directory for the quota limitation..
         /// </summary>
         internal static string determiningQuota {
@@ -3057,6 +3066,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to failed to upload file.
+        /// </summary>
+        internal static string logUploadTaskFailed {
+            get {
+                return ResourceManager.GetString("logUploadTaskFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to file successfully uploaded.
+        /// </summary>
+        internal static string logUploadTaskSuccess {
+            get {
+                return ResourceManager.GetString("logUploadTaskSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon memoryexceeded {
@@ -3218,6 +3245,15 @@ namespace iba.Properties {
         internal static string NewUpdateDataTaskTitle {
             get {
                 return ResourceManager.GetString("NewUpdateDataTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Upload Task.
+        /// </summary>
+        internal static string NewUploadTaskTitle {
+            get {
+                return ResourceManager.GetString("NewUploadTaskTitle", resourceCulture);
             }
         }
         
@@ -5409,6 +5445,34 @@ namespace iba.Properties {
         internal static string uploadFileProblem {
             get {
                 return ResourceManager.GetString("uploadFileProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add new upload task.
+        /// </summary>
+        internal static string UploadTaskButton {
+            get {
+                return ResourceManager.GetString("UploadTaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon UploadTaskIcon {
+            get {
+                object obj = ResourceManager.GetObject("UploadTaskIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload.
+        /// </summary>
+        internal static string UploadTaskTitle {
+            get {
+                return ResourceManager.GetString("UploadTaskTitle", resourceCulture);
             }
         }
         

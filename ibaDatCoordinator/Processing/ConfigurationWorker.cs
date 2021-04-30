@@ -2593,7 +2593,7 @@ namespace iba.Processing
                         }
                         continue;
                     }
-                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData))
+                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData) && !(task is UploadTaskData))
                     {
                         m_outPutFilesPrevTask = null;
                     }
@@ -3034,6 +3034,11 @@ namespace iba.Processing
                 }
                 else
                     CopyDatFile(DatFile, dat);
+            }
+            else if(task is UploadTaskData)
+            {
+                UploadTaskData dat = task as UploadTaskData;
+                UploadDatFile(DatFile, dat);
             }
             else if (task is HDCreateEventTaskData)
             {
@@ -4393,6 +4398,73 @@ namespace iba.Processing
                 {
                     Log(Logging.Level.Exception, iba.Properties.Resources.logCopyTaskFailed + ": " + ex.Message, filename, task);
                 }
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+        }
+
+        private void UploadDatFile(string filename, UploadTaskData task)
+        {
+            string[] filesToCopy = new string[] { filename };
+
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
+
+            if (task.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.PREVOUTPUT)
+            {
+                if (m_outPutFilesPrevTask == null || m_outPutFilesPrevTask.Length == 0 || string.IsNullOrEmpty(m_outPutFilesPrevTask[0]))
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
+                    return;
+                }
+                if (m_outPutFilesPrevTask != null)
+                {
+                    filesToCopy = m_outPutFilesPrevTask;
+                }
+            }
+            m_outPutFilesPrevTask = null;
+
+            try
+            {
+                //close .dat file first
+                try
+                {
+                    if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+                }
+                catch
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                    if (m_needIbaAnalyzer)
+                    {
+                        RestartIbaAnalyzer();
+                    }
+                }
+
+                foreach (var fileToCopy in filesToCopy)
+                {
+                    var uploadTaskWorker = new UploadTaskWorker(fileToCopy, task);
+
+                    uploadTaskWorker.UploadFile();
+                    Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
+                }
+
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    if (m_outPutFilesPrevTask != null && m_outPutFilesPrevTask.Length > 0)
+                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFilesPrevTask[0];
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message, filename, task);
+
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
