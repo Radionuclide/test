@@ -2545,6 +2545,11 @@ namespace iba.Processing
                     {
                         m_ibaAnalyzer.CloseDataFiles();
                         StopIbaAnalyzer();
+                        if (InputFile.EndsWith(".hdq"))
+                        { //try to delete the file so it doesn't get reprocessed
+
+                            File.Delete(InputFile);
+                        }
                     }
                     catch
                     {

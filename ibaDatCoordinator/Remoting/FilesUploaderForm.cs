@@ -24,7 +24,7 @@ namespace iba.Remoting
 
         protected iba.Utility.Components.ibaBackgroundWorker backWorker;
         protected string[] files;
-        protected string[] destPaths;
+        protected string[] destFileNames;
         protected IPdaServerFiles pdaFiles;
         protected float progressOffset;
         protected float progressScale;
@@ -39,7 +39,7 @@ namespace iba.Remoting
             InitializeComponent();
 
             this.files = files;
-            this.destPaths = destPaths;
+            this.destFileNames = destPaths;
             this.pdaFiles = pdaFiles;
 
             lbFileName.Text = "";
@@ -58,8 +58,11 @@ namespace iba.Remoting
         }
 
         public FilesUploaderForm(string[] files, string destPath, IPdaServerFiles pdaFiles)
-            : this(files, new string[] { destPath }, pdaFiles)
+            : this(files, files, pdaFiles)
         {
+            this.destFileNames = new string[files.Length];
+            for (int i = 0; i < files.Length; i++)
+                this.destFileNames[i] = Path.Combine(destPath, Path.GetFileName(files[i]));
         }
 
 		/// <summary>
@@ -168,10 +171,6 @@ namespace iba.Remoting
 				using(FileStream file = File.Open(files[i], FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					FileUploader upload = new FileUploader(file, fInfo[i].LastWriteTimeUtc, completed, this);
-                    string[] destFileNames = new string[destPaths.Length];
-                    for(int j=0;j<destPaths.Length;j++)
-                        destFileNames[j] = Path.Combine(destPaths[j], Path.GetFileName(files[i]));
-
                     pdaFiles.UploadFile(destFileNames, upload, fInfo[i].Length);
 
                     //Wait until upload is complete
