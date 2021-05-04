@@ -297,6 +297,160 @@
             Request id that will be passed to callback
             </returns>
         </member>
+        <member name="T:iba.HD.Client.Interfaces.IHdEventManager">
+            <summary>
+            Manages event request for a single HD client
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetStoreNames">
+            <summary>
+            Gets names of all event stores on the connected server
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetSignalText(System.String)">
+            <summary>
+            Gets text information for event with given id
+            </summary>
+            <returns>
+            Null if id is unknown
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetQueries">
+            <summary>
+            Gets event queries on the connected server
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.SetQueries(System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Boolean)">
+            <summary>
+            Sets event queries
+            </summary>
+            <param name="force">
+            Force if config is out of date
+            </param>
+            <returns>
+            0 if failed; 1 if config out of date; 2 if successful
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetQueryFields(System.String)">
+            <summary>
+            Gets field expressions for event with given id
+            </summary>
+            <returns>
+            Null if id is unknown
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.AddSubset(iba.HD.Common.EventStoreSubset,System.Action{System.String,System.Int32})">
+            <summary>
+            Adds event store subset to be used in requests
+            </summary>
+            <param name="subset">
+            subset of event ids in a single store
+            </param>
+            <param name="callback">
+            Delegate that will be called when subset id arrives.
+            First parameter is store name, second parameter is subset id.
+            </param>
+            <remarks>
+            Retrieved subset ids become invalid when reader gets disconnected
+            </remarks>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.RemoveSubset(System.Int32)">
+            <summary>
+            Subset must be removed if not used anymore
+            </summary>
+            <param name="subsetId">
+            id of the subset to be removed
+            </param>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.AddLiveRequest(System.Int32,iba.HD.Common.TimeRangeUtc,System.Int32)">
+            <summary>
+            Adds live requests
+            </summary>
+            <param name="subsetId">
+            Id of event subset to be used
+            </param>
+            <param name="range">
+            Data request time range
+            </param>
+            <returns>
+            Request id required to send request; negative if subset id is invalid
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.AddQueryRequest(iba.HD.Common.MultiEventQuery,System.Int32)">
+            <summary>
+            Adds query requests
+            </summary>
+            <param name="query">
+            Query details
+            </param>
+            <returns>
+            Request id required to send request
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.SendRequest(System.Int32,System.Action{iba.HD.Common.EventResponse})">
+            <summary>
+            Sends the request with given id
+            </summary>
+            <param name="requestId">
+            id of the request to send
+            </param>
+            <param name="callback">
+            Delegate that will be called when requested data arrives; might be called more than once for a single request
+            </param>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.CancelRequest(System.Int32)">
+            <summary>
+            Cancels request with given id
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.Acknowledge(iba.HD.Common.EventAckRequest)">
+            <summary>
+            Acknowledges one or more events
+            </summary>
+            <param name="request">
+            Information about the events that are being acknowledged
+            </param>
+            <returns>
+            True, if the request has been sent to the server
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.Annotate(iba.HD.Common.EventNoteRequest)">
+            <summary>
+            Adds an annotation to an event
+            </summary>
+            <param name="request">
+            Annotation data
+            </param>
+            <returns>
+            True, if the request has been sent to the server
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetBlob(iba.HD.Common.EventReaderData,System.String,System.String,System.IO.Stream)">
+            <summary>
+            Retrieve event blob
+            </summary>
+            <returns>
+            True upon success
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.SelectedSignals">
+            <summary>
+            Gets the ids of all the selected signals of the event wizard
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.Apply">
+            <summary>
+            Create a new event based on the selected signals in the popup dialog.
+            </summary>
+            <returns>
+            Null if id is unknown
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.ShowDialog(System.Windows.Forms.IWin32Window)">
+            <summary>
+            Gets event queries on the connected server
+            </summary>
+        </member>
         <member name="T:iba.HD.Client.Interfaces.IHdChannelDetails">
             <summary>
             Channel details that can change over time
@@ -596,361 +750,6 @@
             <param name="min">minimum value</param>
             <param name="max">maximum value</param>
         </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.Control">
-            <summary>
-            Gets the control
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.BeginStateChange">
-            <summary>
-            Can be called before changing tree state; EndStateChange must be called afterwards
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.EndStateChange">
-            <summary>
-            Can be called after changing tree state; BeginStateChange must be called first
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.Mode">
-            <summary>
-            Gets or sets tree node mode
-            </summary>
-        </member>
-        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.ModeChanged">
-            <summary>
-            Fired when mode changes
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ContextOptions">
-            <summary>
-            Gets or sets context menu options
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.AggregateOptions">
-            <summary>
-            Get or set signal aggregate options
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.LogicalFilter">
-            <summary>
-            Gets or sets logical filter
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilter">
-            <summary>
-            Gets or sets write status filter
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilterText">
-            <summary>
-            Gets write status filter name
-            </summary>
-        </member>
-        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilterChanged">
-            <summary>
-            Fired when write filter changed
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.StoreNameFilters">
-            <summary>
-            Gets or sets store name filters
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.StoreTypeFilter">
-            <summary>
-            Gets or sets store type filter
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.LocationNameFilter">
-            <summary>
-            Gets or sets location name filter
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.AttachedSignalFilter">
-            <summary>
-            Gets or sets attached signal filter
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowAttachments">
-            <summary>
-            Show attached backups if there are any
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.AllowDrag">
-            <summary>
-            Allow node drag operations or not
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.MultiSelect">
-            <summary>
-            Allow multiple node selection or not
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowCheckboxes">
-            <summary>
-            Show checkboxes or not
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowAsterisks">
-            <summary>
-            Show asterisk nodes or not
-            </summary>
-        </member>
-        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.SelectedSignalId">
-            <summary>
-            Gets or sets the selected signal id
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.ExpandAll(System.Int32)">
-            <summary>
-            Expands all tree nodes
-            </summary>
-            <param name="maxDepth">
-            If negative, nodes expand until signals are visible
-            </param>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CollapseAll">
-            <summary>
-            Collapses all tree nodes
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.GetSelectedSignalIds">
-            <summary>
-            Gets all selected signal ids
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.SelectSignalIds(System.String[])">
-            <summary>
-            Sets all selected signal ids
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.GetCheckedSignalIds">
-            <summary>
-            Gets all checked signal ids
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CheckAll">
-            <summary>
-            Checks all signals
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UncheckAll">
-            <summary>
-            Uncheck all signals
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CheckSignalIds(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Sets all checked signal ids
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.SetComparer(System.Collections.Generic.IComparer{iba.HD.Common.HdReaderSignal})">
-            <summary>
-            Sets the comparer used to sort signal nodes
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.AddCustomNode(System.String,System.Drawing.Image)">
-            <summary>
-            Adds a custom node to the signal tree
-            </summary>
-            <param name="text">Tree node text</param>
-            <param name="image">Tree node image</param>
-            <returns>Tree node id</returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.ClearCustomNodes">
-            <summary>
-            Remove all custom nodes from the signal tree
-            </summary>
-        </member>
-        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.SignalSelected">
-            <summary>
-            Fired when a signal is selected
-            </summary>
-        </member>
-        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.SelectionChanged">
-            <summary>
-            Fired when selection has changed
-            </summary>
-        </member>
-        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.CheckedChanged">
-            <summary>
-            Fired when node checked state has changed
-            </summary>
-        </member>
-        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.DoubleClick">
-            <summary>
-            Fired when a node is double clicked
-            </summary>
-        </member>
-        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.Drag">
-            <summary>
-            Fired when a node is dragged
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UpdateNameMode">
-            <summary>
-            Updates signal names according to current name mode
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UpdateLocalization">
-            <summary>
-            Updates tree control localization
-            </summary>
-        </member>
-        <member name="T:iba.HD.Client.Interfaces.IHdEventManager">
-            <summary>
-            Manages event request for a single HD client
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetStoreNames">
-            <summary>
-            Gets names of all event stores on the connected server
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetSignalText(System.String)">
-            <summary>
-            Gets text information for event with given id
-            </summary>
-            <returns>
-            Null if id is unknown
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetQueries">
-            <summary>
-            Gets event queries on the connected server
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.SetQueries(System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Collections.Generic.List{iba.HD.Common.MultiEventQuery},System.Boolean)">
-            <summary>
-            Sets event queries
-            </summary>
-            <param name="force">
-            Force if config is out of date
-            </param>
-            <returns>
-            0 if failed; 1 if config out of date; 2 if successful
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetQueryFields(System.String)">
-            <summary>
-            Gets field expressions for event with given id
-            </summary>
-            <returns>
-            Null if id is unknown
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.AddSubset(iba.HD.Common.EventStoreSubset,System.Action{System.String,System.Int32})">
-            <summary>
-            Adds event store subset to be used in requests
-            </summary>
-            <param name="subset">
-            subset of event ids in a single store
-            </param>
-            <param name="callback">
-            Delegate that will be called when subset id arrives.
-            First parameter is store name, second parameter is subset id.
-            </param>
-            <remarks>
-            Retrieved subset ids become invalid when reader gets disconnected
-            </remarks>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.RemoveSubset(System.Int32)">
-            <summary>
-            Subset must be removed if not used anymore
-            </summary>
-            <param name="subsetId">
-            id of the subset to be removed
-            </param>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.AddLiveRequest(System.Int32,iba.HD.Common.TimeRangeUtc,System.Int32)">
-            <summary>
-            Adds live requests
-            </summary>
-            <param name="subsetId">
-            Id of event subset to be used
-            </param>
-            <param name="range">
-            Data request time range
-            </param>
-            <returns>
-            Request id required to send request; negative if subset id is invalid
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.AddQueryRequest(iba.HD.Common.MultiEventQuery,System.Int32)">
-            <summary>
-            Adds query requests
-            </summary>
-            <param name="query">
-            Query details
-            </param>
-            <returns>
-            Request id required to send request
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.SendRequest(System.Int32,System.Action{iba.HD.Common.EventResponse})">
-            <summary>
-            Sends the request with given id
-            </summary>
-            <param name="requestId">
-            id of the request to send
-            </param>
-            <param name="callback">
-            Delegate that will be called when requested data arrives; might be called more than once for a single request
-            </param>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.CancelRequest(System.Int32)">
-            <summary>
-            Cancels request with given id
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.Acknowledge(iba.HD.Common.EventAckRequest)">
-            <summary>
-            Acknowledges one or more events
-            </summary>
-            <param name="request">
-            Information about the events that are being acknowledged
-            </param>
-            <returns>
-            True, if the request has been sent to the server
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.Annotate(iba.HD.Common.EventNoteRequest)">
-            <summary>
-            Adds an annotation to an event
-            </summary>
-            <param name="request">
-            Annotation data
-            </param>
-            <returns>
-            True, if the request has been sent to the server
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.GetBlob(iba.HD.Common.EventReaderData,System.String,System.String,System.IO.Stream)">
-            <summary>
-            Retrieve event blob
-            </summary>
-            <returns>
-            True upon success
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.SelectedSignals">
-            <summary>
-            Gets the ids of all the selected signals of the event wizard
-            </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.Apply">
-            <summary>
-            Create a new event based on the selected signals in the popup dialog.
-            </summary>
-            <returns>
-            Null if id is unknown
-            </returns>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdEventWizard.ShowDialog(System.Windows.Forms.IWin32Window)">
-            <summary>
-            Gets event queries on the connected server
-            </summary>
-        </member>
         <member name="T:iba.HD.Client.Interfaces.IHdTimeSynchronizer">
             <summary>
             Interface to convert between server time and local client time
@@ -1167,6 +966,207 @@
             <returns>
             Zip file
             </returns>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.Control">
+            <summary>
+            Gets the control
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.BeginStateChange">
+            <summary>
+            Can be called before changing tree state; EndStateChange must be called afterwards
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.EndStateChange">
+            <summary>
+            Can be called after changing tree state; BeginStateChange must be called first
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.Mode">
+            <summary>
+            Gets or sets tree node mode
+            </summary>
+        </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.ModeChanged">
+            <summary>
+            Fired when mode changes
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ContextOptions">
+            <summary>
+            Gets or sets context menu options
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.AggregateOptions">
+            <summary>
+            Get or set signal aggregate options
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.LogicalFilter">
+            <summary>
+            Gets or sets logical filter
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilter">
+            <summary>
+            Gets or sets write status filter
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilterText">
+            <summary>
+            Gets write status filter name
+            </summary>
+        </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.WriteStatusFilterChanged">
+            <summary>
+            Fired when write filter changed
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.StoreNameFilters">
+            <summary>
+            Gets or sets store name filters
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.StoreTypeFilter">
+            <summary>
+            Gets or sets store type filter
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.LocationNameFilter">
+            <summary>
+            Gets or sets location name filter
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.AttachedSignalFilter">
+            <summary>
+            Gets or sets attached signal filter
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowAttachments">
+            <summary>
+            Show attached backups if there are any
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.AllowDrag">
+            <summary>
+            Allow node drag operations or not
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.MultiSelect">
+            <summary>
+            Allow multiple node selection or not
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowCheckboxes">
+            <summary>
+            Show checkboxes or not
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowAsterisks">
+            <summary>
+            Show asterisk nodes or not
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.SelectedSignalId">
+            <summary>
+            Gets or sets the selected signal id
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.ExpandAll(System.Int32)">
+            <summary>
+            Expands all tree nodes
+            </summary>
+            <param name="maxDepth">
+            If negative, nodes expand until signals are visible
+            </param>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CollapseAll">
+            <summary>
+            Collapses all tree nodes
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.GetSelectedSignalIds">
+            <summary>
+            Gets all selected signal ids
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.SelectSignalIds(System.String[])">
+            <summary>
+            Sets all selected signal ids
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.GetCheckedSignalIds">
+            <summary>
+            Gets all checked signal ids
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CheckAll">
+            <summary>
+            Checks all signals
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UncheckAll">
+            <summary>
+            Uncheck all signals
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CheckSignalIds(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Sets all checked signal ids
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.SetComparer(System.Collections.Generic.IComparer{iba.HD.Common.HdReaderSignal})">
+            <summary>
+            Sets the comparer used to sort signal nodes
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.AddCustomNode(System.String,System.Drawing.Image)">
+            <summary>
+            Adds a custom node to the signal tree
+            </summary>
+            <param name="text">Tree node text</param>
+            <param name="image">Tree node image</param>
+            <returns>Tree node id</returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.ClearCustomNodes">
+            <summary>
+            Remove all custom nodes from the signal tree
+            </summary>
+        </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.SignalSelected">
+            <summary>
+            Fired when a signal is selected
+            </summary>
+        </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.SelectionChanged">
+            <summary>
+            Fired when selection has changed
+            </summary>
+        </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.CheckedChanged">
+            <summary>
+            Fired when node checked state has changed
+            </summary>
+        </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.DoubleClick">
+            <summary>
+            Fired when a node is double clicked
+            </summary>
+        </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdSignalTree.Drag">
+            <summary>
+            Fired when a node is dragged
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UpdateNameMode">
+            <summary>
+            Updates signal names according to current name mode
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UpdateLocalization">
+            <summary>
+            Updates tree control localization
+            </summary>
         </member>
         <member name="T:iba.HD.Client.Interfaces.IHdUserManager">
             <summary>
