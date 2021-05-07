@@ -32,9 +32,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.gbEvent = new iba.Utility.CollapsibleGroupBox();
-            this.m_ctrlEvent = new iba.HD.Client.ControlEventConfig();
+            this.m_ctrlEvent = new iba.HD.Client.Dialogs.ControlEventConfig();
             this.gbStoreSelection = new System.Windows.Forms.GroupBox();
-            this.m_ctrlServer = new iba.HD.Client.ControlServerSelection();
+            this.m_ctrlServer = new iba.HD.Client.Dialogs.ControlServerSelection();
             this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -303,8 +303,8 @@
         private System.Windows.Forms.Button m_btnUploadPDO;
         private System.Windows.Forms.Button m_btnTest;
         private System.Windows.Forms.ToolTip m_toolTip;
-        private HD.Client.ControlEventConfig m_ctrlEvent;
-        private HD.Client.ControlServerSelection m_ctrlServer;
+        private HD.Client.Dialogs.ControlEventConfig m_ctrlEvent;
+        private HD.Client.Dialogs.ControlServerSelection m_ctrlServer;
 		private System.Windows.Forms.TextBox m_tbPDO;
         private System.Windows.Forms.Button m_btTakeParentPass;
     }

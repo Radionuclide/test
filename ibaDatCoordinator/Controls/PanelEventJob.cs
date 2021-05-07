@@ -11,6 +11,7 @@ using iba.Processing;
 using iba.HD.Common;
 using iba.HD.Client.Interfaces;
 using iba.HD.Client;
+using iba.HD.Client.Dialogs;
 using System.Threading.Tasks;
 using iba.Logging;
 using iba.Dialogs;

@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using iba.HD.Common;
 using iba.Data;
 using iba.HD.Client;
+using iba.HD.Client.Dialogs;
 using System;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Drawing;
