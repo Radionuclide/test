@@ -1701,6 +1701,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The .dat file is in an older file format which requires a license, please contact iba Support.
+        /// </summary>
+        internal static string ibaFilesNoLicense {
+            get {
+                return ResourceManager.GetString("ibaFilesNoLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ibalogo_transparent {

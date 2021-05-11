@@ -230,7 +230,7 @@ namespace iba.Remoting
                 }
 
                 DialogResult res = DialogResult.OK;
-                using (var dlg = new FilesUploaderForm(new string[1] { localFile }, Path.GetDirectoryName(remoteFile), Program.CommunicationObject.GetServerSideFileHandler()))
+                using (var dlg = new FilesUploaderForm(new string[1] { localFile }, new string[1] { remoteFile }, Program.CommunicationObject.GetServerSideFileHandler()))
                 {
                     if (Program.MainForm.InvokeRequired)
                         res = (DialogResult)Program.MainForm.Invoke(new Func<DialogResult>(() => { return dlg.ShowDialog(Program.MainForm); }));

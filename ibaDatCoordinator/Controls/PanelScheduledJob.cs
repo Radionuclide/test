@@ -10,6 +10,7 @@ using iba.Utility;
 using iba.Processing;
 using iba.HD.Common;
 using iba.HD.Client;
+using iba.HD.Client.Dialogs;
 using iba;
 using System.Threading.Tasks;
 using iba.HD.Client.Interfaces;

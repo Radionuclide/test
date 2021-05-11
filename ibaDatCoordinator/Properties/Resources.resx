@@ -1953,6 +1953,9 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="treeErrorNoService" xml:space="preserve">
     <value>ibaDatCoordinator Service is disconnected</value>
   </data>
+  <data name="ibaFilesNoLicense" xml:space="preserve">
+    <value>The .dat file is in an older file format which requires a license, please contact iba Support</value>
+  </data>
   <data name="UploadTaskButton" xml:space="preserve">
     <value>add new upload task</value>
   </data>

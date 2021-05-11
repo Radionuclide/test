@@ -165,6 +165,18 @@
 
 	<div id="hist">
 		<div class="box">
+		<P class="header1">Version 2.4.1 - 2021-05-??</P>
+			<p class="header2">Improvements (I)</p>
+			<OL>
+			<li>A better error message is given when processing V1 or V2 files and the necessary license is missing. #18764</li>
+			<li>A malformed .hdq file will be deleted as to prevent reprocessing and hence spurious log messages. #18720</li>
+			</OL>
+			<p class="header2">Bugfixes (B)</p>
+			<OL>
+			<li>ibaDatCoordinator installer referred to ibaPDA installer when .net 4.8 framework is missing.</li>
+			<li>When uploading a .pdo file, the original file was not overwritten, instead a new file was created with the _(ibaDatCoodinator) suffix still attached. #18726</li>
+			</OL>
+		<p>&nbsp; </p>
 		<P class="header1">Version 2.4.0 - 2021-04-12</P>
 			<p class="warning">
 				.NET framework 4.8 is required.<br>
