@@ -99,6 +99,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to add a new Kafka Writer Task.
+        /// </summary>
+        internal static string addKafkaWriterTask {
+            get {
+                return ResourceManager.GetString("addKafkaWriterTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add One Time Job.
         /// </summary>
         internal static string addOneTimeConfigurationText {
@@ -539,6 +548,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connection test succeeded.
+        /// </summary>
+        internal static string ConnectionTestSucceeded {
+            get {
+                return ResourceManager.GetString("ConnectionTestSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap copy {
@@ -765,6 +783,15 @@ namespace iba.Properties {
         internal static string deleteIfTaskQuestion {
             get {
                 return ResourceManager.GetString("deleteIfTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the Kafka options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteKafkaTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteKafkaTaskQuestion", resourceCulture);
             }
         }
         
@@ -2062,6 +2089,34 @@ namespace iba.Properties {
         internal static string invalidSender {
             get {
                 return ResourceManager.GetString("invalidSender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon kafka {
+            get {
+                object obj = ResourceManager.GetObject("kafka", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kafka.
+        /// </summary>
+        internal static string kafkaWriterTastTitle {
+            get {
+                return ResourceManager.GetString("kafkaWriterTastTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key.
+        /// </summary>
+        internal static string Key {
+            get {
+                return ResourceManager.GetString("Key", resourceCulture);
             }
         }
         
@@ -3986,7 +4041,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to open PDO file {0}: .
+        ///   Looks up a localized string similar to Failed to open PDO file {0}:.
         /// </summary>
         internal static string PDOOpenFailed {
             get {
@@ -5491,6 +5546,15 @@ namespace iba.Properties {
         internal static string UseSignalName {
             get {
                 return ResourceManager.GetString("UseSignalName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        internal static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
         

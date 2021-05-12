@@ -66,6 +66,15 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Avro">
+      <HintPath>..\Dependencies\KafkaLib\Avro.dll</HintPath>
+    </Reference>
+    <Reference Include="Confluent.Kafka">
+      <HintPath>..\Dependencies\KafkaLib\Confluent.Kafka.dll</HintPath>
+    </Reference>
+    <Reference Include="Confluent.SchemaRegistry">
+      <HintPath>..\Dependencies\KafkaLib\Confluent.SchemaRegistry.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Data.v16.1">
     </Reference>
     <Reference Include="DevExpress.PivotGrid.v16.1.Core, Version=16.1.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -290,6 +299,7 @@
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
     <Compile Include="Data\HDCreateEventTaskData.cs" />
+    <Compile Include="Data\KafkaWriterTaskData.cs" />
     <Compile Include="Data\OpcUaData.cs" />
     <Compile Include="Data\OpcUaWriterTaskData.cs" />
     <Compile Include="Data\PluginTaskDataWrapper.cs" />
@@ -323,6 +333,12 @@
     </Compile>
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\ExtMonData.cs" />
+    <Compile Include="Controls\KafkaWriterTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\KafkaWriterTaskControl.Designer.cs">
+      <DependentUpon>KafkaWriterTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
     <Compile Include="Processing\ErrorPluginTaskWorker.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
@@ -330,6 +346,7 @@
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaVariable.cs" />
     <Compile Include="Processing\HDCreateEventTaskWorker.cs" />
     <Compile Include="Processing\HDEventMonitor.cs" />
+    <Compile Include="Processing\KafkaWriterTaskWorker.cs" />
     <Compile Include="Processing\OpcUaWorker.cs" />
     <Compile Include="Processing\SnmpWorker.cs" />
     <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
@@ -628,6 +645,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\OpcUaWriterTaskControl.resx">
       <DependentUpon>OpcUaWriterTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelEventJob.resx">
       <DependentUpon>PanelEventJob.cs</DependentUpon>
@@ -687,6 +705,9 @@
     <EmbeddedResource Include="Dialogs\TestSplitterTaskDialog.resx">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\KafkaWriterTaskControl.resx">
+      <DependentUpon>KafkaWriterTaskControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
@@ -840,6 +861,7 @@
     <Content Include="ibaDatCoordinator.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="Resources\kafka.ico" />
     <None Include="Resources\up.ico" />
     <None Include="Resources\down.ico" />
     <None Include="Resources\UploadTaskIcon.ico" />

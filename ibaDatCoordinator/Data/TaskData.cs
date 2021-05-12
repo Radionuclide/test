@@ -113,6 +113,8 @@ namespace iba.Data
                 m_name = iba.Properties.Resources.opcUaWriterTaskTitle;
             else if (this is UploadTaskData)
                 m_name = iba.Properties.Resources.UploadTaskTitle;
+            else if (this is KafkaWriterTaskData)
+                m_name = iba.Properties.Resources.kafkaWriterTastTitle;
         }
 
         public int CompareTo(TaskData other)

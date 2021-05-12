@@ -1876,7 +1876,6 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Failed to write events</value>
   </data>
   <data name="OPCUAIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-  <data name="PDOOpenFailed" xml:space="preserve">
     <value>..\Resources\OPCIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="opcUaWriterTaskButton" xml:space="preserve">
@@ -1933,6 +1932,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="up" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\up.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PDOOpenFailed" xml:space="preserve">
     <value>Failed to open PDO file {0}: </value>
   </data>
   <data name="ErrorDatFileOpen" xml:space="preserve">
@@ -1976,5 +1976,29 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="UploadTaskIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UploadTaskIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="addKafkaWriterTask" xml:space="preserve">
+    <value>add a new Kafka Writer Task</value>
+  </data>
+  <data name="kafka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kafka.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="kafkaWriterTastTitle" xml:space="preserve">
+    <value>Kafka</value>
+  </data>
+  <data name="PDOOpenFailed" xml:space="preserve">
+    <value>Failed to open PDO file {0}:</value>
+  </data>
+  <data name="deleteKafkaTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Kafka options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="Key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="ConnectionTestSucceeded" xml:space="preserve">
+    <value>Connection test succeeded</value>
   </data>
 </root>

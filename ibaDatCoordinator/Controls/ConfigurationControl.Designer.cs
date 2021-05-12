@@ -28,8 +28,9 @@ namespace iba.Controls
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationControl));
-            this.m_toolTip = new System.Windows.Forms.ToolTip();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_sourcePanel = new System.Windows.Forms.Panel();
             this.gbNotifications = new iba.Utility.CollapsibleGroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -67,6 +68,7 @@ namespace iba.Controls
             this.m_newSplitterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newUploadTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newHdCreateEventTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newKafkaWriterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.gbJobName = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
@@ -281,7 +283,8 @@ namespace iba.Controls
             this.m_newCleanupTaskButton,
             this.m_newSplitterTaskButton,
             this.m_newHdCreateEventTaskButton,
-            this.m_newOPCUAWriterTaskButton});
+            this.m_newOPCUAWriterTaskButton,
+            this.m_newKafkaWriterTaskButton});
             this.m_newTaskToolstrip.Name = "m_newTaskToolstrip";
             this.m_newTaskToolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -312,6 +315,13 @@ namespace iba.Controls
             this.m_newCopyTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newCopyTaskButton.Name = "m_newCopyTaskButton";
             this.m_newCopyTaskButton.Click += new System.EventHandler(this.m_newCopyTaskButton_Click);
+            // 
+            // m_newUploadTaskButton
+            // 
+            resources.ApplyResources(this.m_newUploadTaskButton, "m_newUploadTaskButton");
+            this.m_newUploadTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newUploadTaskButton.Name = "m_newUploadTaskButton";
+            this.m_newUploadTaskButton.Click += new System.EventHandler(this.m_newUploadTaskButton_Click);
             // 
             // m_newIfTaskButton
             // 
@@ -348,19 +358,26 @@ namespace iba.Controls
             this.m_newSplitterTaskButton.Name = "m_newSplitterTaskButton";
             this.m_newSplitterTaskButton.Click += new System.EventHandler(this.m_newSplitterTaskButton_Click);
             // 
-            // m_newUploadTaskButton
-            // 
-            resources.ApplyResources(this.m_newUploadTaskButton, "m_newUploadTaskButton");
-            this.m_newUploadTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.m_newUploadTaskButton.Name = "m_newUploadTaskButton";
-            this.m_newUploadTaskButton.Click += new System.EventHandler(this.m_newUploadTaskButton_Click);
-            // 
             // m_newHdCreateEventTaskButton
             // 
             resources.ApplyResources(this.m_newHdCreateEventTaskButton, "m_newHdCreateEventTaskButton");
             this.m_newHdCreateEventTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newHdCreateEventTaskButton.Name = "m_newHdCreateEventTaskButton";
             this.m_newHdCreateEventTaskButton.Click += new System.EventHandler(this.m_newHDCreateEventTaskButton_Click);
+            // 
+            // m_newOPCUAWriterTaskButton
+            // 
+            resources.ApplyResources(this.m_newOPCUAWriterTaskButton, "m_newOPCUAWriterTaskButton");
+            this.m_newOPCUAWriterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newOPCUAWriterTaskButton.Name = "m_newOPCUAWriterTaskButton";
+            this.m_newOPCUAWriterTaskButton.Click += new System.EventHandler(this.m_newOPCUAWriterTaskButton_Click);
+            // 
+            // m_newKafkaWriterTaskButton
+            // 
+            resources.ApplyResources(this.m_newKafkaWriterTaskButton, "m_newKafkaWriterTaskButton");
+            this.m_newKafkaWriterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newKafkaWriterTaskButton.Name = "m_newKafkaWriterTaskButton";
+            this.m_newKafkaWriterTaskButton.Click += new System.EventHandler(this.m_newKafkaWriterTaskButton_Click);
             // 
             // gbJobName
             // 
@@ -380,13 +397,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_nameTextBox, "m_nameTextBox");
             this.m_nameTextBox.Name = "m_nameTextBox";
             this.m_nameTextBox.TextChanged += new System.EventHandler(this.m_nameTextBox_TextChanged);
-            // 
-            // m_newOPCUAWriterTaskButton
-            // 
-            resources.ApplyResources(this.m_newOPCUAWriterTaskButton, "m_newOPCUAWriterTaskButton");
-            this.m_newOPCUAWriterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.m_newOPCUAWriterTaskButton.Name = "m_newOPCUAWriterTaskButton";
-            this.m_newOPCUAWriterTaskButton.Click += new System.EventHandler(this.m_newOPCUAWriterTaskButton_Click);
             // 
             // ConfigurationControl
             // 
@@ -457,5 +467,6 @@ namespace iba.Controls
         private System.Windows.Forms.ToolStripButton m_newHdCreateEventTaskButton;
         private System.Windows.Forms.ToolStripButton m_newOPCUAWriterTaskButton;
         private System.Windows.Forms.ToolStripButton m_newUploadTaskButton;
+        private System.Windows.Forms.ToolStripButton m_newKafkaWriterTaskButton;
     }
 }
