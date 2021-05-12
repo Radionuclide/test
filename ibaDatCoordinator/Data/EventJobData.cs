@@ -92,6 +92,7 @@ namespace iba.Data
             m_postTriggerRange = TimeSpan.Zero;
             m_enablePreTrigger = false;
             m_enablePostTrigger = false;
+            m_enableMaxTrigger = true;
             m_preferredTimeBaseTicks = 0;
             m_bPreferredTimeBaseIsAuto = true;
         }
@@ -147,6 +148,13 @@ namespace iba.Data
         {
             get { return m_postTriggerRange.Ticks; }
             set { m_postTriggerRange = TimeSpan.FromTicks(value); }
+        }
+
+        private bool m_enableMaxTrigger;
+        public bool EnableMaxTriggerRange
+        {
+            get { return m_enableMaxTrigger; }
+            set { m_enableMaxTrigger = value; }
         }
 
         private TimeSpan m_maxTriggerRange;
@@ -251,6 +259,7 @@ namespace iba.Data
             nejd.m_maxTriggerRange = m_maxTriggerRange;
             nejd.m_preTriggerRange = m_preTriggerRange;
             nejd.m_postTriggerRange = m_postTriggerRange;
+            nejd.m_enableMaxTrigger = m_enableMaxTrigger;
             nejd.m_enablePreTrigger = m_enablePreTrigger;
             nejd.m_enablePostTrigger = m_enablePostTrigger;
             nejd.m_bPreferredTimeBaseIsAuto = m_bPreferredTimeBaseIsAuto;
@@ -280,6 +289,7 @@ namespace iba.Data
             other.m_postTriggerRange == m_postTriggerRange &&
             other.m_enablePreTrigger == m_enablePreTrigger &&
             other.m_enablePostTrigger == m_enablePostTrigger &&
+            other.m_enableMaxTrigger == m_enableMaxTrigger &&
             other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
 
             if (!res)

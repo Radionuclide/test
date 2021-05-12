@@ -178,6 +178,7 @@ namespace iba.Controls
 
             m_cbPreTrigger.Checked = m_eventData.EnablePreTriggerRange;
             m_cbPostTrigger.Checked = m_eventData.EnablePostTriggerRange;
+            m_cbMaxTrigger.Checked = !m_eventData.EnableMaxTriggerRange;
 
             m_nudDaysMax.Value = Math.Min(m_nudDaysMax.Maximum, m_eventData.MaxTriggerRange.Days);
             m_nudHoursMax.Value = Math.Min(m_nudHoursMax.Maximum, m_eventData.MaxTriggerRange.Hours);
@@ -237,6 +238,7 @@ namespace iba.Controls
 
             m_eventData.EnablePreTriggerRange = m_cbPreTrigger.Checked;
             m_eventData.EnablePostTriggerRange = m_cbPostTrigger.Checked;
+            m_eventData.EnableMaxTriggerRange = !m_cbMaxTrigger.Checked;
 
             m_eventData.MaxTriggerRange = new TimeSpan((int)m_nudDaysMax.Value, (int)m_nudHoursMax.Value, (int)m_nudMinsMax.Value, (int)m_nudSecsMax.Value);
             m_eventData.PreTriggerRange = new TimeSpan((int)m_nudDaysPre.Value, (int)m_nudHoursPre.Value, (int)m_nudMinsPre.Value, (int)m_nudSecsPre.Value);
@@ -541,6 +543,7 @@ namespace iba.Controls
         void ChangeVisibilityMaxRange(bool bShow)
         {
             m_nudDaysMax.Visible = m_nudHoursMax.Visible = m_nudMinsMax.Visible = m_nudSecsMax.Visible = bShow;
+            m_cbMaxTrigger.Visible = bShow;
             m_lblMaxCaption.Visible = m_lblMaxDays.Visible = m_lblMaxHours.Visible = m_lblMaxMins.Visible = m_lblMaxSecs.Visible = bShow;
             m_lbMaximum.Visible = bShow;
         }
