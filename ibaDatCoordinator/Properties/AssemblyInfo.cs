@@ -26,33 +26,32 @@ namespace iba
             if (cachedVersion != null)
                 return cachedVersion;
 
-            AssemblyInformationalVersionAttribute attrib = typeof(iba.MainForm).Assembly.GetCustomAttribute(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
-            if (attrib != null)
+            if (typeof(MainForm).Assembly.GetCustomAttribute(typeof(AssemblyInformationalVersionAttribute)) is AssemblyInformationalVersionAttribute attrib)
                 cachedVersion = attrib.InformationalVersion;
             else
-                cachedVersion = typeof(iba.MainForm).Assembly.GetName().Version.ToString(3);
+                cachedVersion = typeof(MainForm).Assembly.GetName().Version.ToString(3);
 
             return cachedVersion;
         }
 
         public static int MinimumClientVersion()
         {
-            ///modify this if minimum client is necessary (because features have been added)
+            //modify this if minimum client is necessary (because features have been added)
             Version v = new Version(2, 4, 0, 0);
             return ((v.Major * 1000) + v.Minor) * 1000 + v.Build;
         }
 
         public static int MinimumServerVersion()
         {
-            ///modify this if minimum server is necessary (because features have been added)
+            //modify this if minimum server is necessary (because features have been added)
             Version v = new Version(2, 4, 0, 0);
             return ((v.Major * 1000) + v.Minor) * 1000 + v.Build;
         }
 
         public static int CurrentVersion() //serves as both client and server version
         {
-            ///current client version, serves
-            Version v = typeof(iba.MainForm).Assembly.GetName().Version;
+            //current client version, serves
+            Version v = typeof(MainForm).Assembly.GetName().Version;
             return ((v.Major * 1000) + v.Minor) * 1000 + v.Build;
         }
 
