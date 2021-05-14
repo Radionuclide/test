@@ -41,6 +41,10 @@
     <Reference Include="ibaLogger">
       <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.ibaAnalyzer">
+      <HintPath>..\Dependencies\ibaAnalyzer\Interop.ibaAnalyzer.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -101,17 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SychronizeList.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="IbaAnalyzer">
-      <Guid>{13449E7B-9E2F-4C8A-8050-102312D3FC84}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ibaAnalyzer.png" />
