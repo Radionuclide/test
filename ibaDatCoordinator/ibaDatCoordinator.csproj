@@ -959,6 +959,9 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro">
+      <Version>1.6.3</Version>
+    </PackageReference>
     <PackageReference Include="ibaSnmpLib">
       <Version>1.9.8</Version>
     </PackageReference>

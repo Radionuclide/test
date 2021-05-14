@@ -33,6 +33,7 @@
             this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumnExpression = new DevExpress.XtraGrid.Columns.GridColumn();
             this.dataTypeGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.testValueGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
             this.expressionAddButton = new System.Windows.Forms.Button();
             this.m_monitorGroup = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -89,8 +90,8 @@
             // 
             // exprGrid
             // 
-            this.exprGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.exprGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.exprGrid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.exprGrid.Location = new System.Drawing.Point(7, 387);
@@ -107,7 +108,8 @@
             // 
             this.dataGV.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumnExpression,
-            this.dataTypeGridColumn});
+            this.dataTypeGridColumn,
+            this.testValueGridColumn});
             this.dataGV.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
             this.dataGV.GridControl = this.exprGrid;
             this.dataGV.GroupFormat = "";
@@ -144,6 +146,14 @@
             this.dataTypeGridColumn.Visible = true;
             this.dataTypeGridColumn.VisibleIndex = 1;
             // 
+            // testValueGridColumn
+            // 
+            this.testValueGridColumn.Caption = "gridColumn1";
+            this.testValueGridColumn.FieldName = "TestValue";
+            this.testValueGridColumn.Name = "testValueGridColumn";
+            this.testValueGridColumn.Visible = true;
+            this.testValueGridColumn.VisibleIndex = 2;
+            // 
             // expressionAddButton
             // 
             this.expressionAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -161,7 +171,7 @@
             // 
             // m_monitorGroup
             // 
-            this.m_monitorGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.m_monitorGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_monitorGroup.Controls.Add(this.label4);
             this.m_monitorGroup.Controls.Add(this.label7);
@@ -274,7 +284,7 @@
             // 
             // topicComboBox
             // 
-            this.topicComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.topicComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.topicComboBox.FormattingEnabled = true;
             this.topicComboBox.Location = new System.Drawing.Point(171, 115);
@@ -313,7 +323,7 @@
             // 
             // addressTextBox
             // 
-            this.addressTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.addressTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addressTextBox.Location = new System.Drawing.Point(171, 83);
             this.addressTextBox.Name = "addressTextBox";
@@ -357,7 +367,7 @@
             // 
             // dataFormatComboBox
             // 
-            this.dataFormatComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.dataFormatComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataFormatComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dataFormatComboBox.FormattingEnabled = true;
@@ -396,7 +406,7 @@
             // 
             // m_datFileTextBox
             // 
-            this.m_datFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.m_datFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_datFileTextBox.Location = new System.Drawing.Point(171, 52);
             this.m_datFileTextBox.Margin = new System.Windows.Forms.Padding(4);
@@ -444,7 +454,7 @@
             // 
             // m_pdoFileTextBox
             // 
-            this.m_pdoFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.m_pdoFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_pdoFileTextBox.Location = new System.Drawing.Point(171, 18);
             this.m_pdoFileTextBox.Margin = new System.Windows.Forms.Padding(4);
@@ -554,7 +564,7 @@
             // 
             // paramGrid
             // 
-            this.paramGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.paramGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paramGrid.Location = new System.Drawing.Point(171, 604);
             this.paramGrid.MainView = this._viewParam;
@@ -798,5 +808,6 @@
         private System.Windows.Forms.ComboBox digitalFormatComboBox;
         private System.Windows.Forms.Button testConnectionButton;
         private DevExpress.XtraGrid.Columns.GridColumn dataTypeGridColumn;
+        private DevExpress.XtraGrid.Columns.GridColumn testValueGridColumn;
     }
 }

@@ -89,7 +89,10 @@ namespace iba.Data
             }
             public string Expression { get; set; }
             public object Value { get; set; }
-            
+
+            [XmlIgnore]
+            public string TestValue { get; set; }
+
             public Record()
             {
                 Expression = "";
@@ -107,12 +110,21 @@ namespace iba.Data
             }
             public override bool Equals(object obj)
             {
-                throw new System.NotImplementedException();
+                if (!(obj is Record))
+                    return false;
+                var rec = (Record)obj;
+                return
+                    (
+                        Expression == rec.Expression &&
+                        //Name == rec.Name &&
+                        DataType == rec.DataType
+                    );
             }
 
             public override int GetHashCode()
             {
-                throw new System.NotImplementedException();
+                return Expression.GetHashCode() ^ DataType.GetHashCode();
+
             }
         }
 
@@ -147,6 +159,7 @@ namespace iba.Data
             d.Records = Records.Select(r => (Record)r.Clone()).ToList();
             d.Params = Params.Select(r => (Param)r.Clone()).ToList();
             d.timeout = timeout;
+            d.Format = Format;
             d.digitalFormat = digitalFormat;
             d.identifier = identifier;
             d.AnalysisFile = AnalysisFile;

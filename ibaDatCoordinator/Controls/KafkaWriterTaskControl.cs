@@ -7,6 +7,8 @@ using iba.Data;
 using Confluent.Kafka;
 using DevExpress.XtraGrid.Views.Grid;
 using iba.Utility;
+using System.IO;
+using System.Collections.Generic;
 
 namespace iba.Controls
 {
@@ -33,7 +35,13 @@ namespace iba.Controls
             channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             exprGrid.RepositoryItems.Add(channelEditor);
             gridColumnExpression.ColumnEdit = channelEditor;
-            
+
+            dataTypeGridColumn.Caption = Properties.Resources.DataType;
+            gridColumnExpression.Caption = Properties.Resources.ibaAnalyzerExpression;
+            testValueGridColumn.Caption = Properties.Resources.TestValue;
+            keyGridColumn.Caption = Properties.Resources.Key;
+            valGridColumn.Caption = Properties.Resources.Value;
+
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             foreach (var t in KafkaWriterTaskData.Record.DataTypes)
                 typeComboBox.Items.Add(t);
@@ -363,7 +371,151 @@ namespace iba.Controls
 
         private void m_testButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("not implemented");
+            IbaAnalyzer.IbaAnalyzer ibaAnalyzer;
+            //register this
+            using (new WaitCursor())
+            {
+                //start the com object
+                try
+                {
+                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                }
+                catch (Exception ex2)
+                {
+                    MessageBox.Show(ex2.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            string version = ibaAnalyzer.GetVersion();
+            int startIndex = version.IndexOf(' ') + 1;
+            int stopIndex = startIndex + 1;
+            while (stopIndex < version.Length && (char.IsDigit(version[stopIndex]) || version[stopIndex] == '.'))
+                stopIndex++;
+            string[] nrs = version.Substring(startIndex, stopIndex - startIndex).Split('.');
+            if (nrs.Length < 3)
+            {
+                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (!Int32.TryParse(nrs[0], out var major))
+            {
+                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (!Int32.TryParse(nrs[1], out var minor))
+            {
+                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (!Int32.TryParse(nrs[2], out _))
+            {
+                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (major < 6 || (major == 6 && minor < 5))
+                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (major < 6 || (major == 6 && minor < 7))
+                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
+            bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
+            try
+            {
+                using (new WaitCursor())
+                {
+                    if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
+                    if (bUseDatFile) ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
+                    var records = (IList<KafkaWriterTaskData.Record>)exprGrid.DataSource;
+                    foreach (KafkaWriterTaskData.Record record in records)
+                    {
+                        if (string.IsNullOrEmpty(record.Expression)) continue;
+
+                        if (record.DataType == KafkaWriterTaskData.Record.ExpressionType.Text)
+                        {
+                            object oValues = null;
+
+                            try
+                            {
+                                ibaAnalyzer.EvaluateToStringArray(record.Expression, 0, out _, out oValues);
+                            }
+                            catch { }
+
+                            if (oValues != null)
+                            {
+                                string[] values = oValues as string[];
+                                foreach (string str in values)
+                                {
+                                    if (!string.IsNullOrEmpty(str))
+                                    {
+                                        record.TestValue = str;
+                                        ParentForm.Activate();
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Expression), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                record.TestValue = "";
+                            }
+                        }
+                        else
+                        {
+                            double f;
+                            try
+                            {
+                                f = ibaAnalyzer.EvaluateDouble(record.Expression, 0);
+                            }
+                            catch  //might be old ibaAnalyzer
+                            {
+                                f = ibaAnalyzer.Evaluate(record.Expression, 0);
+                            }
+
+                            if (double.IsNaN(f) || double.IsInfinity(f))
+                            {
+                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Expression), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+
+                            else
+                            {
+                                if (record.DataType == KafkaWriterTaskData.Record.ExpressionType.Digital)
+                                {
+                                    if (_data.digitalFormat == KafkaWriterTaskData.DigitalFormat.TrueFalse)
+                                        record.TestValue = (f >= 0.5 ? "true" : "false");
+                                    else
+                                        record.TestValue = (f >= 0.5 ? "1" : "0");
+                                }
+                                else
+                                    record.TestValue = f.ToString();
+                            }
+                        }
+                    }
+                    ParentForm.Activate();
+                }
+            }
+            catch (Exception ex3)
+            {
+                string message = ex3.Message;
+                try
+                {
+                    string ibaMessage = ibaAnalyzer.GetLastError();
+                    if (!string.IsNullOrEmpty(ibaMessage))
+                        message = ibaMessage;
+                }
+                catch
+                {
+                }
+                MessageBox.Show(message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (ibaAnalyzer != null && bUseAnalysis)
+                {
+                    ibaAnalyzer.CloseAnalysis();
+                    ibaAnalyzer.CloseDataFiles();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+                }
+                exprGrid.RefreshDataSource();
+            }
         }
 
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
