@@ -1579,17 +1579,17 @@ namespace iba.Processing
             }
         }
 
-        internal void OneTimeEventsSetTimespanChanged(ConfigurationData configData)
+        internal void OneTimeJobsSetHistoricalTimespanChanged(ConfigurationData configData)
         {
+            ConfigurationData oldData = GetConfiguration(configData.Guid);
+
+            if (oldData == null || oldData.JobType != configData.JobType)
+                return;
+
             if (configData.JobType == ConfigurationData.JobTypeEnum.Event)
-            {
-                ConfigurationData oldData = GetConfiguration(configData.Guid);
-
-                if (oldData == null || oldData.JobType != ConfigurationData.JobTypeEnum.Event)
-                    return;
-
                 oldData.EventData.HdQueryTimeSpanChanged = configData.EventData.HdQueryTimeSpanChanged;
-            }
+            else if (configData.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                oldData.ScheduleData.ProcessHistorical = configData.ScheduleData.ProcessHistorical;
         }
 
         ConfigurationData GetConfiguration(Guid guid)
@@ -1609,6 +1609,13 @@ namespace iba.Processing
             ConfigurationData config = GetConfiguration(guid);
 
             return config?.EventData?.HdQueryTimeSpanChanged ?? false;
+        }
+
+        public virtual bool GetOneTimeScheduledConfigurationChanged(Guid guid)
+        {
+            ConfigurationData config = GetConfiguration(guid);
+
+            return config?.ScheduleData?.ProcessHistorical ?? false;
         }
 
         public virtual void SetOneTimeEventEndTimes(Guid guid, Dictionary<string, long> endTime)
@@ -2125,6 +2132,19 @@ namespace iba.Processing
             {
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return Manager.GetOneTimeEventConfigurationChanged(guid);
+            }
+        }
+
+        public override bool GetOneTimeScheduledConfigurationChanged(Guid guid)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.GetOneTimeScheduledConfigurationChanged(guid);
+            }
+            catch (Exception ex)
+            {
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+                return Manager.GetOneTimeScheduledConfigurationChanged(guid);
             }
         }
 

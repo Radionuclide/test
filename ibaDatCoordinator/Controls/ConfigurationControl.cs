@@ -643,10 +643,18 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             SaveData();
             TaskManager.Manager.UpdateConfiguration(m_data);
-            if (m_data.EventData != null)
-                m_data.EventData.HdQueryTimeSpanChanged = false;
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                // If this does not run with a service, changing to false will change this in the local task manager before the option is processed.
+                // This is then set in the task manager
+                if (m_data.EventData != null)
+                    m_data.EventData.HdQueryTimeSpanChanged = false;
+                else if (m_data.ScheduleData != null)
+                    m_data.ScheduleData.ProcessHistorical = false;
+
                 Program.CommunicationObject.SaveConfigurations();
+            }
         }
 
         private void m_undoChangesBtn_Click(object sender, EventArgs e)
