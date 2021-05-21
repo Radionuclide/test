@@ -2,8 +2,8 @@
 #define COMMONVERSION_H
 
 
-#define MAJOR	2
-#define MINOR	4
+#define MAJOR	3
+#define MINOR	0
 #define BUILD	0
 #define BETATAG " BETA8" // use with leading whitespace, empty string "" when not set 
 
