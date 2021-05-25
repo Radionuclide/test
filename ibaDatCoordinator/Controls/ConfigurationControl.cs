@@ -353,7 +353,10 @@ namespace iba.Controls
             m_newTaskToolstrip.Enabled = false;
             m_applyToRunningBtn.Enabled = true;
             m_stopButton.Enabled = true;
-            if(t != null)
+
+           LoadData(m_data, m_manager);
+
+            if (t != null)
             {
                 t.UpdateButtons();
                 t.SwitchToStatusPane();
