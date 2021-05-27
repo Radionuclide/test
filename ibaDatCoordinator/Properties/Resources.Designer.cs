@@ -2662,6 +2662,33 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed sending data to Kafka: {0}.
+        /// </summary>
+        internal static string logKafkaFailed {
+            get {
+                return ResourceManager.GetString("logKafkaFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Started sending data to Kafka.
+        /// </summary>
+        internal static string logKafkaStarted {
+            get {
+                return ResourceManager.GetString("logKafkaStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sending data to Kafka succefully completed.
+        /// </summary>
+        internal static string logKafkaSuccess {
+            get {
+                return ResourceManager.GetString("logKafkaSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot start the job because no license was found for one or more custom tasks.
         /// </summary>
         internal static string logLicenseNoStart {
@@ -4041,7 +4068,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to open PDO file {0}:.
+        ///   Looks up a localized string similar to Failed to open PDO file {0}: .
         /// </summary>
         internal static string PDOOpenFailed {
             get {

@@ -1986,9 +1986,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="kafkaWriterTastTitle" xml:space="preserve">
     <value>Kafka</value>
   </data>
-  <data name="PDOOpenFailed" xml:space="preserve">
-    <value>Failed to open PDO file {0}:</value>
-  </data>
   <data name="deleteKafkaTaskQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the Kafka options "{0}" of Job "{1}" ?</value>
   </data>
@@ -2000,5 +1997,14 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="ConnectionTestSucceeded" xml:space="preserve">
     <value>Connection test succeeded</value>
+  </data>
+  <data name="logKafkaFailed" xml:space="preserve">
+    <value>Failed sending data to Kafka: {0}</value>
+  </data>
+  <data name="logKafkaStarted" xml:space="preserve">
+    <value>Started sending data to Kafka</value>
+  </data>
+  <data name="logKafkaSuccess" xml:space="preserve">
+    <value>Sending data to Kafka succefully completed</value>
   </data>
 </root>

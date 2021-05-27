@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using Confluent.SchemaRegistry;
 using iba.Controls;
 
 namespace iba.Data
@@ -9,6 +10,8 @@ namespace iba.Data
     public class KafkaWriterTaskData : TaskData
     {
         public string clusterAddress;
+        public string schemaRegistryAddress;
+        public bool useSchemaRegistryServer;
         public string topicName;
         public double timeout;//in sec
         public List<Record> Records;
@@ -17,6 +20,11 @@ namespace iba.Data
         public MonitorData MonitorData { get; set; }
         public string TestDatFile { get; set; }
         public DigitalFormat digitalFormat;
+
+        private string schemaRegistryAddressCached;
+        private byte[] schemaFingerprintCached;
+
+
 
         public enum DigitalFormat
         {
@@ -36,6 +44,61 @@ namespace iba.Data
             Leader, // Only an acknowledgment from the leader broker is required
             All     // An acknowledgment from all brokers is required
         }
+
+        public byte[] schemaFingerPrint
+        {
+            get
+            {
+                if (schemaRegistryAddress == schemaRegistryAddressCached && schemaFingerprintCached.Length > 0)
+                    return schemaFingerprintCached;
+
+                Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
+                schemRegConfig.Url = schemaRegistryAddress;
+                schemRegConfig.RequestTimeoutMs = (int)timeout * 1000;
+
+                // Add expert parameters
+                foreach (var kvp in Params)
+                {
+                    if (string.IsNullOrEmpty(kvp.Key))
+                        continue;
+
+                    if (!kvp.Key.StartsWith("schema.registry."))
+                        continue;
+
+                    schemRegConfig.Set(kvp.Key, kvp.Value);
+                }
+
+                Confluent.SchemaRegistry.CachedSchemaRegistryClient schemRegClient = null;
+                try
+                {
+                    schemRegClient = new Confluent.SchemaRegistry.CachedSchemaRegistryClient(schemRegConfig);
+
+                    string subject = Confluent.SchemaRegistry.SubjectNameStrategy.Topic.ConstructValueSubjectName(topicName, null);
+                    System.Threading.Tasks.Task<int> task = schemRegClient.RegisterSchemaAsync(subject, Processing.KafkaWriterTaskWorker.schemaDefault.ToString());
+                    if (!task.Wait((int)timeout * 1000))
+                        throw new TimeoutException();
+
+                    if (!task.IsCompleted)
+                    {
+                        if (task.Exception != null)
+                            throw task.Exception;
+                        else
+                            throw new Exception("Failed to get schema ID from address server.");
+                    }
+                    int schemaId = task.Result;
+                    schemaRegistryAddressCached = schemaRegistryAddress;
+                    schemaFingerprintCached = BitConverter.GetBytes(System.Net.IPAddress.HostToNetworkOrder(schemaId));
+
+                    return schemaFingerprintCached;
+                }
+                finally
+                {
+                    if (schemRegClient != null)
+                        schemRegClient.Dispose();
+                }
+            }
+        }
+
 
         public string ToText(Record rec)
         {
@@ -58,9 +121,9 @@ namespace iba.Data
         {
             public static readonly string[] DataTypes =
             {
-                "Analog",
-                "Text",
-                "Digital"
+                "DOUBLE",
+                "STRING",
+                "BOOLEAN"
             };
             public enum ExpressionType
             {
@@ -68,6 +131,8 @@ namespace iba.Data
                 Text = 1,
                 Digital = 2
             }
+
+            public string Metadata { get; set; }
 
             [XmlIgnore]
             public ExpressionType DataType
@@ -92,6 +157,7 @@ namespace iba.Data
 
             [XmlIgnore]
             public string TestValue { get; set; }
+            public string Name { get; set; }
 
             public Record()
             {
@@ -105,7 +171,9 @@ namespace iba.Data
                 {
                     Expression = this.Expression,
                     Value = this.Value,
-                    DataType = this.DataType
+                    DataType = this.DataType,
+                    Name = this.Name,
+                    Metadata = this.Metadata
                 };
             }
             public override bool Equals(object obj)
@@ -151,6 +219,8 @@ namespace iba.Data
             MonitorData = new MonitorData();
             topicName = "ibaDatCo-Test";
             clusterAddress = "192.168.150.63:9092";
+            schemaRegistryAddress = "";
+            useSchemaRegistryServer = false;
         }
 
         public override TaskData CloneInternal()
@@ -164,6 +234,10 @@ namespace iba.Data
             d.identifier = identifier;
             d.AnalysisFile = AnalysisFile;
             d.MonitorData = (MonitorData)MonitorData.Clone();
+            d.schemaRegistryAddress = schemaRegistryAddress;
+            d.schemaRegistryAddressCached = schemaRegistryAddressCached;
+            d.schemaFingerprintCached = schemaFingerprintCached;
+            d.useSchemaRegistryServer = useSchemaRegistryServer;
             return d;
         }
 

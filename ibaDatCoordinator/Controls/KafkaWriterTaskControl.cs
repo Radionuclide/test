@@ -9,6 +9,11 @@ using DevExpress.XtraGrid.Views.Grid;
 using iba.Utility;
 using System.IO;
 using System.Collections.Generic;
+using Avro.IO;
+using Confluent.SchemaRegistry;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
+using iba.HD.Common;
 
 namespace iba.Controls
 {
@@ -36,6 +41,15 @@ namespace iba.Controls
             exprGrid.RepositoryItems.Add(channelEditor);
             gridColumnExpression.ColumnEdit = channelEditor;
 
+            repositoryItemCheckedComboBoxEdit1.Items.Add("Unit");
+            repositoryItemCheckedComboBoxEdit1.Items.Add("Comment 1");
+            repositoryItemCheckedComboBoxEdit1.Items.Add("Comment 2");
+            repositoryItemCheckedComboBoxEdit1.Items.Add("Signal names");
+            repositoryItemCheckedComboBoxEdit1.Items.Add("Signal ID");
+            repositoryItemCheckedComboBoxEdit1.Items.Add("Identifier");
+            repositoryItemCheckedComboBoxEdit1.ShowButtons = false;
+
+
             dataTypeGridColumn.Caption = Properties.Resources.DataType;
             gridColumnExpression.Caption = Properties.Resources.ibaAnalyzerExpression;
             testValueGridColumn.Caption = Properties.Resources.TestValue;
@@ -55,146 +69,6 @@ namespace iba.Controls
             valGridColumn.Caption = Properties.Resources.Value;
         }
 
-        //public string TestKafkaConnection()
-        //{
-        //    KafkaTopicsCollection coll = GetKafkaTopics(connConfig);
-        //    if (coll == null)
-        //        return "Unexpected error";
-
-        //    // Test connection to schema registry
-        //    if (!string.IsNullOrEmpty(connConfig.SchemaRegistryAddress))
-        //    {
-        //        string errorMsg;
-        //        if (!TestSchemaRegistryConnection(connConfig, out errorMsg))
-        //            return string.Concat("Error connecting to schema registry: ", errorMsg);
-        //    }
-
-        //    return coll.ErrorMsg;
-        //}
-        //public static KafkaTopicsCollection GetKafkaTopics(KafkaConnectionConfig connConfig)
-        //{
-        //    KafkaTopicsCollection result = new KafkaTopicsCollection();
-
-        //    if ((connConfig == null) || string.IsNullOrEmpty(connConfig.ClusterAddress))
-        //    {
-        //        result.ErrorMsg = "Invalid cluster address";
-        //        return result;
-        //    }
-
-        //    Confluent.Kafka.IAdminClient adminClient = null;
-        //    try
-        //    {
-        //        Confluent.Kafka.AdminClientConfig admCfg = new Confluent.Kafka.AdminClientConfig();
-        //        CKafkaArchiverLevel.PrepareConfig(admCfg, connConfig);
-
-        //        adminClient = (new Confluent.Kafka.AdminClientBuilder(admCfg)).Build();
-        //        Confluent.Kafka.Metadata metaData = adminClient.GetMetadata(TimeSpan.FromSeconds(5));
-
-        //        int nrTopics = metaData.Topics.Count;
-        //        result.Topics = new string[nrTopics];
-
-        //        for (int i = 0; i < nrTopics; i++)
-        //            result.Topics[i] = metaData.Topics[i].Topic;
-
-        //        return result;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        result.ErrorMsg = ex.Message;
-        //        return result;
-        //    }
-        //    finally
-        //    {
-        //        if (adminClient != null)
-        //            adminClient.Dispose();
-        //    }
-        //}
-
-        //public static bool TestSchemaRegistryConnection(KafkaConnectionConfig connConfig, out string errorMsg)
-        //{
-        //    if ((connConfig == null) || string.IsNullOrEmpty(connConfig.SchemaRegistryAddress))
-        //    {
-        //        errorMsg = "Invalid schema registry address";
-        //        return false;
-        //    }
-
-        //    Confluent.SchemaRegistry.CachedSchemaRegistryClient schemRegClient = null;
-        //    try
-        //    {
-        //        Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
-        //        schemRegConfig.Url = connConfig.SchemaRegistryAddress;
-        //        schemRegConfig.RequestTimeoutMs = connConfig.MsgTimeoutMs;
-
-        //        // Add expert parameters
-        //        foreach (System.Collections.Generic.KeyValuePair<string, string> kvp in connConfig.ExpertParams)
-        //        {
-        //            if (string.IsNullOrEmpty(kvp.Key))
-        //                continue;
-
-        //            if (!kvp.Key.StartsWith("schema.registry."))
-        //                continue;
-
-        //            schemRegConfig.Set(kvp.Key, kvp.Value);
-        //        }
-
-        //        schemRegClient = new Confluent.SchemaRegistry.CachedSchemaRegistryClient(schemRegConfig);
-        //        if (!(schemRegClient.GetAllSubjectsAsync()).Wait(connConfig.MsgTimeoutMs))
-        //        {
-        //            errorMsg = "Timeout";
-        //            return false;
-        //        }
-        //    }
-        //    catch (AggregateException aggrEx)
-        //    {
-        //        errorMsg = null;
-        //        foreach (Exception exc in aggrEx.InnerExceptions)
-        //        {
-        //            string curMsg = exc.Message;
-        //            if (exc is System.Net.Http.HttpRequestException httpExc)
-        //            {
-        //                if (httpExc.InnerException is iba.Kafka.SchemaRegistry.SslVerificationException sslVerExc)
-        //                {
-        //                    // Log extra info
-        //                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
-        //                    sb.AppendLine("Kafka Schema Registry authentication error details:");
-        //                    sb.AppendLine();
-        //                    sb.AppendLine($"Request URI: {sslVerExc.RequestURI}");
-        //                    sb.AppendLine($"SSL Policy errors: {sslVerExc.SSLErrors}");
-        //                    sb.AppendLine();
-        //                    sb.AppendLine($"Certificate:");
-        //                    sb.AppendLine();
-        //                    sb.AppendLine(sslVerExc.Certificate);
-        //                    sb.AppendLine();
-        //                    sb.AppendLine($"Certificate chain:");
-        //                    sb.AppendLine();
-        //                    sb.AppendLine(sslVerExc.Chain);
-
-        //                    iba.Logging.ibaLogger.DebugFormat(sb.ToString());
-        //                }
-        //            }
-
-        //            errorMsg = (errorMsg == null) ? curMsg : string.Concat(errorMsg, Environment.NewLine, curMsg);
-        //        }
-
-        //        return false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        errorMsg = ex.Message;
-        //        return false;
-        //    }
-        //    finally
-        //    {
-        //        if (schemRegClient != null)
-        //            schemRegClient.Dispose();
-        //    }
-
-        //    errorMsg = null;
-        //    return true;
-        //}
-
-
-
         private void UpdateParamTableButtons()
         {
             paramRemoveButton.Enabled = _viewParam.FocusedRowHandle >= 0;
@@ -213,6 +87,9 @@ namespace iba.Controls
                 _paramTableData.Add((KafkaWriterTaskData.Param)par.Clone());
 
             addressTextBox.Text = _data.clusterAddress;
+            schemaTextBox.Text = _data.schemaRegistryAddress;
+            useSchemaServerCheckBox.Checked = _data.useSchemaRegistryServer;
+            schemaTextBox.Enabled = _data.useSchemaRegistryServer;
             topicComboBox.Text = _data.topicName;
             digitalFormatComboBox.SelectedIndex = (int)_data.digitalFormat;
             timeoutNumericUpDown.Value =
@@ -257,36 +134,32 @@ namespace iba.Controls
             m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(_data.MonitorData.TimeLimit.TotalMinutes, 1));
         }
 
-        private async void FillTopicListAsync()
+        private bool FillTopicList()
         {
-            if (addressTextBox.Text == "")
-                return;
-
             loadingLabel.Visible = true;
-            await Task.Run(() =>
-            {
-                try
-                {
-                    using (var adminClient = new AdminClientBuilder(new AdminClientConfig { BootstrapServers = addressTextBox.Text }).Build())
-                    {
-                        var meta = adminClient.GetMetadata(TimeSpan.FromSeconds(Decimal.ToDouble(timeoutNumericUpDown.Value)));
 
-                        topicComboBox.Invoke((MethodInvoker)delegate {
-                            topicComboBox.Items.Clear();
-                            meta.Topics.ForEach(topic => { topicComboBox.Items.Add(topic.Topic); });
-                        });
-                    }
-                    MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception e)
+            try
+            {
+                using (var adminClient = new AdminClientBuilder(new AdminClientConfig { BootstrapServers = addressTextBox.Text }).Build())
                 {
-                    MessageBox.Show(e.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    var meta = adminClient.GetMetadata(TimeSpan.FromSeconds(Decimal.ToDouble(timeoutNumericUpDown.Value)));
+
+                    topicComboBox.Invoke((MethodInvoker)delegate {
+                        topicComboBox.Items.Clear();
+                        meta.Topics.ForEach(topic => { topicComboBox.Items.Add(topic.Topic); });
+                    });
                 }
-                finally
-                {
-                    loadingLabel.Invoke((MethodInvoker)delegate { loadingLabel.Visible = false; });
-                }
-            });
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                loadingLabel.Invoke((MethodInvoker)delegate { loadingLabel.Visible = false; });
+            }
+            return false;
         }
 
         public void LeaveCleanup() { }
@@ -304,6 +177,8 @@ namespace iba.Controls
                     _data.Params.Add(par);
 
             _data.clusterAddress = addressTextBox.Text;
+            _data.schemaRegistryAddress = schemaTextBox.Text;
+            _data.useSchemaRegistryServer = useSchemaServerCheckBox.Checked;
             _data.topicName = topicComboBox.Text;
             _data.timeout = Decimal.ToDouble(timeoutNumericUpDown.Value);
             _data.identifier = identifierTextBox.Text;
@@ -586,7 +461,98 @@ namespace iba.Controls
 
         private void testConnectionButton_Click(object sender, EventArgs e)
         {
-            FillTopicListAsync();
+            if (addressTextBox.Text == "")
+                return;
+
+            bool clusterAvailable = FillTopicList();
+
+            if (!clusterAvailable)
+                return;
+
+            if (schemaTextBox.Text == "" || !useSchemaServerCheckBox.Checked)
+            {
+                MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+
+            Confluent.SchemaRegistry.CachedSchemaRegistryClient schemRegClient = null;
+            try
+            {
+                Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
+                schemRegConfig.Url = schemaTextBox.Text;
+                schemRegConfig.RequestTimeoutMs = Decimal.ToInt32(timeoutNumericUpDown.Value) * 1000;
+
+                // Add expert parameters
+                foreach (var par in _paramTableData)
+                {
+                    if (string.IsNullOrEmpty(par.Key))
+                        continue;
+
+                    if (!par.Key.StartsWith("schema.registry."))
+                        continue;
+
+                    schemRegConfig.Set(par.Key, par.Value);
+                }
+
+                schemRegClient = new Confluent.SchemaRegistry.CachedSchemaRegistryClient(schemRegConfig);
+                if (!(schemRegClient.GetAllSubjectsAsync()).Wait(Decimal.ToInt32(timeoutNumericUpDown.Value) * 1000))
+                {
+                    MessageBox.Show("Error connecting to schema registry: Timeout.", "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            //catch (AggregateException aggrEx)
+            //{
+            //    foreach (Exception exc in aggrEx.InnerExceptions)
+            //    {
+            //        string curMsg = exc.Message;
+            //        if (exc is System.Net.Http.HttpRequestException httpExc)
+            //        {
+            //            if (httpExc.InnerException is iba.Kafka.SchemaRegistry.SslVerificationException sslVerExc) // TODO
+            //            {
+            //                // Log extra info
+            //                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            //                sb.AppendLine("Kafka Schema Registry authentication error details:");
+            //                sb.AppendLine();
+            //                sb.AppendLine($"Request URI: {sslVerExc.RequestURI}");
+            //                sb.AppendLine($"SSL Policy errors: {sslVerExc.SSLErrors}");
+            //                sb.AppendLine();
+            //                sb.AppendLine($"Certificate:");
+            //                sb.AppendLine();
+            //                sb.AppendLine(sslVerExc.Certificate);
+            //                sb.AppendLine();
+            //                sb.AppendLine($"Certificate chain:");
+            //                sb.AppendLine();
+            //                sb.AppendLine(sslVerExc.Chain);
+
+            //                iba.Logging.ibaLogger.DebugFormat(sb.ToString());
+            //            }
+            //        }
+
+            //        //errorMsg = (errorMsg == null) ? curMsg : string.Concat(errorMsg, Environment.NewLine, curMsg);
+            //    }
+                
+            //}
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                    MessageBox.Show(ex.InnerException.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                    MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            finally
+            {
+                if (schemRegClient != null)
+                    schemRegClient.Dispose();
+            }
+            MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void UseSchemaServerCheckBoxCheckedChanged(object sender, EventArgs e)
+        {
+            schemaTextBox.Enabled = useSchemaServerCheckBox.Checked;
         }
     }
 }
