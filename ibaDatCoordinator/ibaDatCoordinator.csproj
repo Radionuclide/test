@@ -120,6 +120,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.ibaAnalyzer">
+      <HintPath>..\Dependencies\ibaAnalyzer\Interop.ibaAnalyzer.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Opc.Ua.Configuration">
       <HintPath>..\Dependencies\OpcUa\Opc.Ua.Configuration.dll</HintPath>
@@ -795,17 +799,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="IbaAnalyzer">
-      <Guid>{13449E7B-9E2F-4C8A-8050-102312D3FC84}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ibaDatCoordinator.ico" />
