@@ -135,8 +135,6 @@ namespace iba.Controls
 
         private bool FillTopicList()
         {
-            loadingLabel.Visible = true;
-
             try
             {
                 using (var adminClient = new AdminClientBuilder(new AdminClientConfig { BootstrapServers = addressTextBox.Text }).Build())
@@ -153,10 +151,6 @@ namespace iba.Controls
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                loadingLabel.Invoke((MethodInvoker)delegate { loadingLabel.Visible = false; });
             }
             return false;
         }
