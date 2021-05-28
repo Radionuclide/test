@@ -152,7 +152,7 @@ Name "${PRODUCT_NAME} v${PRODUCT_VERSION}"
 !ifdef UNINSTALLER_ONLY
 OutFile "..\InstallFiles\uninstaller_only.exe"
 !else
-OutFile "ibaDatCoordinatorInstall_v${PRODUCT_VERSION}.exe"
+OutFile "ibaDatCoordinatorSetup_v${PRODUCT_VERSION}.exe"
 !endif
 InstallDir "$PROGRAMFILES\iba\ibaDatCoordinator"
 ;InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
