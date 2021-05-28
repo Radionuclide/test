@@ -10,21 +10,20 @@ namespace iba.Data
     public class KafkaWriterTaskData : TaskData
     {
         public string clusterAddress;
-        public string schemaRegistryAddress;
-        public bool useSchemaRegistryServer;
         public string topicName;
         public double timeout;//in sec
-        public List<Record> Records;
+        public List<KafkaRecord> Records;
         public List<Param> Params;
         public string identifier;
-        public MonitorData MonitorData { get; set; }
-        public string TestDatFile { get; set; }
         public DigitalFormat digitalFormat;
-
         private string schemaRegistryAddressCached;
         private byte[] schemaFingerprintCached;
-
-
+        public string schemaRegistryAddress;
+        public bool useSchemaRegistryServer;
+        public MonitorData MonitorData { get; set; }
+        public string TestDatFile { get; set; }
+        public RequiredAcks AckMode { get; set; }
+        public DataFormat Format { get; set; }
 
         public enum DigitalFormat
         {
@@ -49,7 +48,7 @@ namespace iba.Data
         {
             get
             {
-                if (schemaRegistryAddress == schemaRegistryAddressCached && schemaFingerprintCached.Length > 0)
+                if (schemaRegistryAddress == schemaRegistryAddressCached && schemaFingerprintCached != null && schemaFingerprintCached.Length > 0)
                     return schemaFingerprintCached;
 
                 Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
@@ -99,10 +98,9 @@ namespace iba.Data
             }
         }
 
-
-        public string ToText(Record rec)
+        public string ToText(KafkaRecord rec)
         {
-            if (rec.DataType == Record.ExpressionType.Digital)
+            if (rec.DataType == KafkaRecord.ExpressionType.Digital)
             {
                 if (digitalFormat == DigitalFormat.TrueFalse)
                     return (double)rec.Value >= 0.5 ? "True" : "False";
@@ -113,11 +111,8 @@ namespace iba.Data
                 return rec.Value.ToString();
         }
 
-        public RequiredAcks AckMode { get; set; }
-        public DataFormat Format { get; set; }
-
         [Serializable]
-        public class Record : ICloneable
+        public class KafkaRecord : ICloneable
         {
             public static readonly string[] DataTypes =
             {
@@ -133,8 +128,7 @@ namespace iba.Data
             }
 
             public string Metadata { get; set; }
-
-            [XmlIgnore]
+            
             public ExpressionType DataType
             {
                 get; set;
@@ -159,7 +153,7 @@ namespace iba.Data
             public string TestValue { get; set; }
             public string Name { get; set; }
 
-            public Record()
+            public KafkaRecord()
             {
                 Expression = "";
                 Value = double.NaN;
@@ -167,7 +161,7 @@ namespace iba.Data
 
             public object Clone()
             {
-                return new Record
+                return new KafkaRecord
                 {
                     Expression = this.Expression,
                     Value = this.Value,
@@ -178,20 +172,20 @@ namespace iba.Data
             }
             public override bool Equals(object obj)
             {
-                if (!(obj is Record))
+                if (!(obj is KafkaRecord))
                     return false;
-                var rec = (Record)obj;
+                var rec = (KafkaRecord)obj;
                 return
                     (
                         Expression == rec.Expression &&
-                        //Name == rec.Name &&
+                        Name == rec.Name &&
                         DataType == rec.DataType
                     );
             }
 
             public override int GetHashCode()
             {
-                return Expression.GetHashCode() ^ DataType.GetHashCode();
+                return Expression.GetHashCode() ^ DataType.GetHashCode() ^ Name.GetHashCode();
 
             }
         }
@@ -212,45 +206,78 @@ namespace iba.Data
                 };
             }
         }
+
         public KafkaWriterTaskData(ConfigurationData parent) : base(parent)
         {
-            Records = new List<Record>();
+            Records = new List<KafkaRecord>();
             Params = new List<Param>();
             MonitorData = new MonitorData();
+            timeout = 3;
+            Format = DataFormat.JSONGrouped;
+            digitalFormat = DigitalFormat.TrueFalse;
+            identifier = "";
+            AnalysisFile = "";
             topicName = "ibaDatCo-Test";
-            clusterAddress = "192.168.150.63:9092";
+            clusterAddress = "";
             schemaRegistryAddress = "";
+            schemaRegistryAddressCached = "";
+            schemaFingerprintCached = null;
             useSchemaRegistryServer = false;
+            AckMode = RequiredAcks.None;
         }
+
+        public KafkaWriterTaskData() : this(null) { }
 
         public override TaskData CloneInternal()
         {
             KafkaWriterTaskData d = new KafkaWriterTaskData(null);
-            d.Records = Records.Select(r => (Record)r.Clone()).ToList();
+            d.Records = Records.Select(r => (KafkaRecord)r.Clone()).ToList();
             d.Params = Params.Select(r => (Param)r.Clone()).ToList();
+            d.MonitorData = (MonitorData)MonitorData.Clone();
             d.timeout = timeout;
             d.Format = Format;
             d.digitalFormat = digitalFormat;
             d.identifier = identifier;
             d.AnalysisFile = AnalysisFile;
-            d.MonitorData = (MonitorData)MonitorData.Clone();
+            d.topicName = topicName;
+            d.clusterAddress = clusterAddress;
             d.schemaRegistryAddress = schemaRegistryAddress;
             d.schemaRegistryAddressCached = schemaRegistryAddressCached;
             d.schemaFingerprintCached = schemaFingerprintCached;
             d.useSchemaRegistryServer = useSchemaRegistryServer;
+            d.AckMode = AckMode;
+
             return d;
         }
 
         public override bool IsSameInternal(TaskData taskData)
         {
-            throw new System.NotImplementedException();
+            if (!(taskData is KafkaWriterTaskData other)) return false;
+            if (other == this) return true;
+
+            return
+                Records.SequenceEqual(other.Records) &&
+                Params.SequenceEqual(other.Params) &&
+                MonitorData.IsSame(other.MonitorData) &&
+                timeout == other.timeout &&
+                Format == other.Format &&
+                digitalFormat == other.digitalFormat &&
+                identifier == other.identifier &&
+                AnalysisFile == other.AnalysisFile &&
+                topicName == other.topicName &&
+                clusterAddress == other.clusterAddress &&
+                schemaRegistryAddress == other.schemaRegistryAddress &&
+                schemaRegistryAddressCached == other.schemaRegistryAddressCached &&
+                schemaFingerprintCached == other.schemaFingerprintCached &&
+                useSchemaRegistryServer == other.useSchemaRegistryServer &&
+                AckMode == other.AckMode;
         }
 
         public void EvaluateValues(string filename, IbaAnalyzer.IbaAnalyzer ibaAnalyzer)
         {
             foreach (var record in Records)
             {
-                if (record.DataType == Record.ExpressionType.Text)
+                if (record.DataType == KafkaRecord.ExpressionType.Text)
                 {
                     ibaAnalyzer.EvaluateToStringArray(record.Expression, 0, out _, out var oValues);
 

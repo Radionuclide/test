@@ -19,7 +19,7 @@ namespace iba.Controls
 {
     internal partial class KafkaWriterTaskControl : UserControl, IPropertyPane
     {
-        readonly BindingList<KafkaWriterTaskData.Record> _expressionTableData;
+        readonly BindingList<KafkaWriterTaskData.KafkaRecord> _expressionTableData;
         readonly BindingList<KafkaWriterTaskData.Param> _paramTableData;
         private readonly AnalyzerManager _analyzerManager;
         protected DevExpress.XtraGrid.GridControl exprGrid;
@@ -31,7 +31,7 @@ namespace iba.Controls
         {
             InitializeComponent();
             _analyzerManager = new AnalyzerManager();
-            _expressionTableData = new BindingList<KafkaWriterTaskData.Record>();
+            _expressionTableData = new BindingList<KafkaWriterTaskData.KafkaRecord>();
             exprGrid.DataSource = _expressionTableData;
             _viewExpr = (GridView)exprGrid.MainView;
             _viewExpr.FocusedRowChanged += (sender, e) => UpdateExprTableButtons();
@@ -39,7 +39,7 @@ namespace iba.Controls
             var channelEditor = new RepositoryItemChannelTreeEdit(_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Text);
             channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             exprGrid.RepositoryItems.Add(channelEditor);
-            gridColumnExpression.ColumnEdit = channelEditor;
+            expressionGridColumn.ColumnEdit = channelEditor;
 
             repositoryItemCheckedComboBoxEdit1.Items.Add("Unit");
             repositoryItemCheckedComboBoxEdit1.Items.Add("Comment 1");
@@ -49,15 +49,8 @@ namespace iba.Controls
             repositoryItemCheckedComboBoxEdit1.Items.Add("Identifier");
             repositoryItemCheckedComboBoxEdit1.ShowButtons = false;
 
-
-            dataTypeGridColumn.Caption = Properties.Resources.DataType;
-            gridColumnExpression.Caption = Properties.Resources.ibaAnalyzerExpression;
-            testValueGridColumn.Caption = Properties.Resources.TestValue;
-            keyGridColumn.Caption = Properties.Resources.Key;
-            valGridColumn.Caption = Properties.Resources.Value;
-
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
-            foreach (var t in KafkaWriterTaskData.Record.DataTypes)
+            foreach (var t in KafkaWriterTaskData.KafkaRecord.DataTypes)
                 typeComboBox.Items.Add(t);
             dataTypeGridColumn.ColumnEdit = typeComboBox;
 
@@ -65,8 +58,14 @@ namespace iba.Controls
             paramGrid.DataSource = _paramTableData;
             _viewParam = (GridView)paramGrid.MainView;
             _viewParam.FocusedRowChanged += (sender, e) => UpdateParamTableButtons();
+
             keyGridColumn.Caption = Properties.Resources.Key;
             valGridColumn.Caption = Properties.Resources.Value;
+            dataTypeGridColumn.Caption = Properties.Resources.DataType;
+            expressionGridColumn.Caption = Properties.Resources.ibaAnalyzerExpression;
+            testValueGridColumn.Caption = Properties.Resources.TestValue;
+            nameGridColumn.Caption = Properties.Resources.Name;
+            metadataGridColumn.Caption = Properties.Resources.Metadata;
         }
 
         private void UpdateParamTableButtons()
@@ -82,7 +81,7 @@ namespace iba.Controls
             m_datFileTextBox.Text = _data.TestDatFile;
             _expressionTableData.Clear();
             foreach (var rec in _data.Records)
-                _expressionTableData.Add((KafkaWriterTaskData.Record)rec.Clone());
+                _expressionTableData.Add((KafkaWriterTaskData.KafkaRecord)rec.Clone());
             foreach (var par in _data.Params)
                 _paramTableData.Add((KafkaWriterTaskData.Param)par.Clone());
 
@@ -198,7 +197,7 @@ namespace iba.Controls
 
         private void buttonExpressionAdd_Click(object sender, System.EventArgs e)
         {
-            _expressionTableData.Add(new KafkaWriterTaskData.Record());
+            _expressionTableData.Add(new KafkaWriterTaskData.KafkaRecord());
             _viewExpr.FocusedRowHandle = _expressionTableData.Count - 1;
             _viewExpr.ShowEditor();
 
@@ -299,12 +298,12 @@ namespace iba.Controls
                 {
                     if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if (bUseDatFile) ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
-                    var records = (IList<KafkaWriterTaskData.Record>)exprGrid.DataSource;
-                    foreach (KafkaWriterTaskData.Record record in records)
+                    var records = (IList<KafkaWriterTaskData.KafkaRecord>)exprGrid.DataSource;
+                    foreach (KafkaWriterTaskData.KafkaRecord record in records)
                     {
                         if (string.IsNullOrEmpty(record.Expression)) continue;
 
-                        if (record.DataType == KafkaWriterTaskData.Record.ExpressionType.Text)
+                        if (record.DataType == KafkaWriterTaskData.KafkaRecord.ExpressionType.Text)
                         {
                             object oValues = null;
 
@@ -352,7 +351,7 @@ namespace iba.Controls
 
                             else
                             {
-                                if (record.DataType == KafkaWriterTaskData.Record.ExpressionType.Digital)
+                                if (record.DataType == KafkaWriterTaskData.KafkaRecord.ExpressionType.Digital)
                                 {
                                     if (_data.digitalFormat == KafkaWriterTaskData.DigitalFormat.TrueFalse)
                                         record.TestValue = (f >= 0.5 ? "true" : "false");
@@ -402,9 +401,9 @@ namespace iba.Controls
         {
             if ((_viewExpr.FocusedRowHandle >= 0) &&
                 (_viewExpr.FocusedRowHandle < _expressionTableData.Count) &&
-                _viewExpr.GetRow(_viewExpr.FocusedRowHandle) is KafkaWriterTaskData.Record oldRow)
+                _viewExpr.GetRow(_viewExpr.FocusedRowHandle) is KafkaWriterTaskData.KafkaRecord oldRow)
             {
-                var newRow = (KafkaWriterTaskData.Record)oldRow.Clone();
+                var newRow = (KafkaWriterTaskData.KafkaRecord)oldRow.Clone();
                 _expressionTableData.Add(newRow);
                 _viewExpr.FocusedRowHandle = _expressionTableData.Count - 1;
                 _viewExpr.ShowEditor();
