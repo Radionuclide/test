@@ -166,15 +166,15 @@ namespace iba.Data
         }
 
         public override bool IsSameInternal(TaskData taskData)
-		{
+        {
+            if (!(taskData is OpcUaWriterTaskData other)) return false;
+            if (other == this) return true;
+
             return
-                (
-                    taskData is OpcUaWriterTaskData other &&
                     Records.SequenceEqual(other.Records) &&
                     AnalysisFile == other.AnalysisFile &&
                     TestDatFile == other.TestDatFile &&
-                    MonitorData == other.MonitorData
-                );
+                    MonitorData == other.MonitorData;
 		}
 
         /// <summary> Ensures there are no duplicate names in <see cref="OpcUaWriterTaskData"/> records.

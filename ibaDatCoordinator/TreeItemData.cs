@@ -694,10 +694,43 @@ namespace iba
 			return ctrl;
 		}
 	}
-	#endregion
+    #endregion
 
-	#region StatusTreeItemData
-	public class StatusTreeItemData : TreeItemData
+    #region KafkaWriterTaskTreeItemData
+    public class KafkaWriterTaskTreeItemData : TreeItemData
+    {
+        public KafkaWriterTaskTreeItemData(IPropertyPaneManager propManager, KafkaWriterTaskData tdc)
+            : base(propManager)
+        {
+            m_tdc = tdc;
+        }
+
+        public override string What => "KafkaWriterTask";
+
+        protected KafkaWriterTaskData m_tdc;
+
+        public override object DataSource
+        {
+            get => m_tdc;
+            set => m_tdc = value as KafkaWriterTaskData;
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["KafkaWriterTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new KafkaWriterTaskControl());
+                manager.PropertyPanes["KafkaWriterTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
+
+    #region StatusTreeItemData
+    public class StatusTreeItemData : TreeItemData
     {
         public StatusTreeItemData(IPropertyPaneManager propManager, ConfigurationData dat)
             : base(propManager)

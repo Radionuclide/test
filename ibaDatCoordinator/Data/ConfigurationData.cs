@@ -85,6 +85,7 @@ namespace iba.Data
         XmlElement(Type = typeof(SplitterTaskData)),
         XmlElement(Type = typeof(HDCreateEventTaskData)),
         XmlElement(Type = typeof(OpcUaWriterTaskData)),
+        XmlElement(Type = typeof(KafkaWriterTaskData)),
         XmlElement(Type = typeof(CustomTaskData)),
         XmlElement(Type = typeof(CustomTaskDataUNC)),
         XmlElement(Type = typeof(UploadTaskData))]

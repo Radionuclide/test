@@ -462,7 +462,7 @@ namespace iba.Processing
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData ||
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData || t is KafkaWriterTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
 							|| (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
 							|| (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
@@ -3063,6 +3063,12 @@ namespace iba.Processing
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
                 memoryUsed = ((OpcUaWriterTaskData)task).MonitorData.MemoryUsed;
             }
+            else if (task is KafkaWriterTaskData)
+            {
+                DoKafkaWriterTask(DatFile, task as KafkaWriterTaskData);
+                IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                memoryUsed = ((KafkaWriterTaskData)task).MonitorData.MemoryUsed;
+            }
             else if (task is CustomTaskData)
             {
                 DoCustomTask(DatFile, task as CustomTaskData);
@@ -5210,6 +5216,11 @@ namespace iba.Processing
         private void DoOPCUAWriterTask(string filename, OpcUaWriterTaskData task)
         {
             (new ComputedValuesTaskWorker(this, task)).DoWork(filename);
+        }
+
+        private void DoKafkaWriterTask(string filename, KafkaWriterTaskData task)
+        {
+            (new KafkaWriterTaskWorker(this, task)).DoWork(filename);
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 

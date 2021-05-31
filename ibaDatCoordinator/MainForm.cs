@@ -47,16 +47,17 @@ namespace iba
         public static readonly int CLEANUPTASK_INDEX = 11;
         public static readonly int SPLITTERTASK_INDEX = 12;
         public static readonly int HDEVENTTASK_INDEX = 13;
-        public static readonly int OPCUA_WRITERTASK_INDEX = 14;
+		public static readonly int OPCUA_WRITERTASK_INDEX = 14;
         public static readonly int UPLOADTASK_INDEX = 15;
+        public static readonly int KAFKAWRITERTASK_INDEX = 16;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int UNKNOWNTASK_INDEX = 16;
-        public static readonly int NEWCONF_INDEX = 17;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 18;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 19;
-        public static readonly int NEW_EVENT_CONF_INDEX = 20;
-        public static readonly int CUSTOMTASK_INDEX = 21;
-        public static readonly int NR_TASKS = 12;
+        public static readonly int UNKNOWNTASK_INDEX = 17;
+        public static readonly int NEWCONF_INDEX = 18;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 19;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 20;
+        public static readonly int NEW_EVENT_CONF_INDEX = 21;
+        public static readonly int CUSTOMTASK_INDEX = 22;
+        public static readonly int NR_TASKS = 13;
 
         private QuitForm m_quitForm;
 
@@ -131,6 +132,7 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.img_computed_values);
 			confsImageList.Images.Add(iba.Properties.Resources.OPCUAIcon.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.UploadTaskIcon);
+            confsImageList.Images.Add(iba.Properties.Resources.kafka.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.img_question);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
@@ -610,7 +612,12 @@ namespace iba
 				{
 					taskNode = new TreeNode(task.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
 					taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, task as OpcUaWriterTaskData);
-				}
+                }
+                else if (task is KafkaWriterTaskData)
+                {
+                    taskNode = new TreeNode(task.Name, KAFKAWRITERTASK_INDEX, KAFKAWRITERTASK_INDEX);
+                    taskNode.Tag = new KafkaWriterTaskTreeItemData(this, task as KafkaWriterTaskData);
+                }
                 else if(task.GetType() == typeof(TaskWithTargetDirData) || task.GetType() == typeof(CleanupTaskData))
                 {
                     taskNode = new TreeNode(task.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
@@ -882,6 +889,7 @@ namespace iba
                 case "CustomTask":
                 case "HDCreateEventTask":
 				case "OPCUAWriterTask":
+                case "KafkaWriterTask":
                 case "task":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
@@ -1048,6 +1056,8 @@ namespace iba
                             node.Text, node.Parent.Text);
                     else if (node.Tag is OpcUaWriterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteOPCUATastQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is KafkaWriterTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteKafkaTaskQuestion, node.Text, node.Parent.Text);
                 }
                 DialogResult res = MessageBox.Show(this, msg,
                     iba.Properties.Resources.deleteTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
@@ -1215,6 +1225,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
                     taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, m_task_copy as OpcUaWriterTaskData);
                 }
+                else if (m_task_copy is KafkaWriterTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, KAFKAWRITERTASK_INDEX, KAFKAWRITERTASK_INDEX);
+                    taskNode.Tag = new KafkaWriterTaskTreeItemData(this, m_task_copy as KafkaWriterTaskData);
+                }
                 else if(m_task_copy.GetType() == typeof(TaskWithTargetDirData))
                 {
                     taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
@@ -1315,6 +1330,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
                     taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, m_task_copy as OpcUaWriterTaskData);
                 }
+                else if (m_task_copy is KafkaWriterTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, KAFKAWRITERTASK_INDEX, KAFKAWRITERTASK_INDEX);
+                    taskNode.Tag = new KafkaWriterTaskTreeItemData(this, m_task_copy as KafkaWriterTaskData);
+                }
                 else if(m_task_copy.GetType() == typeof(TaskWithTargetDirData))
                 {
                     taskNode = new TreeNode(m_task_copy.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
@@ -1405,6 +1425,7 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.img_computed_values);
             menuImages.Images.Add(iba.Properties.Resources.OPCUAIcon);
             menuImages.Images.Add(iba.Properties.Resources.UploadTaskIcon);
+            menuImages.Images.Add(iba.Properties.Resources.kafka);
 
             int pluginsStartImageIndex = menuImages.Images.Count;
             List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
@@ -1412,7 +1433,7 @@ namespace iba
                 menuImages.Images.Add(info.Icon);
 
             int customcount = filteredPlugins.Count;
-            m_menuItems = new ToolStripMenuItem[18 + customcount];
+            m_menuItems = new ToolStripMenuItem[19 + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
             m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
             m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(iba.Properties.Resources.cutTitle, menuImages.Images[0], new EventHandler(OnCutMenuItem), Keys.X | Keys.Control);
@@ -1432,8 +1453,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewCleanupTask] = new ToolStripMenuItem(iba.Properties.Resources.NewCleanupTaskTitle, iba.Properties.Resources.broom, new EventHandler(OnNewCleanupTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewSplitterTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSplitterTaskTitle, menuImages.Images[11], new EventHandler(OnNewSplitterTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(iba.Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], new EventHandler(OnNewHDCreateEventTaskMenuItem));
-			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.opcUaWriterTaskButton, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
+			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[14], new EventHandler(OnNewUploadTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[15], new EventHandler(OnNewKafkaTaskMenuItem));
 
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1455,6 +1477,7 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSplitterTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
 			m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewOPCUATask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewKafkaTask]);
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
                 var item = m_menuItems[i + (int)MenuItemsEnum.NewCustomTask];
@@ -1484,7 +1507,8 @@ namespace iba
             NewHDCreateEventTask = 15,
             NewOPCUATask = 16,
             NewUploadTask = 17,
-            NewCustomTask = 18
+            NewKafkaTask = 18,
+			NewCustomTask = 19
         }
 
 
@@ -1788,7 +1812,26 @@ namespace iba
 			node.Nodes.Add(newNode);
 			newNode.EnsureVisible();
 			if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
-		}
+        }
+
+        private void OnNewKafkaTaskMenuItem(object sender, EventArgs e)
+        {
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
+            TreeNode node = mc.Tag as TreeNode;
+            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
+            KafkaWriterTaskData createEvent = new KafkaWriterTaskData(confData);
+            new SetNextName(createEvent);
+            confData.Tasks.Add(createEvent);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+            TreeNode newNode = new TreeNode(createEvent.Name, KAFKAWRITERTASK_INDEX, KAFKAWRITERTASK_INDEX);
+            newNode.Tag = new KafkaWriterTaskTreeItemData(this, createEvent);
+            node.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+        }
 
         private void OnNewSplitterTaskMenuItem(object sender, EventArgs e)
         {
