@@ -67,13 +67,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Avro">
-      <HintPath>..\Dependencies\KafkaLib\Avro.dll</HintPath>
+      <HintPath>..\Dependencies\Kafka\Avro.dll</HintPath>
     </Reference>
     <Reference Include="Confluent.Kafka">
-      <HintPath>..\Dependencies\KafkaLib\Confluent.Kafka.dll</HintPath>
+      <HintPath>..\Dependencies\Kafka\Confluent.Kafka.dll</HintPath>
     </Reference>
     <Reference Include="Confluent.SchemaRegistry">
-      <HintPath>..\Dependencies\KafkaLib\Confluent.SchemaRegistry.dll</HintPath>
+      <HintPath>..\Dependencies\Kafka\Confluent.SchemaRegistry.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v16.1">
     </Reference>

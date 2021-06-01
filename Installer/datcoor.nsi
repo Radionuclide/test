@@ -457,6 +457,12 @@ Section -Common
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\ibaUser.dll"
   File "..\Dependencies\ibaUser.Forms.dll"
+  ;Kafka
+  File "..\Dependencies\Kafka\x86\libeay32.dll"
+  File "..\Dependencies\Kafka\x86\librdkafka.dll"
+  File "..\Dependencies\Kafka\x86\libzstd.dll"
+  File "..\Dependencies\Kafka\x86\ssleay32.dll"
+  File "..\Dependencies\Kafka\x86\zlibwapi.dll"
   
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
@@ -881,6 +887,12 @@ Function un.UninstallTasks
   Delete "$INSTDIR\PowerCollections.dll"
   Delete "$INSTDIR\GenuineChannels.dll"
   Delete "$INSTDIR\Zyan.SafeDeserializationHelpers.dll"
+
+  Delete "$INSTDIR\libeay32.dll"
+  Delete "$INSTDIR\librdkafka.dll"
+  Delete "$INSTDIR\libzstd.dll"
+  Delete "$INSTDIR\ssleay32.dll"
+  Delete "$INSTDIR\zlibwapi.dll"
 
   Delete "$INSTDIR\ibaSnmpLib.dll"
   Delete "$INSTDIR\WinSCPnet.dll"
