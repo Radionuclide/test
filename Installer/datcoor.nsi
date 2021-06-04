@@ -463,6 +463,9 @@ Section -Common
   File "..\Dependencies\Kafka\x86\libzstd.dll"
   File "..\Dependencies\Kafka\x86\ssleay32.dll"
   File "..\Dependencies\Kafka\x86\zlibwapi.dll"
+  File "..\Dependencies\Kafka\Avro.dll"
+  File "..\Dependencies\Kafka\Confluent.Kafka.dll"
+  File "..\Dependencies\Kafka\Confluent.SchemaRegistry.dll"
   
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
@@ -893,6 +896,9 @@ Function un.UninstallTasks
   Delete "$INSTDIR\libzstd.dll"
   Delete "$INSTDIR\ssleay32.dll"
   Delete "$INSTDIR\zlibwapi.dll"
+  Delete "$INSTDIR\Avro.dll"
+  Delete "$INSTDIR\Confluent.Kafka.dll"
+  Delete "$INSTDIR\Confluent.SchemaRegistry.dll"
 
   Delete "$INSTDIR\ibaSnmpLib.dll"
   Delete "$INSTDIR\WinSCPnet.dll"
