@@ -596,8 +596,9 @@ namespace iba.Data
                         sw.WriteLine("timebase=" + tb.TotalSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
-                if (count == 0)
-                    throw new Exception(Properties.Resources.HDQErrorNoStores);
+                //don't throw when no stores, some people use sheduled job without HD data -> TODO: fix in ibaAnalyzer empty store handling...
+               // if (count == 0)
+                //    throw new Exception(Properties.Resources.HDQErrorNoStores);
             }
         }
 

@@ -11,6 +11,7 @@ using iba.Controls;
 using iba.Data;
 using IbaAnalyzer;
 using iba.Remoting;
+using System.Linq;
 
 namespace iba.Utility
 {
@@ -160,6 +161,19 @@ namespace iba.Utility
                         return;
                     }
 
+                    if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal) //check for corresponding .lst files
+                    {
+                        var infos  = Program.CommunicationObject.GetFileInfos2(Path.GetDirectoryName(pdoFile), "*.lst")?.OrderBy(File => File.LastWriteTimeUtc);
+                        if (infos.Count() > 0)
+                        {
+                            string lstfile = infos.Last().LocalFileName;
+                            if (!Program.RemoteFileLoader.DownloadFile(lstfile, out string localLstFile, out string error2))
+                            {
+                                MessageBox.Show(error2, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                    }
+
                     if (!File.Exists(localFile))
                     {
                         DialogResult res = MessageBox.Show(Properties.Resources.AnalysisDoesNotExist, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -262,9 +276,40 @@ namespace iba.Utility
 
             string localFile = Program.RemoteFileLoader.GetLocalPath(pdoFilePath);
             localFile = localFile.Replace(".pdo", "_(ibaDatCoordinator).pdo");
-            string toDelete = "";
 
-            if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, pdoFilePath))
+            string lstFileLocal = null;
+            string lstFileRemote = null;
+            bool lstFileNewOrModified = false;
+            try
+            {
+                DateTime newest = DateTime.MinValue;
+                string[] lstFiles = Directory.GetFiles(Path.GetDirectoryName(localFile), "*.lst");
+                foreach (string lstFile in lstFiles)
+                {
+                    if (File.Exists(lstFile))
+                    {
+                        DateTime writeTime = File.GetLastWriteTime(lstFile);
+                        if  (writeTime> newest)
+                        {
+                            lstFileLocal = lstFile;
+                            newest = writeTime;
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(lstFileLocal))
+                {
+                    lstFileRemote = Path.Combine(Path.GetDirectoryName(pdoFilePath), Path.GetFileName(lstFileLocal));
+                    lstFileNewOrModified = !Program.CommunicationObject.FileExists(lstFileRemote) || Program.RemoteFileLoader.IsFileChangedLocally(lstFileLocal, lstFileRemote);
+                }
+            }
+            catch
+            {
+
+            }
+
+
+            if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, pdoFilePath) || lstFileNewOrModified)
             {
                 if (MessageBox.Show(form, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.FileChanged_UploadStandalone : Properties.Resources.FileChanged_Upload, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                     return false;
@@ -283,7 +328,8 @@ namespace iba.Utility
 
                     if (!Program.RemoteFileLoader.UploadFile(localFile, pdoFilePath, true, out string error))
                         throw new Exception(error);
-
+                    if (lstFileNewOrModified && !Program.RemoteFileLoader.UploadFile(lstFileLocal, lstFileRemote, true, out string error2))
+                        throw new Exception(error2);
                     if (bStarted)
                         TaskManager.Manager.StartConfiguration((ConfigurationData)jobData);
 
@@ -303,18 +349,7 @@ namespace iba.Utility
             else if (messageOnNoChanges)
             {
                 MessageBox.Show(form, Properties.Resources.FileChanged_UploadNoChanges, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                toDelete = "";
-            }
-            if (!String.IsNullOrEmpty(toDelete))
-            {
-                try
-                {
-                    File.Delete(toDelete);
-                }
-                catch
-                {
-                }
-            }
+            }            }
             return false;
         }
 
