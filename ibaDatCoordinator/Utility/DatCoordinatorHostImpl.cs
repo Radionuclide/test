@@ -280,34 +280,36 @@ namespace iba.Utility
             string lstFileLocal = null;
             string lstFileRemote = null;
             bool lstFileNewOrModified = false;
-            try
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
             {
-                DateTime newest = DateTime.MinValue;
-                string[] lstFiles = Directory.GetFiles(Path.GetDirectoryName(localFile), "*.lst");
-                foreach (string lstFile in lstFiles)
+                try
                 {
-                    if (File.Exists(lstFile))
+                    DateTime newest = DateTime.MinValue;
+                    string[] lstFiles = Directory.GetFiles(Path.GetDirectoryName(localFile), "*.lst");
+                    foreach (string lstFile in lstFiles)
                     {
-                        DateTime writeTime = File.GetLastWriteTime(lstFile);
-                        if  (writeTime> newest)
+                        if (File.Exists(lstFile))
                         {
-                            lstFileLocal = lstFile;
-                            newest = writeTime;
+                            DateTime writeTime = File.GetLastWriteTime(lstFile);
+                            if (writeTime > newest)
+                            {
+                                lstFileLocal = lstFile;
+                                newest = writeTime;
+                            }
                         }
                     }
-                }
 
-                if (!string.IsNullOrEmpty(lstFileLocal))
+                    if (!string.IsNullOrEmpty(lstFileLocal))
+                    {
+                        lstFileRemote = Path.Combine(Path.GetDirectoryName(pdoFilePath), Path.GetFileName(lstFileLocal));
+                        lstFileNewOrModified = !Program.CommunicationObject.FileExists(lstFileRemote) || Program.RemoteFileLoader.IsFileChangedLocally(lstFileLocal, lstFileRemote);
+                    }
+                }
+                catch
                 {
-                    lstFileRemote = Path.Combine(Path.GetDirectoryName(pdoFilePath), Path.GetFileName(lstFileLocal));
-                    lstFileNewOrModified = !Program.CommunicationObject.FileExists(lstFileRemote) || Program.RemoteFileLoader.IsFileChangedLocally(lstFileLocal, lstFileRemote);
+
                 }
             }
-            catch
-            {
-
-            }
-
 
             if (Program.RemoteFileLoader.IsFileChangedLocally(localFile, pdoFilePath) || lstFileNewOrModified)
             {
@@ -349,7 +351,7 @@ namespace iba.Utility
             else if (messageOnNoChanges)
             {
                 MessageBox.Show(form, Properties.Resources.FileChanged_UploadNoChanges, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }            }
+            }            
             return false;
         }
 
