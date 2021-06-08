@@ -165,7 +165,7 @@
 
 	<div id="hist">
 		<div class="box">
-		<P class="header1">Version 2.4.1 - 2021-05-??</P>
+		<P class="header1">Version 2.4.1 - 2021-06-08</P>
 			<p class="header2">New features (N)</p>
 			<OL>
 			<li>Added an option to discard event pairs in the event job when no outgoing event is received within the maximum time range. #18893</li>
@@ -175,14 +175,14 @@
 			<OL>
 			<li>A better error message is given when processing V1 or V2 files and the necessary license is missing. #18764</li>
 			<li>A malformed .hdq file will be deleted as to prevent reprocessing and hence spurious log messages. #18720</li>
-			<li>when .pdo files are down- or uploaded, .lst files will be copied as well if they are in the same folder...</li>
+			<li>When .pdo files are down- or uploaded, .lst files will be copied as well if they are in the same folder...</li>
+			<li>Removed the test for checking whether an HD store was specified in a scheduled or event job, as those jobs are also used without any data.</li>
 			</OL>
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
 			<li>ibaDatCoordinator installer referred to ibaPDA installer when .net 4.8 framework is missing.</li>
 			<li>When uploading a .pdo file, the original file was not overwritten, instead a new file was created with the _(ibaDatCoodinator) suffix still attached. #18726</li>
 			<li>Update data task - ODBC connections failed. #18626</li>
-			<li>Removed the test for checking whether an HD store was specified in a scheduled or event job, as those jobs are also used without any data.</li>
 			</OL>
 		<p>&nbsp; </p>
 		<P class="header1">Version 2.4.0 - 2021-04-12</P>
