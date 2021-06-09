@@ -715,66 +715,66 @@ namespace iba.Processing
             return error;
         }
 
-// Deprecated do not use. No support for multiple events and multiple stores per task.
-public void WriteEvents(EventWriterData eventData)
-        {
-            // Write events
-            IHdWriterManager writerManager = null;
-            try
-            {
-                HdWriterConfig cfg = CreateSlimHDWriterConfig(m_data, m_data.EventSettings[0].StoreName);
+        // Deprecated do not use. No support for multiple events and multiple stores per task.
+        //public void WriteEvents(EventWriterData eventData)
+        //{
+        //    // Write events
+        //    IHdWriterManager writerManager = null;
+        //    try
+        //    {
+        //        HdWriterConfig cfg = CreateSlimHDWriterConfig(m_data, m_data.EventSettings[0].StoreName);
 
-                writerManager = HdClient.CreateWriterManager();
+        //        writerManager = HdClient.CreateWriterManager();
 
-                writerManager.StartConfig();
+        //        writerManager.StartConfig();
 
-                IHdWriterSummary summary = writerManager.SetConfig(cfg, null, HdValidationMessage.Ignore);
-                while (summary.Result == WriterConfigResult.Conflict)
-                {
-                    foreach (var cflt in summary.Conflicts)
-                        cflt.Solution = HdWriterSolution.Append;
+        //        IHdWriterSummary summary = writerManager.SetConfig(cfg, null, HdValidationMessage.Ignore);
+        //        while (summary.Result == WriterConfigResult.Conflict)
+        //        {
+        //            foreach (var cflt in summary.Conflicts)
+        //                cflt.Solution = HdWriterSolution.Append;
 
-                    summary = writerManager.SetConfig(cfg, summary, HdValidationMessage.Ignore);
-                }
+        //            summary = writerManager.SetConfig(cfg, summary, HdValidationMessage.Ignore);
+        //        }
 
-                writerManager.EndConfig();
+        //        writerManager.EndConfig();
 
-                if (summary.Result != WriterConfigResult.Valid)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    if (summary.Errors != null && summary.Errors.Count > 0)
-                    {
-                        foreach (var err in summary.Errors)
-                            sb.Append(" ").Append(err.Text).Append(",");
+        //        if (summary.Result != WriterConfigResult.Valid)
+        //        {
+        //            StringBuilder sb = new StringBuilder();
+        //            if (summary.Errors != null && summary.Errors.Count > 0)
+        //            {
+        //                foreach (var err in summary.Errors)
+        //                    sb.Append(" ").Append(err.Text).Append(",");
 
-                        sb.Remove(sb.Length - 1, 1);
-                    }
+        //                sb.Remove(sb.Length - 1, 1);
+        //            }
 
-                    throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
-                }
+        //            throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
+        //        }
 
-                writerManager.StartCreate();
-                IHdWriter writer = writerManager.CreateWriter(summary, true, HdValidationMessage.Ignore);
-                writerManager.EndCreate();
+        //        writerManager.StartCreate();
+        //        IHdWriter writer = writerManager.CreateWriter(summary, true, HdValidationMessage.Ignore);
+        //        writerManager.EndCreate();
 
-                if (writer == null || writer.Status != HdWriterStatus.Open)
-                    throw new HDCreateEventException(Properties.Resources.logHDEventTaskActivateError);
+        //        if (writer == null || writer.Status != HdWriterStatus.Open)
+        //            throw new HDCreateEventException(Properties.Resources.logHDEventTaskActivateError);
 
-                writer.Write(eventData);
-            }
-            finally
-            {
-                if (writerManager != null)
-                {
-                    try
-                    {
-                        writerManager.Dispose();
-                    }
-                    catch
-                    { }
-                }
-            }
-        }
+        //        writer.Write(eventData);
+        //    }
+        //    finally
+        //    {
+        //        if (writerManager != null)
+        //        {
+        //            try
+        //            {
+        //                writerManager.Dispose();
+        //            }
+        //            catch
+        //            { }
+        //        }
+        //    }
+        //}
     }
 
     internal class HDCreateEventException : Exception

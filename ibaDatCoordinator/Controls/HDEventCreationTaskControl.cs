@@ -408,6 +408,7 @@ namespace iba.Controls
                     }
                     catch (HDCreateEventException)
                     {
+                        //Messages are already displayed via validationForm.AddRange
                         saveSuccessfull = false;
                     }
                     catch (Exception ex)
@@ -453,31 +454,19 @@ namespace iba.Controls
                     foreach (HDCreateEventTaskData.EventData data in localEvents)
                         m_data.EventSettings.Add(data);
                 }
+
                 List<EventConfig > changedConfigs = m_ctrlEvent.ServerEventsChanged();
                 if (changedConfigs!= null && changedConfigs.Count > 0)
                 {
                     DialogResult res = MessageBox.Show(this, iba.Properties.Resources.HDEventsChanged,
                             iba.Properties.Resources.closing, MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                             MessageBoxDefaultButton.Button2);
-                    switch (res)
+                    if (res == DialogResult.Yes)
                     {
-                        case DialogResult.Yes:
-                            if (SaveServerData(changedConfigs))
-                            {
-                                m_data.FullEventConfig.Clear();
-                            }
-                            else
-                            {
-                                var storeNames = m_ctrlEvent.GetStoreNames();
-                                m_data.FullEventConfig.Clear();
-                                foreach (string storeName in storeNames)
-                                {
-                                    m_data.FullEventConfig[storeName] = m_ctrlEvent.SerialzeServerEvents(storeName, m_data.Server, m_data.ServerPort, m_data.Guid, m_data.Name, m_data.Username, m_data.HDPassword);
-                                }
-                            }
-                            break;
-                        case DialogResult.No:
-                            break;
+                        SaveServerData(changedConfigs);
+
+                        //Just clear the full event config even when the apply didn't succeed because we only allow it to be applied from the GUI.
+                        m_data.FullEventConfig.Clear();
                     }
                 }
             }
