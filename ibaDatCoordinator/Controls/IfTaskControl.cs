@@ -19,11 +19,12 @@ namespace iba.Controls
     public partial class IfTaskControl : UserControl, IPropertyPane
     {
         private ChannelTreeEdit channelTreeEdit;
+
         public IfTaskControl()
         {
             InitializeComponent();
 
-            channelTreeEdit = new iba.Controls.ChannelTreeEdit();
+            channelTreeEdit = ChannelTreeEdit.CreateInstance(null, ChannelTreeFilter.Expressions | ChannelTreeFilter.Analog | ChannelTreeFilter.Digital);
             channelTreeEdit.Size = channelTreeEditPlaceholder.Size;
             channelTreeEdit.Location = channelTreeEditPlaceholder.Location;
             channelTreeEdit.Anchor = channelTreeEditPlaceholder.Anchor;
@@ -93,7 +94,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            channelTreeEdit.analyzerManager.OnLeave();
+            channelTreeEdit.AnalyzerManager.OnLeave();
         }
 
         #endregion
@@ -130,7 +131,7 @@ namespace iba.Controls
 
         private void UpdateSources()
         {
-            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+            channelTreeEdit.AnalyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
         }
 
         private void m_testButton_Click(object sender, EventArgs e)
@@ -258,7 +259,7 @@ namespace iba.Controls
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
+			Utility.DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(true, this, m_pdoFileTextBox.Text, channelTreeEdit.AnalyzerManager, m_data.ParentConfigurationData);
             UpdateSources();
 		}
 

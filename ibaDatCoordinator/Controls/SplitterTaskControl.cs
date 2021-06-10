@@ -23,7 +23,7 @@ namespace iba.Controls
         {
             InitializeComponent();
 
-            channelTreeEdit = new iba.Controls.ChannelTreeEdit();
+            channelTreeEdit = ChannelTreeEdit.CreateInstance(null, ChannelTreeFilter.Expressions | ChannelTreeFilter.Analog | ChannelTreeFilter.Digital);
             channelTreeEdit.Size = channelTreeEditPlaceholder.Size;
             channelTreeEdit.Location = channelTreeEditPlaceholder.Location;
             channelTreeEdit.Anchor = channelTreeEditPlaceholder.Anchor;
@@ -112,7 +112,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            channelTreeEdit.analyzerManager.OnLeave();
+            channelTreeEdit.AnalyzerManager.OnLeave();
         }
 
         #endregion
@@ -197,7 +197,7 @@ namespace iba.Controls
 
         private void UpdateSources()
         {
-            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+            channelTreeEdit.AnalyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
         }
 
         private void m_btTakeParentPass_Click(object sender, EventArgs e)

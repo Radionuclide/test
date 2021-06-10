@@ -24,9 +24,9 @@ using System.Windows.Forms;
 
 namespace iba.Controls
 {
-	#region AnalyzerManager
-	internal class AnalyzerManager : IDisposable, IAnalyzerManagerUpdateSource
-	{
+    #region AnalyzerManager
+    internal class AnalyzerManager : IDisposable, IAnalyzerManagerUpdateSource
+    {
         #region Members
         object lockAnalyzer;
         public IbaAnalyzer.IbaAnalyzer Analyzer { get; private set; }
@@ -171,31 +171,31 @@ namespace iba.Controls
             SourceUpdated?.Invoke();
         }
 
-		public void UnLoadAnalysis()
-		{
-			try
-			{
-				if (Analyzer != null)
-				{
-					Analyzer.CloseAnalysis();
-				}
-			}
-			catch
-			{ }
-		}
+        public void UnLoadAnalysis()
+        {
+            try
+            {
+                if (Analyzer != null)
+                {
+                    Analyzer.CloseAnalysis();
+                }
+            }
+            catch
+            { }
+        }
 
-		public void ReopenAnalysis()
-		{
-			try
-			{
-				if (Analyzer != null)
-				{
-					Analyzer.OpenAnalysis(pdoFile);
-				}
-			}
-			catch
-			{ }
-		}
+        public void ReopenAnalysis()
+        {
+            try
+            {
+                if (Analyzer != null)
+                {
+                    Analyzer.OpenAnalysis(pdoFile);
+                }
+            }
+            catch
+            { }
+        }
 
         public void OnLeave()
         {
@@ -217,12 +217,12 @@ namespace iba.Controls
         Analog = 0x01,
         Digital = 0x02,
         Text = 0x04,
-		Expressions = 0x100000,
-		Logicals = 0x200000,
-		Infofields = 0x400000
-	};
+        Expressions = 0x100000,
+        Logicals = 0x200000,
+        Infofields = 0x400000
+    };
 
-	internal class AnalyzerTreeControl : Panel, ISignalDragDropHandler
+    internal class AnalyzerTreeControl : Panel, ISignalDragDropHandler
     {
         private class CustomNode
         {
@@ -246,7 +246,7 @@ namespace iba.Controls
         List<CustomNode> customNodes;
 
         string pendingSelection;
-        
+
         protected Crownwood.DotNetMagic.Controls.TreeControl tree;
 
         IbaAnalyzer.ISignalTree analyzerTree;
@@ -255,10 +255,12 @@ namespace iba.Controls
         public event Action<AnalyzerTreeControl, string> CustomDoubleClick;
 
         public bool IsLoading => iState == Loading;
-		#endregion
 
-		#region Initialize
-		public AnalyzerTreeControl(AnalyzerManager manager, ChannelTreeFilter filter)
+        public AnalyzerManager AnalyzerManager => manager;
+        #endregion
+
+        #region Initialize
+        public AnalyzerTreeControl(AnalyzerManager manager, ChannelTreeFilter filter)
         {
             this.manager = manager;
             this.filter = filter;
@@ -551,7 +553,7 @@ namespace iba.Controls
             Interlocked.Exchange(ref iState, Unloaded);
         }
 
-		private bool checkBoxes;
+        private bool checkBoxes;
 
         [DefaultValue(false)]
         public bool CheckBoxes
@@ -607,7 +609,7 @@ namespace iba.Controls
         static ImageList imageList;
         static ImageList emptyList;
         static object imageListLock = new object();
-        
+
         static AnalyzerTreeControl()
         {
             emptyList = new ImageList();
@@ -754,7 +756,7 @@ namespace iba.Controls
                         Node trnode = new Node(node.Text, node.ImageIndex);
                         trnode.Tag = node;
                         RecursiveAdd(trnode);
-                        
+
                         //Only add the node here to the tree because otherwise we get constant tree updates
                         tree.Nodes.Add(trnode);
                     }
@@ -768,7 +770,7 @@ namespace iba.Controls
                     }
                     analyzerTree = null;
                 }
-            }          
+            }
 
             if (!string.IsNullOrEmpty(pendingSelection))
             {
@@ -815,7 +817,7 @@ namespace iba.Controls
                 return true;
             if (prevState == Unloading)
                 return false;
-            
+
             if (manager.IsOpened)
                 CreateTree(null);
             else
@@ -870,7 +872,7 @@ namespace iba.Controls
                 RecursiveAdd(childtrnode);
             }
 
-            if (!addSiblings) 
+            if (!addSiblings)
                 return;
 
             IbaAnalyzer.ISignalTreeNode sibling = signalTreeNode.GetSiblingNode() as IbaAnalyzer.ISignalTreeNode;
@@ -1125,6 +1127,7 @@ namespace iba.Controls
 
         #region instance
         bool bOriginalInstance;
+        bool bOwnsManager;
         private AnalyzerTreeControl channelTree;
 
         public bool DrawImages;
@@ -1144,8 +1147,14 @@ namespace iba.Controls
         }
 
         public RepositoryItemChannelTreeEdit(AnalyzerManager manager, ChannelTreeFilter filter)
-           :this()
+           : this()
         {
+            if (manager == null)
+            {
+                manager = new AnalyzerManager();
+                bOwnsManager = true;
+            }
+
             channelTree = new AnalyzerTreeControl(manager, filter);
             bOriginalInstance = true;
         }
@@ -1155,10 +1164,9 @@ namespace iba.Controls
             get { return "ChannelTreeEdit"; }
         }
 
-        public AnalyzerTreeControl ChannelTree
-        {
-            get { return channelTree; }
-        }
+        public AnalyzerTreeControl ChannelTree => channelTree;
+
+        public AnalyzerManager AnalyzerManager => channelTree.AnalyzerManager;
 
         public override void Assign(RepositoryItem item)
         {
@@ -1169,9 +1177,19 @@ namespace iba.Controls
                 channelTree = channelTreeItem.ChannelTree;
                 specialNodes = channelTreeItem.specialNodes;
                 DrawImages = channelTreeItem.DrawImages;
+                specialNodes = channelTreeItem.specialNodes;
             }
 
             base.Assign(item);
+        }
+
+        internal void TransferOwnership(RepositoryItemChannelTreeEdit other)
+        {
+            other.bOriginalInstance = bOriginalInstance;
+            bOriginalInstance = false;
+
+            other.bOwnsManager = bOwnsManager;
+            bOwnsManager = false;
         }
 
         public new ChannelTreeEdit CreateEditor()
@@ -1185,10 +1203,18 @@ namespace iba.Controls
             {
                 ResetChannelTree();
 
+                var manager = channelTree?.AnalyzerManager;
+
                 if (bOriginalInstance && channelTree != null)
                 {
                     channelTree.Dispose();
                     channelTree = null;
+                }
+
+                if (bOwnsManager && manager != null)
+                {
+                    manager.Dispose();
+                    manager = null;
                 }
             }
 
@@ -1246,7 +1272,7 @@ namespace iba.Controls
         {
             get
             {
-                AnalyzerTreeControl tree = ChannelTreeProperties.ChannelTree;
+                AnalyzerTreeControl tree = Tree;
 
                 if (tree == null || string.IsNullOrEmpty(tree.SelectedChannel))
                     return OwnerEdit.EditValue;  //return previous value because it isn't available in tree now and nothing else was selected
@@ -1259,29 +1285,24 @@ namespace iba.Controls
                     return selected;
             }
         }
-		AnalyzerTreeControl tree
-		{
-			get
-			{
-				if (ChannelTreeProperties.ChannelTree is null)
-				{
-					return ((ChannelTreeEdit)OwnerEdit).control;
-				}
-				return ChannelTreeProperties.ChannelTree;
-			}
-		}
-			
+
+        AnalyzerTreeControl Tree
+        {
+            get { return ChannelTreeProperties.ChannelTree; }
+        }
+
         RepositoryItemChannelTreeEdit ChannelTreeProperties
         {
             get { return (RepositoryItemChannelTreeEdit)base.Properties; }
         }
 
-        public bool IsLoading => tree.IsLoading;
+        public bool IsLoading => Tree.IsLoading;
 
         #region popup
 
         protected override void OnBeforeShowPopup()
         {
+            AnalyzerTreeControl tree = Tree;
             if (tree != null)
             {
                 while (!tree.Load()) ;
@@ -1312,6 +1333,7 @@ namespace iba.Controls
 
         public override void HidePopupForm()
         {
+            AnalyzerTreeControl tree = Tree;
             if (tree != null)
             {
                 tree.AfterSelect -= tree_AfterSelect;
@@ -1326,9 +1348,9 @@ namespace iba.Controls
             if ((MouseButtons & MouseButtons.Right) == MouseButtons.Right)
                 return; //ignore opening of context menu
 
-			((ChannelTreeEdit)OwnerEdit).EditValue = id;
+            ((ChannelTreeEdit)OwnerEdit).EditValue = id;
 
-			if (sender != null && id != null)
+            if (sender != null && id != null)
                 ClosePopup(PopupCloseMode.Normal);
         }
         #endregion
@@ -1347,7 +1369,7 @@ namespace iba.Controls
 
         void DoUpdateBounds()
         {
-            AnalyzerTreeControl tree = ChannelTreeProperties.ChannelTree;
+            AnalyzerTreeControl tree = Tree;
             if (tree != null)
             {
                 tree.Location = Point.Empty;
@@ -1371,13 +1393,15 @@ namespace iba.Controls
 
             DoUpdateBounds();
             resizedSize = ClientSize;
-			if (tree != null)
-			{
-				var s = Size;
-				s.Height -= 20;
-				tree.Size = s;
-			}
-		}
+
+            AnalyzerTreeControl tree = Tree;
+            if (tree != null)
+            {
+                var s = Size;
+                s.Height -= 20;
+                tree.Size = s;
+            }
+        }
 
         #endregion
     }
@@ -1386,18 +1410,29 @@ namespace iba.Controls
 
     #region ChannelTreeEdit
 
-    public class ChannelTreeEdit : PopupBaseEdit
+    internal class ChannelTreeEdit : PopupBaseEdit
     {
         static ChannelTreeEdit()
         {
             RepositoryItemChannelTreeEdit.RegisterChannelTreeEdit();
         }
 
-		public ChannelTreeEdit() : base ()
-		{
-			analyzerManager = new AnalyzerManager();
-			control = new AnalyzerTreeControl((AnalyzerManager)analyzerManager, ChannelTreeFilter.Expressions | ChannelTreeFilter.Analog | ChannelTreeFilter.Digital);
-		}
+        public static ChannelTreeEdit CreateInstance(AnalyzerManager analyzerManager, ChannelTreeFilter filter)
+        {
+            //Let's create editor
+            var repItem = new RepositoryItemChannelTreeEdit(analyzerManager, filter);
+            ChannelTreeEdit edit = repItem.CreateEditor();
+            edit.Properties.Assign(repItem);
+
+            //Transfer the ownership of the manager and tree to the properties of the newly created editor
+            repItem.TransferOwnership(edit.Properties as RepositoryItemChannelTreeEdit);
+
+            return edit;
+        }
+
+        public ChannelTreeEdit() : base()
+        {
+        }
 
         public override string EditorTypeName
         {
@@ -1417,9 +1452,14 @@ namespace iba.Controls
             base.DoClosePopup(closeMode);
         }
 
-		internal AnalyzerTreeControl control;
-		public IAnalyzerManagerUpdateSource analyzerManager;
-	}
+        internal AnalyzerTreeControl Tree => (Properties as RepositoryItemChannelTreeEdit)?.ChannelTree;
+        public IAnalyzerManagerUpdateSource AnalyzerManager => (Properties as RepositoryItemChannelTreeEdit)?.AnalyzerManager;
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
 
     #endregion
 
@@ -1431,7 +1471,7 @@ namespace iba.Controls
         {
             PopupBaseEditViewInfo vi = info.ViewInfo as PopupBaseEditViewInfo;
 
-			string id = vi.EditValue as string;
+            string id = vi.EditValue as string;
 
             RepositoryItemChannelTreeEdit item = vi.Item as RepositoryItemChannelTreeEdit;
 
@@ -1449,11 +1489,11 @@ namespace iba.Controls
                 else
                 {
                     AnalyzerTreeControl tree = item.ChannelTree;
-					if (tree is null)
-						tree = (vi.EditValue as ChannelTreeEdit).control;
+                    if (tree is null)
+                        tree = (vi.EditValue as ChannelTreeEdit).Tree;
 
-					text = tree.GetDisplayName(id) ?? id;
-					image = tree.GetImage(id);
+                    text = tree.GetDisplayName(id) ?? id;
+                    image = tree.GetImage(id);
                     /*if (image == null)
                     {
                         SpecialNode unassigned = item.GetSpecialNodeFromValue("*UNASSIGNED*");
@@ -1477,5 +1517,5 @@ namespace iba.Controls
         }
     }
 
-	#endregion
+    #endregion
 }

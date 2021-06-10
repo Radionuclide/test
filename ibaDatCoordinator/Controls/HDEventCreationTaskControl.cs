@@ -108,27 +108,7 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_btnTest, Properties.Resources.HDEventTask_ToolTip_Test);
 
             m_ctrlEvent.EventTrigger = triggerControl;
-            m_ctrlServer.ServerSelectionChanged += (s, e) =>
-            {
-                if (m_ctrlServer.Reader.IsConnected())
-                {
-                    m_ctrlEvent.ReadOnly = false;
-
-                    if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
-                    {
-                        if (m_ctrlServer.Reader.UserManager.IsActive() && user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
-                            m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
-                        else if (!m_ctrlServer.Reader.UserManager.IsActive() || user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
-                            m_ctrlEvent.StoreFilter = null;
-                        m_ctrlEvent.RequestEditRightsHDServer(m_ctrlEvent.GetStoreNames());
-                    }
-                }
-                else
-                {
-                    m_ctrlEvent.ReadOnly = true;
-                    m_ctrlEvent.StoreFilter = null;
-                }
-            };
+            m_ctrlServer.ServerSelectionChanged += OnServerSelectionChanged;
             m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), null, false);
             m_ctrlEvent.EventWizard = new HDEventWizard(m_analyzerManager, GetPriorities());
 
@@ -141,6 +121,34 @@ namespace iba.Controls
             bLoadingChannelTree = false;
             bResetChannelTree = false;
             bDisposeChannelTree = false;
+        }
+
+        private void OnServerSelectionChanged(object sender, EventArgs e)
+        {
+            if(InvokeRequired)
+            {
+                BeginInvoke(new Action<object, EventArgs>(OnServerSelectionChanged), sender, e);
+                return;
+            }
+
+            if (m_ctrlServer.Reader.IsConnected())
+            {
+                m_ctrlEvent.ReadOnly = false;
+
+                if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
+                {
+                    if (m_ctrlServer.Reader.UserManager.IsActive() && user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
+                        m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
+                    else if (!m_ctrlServer.Reader.UserManager.IsActive() || user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
+                        m_ctrlEvent.StoreFilter = null;
+                    m_ctrlEvent.RequestEditRightsHDServer(m_ctrlEvent.GetStoreNames());
+                }
+            }
+            else
+            {
+                m_ctrlEvent.ReadOnly = true;
+                m_ctrlEvent.StoreFilter = null;
+            }
         }
 
         public void ChannelEditorModified(object sender, EventArgs args)
