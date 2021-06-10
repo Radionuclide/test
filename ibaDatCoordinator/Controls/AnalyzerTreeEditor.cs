@@ -24,7 +24,7 @@ using System.Windows.Forms;
 
 namespace iba.Controls
 {
-	#region AnalyzerTree
+	#region AnalyzerManager
 	internal class AnalyzerManager : IDisposable, IAnalyzerManagerUpdateSource
 	{
         #region Members
@@ -207,8 +207,11 @@ namespace iba.Controls
             }
         }
     }
+    #endregion
 
-	[Flags]
+    #region AnalyzerTreeControl
+
+    [Flags]
     public enum ChannelTreeFilter
     {
         Analog = 0x01,
@@ -240,13 +243,10 @@ namespace iba.Controls
         ChannelTreeFilter filter;
 
         List<Node> customTreeNodes;
-
-        string pendingSelection;
-
-        ImageList imageList;
-        Dictionary<string, Tuple<int, Image>> customNodesImages = new Dictionary<string, Tuple<int, Image>> ();
         List<CustomNode> customNodes;
 
+        string pendingSelection;
+        
         protected Crownwood.DotNetMagic.Controls.TreeControl tree;
 
         IbaAnalyzer.ISignalTree analyzerTree;
@@ -272,10 +272,8 @@ namespace iba.Controls
 
             Padding = new Padding(0);
 
-            imageList = new ImageList();
-            imageList.TransparentColor = Color.Magenta;
             tree = new Crownwood.DotNetMagic.Controls.TreeControl();
-            tree.ImageList = imageList;
+            tree.ImageList = emptyList;
             tree.Dock = DockStyle.Fill;
             tree.Location = Point.Empty;
 
@@ -548,7 +546,6 @@ namespace iba.Controls
             if (analyzerTree != null)
                 ((IDisposable)analyzerTree).Dispose();
             analyzerTree = null;
-            customTreeNodes.Clear();
             pendingSelection = "";
 
             Interlocked.Exchange(ref iState, Unloaded);
@@ -603,62 +600,63 @@ namespace iba.Controls
             return null;
         }
 
-        static List<byte[]> cachedImageBytes = new List<byte[]>(); //use cache as when 
+        #region ImageList
 
-        void FillImageList()
+        const int ImageWidth = 16;
+        const int ImageHeigth = 16;
+        static ImageList imageList;
+        static ImageList emptyList;
+        static object imageListLock = new object();
+        
+        static AnalyzerTreeControl()
         {
-            lock (imageList)
+            emptyList = new ImageList();
+            emptyList.ImageSize = new Size(ImageWidth, ImageHeigth);
+            emptyList.TransparentColor = Color.Magenta;
+            emptyList.ColorDepth = ColorDepth.Depth32Bit;
+            imageList = emptyList;
+        }
+
+        static ImageList GetImageList(AnalyzerManager manager)
+        {
+            lock (imageListLock)
             {
-                lock (cachedImageBytes)
-                {
-                    FillImageListBase();
-                }
+                if ((imageList != null) && (imageList.Images.Count > 0))
+                    return imageList;
+
+                imageList = CreateImageList(manager);
+                return imageList;
             }
         }
 
-        unsafe void FillImageListBase()
+        static unsafe ImageList CreateImageList(AnalyzerManager manager)
         {
-
             if (manager.Analyzer == null)
-                return;
+                return emptyList;
+
+            ImageList newList = new ImageList();
+            newList.ImageSize = new Size(ImageWidth, ImageHeigth);
+            newList.TransparentColor = Color.Magenta;
+            newList.ColorDepth = ColorDepth.Depth32Bit;
+
             int cnt = manager.Analyzer.SignalTreeImageCount;
-
-            bool useCache = true;
-            if (cnt != cachedImageBytes.Count)
-            {
-                cachedImageBytes.Clear();
-                useCache = false;
-            }
-
             for (int i = 0; i < cnt; i++)
             {
-                byte[] thearray;
-                if (useCache)
-                {
-                    thearray = cachedImageBytes[i];
-                }
-                else
-                {
-                    object myArrayObject = null;
-                    manager.Analyzer.SignalTreeImageData(i, out myArrayObject); //make sure you always provide "NULL"
-                    thearray = myArrayObject as byte[];
-                    cachedImageBytes.Add(thearray);
-                }
-                fixed (byte* p = thearray)
-                {
-                    IntPtr ptr = (IntPtr)p;
-                    Bitmap bm = new Bitmap(16, 16, 16 * 4, System.Drawing.Imaging.PixelFormat.Format32bppRgb, ptr);
-                    imageList.Images.Add(bm);
-                }
+                object myArrayObject = null;
+                manager.Analyzer.SignalTreeImageData(i, out myArrayObject); //make sure you always provide "NULL"
+                byte[] pixelData = myArrayObject as byte[];
 
+                fixed (byte* p = pixelData)
+                {
+                    Bitmap bm = new Bitmap(ImageWidth, ImageHeigth, ImageWidth * 4, System.Drawing.Imaging.PixelFormat.Format32bppRgb, new IntPtr(p));
+                    newList.Images.Add(bm);
+                }
             }
-            foreach (string key in new List<string>(customNodesImages.Keys))
-            {
-                Tuple<int, Image> val = customNodesImages[key];
-                customNodesImages[key] = Tuple.Create(imageList.Images.Count, val.Item2);
-                imageList.Images.Add(val.Item2);
-            }
+
+            return newList;
         }
+
+        #endregion
 
         public Node GetSignalNode(string id)
         {
@@ -688,6 +686,7 @@ namespace iba.Controls
             {
 
             }
+            customTreeNodes.Clear();
             tree.Nodes.Clear();
         }
 
@@ -714,47 +713,51 @@ namespace iba.Controls
             }
 
             ClearNodes();
+
+            //Check if there was an error when opening ibaAnalyzer
             string error = "";
             if (task != null && (task.IsFaulted || !string.IsNullOrEmpty(task.Result)))
-            {
                 error = task.Exception?.Message ?? task.Result ?? Properties.Resources.AnalyzerTree_UnknownError;
-                imageList.Images.Clear();
-                tree.ImageList = imageList;
-            }
-            if (String.IsNullOrEmpty(error))
+            else
             {
                 try
                 {
-                    if (imageList.Images.Count < 2)
-                    {
-                        imageList.Images.Clear();
-                        FillImageList();
-                    }
                     analyzerTree = manager.Analyzer.GetSignalTree((int)filter) as IbaAnalyzer.ISignalTree; //could throw null ref exceptions when disconnected
-                    if (analyzerTree== null) //likely a disconnect
-                    {
-                        if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
-                        {
-                            error = Properties.Resources.treeErrorNoService;
-                        }
-                        error = Properties.Resources.treeErrorGeneric;
-                    }
-                    else
-                    { 
-                        object nodeObj = analyzerTree.GetRootNode();
-                        IbaAnalyzer.ISignalTreeNode node = nodeObj as IbaAnalyzer.ISignalTreeNode;
-                        if (node != null)
-                        {
-                            Node trnode = new Node(node.Text, node.ImageIndex);
-                            trnode.Tag = node;
-                            tree.Nodes.Add(trnode);
-                            RecursiveAdd(trnode);
-                        }
-                    }
-                    tree.ImageList = imageList;
-                    Invalidate();
-                    OnInvalidated(null);
+                    if (analyzerTree == null) //likely a disconnect
+                        error = Program.RunsWithService == Program.ServiceEnum.DISCONNECTED ? Properties.Resources.treeErrorNoService : Properties.Resources.treeErrorGeneric;
+                }
+                catch (Exception)
+                {
+                    error = Program.RunsWithService == Program.ServiceEnum.DISCONNECTED ? Properties.Resources.treeErrorNoService : Properties.Resources.treeErrorGeneric;
+                }
+            }
 
+            foreach (var cstNode in customNodes)
+                InsertSpecialNode(cstNode);
+
+            if (!String.IsNullOrEmpty(error))
+            {
+                Node errorNode = new Node(error);
+                errorNode.SelectedImage = errorNode.Image = Properties.Resources.img_error;
+                tree.Nodes.Add(errorNode);
+            }
+            else
+            {
+                try
+                {
+                    tree.ImageList = GetImageList(manager);
+
+                    object nodeObj = analyzerTree.GetRootNode();
+                    IbaAnalyzer.ISignalTreeNode node = nodeObj as IbaAnalyzer.ISignalTreeNode;
+                    if (node != null)
+                    {
+                        Node trnode = new Node(node.Text, node.ImageIndex);
+                        trnode.Tag = node;
+                        RecursiveAdd(trnode);
+                        
+                        //Only add the node here to the tree because otherwise we get constant tree updates
+                        tree.Nodes.Add(trnode);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -764,26 +767,8 @@ namespace iba.Controls
                         ((IDisposable)analyzerTree).Dispose();
                     }
                     analyzerTree = null;
-                    ClearNodes();
                 }
-            }
-
-            Node errorNode = null;
-            if (!string.IsNullOrEmpty(error))
-            {
-                int imgIndex = imageList.Images.Count;
-                errorNode = new Node(error, imgIndex);
-                lock (imageList)
-                {
-                    imageList.Images.Add(Properties.Resources.img_error);
-                }
-            }
-
-            foreach (var cstNode in customNodes)
-                InsertSpecialNode(cstNode);
-
-            if (errorNode != null)
-                tree.Nodes.Add(errorNode);
+            }          
 
             if (!string.IsNullOrEmpty(pendingSelection))
             {
@@ -801,7 +786,6 @@ namespace iba.Controls
             Interlocked.Exchange(ref iState, Loaded);
 
             UpdateTree();
-
         }
 
         private void TreeSetAnalyzerLoading()
@@ -811,13 +795,13 @@ namespace iba.Controls
                 BeginInvoke(new Action(TreeSetAnalyzerLoading));
                 return;
             }
-            lock (imageList)
-            {
-                imageList.Images.Clear();
-                ClearNodes();
-                imageList.Images.Add(Properties.Resources.img_warning);
-            }
-            tree.Nodes.Add(new Node(Properties.Resources.AnalyzerTree_Loading, 0));
+
+            ClearNodes();
+
+            Node loadingNode = new Node(Properties.Resources.AnalyzerTree_Loading);
+            loadingNode.SelectedImage = loadingNode.Image = Properties.Resources.img_warning;
+            tree.Nodes.Add(loadingNode);
+
             UpdateTree();
         }
 
@@ -845,7 +829,8 @@ namespace iba.Controls
 
         private void InsertSpecialNode(CustomNode customNode)
         {
-            Node trNode = new Node(customNode.Text, customNodesImages[customNode.Text].Item1);
+            Node trNode = new Node(customNode.Text);
+            trNode.SelectedImage = trNode.Image = customNode.Image;
             trNode.Tag = customNode;
             customTreeNodes.Add(trNode);
 
@@ -866,8 +851,6 @@ namespace iba.Controls
 
             CustomNode cstNode = new CustomNode() { Text = text, ChannelID = key, Image = image };
             customNodes.Add(cstNode);
-            if (!customNodesImages.ContainsKey(text))
-                customNodesImages.Add(text, Tuple.Create(-1, image));
 
             if (iState == Loaded)
                 InsertSpecialNode(cstNode);
@@ -886,7 +869,10 @@ namespace iba.Controls
                 trnode.Nodes.Add(childtrnode);
                 RecursiveAdd(childtrnode);
             }
-            if (!addSiblings) return;
+
+            if (!addSiblings) 
+                return;
+
             IbaAnalyzer.ISignalTreeNode sibling = signalTreeNode.GetSiblingNode() as IbaAnalyzer.ISignalTreeNode;
             while (sibling != null)
             {
@@ -904,12 +890,13 @@ namespace iba.Controls
             if (node.Nodes.Count == 1 && node.Nodes[0].Text == "dummy")
             {
                 node.Nodes.Clear();
+
                 IbaAnalyzer.ISignalTreeNode parent = node.Tag as IbaAnalyzer.ISignalTreeNode;
                 if (parent != null)
                 {
                     parent.Expand();
+
                     RecursiveAdd(node, false);
-                    tree.Update();
                 }
             }
         }
@@ -1026,7 +1013,10 @@ namespace iba.Controls
             if (trNode == null)
                 return null;
 
-            return trNode.ImageIndex > 0 && trNode.ImageIndex < imageList.Images.Count ? imageList.Images[trNode.ImageIndex] : null;
+            if (trNode.Image != null)
+                return trNode.Image;
+
+            return trNode.ImageIndex >= 0 && trNode.ImageIndex < imageList.Images.Count ? imageList.Images[trNode.ImageIndex] : null;
         }
 
         #region Handlers

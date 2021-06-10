@@ -132,7 +132,7 @@
     <value>0</value>
   </data>
   <data name="m_grPulse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>217, 20</value>
   </data>
   <data name="m_grPulse.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
