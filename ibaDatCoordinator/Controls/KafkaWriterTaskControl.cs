@@ -7,7 +7,6 @@ using DevExpress.XtraGrid.Views.Grid;
 using iba.Utility;
 using System.IO;
 using System.Collections.Generic;
-using iba.Kafka.SchemaRegistry;
 
 namespace iba.Controls
 {
@@ -81,8 +80,6 @@ namespace iba.Controls
 
             addressTextBox.Text = _data.clusterAddress;
             schemaTextBox.Text = _data.schemaRegistryAddress;
-            useSchemaServerCheckBox.Checked = _data.useSchemaRegistryServer;
-            schemaTextBox.Enabled = _data.useSchemaRegistryServer;
             topicComboBox.Text = _data.topicName;
             digitalFormatComboBox.SelectedIndex = (int)_data.digitalFormat;
             timeoutNumericUpDown.Value =
@@ -165,7 +162,6 @@ namespace iba.Controls
 
             _data.clusterAddress = addressTextBox.Text;
             _data.schemaRegistryAddress = schemaTextBox.Text;
-            _data.useSchemaRegistryServer = useSchemaServerCheckBox.Checked;
             _data.topicName = topicComboBox.Text;
             _data.timeout = Decimal.ToDouble(timeoutNumericUpDown.Value);
             _data.identifier = identifierTextBox.Text;
@@ -207,7 +203,7 @@ namespace iba.Controls
             }
         }
 
-        private void m_executeIBAButton_Click(object sender, EventArgs e)
+        private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
             DatCoordinatorHostImpl.Host.OpenPDO(m_pdoFileTextBox.Text);
         }
@@ -456,7 +452,7 @@ namespace iba.Controls
             if (!clusterAvailable)
                 return;
 
-            if (schemaTextBox.Text == "" || !useSchemaServerCheckBox.Checked)
+            if (schemaTextBox.Text == "")
             {
                 MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -536,11 +532,6 @@ namespace iba.Controls
                     schemRegClient.Dispose();
             }
             MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void UseSchemaServerCheckBoxCheckedChanged(object sender, EventArgs e)
-        {
-            schemaTextBox.Enabled = useSchemaServerCheckBox.Checked;
         }
     }
 }

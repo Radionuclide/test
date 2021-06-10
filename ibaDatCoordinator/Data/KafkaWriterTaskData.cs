@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using Confluent.SchemaRegistry;
 using iba.Controls;
+using IbaAnalyzer;
 
 namespace iba.Data
 {
@@ -19,7 +20,7 @@ namespace iba.Data
         private string schemaRegistryAddressCached;
         private byte[] schemaFingerprintCached;
         public string schemaRegistryAddress;
-        public bool useSchemaRegistryServer;
+        public string key;
         public MonitorData MonitorData { get; set; }
         public string TestDatFile { get; set; }
         public RequiredAcks AckMode { get; set; }
@@ -173,9 +174,9 @@ namespace iba.Data
                     return false;
                 var rec = (KafkaRecord)obj;
                 return
-                    Expression == rec.Expression &&
-                    Name == rec.Name &&
-                    DataType == rec.DataType;
+                        Expression == rec.Expression &&
+                        Name == rec.Name &&
+                        DataType == rec.DataType;
             }
 
             public override int GetHashCode()
@@ -217,7 +218,7 @@ namespace iba.Data
             schemaRegistryAddress = "";
             schemaRegistryAddressCached = "";
             schemaFingerprintCached = null;
-            useSchemaRegistryServer = false;
+            key = "";
             AckMode = RequiredAcks.None;
         }
 
@@ -239,9 +240,8 @@ namespace iba.Data
             d.schemaRegistryAddress = schemaRegistryAddress;
             d.schemaRegistryAddressCached = schemaRegistryAddressCached;
             d.schemaFingerprintCached = schemaFingerprintCached;
-            d.useSchemaRegistryServer = useSchemaRegistryServer;
             d.AckMode = AckMode;
-
+            d.key = key;
             return d;
         }
 
@@ -264,8 +264,8 @@ namespace iba.Data
                 schemaRegistryAddress == other.schemaRegistryAddress &&
                 schemaRegistryAddressCached == other.schemaRegistryAddressCached &&
                 schemaFingerprintCached == other.schemaFingerprintCached &&
-                useSchemaRegistryServer == other.useSchemaRegistryServer &&
-                AckMode == other.AckMode;
+                AckMode == other.AckMode &&
+                key == other.key;
         }
 
         public void EvaluateValues(string filename, IbaAnalyzer.IbaAnalyzer ibaAnalyzer)

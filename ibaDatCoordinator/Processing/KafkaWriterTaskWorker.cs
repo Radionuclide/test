@@ -193,7 +193,7 @@ namespace iba.Processing
                                 message += "\"" + m_data.Records[i].Expression + "\": " + m_data.ToText(m_data.Records[i]);
                             }
                             message += "}";
-                            var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Value = message }).Result;
+                            var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = m_data.key, Value = message }).Result;
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONPerSignal)
                         {
@@ -201,13 +201,13 @@ namespace iba.Processing
                             foreach (var rec in m_data.Records)
                             {
                                 string message = "{ \"Signal\": \"" + rec.Expression + "\", \"Value\": " + m_data.ToText(rec) + "}";
-                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Value = message }).Result;
+                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = m_data.key, Value = message }).Result;
                             }
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.AVRO)
                         {
                             var schemaFingerPrint = schemaFingerPrintDefault;
-                            if (m_data.useSchemaRegistryServer)
+                            if (m_data.schemaRegistryAddress != "")
                                 schemaFingerPrint = m_data.schemaFingerPrint;
                             var schema = schemaDefault;
                             
@@ -255,7 +255,7 @@ namespace iba.Processing
                                     msg.Value = ms.ToArray();
                                 }
 
-                                msg.Key = null;
+                                msg.Key = Encoding.UTF8.GetBytes(m_data.key.ToCharArray());
                                 var dr = p.ProduceAsync(m_data.topicName, msg);
                             }
                         }
