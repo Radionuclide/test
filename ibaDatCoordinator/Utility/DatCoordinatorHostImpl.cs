@@ -166,7 +166,8 @@ namespace iba.Utility
                         var infos  = Program.CommunicationObject.GetFileInfos2(Path.GetDirectoryName(pdoFile), "*.lst")?.OrderBy(File => File.LastWriteTimeUtc);
                         if (infos.Count() > 0)
                         {
-                            string lstfile = infos.Last().LocalFileName;
+                            var sameName = infos.FirstOrDefault(File => Path.GetFileNameWithoutExtension(File.LocalFileName).ToLower() == Path.GetFileNameWithoutExtension(pdoFile).ToLower());
+                            string lstfile = (sameName??infos.Last()).LocalFileName;
                             if (!Program.RemoteFileLoader.DownloadFile(lstfile, out string localLstFile, out string error2))
                             {
                                 MessageBox.Show(error2, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -290,6 +291,11 @@ namespace iba.Utility
                     {
                         if (File.Exists(lstFile))
                         {
+                            if (Path.GetFileNameWithoutExtension(lstFile).ToLower() == Path.GetFileNameWithoutExtension(localFile).ToLower())
+                            {
+                                lstFileLocal = lstFile;
+                                break;
+                            }
                             DateTime writeTime = File.GetLastWriteTime(lstFile);
                             if (writeTime > newest)
                             {
