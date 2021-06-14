@@ -302,11 +302,20 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Browse for .dat file. If necessary, remove the &quot;Already processed&quot; mark and process it..
+        ///   Looks up a localized string similar to Browse for .dat file....
         /// </summary>
-        internal static string browseCleanProcessButton {
+        internal static string browseDatFile {
             get {
-                return ResourceManager.GetString("browseCleanProcessButton", resourceCulture);
+                return ResourceManager.GetString("browseDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to browse for .dat file folder....
+        /// </summary>
+        internal static string browseFolderDatFile {
+            get {
+                return ResourceManager.GetString("browseFolderDatFile", resourceCulture);
             }
         }
         
@@ -1417,7 +1426,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open the PDO file with ibaAnalyzer.
+        ///   Looks up a localized string similar to Open the analysis file with ibaAnalyzer.
         /// </summary>
         internal static string HDEventTask_ToolTip_OpenPDO {
             get {
@@ -1435,7 +1444,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload a PDO file to the server.
+        ///   Looks up a localized string similar to Upload the analysis file to the server.
         /// </summary>
         internal static string HDEventTask_ToolTip_UploadPDO {
             get {
@@ -1444,7 +1453,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update the PDO file.
+        ///   Looks up a localized string similar to Update the analysis file.
         /// </summary>
         internal static string HDEventTask_ToolTip_UploadPDOStandAlone {
             get {
@@ -4926,6 +4935,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("Toolbars16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to browse for analysis....
+        /// </summary>
+        internal static string ToolTip_BrowsePDO {
+            get {
+                return ResourceManager.GetString("ToolTip_BrowsePDO", resourceCulture);
             }
         }
         

@@ -103,7 +103,8 @@ namespace iba.Controls
             m_ctrlEvent.SetChannelTreeCtrl(channelTree);
 
             m_toolTip.SetToolTip(m_btnOpenPDO, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
-            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService==Program.ServiceEnum.NOSERVICE?Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone:Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService==Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone:Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_btnBrowsePDO, Properties.Resources.ToolTip_BrowsePDO);
 
             m_toolTip.SetToolTip(m_btnTest, Properties.Resources.HDEventTask_ToolTip_Test);
 
