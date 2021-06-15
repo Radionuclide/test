@@ -18,6 +18,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelScheduledJob));
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_btTriggerNow = new System.Windows.Forms.Button();
+            this.m_btShowTrigger = new System.Windows.Forms.Button();
             this.gbSchedule = new iba.Utility.CollapsibleGroupBox();
             this.m_cbRepErr = new System.Windows.Forms.CheckBox();
             this.m_cbInitialScanEnabled = new System.Windows.Forms.CheckBox();
@@ -29,8 +31,7 @@
             this.m_nudRepeatHours = new System.Windows.Forms.NumericUpDown();
             this.m_cbRepeat = new System.Windows.Forms.CheckBox();
             this.gbTrigger = new System.Windows.Forms.GroupBox();
-            this.m_btTriggerNow = new System.Windows.Forms.Button();
-            this.m_btShowTrigger = new System.Windows.Forms.Button();
+            this.m_cbStartHistorical = new System.Windows.Forms.CheckBox();
             this.m_dtStart = new iba.Utility.RippleDateTimePicker();
             this.m_gbSubProperties = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -84,7 +85,6 @@
             this.m_nudStartHours = new System.Windows.Forms.NumericUpDown();
             this.m_nudStartDays = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
-            this.m_cbStartHistorical = new System.Windows.Forms.CheckBox();
             this.gbSchedule.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatTimes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudRepeatMinutes)).BeginInit();
@@ -104,9 +104,26 @@
             ((System.ComponentModel.ISupportInitialize)(this.m_nudStartDays)).BeginInit();
             this.SuspendLayout();
             // 
+            // m_btTriggerNow
+            // 
+            resources.ApplyResources(this.m_btTriggerNow, "m_btTriggerNow");
+            this.m_btTriggerNow.Name = "m_btTriggerNow";
+            this.m_toolTip.SetToolTip(this.m_btTriggerNow, resources.GetString("m_btTriggerNow.ToolTip"));
+            this.m_btTriggerNow.UseVisualStyleBackColor = true;
+            this.m_btTriggerNow.Click += new System.EventHandler(this.m_btTriggerNow_Click);
+            // 
+            // m_btShowTrigger
+            // 
+            resources.ApplyResources(this.m_btShowTrigger, "m_btShowTrigger");
+            this.m_btShowTrigger.Name = "m_btShowTrigger";
+            this.m_toolTip.SetToolTip(this.m_btShowTrigger, resources.GetString("m_btShowTrigger.ToolTip"));
+            this.m_btShowTrigger.UseVisualStyleBackColor = true;
+            this.m_btShowTrigger.Click += new System.EventHandler(this.m_btShowTrigger_Click);
+            // 
             // gbSchedule
             // 
             resources.ApplyResources(this.gbSchedule, "gbSchedule");
+            this.gbSchedule.Controls.Add(this.m_cbStartHistorical);
             this.gbSchedule.Controls.Add(this.m_cbRepErr);
             this.gbSchedule.Controls.Add(this.m_cbInitialScanEnabled);
             this.gbSchedule.Controls.Add(this.m_nudRepeatTimes);
@@ -203,7 +220,6 @@
             // gbTrigger
             // 
             resources.ApplyResources(this.gbTrigger, "gbTrigger");
-            this.gbTrigger.Controls.Add(this.m_cbStartHistorical);
             this.gbTrigger.Controls.Add(this.m_btTriggerNow);
             this.gbTrigger.Controls.Add(this.m_btShowTrigger);
             this.gbTrigger.Controls.Add(this.m_dtStart);
@@ -217,21 +233,11 @@
             this.gbTrigger.Name = "gbTrigger";
             this.gbTrigger.TabStop = false;
             // 
-            // m_btTriggerNow
+            // m_cbStartHistorical
             // 
-            resources.ApplyResources(this.m_btTriggerNow, "m_btTriggerNow");
-            this.m_btTriggerNow.Name = "m_btTriggerNow";
-            this.m_toolTip.SetToolTip(this.m_btTriggerNow, resources.GetString("m_btTriggerNow.ToolTip"));
-            this.m_btTriggerNow.UseVisualStyleBackColor = true;
-            this.m_btTriggerNow.Click += new System.EventHandler(this.m_btTriggerNow_Click);
-            // 
-            // m_btShowTrigger
-            // 
-            resources.ApplyResources(this.m_btShowTrigger, "m_btShowTrigger");
-            this.m_btShowTrigger.Name = "m_btShowTrigger";
-            this.m_toolTip.SetToolTip(this.m_btShowTrigger, resources.GetString("m_btShowTrigger.ToolTip"));
-            this.m_btShowTrigger.UseVisualStyleBackColor = true;
-            this.m_btShowTrigger.Click += new System.EventHandler(this.m_btShowTrigger_Click);
+            resources.ApplyResources(this.m_cbStartHistorical, "m_cbStartHistorical");
+            this.m_cbStartHistorical.Name = "m_cbStartHistorical";
+            this.m_cbStartHistorical.UseVisualStyleBackColor = true;
             // 
             // m_dtStart
             // 
@@ -682,12 +688,6 @@
             // 
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
-            // 
-            // m_cbStartHistorical
-            // 
-            resources.ApplyResources(this.m_cbStartHistorical, "m_cbStartHistorical");
-            this.m_cbStartHistorical.Name = "m_cbStartHistorical";
-            this.m_cbStartHistorical.UseVisualStyleBackColor = true;
             // 
             // PanelScheduledJob
             // 
