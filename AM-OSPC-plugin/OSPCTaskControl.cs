@@ -31,12 +31,11 @@ namespace AM_OSPC_plugin
 			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;
 			dataGV.IndicatorWidth = 50;
 
-            m_datcoHost.
             gridColumn6.Caption = Properties.Resources.ExprTblExpression;
             gridColumn7.Caption = Properties.Resources.ExprTblProcessName;
             gridColumn8.Caption = Properties.Resources.ExprTblVarName;
             gridColumn9.Caption = Properties.Resources.ExprTblTestVal;
-            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            //m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
         }
 
         protected override void OnLoad(EventArgs e)
