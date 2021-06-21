@@ -21,6 +21,7 @@ namespace iba.Data
         private byte[] schemaFingerprintCached;
         public string schemaRegistryAddress;
         public string key;
+        public List<string> metadata;
         public MonitorData MonitorData { get; set; }
         public string TestDatFile { get; set; }
         public RequiredAcks AckMode { get; set; }
@@ -127,8 +128,6 @@ namespace iba.Data
                 Text = 1,
                 Digital = 2
             }
-
-            public string Metadata { get; set; }
             
             public ExpressionType DataType { get; set; }
             public string DataTypeAsString
@@ -164,8 +163,7 @@ namespace iba.Data
                     Expression = this.Expression,
                     Value = this.Value,
                     DataType = this.DataType,
-                    Name = this.Name,
-                    Metadata = this.Metadata
+                    Name = this.Name
                 };
             }
             public override bool Equals(object obj)
@@ -207,6 +205,8 @@ namespace iba.Data
         {
             Records = new List<KafkaRecord>();
             Params = new List<Param>();
+            Name = "";
+            metadata = new List<string>();
             MonitorData = new MonitorData();
             timeout = 3;
             Format = DataFormat.JSONGrouped;
@@ -242,6 +242,8 @@ namespace iba.Data
             d.schemaFingerprintCached = schemaFingerprintCached;
             d.AckMode = AckMode;
             d.key = key;
+            d.metadata = metadata.Select(r => (string)r.Clone()).ToList();
+            d.Name = Name;
             return d;
         }
 
@@ -265,7 +267,8 @@ namespace iba.Data
                 schemaRegistryAddressCached == other.schemaRegistryAddressCached &&
                 schemaFingerprintCached == other.schemaFingerprintCached &&
                 AckMode == other.AckMode &&
-                key == other.key;
+                key == other.key &&
+                metadata.SequenceEqual(other.metadata);
         }
 
         public void EvaluateValues(string filename, IbaAnalyzer.IbaAnalyzer ibaAnalyzer)

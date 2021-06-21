@@ -7,6 +7,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using iba.Utility;
 using System.IO;
 using System.Collections.Generic;
+using DevExpress.XtraEditors.Controls;
 
 namespace iba.Controls
 {
@@ -34,13 +35,12 @@ namespace iba.Controls
             exprGrid.RepositoryItems.Add(channelEditor);
             expressionGridColumn.ColumnEdit = channelEditor;
 
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Unit");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Comment 1");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Comment 2");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Signal names");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Signal ID");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Identifier");
-            repositoryItemCheckedComboBoxEdit1.ShowButtons = false;
+            metadataComboBox.Properties.Items.Add("Unit");
+            metadataComboBox.Properties.Items.Add("Comment 1");
+            metadataComboBox.Properties.Items.Add("Comment 2");
+            metadataComboBox.Properties.Items.Add("Signal name");
+            metadataComboBox.Properties.Items.Add("Signal ID");
+            metadataComboBox.Properties.Items.Add("Identifier");
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             foreach (var t in KafkaWriterTaskData.KafkaRecord.DataTypes)
@@ -58,7 +58,6 @@ namespace iba.Controls
             expressionGridColumn.Caption = Properties.Resources.ibaAnalyzerExpression;
             testValueGridColumn.Caption = Properties.Resources.TestValue;
             nameGridColumn.Caption = Properties.Resources.Name;
-            metadataGridColumn.Caption = Properties.Resources.Metadata;
         }
 
         private void UpdateParamTableButtons()
@@ -77,6 +76,9 @@ namespace iba.Controls
                 _expressionTableData.Add((KafkaWriterTaskData.KafkaRecord)rec.Clone());
             foreach (var par in _data.Params)
                 _paramTableData.Add((KafkaWriterTaskData.Param)par.Clone());
+
+            foreach (CheckedListBoxItem i in metadataComboBox.Properties.Items)
+                i.CheckState = _data.metadata.Contains(i.ToString()) ? CheckState.Checked : CheckState.Unchecked;
 
             addressTextBox.Text = _data.clusterAddress;
             schemaTextBox.Text = _data.schemaRegistryAddress;
@@ -166,6 +168,11 @@ namespace iba.Controls
             _data.timeout = Decimal.ToDouble(timeoutNumericUpDown.Value);
             _data.identifier = identifierTextBox.Text;
             _data.digitalFormat = (KafkaWriterTaskData.DigitalFormat)digitalFormatComboBox.SelectedIndex;
+
+            _data.metadata.Clear();
+            foreach (CheckedListBoxItem i in metadataComboBox.Properties.Items)
+                if (i.CheckState == CheckState.Checked)
+                    _data.metadata.Add(i.ToString());
 
             _data.Format = (KafkaWriterTaskData.DataFormat)dataFormatComboBox.SelectedIndex;
             _data.AckMode = (KafkaWriterTaskData.RequiredAcks)acknowledgmentComboBox.SelectedIndex;

@@ -29,13 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KafkaWriterTaskControl));
-            this.repositoryItemCheckedComboBoxEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckedComboBoxEdit();
             this.exprGrid = new DevExpress.XtraGrid.GridControl();
             this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.expressionGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
             this.dataTypeGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
             this.testValueGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.metadataGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
             this.nameGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
             this.expressionAddButton = new System.Windows.Forms.Button();
             this.m_monitorGroup = new System.Windows.Forms.GroupBox();
@@ -82,12 +80,14 @@
             this.testConnectionButton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.schemaTextBox = new System.Windows.Forms.TextBox();
-            this.collapsibleGroupBox1 = new iba.Utility.CollapsibleGroupBox();
+            this.collapsibleGroupBox1 = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.collapsibleGroupBox2 = new iba.Utility.CollapsibleGroupBox();
+            this.collapsibleGroupBox2 = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.metadataComboBox = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.keyTextBox = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckedComboBoxEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exprGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             this.m_monitorGroup.SuspendLayout();
@@ -98,14 +98,8 @@
             ((System.ComponentModel.ISupportInitialize)(this._viewParam)).BeginInit();
             this.collapsibleGroupBox1.SuspendLayout();
             this.collapsibleGroupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.metadataComboBox.Properties)).BeginInit();
             this.SuspendLayout();
-            // 
-            // repositoryItemCheckedComboBoxEdit1
-            // 
-            this.repositoryItemCheckedComboBoxEdit1.AutoHeight = false;
-            this.repositoryItemCheckedComboBoxEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repositoryItemCheckedComboBoxEdit1.Name = "repositoryItemCheckedComboBoxEdit1";
             // 
             // exprGrid
             // 
@@ -113,12 +107,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.exprGrid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.exprGrid.Location = new System.Drawing.Point(8, 654);
+            this.exprGrid.Location = new System.Drawing.Point(8, 549);
             this.exprGrid.MainView = this.dataGV;
             this.exprGrid.Margin = new System.Windows.Forms.Padding(20, 4, 20, 4);
             this.exprGrid.MinimumSize = new System.Drawing.Size(0, 199);
             this.exprGrid.Name = "exprGrid";
-            this.exprGrid.Size = new System.Drawing.Size(983, 199);
+            this.exprGrid.Size = new System.Drawing.Size(940, 201);
             this.exprGrid.TabIndex = 17;
             this.exprGrid.TabStop = false;
             this.exprGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -130,7 +124,6 @@
             this.expressionGridColumn,
             this.dataTypeGridColumn,
             this.testValueGridColumn,
-            this.metadataGridColumn,
             this.nameGridColumn});
             this.dataGV.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
             this.dataGV.GridControl = this.exprGrid;
@@ -176,15 +169,6 @@
             this.testValueGridColumn.Visible = true;
             this.testValueGridColumn.VisibleIndex = 3;
             // 
-            // metadataGridColumn
-            // 
-            this.metadataGridColumn.Caption = "gridColumnMetadata";
-            this.metadataGridColumn.ColumnEdit = this.repositoryItemCheckedComboBoxEdit1;
-            this.metadataGridColumn.FieldName = "Metadata";
-            this.metadataGridColumn.Name = "metadataGridColumn";
-            this.metadataGridColumn.Visible = true;
-            this.metadataGridColumn.VisibleIndex = 4;
-            // 
             // nameGridColumn
             // 
             this.nameGridColumn.Caption = "gridColumnName";
@@ -199,7 +183,7 @@
             this.expressionAddButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.expressionAddButton.Image = ((System.Drawing.Image)(resources.GetObject("expressionAddButton.Image")));
             this.expressionAddButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.expressionAddButton.Location = new System.Drawing.Point(997, 656);
+            this.expressionAddButton.Location = new System.Drawing.Point(954, 549);
             this.expressionAddButton.Margin = new System.Windows.Forms.Padding(4);
             this.expressionAddButton.Name = "expressionAddButton";
             this.expressionAddButton.Size = new System.Drawing.Size(32, 30);
@@ -217,11 +201,11 @@
             this.m_monitorGroup.Controls.Add(this.m_nudMemory);
             this.m_monitorGroup.Controls.Add(this.m_cbTime);
             this.m_monitorGroup.Controls.Add(this.m_cbMemory);
-            this.m_monitorGroup.Location = new System.Drawing.Point(4, 1017);
+            this.m_monitorGroup.Location = new System.Drawing.Point(4, 914);
             this.m_monitorGroup.Margin = new System.Windows.Forms.Padding(4);
             this.m_monitorGroup.Name = "m_monitorGroup";
             this.m_monitorGroup.Padding = new System.Windows.Forms.Padding(4);
-            this.m_monitorGroup.Size = new System.Drawing.Size(1025, 90);
+            this.m_monitorGroup.Size = new System.Drawing.Size(982, 90);
             this.m_monitorGroup.TabIndex = 26;
             this.m_monitorGroup.TabStop = false;
             this.m_monitorGroup.Text = "Monitor ibaAnalyzer";
@@ -328,13 +312,13 @@
             this.topicComboBox.Location = new System.Drawing.Point(198, 20);
             this.topicComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.topicComboBox.Name = "topicComboBox";
-            this.topicComboBox.Size = new System.Drawing.Size(463, 24);
+            this.topicComboBox.Size = new System.Drawing.Size(641, 24);
             this.topicComboBox.TabIndex = 9;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 24);
+            this.label1.Location = new System.Drawing.Point(19, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 17);
             this.label1.TabIndex = 18;
@@ -343,7 +327,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 96);
+            this.label2.Location = new System.Drawing.Point(19, 96);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 17);
             this.label2.TabIndex = 20;
@@ -353,16 +337,16 @@
             // 
             this.addressTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addressTextBox.Location = new System.Drawing.Point(195, 93);
+            this.addressTextBox.Location = new System.Drawing.Point(198, 93);
             this.addressTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.addressTextBox.Name = "addressTextBox";
-            this.addressTextBox.Size = new System.Drawing.Size(669, 22);
+            this.addressTextBox.Size = new System.Drawing.Size(641, 22);
             this.addressTextBox.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 160);
+            this.label3.Location = new System.Drawing.Point(19, 160);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(119, 17);
             this.label3.TabIndex = 22;
@@ -370,7 +354,7 @@
             // 
             // timeoutNumericUpDown
             // 
-            this.timeoutNumericUpDown.Location = new System.Drawing.Point(195, 160);
+            this.timeoutNumericUpDown.Location = new System.Drawing.Point(198, 160);
             this.timeoutNumericUpDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.timeoutNumericUpDown.Minimum = new decimal(new int[] {
             1,
@@ -378,7 +362,7 @@
             0,
             0});
             this.timeoutNumericUpDown.Name = "timeoutNumericUpDown";
-            this.timeoutNumericUpDown.Size = new System.Drawing.Size(60, 22);
+            this.timeoutNumericUpDown.Size = new System.Drawing.Size(68, 22);
             this.timeoutNumericUpDown.TabIndex = 12;
             this.timeoutNumericUpDown.Value = new decimal(new int[] {
             1,
@@ -389,7 +373,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 101);
+            this.label5.Location = new System.Drawing.Point(19, 119);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(86, 17);
             this.label5.TabIndex = 24;
@@ -405,10 +389,10 @@
             "JSON (grouped)",
             "JSON (per signal)",
             "AVRO (per signal)"});
-            this.dataFormatComboBox.Location = new System.Drawing.Point(198, 97);
+            this.dataFormatComboBox.Location = new System.Drawing.Point(198, 116);
             this.dataFormatComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataFormatComboBox.Name = "dataFormatComboBox";
-            this.dataFormatComboBox.Size = new System.Drawing.Size(463, 24);
+            this.dataFormatComboBox.Size = new System.Drawing.Size(641, 24);
             this.dataFormatComboBox.TabIndex = 10;
             // 
             // m_browseDatFileButton
@@ -416,7 +400,7 @@
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browseDatFileButton.Image = global::iba.Properties.Resources.open;
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browseDatFileButton.Location = new System.Drawing.Point(913, 48);
+            this.m_browseDatFileButton.Location = new System.Drawing.Point(870, 46);
             this.m_browseDatFileButton.Margin = new System.Windows.Forms.Padding(4);
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_browseDatFileButton.Size = new System.Drawing.Size(32, 30);
@@ -428,7 +412,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label6.Location = new System.Drawing.Point(4, 54);
+            this.label6.Location = new System.Drawing.Point(4, 52);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(111, 17);
@@ -439,10 +423,10 @@
             // 
             this.m_datFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_datFileTextBox.Location = new System.Drawing.Point(187, 50);
+            this.m_datFileTextBox.Location = new System.Drawing.Point(198, 48);
             this.m_datFileTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_datFileTextBox.Name = "m_datFileTextBox";
-            this.m_datFileTextBox.Size = new System.Drawing.Size(720, 22);
+            this.m_datFileTextBox.Size = new System.Drawing.Size(666, 22);
             this.m_datFileTextBox.TabIndex = 4;
             // 
             // m_testButton
@@ -450,7 +434,7 @@
             this.m_testButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_testButton.Image = global::iba.Properties.Resources.sychronizeList;
             this.m_testButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_testButton.Location = new System.Drawing.Point(953, 48);
+            this.m_testButton.Location = new System.Drawing.Point(910, 46);
             this.m_testButton.Margin = new System.Windows.Forms.Padding(4);
             this.m_testButton.Name = "m_testButton";
             this.m_testButton.Size = new System.Drawing.Size(32, 30);
@@ -463,7 +447,7 @@
             this.m_btnUploadPDO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
             this.m_btnUploadPDO.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_btnUploadPDO.Location = new System.Drawing.Point(993, 15);
+            this.m_btnUploadPDO.Location = new System.Drawing.Point(950, 13);
             this.m_btnUploadPDO.Margin = new System.Windows.Forms.Padding(4);
             this.m_btnUploadPDO.Name = "m_btnUploadPDO";
             this.m_btnUploadPDO.Padding = new System.Windows.Forms.Padding(1);
@@ -476,7 +460,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label8.Location = new System.Drawing.Point(4, 22);
+            this.label8.Location = new System.Drawing.Point(4, 20);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(120, 17);
@@ -487,10 +471,10 @@
             // 
             this.m_pdoFileTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_pdoFileTextBox.Location = new System.Drawing.Point(187, 18);
+            this.m_pdoFileTextBox.Location = new System.Drawing.Point(198, 16);
             this.m_pdoFileTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-            this.m_pdoFileTextBox.Size = new System.Drawing.Size(720, 22);
+            this.m_pdoFileTextBox.Size = new System.Drawing.Size(666, 22);
             this.m_pdoFileTextBox.TabIndex = 0;
             this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
             // 
@@ -499,7 +483,7 @@
             this.m_browsePDOFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browsePDOFileButton.Image = global::iba.Properties.Resources.open;
             this.m_browsePDOFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browsePDOFileButton.Location = new System.Drawing.Point(913, 15);
+            this.m_browsePDOFileButton.Location = new System.Drawing.Point(870, 13);
             this.m_browsePDOFileButton.Margin = new System.Windows.Forms.Padding(4);
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_browsePDOFileButton.Size = new System.Drawing.Size(32, 30);
@@ -512,7 +496,7 @@
             this.m_executeIBAAButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
             this.m_executeIBAAButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_executeIBAAButton.Location = new System.Drawing.Point(953, 15);
+            this.m_executeIBAAButton.Location = new System.Drawing.Point(910, 13);
             this.m_executeIBAAButton.Margin = new System.Windows.Forms.Padding(4);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.Size = new System.Drawing.Size(32, 30);
@@ -525,7 +509,7 @@
             this.downButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.downButton.Image = ((System.Drawing.Image)(resources.GetObject("downButton.Image")));
             this.downButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.downButton.Location = new System.Drawing.Point(997, 772);
+            this.downButton.Location = new System.Drawing.Point(954, 665);
             this.downButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.downButton.Name = "downButton";
             this.downButton.Size = new System.Drawing.Size(32, 30);
@@ -538,7 +522,7 @@
             this.upButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.upButton.Image = ((System.Drawing.Image)(resources.GetObject("upButton.Image")));
             this.upButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.upButton.Location = new System.Drawing.Point(997, 733);
+            this.upButton.Location = new System.Drawing.Point(954, 626);
             this.upButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(32, 30);
@@ -552,7 +536,7 @@
             this.expressionCopyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.expressionCopyButton.Image = ((System.Drawing.Image)(resources.GetObject("expressionCopyButton.Image")));
             this.expressionCopyButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.expressionCopyButton.Location = new System.Drawing.Point(997, 695);
+            this.expressionCopyButton.Location = new System.Drawing.Point(954, 588);
             this.expressionCopyButton.Margin = new System.Windows.Forms.Padding(4);
             this.expressionCopyButton.Name = "expressionCopyButton";
             this.expressionCopyButton.Size = new System.Drawing.Size(32, 30);
@@ -566,7 +550,7 @@
             this.expressionRemoveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.expressionRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("expressionRemoveButton.Image")));
             this.expressionRemoveButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.expressionRemoveButton.Location = new System.Drawing.Point(997, 824);
+            this.expressionRemoveButton.Location = new System.Drawing.Point(954, 720);
             this.expressionRemoveButton.Margin = new System.Windows.Forms.Padding(4);
             this.expressionRemoveButton.Name = "expressionRemoveButton";
             this.expressionRemoveButton.Size = new System.Drawing.Size(32, 30);
@@ -577,7 +561,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(22, 192);
+            this.label9.Location = new System.Drawing.Point(19, 192);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(157, 17);
             this.label9.TabIndex = 39;
@@ -587,7 +571,7 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(4, 875);
+            this.label10.Location = new System.Drawing.Point(5, 777);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(150, 17);
             this.label10.TabIndex = 42;
@@ -598,11 +582,11 @@
             this.paramGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paramGrid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.paramGrid.Location = new System.Drawing.Point(189, 874);
+            this.paramGrid.Location = new System.Drawing.Point(190, 766);
             this.paramGrid.MainView = this._viewParam;
             this.paramGrid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.paramGrid.Name = "paramGrid";
-            this.paramGrid.Size = new System.Drawing.Size(801, 139);
+            this.paramGrid.Size = new System.Drawing.Size(758, 139);
             this.paramGrid.TabIndex = 23;
             this.paramGrid.TabStop = false;
             this.paramGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -653,7 +637,7 @@
             this.paramAddButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.paramAddButton.Image = ((System.Drawing.Image)(resources.GetObject("paramAddButton.Image")));
             this.paramAddButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.paramAddButton.Location = new System.Drawing.Point(997, 874);
+            this.paramAddButton.Location = new System.Drawing.Point(954, 764);
             this.paramAddButton.Margin = new System.Windows.Forms.Padding(4);
             this.paramAddButton.Name = "paramAddButton";
             this.paramAddButton.Size = new System.Drawing.Size(32, 30);
@@ -667,7 +651,7 @@
             this.paramRemoveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.paramRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("paramRemoveButton.Image")));
             this.paramRemoveButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.paramRemoveButton.Location = new System.Drawing.Point(997, 985);
+            this.paramRemoveButton.Location = new System.Drawing.Point(954, 875);
             this.paramRemoveButton.Margin = new System.Windows.Forms.Padding(4);
             this.paramRemoveButton.Name = "paramRemoveButton";
             this.paramRemoveButton.Size = new System.Drawing.Size(32, 30);
@@ -683,7 +667,7 @@
             "None",
             "Leader",
             "All"});
-            this.acknowledgmentComboBox.Location = new System.Drawing.Point(195, 189);
+            this.acknowledgmentComboBox.Location = new System.Drawing.Point(198, 189);
             this.acknowledgmentComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.acknowledgmentComboBox.Name = "acknowledgmentComboBox";
             this.acknowledgmentComboBox.Size = new System.Drawing.Size(153, 24);
@@ -692,7 +676,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(22, 32);
+            this.label12.Location = new System.Drawing.Point(19, 32);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(66, 17);
             this.label12.TabIndex = 48;
@@ -702,16 +686,16 @@
             // 
             this.identifierTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.identifierTextBox.Location = new System.Drawing.Point(195, 32);
+            this.identifierTextBox.Location = new System.Drawing.Point(198, 32);
             this.identifierTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.identifierTextBox.Name = "identifierTextBox";
-            this.identifierTextBox.Size = new System.Drawing.Size(669, 22);
+            this.identifierTextBox.Size = new System.Drawing.Size(641, 22);
             this.identifierTextBox.TabIndex = 13;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(16, 135);
+            this.label13.Location = new System.Drawing.Point(19, 153);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(140, 17);
             this.label13.TabIndex = 50;
@@ -724,7 +708,7 @@
             this.digitalFormatComboBox.Items.AddRange(new object[] {
             "\"True\" / \"False\"",
             "\"1\" / \"0\""});
-            this.digitalFormatComboBox.Location = new System.Drawing.Point(199, 131);
+            this.digitalFormatComboBox.Location = new System.Drawing.Point(198, 150);
             this.digitalFormatComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.digitalFormatComboBox.Name = "digitalFormatComboBox";
             this.digitalFormatComboBox.Size = new System.Drawing.Size(153, 24);
@@ -733,7 +717,7 @@
             // testConnectionButton
             // 
             this.testConnectionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.testConnectionButton.Location = new System.Drawing.Point(913, 82);
+            this.testConnectionButton.Location = new System.Drawing.Point(870, 87);
             this.testConnectionButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.testConnectionButton.Name = "testConnectionButton";
             this.testConnectionButton.Size = new System.Drawing.Size(112, 58);
@@ -745,7 +729,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(22, 128);
+            this.label11.Location = new System.Drawing.Point(19, 128);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(169, 17);
             this.label11.TabIndex = 53;
@@ -755,14 +739,17 @@
             // 
             this.schemaTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.schemaTextBox.Location = new System.Drawing.Point(195, 128);
+            this.schemaTextBox.Location = new System.Drawing.Point(198, 128);
             this.schemaTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.schemaTextBox.Name = "schemaTextBox";
-            this.schemaTextBox.Size = new System.Drawing.Size(669, 22);
+            this.schemaTextBox.Size = new System.Drawing.Size(641, 22);
             this.schemaTextBox.TabIndex = 16;
             // 
             // collapsibleGroupBox1
             // 
+            this.collapsibleGroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.collapsibleGroupBox1.Controls.Add(this.label17);
             this.collapsibleGroupBox1.Controls.Add(this.label14);
             this.collapsibleGroupBox1.Controls.Add(this.identifierTextBox);
             this.collapsibleGroupBox1.Controls.Add(this.schemaTextBox);
@@ -774,17 +761,28 @@
             this.collapsibleGroupBox1.Controls.Add(this.label3);
             this.collapsibleGroupBox1.Controls.Add(this.label9);
             this.collapsibleGroupBox1.Controls.Add(this.timeoutNumericUpDown);
-            this.collapsibleGroupBox1.Location = new System.Drawing.Point(8, 386);
+            this.collapsibleGroupBox1.Location = new System.Drawing.Point(0, 287);
             this.collapsibleGroupBox1.Name = "collapsibleGroupBox1";
-            this.collapsibleGroupBox1.Size = new System.Drawing.Size(937, 250);
+            this.collapsibleGroupBox1.Size = new System.Drawing.Size(856, 250);
             this.collapsibleGroupBox1.TabIndex = 54;
             this.collapsibleGroupBox1.TabStop = false;
             this.collapsibleGroupBox1.Text = "Connection";
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label17.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label17.Location = new System.Drawing.Point(198, 64);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(135, 17);
+            this.label17.TabIndex = 55;
+            this.label17.Text = "not implemented yet";
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(22, 64);
+            this.label14.Location = new System.Drawing.Point(19, 64);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(44, 17);
             this.label14.TabIndex = 54;
@@ -792,6 +790,10 @@
             // 
             // collapsibleGroupBox2
             // 
+            this.collapsibleGroupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.collapsibleGroupBox2.Controls.Add(this.label16);
+            this.collapsibleGroupBox2.Controls.Add(this.metadataComboBox);
             this.collapsibleGroupBox2.Controls.Add(this.keyTextBox);
             this.collapsibleGroupBox2.Controls.Add(this.label15);
             this.collapsibleGroupBox2.Controls.Add(this.topicComboBox);
@@ -800,24 +802,46 @@
             this.collapsibleGroupBox2.Controls.Add(this.digitalFormatComboBox);
             this.collapsibleGroupBox2.Controls.Add(this.dataFormatComboBox);
             this.collapsibleGroupBox2.Controls.Add(this.label13);
-            this.collapsibleGroupBox2.Location = new System.Drawing.Point(15, 92);
+            this.collapsibleGroupBox2.Location = new System.Drawing.Point(0, 82);
             this.collapsibleGroupBox2.Name = "collapsibleGroupBox2";
-            this.collapsibleGroupBox2.Size = new System.Drawing.Size(672, 219);
+            this.collapsibleGroupBox2.Size = new System.Drawing.Size(856, 197);
             this.collapsibleGroupBox2.TabIndex = 55;
             this.collapsibleGroupBox2.TabStop = false;
             this.collapsibleGroupBox2.Text = "Target";
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(19, 87);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(71, 17);
+            this.label16.TabIndex = 54;
+            this.label16.Text = "Metadata:";
+            // 
+            // metadataComboBox
+            // 
+            this.metadataComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.metadataComboBox.Location = new System.Drawing.Point(198, 84);
+            this.metadataComboBox.Name = "metadataComboBox";
+            this.metadataComboBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.metadataComboBox.Size = new System.Drawing.Size(641, 22);
+            this.metadataComboBox.TabIndex = 53;
+            // 
             // keyTextBox
             // 
-            this.keyTextBox.Location = new System.Drawing.Point(198, 56);
+            this.keyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.keyTextBox.Location = new System.Drawing.Point(198, 52);
             this.keyTextBox.Name = "keyTextBox";
-            this.keyTextBox.Size = new System.Drawing.Size(463, 22);
+            this.keyTextBox.Size = new System.Drawing.Size(641, 22);
             this.keyTextBox.TabIndex = 52;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(18, 56);
+            this.label15.Location = new System.Drawing.Point(19, 55);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(36, 17);
             this.label15.TabIndex = 51;
@@ -851,10 +875,9 @@
             this.Controls.Add(this.expressionAddButton);
             this.Controls.Add(this.exprGrid);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MinimumSize = new System.Drawing.Size(0, 850);
+            this.MinimumSize = new System.Drawing.Size(0, 1012);
             this.Name = "KafkaWriterTaskControl";
-            this.Size = new System.Drawing.Size(1033, 1115);
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckedComboBoxEdit1)).EndInit();
+            this.Size = new System.Drawing.Size(990, 1012);
             ((System.ComponentModel.ISupportInitialize)(this.exprGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).EndInit();
             this.m_monitorGroup.ResumeLayout(false);
@@ -868,6 +891,7 @@
             this.collapsibleGroupBox1.PerformLayout();
             this.collapsibleGroupBox2.ResumeLayout(false);
             this.collapsibleGroupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.metadataComboBox.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -920,15 +944,16 @@
         private System.Windows.Forms.Button testConnectionButton;
         private DevExpress.XtraGrid.Columns.GridColumn dataTypeGridColumn;
         private DevExpress.XtraGrid.Columns.GridColumn testValueGridColumn;
-        private DevExpress.XtraGrid.Columns.GridColumn metadataGridColumn;
         private DevExpress.XtraGrid.Columns.GridColumn nameGridColumn;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox schemaTextBox;
-        private DevExpress.XtraEditors.Repository.RepositoryItemCheckedComboBoxEdit repositoryItemCheckedComboBoxEdit1;
-        private Utility.CollapsibleGroupBox collapsibleGroupBox1;
+        private System.Windows.Forms.GroupBox collapsibleGroupBox1;
         private System.Windows.Forms.Label label14;
-        private Utility.CollapsibleGroupBox collapsibleGroupBox2;
+        private System.Windows.Forms.GroupBox collapsibleGroupBox2;
         private System.Windows.Forms.TextBox keyTextBox;
         private System.Windows.Forms.Label label15;
+        private DevExpress.XtraEditors.CheckedComboBoxEdit metadataComboBox;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
     }
 }
