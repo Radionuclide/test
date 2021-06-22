@@ -177,7 +177,7 @@ namespace iba.Data
         public bool IsStructureValid
         {
             get => _isStructureValid;
-            set
+            protected set
             {
                 // this implementation works properly if called from different threads;
                 // lock of the timer is not needed here
@@ -189,12 +189,20 @@ namespace iba.Data
                 // if structure is marked invalid
                 if (!value)
                 {
+                    DebugWriteLine(nameof(ExtMonData), "IsStructureValid --> FALSE");
                     // schedule a delayed tree rebuild, 
                     // if it will not happen earlier
                     _treeValidatorTimer?.Start();
                 }
             }
         }
+
+        /// <summary> Call this to let ExtMonData know that the tree structure is outdated.
+        /// Then it will take care of rebuilding itself.
+        /// Invalidation should be triggered e.g. on adding/deleting/reordering Jobs/Tasks, etc.
+        /// </summary>
+        /// <remarks> Is thread-safe. </remarks>
+        public void InvalidateTree() => IsStructureValid = false;
 
         /// <summary>
         /// The reason for having this timer is a compromise between responsiveness, reliability and computational efforts.
@@ -217,7 +225,7 @@ namespace iba.Data
                 // it will be rebuilt either:
                 //  * on first request to any existing node
                 //  * or automatically on tick of _treeValidatorTimer
-                IsStructureValid = false;
+                InvalidateTree();
             };
 
             // create the timer for delayed tree rebuild
