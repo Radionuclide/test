@@ -395,12 +395,12 @@ namespace iba.Controls
             if (!TestTaskCount())
                 return;
 
-            ReportData report = new ReportData(m_data);
-            new SetNextName(report);
-            m_data.Tasks.Add(report);
+            ReportData taskData = new ReportData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(report.Name, MainForm.REPORTTASK_INDEX, MainForm.REPORTTASK_INDEX);
-            newNode.Tag = new ReportTreeItemData(m_manager, report);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.REPORTTASK_INDEX, MainForm.REPORTTASK_INDEX);
+            newNode.Tag = new ReportTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -408,18 +408,16 @@ namespace iba.Controls
             m_manager.LeftTree.SelectedNode = newNode;
         }
 
-
-
-private void m_newExtractButton_Click(object sender, EventArgs e)
+        private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            ExtractData extract = new ExtractData(m_data);
-            new SetNextName(extract);
-            m_data.Tasks.Add(extract);
+            var taskData = new ExtractData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(extract.Name, MainForm.EXTRACTTASK_INDEX, MainForm.EXTRACTTASK_INDEX);
-            newNode.Tag = new ExtractTreeItemData(m_manager, extract);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.EXTRACTTASK_INDEX, MainForm.EXTRACTTASK_INDEX);
+            newNode.Tag = new ExtractTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -432,12 +430,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
             if (!TestTaskCount())
                 return;
 
-            BatchFileData batchfile = new BatchFileData(m_data);
-            new SetNextName(batchfile);
-            m_data.Tasks.Add(batchfile);
+            BatchFileData taskData = new BatchFileData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(batchfile.Name, MainForm.BATCHFILETASK_INDEX, MainForm.BATCHFILETASK_INDEX);
-            newNode.Tag = new BatchFileTreeItemData(m_manager, batchfile);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.BATCHFILETASK_INDEX, MainForm.BATCHFILETASK_INDEX);
+            newNode.Tag = new BatchFileTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -449,12 +447,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            CopyMoveTaskData copy = new CopyMoveTaskData(m_data);
-            new SetNextName(copy);
-            m_data.Tasks.Add(copy);
+            CopyMoveTaskData taskData = new CopyMoveTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(copy.Name, MainForm.COPYTASK_INDEX, MainForm.COPYTASK_INDEX);
-            newNode.Tag = new CopyTaskTreeItemData(m_manager, copy);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.COPYTASK_INDEX, MainForm.COPYTASK_INDEX);
+            newNode.Tag = new CopyTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -466,12 +464,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            IfTaskData condo = new IfTaskData(m_data);
-            new SetNextName(condo);
-            m_data.Tasks.Add(condo);
+            IfTaskData taskData = new IfTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(condo.Name, MainForm.IFTASK_INDEX, MainForm.IFTASK_INDEX);
-            newNode.Tag = new IfTaskTreeItemData(m_manager, condo);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.IFTASK_INDEX, MainForm.IFTASK_INDEX);
+            newNode.Tag = new IfTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -499,12 +497,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
                         iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
                 return;
             }
-            UpdateDataTaskData udt = new UpdateDataTaskData(m_data);
-            new SetNextName(udt);
-            m_data.Tasks.Add(udt);
+            UpdateDataTaskData taskData = new UpdateDataTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(udt.Name, MainForm.UPDATEDATATASK_INDEX, MainForm.UPDATEDATATASK_INDEX);
-            newNode.Tag = new UpdateDataTaskTreeItemData(m_manager, udt);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.UPDATEDATATASK_INDEX, MainForm.UPDATEDATATASK_INDEX);
+            newNode.Tag = new UpdateDataTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -516,12 +514,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            PauseTaskData pause = new PauseTaskData(m_data);
-            new SetNextName(pause);
-            m_data.Tasks.Add(pause);
+            PauseTaskData taskData = new PauseTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(pause.Name, MainForm.PAUSETASK_INDEX, MainForm.PAUSETASK_INDEX);
-            newNode.Tag = new PauseTaskTreeItemData(m_manager, pause);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.PAUSETASK_INDEX, MainForm.PAUSETASK_INDEX);
+            newNode.Tag = new PauseTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -533,12 +531,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            TaskWithTargetDirData cleanup = new CleanupTaskData(m_data);
-            new SetNextName(cleanup);
-            m_data.Tasks.Add(cleanup);
+            TaskWithTargetDirData taskData = new CleanupTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(cleanup.Name, MainForm.CLEANUPTASK_INDEX, MainForm.CLEANUPTASK_INDEX);
-            newNode.Tag = new CleanupTaskTreeItemData(m_manager, cleanup);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.CLEANUPTASK_INDEX, MainForm.CLEANUPTASK_INDEX);
+            newNode.Tag = new CleanupTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -550,12 +548,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            SplitterTaskData Splitter = new SplitterTaskData(m_data);
-            new SetNextName(Splitter);
-            m_data.Tasks.Add(Splitter);
+            SplitterTaskData taskData = new SplitterTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(Splitter.Name, MainForm.SPLITTERTASK_INDEX, MainForm.SPLITTERTASK_INDEX);
-            newNode.Tag = new SplitterTaskTreeItemData(m_manager, Splitter);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.SPLITTERTASK_INDEX, MainForm.SPLITTERTASK_INDEX);
+            newNode.Tag = new SplitterTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -567,12 +565,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            HDCreateEventTaskData createEvent = new HDCreateEventTaskData(m_data);
-            new SetNextName(createEvent);
-            m_data.Tasks.Add(createEvent);
+            HDCreateEventTaskData taskData = new HDCreateEventTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(createEvent.Name, MainForm.HDEVENTTASK_INDEX, MainForm.HDEVENTTASK_INDEX);
-            newNode.Tag = new HDCreateEventTaskTreeItemData(m_manager, createEvent);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.HDEVENTTASK_INDEX, MainForm.HDEVENTTASK_INDEX);
+            newNode.Tag = new HDCreateEventTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -583,12 +581,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            OpcUaWriterTaskData createEvent = new OpcUaWriterTaskData(m_data);
-            new SetNextName(createEvent);
-            m_data.Tasks.Add(createEvent);
+            OpcUaWriterTaskData taskData = new OpcUaWriterTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(createEvent.Name, MainForm.OPCUA_WRITERTASK_INDEX, MainForm.OPCUA_WRITERTASK_INDEX);
-            newNode.Tag = new OpcUaWriterTaskTreeItemData(m_manager, createEvent);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.OPCUA_WRITERTASK_INDEX, MainForm.OPCUA_WRITERTASK_INDEX);
+            newNode.Tag = new OpcUaWriterTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -599,12 +597,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            KafkaWriterTaskData createEvent = new KafkaWriterTaskData(m_data);
-            new SetNextName(createEvent);
-            m_data.Tasks.Add(createEvent);
+            KafkaWriterTaskData taskData = new KafkaWriterTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(createEvent.Name, MainForm.KAFKAWRITERTASK_INDEX, MainForm.KAFKAWRITERTASK_INDEX);
-            newNode.Tag = new KafkaWriterTaskTreeItemData(m_manager, createEvent);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.KAFKAWRITERTASK_INDEX, MainForm.KAFKAWRITERTASK_INDEX);
+            newNode.Tag = new KafkaWriterTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -616,12 +614,12 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            UploadTaskData upload = new UploadTaskData(m_data);
-            new SetNextName(upload);
-            m_data.Tasks.Add(upload);
+            UploadTaskData taskData = new UploadTaskData(m_data);
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(upload.Name, MainForm.UPLOADTASK_INDEX, MainForm.UPLOADTASK_INDEX);
-            newNode.Tag = new UploadTaskTreeItemData(m_manager, upload);
+            TreeNode newNode = new TreeNode(taskData.Name, MainForm.UPLOADTASK_INDEX, MainForm.UPLOADTASK_INDEX);
+            newNode.Tag = new UploadTaskTreeItemData(m_manager, taskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
@@ -636,13 +634,13 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
 
             PluginTaskInfo info = (PluginTaskInfo)(((ToolStripButton)sender).Tag);
 
-            TaskData cust;
+            TaskData taskData;
             if (info is PluginTaskInfoUNC)
-                cust = new CustomTaskDataUNC(m_data, info);
+                taskData = new CustomTaskDataUNC(m_data, info);
             else
-                cust = new CustomTaskData(m_data, info);
+                taskData = new CustomTaskData(m_data, info);
 
-            ICustomTaskData icust = (ICustomTaskData)cust;
+            ICustomTaskData icust = (ICustomTaskData)taskData;
             bool IsLicensed = false;
             try
             {
@@ -661,9 +659,9 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
                 return;
             }
 
-            new SetNextName(cust);
-            m_data.Tasks.Add(cust);
- 
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
 
@@ -678,7 +676,7 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
             if (m_data.AdjustDependencies()) 
                 Program.MainForm.AdjustFrontIcons(m_data);
         }
-
+       
         private void m_rbImmediate_CheckedChanged(object sender, EventArgs e)
         {
             m_nudNotifyTime.Enabled = m_rbTime.Checked;

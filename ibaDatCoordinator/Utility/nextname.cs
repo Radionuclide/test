@@ -4,28 +4,8 @@ using iba.Processing;
 
 namespace iba.Utility
 {
-    class SetNextName
+    internal static class SetNextNameHelper
     {
-        private TaskData m_tdata;
-        private ConfigurationData m_cdata;
-        private string m_name;
-
-        public SetNextName(TaskData data)
-        {
-            m_tdata = data;
-            m_cdata = null;
-            CalcNextName();
-            data.Name = m_name;
-        }
-
-        public SetNextName(ConfigurationData data)
-        {
-            m_cdata = data;
-            m_tdata = null;
-            CalcNextName();
-            data.Name = m_name;
-        }
-
         private static int GetIndex(string name)
         {
             int pos = name.LastIndexOf('_');
@@ -40,45 +20,46 @@ namespace iba.Utility
         private static string GetRoot(string name)
         {
             if (GetIndex(name) == 0) return name;
-            else return name.Substring(0,name.LastIndexOf('_'));
+            else return name.Substring(0, name.LastIndexOf('_'));
         }
 
-        private void CalcNextName()
-        {
-            m_name = CalcNextName(m_tdata, m_cdata);
-        }
-
-        
-        public static string CalcNextName(TaskData taskData, ConfigurationData confData = null)
+        private static string CalcNextName(TaskData taskData, ConfigurationData confData = null)
         {
             string name = (confData == null) ? taskData.Name : confData.Name;
             int index = -1;
             bool found = false;
             string root = GetRoot(name);
-            foreach (ConfigurationData cdata in TaskManager.Manager.Configurations)
+            foreach (ConfigurationData cData in TaskManager.Manager.Configurations)
             {
                 if (confData != null)
                 {
-                    if (root.Equals(GetRoot(cdata.Name)))
+                    if (root.Equals(GetRoot(cData.Name)))
                     {
-                        index = Math.Max(index, GetIndex(cdata.Name));
-                        if (name.Equals(cdata.Name))
+                        index = Math.Max(index, GetIndex(cData.Name));
+                        if (name.Equals(cData.Name))
                             found = true;
                     }
                 }
-                else foreach (TaskData tdata in cdata.Tasks)
+                else
                 {
-                    if (root.Equals(GetRoot(tdata.Name)))
+                    foreach (TaskData tData in cData.Tasks)
                     {
-                        index = Math.Max(index, GetIndex(tdata.Name));
-                        if (name.Equals(tdata.Name))
-                            found = true;
+                        if (root.Equals(GetRoot(tData.Name)))
+                        {
+                            index = Math.Max(index, GetIndex(tData.Name));
+                            if (name.Equals(tData.Name))
+                                found = true;
+                        }
                     }
                 }
             }
-            return !found 
+            return !found
                 ? name //original name
                 : $"{root}_{index + 1}"; // name with an incremented index
         }
+
+        public static void SetNextName(this TaskData taskData) => taskData.Name = CalcNextName(taskData);
+
+        public static void SetNextName(this ConfigurationData taskData) => taskData.Name = CalcNextName(null, taskData);
     }
 }

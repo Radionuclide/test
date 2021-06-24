@@ -937,7 +937,7 @@ namespace iba
                     else if (c4)
                         type = ConfigurationData.JobTypeEnum.Event;
                     ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, type);
-                    new SetNextName(newData);
+                    newData.SetNextName();
                     TaskManager.Manager.AddConfiguration(newData);
                     m_configTreeView.BeginUpdate();
                     node = InsertNewConf(newData);
@@ -1134,9 +1134,9 @@ namespace iba
             {
                 SaveRightPaneControl();
                 //code to create new configuration
-                new SetNextName(m_cd_copy);
+                m_cd_copy.SetNextName();
                 foreach (TaskData t in m_cd_copy.Tasks)
-                    new SetNextName(t);
+                    t.SetNextName();
                 TaskManager.Manager.AddConfiguration(m_cd_copy);
                 m_configTreeView.BeginUpdate();
                 node = InsertNewConf(m_cd_copy);
@@ -1154,9 +1154,9 @@ namespace iba
                 SaveRightPaneControl();
                 int index = node.Index;
                 //code to create new configuration
-                new SetNextName(m_cd_copy);
+                m_cd_copy.SetNextName();
                 foreach (TaskData t in m_cd_copy.Tasks)
-                    new SetNextName(t);
+                    t.SetNextName();
                 TaskManager.Manager.AddConfiguration(m_cd_copy);
                 m_configTreeView.BeginUpdate();
                 TreeNode tn = CreateConfigurationNode(m_cd_copy);
@@ -1177,7 +1177,7 @@ namespace iba
                 if (!TestTaskCount(origData))
                     return;
                 m_task_copy.ParentConfigurationData = origData;
-                new SetNextName(m_task_copy);
+                m_task_copy.SetNextName();
                 origData.Tasks.Add(m_task_copy);
                 TreeNode taskNode = null;
                 if (m_task_copy is ReportData)
@@ -1279,12 +1279,12 @@ namespace iba
             else if (!(node.Tag is NewConfigurationTreeItemDataBase) && m_task_copy != null)
             {
                 SaveRightPaneControl();
-                ConfigurationData origData = (node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData;
+                ConfigurationData origData = ((ConfigurationTreeItemData)node.Parent.Tag).ConfigurationData;
                 m_task_copy.ParentConfigurationData = origData;
                 if (!TestTaskCount(origData))
                     return;
                 TreeNode taskNode = null;
-                new SetNextName(m_task_copy);
+                m_task_copy.SetNextName();
                 if (m_task_copy is ReportData)
                 {
                     taskNode = new TreeNode(m_task_copy.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
@@ -1666,7 +1666,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new ReportData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new ReportTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1681,7 +1681,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new ExtractData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new ExtractTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1696,7 +1696,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new BatchFileData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new BatchFileTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1711,7 +1711,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new IfTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new IfTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1720,11 +1720,10 @@ namespace iba
 
         private void OnNewUpdateDataTaskMenuItem(object sender, EventArgs e)
         {
-            CDongleInfo info;
             bool isLicensed = false;
             try
             {
-                info = CDongleInfo.ReadDongle();
+                var info = CDongleInfo.ReadDongle();
                 if (info.IsPluginLicensed(2))
                     isLicensed = true;
             }
@@ -1744,7 +1743,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new UpdateDataTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new UpdateDataTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1759,7 +1758,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new CopyMoveTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new CopyTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1774,7 +1773,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new PauseTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new PauseTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1789,7 +1788,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new HDCreateEventTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new HDCreateEventTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1804,7 +1803,7 @@ namespace iba
 			if (!TestTaskCount(confData))
 				return;
             var taskData = new OpcUaWriterTaskData(confData);
-			new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new OpcUaWriterTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1819,7 +1818,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new KafkaWriterTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new KafkaWriterTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1834,7 +1833,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new SplitterTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new SplitterTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1849,7 +1848,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new UploadTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new UploadTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1864,7 +1863,7 @@ namespace iba
             if (!TestTaskCount(confData))
                 return;
             var taskData = new CleanupTaskData(confData);
-            new SetNextName(taskData);
+            taskData.SetNextName();
             var treeItemData = new CleanupTaskTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
@@ -1904,7 +1903,7 @@ namespace iba
                         iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
                 return;
             }
-            new SetNextName(taskData);
+            taskData.SetNextName();
             int imageIndex = GetCustomTaskImageIndex(iCust);
             var treeItemData = new CustomTaskTreeItemData(this, iCust);
 
