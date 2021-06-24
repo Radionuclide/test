@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using iba.Data;
 using iba.Processing;
 
@@ -28,7 +26,7 @@ namespace iba.Utility
             data.Name = m_name;
         }
 
-        private int GetIndex(string name)
+        private static int GetIndex(string name)
         {
             int pos = name.LastIndexOf('_');
             if (pos < 0) return 0;
@@ -39,7 +37,7 @@ namespace iba.Utility
                 return 0;
         }
 
-        private string GetRoot(string name)
+        private static string GetRoot(string name)
         {
             if (GetIndex(name) == 0) return name;
             else return name.Substring(0,name.LastIndexOf('_'));
@@ -47,13 +45,19 @@ namespace iba.Utility
 
         private void CalcNextName()
         {
-            string name = (m_cdata == null)?m_tdata.Name:m_cdata.Name;
+            m_name = CalcNextName(m_tdata, m_cdata);
+        }
+
+        
+        public static string CalcNextName(TaskData taskData, ConfigurationData confData = null)
+        {
+            string name = (confData == null) ? taskData.Name : confData.Name;
             int index = -1;
             bool found = false;
             string root = GetRoot(name);
             foreach (ConfigurationData cdata in TaskManager.Manager.Configurations)
             {
-                if (m_cdata != null)
+                if (confData != null)
                 {
                     if (root.Equals(GetRoot(cdata.Name)))
                     {
@@ -63,17 +67,18 @@ namespace iba.Utility
                     }
                 }
                 else foreach (TaskData tdata in cdata.Tasks)
+                {
+                    if (root.Equals(GetRoot(tdata.Name)))
                     {
-                        if (root.Equals(GetRoot(tdata.Name)))
-                        {
-                            index = Math.Max(index, GetIndex(tdata.Name));
-                            if (name.Equals(tdata.Name))
-                                found = true;
-                        }
+                        index = Math.Max(index, GetIndex(tdata.Name));
+                        if (name.Equals(tdata.Name))
+                            found = true;
                     }
+                }
             }
-            if (!found) m_name = name; //original name
-            else m_name = root + "_" + (index+1).ToString();
+            return !found 
+                ? name //original name
+                : $"{root}_{index + 1}"; // name with an incremented index
         }
     }
 }
