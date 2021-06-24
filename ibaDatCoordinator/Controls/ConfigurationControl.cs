@@ -410,8 +410,23 @@ namespace iba.Controls
             newNode.EnsureVisible();
             m_manager.LeftTree.SelectedNode = newNode;
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
+            // update remote config and/or external monitoring subsystem
+            switch (Program.RunsWithService)
+            {
+                case Program.ServiceEnum.CONNECTED:
+                    TaskManager.Manager.ReplaceConfiguration(m_data);
+                    break;
+                case Program.ServiceEnum.NOSERVICE:
+                    // no need to call ReplaceConfiguration (because cfg it's local),
+                    // but just inform ExtMonData that job/task tree structure was changed
+                    ExtMonData.Instance.InvalidateTree(); 
+                    break;
+                case Program.ServiceEnum.DISCONNECTED:
+                    // no action is needed; everything will be done on reconnect
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void m_newReportButton_Click(object sender, EventArgs e)
