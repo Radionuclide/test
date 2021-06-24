@@ -390,39 +390,48 @@ namespace iba.Controls
             }
             return true;
         }
+
+        /// <summary>
+        /// Creates a <see cref="TreeNode"/> for the task, adds it to job's <see cref="TreeNode"/>,
+        /// adds the task to <see cref="ConfigurationData"/> and does other important post-processing like:
+        /// replacing configuration in TaskManager, informing ExtMonData about changes, etc.
+        /// </summary>
+        private void AddNewTaskHelper(TaskData taskData, int imageIndex, TreeItemData treeItemData)
+        {
+            taskData.SetNextName();
+            m_data.Tasks.Add(taskData);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(taskData.Name, imageIndex, imageIndex)
+            {
+                Tag = treeItemData
+            };
+
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            m_manager.LeftTree.SelectedNode = newNode;
+
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+        }
+
         private void m_newReportButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-
-            ReportData taskData = new ReportData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.REPORTTASK_INDEX, MainForm.REPORTTASK_INDEX);
-            newNode.Tag = new ReportTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+            
+            var taskData = new ReportData(m_data);
+            var treeItemData = new ReportTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.REPORTTASK_INDEX, treeItemData);
         }
 
         private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
+
             var taskData = new ExtractData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.EXTRACTTASK_INDEX, MainForm.EXTRACTTASK_INDEX);
-            newNode.Tag = new ExtractTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+            var treeItemData = new ExtractTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.EXTRACTTASK_INDEX, treeItemData);
         }
 
         private void m_newBatchfileButton_Click(object sender, EventArgs e)
@@ -430,201 +439,126 @@ namespace iba.Controls
             if (!TestTaskCount())
                 return;
 
-            BatchFileData taskData = new BatchFileData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.BATCHFILETASK_INDEX, MainForm.BATCHFILETASK_INDEX);
-            newNode.Tag = new BatchFileTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+            var taskData = new BatchFileData(m_data);
+            var treeItemData = new BatchFileTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.BATCHFILETASK_INDEX, treeItemData);
         }
 
         private void m_newCopyTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            CopyMoveTaskData taskData = new CopyMoveTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.COPYTASK_INDEX, MainForm.COPYTASK_INDEX);
-            newNode.Tag = new CopyTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new CopyMoveTaskData(m_data);
+            var treeItemData = new CopyTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.COPYTASK_INDEX, treeItemData);
         }
 
         private void m_newIfTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            IfTaskData taskData = new IfTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.IFTASK_INDEX, MainForm.IFTASK_INDEX);
-            newNode.Tag = new IfTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new IfTaskData(m_data);
+            var treeItemData = new IfTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.IFTASK_INDEX, treeItemData);
         }
 
         private void m_newUpdateDataTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            bool IsLicensed = false;
+            bool isLicensed = false;
             try
             {
                 CDongleInfo info = CDongleInfo.ReadDongle();
                 if (info.IsPluginLicensed(2))
-                    IsLicensed = true;
+                    isLicensed = true;
             }
             catch 
             {
             }
-            if (!IsLicensed)
+            if (!isLicensed)
             {
                 MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
                         iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
                 return;
             }
-            UpdateDataTaskData taskData = new UpdateDataTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.UPDATEDATATASK_INDEX, MainForm.UPDATEDATATASK_INDEX);
-            newNode.Tag = new UpdateDataTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new UpdateDataTaskData(m_data);
+            var treeItemData = new UpdateDataTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.UPDATEDATATASK_INDEX, treeItemData);
         }
 
         private void m_newPauseTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            PauseTaskData taskData = new PauseTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.PAUSETASK_INDEX, MainForm.PAUSETASK_INDEX);
-            newNode.Tag = new PauseTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new PauseTaskData(m_data);
+            var treeItemData = new PauseTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.PAUSETASK_INDEX, treeItemData);
         }
 
         private void m_newCleanupTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            TaskWithTargetDirData taskData = new CleanupTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.CLEANUPTASK_INDEX, MainForm.CLEANUPTASK_INDEX);
-            newNode.Tag = new CleanupTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new CleanupTaskData(m_data);
+            var treeItemData = new CleanupTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.CLEANUPTASK_INDEX, treeItemData);
         }
 
         private void m_newSplitterTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            SplitterTaskData taskData = new SplitterTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.SPLITTERTASK_INDEX, MainForm.SPLITTERTASK_INDEX);
-            newNode.Tag = new SplitterTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new SplitterTaskData(m_data);
+            var treeItemData = new SplitterTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.SPLITTERTASK_INDEX, treeItemData);
         }
 
         private void m_newHDCreateEventTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            HDCreateEventTaskData taskData = new HDCreateEventTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.HDEVENTTASK_INDEX, MainForm.HDEVENTTASK_INDEX);
-            newNode.Tag = new HDCreateEventTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new HDCreateEventTaskData(m_data);
+            var treeItemData = new HDCreateEventTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.HDEVENTTASK_INDEX, treeItemData);
         }
+
         private void m_newOPCUAWriterTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            OpcUaWriterTaskData taskData = new OpcUaWriterTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.OPCUA_WRITERTASK_INDEX, MainForm.OPCUA_WRITERTASK_INDEX);
-            newNode.Tag = new OpcUaWriterTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new OpcUaWriterTaskData(m_data);
+            var treeItemData = new OpcUaWriterTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.OPCUA_WRITERTASK_INDEX, treeItemData);
+
         }
+
         private void m_newKafkaWriterTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            KafkaWriterTaskData taskData = new KafkaWriterTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.KAFKAWRITERTASK_INDEX, MainForm.KAFKAWRITERTASK_INDEX);
-            newNode.Tag = new KafkaWriterTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new KafkaWriterTaskData(m_data);
+            var treeItemData = new KafkaWriterTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.KAFKAWRITERTASK_INDEX, treeItemData);
         }
 
         private void m_newUploadTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
-            UploadTaskData taskData = new UploadTaskData(m_data);
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(taskData.Name, MainForm.UPLOADTASK_INDEX, MainForm.UPLOADTASK_INDEX);
-            newNode.Tag = new UploadTaskTreeItemData(m_manager, taskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new UploadTaskData(m_data);
+            var treeItemData = new UploadTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.UPLOADTASK_INDEX, treeItemData);
         }
 
         void newCustomTaskButton_Click(object sender, EventArgs e)
@@ -640,41 +574,28 @@ namespace iba.Controls
             else
                 taskData = new CustomTaskData(m_data, info);
 
-            ICustomTaskData icust = (ICustomTaskData)taskData;
-            bool IsLicensed = false;
+            ICustomTaskData iCust = (ICustomTaskData)taskData;
+            bool isLicensed = false;
             try
             {
-                CDongleInfo dinfo = CDongleInfo.ReadDongle();
-                if (dinfo.IsPluginLicensed(icust.Plugin.DongleBitPos))
-                    IsLicensed = true;
+                CDongleInfo dInfo = CDongleInfo.ReadDongle();
+                if (dInfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
+                    isLicensed = true;
             }
             catch
             {
             }
 
-            if (!IsLicensed)
+            if (!isLicensed)
             {
                 MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
                         iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
                 return;
             }
 
-            taskData.SetNextName();
-            m_data.Tasks.Add(taskData);
-
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-
-            int index = PluginManager.Manager.GetCustomTaskImageIndex(icust);
-            TreeNode newNode = new TreeNode(icust.Name, index, index);
-            newNode.Tag = new CustomTaskTreeItemData(m_manager, icust);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-
-            newNode.EnsureVisible();
-            m_manager.LeftTree.SelectedNode = newNode;
-
-            if (m_data.AdjustDependencies()) 
-                Program.MainForm.AdjustFrontIcons(m_data);
+            var treeItemData = new CustomTaskTreeItemData(m_manager, iCust);
+            int imageIndex = PluginManager.Manager.GetCustomTaskImageIndex(iCust);
+            AddNewTaskHelper(taskData, imageIndex, treeItemData);
         }
        
         private void m_rbImmediate_CheckedChanged(object sender, EventArgs e)
