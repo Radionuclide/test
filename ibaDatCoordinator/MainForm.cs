@@ -1101,6 +1101,7 @@ namespace iba
                 if (confParent.AdjustDependencies()) AdjustFrontIcons(confParent);
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     TaskManager.Manager.ReplaceConfiguration(confParent);
+                InformExtMonDataAboutTreeStructureChange();
                 node.Remove();
             }
         }
@@ -1642,6 +1643,19 @@ namespace iba
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(confData);
+            
+            InformExtMonDataAboutTreeStructureChange();
+        }
+
+        private static void InformExtMonDataAboutTreeStructureChange()
+        {
+            // in case of Standalone inform ExtMon data immediately;
+            // otherwise do nothing right now, because this will be done on Job Start or Update
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                // inform ExtMonData that job/task tree structure was changed
+                ExtMonData.Instance.InvalidateTree();
+            }
         }
 
         private void OnNewReportMenuItem(object sender, EventArgs e)
@@ -2771,6 +2785,7 @@ namespace iba
                     }
                 }
             }
+            InformExtMonDataAboutTreeStructureChange();
         }
 
         public delegate void IbaAnalyzerCall();
