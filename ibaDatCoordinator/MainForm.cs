@@ -1067,7 +1067,6 @@ namespace iba
             //Delete node in tree
             if (node.Tag is ConfigurationTreeItemData)
             {
-                TreeNode parent = node.Parent;
                 if (TaskManager.Manager.IsJobStarted((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid))
                     return;
                 TreeNode nextNode = node.NextNode;
@@ -1624,6 +1623,26 @@ namespace iba
             return true;
         }
 
+        /// <summary>
+        /// Creates a <see cref="TreeNode"/> for the task, adds it to job's <see cref="TreeNode"/>,
+        /// adds the task to <see cref="ConfigurationData"/> and does other important post-processing like:
+        /// replacing configuration in TaskManager, informing ExtMonData about changes, etc.
+        /// This method should be called for every new task.
+        /// </summary>
+        private void AddNewTaskHelper(ConfigurationData confData, TreeNode parentNode, TaskData taskData, int imageIndex, TreeItemData treeItemData)
+        {
+            confData.Tasks.Add(taskData);
+            TreeNode newNode = new TreeNode(taskData.Name, imageIndex, imageIndex)
+            {
+                Tag = treeItemData
+            };
+            parentNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+        }
 
         private void OnNewReportMenuItem(object sender, EventArgs e)
         {
@@ -1632,16 +1651,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            ReportData report = new ReportData(confData);
-            new SetNextName(report);
-            confData.Tasks.Add(report);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(report.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
-            newNode.Tag = new ReportTreeItemData(this, report);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+            var taskData = new ReportData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new ReportTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, REPORTTASK_INDEX, treeItemData);
         }
 
         private void OnNewExtractMenuItem(object sender, EventArgs e)
@@ -1651,16 +1666,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            ExtractData extract = new ExtractData(confData);
-            new SetNextName(extract);
-            confData.Tasks.Add(extract);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(extract.Name, EXTRACTTASK_INDEX, EXTRACTTASK_INDEX);
-            newNode.Tag = new ExtractTreeItemData(this, extract);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+            var taskData = new ExtractData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new ExtractTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, REPORTTASK_INDEX, treeItemData);
         }
 
         private void OnNewBatchfileMenuItem(object sender, EventArgs e)
@@ -1670,16 +1681,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            BatchFileData bat = new BatchFileData(confData);
-            new SetNextName(bat);
-            confData.Tasks.Add(bat);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(bat.Name, BATCHFILETASK_INDEX, BATCHFILETASK_INDEX);
-            newNode.Tag = new BatchFileTreeItemData(this, bat);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+            var taskData = new BatchFileData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new BatchFileTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, BATCHFILETASK_INDEX, treeItemData);
         }
 
         private void OnNewIfTaskMenuItem(object sender, EventArgs e)
@@ -1689,16 +1696,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            IfTaskData condo = new IfTaskData(confData);
-            new SetNextName(condo);
-            confData.Tasks.Add(condo);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(condo.Name, IFTASK_INDEX, IFTASK_INDEX);
-            newNode.Tag = new IfTaskTreeItemData(this, condo);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+            var taskData = new IfTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new IfTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, IFTASK_INDEX, treeItemData);
         }
 
         private void OnNewUpdateDataTaskMenuItem(object sender, EventArgs e)
@@ -1726,16 +1729,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            UpdateDataTaskData udt = new UpdateDataTaskData(confData);
-            new SetNextName(udt);
-            confData.Tasks.Add(udt);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(udt.Name, UPDATEDATATASK_INDEX, UPDATEDATATASK_INDEX);
-            newNode.Tag = new UpdateDataTaskTreeItemData(this, udt);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            var taskData = new UpdateDataTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new UpdateDataTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, UPDATEDATATASK_INDEX, treeItemData);
         }
 
         private void OnNewCopyTaskMenuItem(object sender, EventArgs e)
@@ -1745,16 +1744,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            CopyMoveTaskData cop = new CopyMoveTaskData(confData);
-            new SetNextName(cop);
-            confData.Tasks.Add(cop);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(cop.Name, COPYTASK_INDEX, COPYTASK_INDEX);
-            newNode.Tag = new CopyTaskTreeItemData(this, cop);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+            var taskData = new CopyMoveTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new CopyTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, COPYTASK_INDEX, treeItemData);
         }
 
         private void OnNewPauseTaskMenuItem(object sender, EventArgs e)
@@ -1764,16 +1759,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            PauseTaskData pause = new PauseTaskData(confData);
-            new SetNextName(pause);
-            confData.Tasks.Add(pause);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(pause.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
-            newNode.Tag = new PauseTaskTreeItemData(this, pause);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            var taskData = new PauseTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new PauseTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, PAUSETASK_INDEX, treeItemData);
         }
 
         private void OnNewHDCreateEventTaskMenuItem(object sender, EventArgs e)
@@ -1783,35 +1774,27 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            HDCreateEventTaskData createEvent = new HDCreateEventTaskData(confData);
-            new SetNextName(createEvent);
-            confData.Tasks.Add(createEvent);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(createEvent.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
-            newNode.Tag = new HDCreateEventTaskTreeItemData(this, createEvent);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            var taskData = new HDCreateEventTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new HDCreateEventTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, HDEVENTTASK_INDEX, treeItemData);
         }
 
-		private void OnNewOPCUATaskMenuItem(object sender, EventArgs e)
+        private void OnNewOPCUATaskMenuItem(object sender, EventArgs e)
 		{
 			ToolStripMenuItem mc = (ToolStripMenuItem)sender;
 			TreeNode node = mc.Tag as TreeNode;
 			ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
 			if (!TestTaskCount(confData))
 				return;
-			OpcUaWriterTaskData createEvent = new OpcUaWriterTaskData(confData);
-			new SetNextName(createEvent);
-			confData.Tasks.Add(createEvent);
-			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-				TaskManager.Manager.ReplaceConfiguration(confData);
-			TreeNode newNode = new TreeNode(createEvent.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
-			newNode.Tag = new OpcUaWriterTaskTreeItemData(this, createEvent);
-			node.Nodes.Add(newNode);
-			newNode.EnsureVisible();
-			if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            var taskData = new OpcUaWriterTaskData(confData);
+			new SetNextName(taskData);
+            var treeItemData = new OpcUaWriterTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, OPCUA_WRITERTASK_INDEX, treeItemData);
         }
 
         private void OnNewKafkaTaskMenuItem(object sender, EventArgs e)
@@ -1821,16 +1804,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            KafkaWriterTaskData createEvent = new KafkaWriterTaskData(confData);
-            new SetNextName(createEvent);
-            confData.Tasks.Add(createEvent);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(createEvent.Name, KAFKAWRITERTASK_INDEX, KAFKAWRITERTASK_INDEX);
-            newNode.Tag = new KafkaWriterTaskTreeItemData(this, createEvent);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            var taskData = new KafkaWriterTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new KafkaWriterTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, KAFKAWRITERTASK_INDEX, treeItemData);
         }
 
         private void OnNewSplitterTaskMenuItem(object sender, EventArgs e)
@@ -1840,16 +1819,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            SplitterTaskData Splitter = new SplitterTaskData(confData);
-            new SetNextName(Splitter);
-            confData.Tasks.Add(Splitter);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(Splitter.Name, SPLITTERTASK_INDEX, SPLITTERTASK_INDEX);
-            newNode.Tag = new SplitterTaskTreeItemData(this, Splitter);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            var taskData = new SplitterTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new SplitterTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, SPLITTERTASK_INDEX, treeItemData);
         }
 
         private void OnNewUploadTaskMenuItem(object sender, EventArgs e)
@@ -1859,16 +1834,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            UploadTaskData uploadTaskData = new UploadTaskData(confData);
-            new SetNextName(uploadTaskData);
-            confData.Tasks.Add(uploadTaskData);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(uploadTaskData.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
-            newNode.Tag = new UploadTaskTreeItemData(this, uploadTaskData);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            var taskData = new UploadTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new UploadTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, UPLOADTASK_INDEX, treeItemData);
         }
 
         private void OnNewCleanupTaskMenuItem(object sender, EventArgs e)
@@ -1878,16 +1849,12 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            CleanupTaskData cleanup = new CleanupTaskData(confData);
-            new SetNextName(cleanup);
-            confData.Tasks.Add(cleanup);
-            if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(cleanup.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
-            newNode.Tag = new CleanupTaskTreeItemData(this, cleanup);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if(confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            var taskData = new CleanupTaskData(confData);
+            new SetNextName(taskData);
+            var treeItemData = new CleanupTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, CLEANUPTASK_INDEX, treeItemData);
         }
 
         private void OnNewCustomTaskMenuItem(object sender, EventArgs e)
@@ -1900,43 +1867,35 @@ namespace iba
             ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
-            TaskData cust;
+            TaskData taskData;
             if (info is PluginTaskInfoUNC)
-                cust = new CustomTaskDataUNC(confData, info);
+                taskData = new CustomTaskDataUNC(confData, info);
             else
-                cust = new CustomTaskData(confData, info);
+                taskData = new CustomTaskData(confData, info);
 
-            ICustomTaskData icust = (ICustomTaskData)cust;
-            bool IsLicensed = false;
+            ICustomTaskData iCust = (ICustomTaskData)taskData;
+            bool isLicensed = false;
             try
             {
                 CDongleInfo dinfo = CDongleInfo.ReadDongle();
-                if (dinfo.IsPluginLicensed(icust.Plugin.DongleBitPos))
-                    IsLicensed = true;
+                if (dinfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
+                    isLicensed = true;
             }
             catch
             {
             }
-            if (!IsLicensed)
+            if (!isLicensed)
             {
                 MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
                         iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
                 return;
             }
-            new SetNextName(cust);
-            confData.Tasks.Add(cust);
+            new SetNextName(taskData);
+            int imageIndex = GetCustomTaskImageIndex(iCust);
+            var treeItemData = new CustomTaskTreeItemData(this, iCust);
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-
-            int imageIndex = GetCustomTaskImageIndex(icust);
-            TreeNode newNode = new TreeNode(icust.Name, imageIndex, imageIndex);
-            newNode.Tag = new CustomTaskTreeItemData(this, icust);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-
-            if (confData.AdjustDependencies()) 
-                AdjustFrontIcons(confData);
+            // create tree node and do other things common for any task
+            AddNewTaskHelper(confData, node, taskData, imageIndex, treeItemData);
         }
 
         static public int DataToRootNodeIndex(ConfigurationData data)
