@@ -1661,8 +1661,8 @@ namespace iba
         private void OnNewReportMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new ReportData(confData);
@@ -1676,8 +1676,8 @@ namespace iba
         private void OnNewExtractMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new ExtractData(confData);
@@ -1691,8 +1691,8 @@ namespace iba
         private void OnNewBatchfileMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new BatchFileData(confData);
@@ -1706,8 +1706,8 @@ namespace iba
         private void OnNewIfTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new IfTaskData(confData);
@@ -1721,17 +1721,17 @@ namespace iba
         private void OnNewUpdateDataTaskMenuItem(object sender, EventArgs e)
         {
             CDongleInfo info;
-            bool IsLicensed = false;
+            bool isLicensed = false;
             try
             {
                 info = CDongleInfo.ReadDongle();
                 if (info.IsPluginLicensed(2))
-                    IsLicensed = true;
+                    isLicensed = true;
             }
             catch 
             {
             }
-            if (!IsLicensed)
+            if (!isLicensed)
             {
                 MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
                         iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
@@ -1739,8 +1739,8 @@ namespace iba
             }
 
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new UpdateDataTaskData(confData);
@@ -1754,8 +1754,8 @@ namespace iba
         private void OnNewCopyTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new CopyMoveTaskData(confData);
@@ -1769,8 +1769,8 @@ namespace iba
         private void OnNewPauseTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new PauseTaskData(confData);
@@ -1784,8 +1784,8 @@ namespace iba
         private void OnNewHDCreateEventTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new HDCreateEventTaskData(confData);
@@ -1799,8 +1799,8 @@ namespace iba
         private void OnNewOPCUATaskMenuItem(object sender, EventArgs e)
 		{
 			ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-			TreeNode node = mc.Tag as TreeNode;
-			ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+			TreeNode node = (TreeNode)mc.Tag;
+			ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
 			if (!TestTaskCount(confData))
 				return;
             var taskData = new OpcUaWriterTaskData(confData);
@@ -1814,8 +1814,8 @@ namespace iba
         private void OnNewKafkaTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new KafkaWriterTaskData(confData);
@@ -1829,8 +1829,8 @@ namespace iba
         private void OnNewSplitterTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new SplitterTaskData(confData);
@@ -1844,8 +1844,8 @@ namespace iba
         private void OnNewUploadTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new UploadTaskData(confData);
@@ -1859,8 +1859,8 @@ namespace iba
         private void OnNewCleanupTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            TreeNode node = (TreeNode)mc.Tag;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             var taskData = new CleanupTaskData(confData);
@@ -1874,11 +1874,11 @@ namespace iba
         private void OnNewCustomTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            Pair<TreeNode, PluginTaskInfo> p = mc.Tag as Pair<TreeNode, PluginTaskInfo>;
+            var p = (Pair<TreeNode, PluginTaskInfo>)mc.Tag;
             TreeNode node = p.First;
             PluginTaskInfo info = p.Second;
             
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            ConfigurationData confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
             if (!TestTaskCount(confData))
                 return;
             TaskData taskData;
@@ -1891,8 +1891,8 @@ namespace iba
             bool isLicensed = false;
             try
             {
-                CDongleInfo dinfo = CDongleInfo.ReadDongle();
-                if (dinfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
+                CDongleInfo dInfo = CDongleInfo.ReadDongle();
+                if (dInfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
                     isLicensed = true;
             }
             catch
