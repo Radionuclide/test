@@ -662,6 +662,8 @@ namespace iba.Processing
                     {
                         m_delayedHDQStop = false;
                         ScheduleNextEvent();
+                        TaskManager.Manager.OneTimeJobsSetHistoricalTimespanChanged(m_cd);
+
                         if (m_delayedHDQStop)
                         {
                             m_delayedHDQStop = false;
@@ -673,7 +675,7 @@ namespace iba.Processing
                     {
                         m_hdEventMonitor = new HDEventMonitor();
                         m_hdEventMonitor.UpdateConfiguration(m_cd.EventData, m_cd.Name);
-                        TaskManager.Manager.OneTimeEventsSetTimespanChanged(m_cd);
+                        TaskManager.Manager.OneTimeJobsSetHistoricalTimespanChanged(m_cd);
                         m_hdEventMonitor.Start();
                         m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null, intervalProcessNewEvents, Timeout.Infinite);
                     }
@@ -5279,7 +5281,14 @@ namespace iba.Processing
 
         private void ScheduleNextEvent()
         {
-            ScheduleNextEvent(DateTime.Now);
+            DateTime startTime = DateTime.Now;
+
+            if (m_cd.ScheduleData.ProcessHistorical)
+            {
+                startTime = m_cd.ScheduleData.BaseTriggerTime;
+                m_cd.ScheduleData.ProcessHistorical = false; // Disable the processing of historical data for next execution
+            }                                                // This would re execute the same hdq files again
+            ScheduleNextEvent(startTime);
         }
 
         private bool m_delayedHDQStop;

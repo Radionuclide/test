@@ -83,7 +83,7 @@ ${StrLoc}
 !endif
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "${dashedname}Installer_v${PRODUCT_VERSION}.exe"
+OutFile "${dashedname}Setup_v${PRODUCT_VERSION}.exe"
 InstallDir "$PROGRAMFILES\iba\ibaDatCoordinator\plugins"
 ShowInstDetails show
 BrandingText "iba AG"

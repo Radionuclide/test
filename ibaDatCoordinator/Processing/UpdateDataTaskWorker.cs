@@ -98,7 +98,7 @@ namespace iba.Processing
                     }
                 case UpdateDataTaskData.DbProviderEnum.Odbc:
                     {
-                        return new OdbcConnection(String.Format("Dsn={0};Uid={1};Pwd={2}", udt.DbName, udt.Username, udt.Password));
+                        return new OdbcConnection(String.Format("Dsn={0};Uid={1};Pwd={2}", udt.DbName, udt.DbUserName, udt.DbPassword));
                     }
             }
             return null;

@@ -166,6 +166,11 @@
 	<div id="hist">
 		<div class="box">
 		<P class="header1">Version 2.4.1 - 2021-05-??</P>
+			<p class="header2">New features (N)</p>
+			<OL>
+			<li>Added an option to discard event pairs in the event job when no outgoing event is received within the maximum time range. #18893</li>
+			<li>Historical data can be processed by scheduled jobs by setting the start time in the past. #16339</li>
+			</OL>
 			<p class="header2">Improvements (I)</p>
 			<OL>
 			<li>A better error message is given when processing V1 or V2 files and the necessary license is missing. #18764</li>
@@ -175,6 +180,7 @@
 			<OL>
 			<li>ibaDatCoordinator installer referred to ibaPDA installer when .net 4.8 framework is missing.</li>
 			<li>When uploading a .pdo file, the original file was not overwritten, instead a new file was created with the _(ibaDatCoodinator) suffix still attached. #18726</li>
+			<li>Update data task - ODBC connections failed. #18626</li>
 			</OL>
 		<p>&nbsp; </p>
 		<P class="header1">Version 2.4.0 - 2021-04-12</P>

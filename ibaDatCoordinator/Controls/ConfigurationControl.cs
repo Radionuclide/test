@@ -359,7 +359,10 @@ namespace iba.Controls
             m_newTaskToolstrip.Enabled = false;
             m_applyToRunningBtn.Enabled = true;
             m_stopButton.Enabled = true;
-            if(t != null)
+
+           LoadData(m_data, m_manager);
+
+            if (t != null)
             {
                 t.UpdateButtons();
                 t.SwitchToStatusPane();
@@ -632,10 +635,18 @@ namespace iba.Controls
         {
             SaveData();
             TaskManager.Manager.UpdateConfiguration(m_data);
-            if (m_data.EventData != null)
-                m_data.EventData.HdQueryTimeSpanChanged = false;
+
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+            {
+                // If this does not run with a service, changing to false will change this in the local task manager before the option is processed.
+                // This is then set in the task manager
+                if (m_data.EventData != null)
+                    m_data.EventData.HdQueryTimeSpanChanged = false;
+                else if (m_data.ScheduleData != null)
+                    m_data.ScheduleData.ProcessHistorical = false;
+
                 Program.CommunicationObject.SaveConfigurations();
+            }
         }
 
         private void m_undoChangesBtn_Click(object sender, EventArgs e)

@@ -461,7 +461,7 @@ namespace iba.Controls
                 foreach (Node node in inodes)
                 {
                     IbaAnalyzer.ISignalTreeNode analyzerNode = (IbaAnalyzer.ISignalTreeNode)(node.Tag);
-                    string id = analyzerNode.channelId;
+                    string id = analyzerNode.channelID;
                     if (ContainsNode(id))
                         validSignals.Add(Tuple.Create(id, node.Text));
 
@@ -482,7 +482,7 @@ namespace iba.Controls
                 foreach (Node node in inodes)
                 {
                     IbaAnalyzer.ISignalTreeNode analyzerNode = (IbaAnalyzer.ISignalTreeNode)(node.Tag);
-                    string id = analyzerNode.channelId;
+                    string id = analyzerNode.channelID;
                     if (ContainsNode(id))
                         validSignals.Add(Tuple.Create(id, node.Text));
                 }
@@ -505,7 +505,7 @@ namespace iba.Controls
                     return cstNode.ChannelID;
 
                 if (tree.SelectedNode.Tag is IbaAnalyzer.ISignalTreeNode sigNode)
-                    return sigNode.channelId;
+                    return sigNode.channelID;
 
                 return "";
             }
@@ -1047,7 +1047,7 @@ namespace iba.Controls
             if (e.Node?.Tag is CustomNode cstNode)
                 id = cstNode.ChannelID;
             else if (e.Node?.Tag is IbaAnalyzer.ISignalTreeNode sigNode)
-                id = sigNode.channelId;
+                id = sigNode.channelID;
 
             if (id != "")
                 AfterSelect?.Invoke(this, id);
