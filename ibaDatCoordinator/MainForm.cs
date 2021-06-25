@@ -1453,9 +1453,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewCleanupTask] = new ToolStripMenuItem(iba.Properties.Resources.NewCleanupTaskTitle, iba.Properties.Resources.broom, new EventHandler(OnNewCleanupTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewSplitterTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSplitterTaskTitle, menuImages.Images[11], new EventHandler(OnNewSplitterTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(iba.Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], new EventHandler(OnNewHDCreateEventTaskMenuItem));
-			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
+			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[14], new EventHandler(OnNewUploadTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[15], new EventHandler(OnNewKafkaTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[15], new EventHandler(OnNewKafkaTaskMenuItem));
 
             for (int i = 0; i < filteredPlugins.Count; i++)
             {

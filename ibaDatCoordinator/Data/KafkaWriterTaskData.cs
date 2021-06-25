@@ -205,7 +205,6 @@ namespace iba.Data
         {
             Records = new List<KafkaRecord>();
             Params = new List<Param>();
-            Name = "";
             metadata = new List<string>();
             MonitorData = new MonitorData();
             timeout = 3;
