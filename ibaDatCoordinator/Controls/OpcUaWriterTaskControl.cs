@@ -202,7 +202,10 @@ namespace iba.Controls
             downButton.Enabled = (_view.RowCount > 0 && _view.FocusedRowHandle < _view.RowCount - 1);
         }
 
-        public void LeaveCleanup() { }
+        public void LeaveCleanup()
+        {
+            MainForm.InformExtMonDataAboutTreeStructureChange();
+        }
 
 		public void SaveData()
         {

@@ -1662,7 +1662,7 @@ namespace iba
             InformExtMonDataAboutTreeStructureChange();
         }
 
-        private static void InformExtMonDataAboutTreeStructureChange()
+        internal static void InformExtMonDataAboutTreeStructureChange()
         {
             // in case of Standalone inform ExtMon data immediately;
             // otherwise do nothing right now, because this will be done on Job Start or Update
