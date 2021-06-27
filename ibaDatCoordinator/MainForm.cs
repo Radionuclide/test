@@ -1662,6 +1662,10 @@ namespace iba
             InformExtMonDataAboutTreeStructureChange();
         }
 
+        /// <summary>
+        /// Informs ExtMon subsystem about node tree structure change
+        /// (actually, is needed only in Standalone mode, see comments inside)
+        /// </summary>
         internal static void InformExtMonDataAboutTreeStructureChange()
         {
             // in case of Standalone inform ExtMon data immediately;
