@@ -441,6 +441,12 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\ibaSnmpLib.dll"
   File "..\ibaDatCoordinator\bin\Release\WinSCPnet.dll"
   File "..\ibaDatCoordinator\bin\Release\WinSCP.exe"
+  File "..\ibaDatCoordinator\bin\Release\Google.Protobuf.dll"
+  File "..\ibaDatCoordinator\bin\Release\Grpc.Core.Api.dll"
+  File "..\ibaDatCoordinator\bin\Release\Grpc.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\grpc_csharp_ext.x64.dll"
+  File "..\ibaDatCoordinator\bin\Release\grpc_csharp_ext.x86.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Memory.dll"
   ;OPC UA
   File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
