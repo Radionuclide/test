@@ -2924,7 +2924,10 @@ namespace iba.Processing
         private bool ProcessTask(string DatFile, TaskData task, ref bool failedOnce)
         {
             // added by kolesnik - begin
-            DateTime processingStarted = DateTime.Now;
+            // it's important to use UtcNow rather than Now, 
+            // because latter can have issues with duration calculations
+            // on spring/fall daylight saving switch
+            DateTime utcTimeStampProcessingStarted = DateTime.UtcNow;
             uint memoryUsed = 0;
 			// added by kolesnik - end
 
@@ -3089,7 +3092,7 @@ namespace iba.Processing
 
             TaskLastExecutionData lastExec = new TaskLastExecutionData
             {
-                DurationMs = (DateTime.Now - processingStarted).TotalMilliseconds,
+                DurationMs = (DateTime.UtcNow - utcTimeStampProcessingStarted).TotalMilliseconds,
                 MemoryUsed = memoryUsed
             };
 

@@ -449,7 +449,7 @@ namespace iba.Controls
 
         private void RefreshCertificatesTable(List<OpcUaData.CertificateTag> certs)
         {
-            _lastCertTableUpdateStamp = DateTime.Now;
+            _lastCertTableUpdateUtcStamp = DateTime.UtcNow;
 
             // remember selected line and scroll position
             var selectedLine = SelectedCertificate;
@@ -1153,7 +1153,7 @@ namespace iba.Controls
 
         }
 
-        private DateTime _lastCertTableUpdateStamp = DateTime.MinValue;
+        private DateTime _lastCertTableUpdateUtcStamp = DateTime.MinValue;
         private void timerRefreshStatus_Tick(object sender, EventArgs e)
         {
             bool isConnectedOrLocal = IsConnectedOrLocal;
@@ -1175,12 +1175,12 @@ namespace iba.Controls
                 // I use a timer here, because it is much simpler and more reliable than informing client via event.
                 // This Timer is active ONLY if the OPC UA pane is visible, so it doesn't have any computational impact most of time.
                 if (tabCertificates.Selected &&
-                    DateTime.Now - _lastCertTableUpdateStamp > TimeSpan.FromSeconds(3) /*not more often than once per 3 sec*/)
+                    DateTime.UtcNow - _lastCertTableUpdateUtcStamp > TimeSpan.FromSeconds(3) /*not more often than once per 3 sec*/)
                 {
                     try
                     {
                         var certs = TaskManager.Manager.OpcUaHandleCertificate("sync");
-                        _lastCertTableUpdateStamp = DateTime.Now;
+                        _lastCertTableUpdateUtcStamp = DateTime.UtcNow;
                         if (certs == null)
                         {
                             // no changes in certificates; no need to refresh table
