@@ -46,11 +46,12 @@ namespace iba.Dialogs
         private DataGridView grid;
         private HelpProvider helpProvider;
         private NumericUpDown spPortNr;
+        private iba.Controls.ImageComboBoxItem noneItem;
         private DataGridViewTextBoxColumn colName;
         private DataGridViewTextBoxColumn colIpAddress;
         private DataGridViewTextBoxColumn colPortNr;
         private DataGridViewTextBoxColumn colVersion;
-        private iba.Controls.ImageComboBoxItem noneItem;
+        private DataGridViewTextBoxColumn colDataTrnasfer;
         private ServerConfiguration serverConfig;
 
         public ServerSelectionForm(ServerConfiguration _serverConfig)
@@ -181,12 +182,13 @@ namespace iba.Dialogs
             this.ckAutoConnect = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.grid = new System.Windows.Forms.DataGridView();
+            this.spPortNr = new System.Windows.Forms.NumericUpDown();
+            this.cbAddress = new iba.Controls.ImageComboBox();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIpAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPortNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.spPortNr = new System.Windows.Forms.NumericUpDown();
-            this.cbAddress = new iba.Controls.ImageComboBox();
+            this.colDataTrnasfer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spPortNr)).BeginInit();
             this.SuspendLayout();
@@ -249,7 +251,8 @@ namespace iba.Dialogs
             this.colName,
             this.colIpAddress,
             this.colPortNr,
-            this.colVersion});
+            this.colVersion,
+            this.colDataTrnasfer});
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";
             this.grid.ReadOnly = true;
@@ -258,38 +261,6 @@ namespace iba.Dialogs
             this.grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grid.SelectionChanged += new System.EventHandler(this.grid_SelectionChanged);
             this.grid.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.grid_MouseDoubleClick);
-            // 
-            // colName
-            // 
-            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colName.FillWeight = 40F;
-            resources.ApplyResources(this.colName, "colName");
-            this.colName.Name = "colName";
-            this.colName.ReadOnly = true;
-            // 
-            // colIpAddress
-            // 
-            this.colIpAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colIpAddress.FillWeight = 22F;
-            resources.ApplyResources(this.colIpAddress, "colIpAddress");
-            this.colIpAddress.Name = "colIpAddress";
-            this.colIpAddress.ReadOnly = true;
-            // 
-            // colPortNr
-            // 
-            this.colPortNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colPortNr.FillWeight = 20F;
-            resources.ApplyResources(this.colPortNr, "colPortNr");
-            this.colPortNr.Name = "colPortNr";
-            this.colPortNr.ReadOnly = true;
-            // 
-            // colVersion
-            // 
-            this.colVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colVersion.FillWeight = 22F;
-            resources.ApplyResources(this.colVersion, "colVersion");
-            this.colVersion.Name = "colVersion";
-            this.colVersion.ReadOnly = true;
             // 
             // spPortNr
             // 
@@ -318,6 +289,46 @@ namespace iba.Dialogs
             this.cbAddress.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbAddress.ImageList = null;
             this.cbAddress.Name = "cbAddress";
+            // 
+            // colName
+            // 
+            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colName.FillWeight = 46.599F;
+            resources.ApplyResources(this.colName, "colName");
+            this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
+            // 
+            // colIpAddress
+            // 
+            this.colIpAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colIpAddress.FillWeight = 25.62944F;
+            resources.ApplyResources(this.colIpAddress, "colIpAddress");
+            this.colIpAddress.Name = "colIpAddress";
+            this.colIpAddress.ReadOnly = true;
+            // 
+            // colPortNr
+            // 
+            this.colPortNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colPortNr.FillWeight = 23.29949F;
+            resources.ApplyResources(this.colPortNr, "colPortNr");
+            this.colPortNr.Name = "colPortNr";
+            this.colPortNr.ReadOnly = true;
+            // 
+            // colVersion
+            // 
+            this.colVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colVersion.FillWeight = 25.62944F;
+            resources.ApplyResources(this.colVersion, "colVersion");
+            this.colVersion.Name = "colVersion";
+            this.colVersion.ReadOnly = true;
+            // 
+            // colDataTrnasfer
+            // 
+            this.colDataTrnasfer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colDataTrnasfer.FillWeight = 82.84264F;
+            resources.ApplyResources(this.colDataTrnasfer, "colDataTrnasfer");
+            this.colDataTrnasfer.Name = "colDataTrnasfer";
+            this.colDataTrnasfer.ReadOnly = true;
             // 
             // ServerSelectionForm
             // 
@@ -523,6 +534,7 @@ namespace iba.Dialogs
     {
         public string Address;
         public int PortNr;
+        public bool DataTransfer;
         public bool Enabled
         {
             get { return !String.IsNullOrEmpty(Address); }

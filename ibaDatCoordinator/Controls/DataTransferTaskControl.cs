@@ -42,6 +42,8 @@ namespace iba.Controls
             m_tbServer.Text = m_data.Server;
             m_tbPort.Text = m_data.Port;
             m_tbRemotePath.Text = m_data.RemotePath;
+            m_rbDatFile.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.DATFILE;
+            m_rbPrevOutput.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT;
         }
 
         public void SaveData()

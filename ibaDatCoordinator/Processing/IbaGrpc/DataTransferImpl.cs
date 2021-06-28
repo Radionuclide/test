@@ -41,11 +41,11 @@ namespace iba.Processing.IbaGrpc
                 data.AddRange(requestStream.Current.Chunk);
                 file = requestStream.Current.FileName;
             }
-            Console.WriteLine("Received file with " + data.Count + " bytes");
 
             Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test"));
 
             file = file.Substring(file.LastIndexOf("\\") +1);
+
             File.WriteAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test", file), data.ToArray());
 
             return new TransferResponse()

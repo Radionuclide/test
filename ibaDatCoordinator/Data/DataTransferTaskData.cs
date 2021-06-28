@@ -51,6 +51,7 @@ namespace iba.Data
         {
             m_name = iba.Properties.Resources.DataTransferTaskTitle;
             RemotePath = "/";
+            WhatFileTransfer = WhatFileTransferEnum.DATFILE;
         }
 
         public enum WhatFileTransferEnum { DATFILE, PREVOUTPUT }
