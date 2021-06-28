@@ -4542,7 +4542,7 @@ namespace iba.Processing
             }
             catch (Exception ex)
             {
-                Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message, filename, task);
+                Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.InnerException?.Message, filename, task);
 
                 lock (m_sd.DatFileStates)
                 {

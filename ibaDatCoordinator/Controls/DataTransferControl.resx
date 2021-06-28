@@ -141,7 +141,7 @@
     <value>50</value>
   </data>
   <data name="ColCurrentBandwidth.HeaderText" xml:space="preserve">
-    <value>Current bandwith</value>
+    <value>Current bandwidth</value>
   </data>
   <data name="ColCurrentBandwidth.MinimumWidth" type="System.Int32, mscorlib">
     <value>50</value>

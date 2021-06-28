@@ -3,22 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using iba.Data;
 using iba.Processing.IbaGrpc;
 
 namespace iba.Processing
 {
-    class DataTransferWorker
+    internal class DataTransferWorker
     {
-        public readonly GrpcServer Server = new GrpcServer();
+        private readonly GrpcServer _server = new GrpcServer();
+
+        
 
         public void StartServer()
         {
-            Server.Start();
+            _server.Start();
         }
 
         public void StopServer()
         {
-            Server.Stop();
+            _server.Stop();
         }
     }
 }
