@@ -63,6 +63,8 @@ namespace iba.Controls
         {
             if (((CheckBox)sender).Checked)
             {
+                //TaskManager.Manager.DataTransferWorkerInit();
+                DataTransferWorker.Port = (int)m_numPort.Value;
                 DataTransferWorker.StartServer();
                 tbStatus.Text = "Server started";
             }

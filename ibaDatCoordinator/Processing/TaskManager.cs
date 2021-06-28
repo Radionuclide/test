@@ -1178,7 +1178,7 @@ namespace iba.Processing
             get => DataTransferWorker?.DataTransferData;
             set
             {
-                if (SnmpWorker != null)
+                if (DataTransferWorker != null)
                 {
                     DataTransferWorker.DataTransferData = value;
                 }

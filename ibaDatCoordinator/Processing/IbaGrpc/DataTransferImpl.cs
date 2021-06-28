@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,12 @@ namespace iba.Processing.IbaGrpc
 
         public override async Task<TransferResponse> TransferFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)
         {
+            var host = context.RequestHeaders.Get("host");
             var data = new List<byte>();
             string file = null;
             while (await requestStream.MoveNext())
             {
-                Console.WriteLine("Received " +
+                Debug.WriteLine("Received " +
                                   requestStream.Current.Chunk.Length + " bytes");
                 data.AddRange(requestStream.Current.Chunk);
                 file = requestStream.Current.FileName;
@@ -37,7 +39,8 @@ namespace iba.Processing.IbaGrpc
 
             return new TransferResponse()
             {
-                Status = "OK"
+                Status = "OK",
+                Progress = 1
             };
         }
     }
