@@ -1983,9 +1983,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="DataTransferTaskTitle" xml:space="preserve">
     <value>Transfer Data</value>
   </data>
-  <data name="DataTransferIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DataTransferIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DataTransferTaskButton" xml:space="preserve">
     <value>add new transfer task</value>
   </data>
@@ -1994,5 +1991,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="NewDataTransferTaskTitle" xml:space="preserve">
     <value>Add Data Transfer Task</value>
+  </data>
+  <data name="DataTransferIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataTransferIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

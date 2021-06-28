@@ -108,7 +108,7 @@ namespace iba
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = iba.Properties.Resources.snmp_icon;
             m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.opcUaServer_icon;
             // added by kolesnik - end
-            m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = iba.Properties.Resources.snmp_icon;
+            m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle);
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
             m_loggingPane.LargeImage = m_loggingPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.logging.Handle);
