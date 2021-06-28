@@ -337,6 +337,8 @@
     <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
     <Compile Include="Processing\DataTransferWorker.cs" />
     <Compile Include="Processing\ErrorPluginTaskWorker.cs" />
+    <Compile Include="Processing\IbaGrpc\DataTransferImpl.cs" />
+    <Compile Include="Processing\IbaGrpc\GrpcServer.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaNodeManager.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaVariable.cs" />
@@ -845,6 +847,7 @@
     <Content Include="ibaDatCoordinator.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <Protobuf Include="Processing\IbaGrpc\protos\DataTransfer.proto" />
     <None Include="Resources\up.ico" />
     <None Include="Resources\down.ico" />
     <None Include="Resources\UploadTaskIcon.ico" />
@@ -942,6 +945,17 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf">
+      <Version>3.15.8</Version>
+    </PackageReference>
+    <PackageReference Include="Grpc.Core">
+      <Version>2.37.1</Version>
+    </PackageReference>
+    <PackageReference Include="Grpc.Tools">
+      <Version>2.37.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="ibaSnmpLib">
       <Version>1.9.8</Version>
     </PackageReference>
@@ -949,6 +963,7 @@
       <Version>5.17.10</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"

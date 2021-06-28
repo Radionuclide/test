@@ -1,0 +1,34 @@
+﻿syntax = "proto3";
+
+//option csharp_namespace = "Messages";
+
+package Messages.V1;
+
+service DataTransfer{
+	rpc SendConfiguration (ConfigurationRequest) returns (ConfigurationResponse);
+	rpc UploadFile (stream TransferRequest) returns (TransferResponse);
+}
+
+
+message ConfigurationRequest{
+	string fileName = 1;
+	string path = 2;
+	string apiKey = 3;
+	string clientVersion = 4;
+}
+ 
+message ConfigurationResponse{
+	string fileName = 1;
+	string path = 2;
+	string status = 3;
+	string clientVersion = 4;
+}
+
+message TransferRequest{
+	bytes chunk = 1;
+}
+ 
+message TransferResponse{
+	string status = 1;
+	int32 progress = 2;
+}
