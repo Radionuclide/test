@@ -342,9 +342,11 @@
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\ExtMonData.cs" />
     <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
+    <Compile Include="Processing\DataTransferTaskWorker.cs" />
     <Compile Include="Processing\DataTransferWorker.cs" />
     <Compile Include="Processing\ErrorPluginTaskWorker.cs" />
     <Compile Include="Processing\IbaGrpc\DataTransferImpl.cs" />
+    <Compile Include="Processing\IbaGrpc\GrpcClient.cs" />
     <Compile Include="Processing\IbaGrpc\GrpcServer.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaNodeManager.cs" />
