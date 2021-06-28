@@ -7,6 +7,7 @@ using Grpc.Core;
 using iba.Data;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
+using iba.Remoting;
 using Messages.V1;
 
 namespace iba.Processing
@@ -14,10 +15,19 @@ namespace iba.Processing
     internal class DataTransferWorker
     {
         private DataTransferData _dataTransferData = new DataTransferData();
+        private DataTransferImpl _dataTransferImpl;
+        private readonly ClientManager _clientManager;
         
         private const string HOST = "localhost";
         private Server m_server;
         private int m_port;
+
+        public DataTransferWorker()
+        {
+            _clientManager = new ClientManager();
+            TransferImpl = new DataTransferImpl(ClientManager);
+        }
+
 
         public int Port
         {
@@ -40,6 +50,14 @@ namespace iba.Processing
                 }
             }
         }
+
+        public DataTransferImpl TransferImpl
+        {
+            get => _dataTransferImpl;
+            set => _dataTransferImpl = value;
+        }
+
+        public ClientManager ClientManager => _clientManager;
 
         public void StartServer()
         {
@@ -76,7 +94,7 @@ namespace iba.Processing
         {
             return new Server
             {
-                Services = { DataTransfer.BindService(new DataTransferImpl()) },
+                Services = { DataTransfer.BindService(TransferImpl) },
                 Ports = { new ServerPort(HOST, Port, ServerCredentials.Insecure) },
             };
         }

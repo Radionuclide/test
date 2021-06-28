@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
+using iba.Annotations;
 using iba.Data;
 using iba.Logging;
 using iba.Processing;
@@ -20,13 +23,16 @@ namespace iba.Controls
     {
         private DataTransferWorker DataTransferWorker;
         private DataTransferData m_data;
+        private BindingList<DiagnosticsData> _diagnosticsDatas;
         private IPropertyPaneManager m_manager;
         public DataTransferControl()
         {
             InitializeComponent();
-            DataTransferWorker = new DataTransferWorker();
+            DataTransferWorker = TaskManager.Manager.DataTransferWorker;
+            _diagnosticsDatas = new BindingList<DiagnosticsData>();
+            dgvClients.DataSource = _diagnosticsDatas;
+            DataTransferWorker.ClientManager.UpdateCountCallback += IncrementCount;
 
-            dgvClients.DataSource = DataTransferImpl.ConnectedClients;
         }
 
         public void LoadData(object dataSource, IPropertyPaneManager manager)
@@ -81,7 +87,22 @@ namespace iba.Controls
 
         private void buttonClearClients_Click(object sender, EventArgs e)
         {
-            DataTransferImpl.ConnectedClients[0].CientName = "test";
+        }
+
+        delegate void IncrementCountCallback(BindingList<DiagnosticsData> diagnosticsData);
+        private void IncrementCount(BindingList<DiagnosticsData> diagnosticsData)
+        {
+            if (this.dgvClients.InvokeRequired)
+            {
+                IncrementCountCallback d = new IncrementCountCallback(IncrementCount);
+                this.Invoke(d, new object[] { diagnosticsData });
+            }
+            else
+            {
+                _diagnosticsDatas.Clear();
+                _diagnosticsDatas.Add(diagnosticsData.First());
+            }
+
         }
     }
 }

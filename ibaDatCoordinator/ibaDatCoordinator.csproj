@@ -345,7 +345,9 @@
     <Compile Include="Processing\DataTransferTaskWorker.cs" />
     <Compile Include="Processing\DataTransferWorker.cs" />
     <Compile Include="Processing\ErrorPluginTaskWorker.cs" />
+    <Compile Include="Processing\IbaGrpc\ClientManager.cs" />
     <Compile Include="Processing\IbaGrpc\DataTransferImpl.cs" />
+    <Compile Include="Processing\IbaGrpc\DiagnosticsData.cs" />
     <Compile Include="Processing\IbaGrpc\GrpcClient.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaNodeManager.cs" />

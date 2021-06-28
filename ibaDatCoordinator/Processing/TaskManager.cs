@@ -1171,7 +1171,7 @@ namespace iba.Processing
         #endregion
 
         #region DataTransferConfiguration
-        private DataTransferWorker DataTransferWorker { get; } = new DataTransferWorker();
+        internal DataTransferWorker DataTransferWorker { get; } = new DataTransferWorker();
 
         public virtual DataTransferData DataTransferData
         {
