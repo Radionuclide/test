@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using iba.Data;
 using iba.Logging;
 using iba.Processing;
+using iba.Processing.IbaGrpc;
 using iba.Properties;
 
 
@@ -15,12 +16,11 @@ namespace iba.Controls
 {
     public partial class DataTransferControl : UserControl, IPropertyPane
     {
-
-
+        private DataTransferWorker DataTransferWorker;
         public DataTransferControl()
         {
             InitializeComponent();
-
+            DataTransferWorker = new DataTransferWorker();
         }
 
         public void LoadData(object dataSource, IPropertyPaneManager manager)
@@ -38,5 +38,18 @@ namespace iba.Controls
    
         }
 
+        private void cbEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((CheckBox)sender).Checked)
+            {
+                DataTransferWorker.StartServer();
+                tbStatus.Text = "Server started";
+            }
+            else
+            {
+                DataTransferWorker.StopServer();
+                tbStatus.Text = "Server stopped";
+            }
+        }
     }
 }

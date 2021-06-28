@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
-using iba.HD.Common;
 using Messages.V1;
 using TransferRequest = Messages.V1.TransferRequest;
 

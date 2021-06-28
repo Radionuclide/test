@@ -33,6 +33,10 @@
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.dgvClients = new System.Windows.Forms.DataGridView();
+            this.ColAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColDestinationPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColCurrentBandwidth = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColClientVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.buttonClearClients = new System.Windows.Forms.Button();
             this.lblConnectedClients = new System.Windows.Forms.Label();
@@ -53,10 +57,6 @@
             this.gbDirectory = new System.Windows.Forms.GroupBox();
             this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
             this.gbStatus = new System.Windows.Forms.GroupBox();
-            this.ColAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColDestinationPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColCurrentBandwidth = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColClientVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.panelFooter.SuspendLayout();
@@ -92,6 +92,34 @@
             this.dgvClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvClients.StandardTab = true;
             // 
+            // ColAddress
+            // 
+            this.ColAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.ColAddress, "ColAddress");
+            this.ColAddress.Name = "ColAddress";
+            this.ColAddress.ReadOnly = true;
+            // 
+            // ColDestinationPath
+            // 
+            this.ColDestinationPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.ColDestinationPath, "ColDestinationPath");
+            this.ColDestinationPath.Name = "ColDestinationPath";
+            this.ColDestinationPath.ReadOnly = true;
+            // 
+            // ColCurrentBandwidth
+            // 
+            this.ColCurrentBandwidth.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.ColCurrentBandwidth, "ColCurrentBandwidth");
+            this.ColCurrentBandwidth.Name = "ColCurrentBandwidth";
+            this.ColCurrentBandwidth.ReadOnly = true;
+            // 
+            // ColClientVersion
+            // 
+            this.ColClientVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            resources.ApplyResources(this.ColClientVersion, "ColClientVersion");
+            this.ColClientVersion.Name = "ColClientVersion";
+            this.ColClientVersion.ReadOnly = true;
+            // 
             // tbStatus
             // 
             resources.ApplyResources(this.tbStatus, "tbStatus");
@@ -117,6 +145,7 @@
             this.cbEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbEnabled.Name = "cbEnabled";
             this.cbEnabled.UseVisualStyleBackColor = true;
+            this.cbEnabled.CheckedChanged += new System.EventHandler(this.cbEnabled_CheckedChanged);
             // 
             // buttonConfigurationReset
             // 
@@ -250,34 +279,6 @@
             resources.ApplyResources(this.gbStatus, "gbStatus");
             this.gbStatus.Name = "gbStatus";
             this.gbStatus.TabStop = false;
-            // 
-            // ColAddress
-            // 
-            this.ColAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColAddress, "ColAddress");
-            this.ColAddress.Name = "ColAddress";
-            this.ColAddress.ReadOnly = true;
-            // 
-            // ColDestinationPath
-            // 
-            this.ColDestinationPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColDestinationPath, "ColDestinationPath");
-            this.ColDestinationPath.Name = "ColDestinationPath";
-            this.ColDestinationPath.ReadOnly = true;
-            // 
-            // ColCurrentBandwidth
-            // 
-            this.ColCurrentBandwidth.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColCurrentBandwidth, "ColCurrentBandwidth");
-            this.ColCurrentBandwidth.Name = "ColCurrentBandwidth";
-            this.ColCurrentBandwidth.ReadOnly = true;
-            // 
-            // ColClientVersion
-            // 
-            this.ColClientVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColClientVersion, "ColClientVersion");
-            this.ColClientVersion.Name = "ColClientVersion";
-            this.ColClientVersion.ReadOnly = true;
             // 
             // DataTransferControl
             // 
