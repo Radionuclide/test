@@ -53,14 +53,14 @@ namespace iba.Data
             RemotePath = "/";
         }
 
-        public enum WhatFileUploadEnum { DATFILE, PREVOUTPUT }
+        public enum WhatFileTransferEnum { DATFILE, PREVOUTPUT }
 
-        private WhatFileUploadEnum m_whatFileUpload;
+        private WhatFileTransferEnum _mWhatFileTransfer;
 
-        public WhatFileUploadEnum WhatFileUpload
+        public WhatFileTransferEnum WhatFileTransfer
         {
-            get => m_whatFileUpload;
-            set => m_whatFileUpload = value;
+            get => _mWhatFileTransfer;
+            set => _mWhatFileTransfer = value;
         }
 
         public DataTransferTaskData()
@@ -76,7 +76,7 @@ namespace iba.Data
             cd.m_password = m_password;
             cd.m_port = m_port;
             cd.m_remotePath = m_remotePath;
-            cd.m_whatFileUpload = m_whatFileUpload;
+            cd._mWhatFileTransfer = _mWhatFileTransfer;
             return cd;
         }
 
@@ -86,7 +86,7 @@ namespace iba.Data
             if (other == null) return false;
             if (other == this) return true;
             return
-                other.m_whatFileUpload == m_whatFileUpload &&
+                other._mWhatFileTransfer == _mWhatFileTransfer &&
                 other.m_server == m_server &&
                 other.m_username == m_username &&
                 other.m_password == m_password &&

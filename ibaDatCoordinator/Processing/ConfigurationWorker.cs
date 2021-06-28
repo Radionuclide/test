@@ -2601,7 +2601,7 @@ namespace iba.Processing
                         }
                         continue;
                     }
-                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData) && !(task is UploadTaskData))
+                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData) && !(task is UploadTaskData) && !(task is DataTransferTaskData))
                     {
                         m_outPutFilesPrevTask = null;
                     }
@@ -3062,6 +3062,11 @@ namespace iba.Processing
 				DoOPCUAWriterTask(DatFile, task as OpcUaWriterTaskData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
                 memoryUsed = ((OpcUaWriterTaskData)task).MonitorData.MemoryUsed;
+            }
+            else if (task is DataTransferTaskData)
+            {
+                DataTransferTaskData dat = task as DataTransferTaskData;
+                TransferFile(DatFile, dat);
             }
             else if (task is CustomTaskData)
             {
@@ -4471,6 +4476,72 @@ namespace iba.Processing
             catch (Exception ex)
             {
 
+                Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message, filename, task);
+
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+        }
+
+        internal void TransferFile(string filename, DataTransferTaskData task)
+        {
+            string[] filesToCopy = new string[] { filename };
+
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
+
+            if (task.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT)
+            {
+                if (m_outPutFilesPrevTask == null || m_outPutFilesPrevTask.Length == 0 || string.IsNullOrEmpty(m_outPutFilesPrevTask[0]))
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
+                    return;
+                }
+                if (m_outPutFilesPrevTask != null)
+                {
+                    filesToCopy = m_outPutFilesPrevTask;
+                }
+            }
+            m_outPutFilesPrevTask = null;
+
+            try
+            {
+                //close .dat file first
+                try
+                {
+                    if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+                }
+                catch
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                    if (m_needIbaAnalyzer)
+                    {
+                        RestartIbaAnalyzer();
+                    }
+                }
+
+                foreach (var fileToCopy in filesToCopy)
+                {
+                    var dataTransferTaskWorker = new DataTransferTaskWorker(fileToCopy, task);
+
+                    dataTransferTaskWorker.TransferFile();
+                    Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
+                }
+
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    if (m_outPutFilesPrevTask != null && m_outPutFilesPrevTask.Length > 0)
+                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFilesPrevTask[0];
+                }
+            }
+            catch (Exception ex)
+            {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message, filename, task);
 
                 lock (m_sd.DatFileStates)

@@ -6,7 +6,7 @@ package Messages.V1;
 
 service DataTransfer{
 	rpc SendConfiguration (ConfigurationRequest) returns (ConfigurationResponse);
-	rpc UploadFile (stream TransferRequest) returns (TransferResponse);
+	rpc TransferFile (stream TransferRequest) returns (TransferResponse);
 }
 
 
@@ -26,6 +26,7 @@ message ConfigurationResponse{
 
 message TransferRequest{
 	bytes chunk = 1;
+	string fileName = 2;
 }
  
 message TransferResponse{

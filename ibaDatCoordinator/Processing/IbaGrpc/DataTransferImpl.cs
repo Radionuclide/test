@@ -27,24 +27,26 @@ namespace iba.Processing.IbaGrpc
                     { FileName = request.FileName, Path = request.Path, Status = "Error: Directory already exists" });
             }
 
-
             return await Task.FromResult(new ConfigurationResponse() { FileName = request.FileName, Path = request.Path, Status = "OK" });
         }
 
-        public override async Task<TransferResponse> UploadFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)
+        public override async Task<TransferResponse> TransferFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)
         {
             var data = new List<byte>();
+            string file = null;
             while (await requestStream.MoveNext())
             {
                 Console.WriteLine("Received " +
                                   requestStream.Current.Chunk.Length + " bytes");
                 data.AddRange(requestStream.Current.Chunk);
+                file = requestStream.Current.FileName;
             }
             Console.WriteLine("Received file with " + data.Count + " bytes");
 
-            Directory.CreateDirectory(Path.Combine(targetPath));
+            Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test"));
 
-            File.WriteAllBytes(Path.Combine(targetPath, fileName), data.ToArray());
+            file = file.Substring(file.LastIndexOf("\\") +1);
+            File.WriteAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test", file), data.ToArray());
 
             return new TransferResponse()
             {

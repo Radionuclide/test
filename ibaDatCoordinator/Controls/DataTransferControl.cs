@@ -17,6 +17,8 @@ namespace iba.Controls
     public partial class DataTransferControl : UserControl, IPropertyPane
     {
         private DataTransferWorker DataTransferWorker;
+        private DataTransferData m_data;
+        private IPropertyPaneManager m_manager;
         public DataTransferControl()
         {
             InitializeComponent();
@@ -25,7 +27,8 @@ namespace iba.Controls
 
         public void LoadData(object dataSource, IPropertyPaneManager manager)
         {
-           
+           m_data = dataSource as DataTransferData;
+           m_manager = manager;
         }
 
         public void SaveData()

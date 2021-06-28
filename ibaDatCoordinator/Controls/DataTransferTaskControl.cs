@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Processing;
+using iba.Processing.IbaGrpc;
 using iba.Utility;
 
 namespace iba.Controls
@@ -51,9 +52,9 @@ namespace iba.Controls
 
 
             if (m_rbPrevOutput.Checked)
-                m_data.WhatFileUpload = DataTransferTaskData.WhatFileUploadEnum.PREVOUTPUT;
+                m_data.WhatFileTransfer = DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT;
             else if (m_rbDatFile.Checked)
-                m_data.WhatFileUpload = DataTransferTaskData.WhatFileUploadEnum.DATFILE;
+                m_data.WhatFileTransfer = DataTransferTaskData.WhatFileTransferEnum.DATFILE;
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
@@ -69,11 +70,14 @@ namespace iba.Controls
             {
                 try
                 {
+                    GrpcClient client = new GrpcClient();
+                    client.TestConnection();
+                    ok = true;
                 }
                 catch (Exception ex)
                 {
                     LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message);
-
+                    ok = false;
                 }
 
                 m_btnCheckConnection.Text = null;
