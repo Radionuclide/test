@@ -465,9 +465,9 @@ namespace iba
                     propertyPanes["dataTransferControl"] = ctrl;
                 }
 
-                SetRightPaneControl(ctrl, Properties.Resources.snmpTitle,
-                    TaskManager.Manager.SnmpData?.Clone());
-                EnableAllButOnePaneToolStripMenuItems(snmpToolStripMenuItem);
+                SetRightPaneControl(ctrl, Properties.Resources.dataTransferTitle, null);
+                    
+                EnableAllButOnePaneToolStripMenuItems(dataTransferToolStripMenuItem);
                 DisableCopyPasteCutDeleteMenuItems();
             }
         }
@@ -486,6 +486,7 @@ namespace iba
             watchdogToolStripMenuItem.Enabled = true;
             snmpToolStripMenuItem.Enabled = true;
             opcUaToolStripMenuItem.Enabled = true;
+            dataTransferToolStripMenuItem.Enabled = true;
             settingsToolStripMenuItem.Enabled = true;
 
             // disable the only one of them
@@ -1969,7 +1970,10 @@ namespace iba
             m_navBar.SelectedPane = m_opcUaPane;
         }
         // added by kolesnik - end
-
+        private void dataTransferToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_navBar.SelectedPane = m_dataTransferPane;
+        }
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_navBar.SelectedPane = m_settingsPane;
@@ -3511,9 +3515,8 @@ namespace iba
                 languageToolStripMenuItem.DropDownItems.Add(mi);
             }
         }
+
         #endregion
-
-
     }
     #endregion
 

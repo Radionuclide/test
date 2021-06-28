@@ -33,7 +33,6 @@ namespace iba.Controls
             this.collapsibleGroupBox1 = new iba.Utility.CollapsibleGroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
-            this.collapsibleGroupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -41,6 +40,7 @@ namespace iba.Controls
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.checkBox1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.collapsibleGroupBox1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -53,7 +53,6 @@ namespace iba.Controls
             // 
             // collapsibleGroupBox1
             // 
-            this.collapsibleGroupBox1.Controls.Add(this.checkBox1);
             this.collapsibleGroupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.collapsibleGroupBox1.Location = new System.Drawing.Point(3, 3);
             this.collapsibleGroupBox1.Name = "collapsibleGroupBox1";
@@ -65,7 +64,7 @@ namespace iba.Controls
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(7, 20);
+            this.checkBox1.Location = new System.Drawing.Point(291, 3);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(59, 17);
             this.checkBox1.TabIndex = 0;
@@ -80,8 +79,7 @@ namespace iba.Controls
             this.Name = "DataTransferControl";
             this.Size = new System.Drawing.Size(577, 258);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.collapsibleGroupBox1.ResumeLayout(false);
-            this.collapsibleGroupBox1.PerformLayout();
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }

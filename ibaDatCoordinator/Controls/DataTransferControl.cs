@@ -19,17 +19,17 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void LeaveCleanup()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void SaveData()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

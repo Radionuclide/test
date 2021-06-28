@@ -93,6 +93,7 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.dataTransferToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -453,6 +454,7 @@ namespace iba
             this.watchdogToolStripMenuItem,
             this.snmpToolStripMenuItem,
             this.opcUaToolStripMenuItem,
+            this.dataTransferToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.toolStripSeparator1,
             this.languageToolStripMenuItem});
@@ -576,6 +578,12 @@ namespace iba
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
             // 
+            // dataTransferToolStripMenuItem
+            // 
+            this.dataTransferToolStripMenuItem.Name = "dataTransferToolStripMenuItem";
+            resources.ApplyResources(this.dataTransferToolStripMenuItem, "dataTransferToolStripMenuItem");
+            this.dataTransferToolStripMenuItem.Click += new System.EventHandler(this.dataTransferToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -673,6 +681,7 @@ namespace iba
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private TD.Eyefinder.NavigationPane m_opcUaPane;
         private System.Windows.Forms.ToolStripMenuItem opcUaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataTransferToolStripMenuItem;
     }
 }
 
