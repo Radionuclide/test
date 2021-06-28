@@ -264,34 +264,34 @@
   <data name="&gt;&gt;lblConnectedClients.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cbEnabled.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_cbEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbEnabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_cbEnabled.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbEnabled.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cbEnabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 19</value>
   </data>
-  <data name="cbEnabled.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_cbEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 17</value>
   </data>
-  <data name="cbEnabled.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cbEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="cbEnabled.Text" xml:space="preserve">
+  <data name="m_cbEnabled.Text" xml:space="preserve">
     <value>Enabled</value>
   </data>
-  <data name="&gt;&gt;cbEnabled.Name" xml:space="preserve">
-    <value>cbEnabled</value>
+  <data name="&gt;&gt;m_cbEnabled.Name" xml:space="preserve">
+    <value>m_cbEnabled</value>
   </data>
-  <data name="&gt;&gt;cbEnabled.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cbEnabled.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbEnabled.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cbEnabled.Parent" xml:space="preserve">
     <value>gbGeneral</value>
   </data>
-  <data name="&gt;&gt;cbEnabled.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cbEnabled.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="buttonConfigurationReset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -441,25 +441,25 @@
   <data name="&gt;&gt;tbCommunity.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="numPort.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_numPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>232, 18</value>
   </data>
-  <data name="numPort.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_numPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 20</value>
   </data>
-  <data name="numPort.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_numPort.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;numPort.Name" xml:space="preserve">
-    <value>numPort</value>
+  <data name="&gt;&gt;m_numPort.Name" xml:space="preserve">
+    <value>m_numPort</value>
   </data>
-  <data name="&gt;&gt;numPort.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_numPort.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;numPort.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_numPort.Parent" xml:space="preserve">
     <value>gbGeneral</value>
   </data>
-  <data name="&gt;&gt;numPort.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_numPort.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="panelFooter.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">

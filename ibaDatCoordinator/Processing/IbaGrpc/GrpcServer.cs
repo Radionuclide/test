@@ -31,7 +31,7 @@ namespace iba.Processing.IbaGrpc
             {
                 _server = CreateNewServer();
                 _server.Start();
-                LogData.Data.Logger.Log(Level.Info, "Data Transfer Service stopped");
+                LogData.Data.Logger.Log(Level.Info, "Data Transfer Service started");
             }
             catch (Exception e)
             {
@@ -46,7 +46,7 @@ namespace iba.Processing.IbaGrpc
             try
             {
                 _server?.ShutdownAsync().Wait();
-                LogData.Data.Logger.Log(Level.Info, "Data Transfer Service started");
+                LogData.Data.Logger.Log(Level.Info, "Data Transfer Service stopped");
             }
             catch (Exception e)
             {

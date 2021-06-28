@@ -1170,7 +1170,27 @@ namespace iba.Processing
 
         #endregion
 
+        #region DataTransferConfiguration
+        private DataTransferWorker DataTransferWorker { get; } = new DataTransferWorker();
 
+        public virtual DataTransferData DataTransferData
+        {
+            get => DataTransferWorker?.DataTransferData;
+            set
+            {
+                if (SnmpWorker != null)
+                {
+                    DataTransferWorker.DataTransferData = value;
+                }
+            }
+        }
+
+        public void DataTransferWorkerInit()
+        {
+            DataTransferWorker.Init();
+        }
+
+        #endregion
         virtual public bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew, bool testWrite)
         {
             return SharesHandler.TestPath(dir, user, pass, out errormessage, createnew, testWrite);

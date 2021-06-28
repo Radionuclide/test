@@ -28,7 +28,7 @@ namespace iba.Data
         public SnmpData SnmpData { get; set; }
         public OpcUaData OpcUaData { get; set; }
         // added by kolesnik - end
-
+        public DataTransferData DataTransferData { get; set; }
         private List<ConfigurationData> m_confs;
         public List<ConfigurationData> Configurations
         {
@@ -137,6 +137,7 @@ namespace iba.Data
             answer.SnmpData = manager.SnmpData;
             answer.OpcUaData = manager.OpcUaData;
             // added by kolesnik - end
+            answer.DataTransferData = manager.DataTransferData;
             answer.m_doPostPoning = manager.DoPostponeProcessing;
             answer.m_maxResourceIntensiveTasks = manager.MaxResourceIntensiveTasks;
             answer.m_PostponingMinutes = manager.PostponeMinutes;
@@ -158,6 +159,7 @@ namespace iba.Data
             manager.SnmpData = SnmpData;
             manager.OpcUaData = OpcUaData;
             // added by kolesnik - end
+            manager.DataTransferData = DataTransferData;
             manager.ProcessPriority = ProcessPriority;
             manager.PostponeMinutes = PostponingMinutes;
             manager.DoPostponeProcessing = DoPostPoning;
@@ -186,6 +188,7 @@ namespace iba.Data
             // added by kolesnik - begin
             SnmpData = null;
             // added by kolesnik - end
+            DataTransferData = null;
             m_confs = null;
             m_logItemCount = 50;
             m_doPostPoning = true;

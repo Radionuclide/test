@@ -27,13 +27,31 @@ namespace iba.Controls
 
         public void LoadData(object dataSource, IPropertyPaneManager manager)
         {
-           m_data = dataSource as DataTransferData;
-           m_manager = manager;
+            try
+            {
+                m_data = dataSource as DataTransferData;
+                m_manager = manager;
+                m_cbEnabled.Checked = m_data.ServerEnabled;
+                m_numPort.Value = m_data.Port;
+            }
+            catch (Exception e)
+            {
+                LogData.Data.Logger.Log(Level.Exception, @"DataTransferControl.SaveData() exception: " + e.Message);
+            }
         }
 
         public void SaveData()
         {
-          
+            try
+            {
+                m_data.ServerEnabled = m_cbEnabled.Checked;
+                m_data.Port = (int)m_numPort.Value;
+                TaskManager.Manager.DataTransferData = m_data.Clone() as DataTransferData;
+            }
+            catch (Exception e)
+            {
+                LogData.Data.Logger.Log(Level.Exception, @"DataTransferControl.LoadData() exception: " + e.Message);
+            }
         }
 
         public void LeaveCleanup()

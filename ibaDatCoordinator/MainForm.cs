@@ -467,7 +467,8 @@ namespace iba
                     propertyPanes["dataTransferControl"] = ctrl;
                 }
 
-                SetRightPaneControl(ctrl, Properties.Resources.dataTransferTitle, null);
+                SetRightPaneControl(ctrl, Properties.Resources.dataTransferTitle, 
+                    TaskManager.Manager.DataTransferData?.Clone());
                     
                 EnableAllButOnePaneToolStripMenuItems(dataTransferToolStripMenuItem);
                 DisableCopyPasteCutDeleteMenuItems();
@@ -562,6 +563,7 @@ namespace iba
                 // Initialize it here only if the app is standalone
                 TaskManager.Manager.SnmpWorkerInit();
                 TaskManager.Manager.OpcUaWorkerInit();
+                TaskManager.Manager.DataTransferWorkerInit();
             }
             // added by kolesnik - end
         }

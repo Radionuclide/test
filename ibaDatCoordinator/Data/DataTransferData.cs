@@ -20,7 +20,8 @@ namespace iba.Data
         {
             var data = new DataTransferData
             {
-                ServerEnabled = this.ServerEnabled
+                ServerEnabled = this.ServerEnabled,
+                Port =  this.Port
             };
             return data;
         }

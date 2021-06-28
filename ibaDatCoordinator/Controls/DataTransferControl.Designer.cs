@@ -40,13 +40,13 @@
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.buttonClearClients = new System.Windows.Forms.Button();
             this.lblConnectedClients = new System.Windows.Forms.Label();
-            this.cbEnabled = new System.Windows.Forms.CheckBox();
+            this.m_cbEnabled = new System.Windows.Forms.CheckBox();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.tbCommunity = new System.Windows.Forms.TextBox();
-            this.numPort = new System.Windows.Forms.NumericUpDown();
+            this.m_numPort = new System.Windows.Forms.NumericUpDown();
             this.panelFooter = new System.Windows.Forms.Panel();
             this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
             this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
@@ -58,7 +58,7 @@
             this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
             this.gbStatus = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_numPort)).BeginInit();
             this.panelFooter.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabConfiguration.SuspendLayout();
@@ -138,14 +138,14 @@
             resources.ApplyResources(this.lblConnectedClients, "lblConnectedClients");
             this.lblConnectedClients.Name = "lblConnectedClients";
             // 
-            // cbEnabled
+            // m_cbEnabled
             // 
-            resources.ApplyResources(this.cbEnabled, "cbEnabled");
-            this.cbEnabled.Checked = true;
-            this.cbEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbEnabled.Name = "cbEnabled";
-            this.cbEnabled.UseVisualStyleBackColor = true;
-            this.cbEnabled.CheckedChanged += new System.EventHandler(this.cbEnabled_CheckedChanged);
+            resources.ApplyResources(this.m_cbEnabled, "m_cbEnabled");
+            this.m_cbEnabled.Checked = true;
+            this.m_cbEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.m_cbEnabled.Name = "m_cbEnabled";
+            this.m_cbEnabled.UseVisualStyleBackColor = true;
+            this.m_cbEnabled.CheckedChanged += new System.EventHandler(this.cbEnabled_CheckedChanged);
             // 
             // buttonConfigurationReset
             // 
@@ -174,15 +174,15 @@
             resources.ApplyResources(this.tbCommunity, "tbCommunity");
             this.tbCommunity.Name = "tbCommunity";
             // 
-            // numPort
+            // m_numPort
             // 
-            resources.ApplyResources(this.numPort, "numPort");
-            this.numPort.Maximum = new decimal(new int[] {
+            resources.ApplyResources(this.m_numPort, "m_numPort");
+            this.m_numPort.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.numPort.Name = "numPort";
+            this.m_numPort.Name = "m_numPort";
             // 
             // panelFooter
             // 
@@ -244,9 +244,9 @@
             // gbGeneral
             // 
             resources.ApplyResources(this.gbGeneral, "gbGeneral");
-            this.gbGeneral.Controls.Add(this.cbEnabled);
+            this.gbGeneral.Controls.Add(this.m_cbEnabled);
             this.gbGeneral.Controls.Add(this.label5);
-            this.gbGeneral.Controls.Add(this.numPort);
+            this.gbGeneral.Controls.Add(this.m_numPort);
             this.gbGeneral.Name = "gbGeneral";
             this.gbGeneral.TabStop = false;
             // 
@@ -289,7 +289,7 @@
             this.Controls.Add(this.gbStatus);
             this.Name = "DataTransferControl";
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_numPort)).EndInit();
             this.panelFooter.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabConfiguration.ResumeLayout(false);
@@ -308,12 +308,12 @@
         }
 
         #endregion
-        private System.Windows.Forms.CheckBox cbEnabled;
+        private System.Windows.Forms.CheckBox m_cbEnabled;
         private System.Windows.Forms.Button buttonConfigurationApply;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tbCommunity;
-        private System.Windows.Forms.NumericUpDown numPort;
+        private System.Windows.Forms.NumericUpDown m_numPort;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Button buttonClearClients;
         private System.Windows.Forms.Label lblConnectedClients;
