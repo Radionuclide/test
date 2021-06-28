@@ -1,35 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using iba.Data;
+using iba.Logging;
+using iba.Processing;
+using iba.Properties;
+
 
 namespace iba.Controls
 {
     public partial class DataTransferControl : UserControl, IPropertyPane
     {
+
+
         public DataTransferControl()
         {
             InitializeComponent();
+
         }
 
-        public void LoadData(object datasource, IPropertyPaneManager manager)
+        public void LoadData(object dataSource, IPropertyPaneManager manager)
         {
-            //throw new NotImplementedException();
-        }
-
-        public void LeaveCleanup()
-        {
-            //throw new NotImplementedException();
+           
         }
 
         public void SaveData()
         {
-            //throw new NotImplementedException();
+          
         }
+
+        public void LeaveCleanup()
+        {
+   
+        }
+
     }
 }
