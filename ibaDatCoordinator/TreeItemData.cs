@@ -269,6 +269,47 @@ namespace iba
     }
     #endregion
 
+    #region DataTransferTaskTreeItemData
+    public class DataTransferTaskTreeItemData : TreeItemData
+    {
+        public DataTransferTaskTreeItemData(IPropertyPaneManager propManager, DataTransferTaskData cop)
+            : base(propManager)
+        {
+            m_test = cop;
+        }
+
+        public override string What
+        {
+            get { return "DataTransferTask"; }
+        }
+
+        protected DataTransferTaskData m_test;
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_test;
+            }
+            set
+            {
+                m_test = value as DataTransferTaskData;
+            }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["DataTransferTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new DataTransferTaskControl());
+                manager.PropertyPanes["DataTransferTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
     #region ExtractTreeItemData
     public class ExtractTreeItemData : TreeItemData
     {

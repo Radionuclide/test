@@ -615,11 +615,30 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data type.
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static string DataType {
+        internal static System.Drawing.Icon DataTransferIcon {
             get {
-                return ResourceManager.GetString("DataType", resourceCulture);
+                object obj = ResourceManager.GetObject("DataTransferIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add new transfer task.
+        /// </summary>
+        internal static string DataTransferTaskButton {
+            get {
+                return ResourceManager.GetString("DataTransferTaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer Data.
+        /// </summary>
+        internal static string DataTransferTaskTitle {
+            get {
+                return ResourceManager.GetString("DataTransferTaskTitle", resourceCulture);
             }
         }
         
@@ -629,6 +648,15 @@ namespace iba.Properties {
         internal static string dataTransferTitle {
             get {
                 return ResourceManager.GetString("dataTransferTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data type.
+        /// </summary>
+        internal static string DataType {
+            get {
+                return ResourceManager.GetString("DataType", resourceCulture);
             }
         }
         
@@ -719,6 +747,15 @@ namespace iba.Properties {
         internal static string deleteCustomTaskQuestion {
             get {
                 return ResourceManager.GetString("deleteCustomTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the Data Transfer options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteDataTransferTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteDataTransferTaskQuestion", resourceCulture);
             }
         }
         
@@ -3181,6 +3218,15 @@ namespace iba.Properties {
         internal static string NewCustomTaskTitle {
             get {
                 return ResourceManager.GetString("NewCustomTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Data Transfer Task.
+        /// </summary>
+        internal static string NewDataTransferTaskTitle {
+            get {
+                return ResourceManager.GetString("NewDataTransferTaskTitle", resourceCulture);
             }
         }
         

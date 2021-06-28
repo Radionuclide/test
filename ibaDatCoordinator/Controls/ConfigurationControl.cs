@@ -89,6 +89,7 @@ namespace iba.Controls
             m_newHdCreateEventTaskButton.Image = iba.Properties.Resources.img_computed_values;
             m_newOPCUAWriterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.OPCUAIcon.Handle);
             m_newUploadTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle);
+            m_newDataTransferTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle);
 
             m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
@@ -102,6 +103,7 @@ namespace iba.Controls
             m_newHdCreateEventTaskButton.ToolTipText = iba.Properties.Resources.hdcreateeventtaskButton;
             m_newOPCUAWriterTaskButton.ToolTipText = iba.Properties.Resources.opcUaWriterTaskButton;
             m_newUploadTaskButton.ToolTipText = iba.Properties.Resources.UploadTaskButton;
+            m_newDataTransferTaskButton.ToolTipText = iba.Properties.Resources.DataTransferTaskButton;
 
             m_taskCount = m_newTaskToolstrip.Items.Count;
             UpdatePlugins();
@@ -408,7 +410,7 @@ namespace iba.Controls
 
 
 
-private void m_newExtractButton_Click(object sender, EventArgs e)
+        private void m_newExtractButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
                 return;
@@ -604,6 +606,23 @@ private void m_newExtractButton_Click(object sender, EventArgs e)
             if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
             TreeNode newNode = new TreeNode(upload.Name, MainForm.UPLOADTASK_INDEX, MainForm.UPLOADTASK_INDEX);
             newNode.Tag = new UploadTaskTreeItemData(m_manager, upload);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
+        }        
+        
+        private void m_newDataTransferTaskButton_Click(object sender, EventArgs e)
+        {
+            if (!TestTaskCount())
+                return;
+            var dataTransferTaskData = new DataTransferTaskData(m_data);
+            new SetNextName(dataTransferTaskData);
+            m_data.Tasks.Add(dataTransferTaskData);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(dataTransferTaskData.Name, MainForm.DATATRANSFER_TASK_INDEX, MainForm.DATATRANSFER_TASK_INDEX);
+            newNode.Tag = new DataTransferTaskTreeItemData(m_manager, dataTransferTaskData);
             m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)

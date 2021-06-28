@@ -1876,7 +1876,6 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Failed to write events</value>
   </data>
   <data name="OPCUAIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-  <data name="PDOOpenFailed" xml:space="preserve">
     <value>..\Resources\OPCIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="opcUaWriterTaskButton" xml:space="preserve">
@@ -1933,6 +1932,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="up" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\up.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PDOOpenFailed" xml:space="preserve">
     <value>Failed to open PDO file {0}: </value>
   </data>
   <data name="ErrorDatFileOpen" xml:space="preserve">
@@ -1979,5 +1979,20 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="dataTransferTitle" xml:space="preserve">
     <value>Data Transfer Server</value>
+  </data>
+  <data name="DataTransferTaskTitle" xml:space="preserve">
+    <value>Transfer Data</value>
+  </data>
+  <data name="DataTransferIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataTransferIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataTransferTaskButton" xml:space="preserve">
+    <value>add new transfer task</value>
+  </data>
+  <data name="deleteDataTransferTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Data Transfer options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewDataTransferTaskTitle" xml:space="preserve">
+    <value>Add Data Transfer Task</value>
   </data>
 </root>

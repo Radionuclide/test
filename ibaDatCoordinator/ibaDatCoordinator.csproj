@@ -283,6 +283,12 @@
     <Compile Include="Controls\HDEventWizard.Designer.cs">
       <DependentUpon>HDEventWizard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTransferTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataTransferTaskControl.Designer.cs">
+      <DependentUpon>DataTransferTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UploadTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -297,6 +303,7 @@
     </Compile>
     <Compile Include="Data\DataTransferData.cs" />
     <Compile Include="Data\ErrorPluginTaskData.cs" />
+    <Compile Include="Data\DataTransferTaskData.cs" />
     <Compile Include="Data\UploadTaskData.cs" />
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
@@ -620,6 +627,10 @@
     <EmbeddedResource Include="Controls\ErrorPluginTaskControl.resx">
       <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataTransferTaskControl.resx">
+      <DependentUpon>DataTransferTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\UploadTaskControl.resx">
       <DependentUpon>UploadTaskControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -851,6 +862,7 @@
     <None Include="Resources\up.ico" />
     <None Include="Resources\down.ico" />
     <None Include="Resources\UploadTaskIcon.ico" />
+    <None Include="Resources\DataTransferIcon.ico" />
     <Content Include="Resources\img_file.png" />
     <None Include="Resources\img_lock.png" />
     <None Include="Resources\img_networkError.ico" />

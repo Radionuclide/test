@@ -49,14 +49,15 @@ namespace iba
         public static readonly int HDEVENTTASK_INDEX = 13;
         public static readonly int OPCUA_WRITERTASK_INDEX = 14;
         public static readonly int UPLOADTASK_INDEX = 15;
+        public static readonly int DATATRANSFER_TASK_INDEX = 16;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int UNKNOWNTASK_INDEX = 16;
-        public static readonly int NEWCONF_INDEX = 17;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 18;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 19;
-        public static readonly int NEW_EVENT_CONF_INDEX = 20;
-        public static readonly int CUSTOMTASK_INDEX = 21;
-        public static readonly int NR_TASKS = 12;
+        public static readonly int UNKNOWNTASK_INDEX = 17;
+        public static readonly int NEWCONF_INDEX = 18;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 19;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 20;
+        public static readonly int NEW_EVENT_CONF_INDEX = 21;
+        public static readonly int CUSTOMTASK_INDEX = 22;
+        public static readonly int NR_TASKS = 13;
 
         private QuitForm m_quitForm;
 
@@ -132,6 +133,7 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.img_computed_values);
 			confsImageList.Images.Add(iba.Properties.Resources.OPCUAIcon.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.UploadTaskIcon);
+            confsImageList.Images.Add(iba.Properties.Resources.DataTransferIcon.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.img_question);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
@@ -643,6 +645,11 @@ namespace iba
                     taskNode = new TreeNode(task.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, task as UploadTaskData);
                 }
+                else if (task.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(task.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, task as DataTransferTaskData);
+                }
                 else if(task is ICustomTaskData cust)
                 {
                     int index = GetCustomTaskImageIndex(cust);
@@ -896,6 +903,7 @@ namespace iba
                 case "SplitterTask":
                 case "CustomTaskUNC":
                 case "UploadTask":
+                case "DataTransferTask":
                 case "CustomTask":
                 case "HDCreateEventTask":
 				case "OPCUAWriterTask":
@@ -1065,6 +1073,8 @@ namespace iba
                             node.Text, node.Parent.Text);
                     else if (node.Tag is OpcUaWriterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteOPCUATastQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is DataTransferTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteDataTransferTaskQuestion, node.Text, node.Parent.Text);
                 }
                 DialogResult res = MessageBox.Show(this, msg,
                     iba.Properties.Resources.deleteTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
@@ -1247,6 +1257,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, m_task_copy as UploadTaskData);
                 }
+                else if (m_task_copy.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, m_task_copy as DataTransferTaskData);
+                }
                 else if (m_task_copy is ICustomTaskData cust)
                 {
                     int index = GetCustomTaskImageIndex(cust);
@@ -1347,6 +1362,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, m_task_copy as UploadTaskData);
                 }
+                else if (m_task_copy.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, m_task_copy as DataTransferTaskData);
+                }
                 else if (m_task_copy is ICustomTaskData cust)
                 {
                     int index = GetCustomTaskImageIndex(cust);
@@ -1422,6 +1442,7 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.img_computed_values);
             menuImages.Images.Add(iba.Properties.Resources.OPCUAIcon);
             menuImages.Images.Add(iba.Properties.Resources.UploadTaskIcon);
+            menuImages.Images.Add(iba.Properties.Resources.DataTransferIcon);
 
             int pluginsStartImageIndex = menuImages.Images.Count;
             List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
@@ -1429,7 +1450,7 @@ namespace iba
                 menuImages.Images.Add(info.Icon);
 
             int customcount = filteredPlugins.Count;
-            m_menuItems = new ToolStripMenuItem[18 + customcount];
+            m_menuItems = new ToolStripMenuItem[19 + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
             m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
             m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(iba.Properties.Resources.cutTitle, menuImages.Images[0], new EventHandler(OnCutMenuItem), Keys.X | Keys.Control);
@@ -1451,6 +1472,7 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(iba.Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], new EventHandler(OnNewHDCreateEventTaskMenuItem));
 			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.opcUaWriterTaskButton, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[14], new EventHandler(OnNewUploadTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(iba.Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[15], new EventHandler(OnNewDataTransferTaskMenuItem));
 
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1471,7 +1493,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewCleanupTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSplitterTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
-			m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewOPCUATask]);
+            m_menuItems[(int) MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int) MenuItemsEnum.NewOPCUATask]);
+			m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewDataTransferTask]);
+
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
                 var item = m_menuItems[i + (int)MenuItemsEnum.NewCustomTask];
@@ -1501,7 +1525,8 @@ namespace iba
             NewHDCreateEventTask = 15,
             NewOPCUATask = 16,
             NewUploadTask = 17,
-            NewCustomTask = 18
+            NewDataTransferTask = 18,
+            NewCustomTask = 19
         }
 
 
@@ -1840,6 +1865,24 @@ namespace iba
                 TaskManager.Manager.ReplaceConfiguration(confData);
             TreeNode newNode = new TreeNode(uploadTaskData.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
             newNode.Tag = new UploadTaskTreeItemData(this, uploadTaskData);
+            node.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+        }
+        private void OnNewDataTransferTaskMenuItem(object sender, EventArgs e)
+        {
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
+            TreeNode node = mc.Tag as TreeNode;
+            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
+            var dataTransferTaskData = new DataTransferTaskData(confData);
+            new SetNextName(dataTransferTaskData);
+            confData.Tasks.Add(dataTransferTaskData);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+            TreeNode newNode = new TreeNode(dataTransferTaskData.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+            newNode.Tag = new DataTransferTaskTreeItemData(this, dataTransferTaskData);
             node.Nodes.Add(newNode);
             newNode.EnsureVisible();
             if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
