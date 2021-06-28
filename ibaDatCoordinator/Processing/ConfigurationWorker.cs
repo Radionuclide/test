@@ -4529,7 +4529,7 @@ namespace iba.Processing
                 {
                     var dataTransferTaskWorker = new DataTransferTaskWorker(fileToCopy, task);
 
-                    dataTransferTaskWorker.TransferFile();
+                    dataTransferTaskWorker.TransferFile().Wait();
                     Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
                 }
 

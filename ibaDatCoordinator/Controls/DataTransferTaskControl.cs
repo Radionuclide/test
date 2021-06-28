@@ -72,13 +72,14 @@ namespace iba.Controls
             {
                 try
                 {
-                    GrpcClient client = new GrpcClient();
+                    GrpcClient client = new GrpcClient(m_tbServer.Text, m_tbPort.Text);
                     client.TestConnection();
                     ok = true;
                 }
                 catch (Exception ex)
                 {
                     LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message);
+                    errormessage = ex.Message;
                     ok = false;
                 }
 

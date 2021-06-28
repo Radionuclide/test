@@ -11,7 +11,7 @@ namespace iba.Processing
 {
     internal class DataTransferTaskWorker
     {
-        public readonly GrpcClient client = new GrpcClient();
+        public readonly GrpcClient client;
         private readonly string file;
         private string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -21,11 +21,12 @@ namespace iba.Processing
         {
             file = fileToCopy;
             m_data = task;
+            client = new GrpcClient(m_data.Server, m_data.Port);
         }
 
         public async Task TransferFile()
         {
-            client.TransferFileAsync(file).Wait();
+            await client.TransferFileAsync(file);
         }
     }
 }

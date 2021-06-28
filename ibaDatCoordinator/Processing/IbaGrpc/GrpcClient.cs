@@ -13,27 +13,19 @@ namespace iba.Processing.IbaGrpc
 {
     class GrpcClient
     {
-        internal static readonly Channel channel = new Channel("127.0.0.1:30051", ChannelCredentials.Insecure);
+        internal  readonly Channel channel;
         private DataTransfer.DataTransferClient client;
-        public GrpcClient()
+        private readonly string _host;
+        private readonly string _port;
+
+        public GrpcClient(string host, string port)
         {
+            _host = host;
+            _port = port;
+            channel = new Channel($"{_host}:{_port}", ChannelCredentials.Insecure);
             client = new DataTransfer.DataTransferClient(channel);
         }
 
-        public async Task<ConfigurationResponse> SendConfigurationAsync()
-        {
-            var response = await client.SendConfigurationAsync(new ConfigurationRequest
-            {
-                FileName = "test.txt", Path = "testpath"
-            });
-
-            if (response.Status == "OK")
-            {
-                MessageBox.Show(response.FileName);
-            }
-
-            return response;
-        }
         public async Task<TransferResponse> TransferFileAsync(string file)
         {
             using (AsyncClientStreamingCall<TransferRequest, TransferResponse> call = client.TransferFile())
@@ -70,16 +62,16 @@ namespace iba.Processing.IbaGrpc
         }
         public void TestConnection()
         {
-            var response = client.SendConfiguration(new ConfigurationRequest
-            {
-                FileName = "test.txt",
-                Path = "testpath"
-            });
+            //var response = client.SendConfiguration(new ConfigurationRequest
+            //{
+            //    FileName = "test.txt",
+            //    Path = "testpath"
+            //});
 
-            if (response.Status == "OK")
-            {
-                MessageBox.Show(response.FileName);
-            }
+            //if (response.Status == "OK")
+            //{
+            //    MessageBox.Show(response.FileName);
+            //}
         }
     }
 }

@@ -16,19 +16,6 @@ namespace iba.Processing.IbaGrpc
         string targetPath = string.Empty;
         string fileName = string.Empty;
 
-        public override async Task<ConfigurationResponse> SendConfiguration(ConfigurationRequest request, ServerCallContext context)
-        {
-            targetPath = Path.Combine(rootPath, request.Path);
-            fileName = request.FileName;
-
-            if (Directory.Exists(targetPath))
-            {
-                return await Task.Run(() => new ConfigurationResponse()
-                    { FileName = request.FileName, Path = request.Path, Status = "Error: Directory already exists" });
-            }
-
-            return await Task.FromResult(new ConfigurationResponse() { FileName = request.FileName, Path = request.Path, Status = "OK" });
-        }
 
         public override async Task<TransferResponse> TransferFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)
         {

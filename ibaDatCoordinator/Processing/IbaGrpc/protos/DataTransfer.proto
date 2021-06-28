@@ -5,7 +5,6 @@
 package Messages.V1;
 
 service DataTransfer{
-	rpc SendConfiguration (ConfigurationRequest) returns (ConfigurationResponse);
 	rpc TransferFile (stream TransferRequest) returns (TransferResponse);
 }
 

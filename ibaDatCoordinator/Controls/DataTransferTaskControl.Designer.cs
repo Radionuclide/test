@@ -39,10 +39,12 @@ namespace iba.Controls
             this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.m_btnCheckConnection = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.m_btnCheckConnection = new System.Windows.Forms.Button();
+            this.tbxMaxBandwidth = new System.Windows.Forms.TextBox();
+            this.lblMaxBandwidth = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_lbServer = new System.Windows.Forms.Label();
             this.m_tbPort = new System.Windows.Forms.TextBox();
@@ -52,8 +54,6 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
-            this.tbxMaxBandwidth = new System.Windows.Forms.TextBox();
-            this.lblMaxBandwidth = new System.Windows.Forms.Label();
             this.m_gbOption.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -124,14 +124,6 @@ namespace iba.Controls
             resources.ApplyResources(this.panel4, "panel4");
             this.panel4.Name = "panel4";
             // 
-            // m_btnCheckConnection
-            // 
-            this.m_btnCheckConnection.Image = global::iba.Properties.Resources.thumup;
-            resources.ApplyResources(this.m_btnCheckConnection, "m_btnCheckConnection");
-            this.m_btnCheckConnection.Name = "m_btnCheckConnection";
-            this.m_btnCheckConnection.UseVisualStyleBackColor = true;
-            this.m_btnCheckConnection.Click += new System.EventHandler(this.m_btnCheckConnection_Click);
-            // 
             // panel3
             // 
             resources.ApplyResources(this.panel3, "panel3");
@@ -151,6 +143,24 @@ namespace iba.Controls
             this.panel2.Controls.Add(this.tbxMaxBandwidth);
             this.panel2.Controls.Add(this.lblMaxBandwidth);
             this.panel2.Name = "panel2";
+            // 
+            // m_btnCheckConnection
+            // 
+            this.m_btnCheckConnection.Image = global::iba.Properties.Resources.thumup;
+            resources.ApplyResources(this.m_btnCheckConnection, "m_btnCheckConnection");
+            this.m_btnCheckConnection.Name = "m_btnCheckConnection";
+            this.m_btnCheckConnection.UseVisualStyleBackColor = true;
+            this.m_btnCheckConnection.Click += new System.EventHandler(this.m_btnCheckConnection_Click);
+            // 
+            // tbxMaxBandwidth
+            // 
+            resources.ApplyResources(this.tbxMaxBandwidth, "tbxMaxBandwidth");
+            this.tbxMaxBandwidth.Name = "tbxMaxBandwidth";
+            // 
+            // lblMaxBandwidth
+            // 
+            resources.ApplyResources(this.lblMaxBandwidth, "lblMaxBandwidth");
+            this.lblMaxBandwidth.Name = "lblMaxBandwidth";
             // 
             // panel1
             // 
@@ -208,16 +218,6 @@ namespace iba.Controls
             this.m_rbDatFile.Name = "m_rbDatFile";
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
-            // 
-            // tbxMaxBandwidth
-            // 
-            resources.ApplyResources(this.tbxMaxBandwidth, "tbxMaxBandwidth");
-            this.tbxMaxBandwidth.Name = "tbxMaxBandwidth";
-            // 
-            // lblMaxBandwidth
-            // 
-            resources.ApplyResources(this.lblMaxBandwidth, "lblMaxBandwidth");
-            this.lblMaxBandwidth.Name = "lblMaxBandwidth";
             // 
             // DataTransferTaskControl
             // 
