@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -10,6 +11,7 @@ using iba.Logging;
 using iba.Processing;
 using iba.Processing.IbaGrpc;
 using iba.Properties;
+using Messages.V1;
 
 
 namespace iba.Controls
@@ -23,6 +25,8 @@ namespace iba.Controls
         {
             InitializeComponent();
             DataTransferWorker = new DataTransferWorker();
+
+            dgvClients.DataSource = DataTransferImpl.ConnectedClients;
         }
 
         public void LoadData(object dataSource, IPropertyPaneManager manager)
@@ -73,6 +77,11 @@ namespace iba.Controls
                 DataTransferWorker.StopServer();
                 tbStatus.Text = "Server stopped";
             }
+        }
+
+        private void buttonClearClients_Click(object sender, EventArgs e)
+        {
+            DataTransferImpl.ConnectedClients[0].CientName = "test";
         }
     }
 }

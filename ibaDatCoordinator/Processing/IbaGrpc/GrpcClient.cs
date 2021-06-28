@@ -29,7 +29,15 @@ namespace iba.Processing.IbaGrpc
 
         public async Task<TransferResponse> TransferFileAsync(string file)
         {
-            using (AsyncClientStreamingCall<TransferRequest, TransferResponse> call = client.TransferFile())
+            Metadata metadata = new Metadata();
+            metadata.Add("clientname", "localhost");
+            metadata.Add("clientversion", "3.0.0");
+            metadata.Add("filename", file);
+            metadata.Add("path", string.Empty);
+            metadata.Add("apikey", string.Empty);
+
+            CallOptions options = new CallOptions(metadata);
+            using (AsyncClientStreamingCall<TransferRequest, TransferResponse> call = client.TransferFile(options))
             {
                 IClientStreamWriter<TransferRequest> stream = call.RequestStream;
 
@@ -50,7 +58,10 @@ namespace iba.Processing.IbaGrpc
                             Array.Resize(ref buffer, numRead);
                         }
 
-                        await stream.WriteAsync(new TransferRequest() { Chunk = ByteString.CopyFrom(buffer), FileName = file});
+                        await stream.WriteAsync(new TransferRequest() { 
+                            Chunk = ByteString.CopyFrom(buffer), 
+                            FileName = file
+                        });
                     }
                 }
 

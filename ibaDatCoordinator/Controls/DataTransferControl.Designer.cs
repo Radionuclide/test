@@ -33,10 +33,6 @@
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.dgvClients = new System.Windows.Forms.DataGridView();
-            this.ColAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColDestinationPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColCurrentBandwidth = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColClientVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.buttonClearClients = new System.Windows.Forms.Button();
             this.lblConnectedClients = new System.Windows.Forms.Label();
@@ -80,45 +76,12 @@
             this.dgvClients.AllowUserToResizeRows = false;
             resources.ApplyResources(this.dgvClients, "dgvClients");
             this.dgvClients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvClients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColAddress,
-            this.ColDestinationPath,
-            this.ColCurrentBandwidth,
-            this.ColClientVersion});
             this.dgvClients.Name = "dgvClients";
             this.dgvClients.ReadOnly = true;
             this.dgvClients.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader;
             this.dgvClients.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window;
             this.dgvClients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvClients.StandardTab = true;
-            // 
-            // ColAddress
-            // 
-            this.ColAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColAddress, "ColAddress");
-            this.ColAddress.Name = "ColAddress";
-            this.ColAddress.ReadOnly = true;
-            // 
-            // ColDestinationPath
-            // 
-            this.ColDestinationPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColDestinationPath, "ColDestinationPath");
-            this.ColDestinationPath.Name = "ColDestinationPath";
-            this.ColDestinationPath.ReadOnly = true;
-            // 
-            // ColCurrentBandwidth
-            // 
-            this.ColCurrentBandwidth.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColCurrentBandwidth, "ColCurrentBandwidth");
-            this.ColCurrentBandwidth.Name = "ColCurrentBandwidth";
-            this.ColCurrentBandwidth.ReadOnly = true;
-            // 
-            // ColClientVersion
-            // 
-            this.ColClientVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            resources.ApplyResources(this.ColClientVersion, "ColClientVersion");
-            this.ColClientVersion.Name = "ColClientVersion";
-            this.ColClientVersion.ReadOnly = true;
             // 
             // tbStatus
             // 
@@ -132,6 +95,7 @@
             resources.ApplyResources(this.buttonClearClients, "buttonClearClients");
             this.buttonClearClients.Name = "buttonClearClients";
             this.buttonClearClients.UseVisualStyleBackColor = true;
+            this.buttonClearClients.Click += new System.EventHandler(this.buttonClearClients_Click);
             // 
             // lblConnectedClients
             // 
@@ -199,7 +163,7 @@
             this.tabControl1.MediaPlayerDockSides = false;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.OfficeDockSides = false;
-            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.SelectedIndex = 1;
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
@@ -220,6 +184,7 @@
             this.tabConfiguration.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabConfiguration.Name = "tabConfiguration";
             this.tabConfiguration.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabConfiguration.Selected = false;
             this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -269,7 +234,6 @@
             this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabDiag.Name = "tabDiag";
             this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabDiag.Selected = false;
             this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -331,9 +295,5 @@
         private System.Windows.Forms.GroupBox gbSecurity;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lblCertificate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColAddress;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColDestinationPath;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColCurrentBandwidth;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColClientVersion;
     }
 }

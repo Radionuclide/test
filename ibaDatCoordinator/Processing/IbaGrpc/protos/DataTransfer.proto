@@ -10,17 +10,17 @@ service DataTransfer{
 
 
 message Configuration{
-	string fileName = 1;
-	string path = 2;
-	string apiKey = 3;
-	string clientVersion = 4;
+	string clientName = 1;
+	string clientVersion = 2;
+	string fileName = 3;
+	string path = 4;
+	string apiKey = 5;
 }
 
 
 message TransferRequest{
 	bytes chunk = 1;
 	string fileName = 2;
-	Configuration configuration = 3;
 }
  
 message TransferResponse{
