@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Google.Protobuf;
 using Grpc.Core;
+using iba.Data;
 using Messages.V1;
 
 namespace iba.Processing.IbaGrpc
@@ -16,24 +17,22 @@ namespace iba.Processing.IbaGrpc
     {
         internal  readonly Channel channel;
         private DataTransfer.DataTransferClient client;
-        private readonly string _host;
-        private readonly string _port;
+        private readonly DataTransferTaskData m_data;
 
-        public GrpcClient(string host, string port)
+        public GrpcClient(DataTransferTaskData data)
         {
-            _host = host;
-            _port = port;
-            channel = new Channel($"{_host}:{_port}", ChannelCredentials.Insecure);
+            m_data = data;
+            channel = new Channel($"{m_data.Server}:{m_data.Port}", ChannelCredentials.Insecure);
             client = new DataTransfer.DataTransferClient(channel);
         }
 
         public async Task<TransferResponse> TransferFileAsync(string file)
         {
             Metadata metadata = new Metadata();
-            metadata.Add("clientname", "localhost");
-            metadata.Add("clientversion", "3.0.0");
+            metadata.Add("clientname", m_data.Hostname);
+            metadata.Add("clientversion", m_data.Version);
             metadata.Add("filename", file);
-            metadata.Add("path", string.Empty);
+            metadata.Add("path", m_data.RemotePath);
             metadata.Add("apikey", string.Empty);
 
             CallOptions options = new CallOptions(metadata);
@@ -74,16 +73,7 @@ namespace iba.Processing.IbaGrpc
         }
         public void TestConnection()
         {
-            //var response = client.SendConfiguration(new ConfigurationRequest
-            //{
-            //    FileName = "test.txt",
-            //    Path = "testpath"
-            //});
-
-            //if (response.Status == "OK")
-            //{
-            //    MessageBox.Show(response.FileName);
-            //}
+            //ToDo
         }
     }
 }

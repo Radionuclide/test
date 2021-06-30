@@ -1995,4 +1995,22 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="DataTransferIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DataTransferIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Hostname" xml:space="preserve">
+	  <value>Hostname</value>
+  </data>
+  <data name="DataTransferControl_ConfigureDiagnosticGrid_Version" xml:space="preserve">
+	  <value>Version</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+	  <value>Version</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+	  <value>Path</value>
+  </data>
+  <data name="TransferredFiles" xml:space="preserve">
+	  <value>Transferred Files</value>
+  </data>
+  <data name="Last_transferred_file" xml:space="preserve">
+	  <value>Last transferred file</value>
+  </data>
 </root>

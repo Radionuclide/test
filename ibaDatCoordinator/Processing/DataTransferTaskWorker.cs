@@ -21,7 +21,7 @@ namespace iba.Processing
         {
             file = fileToCopy;
             m_data = task;
-            client = new GrpcClient(m_data.Server, m_data.Port);
+            client = new GrpcClient(m_data);
         }
 
         public async Task TransferFile()

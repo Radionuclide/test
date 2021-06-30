@@ -72,7 +72,7 @@ namespace iba.Controls
             {
                 try
                 {
-                    GrpcClient client = new GrpcClient(m_tbServer.Text, m_tbPort.Text);
+                    GrpcClient client = new GrpcClient(m_data);
                     client.TestConnection();
                     ok = true;
                 }

@@ -12,7 +12,7 @@ namespace iba.Processing.IbaGrpc
 {
     class ClientManager
     {
-        public delegate void UpdateEvent(BindingList<DiagnosticsData> diagnosticsDatacount);
+        public delegate void UpdateEvent(DiagnosticsData diagnosticsDatacount);
 
         public event UpdateEvent UpdateDiagnosticInfoCallback;
         private BindingList<DiagnosticsData> m_connectedClients;
@@ -42,14 +42,11 @@ namespace iba.Processing.IbaGrpc
                 {
                     m_connectedClients.Add(diagnosticsData);
                 }
-
             }
             catch (Exception e)
             {
                 LogData.Data.Log(Level.Exception, e.Message);
             }
-
-            
         }
 
         public void UpdateDiagnosticsInfo(DiagnosticsData diagnosticsData)
@@ -61,7 +58,7 @@ namespace iba.Processing.IbaGrpc
             data.TransferredFiles++;
             data.Filename = diagnosticsData.Filename;
 
-            UpdateDiagnosticInfoCallback?.Invoke(m_connectedClients);
+            UpdateDiagnosticInfoCallback?.Invoke(data);
         }
     }
 }

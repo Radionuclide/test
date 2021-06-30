@@ -615,6 +615,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        internal static string DataTransferControl_ConfigureDiagnosticGrid_Version {
+            get {
+                return ResourceManager.GetString("DataTransferControl_ConfigureDiagnosticGrid_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon DataTransferIcon {
@@ -1635,6 +1644,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hostname.
+        /// </summary>
+        internal static string Hostname {
+            get {
+                return ResourceManager.GetString("Hostname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ibaAnalyzer {
@@ -2126,6 +2144,15 @@ namespace iba.Properties {
         internal static string Last {
             get {
                 return ResourceManager.GetString("Last", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last transferred file.
+        /// </summary>
+        internal static string Last_transferred_file {
+            get {
+                return ResourceManager.GetString("Last_transferred_file", resourceCulture);
             }
         }
         
@@ -4004,6 +4031,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string Path {
+            get {
+                return ResourceManager.GetString("Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap pausetask {
@@ -5285,6 +5321,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transferred Files.
+        /// </summary>
+        internal static string TransferredFiles {
+            get {
+                return ResourceManager.GetString("TransferredFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to load signal tree.
         /// </summary>
         internal static string treeErrorGeneric {
@@ -5546,6 +5591,15 @@ namespace iba.Properties {
         internal static string UseSignalName {
             get {
                 return ResourceManager.GetString("UseSignalName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        internal static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
         

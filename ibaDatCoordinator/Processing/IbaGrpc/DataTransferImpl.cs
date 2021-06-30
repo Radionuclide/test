@@ -28,11 +28,12 @@ namespace iba.Processing.IbaGrpc
             {
                 ClientName = context.RequestHeaders.Get("clientname").Value,
                 ClientVersion = context.RequestHeaders.Get("clientversion").Value,
-                Filename = context.RequestHeaders.Get("filename").Value,
                 Path = context.RequestHeaders.Get("path").Value,
                 ApiKey = context.RequestHeaders.Get("apikey").Value,
-                TransferredFiles = 0
+                TransferredFiles = 0,
+                Filename = context.RequestHeaders.Get("filename").Value
             };
+
 
             _clientManager.RegisterClient(diagnosticsData);
 

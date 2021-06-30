@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using DevExpress.XtraPrinting.Native;
 using iba.Annotations;
 using iba.Data;
 using iba.Logging;
@@ -21,24 +22,26 @@ namespace iba.Controls
 {
     public partial class DataTransferControl : UserControl, IPropertyPane
     {
-        private DataTransferWorker DataTransferWorker;
-        private DataTransferData m_data;
-        private IPropertyPaneManager m_manager;
+        private readonly DataTransferWorker DataTransferWorker;
+        private DataTransferData _data;
+        private BindingList<DiagnosticsData> _diagnosticsDataList;
+        private IPropertyPaneManager _manager;
         public DataTransferControl()
         {
             InitializeComponent();
             DataTransferWorker = TaskManager.Manager.DataTransferWorker;
             DataTransferWorker.ClientManager.UpdateDiagnosticInfoCallback += UpdateDiagnosticInfo;
+            ConfigureDiagnosticGrid();
         }
 
         public void LoadData(object dataSource, IPropertyPaneManager manager)
         {
             try
             {
-                m_data = dataSource as DataTransferData;
-                m_manager = manager;
-                m_cbEnabled.Checked = m_data.ServerEnabled;
-                m_numPort.Value = m_data.Port;
+                _data = dataSource as DataTransferData;
+                _manager = manager;
+                m_cbEnabled.Checked = _data.ServerEnabled;
+                m_numPort.Value = _data.Port;
             }
             catch (Exception e)
             {
@@ -50,9 +53,9 @@ namespace iba.Controls
         {
             try
             {
-                m_data.ServerEnabled = m_cbEnabled.Checked;
-                m_data.Port = (int)m_numPort.Value;
-                TaskManager.Manager.DataTransferData = m_data.Clone() as DataTransferData;
+                _data.ServerEnabled = m_cbEnabled.Checked;
+                _data.Port = (int)m_numPort.Value;
+                TaskManager.Manager.DataTransferData = _data.Clone() as DataTransferData;
             }
             catch (Exception e)
             {
@@ -83,40 +86,60 @@ namespace iba.Controls
 
         private void buttonClearClients_Click(object sender, EventArgs e)
         {
+            dgvClients.Rows.Clear();
         }
 
-        delegate void UpdateDiagnosticInfoCallback(BindingList<DiagnosticsData> diagnosticsData);
-        private void UpdateDiagnosticInfoSafe(BindingList<DiagnosticsData> diagnosticsData)
+        private delegate void UpdateDiagnosticInfoCallback(DiagnosticsData diagnosticsData);
+        private void UpdateDiagnosticInfoSafe(DiagnosticsData diagnosticsData)
         {
             if (this.dgvClients.InvokeRequired)
             {
                 var callback = new UpdateDiagnosticInfoCallback(UpdateDiagnosticInfoSafe);
                 this.Invoke(callback, new object[] { diagnosticsData });
             }
+            
+            var elem = _diagnosticsDataList.FirstOrDefault(x => x.ClientName == diagnosticsData.ClientName);
 
-            ConfigureDiagnosticGrid(diagnosticsData);
+            if (elem == null)
+            {
+                _diagnosticsDataList.Add(diagnosticsData);
+                return;
+            }
+
+            elem.ClientName = diagnosticsData.ClientName;
+            elem.TransferredFiles = diagnosticsData.TransferredFiles;
         }
 
-        private void UpdateDiagnosticInfo(BindingList<DiagnosticsData> diagnosticsDatas)
+        private void UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)
         {
-            UpdateDiagnosticInfoSafe(diagnosticsDatas);
+            UpdateDiagnosticInfoSafe(diagnosticsData);
         }
 
-        private void ConfigureDiagnosticGrid(BindingList<DiagnosticsData> diagnosticsData)
+        private void ConfigureDiagnosticGrid()
         {
-            if (dgvClients.DataSource != null) return;
+            _diagnosticsDataList = new BindingList<DiagnosticsData>();
+            
+            dgvClients.DataSource = _diagnosticsDataList;
 
+            dgvClients.Columns[nameof(DiagnosticsData.ClientName)].HeaderText = Resources.Hostname;
+            dgvClients.Columns[nameof(DiagnosticsData.ClientName)].DisplayIndex = 0;
 
-            dgvClients.DataSource = diagnosticsData;
+            dgvClients.Columns[nameof(DiagnosticsData.ClientVersion)].HeaderText = Resources.Version;
+            dgvClients.Columns[nameof(DiagnosticsData.ClientVersion)].DisplayIndex = 1;
 
-            dgvClients.Columns["ClientName"].HeaderText = "Hostname";
-            dgvClients.Columns["ClientVersion"].HeaderText = "Version";
-            dgvClients.Columns["Path"].HeaderText = "Path";
-            dgvClients.Columns["Filename"].HeaderText = "FileName";
-            dgvClients.Columns["ApiKey"].Visible = false;
-            dgvClients.Columns["TransferredFiles"].HeaderText = "Transferrred Files";
+            dgvClients.Columns[Resources.Path].HeaderText = Resources.Path;
+            dgvClients.Columns[Resources.Path].DisplayIndex = 2;
 
-            dgvClients.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+            dgvClients.Columns[nameof(DiagnosticsData.TransferredFiles)].HeaderText = Resources.TransferredFiles;
+            dgvClients.Columns[nameof(DiagnosticsData.TransferredFiles)].DisplayIndex = 3;
+
+            dgvClients.Columns[nameof(DiagnosticsData.Filename)].HeaderText = Resources.Last_transferred_file;
+            dgvClients.Columns[nameof(DiagnosticsData.Filename)].DisplayIndex = 4;
+
+            dgvClients.Columns[nameof(DiagnosticsData.ApiKey)].Visible = false;
+
+            dgvClients.Columns.OfType<DataGridViewColumn>()
+                .ForEach(column => column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill);
         }
     }
 }

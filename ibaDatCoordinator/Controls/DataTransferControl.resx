@@ -744,4 +744,10 @@
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="DataTransferControl_ConfigureDiagnosticGrid_Hostname" xml:space="preserve">
+	  <value>Hostname</value>
+  </data>
+  <data name="DataTransferControl_ConfigureDiagnosticGrid_Version" xml:space="preserve">
+	  <value>Version</value>
+  </data>
 </root>
