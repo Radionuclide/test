@@ -26,7 +26,7 @@ namespace iba.Processing.IbaGrpc
         {
             DiagnosticsData diagnosticsData = new DiagnosticsData
             {
-                CientName = context.RequestHeaders.Get("clientname").Value,
+                ClientName = context.RequestHeaders.Get("clientname").Value,
                 ClientVersion = context.RequestHeaders.Get("clientversion").Value,
                 Filename = context.RequestHeaders.Get("filename").Value,
                 Path = context.RequestHeaders.Get("path").Value,
@@ -54,7 +54,7 @@ namespace iba.Processing.IbaGrpc
 
             File.WriteAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test", file), data.ToArray());
 
-            _clientManager.IncreaseClientTransferredFilesCount(diagnosticsData);
+            _clientManager.UpdateDiagnosticsInfo(diagnosticsData);
 
             return new TransferResponse()
             {

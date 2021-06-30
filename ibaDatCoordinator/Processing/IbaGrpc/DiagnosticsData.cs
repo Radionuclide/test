@@ -4,23 +4,23 @@ using iba.Annotations;
 
 namespace iba.Processing.IbaGrpc
 {
-    class DiagnosticsData : INotifyPropertyChanged
+    internal class DiagnosticsData : INotifyPropertyChanged
     {
-        private string m_cientName;
+        private string m_clientName;
         private string m_clientVersion;
         private string m_filename;
         private string m_path;
         private string m_apiKey;
         private int m_transferredFiles;
 
-        public string CientName
+        public string ClientName
         {
-            get => m_cientName;
+            get => m_clientName;
             set
             {
-                if(value == m_cientName)
+                if(value == m_clientName)
                     return;
-                m_cientName = value;
+                m_clientName = value;
                 OnPropertyChanged();
             } 
         }
@@ -28,25 +28,49 @@ namespace iba.Processing.IbaGrpc
         public string ClientVersion
         {
             get => m_clientVersion;
-            set => m_clientVersion = value;
+            set
+            {
+                if (value == m_clientVersion)
+                    return;
+                m_clientVersion = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Filename
         {
             get => m_filename;
-            set => m_filename = value;
+            set
+            {
+                if (value == m_filename)
+                    return;
+                m_filename = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Path
         {
             get => m_path;
-            set => m_path = value;
+            set
+            {
+                if (value == m_path)
+                    return;
+                m_path = value;
+                OnPropertyChanged();
+            }
         }
 
         public string ApiKey
         {
             get => m_apiKey;
-            set => m_apiKey = value;
+            set
+            {
+                if (value == m_apiKey)
+                    return;
+                m_apiKey = value;
+                OnPropertyChanged();
+            }
         }
 
         public int TransferredFiles

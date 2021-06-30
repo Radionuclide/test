@@ -23,16 +23,12 @@ namespace iba.Controls
     {
         private DataTransferWorker DataTransferWorker;
         private DataTransferData m_data;
-        private BindingList<DiagnosticsData> _diagnosticsDatas;
         private IPropertyPaneManager m_manager;
         public DataTransferControl()
         {
             InitializeComponent();
             DataTransferWorker = TaskManager.Manager.DataTransferWorker;
-            _diagnosticsDatas = new BindingList<DiagnosticsData>();
-            dgvClients.DataSource = _diagnosticsDatas;
-            DataTransferWorker.ClientManager.UpdateCountCallback += IncrementCount;
-
+            DataTransferWorker.ClientManager.UpdateDiagnosticInfoCallback += UpdateDiagnosticInfo;
         }
 
         public void LoadData(object dataSource, IPropertyPaneManager manager)
@@ -89,20 +85,38 @@ namespace iba.Controls
         {
         }
 
-        delegate void IncrementCountCallback(BindingList<DiagnosticsData> diagnosticsData);
-        private void IncrementCount(BindingList<DiagnosticsData> diagnosticsData)
+        delegate void UpdateDiagnosticInfoCallback(BindingList<DiagnosticsData> diagnosticsData);
+        private void UpdateDiagnosticInfoSafe(BindingList<DiagnosticsData> diagnosticsData)
         {
             if (this.dgvClients.InvokeRequired)
             {
-                IncrementCountCallback d = new IncrementCountCallback(IncrementCount);
-                this.Invoke(d, new object[] { diagnosticsData });
-            }
-            else
-            {
-                _diagnosticsDatas.Clear();
-                _diagnosticsDatas.Add(diagnosticsData.First());
+                var callback = new UpdateDiagnosticInfoCallback(UpdateDiagnosticInfoSafe);
+                this.Invoke(callback, new object[] { diagnosticsData });
             }
 
+            ConfigureDiagnosticGrid(diagnosticsData);
+        }
+
+        private void UpdateDiagnosticInfo(BindingList<DiagnosticsData> diagnosticsDatas)
+        {
+            UpdateDiagnosticInfoSafe(diagnosticsDatas);
+        }
+
+        private void ConfigureDiagnosticGrid(BindingList<DiagnosticsData> diagnosticsData)
+        {
+            if (dgvClients.DataSource != null) return;
+
+
+            dgvClients.DataSource = diagnosticsData;
+
+            dgvClients.Columns["ClientName"].HeaderText = "Hostname";
+            dgvClients.Columns["ClientVersion"].HeaderText = "Version";
+            dgvClients.Columns["Path"].HeaderText = "Path";
+            dgvClients.Columns["Filename"].HeaderText = "FileName";
+            dgvClients.Columns["ApiKey"].Visible = false;
+            dgvClients.Columns["TransferredFiles"].HeaderText = "Transferrred Files";
+
+            dgvClients.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
         }
     }
 }

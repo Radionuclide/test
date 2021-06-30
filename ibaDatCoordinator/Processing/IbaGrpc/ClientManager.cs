@@ -14,7 +14,7 @@ namespace iba.Processing.IbaGrpc
     {
         public delegate void UpdateEvent(BindingList<DiagnosticsData> diagnosticsDatacount);
 
-        public event UpdateEvent UpdateCountCallback;
+        public event UpdateEvent UpdateDiagnosticInfoCallback;
         private BindingList<DiagnosticsData> m_connectedClients;
 
         public ClientManager()
@@ -32,10 +32,15 @@ namespace iba.Processing.IbaGrpc
         {
             try
             {
-                if (m_connectedClients.Any(x => x.CientName != diagnosticsData.CientName))
+                if (m_connectedClients.Any(x => x.ClientName != diagnosticsData.ClientName))
                 {
                     m_connectedClients.Add(diagnosticsData);
-                    IncreaseClientTransferredFilesCount(diagnosticsData);
+                    UpdateDiagnosticsInfo(diagnosticsData);
+                }
+
+                if (m_connectedClients.All(x => diagnosticsData.ClientName != x.ClientName))
+                {
+                    m_connectedClients.Add(diagnosticsData);
                 }
 
             }
@@ -44,22 +49,19 @@ namespace iba.Processing.IbaGrpc
                 LogData.Data.Log(Level.Exception, e.Message);
             }
 
-            if (m_connectedClients.All(x => diagnosticsData.CientName != x.CientName))
-            {
-                m_connectedClients.Add(diagnosticsData);
-            }
+            
         }
-        private int count = 0;
 
-        public void IncreaseClientTransferredFilesCount(DiagnosticsData diagnosticsData)
+        public void UpdateDiagnosticsInfo(DiagnosticsData diagnosticsData)
         {
-            Debug.WriteLine("count: " + count++);
+            var data = m_connectedClients.FirstOrDefault(x => x.ClientName == diagnosticsData.ClientName);
+            
+            if (data == null) return;
+            
+            data.TransferredFiles++;
+            data.Filename = diagnosticsData.Filename;
 
-            m_connectedClients.First(x => x.CientName == diagnosticsData.CientName).TransferredFiles++;
-            if (UpdateCountCallback != null)
-            {
-                UpdateCountCallback(m_connectedClients);
-            }
+            UpdateDiagnosticInfoCallback?.Invoke(m_connectedClients);
         }
     }
 }
