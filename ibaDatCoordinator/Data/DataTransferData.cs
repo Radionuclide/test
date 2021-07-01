@@ -11,6 +11,7 @@ namespace iba.Data
     {
         public bool ServerEnabled { get; set; }
         public int Port { get; set; }
+        public string RootPath { get; set; }
 
         public DataTransferData()
         {
@@ -21,7 +22,8 @@ namespace iba.Data
             var data = new DataTransferData
             {
                 ServerEnabled = this.ServerEnabled,
-                Port =  this.Port
+                Port =  this.Port,
+                RootPath = this.RootPath
             };
             return data;
         }
@@ -32,14 +34,23 @@ namespace iba.Data
             if (temp == null) { return false; }
 
             return temp.ServerEnabled == ServerEnabled
-                   && temp.Port == Port;
+                   && temp.Port == Port
+                   && temp.RootPath == RootPath;
+        }
+
+        protected bool Equals(DataTransferData other)
+        {
+            return ServerEnabled == other.ServerEnabled && Port == other.Port && RootPath == other.RootPath;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (ServerEnabled.GetHashCode() * 397) ^ Port;
+                var hashCode = ServerEnabled.GetHashCode();
+                hashCode = (hashCode * 397) ^ Port;
+                hashCode = (hashCode * 397) ^ (RootPath != null ? RootPath.GetHashCode() : 0);
+                return hashCode;
             }
         }
     }

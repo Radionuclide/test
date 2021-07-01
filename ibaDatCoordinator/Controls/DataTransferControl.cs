@@ -25,6 +25,8 @@ namespace iba.Controls
         private readonly DataTransferWorker DataTransferWorker;
         private DataTransferData _data;
         private BindingList<DiagnosticsData> _diagnosticsDataList;
+        private readonly string _defaultPath = AppDomain.CurrentDomain.BaseDirectory;
+        private readonly int _defaultPort = 30051;
         private IPropertyPaneManager _manager;
         public DataTransferControl()
         {
@@ -42,6 +44,19 @@ namespace iba.Controls
                 _manager = manager;
                 m_cbEnabled.Checked = _data.ServerEnabled;
                 m_numPort.Value = _data.Port;
+                
+                if (string.IsNullOrEmpty(_data.RootPath))
+                {
+                    _data.RootPath = _defaultPath;
+                }
+                
+                if (string.IsNullOrEmpty(_data.Port.ToString()))
+                {
+                    _data.Port = _defaultPort;
+                }
+
+                tbRootPath.Text = _data.RootPath;
+                m_numPort.Text = _data.Port.ToString();
             }
             catch (Exception e)
             {
@@ -55,6 +70,7 @@ namespace iba.Controls
             {
                 _data.ServerEnabled = m_cbEnabled.Checked;
                 _data.Port = (int)m_numPort.Value;
+                _data.RootPath = tbRootPath.Text;
                 TaskManager.Manager.DataTransferData = _data.Clone() as DataTransferData;
             }
             catch (Exception e)
@@ -75,11 +91,15 @@ namespace iba.Controls
                 //TaskManager.Manager.DataTransferWorkerInit();
                 DataTransferWorker.Port = (int)m_numPort.Value;
                 DataTransferWorker.StartServer();
+                btnRootPath.Enabled = false;
+                m_numPort.Enabled = false;
                 tbStatus.Text = "Server started";
             }
             else
             {
                 DataTransferWorker.StopServer();
+                btnRootPath.Enabled = true;
+                m_numPort.Enabled = true;
                 tbStatus.Text = "Server stopped";
             }
         }
@@ -140,6 +160,20 @@ namespace iba.Controls
 
             dgvClients.Columns.OfType<DataGridViewColumn>()
                 .ForEach(column => column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop;
+
+            folderBrowserDialog.Description = "Select root directory";
+            
+
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                _data.RootPath = tbRootPath.Text = folderBrowserDialog.SelectedPath;
+            }
+            
         }
     }
 }

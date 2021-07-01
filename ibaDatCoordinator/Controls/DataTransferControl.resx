@@ -120,9 +120,6 @@
   <metadata name="folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="timerRefreshStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>180, 17</value>
-  </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="dgvClients.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -333,34 +330,34 @@
   <data name="&gt;&gt;buttonConfigurationApply.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lbsPort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lbsPort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lbsPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>197, 20</value>
   </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lbsPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
   </data>
-  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+  <data name="lbsPort.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label5.Text" xml:space="preserve">
+  <data name="lbsPort.Text" xml:space="preserve">
     <value>Port:</value>
   </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
+  <data name="&gt;&gt;lbsPort.Name" xml:space="preserve">
+    <value>lbsPort</value>
   </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+  <data name="&gt;&gt;lbsPort.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lbsPort.Parent" xml:space="preserve">
     <value>gbGeneral</value>
   </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lbsPort.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
@@ -373,13 +370,13 @@
     <value>3, 22</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 13</value>
+    <value>57, 13</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>Root Directory:</value>
+    <value>Root path:</value>
   </data>
   <data name="&gt;&gt;label7.Name" xml:space="preserve">
     <value>label7</value>
@@ -391,31 +388,31 @@
     <value>gbDirectory</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tbCommunity.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="tbCommunity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 19</value>
-  </data>
-  <data name="tbCommunity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>574, 20</value>
-  </data>
-  <data name="tbCommunity.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;tbCommunity.Name" xml:space="preserve">
-    <value>tbCommunity</value>
+  <data name="tbRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;tbCommunity.Type" xml:space="preserve">
+  <data name="tbRootPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>66, 19</value>
+  </data>
+  <data name="tbRootPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>533, 20</value>
+  </data>
+  <data name="tbRootPath.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tbRootPath.Name" xml:space="preserve">
+    <value>tbRootPath</value>
+  </data>
+  <data name="&gt;&gt;tbRootPath.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbCommunity.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tbRootPath.Parent" xml:space="preserve">
     <value>gbDirectory</value>
   </data>
-  <data name="&gt;&gt;tbCommunity.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;tbRootPath.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_numPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>232, 18</value>
@@ -480,28 +477,28 @@
   <data name="gbSecurity.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="textBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="tbPathToCertificate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="textBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tbPathToCertificate.Location" type="System.Drawing.Point, System.Drawing">
     <value>128, 19</value>
   </data>
-  <data name="textBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tbPathToCertificate.Size" type="System.Drawing.Size, System.Drawing">
     <value>574, 20</value>
   </data>
-  <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="tbPathToCertificate.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;textBox1.Name" xml:space="preserve">
-    <value>textBox1</value>
+  <data name="&gt;&gt;tbPathToCertificate.Name" xml:space="preserve">
+    <value>tbPathToCertificate</value>
   </data>
-  <data name="&gt;&gt;textBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbPathToCertificate.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tbPathToCertificate.Parent" xml:space="preserve">
     <value>gbSecurity</value>
   </data>
-  <data name="&gt;&gt;textBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbPathToCertificate.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="lblCertificate.AutoSize" type="System.Boolean, mscorlib">
@@ -587,6 +584,33 @@
   </data>
   <data name="gbDirectory.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="btnRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="btnRootPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>605, 18</value>
+  </data>
+  <data name="btnRootPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 23</value>
+  </data>
+  <data name="btnRootPath.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btnRootPath.Text" xml:space="preserve">
+    <value>Select root path</value>
+  </data>
+  <data name="&gt;&gt;btnRootPath.Name" xml:space="preserve">
+    <value>btnRootPath</value>
+  </data>
+  <data name="&gt;&gt;btnRootPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnRootPath.Parent" xml:space="preserve">
+    <value>gbDirectory</value>
+  </data>
+  <data name="&gt;&gt;btnRootPath.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="gbDirectory.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 64</value>
@@ -732,22 +756,10 @@
   <data name="&gt;&gt;folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;timerRefreshStatus.Name" xml:space="preserve">
-    <value>timerRefreshStatus</value>
-  </data>
-  <data name="&gt;&gt;timerRefreshStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>DataTransferControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="DataTransferControl_ConfigureDiagnosticGrid_Hostname" xml:space="preserve">
-	  <value>Hostname</value>
-  </data>
-  <data name="DataTransferControl_ConfigureDiagnosticGrid_Version" xml:space="preserve">
-	  <value>Version</value>
   </data>
 </root>

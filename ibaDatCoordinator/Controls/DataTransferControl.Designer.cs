@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataTransferControl));
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.timerRefreshStatus = new System.Windows.Forms.Timer(this.components);
             this.dgvClients = new System.Windows.Forms.DataGridView();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.buttonClearClients = new System.Windows.Forms.Button();
@@ -39,18 +37,19 @@
             this.m_cbEnabled = new System.Windows.Forms.CheckBox();
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lbsPort = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.tbCommunity = new System.Windows.Forms.TextBox();
+            this.tbRootPath = new System.Windows.Forms.TextBox();
             this.m_numPort = new System.Windows.Forms.NumericUpDown();
             this.panelFooter = new System.Windows.Forms.Panel();
             this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
             this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbPathToCertificate = new System.Windows.Forms.TextBox();
             this.lblCertificate = new System.Windows.Forms.Label();
             this.gbGeneral = new System.Windows.Forms.GroupBox();
             this.gbDirectory = new System.Windows.Forms.GroupBox();
+            this.btnRootPath = new System.Windows.Forms.Button();
             this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
             this.gbStatus = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
@@ -64,10 +63,6 @@
             this.tabDiag.SuspendLayout();
             this.gbStatus.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // timerRefreshStatus
-            // 
-            this.timerRefreshStatus.Interval = 1000;
             // 
             // dgvClients
             // 
@@ -123,20 +118,21 @@
             this.buttonConfigurationApply.Name = "buttonConfigurationApply";
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // lbsPort
             // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
+            resources.ApplyResources(this.lbsPort, "lbsPort");
+            this.lbsPort.Name = "lbsPort";
             // 
             // label7
             // 
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
             // 
-            // tbCommunity
+            // tbRootPath
             // 
-            resources.ApplyResources(this.tbCommunity, "tbCommunity");
-            this.tbCommunity.Name = "tbCommunity";
+            resources.ApplyResources(this.tbRootPath, "tbRootPath");
+            this.tbRootPath.Name = "tbRootPath";
+            this.tbRootPath.ReadOnly = true;
             // 
             // m_numPort
             // 
@@ -163,7 +159,7 @@
             this.tabControl1.MediaPlayerDockSides = false;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.OfficeDockSides = false;
-            this.tabControl1.SelectedIndex = 1;
+            this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
@@ -184,22 +180,21 @@
             this.tabConfiguration.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabConfiguration.Name = "tabConfiguration";
             this.tabConfiguration.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabConfiguration.Selected = false;
             this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
             // 
             // gbSecurity
             // 
             resources.ApplyResources(this.gbSecurity, "gbSecurity");
-            this.gbSecurity.Controls.Add(this.textBox1);
+            this.gbSecurity.Controls.Add(this.tbPathToCertificate);
             this.gbSecurity.Controls.Add(this.lblCertificate);
             this.gbSecurity.Name = "gbSecurity";
             this.gbSecurity.TabStop = false;
             // 
-            // textBox1
+            // tbPathToCertificate
             // 
-            resources.ApplyResources(this.textBox1, "textBox1");
-            this.textBox1.Name = "textBox1";
+            resources.ApplyResources(this.tbPathToCertificate, "tbPathToCertificate");
+            this.tbPathToCertificate.Name = "tbPathToCertificate";
             // 
             // lblCertificate
             // 
@@ -210,7 +205,7 @@
             // 
             resources.ApplyResources(this.gbGeneral, "gbGeneral");
             this.gbGeneral.Controls.Add(this.m_cbEnabled);
-            this.gbGeneral.Controls.Add(this.label5);
+            this.gbGeneral.Controls.Add(this.lbsPort);
             this.gbGeneral.Controls.Add(this.m_numPort);
             this.gbGeneral.Name = "gbGeneral";
             this.gbGeneral.TabStop = false;
@@ -218,10 +213,18 @@
             // gbDirectory
             // 
             resources.ApplyResources(this.gbDirectory, "gbDirectory");
-            this.gbDirectory.Controls.Add(this.tbCommunity);
+            this.gbDirectory.Controls.Add(this.btnRootPath);
+            this.gbDirectory.Controls.Add(this.tbRootPath);
             this.gbDirectory.Controls.Add(this.label7);
             this.gbDirectory.Name = "gbDirectory";
             this.gbDirectory.TabStop = false;
+            // 
+            // btnRootPath
+            // 
+            resources.ApplyResources(this.btnRootPath, "btnRootPath");
+            this.btnRootPath.Name = "btnRootPath";
+            this.btnRootPath.UseVisualStyleBackColor = true;
+            this.btnRootPath.Click += new System.EventHandler(this.button1_Click);
             // 
             // tabDiag
             // 
@@ -234,6 +237,7 @@
             this.tabDiag.InactiveTextColor = System.Drawing.Color.Empty;
             this.tabDiag.Name = "tabDiag";
             this.tabDiag.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabDiag.Selected = false;
             this.tabDiag.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabDiag.SelectTextColor = System.Drawing.Color.Empty;
             // 
@@ -274,16 +278,15 @@
         #endregion
         private System.Windows.Forms.CheckBox m_cbEnabled;
         private System.Windows.Forms.Button buttonConfigurationApply;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lbsPort;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox tbCommunity;
+        private System.Windows.Forms.TextBox tbRootPath;
         private System.Windows.Forms.NumericUpDown m_numPort;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Button buttonClearClients;
         private System.Windows.Forms.Label lblConnectedClients;
         private System.Windows.Forms.Button buttonConfigurationReset;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-        private System.Windows.Forms.Timer timerRefreshStatus;
         private System.Windows.Forms.DataGridView dgvClients;
         private System.Windows.Forms.Panel panelFooter;
         private Crownwood.DotNetMagic.Controls.TabControl tabControl1;
@@ -293,7 +296,8 @@
         private System.Windows.Forms.GroupBox gbDirectory;
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.GroupBox gbSecurity;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbPathToCertificate;
         private System.Windows.Forms.Label lblCertificate;
+        private System.Windows.Forms.Button btnRootPath;
     }
 }
