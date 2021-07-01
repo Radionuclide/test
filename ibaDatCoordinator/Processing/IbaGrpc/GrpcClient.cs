@@ -58,8 +58,7 @@ namespace iba.Processing.IbaGrpc
                         }
 
                         await stream.WriteAsync(new TransferRequest() { 
-                            Chunk = ByteString.CopyFrom(buffer), 
-                            FileName = file
+                            Chunk = ByteString.CopyFrom(buffer)
                         });
                     }
                 }
