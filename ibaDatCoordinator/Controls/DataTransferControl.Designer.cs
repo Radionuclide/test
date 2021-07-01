@@ -38,18 +38,19 @@
             this.buttonConfigurationReset = new System.Windows.Forms.Button();
             this.buttonConfigurationApply = new System.Windows.Forms.Button();
             this.lbsPort = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbRootPath = new System.Windows.Forms.TextBox();
+            this.lblRootPath = new System.Windows.Forms.Label();
             this.m_numPort = new System.Windows.Forms.NumericUpDown();
             this.panelFooter = new System.Windows.Forms.Panel();
             this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
             this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
-            this.tbPathToCertificate = new System.Windows.Forms.TextBox();
-            this.lblCertificate = new System.Windows.Forms.Label();
+            this.btnCertificatePath = new System.Windows.Forms.Button();
+            this.tbCertificatePath = new System.Windows.Forms.TextBox();
+            this.lblCertificatePath = new System.Windows.Forms.Label();
             this.gbGeneral = new System.Windows.Forms.GroupBox();
             this.gbDirectory = new System.Windows.Forms.GroupBox();
             this.btnRootPath = new System.Windows.Forms.Button();
+            this.tbRootPath = new System.Windows.Forms.TextBox();
             this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
             this.gbStatus = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
@@ -123,16 +124,10 @@
             resources.ApplyResources(this.lbsPort, "lbsPort");
             this.lbsPort.Name = "lbsPort";
             // 
-            // label7
+            // lblRootPath
             // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
-            // tbRootPath
-            // 
-            resources.ApplyResources(this.tbRootPath, "tbRootPath");
-            this.tbRootPath.Name = "tbRootPath";
-            this.tbRootPath.ReadOnly = true;
+            resources.ApplyResources(this.lblRootPath, "lblRootPath");
+            this.lblRootPath.Name = "lblRootPath";
             // 
             // m_numPort
             // 
@@ -186,20 +181,29 @@
             // gbSecurity
             // 
             resources.ApplyResources(this.gbSecurity, "gbSecurity");
-            this.gbSecurity.Controls.Add(this.tbPathToCertificate);
-            this.gbSecurity.Controls.Add(this.lblCertificate);
+            this.gbSecurity.Controls.Add(this.btnCertificatePath);
+            this.gbSecurity.Controls.Add(this.tbCertificatePath);
+            this.gbSecurity.Controls.Add(this.lblCertificatePath);
             this.gbSecurity.Name = "gbSecurity";
             this.gbSecurity.TabStop = false;
             // 
-            // tbPathToCertificate
+            // btnCertificatePath
             // 
-            resources.ApplyResources(this.tbPathToCertificate, "tbPathToCertificate");
-            this.tbPathToCertificate.Name = "tbPathToCertificate";
+            resources.ApplyResources(this.btnCertificatePath, "btnCertificatePath");
+            this.btnCertificatePath.Name = "btnCertificatePath";
+            this.btnCertificatePath.UseVisualStyleBackColor = true;
+            this.btnCertificatePath.Click += new System.EventHandler(this.btnRootPathOrBtnCertificatePath_Click);
             // 
-            // lblCertificate
+            // tbCertificatePath
             // 
-            resources.ApplyResources(this.lblCertificate, "lblCertificate");
-            this.lblCertificate.Name = "lblCertificate";
+            resources.ApplyResources(this.tbCertificatePath, "tbCertificatePath");
+            this.tbCertificatePath.Name = "tbCertificatePath";
+            this.tbCertificatePath.ReadOnly = true;
+            // 
+            // lblCertificatePath
+            // 
+            resources.ApplyResources(this.lblCertificatePath, "lblCertificatePath");
+            this.lblCertificatePath.Name = "lblCertificatePath";
             // 
             // gbGeneral
             // 
@@ -215,7 +219,7 @@
             resources.ApplyResources(this.gbDirectory, "gbDirectory");
             this.gbDirectory.Controls.Add(this.btnRootPath);
             this.gbDirectory.Controls.Add(this.tbRootPath);
-            this.gbDirectory.Controls.Add(this.label7);
+            this.gbDirectory.Controls.Add(this.lblRootPath);
             this.gbDirectory.Name = "gbDirectory";
             this.gbDirectory.TabStop = false;
             // 
@@ -224,7 +228,13 @@
             resources.ApplyResources(this.btnRootPath, "btnRootPath");
             this.btnRootPath.Name = "btnRootPath";
             this.btnRootPath.UseVisualStyleBackColor = true;
-            this.btnRootPath.Click += new System.EventHandler(this.button1_Click);
+            this.btnRootPath.Click += new System.EventHandler(this.btnRootPathOrBtnCertificatePath_Click);
+            // 
+            // tbRootPath
+            // 
+            resources.ApplyResources(this.tbRootPath, "tbRootPath");
+            this.tbRootPath.Name = "tbRootPath";
+            this.tbRootPath.ReadOnly = true;
             // 
             // tabDiag
             // 
@@ -279,8 +289,7 @@
         private System.Windows.Forms.CheckBox m_cbEnabled;
         private System.Windows.Forms.Button buttonConfigurationApply;
         private System.Windows.Forms.Label lbsPort;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox tbRootPath;
+        private System.Windows.Forms.Label lblRootPath;
         private System.Windows.Forms.NumericUpDown m_numPort;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Button buttonClearClients;
@@ -296,8 +305,10 @@
         private System.Windows.Forms.GroupBox gbDirectory;
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.GroupBox gbSecurity;
-        private System.Windows.Forms.TextBox tbPathToCertificate;
-        private System.Windows.Forms.Label lblCertificate;
+        private System.Windows.Forms.TextBox tbCertificatePath;
+        private System.Windows.Forms.Label lblCertificatePath;
         private System.Windows.Forms.Button btnRootPath;
+        private System.Windows.Forms.TextBox tbRootPath;
+        private System.Windows.Forms.Button btnCertificatePath;
     }
 }

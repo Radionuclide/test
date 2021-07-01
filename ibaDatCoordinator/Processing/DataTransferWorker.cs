@@ -103,7 +103,7 @@ namespace iba.Processing
         {
             Port = _dataTransferData.Port;
             
-            if (_dataTransferData.ServerEnabled)
+            if (_dataTransferData.IsServerEnabled)
             {
                 StartServer();
             }

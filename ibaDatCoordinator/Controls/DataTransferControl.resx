@@ -360,59 +360,38 @@
   <data name="&gt;&gt;lbsPort.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="lblRootPath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblRootPath.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lblRootPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 22</value>
   </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lblRootPath.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 13</value>
   </data>
-  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblRootPath.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label7.Text" xml:space="preserve">
+  <data name="lblRootPath.Text" xml:space="preserve">
     <value>Root path:</value>
   </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
+  <data name="&gt;&gt;lblRootPath.Name" xml:space="preserve">
+    <value>lblRootPath</value>
   </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblRootPath.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblRootPath.Parent" xml:space="preserve">
     <value>gbDirectory</value>
   </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblRootPath.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="tbRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="tbRootPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>66, 19</value>
-  </data>
-  <data name="tbRootPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>533, 20</value>
-  </data>
-  <data name="tbRootPath.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tbRootPath.Name" xml:space="preserve">
-    <value>tbRootPath</value>
-  </data>
-  <data name="&gt;&gt;tbRootPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbRootPath.Parent" xml:space="preserve">
-    <value>gbDirectory</value>
-  </data>
-  <data name="&gt;&gt;tbRootPath.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_numPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>232, 18</value>
@@ -477,59 +456,41 @@
   <data name="gbSecurity.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="tbPathToCertificate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;btnCertificatePath.Name" xml:space="preserve">
+    <value>btnCertificatePath</value>
   </data>
-  <data name="tbPathToCertificate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 19</value>
+  <data name="&gt;&gt;btnCertificatePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tbPathToCertificate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>574, 20</value>
+  <data name="&gt;&gt;btnCertificatePath.Parent" xml:space="preserve">
+    <value>gbSecurity</value>
   </data>
-  <data name="tbPathToCertificate.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;btnCertificatePath.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;tbPathToCertificate.Name" xml:space="preserve">
-    <value>tbPathToCertificate</value>
+  <data name="&gt;&gt;tbCertificatePath.Name" xml:space="preserve">
+    <value>tbCertificatePath</value>
   </data>
-  <data name="&gt;&gt;tbPathToCertificate.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbCertificatePath.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbPathToCertificate.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tbCertificatePath.Parent" xml:space="preserve">
     <value>gbSecurity</value>
   </data>
-  <data name="&gt;&gt;tbPathToCertificate.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;tbCertificatePath.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="lblCertificate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;lblCertificatePath.Name" xml:space="preserve">
+    <value>lblCertificatePath</value>
   </data>
-  <data name="lblCertificate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblCertificate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 22</value>
-  </data>
-  <data name="lblCertificate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 13</value>
-  </data>
-  <data name="lblCertificate.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="lblCertificate.Text" xml:space="preserve">
-    <value>Path to Ceritficate:</value>
-  </data>
-  <data name="&gt;&gt;lblCertificate.Name" xml:space="preserve">
-    <value>lblCertificate</value>
-  </data>
-  <data name="&gt;&gt;lblCertificate.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblCertificatePath.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblCertificate.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lblCertificatePath.Parent" xml:space="preserve">
     <value>gbSecurity</value>
   </data>
-  <data name="&gt;&gt;lblCertificate.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;lblCertificatePath.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="gbSecurity.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 122</value>
@@ -586,13 +547,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="btnRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Right</value>
   </data>
   <data name="btnRootPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>605, 18</value>
+    <value>597, 20</value>
   </data>
   <data name="btnRootPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 23</value>
+    <value>112, 23</value>
   </data>
   <data name="btnRootPath.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -611,6 +572,30 @@
   </data>
   <data name="&gt;&gt;btnRootPath.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="tbRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="tbRootPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 22</value>
+  </data>
+  <data name="tbRootPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>463, 20</value>
+  </data>
+  <data name="tbRootPath.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tbRootPath.Name" xml:space="preserve">
+    <value>tbRootPath</value>
+  </data>
+  <data name="&gt;&gt;tbRootPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbRootPath.Parent" xml:space="preserve">
+    <value>gbDirectory</value>
+  </data>
+  <data name="&gt;&gt;tbRootPath.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="gbDirectory.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 64</value>
@@ -707,6 +692,90 @@
   </data>
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="btnCertificatePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="btnCertificatePath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>597, 18</value>
+  </data>
+  <data name="btnCertificatePath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 23</value>
+  </data>
+  <data name="btnCertificatePath.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="btnCertificatePath.Text" xml:space="preserve">
+    <value>Select  certificate</value>
+  </data>
+  <data name="&gt;&gt;btnCertificatePath.Name" xml:space="preserve">
+    <value>btnCertificatePath</value>
+  </data>
+  <data name="&gt;&gt;btnCertificatePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnCertificatePath.Parent" xml:space="preserve">
+    <value>gbSecurity</value>
+  </data>
+  <data name="&gt;&gt;btnCertificatePath.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tbCertificatePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="tbCertificatePath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 19</value>
+  </data>
+  <data name="tbCertificatePath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>463, 20</value>
+  </data>
+  <data name="tbCertificatePath.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tbCertificatePath.Name" xml:space="preserve">
+    <value>tbCertificatePath</value>
+  </data>
+  <data name="&gt;&gt;tbCertificatePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbCertificatePath.Parent" xml:space="preserve">
+    <value>gbSecurity</value>
+  </data>
+  <data name="&gt;&gt;tbCertificatePath.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblCertificatePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="lblCertificatePath.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblCertificatePath.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblCertificatePath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 22</value>
+  </data>
+  <data name="lblCertificatePath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 13</value>
+  </data>
+  <data name="lblCertificatePath.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lblCertificatePath.Text" xml:space="preserve">
+    <value>Path to Ceritficate:</value>
+  </data>
+  <data name="&gt;&gt;lblCertificatePath.Name" xml:space="preserve">
+    <value>lblCertificatePath</value>
+  </data>
+  <data name="&gt;&gt;lblCertificatePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCertificatePath.Parent" xml:space="preserve">
+    <value>gbSecurity</value>
+  </data>
+  <data name="&gt;&gt;lblCertificatePath.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="gbStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>

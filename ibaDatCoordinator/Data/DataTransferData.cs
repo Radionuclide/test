@@ -9,47 +9,44 @@ namespace iba.Data
     [Serializable]
     public class DataTransferData : ICloneable
     {
-        public bool ServerEnabled { get; set; }
+        public bool IsServerEnabled { get; set; }
         public int Port { get; set; }
         public string RootPath { get; set; }
+        public string CertificatePath { get; set; }
 
         public DataTransferData()
         {
-            ServerEnabled = false;
+            IsServerEnabled = false;
         }
         public object Clone()
         {
             var data = new DataTransferData
             {
-                ServerEnabled = this.ServerEnabled,
+                IsServerEnabled = this.IsServerEnabled,
                 Port =  this.Port,
-                RootPath = this.RootPath
+                RootPath = this.RootPath,
+                CertificatePath = this.CertificatePath
             };
             return data;
         }
 
         public override bool Equals(object obj)
         {
-            var temp = obj as DataTransferData;
-            if (temp == null) { return false; }
+            if (!(obj is DataTransferData temp)) { return false; }
 
-            return temp.ServerEnabled == ServerEnabled
+            return temp.IsServerEnabled == IsServerEnabled
                    && temp.Port == Port
-                   && temp.RootPath == RootPath;
+                   && temp.RootPath == RootPath
+                   && temp.CertificatePath == CertificatePath;
         }
-
-        protected bool Equals(DataTransferData other)
-        {
-            return ServerEnabled == other.ServerEnabled && Port == other.Port && RootPath == other.RootPath;
-        }
-
         public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = ServerEnabled.GetHashCode();
+                var hashCode = IsServerEnabled.GetHashCode();
                 hashCode = (hashCode * 397) ^ Port;
                 hashCode = (hashCode * 397) ^ (RootPath != null ? RootPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CertificatePath != null ? CertificatePath.GetHashCode() : 0);
                 return hashCode;
             }
         }

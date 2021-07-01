@@ -22,7 +22,7 @@ namespace iba.Controls
 {
     public partial class DataTransferControl : UserControl, IPropertyPane
     {
-        private readonly DataTransferWorker DataTransferWorker;
+        private readonly DataTransferWorker _dataTransferWorker;
         private DataTransferData _data;
         private BindingList<DiagnosticsData> _diagnosticsDataList;
         private readonly string _defaultPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -31,8 +31,8 @@ namespace iba.Controls
         public DataTransferControl()
         {
             InitializeComponent();
-            DataTransferWorker = TaskManager.Manager.DataTransferWorker;
-            DataTransferWorker.ClientManager.UpdateDiagnosticInfoCallback += UpdateDiagnosticInfo;
+            _dataTransferWorker = TaskManager.Manager.DataTransferWorker;
+            _dataTransferWorker.ClientManager.UpdateDiagnosticInfoCallback += UpdateDiagnosticInfo;
             ConfigureDiagnosticGrid();
         }
 
@@ -42,7 +42,7 @@ namespace iba.Controls
             {
                 _data = dataSource as DataTransferData;
                 _manager = manager;
-                m_cbEnabled.Checked = _data.ServerEnabled;
+                m_cbEnabled.Checked = _data.IsServerEnabled;
                 m_numPort.Value = _data.Port;
                 
                 if (string.IsNullOrEmpty(_data.RootPath))
@@ -56,6 +56,7 @@ namespace iba.Controls
                 }
 
                 tbRootPath.Text = _data.RootPath;
+                tbCertificatePath.Text = _data.CertificatePath;
                 m_numPort.Text = _data.Port.ToString();
             }
             catch (Exception e)
@@ -68,9 +69,10 @@ namespace iba.Controls
         {
             try
             {
-                _data.ServerEnabled = m_cbEnabled.Checked;
+                _data.IsServerEnabled = m_cbEnabled.Checked;
                 _data.Port = (int)m_numPort.Value;
                 _data.RootPath = tbRootPath.Text;
+                _data.CertificatePath = tbCertificatePath.Text;
                 TaskManager.Manager.DataTransferData = _data.Clone() as DataTransferData;
             }
             catch (Exception e)
@@ -89,15 +91,15 @@ namespace iba.Controls
             if (((CheckBox)sender).Checked)
             {
                 //TaskManager.Manager.DataTransferWorkerInit();
-                DataTransferWorker.Port = (int)m_numPort.Value;
-                DataTransferWorker.StartServer();
+                _dataTransferWorker.Port = (int)m_numPort.Value;
+                _dataTransferWorker.StartServer();
                 btnRootPath.Enabled = false;
                 m_numPort.Enabled = false;
                 tbStatus.Text = "Server started";
             }
             else
             {
-                DataTransferWorker.StopServer();
+                _dataTransferWorker.StopServer();
                 btnRootPath.Enabled = true;
                 m_numPort.Enabled = true;
                 tbStatus.Text = "Server stopped";
@@ -162,18 +164,23 @@ namespace iba.Controls
                 .ForEach(column => column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnRootPathOrBtnCertificatePath_Click(object sender, EventArgs e)
         {
             folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop;
+            var IsRootPath = ((Button)sender).Text.Equals("Select root path");
 
-            folderBrowserDialog.Description = "Select root directory";
-            
+            folderBrowserDialog.Description = IsRootPath ? "Select root directory" : "Select path to certificate";
 
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
+
+            if (IsRootPath)
             {
                 _data.RootPath = tbRootPath.Text = folderBrowserDialog.SelectedPath;
             }
-            
+            else
+            {
+                _data.CertificatePath = tbCertificatePath.Text = folderBrowserDialog.SelectedPath;
+            }
         }
     }
 }
