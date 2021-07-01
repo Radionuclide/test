@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DevExpress.Skins;
 using Grpc.Core;
 using iba.Controls;
+using iba.Data;
 using Messages.V1;
 using TransferRequest = Messages.V1.TransferRequest;
 
@@ -16,10 +17,17 @@ namespace iba.Processing.IbaGrpc
     class DataTransferImpl : DataTransfer.DataTransferBase
     {
         private readonly ClientManager _clientManager;
+        private DataTransferData _data;
 
         public DataTransferImpl(ClientManager clientManager)
         {
             _clientManager = clientManager;
+        }
+
+        public DataTransferData Data
+        {
+            get => _data;
+            set => _data = value;
         }
 
         public override async Task<TransferResponse> TransferFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)
@@ -37,7 +45,6 @@ namespace iba.Processing.IbaGrpc
 
             _clientManager.RegisterClient(diagnosticsData);
 
-            string file = null;
             var data = new List<byte>();
 
             while (await requestStream.MoveNext())
@@ -45,22 +52,19 @@ namespace iba.Processing.IbaGrpc
                 Debug.WriteLine("Received " +
                                   requestStream.Current.Chunk.Length + " bytes");
                 data.AddRange(requestStream.Current.Chunk);
-                file = requestStream.Current.FileName;
             }
 
+            var dir = Directory.CreateDirectory(Path.Combine(_data.RootPath, diagnosticsData.Path.Trim('/')));
+            var file = Path.GetFileName(diagnosticsData.Filename);
 
-            Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test"));
 
-            file = file.Substring(file.LastIndexOf("\\") +1);
-
-            File.WriteAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test", file), data.ToArray());
+            File.WriteAllBytes(Path.Combine(dir.FullName, file), data.ToArray());
 
             _clientManager.UpdateDiagnosticsInfo(diagnosticsData);
 
             return new TransferResponse()
             {
-                Status = "OK",
-                Progress = 1
+                Status = "OK"
             };
         }
     }

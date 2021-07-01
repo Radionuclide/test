@@ -20,10 +20,8 @@ message Configuration{
 
 message TransferRequest{
 	bytes chunk = 1;
-	string fileName = 2;
 }
  
 message TransferResponse{
 	string status = 1;
-	int32 progress = 2;
 }

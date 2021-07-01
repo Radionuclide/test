@@ -91,7 +91,6 @@ namespace iba.Controls
             if (((CheckBox)sender).Checked)
             {
                 //TaskManager.Manager.DataTransferWorkerInit();
-                _dataTransferWorker.Port = (int)m_numPort.Value;
                 _dataTransferWorker.StartServer();
                 btnRootPath.Enabled = false;
                 m_numPort.Enabled = false;
@@ -130,6 +129,7 @@ namespace iba.Controls
 
             elem.ClientName = diagnosticsData.ClientName;
             elem.TransferredFiles = diagnosticsData.TransferredFiles;
+            elem.Path = diagnosticsData.Path;
         }
 
         private void UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)

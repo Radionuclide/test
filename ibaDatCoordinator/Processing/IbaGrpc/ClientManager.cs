@@ -57,6 +57,7 @@ namespace iba.Processing.IbaGrpc
             
             data.TransferredFiles++;
             data.Filename = diagnosticsData.Filename;
+            data.Path = diagnosticsData.Path;
 
             UpdateDiagnosticInfoCallback?.Invoke(data);
         }

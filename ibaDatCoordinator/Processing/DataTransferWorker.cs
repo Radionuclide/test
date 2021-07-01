@@ -14,39 +14,27 @@ namespace iba.Processing
 {
     internal class DataTransferWorker
     {
-        private DataTransferData _dataTransferData = new DataTransferData();
+        private DataTransferData _data;
         private DataTransferImpl _dataTransferImpl;
         private readonly ClientManager _clientManager;
         
         private const string HOST = "localhost";
         private Server m_server;
-        private int m_port;
 
         public DataTransferWorker()
         {
             _clientManager = new ClientManager();
-            TransferImpl = new DataTransferImpl(ClientManager);
-        }
-
-
-        public int Port
-        {
-            get => m_port;
-            set
-            {
-                if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value));
-                m_port = value;
-            }
+            _dataTransferImpl = new DataTransferImpl(ClientManager);
         }
 
         public DataTransferData DataTransferData
         {
-            get => _dataTransferData;
+            get => _data;
             set
             {
                 if (value != null)
                 {
-                    _dataTransferData = value;
+                    _data = value;
                 }
             }
         }
@@ -63,6 +51,7 @@ namespace iba.Processing
         {
             try
             {
+                _dataTransferImpl.Data = _data;
                 m_server = CreateNewServer();
                 m_server.Start();
                 LogData.Data.Logger.Log(Level.Info, "Data Transfer Service started");
@@ -95,15 +84,13 @@ namespace iba.Processing
             return new Server
             {
                 Services = { DataTransfer.BindService(TransferImpl) },
-                Ports = { new ServerPort(HOST, Port, ServerCredentials.Insecure) },
+                Ports = { new ServerPort(HOST, _data.Port, ServerCredentials.Insecure) },
             };
         }
 
         public void Init()
         {
-            Port = _dataTransferData.Port;
-            
-            if (_dataTransferData.IsServerEnabled)
+            if (_data.IsServerEnabled)
             {
                 StartServer();
             }
