@@ -17,17 +17,27 @@ namespace iba.Processing.IbaGrpc
     class DataTransferImpl : DataTransfer.DataTransferBase
     {
         private readonly ClientManager _clientManager;
+        private readonly ConfigurationValidator _configurationValidator;
         private DataTransferData _data;
 
         public DataTransferImpl(ClientManager clientManager)
         {
             _clientManager = clientManager;
+            _configurationValidator = new ConfigurationValidator();
         }
 
         public DataTransferData Data
         {
             get => _data;
             set => _data = value;
+        }
+
+        public override async Task<ConnectionResponse> Connect(ConnectionRequest request, ServerCallContext context)
+        {
+            var configuration = request.Configurataion;
+
+            var result = await _configurationValidator.CheckConfigurationAsync(configuration);
+            return result;
         }
 
         public override async Task<TransferResponse> TransferFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)

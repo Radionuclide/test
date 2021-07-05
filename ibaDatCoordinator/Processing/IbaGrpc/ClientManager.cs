@@ -10,7 +10,7 @@ using iba.Logging;
 
 namespace iba.Processing.IbaGrpc
 {
-    class ClientManager
+    internal class ClientManager
     {
         public delegate void UpdateEvent(DiagnosticsData diagnosticsDatacount);
 

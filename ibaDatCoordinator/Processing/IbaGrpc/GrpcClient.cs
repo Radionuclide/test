@@ -26,8 +26,40 @@ namespace iba.Processing.IbaGrpc
             client = new DataTransfer.DataTransferClient(channel);
         }
 
+        public async Task<ConnectionResponse> ConnectAsync(ConnectionRequest request)
+        {
+            var connectionCall = client.ConnectAsync(request);
+
+            var connectionResponse  = await connectionCall.ResponseAsync;
+
+            return connectionResponse;
+        }
+
         public async Task<TransferResponse> TransferFileAsync(string file)
         {
+            var fileName = Path.GetFileName(file);
+            var request = new ConnectionRequest
+            {
+                Configurataion = new Configuration
+                {
+                    ClientName = m_data.Hostname,
+                    ClientVersion = m_data.Version,
+                    FileName = fileName,
+                    Path = m_data.RemotePath,
+                    ApiKey = string.Empty
+                }
+            };
+
+            var connectionResponse = await ConnectAsync(request);
+
+            if (connectionResponse.Status != "OK")
+            {
+                return new TransferResponse
+                {
+                    Status = connectionResponse.Status
+                };
+            }
+
             Metadata metadata = new Metadata();
             metadata.Add("clientname", m_data.Hostname);
             metadata.Add("clientversion", m_data.Version);
@@ -36,6 +68,7 @@ namespace iba.Processing.IbaGrpc
             metadata.Add("apikey", string.Empty);
 
             CallOptions options = new CallOptions(metadata);
+
             using (AsyncClientStreamingCall<TransferRequest, TransferResponse> call = client.TransferFile(options))
             {
                 IClientStreamWriter<TransferRequest> stream = call.RequestStream;

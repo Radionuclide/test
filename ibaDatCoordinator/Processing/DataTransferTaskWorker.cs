@@ -13,7 +13,6 @@ namespace iba.Processing
     {
         public readonly GrpcClient client;
         private readonly string file;
-        private string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
         private DataTransferTaskData m_data;
 

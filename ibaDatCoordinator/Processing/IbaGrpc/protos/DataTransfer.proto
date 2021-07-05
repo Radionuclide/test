@@ -6,8 +6,8 @@ package Messages.V1;
 
 service DataTransfer{
 	rpc TransferFile (stream TransferRequest) returns (TransferResponse);
+	rpc Connect (ConnectionRequest) returns (ConnectionResponse);
 }
-
 
 message Configuration{
 	string clientName = 1;
@@ -17,6 +17,13 @@ message Configuration{
 	string apiKey = 5;
 }
 
+message ConnectionRequest{
+	Configuration configurataion = 1;
+}
+
+message ConnectionResponse{
+	string status = 1;
+}
 
 message TransferRequest{
 	bytes chunk = 1;
