@@ -8,6 +8,12 @@ namespace iba.Data
     [Serializable]
     public class DataTransferTaskData : TaskData
     {
+        private string m_clientId;
+        public string ClientId
+        {
+            get => m_clientId;
+            set => m_clientId = value;
+        }
         private string m_hostname;
         public string Hostname
         {

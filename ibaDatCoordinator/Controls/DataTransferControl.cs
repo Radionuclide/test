@@ -167,13 +167,13 @@ namespace iba.Controls
         private void btnRootPathOrBtnCertificatePath_Click(object sender, EventArgs e)
         {
             folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop;
-            var IsRootPath = ((Button)sender).Text.Equals("Select root path");
+            var isRootPath = ((Button)sender).Text.Equals("Select root path");
 
-            folderBrowserDialog.Description = IsRootPath ? "Select root directory" : "Select path to certificate";
+            folderBrowserDialog.Description = isRootPath ? "Select root directory" : "Select path to certificate";
 
             if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
 
-            if (IsRootPath)
+            if (isRootPath)
             {
                 _data.RootPath = tbRootPath.Text = folderBrowserDialog.SelectedPath;
             }

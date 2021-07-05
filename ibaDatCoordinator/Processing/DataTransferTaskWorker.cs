@@ -12,18 +12,15 @@ namespace iba.Processing
     internal class DataTransferTaskWorker
     {
         public readonly GrpcClient client;
-        private readonly string file;
-
         private DataTransferTaskData m_data;
 
-        public DataTransferTaskWorker(string fileToCopy, DataTransferTaskData task)
+        public DataTransferTaskWorker(DataTransferTaskData task)
         {
-            file = fileToCopy;
             m_data = task;
             client = new GrpcClient(m_data);
         }
 
-        public async Task TransferFile()
+        public async Task TransferFile(string file)
         {
             await client.TransferFileAsync(file);
         }

@@ -10,7 +10,7 @@ using Grpc.Core;
 using iba.Controls;
 using iba.Data;
 using Messages.V1;
-using TransferRequest = Messages.V1.TransferRequest;
+using Google.Protobuf.WellKnownTypes;
 
 namespace iba.Processing.IbaGrpc
 {
@@ -36,24 +36,46 @@ namespace iba.Processing.IbaGrpc
         {
             var configuration = request.Configurataion;
 
-            var result = await _configurationValidator.CheckConfigurationAsync(configuration);
-            return result;
+            var connectionResponse = await _configurationValidator.CheckConfigurationAsync(configuration);
+
+            //DiagnosticsData diagnosticsData = new DiagnosticsData
+            //{
+            //    ClientName = configuration.ClientName,
+            //    ClientVersion = configuration.ClientVersion,
+            //    Path = configuration.Path,
+            //    ApiKey = configuration.ApiKey,
+            //    TransferredFiles = 0,
+            //    Filename = configuration.FileName
+            //};
+
+            if (request.ClientId == string.Empty)
+            {
+                var newGuid = Guid.NewGuid();
+                connectionResponse.ClientId = newGuid.ToString();
+                _clientManager.ClientList.TryAdd(newGuid, request.Configurataion);
+            }
+            else
+            {
+                _clientManager.ClientList
+                    .First(x => x.Key == Guid.Parse(request.ClientId)).Value.FileName = request.Configurataion.FileName;
+                connectionResponse.ClientId = request.ClientId;
+            }
+
+            //_clientManager.RegisterClient(diagnosticsData);
+
+            return connectionResponse;
         }
 
         public override async Task<TransferResponse> TransferFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)
         {
-            DiagnosticsData diagnosticsData = new DiagnosticsData
-            {
-                ClientName = context.RequestHeaders.Get("clientname").Value,
-                ClientVersion = context.RequestHeaders.Get("clientversion").Value,
-                Path = context.RequestHeaders.Get("path").Value,
-                ApiKey = context.RequestHeaders.Get("apikey").Value,
-                TransferredFiles = 0,
-                Filename = context.RequestHeaders.Get("filename").Value
-            };
+            var clientId = Guid.Parse(context.RequestHeaders.GetValue("clientid"));
+            
+            
+            var tmp = _clientManager.ClientList
+                .First(x => x.Key == clientId).Value;
 
-
-            _clientManager.RegisterClient(diagnosticsData);
+            var path = tmp.Path;
+            var filename = tmp.FileName;
 
             var data = new List<byte>();
 
@@ -64,13 +86,13 @@ namespace iba.Processing.IbaGrpc
                 data.AddRange(requestStream.Current.Chunk);
             }
 
-            var dir = Directory.CreateDirectory(Path.Combine(_data.RootPath, diagnosticsData.Path.Trim('/')));
-            var file = Path.GetFileName(diagnosticsData.Filename);
+            var dir = Directory.CreateDirectory(Path.Combine(_data.RootPath, path.Trim('/')));
+            var file = Path.GetFileName(filename);
 
 
             File.WriteAllBytes(Path.Combine(dir.FullName, file), data.ToArray());
 
-            _clientManager.UpdateDiagnosticsInfo(diagnosticsData);
+            //_clientManager.UpdateDiagnosticsInfo(clientId);
 
             return new TransferResponse()
             {

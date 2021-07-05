@@ -1,6 +1,8 @@
 ﻿syntax = "proto3";
 
 //option csharp_namespace = "Messages";
+//option csharp_namespace = "Google.Protobuf.WellKnownTypes";
+import "google/protobuf/timestamp.proto";
 
 package Messages.V1;
 
@@ -15,14 +17,19 @@ message Configuration{
 	string fileName = 3;
 	string path = 4;
 	string apiKey = 5;
+
 }
 
-message ConnectionRequest{
-	Configuration configurataion = 1;
+message ConnectionRequest{	
+	string clientId = 1;
+	google.protobuf.Timestamp requestDate = 2;
+	Configuration configurataion = 3;
 }
 
 message ConnectionResponse{
-	string status = 1;
+	string clientId = 1;
+	google.protobuf.Timestamp requestDate = 2;
+	string status = 3;
 }
 
 message TransferRequest{

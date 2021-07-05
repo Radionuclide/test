@@ -10,6 +10,7 @@ using Google.Protobuf;
 using Grpc.Core;
 using iba.Data;
 using Messages.V1;
+using Google.Protobuf.WellKnownTypes;
 
 namespace iba.Processing.IbaGrpc
 {
@@ -29,7 +30,7 @@ namespace iba.Processing.IbaGrpc
         public async Task<ConnectionResponse> ConnectAsync(ConnectionRequest request)
         {
             var connectionCall = client.ConnectAsync(request);
-
+            
             var connectionResponse  = await connectionCall.ResponseAsync;
 
             return connectionResponse;
@@ -37,20 +38,10 @@ namespace iba.Processing.IbaGrpc
 
         public async Task<TransferResponse> TransferFileAsync(string file)
         {
-            var fileName = Path.GetFileName(file);
-            var request = new ConnectionRequest
-            {
-                Configurataion = new Configuration
-                {
-                    ClientName = m_data.Hostname,
-                    ClientVersion = m_data.Version,
-                    FileName = fileName,
-                    Path = m_data.RemotePath,
-                    ApiKey = string.Empty
-                }
-            };
-
-            var connectionResponse = await ConnectAsync(request);
+            var connectionRequest = CreateConnectionRequest(file);
+            var connectionResponse = await ConnectAsync(connectionRequest);
+            
+            m_data.ClientId = connectionResponse.ClientId;
 
             if (connectionResponse.Status != "OK")
             {
@@ -60,14 +51,12 @@ namespace iba.Processing.IbaGrpc
                 };
             }
 
-            Metadata metadata = new Metadata();
-            metadata.Add("clientname", m_data.Hostname);
-            metadata.Add("clientversion", m_data.Version);
-            metadata.Add("filename", file);
-            metadata.Add("path", m_data.RemotePath);
-            metadata.Add("apikey", string.Empty);
+            var metadata = new Metadata
+            {
+                {"clientId", connectionResponse.ClientId},
+            };
 
-            CallOptions options = new CallOptions(metadata);
+            var options = new CallOptions(metadata);
 
             using (AsyncClientStreamingCall<TransferRequest, TransferResponse> call = client.TransferFile(options))
             {
@@ -103,6 +92,30 @@ namespace iba.Processing.IbaGrpc
                 return response;
             }
         }
+
+        private ConnectionRequest CreateConnectionRequest(string file)
+        {
+            var fileName = Path.GetFileName(file);
+
+            if (m_data.ClientId == null)
+            {
+                m_data.ClientId = string.Empty;
+            }
+
+            return new ConnectionRequest
+            {
+                ClientId = m_data.ClientId != string.Empty ? m_data.ClientId : string.Empty,
+                Configurataion = new Configuration
+                {
+                    ClientName = m_data.Hostname,
+                    ClientVersion = m_data.Version,
+                    FileName = fileName,
+                    Path = m_data.RemotePath,
+                    ApiKey = string.Empty,
+                }
+            };
+        }
+
         public void TestConnection()
         {
             //ToDo

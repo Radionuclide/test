@@ -4524,12 +4524,11 @@ namespace iba.Processing
                         RestartIbaAnalyzer();
                     }
                 }
+                var dataTransferTaskWorker = new DataTransferTaskWorker(task);
 
                 foreach (var fileToCopy in filesToCopy)
                 {
-                    var dataTransferTaskWorker = new DataTransferTaskWorker(fileToCopy, task);
-
-                    dataTransferTaskWorker.TransferFile().Wait();
+                    dataTransferTaskWorker.TransferFile(fileToCopy).Wait();
                     Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
                 }
 
