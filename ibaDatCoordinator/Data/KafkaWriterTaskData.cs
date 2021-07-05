@@ -154,6 +154,7 @@ namespace iba.Data
             {
                 Expression = "";
                 Value = double.NaN;
+                Name = "";
             }
 
             public object Clone()
@@ -180,7 +181,6 @@ namespace iba.Data
             public override int GetHashCode()
             {
                 return Expression.GetHashCode() ^ DataType.GetHashCode() ^ Name.GetHashCode();
-
             }
         }
 
