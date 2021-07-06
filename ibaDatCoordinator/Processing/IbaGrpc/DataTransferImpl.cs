@@ -38,16 +38,6 @@ namespace iba.Processing.IbaGrpc
 
             var connectionResponse = await _configurationValidator.CheckConfigurationAsync(configuration);
 
-            //DiagnosticsData diagnosticsData = new DiagnosticsData
-            //{
-            //    ClientName = configuration.ClientName,
-            //    ClientVersion = configuration.ClientVersion,
-            //    Path = configuration.Path,
-            //    ApiKey = configuration.ApiKey,
-            //    TransferredFiles = 0,
-            //    Filename = configuration.FileName
-            //};
-
             if (request.ClientId == string.Empty)
             {
                 var newGuid = Guid.NewGuid();
