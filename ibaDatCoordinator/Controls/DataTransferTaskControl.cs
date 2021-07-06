@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -100,6 +101,13 @@ namespace iba.Controls
                 m_btnCheckConnection.Image = iba.Properties.Resources.thumbdown;
             }
             ((Bitmap)m_btnCheckConnection.Image).MakeTransparent(Color.Magenta);
+        }
+
+        private void trackBarMaxBandwidth_Scroll(object sender, EventArgs e)
+        {
+            var trackBar = (sender as TrackBar);
+            Debug.WriteLine((sender as TrackBar).Value);
+            tbxMaxBandwidth.Text = trackBar.Value.ToString();
         }
     }
 }

@@ -54,6 +54,7 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
+            this.trackBarMaxBandwidth = new System.Windows.Forms.TrackBar();
             this.m_gbOption.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -65,6 +66,7 @@ namespace iba.Controls
             this.panel1.SuspendLayout();
             this.m_gbSource.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarMaxBandwidth)).BeginInit();
             this.SuspendLayout();
             // 
             // m_gbOption
@@ -139,6 +141,7 @@ namespace iba.Controls
             // panel2
             // 
             resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Controls.Add(this.trackBarMaxBandwidth);
             this.panel2.Controls.Add(this.m_btnCheckConnection);
             this.panel2.Controls.Add(this.tbxMaxBandwidth);
             this.panel2.Controls.Add(this.lblMaxBandwidth);
@@ -219,6 +222,16 @@ namespace iba.Controls
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
+            // trackBarMaxBandwidth
+            // 
+            this.trackBarMaxBandwidth.LargeChange = 128;
+            resources.ApplyResources(this.trackBarMaxBandwidth, "trackBarMaxBandwidth");
+            this.trackBarMaxBandwidth.Maximum = 1024;
+            this.trackBarMaxBandwidth.Name = "trackBarMaxBandwidth";
+            this.trackBarMaxBandwidth.SmallChange = 128;
+            this.trackBarMaxBandwidth.TickFrequency = 128;
+            this.trackBarMaxBandwidth.Scroll += new System.EventHandler(this.trackBarMaxBandwidth_Scroll);
+            // 
             // DataTransferTaskControl
             // 
             resources.ApplyResources(this, "$this");
@@ -249,6 +262,7 @@ namespace iba.Controls
             this.m_gbSource.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarMaxBandwidth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -280,5 +294,6 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbRemotePath;
         private System.Windows.Forms.TextBox tbxMaxBandwidth;
         private System.Windows.Forms.Label lblMaxBandwidth;
+        private System.Windows.Forms.TrackBar trackBarMaxBandwidth;
     }
 }
