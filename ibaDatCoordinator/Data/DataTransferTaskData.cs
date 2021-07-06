@@ -59,6 +59,13 @@ namespace iba.Data
             set => m_remotePath = value;
         }
 
+        private int m_maxBandwidth;
+        public int MaxBandwidth
+        {
+            get => m_maxBandwidth;
+            set => m_maxBandwidth = value;
+        }
+
         public DataTransferTaskData(ConfigurationData parent)
             : base(parent)
         {
@@ -66,6 +73,7 @@ namespace iba.Data
             m_remotePath = "/";
             m_hostname = System.Net.Dns.GetHostName();
             m_version = DatCoVersion.GetVersion();
+            m_maxBandwidth = 0;
             WhatFileTransfer = WhatFileTransferEnum.DATFILE;
         }
 
@@ -102,6 +110,7 @@ namespace iba.Data
             cd.m_password = m_password;
             cd.m_port = m_port;
             cd.m_remotePath = m_remotePath;
+            cd.m_maxBandwidth = m_maxBandwidth;
             cd.m_WhatFileTransfer = m_WhatFileTransfer;
             return cd;
         }
@@ -112,14 +121,15 @@ namespace iba.Data
             if (other == null) return false;
             if (other == this) return true;
             return
-                other.m_WhatFileTransfer == m_WhatFileTransfer &&
                 other.m_hostname == m_hostname &&
                 other.m_server == m_server &&
                 other.m_version == m_version &&
                 other.m_username == m_username &&
                 other.m_password == m_password &&
                 other.m_port == m_port &&
-                other.m_remotePath == m_remotePath;
+                other.m_remotePath == m_remotePath &&
+                other.m_maxBandwidth == m_maxBandwidth &&
+                other.m_WhatFileTransfer == m_WhatFileTransfer;
         }
     }
 }

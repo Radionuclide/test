@@ -43,7 +43,7 @@ namespace iba.Controls
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.m_btnCheckConnection = new System.Windows.Forms.Button();
-            this.tbxMaxBandwidth = new System.Windows.Forms.TextBox();
+            this.m_tbMaxBandwidth = new System.Windows.Forms.TextBox();
             this.lblMaxBandwidth = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_lbServer = new System.Windows.Forms.Label();
@@ -143,7 +143,7 @@ namespace iba.Controls
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.trackBarMaxBandwidth);
             this.panel2.Controls.Add(this.m_btnCheckConnection);
-            this.panel2.Controls.Add(this.tbxMaxBandwidth);
+            this.panel2.Controls.Add(this.m_tbMaxBandwidth);
             this.panel2.Controls.Add(this.lblMaxBandwidth);
             this.panel2.Name = "panel2";
             // 
@@ -155,10 +155,10 @@ namespace iba.Controls
             this.m_btnCheckConnection.UseVisualStyleBackColor = true;
             this.m_btnCheckConnection.Click += new System.EventHandler(this.m_btnCheckConnection_Click);
             // 
-            // tbxMaxBandwidth
+            // m_tbMaxBandwidth
             // 
-            resources.ApplyResources(this.tbxMaxBandwidth, "tbxMaxBandwidth");
-            this.tbxMaxBandwidth.Name = "tbxMaxBandwidth";
+            resources.ApplyResources(this.m_tbMaxBandwidth, "m_tbMaxBandwidth");
+            this.m_tbMaxBandwidth.Name = "m_tbMaxBandwidth";
             // 
             // lblMaxBandwidth
             // 
@@ -292,7 +292,7 @@ namespace iba.Controls
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label m_lblRemotePath;
         private System.Windows.Forms.TextBox m_tbRemotePath;
-        private System.Windows.Forms.TextBox tbxMaxBandwidth;
+        private System.Windows.Forms.TextBox m_tbMaxBandwidth;
         private System.Windows.Forms.Label lblMaxBandwidth;
         private System.Windows.Forms.TrackBar trackBarMaxBandwidth;
     }

@@ -45,6 +45,7 @@ namespace iba.Controls
                 m_cbEnabled.Checked = _data.IsServerEnabled;
                 m_numPort.Value = _data.Port;
                 
+                
                 if (string.IsNullOrEmpty(_data.RootPath))
                 {
                     _data.RootPath = _defaultPath;
@@ -161,6 +162,9 @@ namespace iba.Controls
 
             dgvClients.Columns[nameof(DiagnosticsData.Filename)].HeaderText = Resources.Last_transferred_file;
             dgvClients.Columns[nameof(DiagnosticsData.Filename)].DisplayIndex = 4;
+
+            dgvClients.Columns[nameof(DiagnosticsData.Filename)].HeaderText = Resources.Max__bandwidth;
+            dgvClients.Columns[nameof(DiagnosticsData.Filename)].DisplayIndex = 5;
 
             dgvClients.Columns[nameof(DiagnosticsData.ApiKey)].Visible = false;
             dgvClients.Columns[nameof(DiagnosticsData.ClientId)].Visible = false;

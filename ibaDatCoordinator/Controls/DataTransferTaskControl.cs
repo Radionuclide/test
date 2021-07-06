@@ -39,10 +39,10 @@ namespace iba.Controls
 
             m_btnCheckConnection.Image = null;
             m_btnCheckConnection.Text = "?";
-
             m_tbServer.Text = m_data.Server;
             m_tbPort.Text = m_data.Port;
             m_tbRemotePath.Text = m_data.RemotePath;
+            m_tbMaxBandwidth.Text = m_data.MaxBandwidth.ToString();
             m_rbDatFile.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.DATFILE;
             m_rbPrevOutput.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT;
         }
@@ -52,7 +52,7 @@ namespace iba.Controls
             m_data.Server = m_tbServer.Text;
             m_data.Port = m_tbPort.Text;
             m_data.RemotePath = m_tbRemotePath.Text;
-
+            m_data.MaxBandwidth = int.Parse(m_tbMaxBandwidth.Text);
 
             if (m_rbPrevOutput.Checked)
                 m_data.WhatFileTransfer = DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT;
@@ -106,8 +106,10 @@ namespace iba.Controls
         private void trackBarMaxBandwidth_Scroll(object sender, EventArgs e)
         {
             var trackBar = (sender as TrackBar);
-            Debug.WriteLine((sender as TrackBar).Value);
-            tbxMaxBandwidth.Text = trackBar.Value.ToString();
+            if (trackBar?.Value == null) return;
+
+            m_data.MaxBandwidth = trackBar.Value;
+            m_tbMaxBandwidth.Text = trackBar.Value.ToString();
         }
     }
 }

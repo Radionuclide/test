@@ -66,7 +66,8 @@ namespace iba.Processing.IbaGrpc
                 {
                     while (true)
                     {
-                        byte[] buffer = new byte[64 * 1024];
+                        const int bufferSize = 64 * 1024;
+                        byte[] buffer = new byte[bufferSize];
                         int numRead = await fs.ReadAsync(buffer, 0, buffer.Length);
 
                         if (numRead == 0)
@@ -79,6 +80,8 @@ namespace iba.Processing.IbaGrpc
                             Array.Resize(ref buffer, numRead);
                         }
 
+                        await DelaySendingChunk(bufferSize);
+
                         await stream.WriteAsync(new TransferRequest() { 
                             Chunk = ByteString.CopyFrom(buffer)
                         });
@@ -90,6 +93,30 @@ namespace iba.Processing.IbaGrpc
                 TransferResponse response = await call.ResponseAsync;
 
                 return response;
+            }
+        }
+
+        private async Task DelaySendingChunk(int bufferSize)
+        {
+            if (m_data.MaxBandwidth == 0)
+            {
+                return;
+            }
+
+            const int milliseconds = 1000;
+
+            try
+            {
+                var kiloByte = (bufferSize / 1024);
+
+                if (m_data.MaxBandwidth > kiloByte)
+                {
+                    await Task.Delay(milliseconds / (m_data.MaxBandwidth / kiloByte));
+                }
+            }
+            catch (Exception e)
+            {
+                //Todo
             }
         }
 
@@ -113,6 +140,7 @@ namespace iba.Processing.IbaGrpc
                     FileName = fileName,
                     Path = m_data.RemotePath,
                     ApiKey = string.Empty,
+                    Maxbandwidth =  m_data.MaxBandwidth
                 }
             };
         }

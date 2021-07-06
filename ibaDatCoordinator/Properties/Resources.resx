@@ -2013,4 +2013,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="Last_transferred_file" xml:space="preserve">
 	  <value>Last transferred file</value>
   </data>
+  <data name="Max__bandwidth" xml:space="preserve">
+	  <value>Max. bandwidth in KB/s</value>
+  </data>
 </root>

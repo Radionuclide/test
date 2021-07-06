@@ -3166,6 +3166,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max. bandwidth in KB/s.
+        /// </summary>
+        internal static string Max__bandwidth {
+            get {
+                return ResourceManager.GetString("Max__bandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon memoryexceeded {
