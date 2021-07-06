@@ -42,19 +42,19 @@ namespace iba.Controls
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.trackBarMaxBandwidth = new System.Windows.Forms.TrackBar();
             this.m_btnCheckConnection = new System.Windows.Forms.Button();
             this.m_tbMaxBandwidth = new System.Windows.Forms.TextBox();
             this.lblMaxBandwidth = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_lbServer = new System.Windows.Forms.Label();
-            this.m_tbPort = new System.Windows.Forms.TextBox();
             this.m_lbPort = new System.Windows.Forms.Label();
             this.m_tbServer = new System.Windows.Forms.TextBox();
             this.m_gbSource = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
-            this.trackBarMaxBandwidth = new System.Windows.Forms.TrackBar();
+            this.m_numericUpDownPort = new System.Windows.Forms.NumericUpDown();
             this.m_gbOption.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -63,10 +63,11 @@ namespace iba.Controls
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarMaxBandwidth)).BeginInit();
             this.panel1.SuspendLayout();
             this.m_gbSource.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarMaxBandwidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_numericUpDownPort)).BeginInit();
             this.SuspendLayout();
             // 
             // m_gbOption
@@ -147,6 +148,16 @@ namespace iba.Controls
             this.panel2.Controls.Add(this.lblMaxBandwidth);
             this.panel2.Name = "panel2";
             // 
+            // trackBarMaxBandwidth
+            // 
+            this.trackBarMaxBandwidth.LargeChange = 128;
+            resources.ApplyResources(this.trackBarMaxBandwidth, "trackBarMaxBandwidth");
+            this.trackBarMaxBandwidth.Maximum = 1024;
+            this.trackBarMaxBandwidth.Name = "trackBarMaxBandwidth";
+            this.trackBarMaxBandwidth.SmallChange = 128;
+            this.trackBarMaxBandwidth.TickFrequency = 128;
+            this.trackBarMaxBandwidth.Scroll += new System.EventHandler(this.trackBarMaxBandwidth_Scroll);
+            // 
             // m_btnCheckConnection
             // 
             this.m_btnCheckConnection.Image = global::iba.Properties.Resources.thumup;
@@ -168,8 +179,8 @@ namespace iba.Controls
             // panel1
             // 
             resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.m_numericUpDownPort);
             this.panel1.Controls.Add(this.m_lbServer);
-            this.panel1.Controls.Add(this.m_tbPort);
             this.panel1.Controls.Add(this.m_lbPort);
             this.panel1.Controls.Add(this.m_tbServer);
             this.panel1.Name = "panel1";
@@ -178,11 +189,6 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_lbServer, "m_lbServer");
             this.m_lbServer.Name = "m_lbServer";
-            // 
-            // m_tbPort
-            // 
-            resources.ApplyResources(this.m_tbPort, "m_tbPort");
-            this.m_tbPort.Name = "m_tbPort";
             // 
             // m_lbPort
             // 
@@ -222,15 +228,15 @@ namespace iba.Controls
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
-            // trackBarMaxBandwidth
+            // m_numericUpDownPort
             // 
-            this.trackBarMaxBandwidth.LargeChange = 128;
-            resources.ApplyResources(this.trackBarMaxBandwidth, "trackBarMaxBandwidth");
-            this.trackBarMaxBandwidth.Maximum = 1024;
-            this.trackBarMaxBandwidth.Name = "trackBarMaxBandwidth";
-            this.trackBarMaxBandwidth.SmallChange = 128;
-            this.trackBarMaxBandwidth.TickFrequency = 128;
-            this.trackBarMaxBandwidth.Scroll += new System.EventHandler(this.trackBarMaxBandwidth_Scroll);
+            resources.ApplyResources(this.m_numericUpDownPort, "m_numericUpDownPort");
+            this.m_numericUpDownPort.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.m_numericUpDownPort.Name = "m_numericUpDownPort";
             // 
             // DataTransferTaskControl
             // 
@@ -256,13 +262,14 @@ namespace iba.Controls
             this.tableLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarMaxBandwidth)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.m_gbSource.ResumeLayout(false);
             this.m_gbSource.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarMaxBandwidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_numericUpDownPort)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -278,7 +285,6 @@ namespace iba.Controls
         private Utility.CollapsibleGroupBox m_gbOption;
         private System.Windows.Forms.Label m_lbServer;
         private System.Windows.Forms.TextBox m_tbServer;
-        private System.Windows.Forms.TextBox m_tbPort;
         private System.Windows.Forms.Label m_lbPort;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
@@ -295,5 +301,6 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbMaxBandwidth;
         private System.Windows.Forms.Label lblMaxBandwidth;
         private System.Windows.Forms.TrackBar trackBarMaxBandwidth;
+        private System.Windows.Forms.NumericUpDown m_numericUpDownPort;
     }
 }

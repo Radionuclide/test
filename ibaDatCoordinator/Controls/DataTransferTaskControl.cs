@@ -40,7 +40,7 @@ namespace iba.Controls
             m_btnCheckConnection.Image = null;
             m_btnCheckConnection.Text = "?";
             m_tbServer.Text = m_data.Server;
-            m_tbPort.Text = m_data.Port;
+            m_numericUpDownPort.Text = m_data.Port;
             m_tbRemotePath.Text = m_data.RemotePath;
             m_tbMaxBandwidth.Text = m_data.MaxBandwidth.ToString();
             m_rbDatFile.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.DATFILE;
@@ -50,7 +50,7 @@ namespace iba.Controls
         public void SaveData()
         {
             m_data.Server = m_tbServer.Text;
-            m_data.Port = m_tbPort.Text;
+            m_data.Port = m_numericUpDownPort.Text;
             m_data.RemotePath = m_tbRemotePath.Text;
             m_data.MaxBandwidth = int.Parse(m_tbMaxBandwidth.Text);
 

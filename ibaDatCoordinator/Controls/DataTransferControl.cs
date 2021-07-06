@@ -163,8 +163,8 @@ namespace iba.Controls
             dgvClients.Columns[nameof(DiagnosticsData.Filename)].HeaderText = Resources.Last_transferred_file;
             dgvClients.Columns[nameof(DiagnosticsData.Filename)].DisplayIndex = 4;
 
-            dgvClients.Columns[nameof(DiagnosticsData.Filename)].HeaderText = Resources.Max__bandwidth;
-            dgvClients.Columns[nameof(DiagnosticsData.Filename)].DisplayIndex = 5;
+            dgvClients.Columns[nameof(DiagnosticsData.MaxBandwidth)].HeaderText = Resources.Max__bandwidth;
+            dgvClients.Columns[nameof(DiagnosticsData.MaxBandwidth)].DisplayIndex = 5;
 
             dgvClients.Columns[nameof(DiagnosticsData.ApiKey)].Visible = false;
             dgvClients.Columns[nameof(DiagnosticsData.ClientId)].Visible = false;
