@@ -45,7 +45,10 @@ namespace iba.Controls
                 m_cbEnabled.Checked = _data.IsServerEnabled;
                 m_numPort.Value = _data.Port;
                 
-                
+                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled) 
+                    = _dataTransferWorker.GetStatus();
+
+
                 if (string.IsNullOrEmpty(_data.RootPath))
                 {
                     _data.RootPath = _defaultPath;
@@ -91,18 +94,17 @@ namespace iba.Controls
         {
             if (((CheckBox)sender).Checked)
             {
-                //TaskManager.Manager.DataTransferWorkerInit();
                 _dataTransferWorker.StartServer();
-                btnRootPath.Enabled = false;
-                m_numPort.Enabled = false;
-                tbStatus.Text = "Server started";
+
+                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
+                    = _dataTransferWorker.GetStatus();
             }
             else
             {
                 _dataTransferWorker.StopServer();
-                btnRootPath.Enabled = true;
-                m_numPort.Enabled = true;
-                tbStatus.Text = "Server stopped";
+
+                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
+                    = _dataTransferWorker.GetStatus();
             }
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Grpc.Core.Interceptors;
 using iba.Data;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
@@ -17,8 +18,12 @@ namespace iba.Processing
         private DataTransferData _data;
         private DataTransferImpl _dataTransferImpl;
         private readonly ClientManager _clientManager;
-        
         private const string HOST = "localhost";
+        public string Status { get; set; }
+        public bool IsPortTextBoxEnabled { get; set; }
+        public bool IsSelectRootPathBtnEnabled { get; set; }
+        public bool IsSelectCertificateBtnEnabled { get; set; }
+
         private Server m_server;
 
         public DataTransferWorker()
@@ -45,6 +50,7 @@ namespace iba.Processing
             set => _dataTransferImpl = value;
         }
 
+
         public ClientManager ClientManager => _clientManager;
 
         public void StartServer()
@@ -54,12 +60,30 @@ namespace iba.Processing
                 _dataTransferImpl.Data = _data;
                 m_server = CreateNewServer();
                 m_server.Start();
+                
+                SetStatus(false);
+
                 LogData.Data.Logger.Log(Level.Info, "Data Transfer Service started");
             }
             catch (Exception e)
             {
                 LogData.Data.Logger.Log(Level.Exception, $"Data Transfer Service could not start: {e.Message}");
             }
+        }
+
+        private  void SetStatus(bool EnableControl)
+        {
+            IsPortTextBoxEnabled = EnableControl;
+            IsSelectCertificateBtnEnabled = EnableControl;
+            IsSelectRootPathBtnEnabled = EnableControl;
+            Status = EnableControl ? "Server not started" : "Server started";
+
+        }
+
+        public (string status, bool IsPortTextBoxEnabled, bool IsSelectRootPathBtnEnabledbool, bool IsSelectCertificateBtnEnabled) 
+            GetStatus()
+        { 
+            return (Status, IsPortTextBoxEnabled, IsSelectRootPathBtnEnabled, IsSelectCertificateBtnEnabled);
         }
 
 
@@ -70,8 +94,10 @@ namespace iba.Processing
                 if (m_server == null) return;
 
                 m_server.ShutdownAsync().Wait();
-                LogData.Data.Logger.Log(Level.Info, "Data Transfer Service stopped");
 
+                SetStatus(true);
+
+                LogData.Data.Logger.Log(Level.Info, "Data Transfer Service stopped");
             }
             catch (Exception e)
             {
@@ -93,6 +119,10 @@ namespace iba.Processing
             if (_data.IsServerEnabled)
             {
                 StartServer();
+            }
+            else
+            {
+                SetStatus(true);
             }
         }
     }
