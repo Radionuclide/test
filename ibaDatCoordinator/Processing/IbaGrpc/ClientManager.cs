@@ -17,59 +17,72 @@ namespace iba.Processing.IbaGrpc
         public delegate void UpdateEvent(DiagnosticsData diagnosticsDatacount);
 
         public event UpdateEvent UpdateDiagnosticInfoCallback;
-        private List<DiagnosticsData> m_diagnosticsList;
         private ConcurrentDictionary<Guid, Configuration> m_clientList;
 
         public ClientManager()
         {
-            m_diagnosticsList = new List<DiagnosticsData>();
             m_clientList = new ConcurrentDictionary<Guid, Configuration>();
 
         }
-        public List<DiagnosticsData> ConnectedClients
-        {
-            get => m_diagnosticsList;
-            set => m_diagnosticsList = value;
-        }
 
-        public ConcurrentDictionary<Guid, Configuration> ClientList
+        public ConcurrentDictionary<Guid, Configuration> ClientList 
         {
             get => m_clientList;
             set => m_clientList = value;
         }
 
-        public void RegisterClient(DiagnosticsData diagnosticsData)
+        public void RegisterClient(Guid newGuid, Configuration configuration)
         {
             try
             {
-                if (m_diagnosticsList.Any(x => x.ClientName != diagnosticsData.ClientName))
-                {
-                    m_diagnosticsList.Add(diagnosticsData);
-                    UpdateDiagnosticsInfo(diagnosticsData);
-                }
-
-                if (m_diagnosticsList.All(x => diagnosticsData.ClientName != x.ClientName))
-                {
-                    m_diagnosticsList.Add(diagnosticsData);
-                }
+                m_clientList.TryAdd(newGuid, configuration);
             }
             catch (Exception e)
             {
                 LogData.Data.Log(Level.Exception, e.Message);
             }
         }
-
-        public void UpdateDiagnosticsInfo(DiagnosticsData diagnosticsData)
+        public void UpdateClient(string requestClientId, Configuration requestConfigurataion)
         {
-            var data = m_diagnosticsList.FirstOrDefault(x => x.ClientName == diagnosticsData.ClientName);
-            
-            if (data == null) return;
-            
-            data.TransferredFiles++;
-            data.Filename = diagnosticsData.Filename;
-            data.Path = diagnosticsData.Path;
+            try
+            {
+                m_clientList[Guid.Parse(requestClientId)].Path = requestConfigurataion.Path;
+                m_clientList[Guid.Parse(requestClientId)].ClientName = requestConfigurataion.ClientName;
+                m_clientList[Guid.Parse(requestClientId)].FileName = requestConfigurataion.FileName;
+                m_clientList[Guid.Parse(requestClientId)].Maxbandwidth = requestConfigurataion.Maxbandwidth;
+                m_clientList[Guid.Parse(requestClientId)].ApiKey = requestConfigurataion.ApiKey;
+                m_clientList[Guid.Parse(requestClientId)].ClientVersion = requestConfigurataion.ClientVersion;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
 
-            UpdateDiagnosticInfoCallback?.Invoke(data);
+        public Configuration GetClientInfo(Guid guid)
+        {
+            return m_clientList[guid];
+        }
+
+        public void UpdateDiagnosticsInfo(Guid guid)
+        {
+            var data = GetClientInfo(guid);
+
+            data.Transferredfiles++;
+
+            var diagnosticsData = new DiagnosticsData
+            {
+                ClientId = guid.ToString(),
+                Filename = data.FileName,
+                ClientName = data.ClientName,
+                ClientVersion = data.ClientVersion,
+                Path = data.Path,
+                MaxBandwidth = data.Maxbandwidth,
+                TransferredFiles = data.Transferredfiles
+            };
+
+            UpdateDiagnosticInfoCallback?.Invoke(diagnosticsData);
         }
     }
 }

@@ -17,7 +17,8 @@ message Configuration{
 	string fileName = 3;
 	string path = 4;
 	string apiKey = 5;
-
+	int32 maxbandwidth = 6;
+	int32 transferredfiles = 7;
 }
 
 message ConnectionRequest{	

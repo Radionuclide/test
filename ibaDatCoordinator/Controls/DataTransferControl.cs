@@ -118,18 +118,22 @@ namespace iba.Controls
                 var callback = new UpdateDiagnosticInfoCallback(UpdateDiagnosticInfoSafe);
                 this.Invoke(callback, new object[] { diagnosticsData });
             }
-            
-            var elem = _diagnosticsDataList.FirstOrDefault(x => x.ClientName == diagnosticsData.ClientName);
-
-            if (elem == null)
+            else
             {
-                _diagnosticsDataList.Add(diagnosticsData);
-                return;
-            }
+                var elem = _diagnosticsDataList.FirstOrDefault(x => x.ClientId == diagnosticsData.ClientId);
 
-            elem.ClientName = diagnosticsData.ClientName;
-            elem.TransferredFiles = diagnosticsData.TransferredFiles;
-            elem.Path = diagnosticsData.Path;
+                if (elem == null)
+                {
+                    _diagnosticsDataList.Add(diagnosticsData);
+                    return;
+                }
+
+                elem.ClientName = diagnosticsData.ClientName;
+                elem.Filename = diagnosticsData.Filename;
+                elem.Path = diagnosticsData.Path;
+                elem.MaxBandwidth = diagnosticsData.MaxBandwidth;
+                elem.TransferredFiles = diagnosticsData.TransferredFiles;
+            }
         }
 
         private void UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)
@@ -159,6 +163,7 @@ namespace iba.Controls
             dgvClients.Columns[nameof(DiagnosticsData.Filename)].DisplayIndex = 4;
 
             dgvClients.Columns[nameof(DiagnosticsData.ApiKey)].Visible = false;
+            dgvClients.Columns[nameof(DiagnosticsData.ClientId)].Visible = false;
 
             dgvClients.Columns.OfType<DataGridViewColumn>()
                 .ForEach(column => column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill);

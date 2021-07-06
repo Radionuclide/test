@@ -6,13 +6,26 @@ namespace iba.Processing.IbaGrpc
 {
     internal class DiagnosticsData : INotifyPropertyChanged
     {
+        private string m_clientId;
         private string m_clientName;
         private string m_clientVersion;
         private string m_filename;
         private string m_path;
         private string m_apiKey;
+        private int m_maxBandwidth;
         private int m_transferredFiles;
 
+        public string ClientId
+        {
+            get => m_clientId;
+            set
+            {
+                if (value == m_clientId)
+                    return;
+                m_clientId = value;
+                OnPropertyChanged();
+            }
+        }
         public string ClientName
         {
             get => m_clientName;
@@ -69,6 +82,18 @@ namespace iba.Processing.IbaGrpc
                 if (value == m_apiKey)
                     return;
                 m_apiKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int MaxBandwidth
+        {
+            get => m_maxBandwidth;
+            set
+            {
+                if (value == m_maxBandwidth)
+                    return;
+                m_maxBandwidth = value;
                 OnPropertyChanged();
             }
         }

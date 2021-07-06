@@ -105,6 +105,7 @@ namespace iba.Processing.IbaGrpc
             return new ConnectionRequest
             {
                 ClientId = m_data.ClientId != string.Empty ? m_data.ClientId : string.Empty,
+                RequestDate = Timestamp.FromDateTime(DateTime.UtcNow),
                 Configurataion = new Configuration
                 {
                     ClientName = m_data.Hostname,
