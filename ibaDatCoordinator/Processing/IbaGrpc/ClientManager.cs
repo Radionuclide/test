@@ -12,7 +12,7 @@ using Messages.V1;
 
 namespace iba.Processing.IbaGrpc
 {
-    internal class ClientManager
+    public class ClientManager
     {
         public delegate void UpdateEvent(DiagnosticsData diagnosticsDatacount);
 

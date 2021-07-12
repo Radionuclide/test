@@ -1,10 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using iba.Annotations;
 
 namespace iba.Processing.IbaGrpc
 {
-    internal class DiagnosticsData : INotifyPropertyChanged
+    
+    [Serializable]
+    public class DiagnosticsData : INotifyPropertyChanged
     {
         private string m_clientId;
         private string m_clientName;

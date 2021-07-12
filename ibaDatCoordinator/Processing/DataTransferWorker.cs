@@ -15,7 +15,7 @@ namespace iba.Processing
 {
     internal class DataTransferWorker
     {
-        private DataTransferData _data;
+        private DataTransferData _data = new DataTransferData();
         private DataTransferImpl _dataTransferImpl;
         private readonly ClientManager _clientManager;
         private const string HOST = "localhost";
@@ -26,7 +26,13 @@ namespace iba.Processing
 
         private Server m_server;
 
-        public DataTransferWorker()
+        private static DataTransferWorker _instance;
+        public static DataTransferWorker GetInstance()
+        {
+            return _instance ?? (_instance = new DataTransferWorker());
+        }
+
+        private DataTransferWorker()
         {
             _clientManager = new ClientManager();
             _dataTransferImpl = new DataTransferImpl(ClientManager);
@@ -63,7 +69,7 @@ namespace iba.Processing
                 
                 SetStatus(false);
 
-                LogData.Data.Logger.Log(Level.Info, "Data Transfer Service started");
+                LogData.Data.Logger.Log(Level.Info, $"Data Transfer Service started on port: {_data.Port}");
             }
             catch (Exception e)
             {
@@ -71,12 +77,12 @@ namespace iba.Processing
             }
         }
 
-        private  void SetStatus(bool EnableControl)
+        private  void SetStatus(bool isControlEnabled)
         {
-            IsPortTextBoxEnabled = EnableControl;
-            IsSelectCertificateBtnEnabled = EnableControl;
-            IsSelectRootPathBtnEnabled = EnableControl;
-            Status = EnableControl ? "Server not started" : "Server started";
+            IsPortTextBoxEnabled = isControlEnabled;
+            IsSelectCertificateBtnEnabled = isControlEnabled;
+            IsSelectRootPathBtnEnabled = isControlEnabled;
+            Status = isControlEnabled ? "Server not started" : "Server started";
 
         }
 

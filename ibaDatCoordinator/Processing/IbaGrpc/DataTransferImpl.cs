@@ -16,7 +16,7 @@ namespace iba.Processing.IbaGrpc
 {
     class DataTransferImpl : DataTransfer.DataTransferBase
     {
-        private readonly ClientManager _clientManager;
+        public readonly ClientManager _clientManager;
         private readonly ConfigurationValidator _configurationValidator;
 
         public DataTransferImpl(ClientManager clientManager)

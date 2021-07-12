@@ -22,7 +22,6 @@ namespace iba.Controls
 {
     public partial class DataTransferControl : UserControl, IPropertyPane
     {
-        private readonly DataTransferWorker _dataTransferWorker;
         private DataTransferData _data;
         private BindingList<DiagnosticsData> _diagnosticsDataList;
         private readonly string _defaultPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -31,8 +30,7 @@ namespace iba.Controls
         public DataTransferControl()
         {
             InitializeComponent();
-            _dataTransferWorker = TaskManager.Manager.DataTransferWorker;
-            _dataTransferWorker.ClientManager.UpdateDiagnosticInfoCallback += UpdateDiagnosticInfo;
+            TaskManager.Manager.DataTransferWorkerSetCallback(UpdateDiagnosticInfo);
             ConfigureDiagnosticGrid();
         }
 
@@ -44,9 +42,9 @@ namespace iba.Controls
                 _manager = manager;
                 m_cbEnabled.Checked = _data.IsServerEnabled;
                 m_numPort.Value = _data.Port;
-                
-                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled) 
-                    = _dataTransferWorker.GetStatus();
+
+                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
+                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
 
 
                 if (string.IsNullOrEmpty(_data.RootPath))
@@ -94,17 +92,17 @@ namespace iba.Controls
         {
             if (((CheckBox)sender).Checked)
             {
-                _dataTransferWorker.StartServer();
+                TaskManager.Manager.DataTransferWorkerStartServer();
 
                 (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
-                    = _dataTransferWorker.GetStatus();
+                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
             }
             else
             {
-                _dataTransferWorker.StopServer();
+                TaskManager.Manager.DataTransferWorkerStopServer();
 
                 (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
-                    = _dataTransferWorker.GetStatus();
+                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
             }
         }
 
@@ -139,7 +137,7 @@ namespace iba.Controls
             }
         }
 
-        private void UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)
+        public void UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)
         {
             UpdateDiagnosticInfoSafe(diagnosticsData);
         }

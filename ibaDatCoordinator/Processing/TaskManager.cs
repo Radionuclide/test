@@ -9,6 +9,7 @@ using iba.Utility;
 using iba.Plugins;
 using System.IO;
 using iba.Logging;
+using iba.Processing.IbaGrpc;
 using iba.Processing.IbaOpcUa;
 using IbaSnmpLib;
 
@@ -1171,7 +1172,8 @@ namespace iba.Processing
         #endregion
 
         #region DataTransferConfiguration
-        internal DataTransferWorker DataTransferWorker { get; } = new DataTransferWorker();
+
+        internal DataTransferWorker DataTransferWorker => DataTransferWorker.GetInstance();
 
         public virtual DataTransferData DataTransferData
         {
@@ -1188,6 +1190,27 @@ namespace iba.Processing
         public void DataTransferWorkerInit()
         {
             DataTransferWorker.Init();
+        }
+
+        public virtual Tuple<string, bool, bool, bool> DataTransferWorkerGetBriefStatus()
+        {
+            return new Tuple<string, bool, bool, bool>(DataTransferWorker.Status,
+                DataTransferWorker.IsPortTextBoxEnabled, DataTransferWorker.IsSelectRootPathBtnEnabled,
+                DataTransferWorker.IsSelectCertificateBtnEnabled);
+        }
+
+        public virtual void DataTransferWorkerStartServer()
+        {
+            DataTransferWorker.StartServer();
+        }
+        public virtual void DataTransferWorkerStopServer()
+        {
+            DataTransferWorker.StopServer();
+        }
+
+        public virtual void DataTransferWorkerSetCallback(ClientManager.UpdateEvent updateDiagnosticInfo)
+        {
+            DataTransferWorker.ClientManager.UpdateDiagnosticInfoCallback += updateDiagnosticInfo;
         }
 
         #endregion
@@ -2107,7 +2130,89 @@ namespace iba.Processing
 
         #endregion
 
+        #region DataTransferData Configuration
 
+        public override DataTransferData DataTransferData
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.DataTransferData;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return Manager.DataTransferData;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.DataTransferData = value;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    Manager.DataTransferData = value;
+                }
+            }
+        }
+
+        public override Tuple<string, bool, bool, bool> DataTransferWorkerGetBriefStatus()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.DataTransferWorkerGetBriefStatus();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.DataTransferWorkerGetBriefStatus();
+            }
+        }
+
+        public override void DataTransferWorkerStartServer()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.DataTransferWorkerStartServer();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.DataTransferWorkerStartServer();
+            }
+        }
+
+        public override void DataTransferWorkerStopServer()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.DataTransferWorkerStopServer();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.DataTransferWorkerStopServer();
+            }
+        }
+
+        public override void DataTransferWorkerSetCallback(ClientManager.UpdateEvent updateDiagnosticInfo)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.DataTransferWorkerSetCallback(updateDiagnosticInfo);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.DataTransferWorkerSetCallback(updateDiagnosticInfo);
+            }
+        }
+
+        #endregion
 
         public override int Count
         {
