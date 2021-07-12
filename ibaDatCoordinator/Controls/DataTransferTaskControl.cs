@@ -111,5 +111,27 @@ namespace iba.Controls
             m_data.MaxBandwidth = trackBar.Value;
             m_tbMaxBandwidth.Text = trackBar.Value.ToString();
         }
+
+        private void m_tbMaxBandwidth_TextChanged(object sender, EventArgs e)
+        {
+            var control = (sender as TextBox);
+
+            var result = int.TryParse(control?.Text, out var value);
+
+            if (!result) return;
+
+            if (value > trackBarMaxBandwidth.Maximum)
+            {
+                return;
+            }
+
+            if (value < 64)
+            {
+                trackBarMaxBandwidth.Value = 0;
+                m_tbMaxBandwidth.Text = 0.ToString();
+            }
+
+            trackBarMaxBandwidth.Value = int.Parse(control?.Text ?? string.Empty);
+        }
     }
 }

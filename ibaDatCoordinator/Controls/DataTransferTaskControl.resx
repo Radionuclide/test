@@ -426,6 +426,15 @@
   <data name="panel2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="trackBarMaxBandwidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>131, 6</value>
+  </data>
+  <data name="trackBarMaxBandwidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 45</value>
+  </data>
+  <data name="trackBarMaxBandwidth.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
   <data name="&gt;&gt;trackBarMaxBandwidth.Name" xml:space="preserve">
     <value>trackBarMaxBandwidth</value>
   </data>
@@ -437,6 +446,18 @@
   </data>
   <data name="&gt;&gt;trackBarMaxBandwidth.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_btnCheckConnection.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnCheckConnection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>317, 6</value>
+  </data>
+  <data name="m_btnCheckConnection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="m_btnCheckConnection.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
   </data>
   <data name="&gt;&gt;m_btnCheckConnection.Name" xml:space="preserve">
     <value>m_btnCheckConnection</value>
@@ -450,6 +471,15 @@
   <data name="&gt;&gt;m_btnCheckConnection.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_tbMaxBandwidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 26</value>
+  </data>
+  <data name="m_tbMaxBandwidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 20</value>
+  </data>
+  <data name="m_tbMaxBandwidth.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
   <data name="&gt;&gt;m_tbMaxBandwidth.Name" xml:space="preserve">
     <value>m_tbMaxBandwidth</value>
   </data>
@@ -461,6 +491,27 @@
   </data>
   <data name="&gt;&gt;m_tbMaxBandwidth.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="lblMaxBandwidth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblMaxBandwidth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblMaxBandwidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 8</value>
+  </data>
+  <data name="lblMaxBandwidth.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="lblMaxBandwidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 13</value>
+  </data>
+  <data name="lblMaxBandwidth.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="lblMaxBandwidth.Text" xml:space="preserve">
+    <value>Max Bandwidth in KB/s:</value>
   </data>
   <data name="&gt;&gt;lblMaxBandwidth.Name" xml:space="preserve">
     <value>lblMaxBandwidth</value>
@@ -501,15 +552,6 @@
   <data name="panel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_numericUpDownPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 31</value>
-  </data>
-  <data name="m_numericUpDownPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 20</value>
-  </data>
-  <data name="m_numericUpDownPort.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
   <data name="&gt;&gt;m_numericUpDownPort.Name" xml:space="preserve">
     <value>m_numericUpDownPort</value>
   </data>
@@ -521,27 +563,6 @@
   </data>
   <data name="&gt;&gt;m_numericUpDownPort.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_lbServer.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbServer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 8</value>
-  </data>
-  <data name="m_lbServer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_lbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 13</value>
-  </data>
-  <data name="m_lbServer.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
-  <data name="m_lbServer.Text" xml:space="preserve">
-    <value>Server:</value>
   </data>
   <data name="&gt;&gt;m_lbServer.Name" xml:space="preserve">
     <value>m_lbServer</value>
@@ -555,27 +576,6 @@
   <data name="&gt;&gt;m_lbServer.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_lbPort.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbPort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 34</value>
-  </data>
-  <data name="m_lbPort.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_lbPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
-  </data>
-  <data name="m_lbPort.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_lbPort.Text" xml:space="preserve">
-    <value>Port:</value>
-  </data>
   <data name="&gt;&gt;m_lbPort.Name" xml:space="preserve">
     <value>m_lbPort</value>
   </data>
@@ -587,18 +587,6 @@
   </data>
   <data name="&gt;&gt;m_lbPort.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="m_tbServer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_tbServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 5</value>
-  </data>
-  <data name="m_tbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 20</value>
-  </data>
-  <data name="m_tbServer.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
   </data>
   <data name="&gt;&gt;m_tbServer.Name" xml:space="preserve">
     <value>m_tbServer</value>
@@ -747,103 +735,115 @@
   <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="trackBarMaxBandwidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>131, 6</value>
+  <data name="m_numericUpDownPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 31</value>
   </data>
-  <data name="trackBarMaxBandwidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 45</value>
+  <data name="m_numericUpDownPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 20</value>
   </data>
-  <data name="trackBarMaxBandwidth.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
+  <data name="m_numericUpDownPort.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;trackBarMaxBandwidth.Name" xml:space="preserve">
-    <value>trackBarMaxBandwidth</value>
+  <data name="&gt;&gt;m_numericUpDownPort.Name" xml:space="preserve">
+    <value>m_numericUpDownPort</value>
   </data>
-  <data name="&gt;&gt;trackBarMaxBandwidth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_numericUpDownPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;trackBarMaxBandwidth.Parent" xml:space="preserve">
-    <value>panel2</value>
+  <data name="&gt;&gt;m_numericUpDownPort.Parent" xml:space="preserve">
+    <value>panel1</value>
   </data>
-  <data name="&gt;&gt;trackBarMaxBandwidth.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_numericUpDownPort.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_btnCheckConnection.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnCheckConnection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>317, 6</value>
-  </data>
-  <data name="m_btnCheckConnection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
-  </data>
-  <data name="m_btnCheckConnection.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="&gt;&gt;m_btnCheckConnection.Name" xml:space="preserve">
-    <value>m_btnCheckConnection</value>
-  </data>
-  <data name="&gt;&gt;m_btnCheckConnection.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCheckConnection.Parent" xml:space="preserve">
-    <value>panel2</value>
-  </data>
-  <data name="&gt;&gt;m_btnCheckConnection.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbMaxBandwidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 26</value>
-  </data>
-  <data name="m_tbMaxBandwidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 20</value>
-  </data>
-  <data name="m_tbMaxBandwidth.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_tbMaxBandwidth.Name" xml:space="preserve">
-    <value>m_tbMaxBandwidth</value>
-  </data>
-  <data name="&gt;&gt;m_tbMaxBandwidth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbMaxBandwidth.Parent" xml:space="preserve">
-    <value>panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tbMaxBandwidth.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="lblMaxBandwidth.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lbServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblMaxBandwidth.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lbServer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblMaxBandwidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 8</value>
+  <data name="m_lbServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 8</value>
   </data>
-  <data name="lblMaxBandwidth.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_lbServer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="lblMaxBandwidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 13</value>
+  <data name="m_lbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 13</value>
   </data>
-  <data name="lblMaxBandwidth.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+  <data name="m_lbServer.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
   </data>
-  <data name="lblMaxBandwidth.Text" xml:space="preserve">
-    <value>Max Bandwidth in KB/s:</value>
+  <data name="m_lbServer.Text" xml:space="preserve">
+    <value>Server:</value>
   </data>
-  <data name="&gt;&gt;lblMaxBandwidth.Name" xml:space="preserve">
-    <value>lblMaxBandwidth</value>
+  <data name="&gt;&gt;m_lbServer.Name" xml:space="preserve">
+    <value>m_lbServer</value>
   </data>
-  <data name="&gt;&gt;lblMaxBandwidth.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lbServer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblMaxBandwidth.Parent" xml:space="preserve">
-    <value>panel2</value>
+  <data name="&gt;&gt;m_lbServer.Parent" xml:space="preserve">
+    <value>panel1</value>
   </data>
-  <data name="&gt;&gt;lblMaxBandwidth.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lbServer.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lbPort.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbPort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbPort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 34</value>
+  </data>
+  <data name="m_lbPort.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_lbPort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 13</value>
+  </data>
+  <data name="m_lbPort.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_lbPort.Text" xml:space="preserve">
+    <value>Port:</value>
+  </data>
+  <data name="&gt;&gt;m_lbPort.Name" xml:space="preserve">
+    <value>m_lbPort</value>
+  </data>
+  <data name="&gt;&gt;m_lbPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbPort.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbPort.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tbServer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbServer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 5</value>
+  </data>
+  <data name="m_tbServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>302, 20</value>
+  </data>
+  <data name="m_tbServer.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;m_tbServer.Name" xml:space="preserve">
+    <value>m_tbServer</value>
+  </data>
+  <data name="&gt;&gt;m_tbServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbServer.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_tbServer.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_gbSource.AutoSize" type="System.Boolean, mscorlib">
