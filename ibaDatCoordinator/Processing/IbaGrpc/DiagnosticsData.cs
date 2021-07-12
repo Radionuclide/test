@@ -10,6 +10,7 @@ namespace iba.Processing.IbaGrpc
     public class DiagnosticsData : INotifyPropertyChanged
     {
         private string m_clientId;
+        private string m_taskName;
         private string m_clientName;
         private string m_clientVersion;
         private string m_filename;
@@ -18,6 +19,17 @@ namespace iba.Processing.IbaGrpc
         private int m_maxBandwidth;
         private int m_transferredFiles;
 
+        public string TaskName
+        {
+            get => m_taskName;
+            set
+            {
+                if (value == m_taskName)
+                    return;
+                m_taskName = value;
+                OnPropertyChanged();
+            }
+        }
         public string ClientId
         {
             get => m_clientId;

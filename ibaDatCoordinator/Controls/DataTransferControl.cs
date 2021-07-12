@@ -130,6 +130,7 @@ namespace iba.Controls
                 }
 
                 elem.ClientName = diagnosticsData.ClientName;
+                elem.TaskName = diagnosticsData.TaskName;
                 elem.Filename = diagnosticsData.Filename;
                 elem.Path = diagnosticsData.Path;
                 elem.MaxBandwidth = diagnosticsData.MaxBandwidth;
@@ -148,23 +149,27 @@ namespace iba.Controls
             
             dgvClients.DataSource = _diagnosticsDataList;
 
+
             dgvClients.Columns[nameof(DiagnosticsData.ClientName)].HeaderText = Resources.Hostname;
             dgvClients.Columns[nameof(DiagnosticsData.ClientName)].DisplayIndex = 0;
 
             dgvClients.Columns[nameof(DiagnosticsData.ClientVersion)].HeaderText = Resources.Version;
             dgvClients.Columns[nameof(DiagnosticsData.ClientVersion)].DisplayIndex = 1;
+            
+            dgvClients.Columns[nameof(DiagnosticsData.TaskName)].HeaderText = Resources.TaskName;
+            dgvClients.Columns[nameof(DiagnosticsData.TaskName)].DisplayIndex = 2;
 
             dgvClients.Columns[Resources.Path].HeaderText = Resources.Path;
-            dgvClients.Columns[Resources.Path].DisplayIndex = 2;
+            dgvClients.Columns[Resources.Path].DisplayIndex = 3;
 
             dgvClients.Columns[nameof(DiagnosticsData.TransferredFiles)].HeaderText = Resources.TransferredFiles;
-            dgvClients.Columns[nameof(DiagnosticsData.TransferredFiles)].DisplayIndex = 3;
+            dgvClients.Columns[nameof(DiagnosticsData.TransferredFiles)].DisplayIndex = 4;
 
             dgvClients.Columns[nameof(DiagnosticsData.Filename)].HeaderText = Resources.Last_transferred_file;
-            dgvClients.Columns[nameof(DiagnosticsData.Filename)].DisplayIndex = 4;
+            dgvClients.Columns[nameof(DiagnosticsData.Filename)].DisplayIndex = 5;
 
             dgvClients.Columns[nameof(DiagnosticsData.MaxBandwidth)].HeaderText = Resources.Max__bandwidth;
-            dgvClients.Columns[nameof(DiagnosticsData.MaxBandwidth)].DisplayIndex = 5;
+            dgvClients.Columns[nameof(DiagnosticsData.MaxBandwidth)].DisplayIndex = 6;
 
             dgvClients.Columns[nameof(DiagnosticsData.ApiKey)].Visible = false;
             dgvClients.Columns[nameof(DiagnosticsData.ClientId)].Visible = false;

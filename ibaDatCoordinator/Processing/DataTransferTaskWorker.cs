@@ -20,9 +20,9 @@ namespace iba.Processing
             client = new GrpcClient(m_data);
         }
 
-        public async Task TransferFile(string file)
+        public async Task TransferFile(string file, TaskData task)
         {
-            await client.TransferFileAsync(file);
+            await client.TransferFileAsync(file, task);
         }
     }
 }

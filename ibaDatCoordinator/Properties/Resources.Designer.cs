@@ -5109,6 +5109,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TaskName.
+        /// </summary>
+        internal static string TaskName {
+            get {
+                return ResourceManager.GetString("TaskName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot add the requested task, the maximum amount of tasks for this job has been reached..
         /// </summary>
         internal static string TasksCountExceeded {

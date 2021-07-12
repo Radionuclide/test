@@ -35,17 +35,17 @@ namespace iba.Processing.IbaGrpc
 
             var connectionResponse = await _configurationValidator.CheckConfigurationAsync(configuration);
 
-            if (request.ClientId == string.Empty)
+            if (ClientManager.ClientList.Any( x => x.Key.ToString() == request.ClientId))
             {
-                var newGuid = Guid.NewGuid();
-                connectionResponse.ClientId = newGuid.ToString();
-                ClientManager.RegisterClient(newGuid, request.Configurataion);
+                ClientManager.UpdateClient(request.ClientId, request.Configurataion);
             }
             else
             {
-                ClientManager.UpdateClient(request.ClientId, request.Configurataion);
-                connectionResponse.ClientId = request.ClientId;
+                var clientId = Guid.Parse(request.ClientId);
+                ClientManager.RegisterClient(clientId, request.Configurataion);
             }
+
+            connectionResponse.ClientId = request.ClientId;
 
             return connectionResponse;
         }

@@ -4528,7 +4528,7 @@ namespace iba.Processing
 
                 foreach (var fileToCopy in filesToCopy)
                 {
-                    dataTransferTaskWorker.TransferFile(fileToCopy).Wait();
+                    dataTransferTaskWorker.TransferFile(fileToCopy, task).Wait();
                     Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
                 }
 

@@ -2016,4 +2016,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="Max__bandwidth" xml:space="preserve">
 	  <value>Max. bandwidth in KB/s</value>
   </data>
+  <data name="TaskName" xml:space="preserve">
+	  <value>TaskName</value>
+  </data>
 </root>

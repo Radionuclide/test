@@ -46,8 +46,9 @@ namespace iba.Processing.IbaGrpc
         {
             try
             {
-                m_clientList[Guid.Parse(requestClientId)].Path = requestConfigurataion.Path;
                 m_clientList[Guid.Parse(requestClientId)].ClientName = requestConfigurataion.ClientName;
+                m_clientList[Guid.Parse(requestClientId)].TaskName = requestConfigurataion.TaskName;
+                m_clientList[Guid.Parse(requestClientId)].Path = requestConfigurataion.Path;
                 m_clientList[Guid.Parse(requestClientId)].FileName = requestConfigurataion.FileName;
                 m_clientList[Guid.Parse(requestClientId)].Maxbandwidth = requestConfigurataion.Maxbandwidth;
                 m_clientList[Guid.Parse(requestClientId)].ApiKey = requestConfigurataion.ApiKey;
@@ -74,6 +75,7 @@ namespace iba.Processing.IbaGrpc
             var diagnosticsData = new DiagnosticsData
             {
                 ClientId = guid.ToString(),
+                TaskName = data.TaskName,
                 Filename = data.FileName,
                 ClientName = data.ClientName,
                 ClientVersion = data.ClientVersion,

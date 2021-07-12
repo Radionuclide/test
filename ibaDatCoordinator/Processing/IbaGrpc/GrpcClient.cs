@@ -36,9 +36,9 @@ namespace iba.Processing.IbaGrpc
             return connectionResponse;
         }
 
-        public async Task<TransferResponse> TransferFileAsync(string file)
+        public async Task<TransferResponse> TransferFileAsync(string file, TaskData task)
         {
-            var connectionRequest = CreateConnectionRequest(file);
+            var connectionRequest = CreateConnectionRequest(file, task);
             var connectionResponse = await ConnectAsync(connectionRequest);
             
             m_data.ClientId = connectionResponse.ClientId;
@@ -120,22 +120,18 @@ namespace iba.Processing.IbaGrpc
             }
         }
 
-        private ConnectionRequest CreateConnectionRequest(string file)
+        private ConnectionRequest CreateConnectionRequest(string file, TaskData task)
         {
             var fileName = Path.GetFileName(file);
 
-            if (m_data.ClientId == null)
-            {
-                m_data.ClientId = string.Empty;
-            }
-
             return new ConnectionRequest
             {
-                ClientId = m_data.ClientId != string.Empty ? m_data.ClientId : string.Empty,
+                ClientId = task.Guid.ToString(),
                 RequestDate = Timestamp.FromDateTime(DateTime.UtcNow),
                 Configurataion = new Configuration
                 {
                     ClientName = m_data.Hostname,
+                    TaskName = task.Name,
                     ClientVersion = m_data.Version,
                     FileName = fileName,
                     Path = m_data.RemotePath,
