@@ -1210,7 +1210,7 @@ namespace iba.Processing
 
         public virtual void DataTransferWorkerSetCallback(ClientManager.UpdateEvent updateDiagnosticInfo)
         {
-            DataTransferWorker.ClientManager.UpdateDiagnosticInfoCallback += updateDiagnosticInfo;
+            DataTransferWorker.SetCallback(updateDiagnosticInfo);
         }
 
         #endregion

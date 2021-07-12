@@ -534,7 +534,6 @@ namespace iba.Dialogs
     {
         public string Address;
         public int PortNr;
-        public bool DataTransfer;
         public bool Enabled
         {
             get { return !String.IsNullOrEmpty(Address); }

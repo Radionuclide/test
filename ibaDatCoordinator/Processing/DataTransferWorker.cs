@@ -17,7 +17,6 @@ namespace iba.Processing
     {
         private DataTransferData _data = new DataTransferData();
         private DataTransferImpl _dataTransferImpl;
-        private readonly ClientManager _clientManager;
         private const string HOST = "localhost";
         public string Status { get; set; }
         public bool IsPortTextBoxEnabled { get; set; }
@@ -34,8 +33,7 @@ namespace iba.Processing
 
         private DataTransferWorker()
         {
-            _clientManager = new ClientManager();
-            _dataTransferImpl = new DataTransferImpl(ClientManager);
+            _dataTransferImpl = new DataTransferImpl();
         }
 
         public DataTransferData DataTransferData
@@ -56,14 +54,10 @@ namespace iba.Processing
             set => _dataTransferImpl = value;
         }
 
-
-        public ClientManager ClientManager => _clientManager;
-
         public void StartServer()
         {
             try
             {
-                _dataTransferImpl.Data = _data;
                 m_server = CreateNewServer();
                 m_server.Start();
                 
@@ -83,7 +77,6 @@ namespace iba.Processing
             IsSelectCertificateBtnEnabled = isControlEnabled;
             IsSelectRootPathBtnEnabled = isControlEnabled;
             Status = isControlEnabled ? "Server not started" : "Server started";
-
         }
 
         public (string status, bool IsPortTextBoxEnabled, bool IsSelectRootPathBtnEnabledbool, bool IsSelectCertificateBtnEnabled) 
@@ -91,7 +84,6 @@ namespace iba.Processing
         { 
             return (Status, IsPortTextBoxEnabled, IsSelectRootPathBtnEnabled, IsSelectCertificateBtnEnabled);
         }
-
 
         public void StopServer()
         {
@@ -130,6 +122,11 @@ namespace iba.Processing
             {
                 SetStatus(true);
             }
+        }
+
+        public void SetCallback(ClientManager.UpdateEvent updateDiagnosticInfo)
+        {
+            _dataTransferImpl.ClientManager.UpdateDiagnosticInfoCallback += updateDiagnosticInfo;
         }
     }
 }
