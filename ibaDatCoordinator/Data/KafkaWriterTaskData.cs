@@ -8,6 +8,7 @@ using IbaAnalyzer;
 
 namespace iba.Data
 {
+    [Serializable]
     public class KafkaWriterTaskData : TaskData
     {
         public string clusterAddress;
