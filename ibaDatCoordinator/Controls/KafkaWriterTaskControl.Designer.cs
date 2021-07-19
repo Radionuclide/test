@@ -81,6 +81,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.schemaTextBox = new System.Windows.Forms.TextBox();
             this.connectionGroupBox = new iba.Utility.CollapsibleGroupBox();
+            this.exportParamButton = new System.Windows.Forms.Button();
+            this.importParamButton = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.targetGroupBox = new iba.Utility.CollapsibleGroupBox();
@@ -88,6 +90,7 @@
             this.metadataComboBox = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.keyTextBox = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this._toolTip = new System.Windows.Forms.ToolTip();
             ((System.ComponentModel.ISupportInitialize)(this.exprGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             this.m_monitorGroup.SuspendLayout();
@@ -375,8 +378,6 @@
             // 
             // dataFormatComboBox
             // 
-            this.dataFormatComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataFormatComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dataFormatComboBox.FormattingEnabled = true;
             this.dataFormatComboBox.Items.AddRange(new object[] {
@@ -386,7 +387,7 @@
             this.dataFormatComboBox.Location = new System.Drawing.Point(148, 144);
             this.dataFormatComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.dataFormatComboBox.Name = "dataFormatComboBox";
-            this.dataFormatComboBox.Size = new System.Drawing.Size(582, 21);
+            this.dataFormatComboBox.Size = new System.Drawing.Size(116, 21);
             this.dataFormatComboBox.TabIndex = 10;
             // 
             // m_browseDatFileButton
@@ -494,7 +495,7 @@
             this.downButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.downButton.Image = ((System.Drawing.Image)(resources.GetObject("downButton.Image")));
             this.downButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.downButton.Location = new System.Drawing.Point(707, 299);
+            this.downButton.Location = new System.Drawing.Point(707, 301);
             this.downButton.Margin = new System.Windows.Forms.Padding(2);
             this.downButton.Name = "downButton";
             this.downButton.Size = new System.Drawing.Size(24, 24);
@@ -507,7 +508,7 @@
             this.upButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.upButton.Image = ((System.Drawing.Image)(resources.GetObject("upButton.Image")));
             this.upButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.upButton.Location = new System.Drawing.Point(707, 268);
+            this.upButton.Location = new System.Drawing.Point(707, 269);
             this.upButton.Margin = new System.Windows.Forms.Padding(2);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(24, 24);
@@ -618,7 +619,7 @@
             // 
             // paramAddButton
             // 
-            this.paramAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.paramAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.paramAddButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.paramAddButton.Image = ((System.Drawing.Image)(resources.GetObject("paramAddButton.Image")));
             this.paramAddButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -702,10 +703,10 @@
             // testConnectionButton
             // 
             this.testConnectionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.testConnectionButton.Location = new System.Drawing.Point(588, 171);
+            this.testConnectionButton.Location = new System.Drawing.Point(587, 121);
             this.testConnectionButton.Margin = new System.Windows.Forms.Padding(2);
             this.testConnectionButton.Name = "testConnectionButton";
-            this.testConnectionButton.Size = new System.Drawing.Size(143, 23);
+            this.testConnectionButton.Size = new System.Drawing.Size(143, 21);
             this.testConnectionButton.TabIndex = 8;
             this.testConnectionButton.Text = "Test connection";
             this.testConnectionButton.UseVisualStyleBackColor = true;
@@ -735,6 +736,8 @@
             // 
             this.connectionGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.connectionGroupBox.Controls.Add(this.exportParamButton);
+            this.connectionGroupBox.Controls.Add(this.importParamButton);
             this.connectionGroupBox.Controls.Add(this.label17);
             this.connectionGroupBox.Controls.Add(this.label14);
             this.connectionGroupBox.Controls.Add(this.identifierTextBox);
@@ -759,6 +762,28 @@
             this.connectionGroupBox.TabIndex = 54;
             this.connectionGroupBox.TabStop = false;
             this.connectionGroupBox.Text = "Connection";
+            // 
+            // exportParamButton
+            // 
+            this.exportParamButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.exportParamButton.Image = global::iba.Properties.Resources.img_export;
+            this.exportParamButton.Location = new System.Drawing.Point(707, 262);
+            this.exportParamButton.Name = "exportParamButton";
+            this.exportParamButton.Size = new System.Drawing.Size(24, 24);
+            this.exportParamButton.TabIndex = 57;
+            this.exportParamButton.UseVisualStyleBackColor = true;
+            this.exportParamButton.Click += new System.EventHandler(this.OnExportParameters);
+            // 
+            // importParamButton
+            // 
+            this.importParamButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.importParamButton.Image = global::iba.Properties.Resources.img_import;
+            this.importParamButton.Location = new System.Drawing.Point(707, 230);
+            this.importParamButton.Name = "importParamButton";
+            this.importParamButton.Size = new System.Drawing.Size(24, 24);
+            this.importParamButton.TabIndex = 56;
+            this.importParamButton.UseVisualStyleBackColor = true;
+            this.importParamButton.Click += new System.EventHandler(this.OnImportParameters);
             // 
             // label17
             // 
@@ -834,14 +859,12 @@
             // 
             // metadataComboBox
             // 
-            this.metadataComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.metadataComboBox.Location = new System.Drawing.Point(148, 118);
             this.metadataComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.metadataComboBox.Name = "metadataComboBox";
             this.metadataComboBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.metadataComboBox.Size = new System.Drawing.Size(582, 20);
+            this.metadataComboBox.Size = new System.Drawing.Size(116, 20);
             this.metadataComboBox.TabIndex = 53;
             // 
             // keyTextBox
@@ -951,5 +974,8 @@
         private DevExpress.XtraEditors.CheckedComboBoxEdit metadataComboBox;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Button exportParamButton;
+        private System.Windows.Forms.Button importParamButton;
+        private System.Windows.Forms.ToolTip _toolTip;
     }
 }

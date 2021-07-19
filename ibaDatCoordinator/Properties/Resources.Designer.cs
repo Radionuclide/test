@@ -604,6 +604,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CSV files (*.csv)|*.csv.
+        /// </summary>
+        internal static string CSVFileFilter {
+            get {
+                return ResourceManager.GetString("CSVFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap cut {
@@ -1234,6 +1243,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export parameters to a CSV file.
+        /// </summary>
+        internal static string ExportParametersToCSV {
+            get {
+                return ResourceManager.GetString("ExportParametersToCSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon extract_running {
@@ -1341,6 +1359,15 @@ namespace iba.Properties {
         internal static string FileChanged_UploadStandalone {
             get {
                 return ResourceManager.GetString("FileChanged_UploadStandalone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File not found. /n Check the file name and try again..
+        /// </summary>
+        internal static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
             }
         }
         
@@ -1903,6 +1930,16 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap img_import {
+            get {
+                object obj = ResourceManager.GetObject("img_import", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap img_key {
             get {
                 object obj = ResourceManager.GetObject("img_key", resourceCulture);
@@ -2017,6 +2054,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("img_warning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import parameters from a CSV file.
+        /// </summary>
+        internal static string ImportParametersFromCSV {
+            get {
+                return ResourceManager.GetString("ImportParametersFromCSV", resourceCulture);
             }
         }
         
@@ -3326,7 +3372,7 @@ namespace iba.Properties {
         /// </summary>
         internal static string NewOpcUaTaskTitle {
             get {
-                return ResourceManager.GetString("NewOpsUaTaskTitle", resourceCulture);
+                return ResourceManager.GetString("NewOpcUaTaskTitle", resourceCulture);
             }
         }
         

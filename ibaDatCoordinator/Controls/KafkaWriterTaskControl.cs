@@ -9,6 +9,7 @@ using System.IO;
 using System.Collections.Generic;
 using DevExpress.XtraEditors.Controls;
 using iba.Remoting;
+using IbaAnalyzer;
 
 namespace iba.Controls
 {
@@ -59,6 +60,9 @@ namespace iba.Controls
             expressionGridColumn.Caption = Properties.Resources.ibaAnalyzerExpression;
             testValueGridColumn.Caption = Properties.Resources.TestValue;
             nameGridColumn.Caption = Properties.Resources.Name;
+
+            _toolTip.SetToolTip(importParamButton, iba.Properties.Resources.ImportParametersFromCSV);
+            _toolTip.SetToolTip(exportParamButton, iba.Properties.Resources.ExportParametersToCSV);
         }
 
         private void UpdateParamTableButtons()
@@ -499,6 +503,96 @@ namespace iba.Controls
                     schemRegClient.Dispose();
             }
             MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void OnImportParameters(object sender, EventArgs e)
+        {
+            string fileName = "";
+
+            using (OpenFileDialog fd = new OpenFileDialog())
+            {
+                fd.Filter = Properties.Resources.CSVFileFilter;
+                fd.DefaultExt = ".csv";
+                fd.Title = Properties.Resources.ImportParametersFromCSV;
+                fd.Multiselect = false;
+                fd.CheckFileExists = true;
+                if (fd.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                fileName = fd.FileName;
+            }
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                MessageBox.Show(this, Properties.Resources.FileNotFound, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                using (StreamReader sr = File.OpenText(fileName))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (string.IsNullOrEmpty(line))
+                            continue;
+
+                        string[] parts = line.Split(',');
+                        if (parts.Length != 2)
+                            continue;
+
+                        if (_paramTableData.FindIndex(param => param.Key == parts[0]) != -1)
+                            continue;
+
+                        _paramTableData.Add(new KafkaWriterTaskData.Param{Key = parts[0], Value = parts[1]});
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OnExportParameters(object sender, EventArgs e)
+        {
+            string fileName;
+
+            using (SaveFileDialog fd = new SaveFileDialog())
+            {
+                fd.Filter = Properties.Resources.CSVFileFilter;
+                fd.DefaultExt = ".csv";
+                fd.AddExtension = true;
+                fd.Title = Properties.Resources.ExportParametersToCSV;
+                fd.OverwritePrompt = true;
+                fd.ValidateNames = true;
+                if (fd.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                fileName = fd.FileName;
+            }
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                MessageBox.Show(this, Properties.Resources.FileNotFound, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(fileName))
+                {
+                    foreach (KafkaWriterTaskData.Param p in _paramTableData)
+                    {
+                        sw.WriteLine($"{p.Key},{p.Value}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -862,6 +862,7 @@
     <Content Include="Resources\img_file.png" />
     <None Include="Resources\img_lock.png" />
     <None Include="Resources\img_networkError.ico" />
+    <None Include="Resources\img_import.png" />
     <Content Include="Resources\img_pdo_upload.png" />
     <None Include="Resources\img_unlock.png" />
     <None Include="Resources\img_server.png" />
