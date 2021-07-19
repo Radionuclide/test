@@ -98,7 +98,7 @@ namespace iba.Controls
             identifierTextBox.Text = _data.identifier;
             switch (_data.Format)
             {
-                case KafkaWriterTaskData.DataFormat.JSONGrouped :
+                case KafkaWriterTaskData.DataFormat.JSONGrouped:
                     dataFormatComboBox.SelectedIndex = 0;
                     break;
                 case KafkaWriterTaskData.DataFormat.JSONPerSignal:
@@ -122,6 +122,47 @@ namespace iba.Controls
                     break;
             }
 
+            switch (_data.ClusterMode)
+            {
+                case KafkaWriterTaskData.ClusterType.Kafka:
+                    typeComboBox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.ClusterType.EventHub:
+                    typeComboBox.SelectedIndex = 1;
+                    break;
+            }
+
+            switch (_data.ClusterSecurityMode)
+            {
+                case KafkaWriterTaskData.ClusterSecurityType.PLAINTEXT:
+                    clusterConnectionSecurityComboBox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.ClusterSecurityType.SSL:
+                    clusterConnectionSecurityComboBox.SelectedIndex = 1;
+                    break;
+                case KafkaWriterTaskData.ClusterSecurityType.SASL_PLAINTEXT:
+                    clusterConnectionSecurityComboBox.SelectedIndex = 2;
+                    break;
+                case KafkaWriterTaskData.ClusterSecurityType.SASL_SSL:
+                    clusterConnectionSecurityComboBox.SelectedIndex = 3;
+                    break;
+            }
+
+            switch (_data.SchemaRegistrySecurityMode)
+            {
+                case KafkaWriterTaskData.SchemaRegistrySecurityType.HTTP:
+                    schemaRegistryConnectionSecurityComboBox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS:
+                    schemaRegistryConnectionSecurityComboBox.SelectedIndex = 1;
+                    break;
+                case KafkaWriterTaskData.SchemaRegistrySecurityType.HTTP_AUTHENTICATION:
+                    schemaRegistryConnectionSecurityComboBox.SelectedIndex = 2;
+                    break;
+                case KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS_AUTHENTICATION:
+                    schemaRegistryConnectionSecurityComboBox.SelectedIndex = 3;
+                    break;
+            }
 
             UpdateSource();
 
@@ -181,6 +222,9 @@ namespace iba.Controls
 
             _data.Format = (KafkaWriterTaskData.DataFormat)dataFormatComboBox.SelectedIndex;
             _data.AckMode = (KafkaWriterTaskData.RequiredAcks)acknowledgmentComboBox.SelectedIndex;
+            _data.ClusterMode = (KafkaWriterTaskData.ClusterType)typeComboBox.SelectedIndex;
+            _data.ClusterSecurityMode = (KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex;
+            _data.SchemaRegistrySecurityMode = (KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex;
             _data.AnalysisFile = m_pdoFileTextBox.Text;
             _data.TestDatFile = m_datFileTextBox.Text;
 

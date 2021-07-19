@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KafkaWriterTaskControl));
             this.exprGrid = new DevExpress.XtraGrid.GridControl();
             this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -81,16 +82,20 @@
             this.label11 = new System.Windows.Forms.Label();
             this.schemaTextBox = new System.Windows.Forms.TextBox();
             this.connectionGroupBox = new iba.Utility.CollapsibleGroupBox();
+            this.schemaRegistryConnectionSecurityComboBox = new System.Windows.Forms.ComboBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.clusterConnectionSecurityComboBox = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.typeComboBox = new System.Windows.Forms.ComboBox();
             this.exportParamButton = new System.Windows.Forms.Button();
             this.importParamButton = new System.Windows.Forms.Button();
-            this.label17 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.targetGroupBox = new iba.Utility.CollapsibleGroupBox();
             this.label16 = new System.Windows.Forms.Label();
             this.metadataComboBox = new DevExpress.XtraEditors.CheckedComboBoxEdit();
             this.keyTextBox = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this._toolTip = new System.Windows.Forms.ToolTip();
+            this._toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.exprGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             this.m_monitorGroup.SuspendLayout();
@@ -332,16 +337,16 @@
             // 
             this.addressTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addressTextBox.Location = new System.Drawing.Point(148, 76);
+            this.addressTextBox.Location = new System.Drawing.Point(157, 76);
             this.addressTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.addressTextBox.Name = "addressTextBox";
-            this.addressTextBox.Size = new System.Drawing.Size(582, 20);
+            this.addressTextBox.Size = new System.Drawing.Size(573, 20);
             this.addressTextBox.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 130);
+            this.label3.Location = new System.Drawing.Point(14, 155);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(90, 13);
@@ -350,7 +355,7 @@
             // 
             // timeoutNumericUpDown
             // 
-            this.timeoutNumericUpDown.Location = new System.Drawing.Point(148, 130);
+            this.timeoutNumericUpDown.Location = new System.Drawing.Point(157, 155);
             this.timeoutNumericUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.timeoutNumericUpDown.Minimum = new decimal(new int[] {
             1,
@@ -545,7 +550,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(14, 156);
+            this.label9.Location = new System.Drawing.Point(214, 157);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(121, 13);
@@ -651,10 +656,10 @@
             "None",
             "Leader",
             "All"});
-            this.acknowledgmentComboBox.Location = new System.Drawing.Point(148, 154);
+            this.acknowledgmentComboBox.Location = new System.Drawing.Point(339, 154);
             this.acknowledgmentComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.acknowledgmentComboBox.Name = "acknowledgmentComboBox";
-            this.acknowledgmentComboBox.Size = new System.Drawing.Size(116, 21);
+            this.acknowledgmentComboBox.Size = new System.Drawing.Size(86, 21);
             this.acknowledgmentComboBox.TabIndex = 11;
             // 
             // label12
@@ -671,10 +676,10 @@
             // 
             this.identifierTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.identifierTextBox.Location = new System.Drawing.Point(148, 26);
+            this.identifierTextBox.Location = new System.Drawing.Point(157, 26);
             this.identifierTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.identifierTextBox.Name = "identifierTextBox";
-            this.identifierTextBox.Size = new System.Drawing.Size(582, 20);
+            this.identifierTextBox.Size = new System.Drawing.Size(573, 20);
             this.identifierTextBox.TabIndex = 13;
             // 
             // label13
@@ -715,7 +720,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(14, 104);
+            this.label11.Location = new System.Drawing.Point(14, 129);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(125, 13);
@@ -726,19 +731,23 @@
             // 
             this.schemaTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.schemaTextBox.Location = new System.Drawing.Point(148, 104);
+            this.schemaTextBox.Location = new System.Drawing.Point(157, 129);
             this.schemaTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.schemaTextBox.Name = "schemaTextBox";
-            this.schemaTextBox.Size = new System.Drawing.Size(582, 20);
+            this.schemaTextBox.Size = new System.Drawing.Size(573, 20);
             this.schemaTextBox.TabIndex = 16;
             // 
             // connectionGroupBox
             // 
             this.connectionGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.connectionGroupBox.Controls.Add(this.schemaRegistryConnectionSecurityComboBox);
+            this.connectionGroupBox.Controls.Add(this.label18);
+            this.connectionGroupBox.Controls.Add(this.clusterConnectionSecurityComboBox);
+            this.connectionGroupBox.Controls.Add(this.label17);
+            this.connectionGroupBox.Controls.Add(this.typeComboBox);
             this.connectionGroupBox.Controls.Add(this.exportParamButton);
             this.connectionGroupBox.Controls.Add(this.importParamButton);
-            this.connectionGroupBox.Controls.Add(this.label17);
             this.connectionGroupBox.Controls.Add(this.label14);
             this.connectionGroupBox.Controls.Add(this.identifierTextBox);
             this.connectionGroupBox.Controls.Add(this.paramRemoveButton);
@@ -763,6 +772,64 @@
             this.connectionGroupBox.TabStop = false;
             this.connectionGroupBox.Text = "Connection";
             // 
+            // schemaRegistryConnectionSecurityComboBox
+            // 
+            this.schemaRegistryConnectionSecurityComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.schemaRegistryConnectionSecurityComboBox.FormattingEnabled = true;
+            this.schemaRegistryConnectionSecurityComboBox.Items.AddRange(new object[] {
+            "HTTP",
+            "HTTPS",
+            "HTTP + Authentication",
+            "HTTPS + Authentication"});
+            this.schemaRegistryConnectionSecurityComboBox.Location = new System.Drawing.Point(621, 158);
+            this.schemaRegistryConnectionSecurityComboBox.Name = "schemaRegistryConnectionSecurityComboBox";
+            this.schemaRegistryConnectionSecurityComboBox.Size = new System.Drawing.Size(110, 21);
+            this.schemaRegistryConnectionSecurityComboBox.TabIndex = 62;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(441, 161);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(174, 13);
+            this.label18.TabIndex = 61;
+            this.label18.Text = "Shema registry connection security:";
+            // 
+            // clusterConnectionSecurityComboBox
+            // 
+            this.clusterConnectionSecurityComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.clusterConnectionSecurityComboBox.FormattingEnabled = true;
+            this.clusterConnectionSecurityComboBox.Items.AddRange(new object[] {
+            "PLAINTEXT",
+            "SSL",
+            "SASL/PLAINTEXT",
+            "SASL/SSL"});
+            this.clusterConnectionSecurityComboBox.Location = new System.Drawing.Point(157, 101);
+            this.clusterConnectionSecurityComboBox.Name = "clusterConnectionSecurityComboBox";
+            this.clusterConnectionSecurityComboBox.Size = new System.Drawing.Size(112, 21);
+            this.clusterConnectionSecurityComboBox.TabIndex = 60;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(14, 105);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(137, 13);
+            this.label17.TabIndex = 59;
+            this.label17.Text = "Cluster connection security:";
+            // 
+            // typeComboBox
+            // 
+            this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.typeComboBox.FormattingEnabled = true;
+            this.typeComboBox.Items.AddRange(new object[] {
+            "Kafka",
+            "Event Hub"});
+            this.typeComboBox.Location = new System.Drawing.Point(157, 52);
+            this.typeComboBox.Name = "typeComboBox";
+            this.typeComboBox.Size = new System.Drawing.Size(112, 21);
+            this.typeComboBox.TabIndex = 58;
+            // 
             // exportParamButton
             // 
             this.exportParamButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -784,18 +851,6 @@
             this.importParamButton.TabIndex = 56;
             this.importParamButton.UseVisualStyleBackColor = true;
             this.importParamButton.Click += new System.EventHandler(this.OnImportParameters);
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label17.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.label17.Location = new System.Drawing.Point(148, 52);
-            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(101, 13);
-            this.label17.TabIndex = 55;
-            this.label17.Text = "not implemented yet";
             // 
             // label14
             // 
@@ -973,9 +1028,13 @@
         private System.Windows.Forms.Label label15;
         private DevExpress.XtraEditors.CheckedComboBoxEdit metadataComboBox;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button exportParamButton;
         private System.Windows.Forms.Button importParamButton;
         private System.Windows.Forms.ToolTip _toolTip;
+        private System.Windows.Forms.ComboBox typeComboBox;
+        private System.Windows.Forms.ComboBox clusterConnectionSecurityComboBox;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.ComboBox schemaRegistryConnectionSecurityComboBox;
+        private System.Windows.Forms.Label label18;
     }
 }
