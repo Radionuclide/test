@@ -229,23 +229,24 @@ namespace iba.Processing
                             var p = new ProducerBuilder<string, string>(config).Build();
                             string message = "{ ";
 
+                            // todo maybe change format to   message += $", \"{rec.Name}.Comment1\": \"{rec.Comment1}\""; and change Name matadata to Expression metadata
                             for (int i = 0; i < m_data.Records.Count; i++)
                             {
-                                if (i > 0)
-                                    message += ", ";
-                                message += "\"" + m_data.Records[i].Expression + "\": " + m_data.ToText(m_data.Records[i]);
+                                var rec = m_data.Records[i];
+                                if (i > 0)  message += ", ";
+                                message += $"\"{rec.Expression}\": \"{m_data.ToText(rec)}\"";
                                 if (m_data.metadata.Contains("Identifier"))
-                                    message += "\"Identifier\":" + m_data.identifier;
+                                    message += $", \"Identifier\": \"{m_data.identifier}\"";
                                 if (m_data.metadata.Contains("Name"))
-                                    message += "\"Name\":" + m_data.Records[i].Name;
+                                    message += $", \"Name\": \"{rec.Name}\"";
                                 if (m_data.metadata.Contains("Unit"))
-                                    message += "\"Unit\":" + m_data.Records[i].Unit;
+                                    message += $", \"Unit\": \"{rec.Unit}\"";
                                 if (m_data.metadata.Contains("Comment 1"))
-                                    message += "\"Comment1\":" + m_data.Records[i].Comment1;
+                                    message += $", \"Comment1\": \"{rec.Comment1}\"";
                                 if (m_data.metadata.Contains("Comment 2"))
-                                    message += "\"Comment2\":" + m_data.Records[i].Comment2;
+                                    message += $", \"Comment2\": \"{rec.Comment2}\"";
                                 if (m_data.metadata.Contains("Signal ID"))
-                                    message += "\"Signal ID\":" + m_data.Records[i].Id;
+                                    message += $", \"Signal ID\": \"{rec.Id}\"";
                             }
                             message += "}";
                             var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = m_data.key, Value = message }).Result;
@@ -255,20 +256,20 @@ namespace iba.Processing
                             var p = new ProducerBuilder<string, string>(config).Build();
                             foreach (var rec in m_data.Records)
                             {
-                                string message = "{ \"Signal\": \"" + rec.Expression + "\", \"Value\": " + m_data.ToText(rec);
+                                string message = "";
                                 if (m_data.metadata.Contains("Identifier"))
-                                    message += "\"Identifier\":" + m_data.identifier;
+                                    message += $", \"Identifier\": \"{m_data.identifier}\"";
                                 if (m_data.metadata.Contains("Name"))
-                                    message += "\"Name\":" + rec.Name;
+                                    message += $", \"Name\": \"{rec.Name}\"";
                                 if (m_data.metadata.Contains("Unit"))
-                                    message += "\"Unit\":" + rec.Unit;
+                                    message += $", \"Unit\": \"{rec.Unit}\"";
                                 if (m_data.metadata.Contains("Comment 1"))
-                                    message += "\"Comment1\":" + rec.Comment1;
+                                    message += $", \"Comment1\": \"{rec.Comment1}\"";
                                 if (m_data.metadata.Contains("Comment 2"))
-                                    message += "\"Comment2\":" + rec.Comment2;
+                                    message += $", \"Comment2\": \"{rec.Comment2}\"";
                                 if (m_data.metadata.Contains("Signal ID"))
-                                    message += "\"Signal ID\":" + rec.Id;
-                                message += "}";
+                                    message += $", \"Signal ID\": \"{rec.Id}\"";
+                                message = $"{{\"Signal\": \"{rec.Expression}\", \"Value\": \"{m_data.ToText(rec)}\"{message}}}";
                                 var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = m_data.key, Value = message }).Result;
                             }
                         }
