@@ -27,7 +27,7 @@
 
 !echo "Executing installer with unsigned uninstaller"
 !system "..\InstallFiles\uninstaller_only.exe" = 2
-!delfile "..\InstallFiles\uninstaller_only.exe"
+!delfile /nonfatal "..\InstallFiles\uninstaller_only.exe"
 
 !echo "Signing uninstaller"
 !ifdef SIGN_TIMESTAMP_URL
