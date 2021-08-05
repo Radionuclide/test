@@ -11,6 +11,7 @@ using iba.Controls;
 using iba.Data;
 using Messages.V1;
 using Google.Protobuf.WellKnownTypes;
+using Status = Messages.V1.Status;
 
 namespace iba.Processing.IbaGrpc
 {
@@ -35,7 +36,7 @@ namespace iba.Processing.IbaGrpc
 
             var connectionResponse = await _configurationValidator.CheckConfigurationAsync(configuration);
 
-            if (connectionResponse.Status == "OK")
+            if (connectionResponse.Status == Status.Ok)
             {
                 ClientManager.AddOrUpdate(configuration);
             }
@@ -56,7 +57,7 @@ namespace iba.Processing.IbaGrpc
 
             return new TransferResponse()
             {
-                Status = "OK"
+                Status = Status.Ok
             };
         }
     }

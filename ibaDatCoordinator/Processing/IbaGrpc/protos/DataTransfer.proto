@@ -31,7 +31,8 @@ message ConnectionRequest{
 message ConnectionResponse{
 	string configurationId = 1;
 	google.protobuf.Timestamp requestDate = 2;
-	string status = 3;
+	Status status = 3;
+	string message = 4;
 }
 
 message TransferRequest{
@@ -39,5 +40,12 @@ message TransferRequest{
 }
  
 message TransferResponse{
-	string status = 1;
+	Status status = 1;
+	string message = 2;
 }
+
+enum Status{
+	OK = 0;
+	Error = 1;
+}
+

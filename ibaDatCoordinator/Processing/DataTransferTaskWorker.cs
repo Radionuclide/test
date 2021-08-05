@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using iba.Data;
 using iba.Processing.IbaGrpc;
+using Messages.V1;
 
 namespace iba.Processing
 {
@@ -23,9 +24,9 @@ namespace iba.Processing
         public async Task TransferFile(string file, TaskData task)
         {
             var response = await client.TransferFileAsync(file, task);
-            if (response.Status != "OK")
+            if (response.Status == Status.Error)
             {
-                throw new InvalidOperationException(response.Status);
+                throw new InvalidOperationException(response.Message);
             }
         }
     }

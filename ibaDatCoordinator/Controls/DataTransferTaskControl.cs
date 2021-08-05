@@ -15,6 +15,7 @@ using iba.Dialogs;
 using iba.Processing;
 using iba.Processing.IbaGrpc;
 using iba.Utility;
+using Messages.V1;
 
 namespace iba.Controls
 {
@@ -64,7 +65,7 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
 
-        private void m_btnCheckConnection_Click(object sender, EventArgs e)
+        private async void m_btnCheckConnection_Click(object sender, EventArgs e)
         {
             SaveData();
             var errormessage = string.Empty;
@@ -74,9 +75,17 @@ namespace iba.Controls
             {
                 try
                 {
-                    GrpcClient client = new GrpcClient(m_data);
-                    client.TestConnection();
-                    ok = true;
+                    var client = new GrpcClient(m_data);
+                    var result = await client.TestConnection(m_data);
+
+                    if (result.Status == Status.Ok)
+                    {
+                        ok = true;
+                    }
+                    else
+                    {
+                        errormessage = result.Message;
+                    }
                 }
                 catch (Exception ex)
                 {

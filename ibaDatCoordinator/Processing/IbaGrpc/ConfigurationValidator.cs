@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraPrinting.Native;
+using iba.Data;
+using iba.Logging;
 using Messages.V1;
 
 namespace iba.Processing.IbaGrpc
@@ -22,30 +25,34 @@ namespace iba.Processing.IbaGrpc
         {
             return await Task.Run(() =>
             {
-                if (!CheckVersion(configuration))
+                try
                 {
-                    return new ConnectionResponse
+                    if (!CheckVersion(configuration))
                     {
-                        Status = "Client version does not match Server Version"
-                    };
+                        return CreateConnectionResponse(Status.Error, "Client version does not match Server Version");
+                    }
+
+                    if (!CheckIfDirectoryIsFree(configuration))
+                    {
+                        return CreateConnectionResponse(Status.Error, "Directory already in use");
+                    }
+
+                    if (!CheckAuthorization(configuration))
+                    {
+                        return CreateConnectionResponse(Status.Error, "Authorization failed");
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogData.Data.Log(Level.Exception, $"{e.Message} \n {e?.InnerException} \n {e.StackTrace}");
+                    return CreateConnectionResponse(Status.Error, e.Message);
                 }
 
-                if (!CheckIfDirectoryIsFree(configuration))
-                {
-                    return new ConnectionResponse
-                    {
-                        Status = "Directory already exists"
-                    };
-                }
-
-                return new ConnectionResponse
-                {
-                    Status = "OK"
-                };
+                return CreateConnectionResponse(Status.Ok, string.Empty);
             });
         }
 
-        public bool CheckIfDirectoryIsFree(Configuration configuration)
+        private bool CheckIfDirectoryIsFree(Configuration configuration)
         {
             var confId = Guid.Parse(configuration.ConfigurationId);
 
@@ -54,9 +61,24 @@ namespace iba.Processing.IbaGrpc
                 .All(conf => conf.Value.Path != configuration.Path);
         }
 
-        public bool CheckVersion(Configuration configuration)
+        private static bool CheckVersion(Configuration configuration)
         {
             return configuration.ClientVersion == DatCoVersion.GetVersion();
+        }
+
+        private static bool CheckAuthorization(Configuration configuration)
+        {
+            //Todo
+            return true;
+        }
+
+        private ConnectionResponse CreateConnectionResponse(Status status, string message)
+        {
+            return new ConnectionResponse
+            {
+                Status = status,
+                Message = message
+            };
         }
     }
 }

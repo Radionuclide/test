@@ -11,6 +11,8 @@ using Grpc.Core;
 using iba.Data;
 using Messages.V1;
 using Google.Protobuf.WellKnownTypes;
+using iba.Logging;
+using Status = Messages.V1.Status;
 
 namespace iba.Processing.IbaGrpc
 {
@@ -29,11 +31,24 @@ namespace iba.Processing.IbaGrpc
 
         public async Task<ConnectionResponse> ConnectAsync(ConnectionRequest request)
         {
-            var connectionCall = client.ConnectAsync(request);
-            
-            var connectionResponse  = await connectionCall.ResponseAsync;
+            try
+            {
+                var connectionCall = client.ConnectAsync(request);
 
-            return connectionResponse;
+                var connectionResponse = await connectionCall.ResponseAsync;
+
+                return connectionResponse;
+            }
+            catch (Exception ex)
+            {
+                LogData.Data.Log(Level.Exception,  $"{ex.Message}\n{ex.StackTrace}", ex);
+
+                return new ConnectionResponse
+                {
+                    Status = Status.Error,
+                    Message = "An error occurred when establishing the connection"
+                };
+            }
         }
 
         public async Task<TransferResponse> TransferFileAsync(string file, TaskData task)
@@ -43,56 +58,69 @@ namespace iba.Processing.IbaGrpc
             
             m_data.ClientId = connectionResponse.ConfigurationId;
 
-            if (connectionResponse.Status != "OK")
+            if (connectionResponse.Status == Status.Error)
             {
                 return new TransferResponse
                 {
-                    Status = connectionResponse.Status
+                    Status = connectionResponse.Status,
+                    Message = connectionResponse.Message
                 };
             }
 
-            var metadata = new Metadata
+            var options = CreateMetadata(connectionResponse);
+
+            using (var call = client.TransferFile(options))
             {
-                {"configurationId", connectionResponse.ConfigurationId},
-            };
+                var stream = call.RequestStream;
 
-            var options = new CallOptions(metadata);
-
-            using (AsyncClientStreamingCall<TransferRequest, TransferResponse> call = client.TransferFile(options))
-            {
-                IClientStreamWriter<TransferRequest> stream = call.RequestStream;
-
-                using (FileStream fs = File.OpenRead(Path.Combine(file)))
-                {
-                    while (true)
-                    {
-                        const int bufferSize = 64 * 1024;
-                        byte[] buffer = new byte[bufferSize];
-                        int numRead = await fs.ReadAsync(buffer, 0, buffer.Length);
-
-                        if (numRead == 0)
-                        {
-                            break;
-                        }
-
-                        if (numRead < buffer.Length)
-                        {
-                            Array.Resize(ref buffer, numRead);
-                        }
-
-                        await DelaySendingChunk(bufferSize);
-
-                        await stream.WriteAsync(new TransferRequest() { 
-                            Chunk = ByteString.CopyFrom(buffer)
-                        });
-                    }
-                }
+                await SendData(file, stream);
 
                 await stream.CompleteAsync();
 
-                TransferResponse response = await call.ResponseAsync;
+                var response = await call.ResponseAsync;
 
                 return response;
+            }
+        }
+
+        private static CallOptions CreateMetadata(ConnectionResponse connectionResponse)
+        {
+            var metadata = new Metadata
+            {
+                { "configurationId", connectionResponse.ConfigurationId },
+            };
+
+            var options = new CallOptions(metadata);
+            return options;
+        }
+
+        private async Task SendData(string file, IClientStreamWriter<TransferRequest> stream)
+        {
+            using (var fs = File.OpenRead(Path.Combine(file)))
+            {
+                while (true)
+                {
+                    const int bufferSize = 64 * 1024;
+                    var buffer = new byte[bufferSize];
+                    var numRead = await fs.ReadAsync(buffer, 0, buffer.Length);
+
+                    if (numRead == 0)
+                    {
+                        break;
+                    }
+
+                    if (numRead < buffer.Length)
+                    {
+                        Array.Resize(ref buffer, numRead);
+                    }
+
+                    await DelaySendingChunk(bufferSize);
+
+                    await stream.WriteAsync(new TransferRequest()
+                    {
+                        Chunk = ByteString.CopyFrom(buffer)
+                    });
+                }
             }
         }
 
@@ -126,10 +154,8 @@ namespace iba.Processing.IbaGrpc
 
             return new ConnectionRequest
             {
-                
                 Configurataion = new Configuration
                 {
-
                     ConfigurationId = task.Guid.ToString(),
                     RequestDate = Timestamp.FromDateTime(DateTime.UtcNow),
                     ClientName = m_data.Hostname,
@@ -143,9 +169,12 @@ namespace iba.Processing.IbaGrpc
             };
         }
 
-        public void TestConnection()
+        public async Task<ConnectionResponse> TestConnection(DataTransferTaskData dataTransferTaskData)
         {
-            //ToDo
+            var connectionRequest = CreateConnectionRequest(string.Empty, dataTransferTaskData);
+            var connectionResponse = await ConnectAsync(connectionRequest);
+
+            return connectionResponse;
         }
     }
 }
