@@ -26,7 +26,7 @@ namespace iba.Processing.IbaGrpc
         {
             _clientManager = new ClientManager();
             _directoryManger = new DirectoryManager(ClientManager);
-            _configurationValidator = new ConfigurationValidator();
+            _configurationValidator = new ConfigurationValidator(ClientManager);
         }
 
         public override async Task<ConnectionResponse> Connect(ConnectionRequest request, ServerCallContext context)
@@ -35,7 +35,10 @@ namespace iba.Processing.IbaGrpc
 
             var connectionResponse = await _configurationValidator.CheckConfigurationAsync(configuration);
 
-            ClientManager.AddOrUpdate(configuration);
+            if (connectionResponse.Status == "OK")
+            {
+                ClientManager.AddOrUpdate(configuration);
+            }
 
             connectionResponse.ConfigurationId = configuration.ConfigurationId;
 

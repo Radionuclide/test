@@ -17,24 +17,24 @@ namespace iba.Processing.IbaGrpc
         public delegate void UpdateEvent(DiagnosticsData diagnosticsDatacount);
 
         public event UpdateEvent UpdateDiagnosticInfoCallback;
-        private ConcurrentDictionary<Guid, Configuration> m_clientList;
+        private readonly ConcurrentDictionary<Guid, Configuration> m_clientList;
+        public ConcurrentDictionary<Guid, Configuration> ClientList => m_clientList;
 
         public ClientManager()
         {
             m_clientList = new ConcurrentDictionary<Guid, Configuration>();
-
         }
 
         public Configuration GetClientInfo(Guid guid)
         {
-            return m_clientList[guid];
+            return ClientList[guid];
         }
 
         public void AddOrUpdate(Configuration configuration)
         {
             var confId = Guid.Parse(configuration.ConfigurationId);
 
-            m_clientList.AddOrUpdate(confId, configuration,
+            ClientList.AddOrUpdate(confId, configuration,
                 (guid, newConfiguration) =>
                 {
                     newConfiguration.FileName = configuration.FileName;

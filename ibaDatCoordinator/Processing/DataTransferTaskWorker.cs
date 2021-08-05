@@ -22,7 +22,11 @@ namespace iba.Processing
 
         public async Task TransferFile(string file, TaskData task)
         {
-            await client.TransferFileAsync(file, task);
+            var response = await client.TransferFileAsync(file, task);
+            if (response.Status != "OK")
+            {
+                throw new InvalidOperationException(response.Status);
+            }
         }
     }
 }
