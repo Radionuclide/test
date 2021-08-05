@@ -447,6 +447,9 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\grpc_csharp_ext.x64.dll"
   File "..\ibaDatCoordinator\bin\Release\grpc_csharp_ext.x86.dll"
   File "..\ibaDatCoordinator\bin\Release\System.Memory.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Buffers.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Numerics.Vectors.dll"
   ;OPC UA
   File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"

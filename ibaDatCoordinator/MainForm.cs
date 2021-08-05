@@ -2892,11 +2892,10 @@ namespace iba
                     }
                 };
 
+                var dialogResult = ssf.ShowDialog();
+
                 if (runWithService == Program.ServiceEnum.NOSERVICE)
                     return;
-
-
-                var dialogResult = ssf.ShowDialog();
 
                 if (dialogResult == DialogResult.OK)
                 {
