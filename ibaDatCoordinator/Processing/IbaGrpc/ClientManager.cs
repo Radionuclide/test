@@ -25,45 +25,28 @@ namespace iba.Processing.IbaGrpc
 
         }
 
-        public ConcurrentDictionary<Guid, Configuration> ClientList 
-        {
-            get => m_clientList;
-            set => m_clientList = value;
-        }
-
-        public void RegisterClient(Guid newGuid, Configuration configuration)
-        {
-            try
-            {
-                m_clientList.TryAdd(newGuid, configuration);
-            }
-            catch (Exception e)
-            {
-                LogData.Data.Log(Level.Exception, e.Message);
-            }
-        }
-        public void UpdateClient(string requestClientId, Configuration requestConfigurataion)
-        {
-            try
-            {
-                m_clientList[Guid.Parse(requestClientId)].ClientName = requestConfigurataion.ClientName;
-                m_clientList[Guid.Parse(requestClientId)].TaskName = requestConfigurataion.TaskName;
-                m_clientList[Guid.Parse(requestClientId)].Path = requestConfigurataion.Path;
-                m_clientList[Guid.Parse(requestClientId)].FileName = requestConfigurataion.FileName;
-                m_clientList[Guid.Parse(requestClientId)].Maxbandwidth = requestConfigurataion.Maxbandwidth;
-                m_clientList[Guid.Parse(requestClientId)].ApiKey = requestConfigurataion.ApiKey;
-                m_clientList[Guid.Parse(requestClientId)].ClientVersion = requestConfigurataion.ClientVersion;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
         public Configuration GetClientInfo(Guid guid)
         {
             return m_clientList[guid];
+        }
+
+        public void AddOrUpdate(Configuration configuration)
+        {
+            var confId = Guid.Parse(configuration.ConfigurationId);
+
+            m_clientList.AddOrUpdate(confId, configuration,
+                (guid, newConfiguration) =>
+                {
+                    newConfiguration.FileName = configuration.FileName;
+                    newConfiguration.Path = configuration.Path;
+                    newConfiguration.ApiKey = configuration.ApiKey;
+                    newConfiguration.ClientName = configuration.ClientName;
+                    newConfiguration.ClientVersion = configuration.ClientVersion;
+                    newConfiguration.TaskName = configuration.TaskName;
+                    newConfiguration.RequestDate = configuration.RequestDate;
+                    newConfiguration.Maxbandwidth = configuration.Maxbandwidth;
+                    return newConfiguration;
+                });
         }
 
         public void UpdateDiagnosticsInfo(Guid guid)
