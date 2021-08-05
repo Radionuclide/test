@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 using System.ServiceProcess;
@@ -420,9 +421,31 @@ namespace iba.Dialogs
         private void grid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var hitInfo = grid.HitTest(e.X, e.Y);
+
+            int serverColumn = 0;
+            int dataTransferServerColumn = 4;
+
+            if (OnServerInfoSelected != null)
+            {
+                var dataInfoRow = grid.Rows[hitInfo.RowIndex];
+                var dataTransferCell = dataInfoRow.Cells[dataTransferServerColumn].Value?.ToString();
+                
+                if (dataTransferCell == "Not Running" || string.IsNullOrEmpty(dataTransferCell))
+                {
+                    return;
+                }
+
+                var server = dataInfoRow.Cells[serverColumn].Value.ToString();
+                var port = dataTransferCell.Split(':')[1];
+
+                OnServerInfoSelected(server, port);
+            }
+
             if((hitInfo.Type == DataGridViewHitTestType.Cell) && btApply.Enabled)
                 btApply_Click(sender, e);
         }
+
+        public event Action<string ,string> OnServerInfoSelected;
 
         private void DoInitialSearch()
         {
@@ -440,7 +463,7 @@ namespace iba.Dialogs
                 stopTimer.Enabled = false;
                 try
                 {
-                    ServiceLocator.StopLocateService(ar);
+                    ServiceLocator.StopLocateService(ar);  
                 }
                 catch(Exception ex)
                 {
@@ -499,15 +522,25 @@ namespace iba.Dialogs
                 return;
             }
 
-            string[] subItems = new string[4];
+            string[] subItems = new string[5];
             subItems[0] = host.EndpointProperties["HostName"] as string;
             subItems[1] = host.IPAddress.ToString();
             subItems[2] = host.EndpointProperties["PortNr"] as string;
             subItems[3] = host.EndpointProperties["Version"] as string;
+            
+            if (host.EndpointProperties["DataTransferServer"] != null)
+            {
+                var propsArr = host.EndpointProperties["DataTransferServer"].ToString().Split(':');
+                
+                var isServerEnabled = propsArr[0];
+                var port = propsArr[1];
 
-			int version = Math.Abs(DatCoVersion.CurrentVersion());
+                subItems[4] = bool.Parse(isServerEnabled) ? $"Running on port: {port}" : "Not Running";
+            }
+
+            int version = Math.Abs(DatCoVersion.CurrentVersion());
 			//int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
-            DataGridViewRow newRow = grid.Rows[grid.Rows.Add(subItems[0], subItems[1], subItems[2], subItems[3], "")];
+            DataGridViewRow newRow = grid.Rows[grid.Rows.Add(subItems[0], subItems[1], subItems[2], subItems[3], subItems[4], "")];
             newRow.Tag = host;
             if(host.EndpointProperties["MinimumClientVersion"] != null)
             {

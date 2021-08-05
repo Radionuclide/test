@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Data;
+using iba.Dialogs;
 using iba.Processing;
 using iba.Processing.IbaGrpc;
 using iba.Utility;
@@ -132,6 +133,28 @@ namespace iba.Controls
             }
 
             trackBarMaxBandwidth.Value = int.Parse(control?.Text ?? string.Empty);
+        }
+
+        private void m_btnSelectServer_Click(object sender, EventArgs e)
+        {
+            ServerConfiguration cf = new ServerConfiguration();
+            cf.Address = Program.ServiceHost;
+            cf.PortNr = Program.ServicePortNr;
+
+            using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
+            {
+                ssf.OnServerInfoSelected += (server, port) =>
+                {
+                    m_tbServer.Text = server;
+                    m_numericUpDownPort.Text = port;
+                };
+
+                DialogResult r = ssf.ShowDialog();
+                if (r == DialogResult.OK /*&& (port != cf.PortNr || server != cf.Address)*/)
+                {
+                    
+                }
+            }
         }
     }
 }

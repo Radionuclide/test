@@ -55,6 +55,7 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
+            this.m_btnSelectServer = new System.Windows.Forms.Button();
             this.m_gbOption.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -181,6 +182,7 @@ namespace iba.Controls
             // panel1
             // 
             resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.m_btnSelectServer);
             this.panel1.Controls.Add(this.m_numericUpDownPort);
             this.panel1.Controls.Add(this.m_lbServer);
             this.panel1.Controls.Add(this.m_lbPort);
@@ -239,6 +241,13 @@ namespace iba.Controls
             this.m_rbDatFile.Name = "m_rbDatFile";
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
+            // 
+            // m_btnSelectServer
+            // 
+            resources.ApplyResources(this.m_btnSelectServer, "m_btnSelectServer");
+            this.m_btnSelectServer.Name = "m_btnSelectServer";
+            this.m_btnSelectServer.UseVisualStyleBackColor = true;
+            this.m_btnSelectServer.Click += new System.EventHandler(this.m_btnSelectServer_Click);
             // 
             // DataTransferTaskControl
             // 
@@ -304,5 +313,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label lblMaxBandwidth;
         private System.Windows.Forms.TrackBar trackBarMaxBandwidth;
         private System.Windows.Forms.NumericUpDown m_numericUpDownPort;
+        private System.Windows.Forms.Button m_btnSelectServer;
     }
 }

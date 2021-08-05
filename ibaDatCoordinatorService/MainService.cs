@@ -105,6 +105,23 @@ namespace iba.Services
                 m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress, DatcoServerDefaults.GroupServerPort);
                 m_servicePublisher.PublishServiceEndpoint(serviceProps);
 
+                m_servicePublisher.ProvideProperties += props =>
+                {
+                    var serverInfo = $"{TaskManager.Manager.DataTransferData.IsServerEnabled}:" +
+                                     $"{TaskManager.Manager.DataTransferData.Port}";
+
+                    if (props.Keys.Cast<string>().Contains("DataTransferServer"))
+                    {
+                        props["DataTransferServer"] = serverInfo;
+                    }
+                    else
+                    {
+                        props.Add("DataTransferServer", serverInfo);
+                    }
+
+                    return true;
+                };
+
                 // added by kolesnik - begin
                 m_communicationObject.Manager.SnmpWorkerInit();
                 m_communicationObject.Manager.OpcUaWorkerInit();
