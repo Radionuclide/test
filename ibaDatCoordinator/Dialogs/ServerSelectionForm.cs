@@ -390,7 +390,7 @@ namespace iba.Dialogs
                 const int serverColumn = 0;
                 var server = dataInfoRow.Cells[serverColumn].Value.ToString();
 
-                if (_discoveredServices[server] != null && sender is DataGridView dataGrid && dataGrid.SelectedRows.Count > 0)
+                if (_discoveredServices[server] != null)
                 {
                     var service = (DataTransferServerInfo)_discoveredServices[server];
 
@@ -427,14 +427,28 @@ namespace iba.Dialogs
             if ((stopTimer.Interval != 1000) && (grid.SelectedRows.Count > 0))
             {
                 cbAddress.Text = grid.SelectedRows[0].Cells[0].Value.ToString();
-                string portVal = grid.SelectedRows[0].Cells[2].Value.ToString();
-                int portNr = 0;
-                if(Int32.TryParse(portVal, out portNr))
+
+                string portVal;
+
+                if (IsDataTransferTaskContext)
+                {
+                    var serverInfo = _discoveredServices[cbAddress.Text] as DataTransferServerInfo;
+
+                    portVal = serverInfo?.Port.ToString();
+                }
+                else
+                {
+                    portVal = grid.SelectedRows[0].Cells[2].Value.ToString();
+                }
+
+                if (int.TryParse(portVal, out var portNr))
                     spPortNr.SetIntValue(portNr);
             }
             else
                 grid.ClearSelection();
         }
+
+        public bool IsDataTransferTaskContext { get; set; }
 
         private void grid_MouseDoubleClick(object sender, MouseEventArgs e)
         {

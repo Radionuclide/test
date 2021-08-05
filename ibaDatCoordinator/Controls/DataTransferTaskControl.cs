@@ -148,6 +148,8 @@ namespace iba.Controls
         {
             using (ServerSelectionForm ssf = new ServerSelectionForm(new ServerConfiguration()))
             {
+                ssf.IsDataTransferTaskContext = true;
+                ssf.Text = "Data transfer server selection";
                 ssf.OnServerInfoSelected += FillServerFields;
                 ssf.ShowDialog();
             }
