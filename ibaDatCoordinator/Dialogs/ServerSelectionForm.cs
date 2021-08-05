@@ -383,6 +383,21 @@ namespace iba.Dialogs
             serverConfig.PortNr = Convert.ToInt32(spPortNr.Value);
             //clientConfig.AutoReconnect = ckAutoConnect.Checked;
 
+            if (OnServerInfoSelected != null && grid.SelectedRows.Count == 1)
+            {
+                var dataInfoRow = grid.SelectedRows[0];
+
+                const int serverColumn = 0;
+                var server = dataInfoRow.Cells[serverColumn].Value.ToString();
+
+                if (_discoveredServices[server] != null)
+                {
+                    var service = (DataTransferServerInfo)_discoveredServices[server];
+
+                    OnServerInfoSelected(server, service.Port.ToString(), service.RunsWithService);
+                }
+            }
+
             SaveMRUList();
 
 			DialogResult = DialogResult.OK;
@@ -424,30 +439,6 @@ namespace iba.Dialogs
         {
             var hitInfo = grid.HitTest(e.X, e.Y);
 
-            int serverColumn = 0;
-            int dataTransferServerColumn = 4;
-
-            if (OnServerInfoSelected != null && hitInfo.Type == DataGridViewHitTestType.Cell)
-            {
-                var dataInfoRow = grid.Rows[hitInfo.RowIndex];
-                var dataTransferCell = dataInfoRow.Cells[dataTransferServerColumn].Value?.ToString();
-
-                var server = dataInfoRow.Cells[serverColumn].Value.ToString();
-
-                string port = string.Empty;
-
-                if (dataTransferCell != "Not Running")
-                {
-                    port = dataTransferCell?.Split(':')[1];
-                }
-
-                if (_discoverdServices[server] != null)
-                {
-                    var result = (DataTransferServerInfo)_discoverdServices[server];
-
-                    OnServerInfoSelected(server, port, result.RunsWithService);
-                }
-            }
 
             if((hitInfo.Type == DataGridViewHitTestType.Cell) && btApply.Enabled)
                 btApply_Click(sender, e);
@@ -522,7 +513,7 @@ namespace iba.Dialogs
 
         delegate void ServiceDiscoveredDelegate(iba.Utility.ServiceLocator.HostResponse host);
 
-        private IDictionary _discoverdServices = new Dictionary<string, DataTransferServerInfo>();
+        private IDictionary _discoveredServices = new Dictionary<string, DataTransferServerInfo>();
 
         public void ServiceDiscovered(iba.Utility.ServiceLocator.HostResponse host)
         {
@@ -537,7 +528,7 @@ namespace iba.Dialogs
             var value = host.EndpointProperties["DataTransferServer"];
 
 
-            _discoverdServices[key] = value;
+            _discoveredServices[key] = value;
 
             string[] subItems = new string[5];
             subItems[0] = host.EndpointProperties["HostName"] as string;

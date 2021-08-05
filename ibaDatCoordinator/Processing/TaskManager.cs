@@ -9,6 +9,7 @@ using iba.Data;
 using iba.Utility;
 using iba.Plugins;
 using System.IO;
+using System.Net;
 using DevExpress.XtraPrinting.Export.Xl;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
@@ -1734,7 +1735,7 @@ namespace iba.Processing
                 serverInfo.IsServerEnabled = Manager.DataTransferData.IsServerEnabled;
                 serverInfo.Port = Manager.DataTransferData.Port;
                 serverInfo.RunsWithService = Program.RunsWithService;
-
+                return true;
             }
 
             return false;

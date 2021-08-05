@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -17,7 +18,7 @@ namespace iba.Processing
     {
         private DataTransferData _data = new DataTransferData();
         private DataTransferImpl _dataTransferImpl;
-        private const string HOST = "localhost";
+        private static readonly string HOST = Dns.GetHostName();
         public string Status { get; set; }
         public bool IsPortTextBoxEnabled { get; set; }
         public bool IsSelectRootPathBtnEnabled { get; set; }

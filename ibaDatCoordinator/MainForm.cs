@@ -2876,23 +2876,24 @@ namespace iba
             ServerConfiguration cf = new ServerConfiguration();
             cf.Address = server;
             cf.PortNr = port;
-            using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
+            
+            using (var ssf = new ServerSelectionForm(cf))
             {
-                Program.ServiceEnum result = Program.ServiceEnum.NOSERVICE;
+                var runnWithService = Program.ServiceEnum.NOSERVICE;
                 
-                ssf.OnServerInfoSelected += (s, s1, s2) =>
+                ssf.OnServerInfoSelected += (dataTransferServer, dataTransferServerPort, serviceEnum) =>
                 {
-                    result = s2;
+                    runnWithService = serviceEnum;
                 };
 
-                DialogResult r = ssf.ShowDialog();
+                var dialogResult = ssf.ShowDialog();
 
                 
-                if (r == DialogResult.OK /*&& (port != cf.PortNr || server != cf.Address)*/)
+                if (dialogResult == DialogResult.OK)
                 {
-                    if (result == Program.ServiceEnum.NOSERVICE)
+                    if (runnWithService == Program.ServiceEnum.NOSERVICE)
                     {
-                        MessageBox.Show("Only Datatransfer Server available");
+                        MessageBox.Show($"On server {server} is only Datatransfer Server available.\nConnection to service not possible");
                         return;
                     }
 
