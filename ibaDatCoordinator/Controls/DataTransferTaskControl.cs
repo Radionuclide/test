@@ -137,11 +137,7 @@ namespace iba.Controls
 
         private void m_btnSelectServer_Click(object sender, EventArgs e)
         {
-            ServerConfiguration cf = new ServerConfiguration();
-            cf.Address = Program.ServiceHost;
-            cf.PortNr = Program.ServicePortNr;
-
-            using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
+            using (ServerSelectionForm ssf = new ServerSelectionForm(new ServerConfiguration()))
             {
                 ssf.OnServerInfoSelected += FillServerFields;
                 ssf.ShowDialog();

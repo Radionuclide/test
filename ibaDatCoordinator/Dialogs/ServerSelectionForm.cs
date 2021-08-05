@@ -390,12 +390,13 @@ namespace iba.Dialogs
                 const int serverColumn = 0;
                 var server = dataInfoRow.Cells[serverColumn].Value.ToString();
 
-                if (_discoveredServices[server] != null)
+                if (_discoveredServices[server] != null && sender is DataGridView dataGrid && dataGrid.SelectedRows.Count > 0)
                 {
                     var service = (DataTransferServerInfo)_discoveredServices[server];
 
                     OnServerInfoSelected(server, service.Port.ToString(), service.RunsWithService);
                 }
+
             }
 
             SaveMRUList();
@@ -524,10 +525,7 @@ namespace iba.Dialogs
             }
 
             var key = host.EndpointProperties["HostName"];
-
             var value = host.EndpointProperties["DataTransferServer"];
-
-
             _discoveredServices[key] = value;
 
             string[] subItems = new string[5];
@@ -536,12 +534,15 @@ namespace iba.Dialogs
             subItems[2] = host.EndpointProperties["PortNr"] as string;
             subItems[3] = host.EndpointProperties["Version"] as string;
 
+            DataTransferServerInfo dataTransferServerInfo = null;
+
             if (host.EndpointProperties["DataTransferServer"] != null)
             {
-                var info = (DataTransferServerInfo)host.EndpointProperties["DataTransferServer"];
+                dataTransferServerInfo = (DataTransferServerInfo)host.EndpointProperties["DataTransferServer"];
 
-                subItems[4] = info.IsServerEnabled ? $"Running on port: {info.Port}" : "Not Running";
+                subItems[4] = dataTransferServerInfo.IsServerEnabled ? $"Running on port: {dataTransferServerInfo.Port}" : "Not Running";
             }
+
 
             int version = Math.Abs(DatCoVersion.CurrentVersion());
             //int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
@@ -552,9 +553,17 @@ namespace iba.Dialogs
             {
                 int reqClientVersion = (int) host.EndpointProperties["MinimumClientVersion"];
                 if (version >= reqClientVersion)
+                {
                     newRow.DefaultCellStyle.ForeColor = Color.Green;
+                }
                 else
                     newRow.DefaultCellStyle.ForeColor = Color.Red;      //need to upgrade manually
+
+                if (dataTransferServerInfo != null && dataTransferServerInfo.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                {
+                    newRow.Cells[2].Value = string.Empty;
+                    newRow.DefaultCellStyle.ForeColor = Color.Red;
+                }
             }
         }
 

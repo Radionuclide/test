@@ -2879,24 +2879,27 @@ namespace iba
             
             using (var ssf = new ServerSelectionForm(cf))
             {
-                var runnWithService = Program.ServiceEnum.NOSERVICE;
-                
+                var runWithService = Program.ServiceEnum.CONNECTED;
+
                 ssf.OnServerInfoSelected += (dataTransferServer, dataTransferServerPort, serviceEnum) =>
                 {
-                    runnWithService = serviceEnum;
+                    runWithService = serviceEnum;
+
+                    if (runWithService == Program.ServiceEnum.NOSERVICE)
+                    {
+                        MessageBox.Show($"On server {dataTransferServer} is only Datatransfer Server available." +
+                                        $"\nConnection to service not possible");
+                    }
                 };
+
+                if (runWithService == Program.ServiceEnum.NOSERVICE)
+                    return;
+
 
                 var dialogResult = ssf.ShowDialog();
 
-                
                 if (dialogResult == DialogResult.OK)
                 {
-                    if (runnWithService == Program.ServiceEnum.NOSERVICE)
-                    {
-                        MessageBox.Show($"On server {server} is only Datatransfer Server available.\nConnection to service not possible");
-                        return;
-                    }
-
                     m_suppresUpload = true;
 
 
