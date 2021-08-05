@@ -12,24 +12,24 @@ service DataTransfer{
 }
 
 message Configuration{
-	string clientName = 1;
-	string taskName = 2;
-	string clientVersion = 3;
-	string fileName = 4;
-	string path = 5;
-	string apiKey = 6;
-	int32 maxbandwidth = 7;
-	int32 transferredfiles = 8;
+	string configurationId = 1;
+	google.protobuf.Timestamp requestDate = 2;
+	string clientName = 3;
+	string taskName = 4;
+	string clientVersion = 5;
+	string fileName = 6;
+	string path = 7;
+	string apiKey = 8;
+	int32 maxbandwidth = 9;
+	int32 transferredfiles = 10;
 }
 
 message ConnectionRequest{	
-	string clientId = 1;
-	google.protobuf.Timestamp requestDate = 2;
 	Configuration configurataion = 3;
 }
 
 message ConnectionResponse{
-	string clientId = 1;
+	string configurationId = 1;
 	google.protobuf.Timestamp requestDate = 2;
 	string status = 3;
 }

@@ -35,28 +35,28 @@ namespace iba.Processing.IbaGrpc
 
             var connectionResponse = await _configurationValidator.CheckConfigurationAsync(configuration);
 
-            if (ClientManager.ClientList.Any( x => x.Key.ToString() == request.ClientId))
+            if (ClientManager.ClientList.Any( x => x.Key.ToString() == configuration.ConfigurationId))
             {
-                ClientManager.UpdateClient(request.ClientId, request.Configurataion);
+                ClientManager.UpdateClient(configuration.ConfigurationId, request.Configurataion);
             }
             else
             {
-                var clientId = Guid.Parse(request.ClientId);
+                var clientId = Guid.Parse(configuration.ConfigurationId);
                 ClientManager.RegisterClient(clientId, request.Configurataion);
             }
 
-            connectionResponse.ClientId = request.ClientId;
+            connectionResponse.ConfigurationId = configuration.ConfigurationId;
 
             return connectionResponse;
         }
 
         public override async Task<TransferResponse> TransferFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)
         {
-            var clientId = Guid.Parse(context.RequestHeaders.GetValue("clientid"));
-            
-            await _directoryManger.WriteFileAsync(requestStream, clientId);
+            var configurationId = Guid.Parse(context.RequestHeaders.GetValue("configurationid"));
 
-            ClientManager.UpdateDiagnosticsInfo(clientId);
+            await _directoryManger.WriteFileAsync(requestStream, configurationId);
+
+            ClientManager.UpdateDiagnosticsInfo(configurationId);
 
             return new TransferResponse()
             {

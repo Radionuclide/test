@@ -41,7 +41,7 @@ namespace iba.Processing.IbaGrpc
             var connectionRequest = CreateConnectionRequest(file, task);
             var connectionResponse = await ConnectAsync(connectionRequest);
             
-            m_data.ClientId = connectionResponse.ClientId;
+            m_data.ClientId = connectionResponse.ConfigurationId;
 
             if (connectionResponse.Status != "OK")
             {
@@ -53,7 +53,7 @@ namespace iba.Processing.IbaGrpc
 
             var metadata = new Metadata
             {
-                {"clientId", connectionResponse.ClientId},
+                {"configurationId", connectionResponse.ConfigurationId},
             };
 
             var options = new CallOptions(metadata);
@@ -126,10 +126,12 @@ namespace iba.Processing.IbaGrpc
 
             return new ConnectionRequest
             {
-                ClientId = task.Guid.ToString(),
-                RequestDate = Timestamp.FromDateTime(DateTime.UtcNow),
+                
                 Configurataion = new Configuration
                 {
+
+                    ConfigurationId = task.Guid.ToString(),
+                    RequestDate = Timestamp.FromDateTime(DateTime.UtcNow),
                     ClientName = m_data.Hostname,
                     TaskName = task.Name,
                     ClientVersion = m_data.Version,
