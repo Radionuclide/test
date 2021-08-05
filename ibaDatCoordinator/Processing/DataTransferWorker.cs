@@ -64,11 +64,6 @@ namespace iba.Processing
                 
                 SetStatus(false);
 
-                if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-                {
-                    TaskManager.Manager.PublishService();
-                }
-
                 LogData.Data.Logger.Log(Level.Info, $"Data Transfer Service started on port: {_data.Port}");
             }
             catch (Exception e)
@@ -100,11 +95,6 @@ namespace iba.Processing
                 m_server.ShutdownAsync().Wait();
 
                 SetStatus(true);
-
-                if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
-                {
-                    TaskManager.Manager.PublishService();
-                }
 
                 LogData.Data.Logger.Log(Level.Info, "Data Transfer Service stopped");
             }
