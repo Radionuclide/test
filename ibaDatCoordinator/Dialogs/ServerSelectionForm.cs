@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ using System.Runtime.Remoting.Channels.Tcp;
 
 using iba.Utility;
 using iba.Logging;
+using iba.Processing.IbaGrpc;
 
 
 //using DevExpress.XtraGrid;
@@ -425,27 +427,33 @@ namespace iba.Dialogs
             int serverColumn = 0;
             int dataTransferServerColumn = 4;
 
-            if (OnServerInfoSelected != null)
+            if (OnServerInfoSelected != null && hitInfo.Type == DataGridViewHitTestType.Cell)
             {
                 var dataInfoRow = grid.Rows[hitInfo.RowIndex];
                 var dataTransferCell = dataInfoRow.Cells[dataTransferServerColumn].Value?.ToString();
-                
-                if (dataTransferCell == "Not Running" || string.IsNullOrEmpty(dataTransferCell))
-                {
-                    return;
-                }
 
                 var server = dataInfoRow.Cells[serverColumn].Value.ToString();
-                var port = dataTransferCell.Split(':')[1];
 
-                OnServerInfoSelected(server, port);
+                string port = string.Empty;
+
+                if (dataTransferCell != "Not Running")
+                {
+                    port = dataTransferCell?.Split(':')[1];
+                }
+
+                if (_discoverdServices[server] != null)
+                {
+                    var result = (DataTransferServerInfo)_discoverdServices[server];
+
+                    OnServerInfoSelected(server, port, result.RunsWithService);
+                }
             }
 
             if((hitInfo.Type == DataGridViewHitTestType.Cell) && btApply.Enabled)
                 btApply_Click(sender, e);
         }
 
-        public event Action<string ,string> OnServerInfoSelected;
+        public event Action<string ,string, Program.ServiceEnum> OnServerInfoSelected;
 
         private void DoInitialSearch()
         {
@@ -514,6 +522,8 @@ namespace iba.Dialogs
 
         delegate void ServiceDiscoveredDelegate(iba.Utility.ServiceLocator.HostResponse host);
 
+        private IDictionary _discoverdServices = new Dictionary<string, DataTransferServerInfo>();
+
         public void ServiceDiscovered(iba.Utility.ServiceLocator.HostResponse host)
         {
             if(InvokeRequired)
@@ -522,33 +532,38 @@ namespace iba.Dialogs
                 return;
             }
 
+            var key = host.EndpointProperties["HostName"];
+
+            var value = host.EndpointProperties["DataTransferServer"];
+
+
+            _discoverdServices[key] = value;
+
             string[] subItems = new string[5];
             subItems[0] = host.EndpointProperties["HostName"] as string;
             subItems[1] = host.IPAddress.ToString();
             subItems[2] = host.EndpointProperties["PortNr"] as string;
             subItems[3] = host.EndpointProperties["Version"] as string;
-            
+
             if (host.EndpointProperties["DataTransferServer"] != null)
             {
-                var propsArr = host.EndpointProperties["DataTransferServer"].ToString().Split(':');
-                
-                var isServerEnabled = propsArr[0];
-                var port = propsArr[1];
+                var info = (DataTransferServerInfo)host.EndpointProperties["DataTransferServer"];
 
-                subItems[4] = bool.Parse(isServerEnabled) ? $"Running on port: {port}" : "Not Running";
+                subItems[4] = info.IsServerEnabled ? $"Running on port: {info.Port}" : "Not Running";
             }
 
             int version = Math.Abs(DatCoVersion.CurrentVersion());
-			//int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
+            //int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
+
             DataGridViewRow newRow = grid.Rows[grid.Rows.Add(subItems[0], subItems[1], subItems[2], subItems[3], subItems[4], "")];
             newRow.Tag = host;
             if(host.EndpointProperties["MinimumClientVersion"] != null)
             {
-				int reqClientVersion = (int) host.EndpointProperties["MinimumClientVersion"];
+                int reqClientVersion = (int) host.EndpointProperties["MinimumClientVersion"];
                 if (version >= reqClientVersion)
-                    newRow.DefaultCellStyle.ForeColor = Color.Green;	
+                    newRow.DefaultCellStyle.ForeColor = Color.Green;
                 else
-                    newRow.DefaultCellStyle.ForeColor = Color.Red;		//need to upgrade manually
+                    newRow.DefaultCellStyle.ForeColor = Color.Red;      //need to upgrade manually
             }
         }
 

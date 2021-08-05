@@ -143,18 +143,15 @@ namespace iba.Controls
 
             using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
             {
-                ssf.OnServerInfoSelected += (server, port) =>
-                {
-                    m_tbServer.Text = server;
-                    m_numericUpDownPort.Text = port;
-                };
-
-                DialogResult r = ssf.ShowDialog();
-                if (r == DialogResult.OK /*&& (port != cf.PortNr || server != cf.Address)*/)
-                {
-                    
-                }
+                ssf.OnServerInfoSelected += FillServerFields;
+                ssf.ShowDialog();
             }
+        }
+
+        private void FillServerFields(string server, string port, Program.ServiceEnum onlyDataTransfer)
+        {
+            m_tbServer.Text = server;
+            m_numericUpDownPort.Text = port;
         }
     }
 }

@@ -348,6 +348,7 @@
     <Compile Include="Processing\IbaGrpc\ClientManager.cs" />
     <Compile Include="Processing\IbaGrpc\ConfigurationValidator.cs" />
     <Compile Include="Processing\IbaGrpc\DataTransferImpl.cs" />
+    <Compile Include="Processing\IbaGrpc\DataTransferServerInfo.cs" />
     <Compile Include="Processing\IbaGrpc\DiagnosticsData.cs" />
     <Compile Include="Processing\IbaGrpc\DirectoryManager.cs" />
     <Compile Include="Processing\IbaGrpc\GrpcClient.cs" />

@@ -2878,10 +2878,27 @@ namespace iba
             cf.PortNr = port;
             using (ServerSelectionForm ssf = new ServerSelectionForm(cf))
             {
+                Program.ServiceEnum result = Program.ServiceEnum.NOSERVICE;
+                
+                ssf.OnServerInfoSelected += (s, s1, s2) =>
+                {
+                    result = s2;
+                };
+
                 DialogResult r = ssf.ShowDialog();
+
+                
                 if (r == DialogResult.OK /*&& (port != cf.PortNr || server != cf.Address)*/)
                 {
+                    if (result == Program.ServiceEnum.NOSERVICE)
+                    {
+                        MessageBox.Show("Only Datatransfer Server available");
+                        return;
+                    }
+
                     m_suppresUpload = true;
+
+
                     Program.ServicePortNr = cf.PortNr;
                     Program.ServiceHost = cf.Address;
 

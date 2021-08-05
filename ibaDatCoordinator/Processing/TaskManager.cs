@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -8,6 +9,7 @@ using iba.Data;
 using iba.Utility;
 using iba.Plugins;
 using System.IO;
+using DevExpress.XtraPrinting.Export.Xl;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
 using iba.Processing.IbaOpcUa;
@@ -1190,6 +1192,11 @@ namespace iba.Processing
         public void DataTransferWorkerInit()
         {
             DataTransferWorker.Init();
+            
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                PublishService();
+            }
         }
 
         public virtual Tuple<string, bool, bool, bool> DataTransferWorkerGetBriefStatus()
@@ -1695,7 +1702,45 @@ namespace iba.Processing
                 config.EventData.LastReceivedHistoricalTimeStamp = endTime;
             }
         }
+
+        private ServicePublisher m_servicePublisher;
+
+        public virtual void PublishService()
+        {
+            Hashtable serviceProps = new Hashtable();
+            serviceProps.Add("HostName", Environment.MachineName);
+            serviceProps.Add("PortNr", Program.ServicePortNr.ToString());
+            serviceProps.Add("Version", DatCoVersion.GetVersion());
+            serviceProps.Add("MinimumClientVersion", DatCoVersion.MinimumClientVersion());
+
+            var dataTransferServerInfo = new DataTransferServerInfo
+            {
+                IsServerEnabled = Manager.DataTransferData.IsServerEnabled,
+                Port = Manager.DataTransferData.Port,
+                RunsWithService = Program.RunsWithService
+            };
+            serviceProps.Add("DataTransferServer", dataTransferServerInfo);
+
+            m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress,
+                DatcoServerDefaults.GroupServerPort);
+            m_servicePublisher.PublishServiceEndpoint(serviceProps);
+
+            m_servicePublisher.ProvideProperties += UpdateProps;
+        }
+        private bool UpdateProps(IDictionary props)
+        {
+            if (props["DataTransferServer"] is DataTransferServerInfo serverInfo)
+            {
+                serverInfo.IsServerEnabled = Manager.DataTransferData.IsServerEnabled;
+                serverInfo.Port = Manager.DataTransferData.Port;
+                serverInfo.RunsWithService = Program.RunsWithService;
+
+            }
+
+            return false;
+        }
     }
+
 
 
     //for remote calls
@@ -2963,6 +3008,18 @@ namespace iba.Processing
             {
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return null;
+            }
+        }
+
+        public override void PublishService()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.PublishService();
+            }
+            catch (Exception ex)
+            {
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
     }
