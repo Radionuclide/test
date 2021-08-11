@@ -146,7 +146,9 @@ namespace iba.Controls
 
         private void m_btnSelectServer_Click(object sender, EventArgs e)
         {
-            using (ServerSelectionForm ssf = new ServerSelectionForm(new ServerConfiguration()))
+            var serverConf = new ServerConfiguration {PortNr = 1};
+
+            using (var ssf = new ServerSelectionForm(serverConf))
             {
                 ssf.IsDataTransferTaskContext = true;
                 ssf.Text = "Data transfer server selection";

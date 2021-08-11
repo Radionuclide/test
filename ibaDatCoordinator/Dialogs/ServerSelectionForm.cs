@@ -185,13 +185,13 @@ namespace iba.Dialogs
             this.ckAutoConnect = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.grid = new System.Windows.Forms.DataGridView();
-            this.spPortNr = new System.Windows.Forms.NumericUpDown();
-            this.cbAddress = new iba.Controls.ImageComboBox();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIpAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPortNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDataTrnasfer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.spPortNr = new System.Windows.Forms.NumericUpDown();
+            this.cbAddress = new iba.Controls.ImageComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spPortNr)).BeginInit();
             this.SuspendLayout();
@@ -265,34 +265,6 @@ namespace iba.Dialogs
             this.grid.SelectionChanged += new System.EventHandler(this.grid_SelectionChanged);
             this.grid.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.grid_MouseDoubleClick);
             // 
-            // spPortNr
-            // 
-            resources.ApplyResources(this.spPortNr, "spPortNr");
-            this.spPortNr.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.spPortNr.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.spPortNr.Name = "spPortNr";
-            this.spPortNr.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // cbAddress
-            // 
-            resources.ApplyResources(this.cbAddress, "cbAddress");
-            this.cbAddress.DefaultImageIndex = -1;
-            this.cbAddress.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbAddress.ImageList = null;
-            this.cbAddress.Name = "cbAddress";
-            // 
             // colName
             // 
             this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -332,6 +304,35 @@ namespace iba.Dialogs
             resources.ApplyResources(this.colDataTrnasfer, "colDataTrnasfer");
             this.colDataTrnasfer.Name = "colDataTrnasfer";
             this.colDataTrnasfer.ReadOnly = true;
+            // 
+            // spPortNr
+            // 
+            resources.ApplyResources(this.spPortNr, "spPortNr");
+            this.spPortNr.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.spPortNr.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.spPortNr.Name = "spPortNr";
+            this.spPortNr.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // cbAddress
+            // 
+            resources.ApplyResources(this.cbAddress, "cbAddress");
+            this.cbAddress.DefaultImageIndex = -1;
+            this.cbAddress.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbAddress.ImageList = null;
+            this.cbAddress.Name = "cbAddress";
+            this.cbAddress.SelectedIndexChanged += new System.EventHandler(this.cbAddress_SelectedIndexChanged);
             // 
             // ServerSelectionForm
             // 
@@ -383,6 +384,8 @@ namespace iba.Dialogs
             serverConfig.PortNr = Convert.ToInt32(spPortNr.Value);
             //clientConfig.AutoReconnect = ckAutoConnect.Checked;
 
+            DataTransferServerInfo service = (DataTransferServerInfo)_discoveredServices[cbAddress.Text];
+
             if (OnServerInfoSelected != null && grid.SelectedRows.Count == 1)
             {
                 var dataInfoRow = grid.SelectedRows[0];
@@ -392,11 +395,21 @@ namespace iba.Dialogs
 
                 if (_discoveredServices[server] != null)
                 {
-                    var service = (DataTransferServerInfo)_discoveredServices[server];
+                    service = (DataTransferServerInfo)_discoveredServices[server];
 
                     OnServerInfoSelected(server, service.Port.ToString(), service.RunsWithService);
                 }
 
+            }
+
+            if (OnServerInfoSelected != null && grid.SelectedRows.Count == 0 && service != null)
+            {
+                OnServerInfoSelected(cbAddress.Text, spPortNr.Value.ToString(), service.RunsWithService);
+            }
+
+            if (OnServerInfoSelected != null && IsDataTransferTaskContext && grid.SelectedRows.Count == 0)
+            {
+                OnServerInfoSelected(cbAddress.Text, spPortNr.Value.ToString(), Program.ServiceEnum.NOSERVICE);
             }
 
             SaveMRUList();
@@ -430,19 +443,21 @@ namespace iba.Dialogs
 
                 string portVal;
 
-                if (IsDataTransferTaskContext)
-                {
-                    var serverInfo = _discoveredServices[cbAddress.Text] as DataTransferServerInfo;
+                var serverInfo = _discoveredServices[cbAddress.Text] as DataTransferServerInfo;
 
-                    portVal = serverInfo?.Port.ToString();
-                }
-                else
+                if (serverInfo != null && serverInfo.RunsWithService == Program.ServiceEnum.NOSERVICE)
                 {
-                    portVal = grid.SelectedRows[0].Cells[2].Value.ToString();
+                    spPortNr.Text = string.Empty;
                 }
+
+                portVal = IsDataTransferTaskContext ? serverInfo?.Port.ToString() : grid.SelectedRows[0].Cells[2].Value.ToString();
 
                 if (int.TryParse(portVal, out var portNr))
+                {
                     spPortNr.SetIntValue(portNr);
+                    spPortNr.Text = portNr.ToString();
+                }
+
             }
             else
                 grid.ClearSelection();
@@ -557,6 +572,11 @@ namespace iba.Dialogs
                 subItems[4] = dataTransferServerInfo.IsServerEnabled ? $"Running on port: {dataTransferServerInfo.Port}" : "Not Running";
             }
 
+            if (IsDataTransferTaskContext)
+            {
+                SetupFormForDataTransferTask(host);
+                return;
+            }
 
             int version = Math.Abs(DatCoVersion.CurrentVersion());
             //int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
@@ -581,6 +601,25 @@ namespace iba.Dialogs
             }
         }
 
+        private void SetupFormForDataTransferTask(ServiceLocator.HostResponse hostResponse)
+        {
+            var props = hostResponse.EndpointProperties;
+
+            if (!props.Contains("DataTransferServer")) return;
+
+            var serverInfo = (DataTransferServerInfo)props["DataTransferServer"];
+            var hostname = props["HostName"];
+            var ip = hostResponse.IPAddress.ToString();
+            var port = serverInfo.Port;
+            var version = props["Version"];
+
+            var runInfo = serverInfo.IsServerEnabled ? "Running" : "Not Running";
+
+            var newRow = grid.Rows[grid.Rows.Add(hostname,ip, port, version, runInfo, "")];
+
+            newRow.DefaultCellStyle.ForeColor = serverInfo.IsServerEnabled ? Color.Green : Color.Red;
+        }
+
         #endregion
 
         private void OnStopTimerTick(object sender, EventArgs e)
@@ -589,6 +628,39 @@ namespace iba.Dialogs
             if(ar != null)
                 OnSearchServers(this, EventArgs.Empty);
             stopTimer.Interval = 5000;
+        }
+
+        private void cbAddress_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var cb = (ComboBox)sender;
+
+            var serverInfo = (DataTransferServerInfo)_discoveredServices[cb.Text];
+
+            if (serverInfo != null && serverInfo.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                if (IsDataTransferTaskContext)
+                {
+                    spPortNr.Value = serverInfo.Port;
+                    spPortNr.Text = serverInfo.Port.ToString();
+                }
+                else
+                {
+                    spPortNr.Text = string.Empty;
+                }
+            }
+            else if(serverInfo != null && serverInfo.RunsWithService != Program.ServiceEnum.NOSERVICE)
+            {
+                if (IsDataTransferTaskContext)
+                {
+                    spPortNr.Value = serverInfo.Port;
+                    spPortNr.Text = serverInfo.Port.ToString();
+                }
+            }
+            else
+            {
+                spPortNr.Value = serverConfig.PortNr;
+                spPortNr.Text = serverConfig.PortNr.ToString();
+            }
         }
     }
 
