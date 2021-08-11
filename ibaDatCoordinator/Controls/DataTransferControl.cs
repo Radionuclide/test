@@ -45,7 +45,7 @@ namespace iba.Controls
                 _data = dataSource as DataTransferData;
                 _manager = manager;
 
-                if (_data == null)
+                if (_data?.Port == null || _data?.RootPath == null)
                 {
                     SetDefaultSettings();
                     return;
