@@ -14,6 +14,7 @@ using System.ComponentModel;
 using iba.HD.Common;
 using iba.HD.Client.Interfaces;
 using iba.HD.Client;
+using iba.Processing.IbaGrpc;
 using Microsoft.Win32;
 
 namespace iba.Processing
@@ -2690,6 +2691,7 @@ namespace iba.Processing
                 {
                     WriteStateInHDQFile(InputFile, completeSucces);
                 }
+
                 m_sd.Changed = true;
             }
 
@@ -3067,6 +3069,12 @@ namespace iba.Processing
             {
                 DataTransferTaskData dat = task as DataTransferTaskData;
                 TransferFile(DatFile, dat);
+
+                if (dat.ShouldDeleteAfterTransfer)
+                {
+                    DirectoryManager.DeleteFileAsync(DatFile);
+                    continueProcessing = false;
+                }
             }
             else if (task is CustomTaskData)
             {

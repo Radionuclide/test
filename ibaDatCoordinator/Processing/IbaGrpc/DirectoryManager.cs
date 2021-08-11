@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using iba.Data;
+using iba.Logging;
 using Messages.V1;
 
 namespace iba.Processing.IbaGrpc
@@ -44,9 +45,8 @@ namespace iba.Processing.IbaGrpc
             var extension = Path.GetExtension(path);
 
             path = Path.ChangeExtension(path, ".temp");
-            const int bufferSize = 64 * 1024;
 
-            var milliseconds = CalculateDelayTime(bufferSize, clientId);
+            var milliseconds = CalculateDelayTime(clientId);
 
             using (var fs = new FileStream(path, FileMode.OpenOrCreate))
             {
@@ -79,8 +79,10 @@ namespace iba.Processing.IbaGrpc
             });
         }
 
-        private int CalculateDelayTime(int bufferSize, Guid clientId)
+        private int CalculateDelayTime(Guid clientId)
         {
+            const int bufferSize = 64 * 1024;
+
             var conf = _clientManager.GetClientInfo(clientId);
             if (conf.Maxbandwidth == 0)
             {
@@ -88,7 +90,7 @@ namespace iba.Processing.IbaGrpc
             }
 
             const int milliseconds = 1000;
-            var kiloByte = (bufferSize / 1024);
+            const int kiloByte = (bufferSize / 1024);
 
             if (conf.Maxbandwidth > kiloByte)
             {
@@ -101,6 +103,19 @@ namespace iba.Processing.IbaGrpc
         private void DelayWritingChunk(int milliseconds)
         {
              Thread.Sleep(milliseconds);
+        }
+
+        public static Task DeleteFileAsync(string file)
+        {
+            try
+            {
+                return Task.Run(() => File.Delete(file));
+            }
+            catch (Exception e)
+            {
+                LogData.Data.Log(Level.Exception, e.Message);
+                throw;
+            }
         }
     }
 }

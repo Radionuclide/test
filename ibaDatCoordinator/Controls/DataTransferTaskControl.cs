@@ -39,6 +39,7 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as DataTransferTaskData;
 
+            m_cbDeleteAfterTransfer.Checked = m_data.ShouldDeleteAfterTransfer;
             m_btnCheckConnection.Image = null;
             m_btnCheckConnection.Text = "?";
             m_tbServer.Text = m_data.Server;
@@ -55,7 +56,7 @@ namespace iba.Controls
             m_data.Port = m_numericUpDownPort.Text;
             m_data.RemotePath = m_tbRemotePath.Text;
             m_data.MaxBandwidth = int.Parse(m_tbMaxBandwidth.Text);
-
+            m_data.ShouldDeleteAfterTransfer = m_cbDeleteAfterTransfer.Checked;
             if (m_rbPrevOutput.Checked)
                 m_data.WhatFileTransfer = DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT;
             else if (m_rbDatFile.Checked)

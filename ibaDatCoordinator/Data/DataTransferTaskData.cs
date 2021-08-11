@@ -66,6 +66,12 @@ namespace iba.Data
             set => m_maxBandwidth = value;
         }
 
+        private bool m_shouldDeleteAfterTransfer;
+        public bool ShouldDeleteAfterTransfer
+        {
+            get => m_shouldDeleteAfterTransfer;
+            set => m_shouldDeleteAfterTransfer = value;
+        }
         public DataTransferTaskData(ConfigurationData parent)
             : base(parent)
         {
@@ -113,6 +119,7 @@ namespace iba.Data
             cd.m_remotePath = m_remotePath;
             cd.m_maxBandwidth = m_maxBandwidth;
             cd.m_WhatFileTransfer = m_WhatFileTransfer;
+            cd.m_shouldDeleteAfterTransfer = m_shouldDeleteAfterTransfer;
             return cd;
         }
 
@@ -130,7 +137,8 @@ namespace iba.Data
                 other.m_port == m_port &&
                 other.m_remotePath == m_remotePath &&
                 other.m_maxBandwidth == m_maxBandwidth &&
-                other.m_WhatFileTransfer == m_WhatFileTransfer;
+                other.m_WhatFileTransfer == m_WhatFileTransfer &&
+                other.m_shouldDeleteAfterTransfer == m_shouldDeleteAfterTransfer;
         }
     }
 }

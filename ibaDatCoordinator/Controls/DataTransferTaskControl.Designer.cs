@@ -47,6 +47,7 @@ namespace iba.Controls
             this.m_tbMaxBandwidth = new System.Windows.Forms.TextBox();
             this.lblMaxBandwidth = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.m_btnSelectServer = new System.Windows.Forms.Button();
             this.m_numericUpDownPort = new System.Windows.Forms.NumericUpDown();
             this.m_lbServer = new System.Windows.Forms.Label();
             this.m_lbPort = new System.Windows.Forms.Label();
@@ -55,7 +56,7 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
-            this.m_btnSelectServer = new System.Windows.Forms.Button();
+            this.m_cbDeleteAfterTransfer = new System.Windows.Forms.CheckBox();
             this.m_gbOption.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -82,6 +83,7 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
             this.tableLayoutPanel3.Controls.Add(this.panel5, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.m_cbDeleteAfterTransfer, 0, 1);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
             // panel5
@@ -189,6 +191,13 @@ namespace iba.Controls
             this.panel1.Controls.Add(this.m_tbServer);
             this.panel1.Name = "panel1";
             // 
+            // m_btnSelectServer
+            // 
+            resources.ApplyResources(this.m_btnSelectServer, "m_btnSelectServer");
+            this.m_btnSelectServer.Name = "m_btnSelectServer";
+            this.m_btnSelectServer.UseVisualStyleBackColor = true;
+            this.m_btnSelectServer.Click += new System.EventHandler(this.m_btnSelectServer_Click);
+            // 
             // m_numericUpDownPort
             // 
             resources.ApplyResources(this.m_numericUpDownPort, "m_numericUpDownPort");
@@ -242,12 +251,11 @@ namespace iba.Controls
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
-            // m_btnSelectServer
+            // m_cbDeleteAfterTransfer
             // 
-            resources.ApplyResources(this.m_btnSelectServer, "m_btnSelectServer");
-            this.m_btnSelectServer.Name = "m_btnSelectServer";
-            this.m_btnSelectServer.UseVisualStyleBackColor = true;
-            this.m_btnSelectServer.Click += new System.EventHandler(this.m_btnSelectServer_Click);
+            resources.ApplyResources(this.m_cbDeleteAfterTransfer, "m_cbDeleteAfterTransfer");
+            this.m_cbDeleteAfterTransfer.Name = "m_cbDeleteAfterTransfer";
+            this.m_cbDeleteAfterTransfer.UseVisualStyleBackColor = true;
             // 
             // DataTransferTaskControl
             // 
@@ -314,5 +322,6 @@ namespace iba.Controls
         private System.Windows.Forms.TrackBar trackBarMaxBandwidth;
         private System.Windows.Forms.NumericUpDown m_numericUpDownPort;
         private System.Windows.Forms.Button m_btnSelectServer;
+        private System.Windows.Forms.CheckBox m_cbDeleteAfterTransfer;
     }
 }
