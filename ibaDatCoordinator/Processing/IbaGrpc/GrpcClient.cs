@@ -130,37 +130,11 @@ namespace iba.Processing.IbaGrpc
                         Array.Resize(ref buffer, numRead);
                     }
 
-                    await DelaySendingChunk(bufferSize);
-
                     await stream.WriteAsync(new TransferRequest()
                     {
                         Chunk = ByteString.CopyFrom(buffer)
                     });
                 }
-            }
-        }
-
-        private async Task DelaySendingChunk(int bufferSize)
-        {
-            if (m_data.MaxBandwidth == 0)
-            {
-                return;
-            }
-
-            const int milliseconds = 1000;
-
-            try
-            {
-                var kiloByte = (bufferSize / 1024);
-
-                if (m_data.MaxBandwidth > kiloByte)
-                {
-                    await Task.Delay(milliseconds / (m_data.MaxBandwidth / kiloByte));
-                }
-            }
-            catch (Exception e)
-            {
-                //Todo
             }
         }
 

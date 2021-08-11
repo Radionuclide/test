@@ -4,6 +4,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using iba.Data;
@@ -40,14 +41,44 @@ namespace iba.Processing.IbaGrpc
         {
             var path = GetFilePath(clientId);
             
+            const int bufferSize = 64 * 1024;
+
+            int milliseconds = CalculateDelayTime(bufferSize, clientId);
+
             using (var sw = new FileStream(path, FileMode.OpenOrCreate))
             {
+
                 while (await requestStream.MoveNext())
                 {
                     var byteArray = requestStream.Current.Chunk.ToByteArray();
                     await sw.WriteAsync(byteArray, 0, byteArray.Length);
+                    DelayWritingChunk(milliseconds);
                 }
             }
+        }
+
+        private int CalculateDelayTime(int bufferSize, Guid clientId)
+        {
+            var conf = _clientManager.GetClientInfo(clientId);
+            if (conf.Maxbandwidth == 0)
+            {
+                return 0;
+            }
+
+            const int milliseconds = 1000;
+            var kiloByte = (bufferSize / 1024);
+
+            if (conf.Maxbandwidth > kiloByte)
+            {
+                return  (milliseconds / (conf.Maxbandwidth / kiloByte));
+            }
+
+            return 0;
+        }
+
+        private void DelayWritingChunk(int milliseconds)
+        {
+             Thread.Sleep(milliseconds);
         }
     }
 }
