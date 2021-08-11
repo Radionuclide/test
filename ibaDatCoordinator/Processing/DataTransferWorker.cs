@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using DevExpress.XtraWaitForm;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using iba.Data;
@@ -19,7 +20,7 @@ namespace iba.Processing
         private DataTransferData _data = new DataTransferData();
         private DataTransferImpl _dataTransferImpl;
         private static readonly string HOST = Dns.GetHostName();
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
         public bool IsPortTextBoxEnabled { get; set; }
         public bool IsSelectRootPathBtnEnabled { get; set; }
         public bool IsSelectCertificateBtnEnabled { get; set; }
@@ -90,6 +91,8 @@ namespace iba.Processing
                 
                 await SetStatus(false);
 
+                OnUpdateServerStatus?.Invoke(Status);
+
                 LogData.Data.Logger.Log(Level.Info, $"Data Transfer Service started on port: {_data.Port}");
             }
             catch (Exception e)
@@ -114,6 +117,8 @@ namespace iba.Processing
                 }
 
                 await SetStatus(true);
+
+                OnUpdateServerStatus?.Invoke(Status);
 
                 LogData.Data.Logger.Log(Level.Info, "Data Transfer Service stopped");
             }
@@ -164,12 +169,21 @@ namespace iba.Processing
             else
             {
                 await SetStatus(true);
+
+                OnUpdateServerStatus?.Invoke(Status);
             }
         }
 
-        public void SetCallback(ClientManager.UpdateEvent updateDiagnosticInfo)
+        public void SetCallback(Action<DiagnosticsData> updateDiagnosticInfo)
         {
             _dataTransferImpl.ClientManager.UpdateDiagnosticInfoCallback += updateDiagnosticInfo;
+        }
+
+        public event Action<string> OnUpdateServerStatus;
+
+        public void SetUpdateStatusCallback(Action<string> statusCallback)
+        {
+            OnUpdateServerStatus += statusCallback;
         }
     }
 }

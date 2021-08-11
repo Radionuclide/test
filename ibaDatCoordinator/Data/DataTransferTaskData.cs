@@ -74,6 +74,7 @@ namespace iba.Data
             m_hostname = System.Net.Dns.GetHostName();
             m_version = DatCoVersion.GetVersion();
             m_maxBandwidth = 0;
+            m_port = "1";
             WhatFileTransfer = WhatFileTransferEnum.DATFILE;
         }
 

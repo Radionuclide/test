@@ -14,9 +14,7 @@ namespace iba.Processing.IbaGrpc
 {
     public class ClientManager
     {
-        public delegate void UpdateEvent(DiagnosticsData diagnosticsDatacount);
-
-        public event UpdateEvent UpdateDiagnosticInfoCallback;
+        public event Action<DiagnosticsData> UpdateDiagnosticInfoCallback;
         private readonly ConcurrentDictionary<Guid, Configuration> m_clientList;
         public ConcurrentDictionary<Guid, Configuration> ClientList => m_clientList;
 

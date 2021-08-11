@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraPrinting.Native;
 using iba.Annotations;
@@ -31,31 +32,29 @@ namespace iba.Controls
         {
             InitializeComponent();
             TaskManager.Manager.DataTransferWorkerSetCallback(UpdateDiagnosticInfo);
+            TaskManager.Manager.DataTransferWorkerSetUpdateServerStatusCallback(UpdateServerStatus);
+            
             ConfigureDiagnosticGrid();
         }
 
-        public void LoadData(object dataSource, IPropertyPaneManager manager)
+
+        public async void LoadData(object dataSource, IPropertyPaneManager manager)
         {
             try
             {
                 _data = dataSource as DataTransferData;
                 _manager = manager;
+
+                if (_data == null)
+                {
+                    SetDefaultSettings();
+                    return;
+                }
+
+                tbStatus.Text = await Task.Run(TaskManager.Manager.DataTransferWorkerGetBriefStatus);
+
                 m_cbEnabled.Checked = _data.IsServerEnabled;
                 m_numPort.Value = _data.Port;
-
-                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
-                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
-
-
-                if (string.IsNullOrEmpty(_data.RootPath))
-                {
-                    _data.RootPath = _defaultPath;
-                }
-                
-                if (string.IsNullOrEmpty(_data.Port.ToString()))
-                {
-                    _data.Port = _defaultPort;
-                }
 
                 tbRootPath.Text = _data.RootPath;
                 tbCertificatePath.Text = _data.CertificatePath;
@@ -88,17 +87,29 @@ namespace iba.Controls
    
         }
 
-        private void buttonClearClients_Click(object sender, EventArgs e)
+        public void UpdateServerStatusSafe(string status)
         {
-            dgvClients.Rows.Clear();
+            if (this.tbStatus.InvokeRequired)
+            {
+                var callback = new Action<string>(UpdateServerStatusSafe);
+                this.Invoke(callback, new object[] { status });
+            }
+            else
+            {
+                tbStatus.Text = status;
+            }
         }
 
-        private delegate void UpdateDiagnosticInfoCallback(DiagnosticsData diagnosticsData);
+        public void UpdateServerStatus(string status)
+        {
+            UpdateServerStatusSafe(status);
+        }
+
         private void UpdateDiagnosticInfoSafe(DiagnosticsData diagnosticsData)
         {
             if (this.dgvClients.InvokeRequired)
             {
-                var callback = new UpdateDiagnosticInfoCallback(UpdateDiagnosticInfoSafe);
+                var callback = new Action<DiagnosticsData>(UpdateDiagnosticInfoSafe);
                 this.Invoke(callback, new object[] { diagnosticsData });
             }
             else
@@ -123,6 +134,11 @@ namespace iba.Controls
         public void UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)
         {
             UpdateDiagnosticInfoSafe(diagnosticsData);
+        }
+
+        private void buttonClearClients_Click(object sender, EventArgs e)
+        {
+            dgvClients.Rows.Clear();
         }
 
         private void ConfigureDiagnosticGrid()
@@ -179,25 +195,35 @@ namespace iba.Controls
             }
         }
 
-        private void  buttonConfigurationApply_Click(object sender, EventArgs e)
+        private async void  buttonConfigurationApply_Click(object sender, EventArgs e)
         {
             SaveData();
 
             if (m_cbEnabled.Checked)
             {
-            
-                TaskManager.Manager.DataTransferWorkerStartServer();
-
-                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
-                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
+                SaveData();
+                await Task.Run(TaskManager.Manager.DataTransferWorkerStartServer);
             }
             else
             {
-                TaskManager.Manager.DataTransferWorkerStopServer();
-
-                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
-                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
+                SaveData();
+                await Task.Run(TaskManager.Manager.DataTransferWorkerStopServer);
             }
+        }
+
+        private void buttonConfigurationReset_Click(object sender, EventArgs e)
+        {
+            SetDefaultSettings();
+            SaveData();
+        }
+
+        private void SetDefaultSettings()
+        {
+            tbStatus.Text = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
+            m_cbEnabled.Checked = false;
+            m_numPort.Value = _defaultPort;
+            tbRootPath.Text = _defaultPath;
+            tbCertificatePath.Text = string.Empty;
         }
     }
 }

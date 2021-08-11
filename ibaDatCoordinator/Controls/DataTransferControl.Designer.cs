@@ -111,6 +111,7 @@
             resources.ApplyResources(this.buttonConfigurationReset, "buttonConfigurationReset");
             this.buttonConfigurationReset.Name = "buttonConfigurationReset";
             this.buttonConfigurationReset.UseVisualStyleBackColor = true;
+            this.buttonConfigurationReset.Click += new System.EventHandler(this.buttonConfigurationReset_Click);
             // 
             // buttonConfigurationApply
             // 

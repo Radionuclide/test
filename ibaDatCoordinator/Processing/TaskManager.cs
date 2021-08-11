@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -11,6 +12,7 @@ using iba.Plugins;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using DevExpress.Skins;
 using DevExpress.XtraPrinting.Export.Xl;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
@@ -1201,25 +1203,28 @@ namespace iba.Processing
             }
         }
 
-        public virtual Tuple<string, bool, bool, bool> DataTransferWorkerGetBriefStatus()
+        public virtual string DataTransferWorkerGetBriefStatus()
         {
-            return new Tuple<string, bool, bool, bool>(DataTransferWorker.Status,
-                DataTransferWorker.IsPortTextBoxEnabled, DataTransferWorker.IsSelectRootPathBtnEnabled,
-                DataTransferWorker.IsSelectCertificateBtnEnabled);
+            return DataTransferWorker.Status;
         }
 
-        public virtual void DataTransferWorkerStartServer()
+        public virtual async void DataTransferWorkerStartServer()
         {
-            DataTransferWorker.StartServer().Wait();
+            await DataTransferWorker.StartServer();
         }
-        public virtual void DataTransferWorkerStopServer()
+        public virtual async void DataTransferWorkerStopServer()
         {
-            DataTransferWorker.StopServer().Wait();
+            await DataTransferWorker.StopServer();
         }
 
-        public virtual void DataTransferWorkerSetCallback(ClientManager.UpdateEvent updateDiagnosticInfo)
+        public virtual void DataTransferWorkerSetCallback(Action<DiagnosticsData> updateDiagnosticInfo)
         {
             DataTransferWorker.SetCallback(updateDiagnosticInfo);
+        }
+
+        public virtual void DataTransferWorkerSetUpdateServerStatusCallback(Action<string> updateServerStatus)
+        {
+            DataTransferWorker.SetUpdateStatusCallback(updateServerStatus);
         }
 
         #endregion
@@ -2207,7 +2212,7 @@ namespace iba.Processing
             }
         }
 
-        public override Tuple<string, bool, bool, bool> DataTransferWorkerGetBriefStatus()
+        public override string DataTransferWorkerGetBriefStatus()
         {
             try
             {
@@ -2246,7 +2251,7 @@ namespace iba.Processing
             }
         }
 
-        public override void DataTransferWorkerSetCallback(ClientManager.UpdateEvent updateDiagnosticInfo)
+        public override void DataTransferWorkerSetCallback(Action<DiagnosticsData> updateDiagnosticInfo)
         {
             try
             {
@@ -2256,6 +2261,18 @@ namespace iba.Processing
             {
                 HandleBrokenConnection(ex);
                 Manager.DataTransferWorkerSetCallback(updateDiagnosticInfo);
+            }
+        }
+        public override void DataTransferWorkerSetUpdateServerStatusCallback(Action<string> updateServerStatus)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.DataTransferWorkerSetUpdateServerStatusCallback(updateServerStatus);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.DataTransferWorkerSetUpdateServerStatusCallback(updateServerStatus);
             }
         }
 
