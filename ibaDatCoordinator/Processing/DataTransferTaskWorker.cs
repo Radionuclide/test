@@ -28,6 +28,8 @@ namespace iba.Processing
             {
                 throw new InvalidOperationException(response.Message);
             }
+
+            await client.channel.ShutdownAsync();
         }
     }
 }

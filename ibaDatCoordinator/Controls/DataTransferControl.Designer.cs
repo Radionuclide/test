@@ -105,7 +105,6 @@
             this.m_cbEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
             this.m_cbEnabled.Name = "m_cbEnabled";
             this.m_cbEnabled.UseVisualStyleBackColor = true;
-            this.m_cbEnabled.CheckedChanged += new System.EventHandler(this.cbEnabled_CheckedChanged);
             // 
             // buttonConfigurationReset
             // 
@@ -118,6 +117,7 @@
             resources.ApplyResources(this.buttonConfigurationApply, "buttonConfigurationApply");
             this.buttonConfigurationApply.Name = "buttonConfigurationApply";
             this.buttonConfigurationApply.UseVisualStyleBackColor = true;
+            this.buttonConfigurationApply.Click += new System.EventHandler(this.buttonConfigurationApply_Click);
             // 
             // lbsPort
             // 

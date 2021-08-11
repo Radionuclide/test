@@ -563,7 +563,7 @@ namespace iba
                 // Initialize it here only if the app is standalone
                 TaskManager.Manager.SnmpWorkerInit();
                 TaskManager.Manager.OpcUaWorkerInit();
-                TaskManager.Manager.DataTransferWorkerInit();
+                TaskManager.Manager.DataTransferWorkerInit().Wait();
             }
             // added by kolesnik - end
         }

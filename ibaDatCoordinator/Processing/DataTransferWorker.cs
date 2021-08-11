@@ -55,14 +55,40 @@ namespace iba.Processing
             set => _dataTransferImpl = value;
         }
 
-        public void StartServer()
+        private async Task SetStatus(bool isControlEnabled)
+        {
+            await Task.Run(() =>
+            {
+                IsPortTextBoxEnabled = isControlEnabled;
+                IsSelectCertificateBtnEnabled = isControlEnabled;
+                IsSelectRootPathBtnEnabled = isControlEnabled;
+                Status = isControlEnabled ? "Server not started" : "Server started";
+            });
+        }
+
+        public (string status, bool IsPortTextBoxEnabled, bool IsSelectRootPathBtnEnabledbool, bool IsSelectCertificateBtnEnabled) 
+            GetStatus()
+        { 
+            return (Status, IsPortTextBoxEnabled, IsSelectRootPathBtnEnabled, IsSelectCertificateBtnEnabled);
+        }
+
+        public async Task StartServer()
         {
             try
             {
+                var deadline = DateTime.UtcNow.AddSeconds(3);
+
+                var isRunning = await IsReadyAsync(deadline);
+
+                if (isRunning)
+                {
+                    await StopServer();
+                }
+
                 m_server = CreateNewServer();
                 m_server.Start();
                 
-                SetStatus(false);
+                await SetStatus(false);
 
                 LogData.Data.Logger.Log(Level.Info, $"Data Transfer Service started on port: {_data.Port}");
             }
@@ -72,29 +98,22 @@ namespace iba.Processing
             }
         }
 
-        private  void SetStatus(bool isControlEnabled)
-        {
-            IsPortTextBoxEnabled = isControlEnabled;
-            IsSelectCertificateBtnEnabled = isControlEnabled;
-            IsSelectRootPathBtnEnabled = isControlEnabled;
-            Status = isControlEnabled ? "Server not started" : "Server started";
-        }
-
-        public (string status, bool IsPortTextBoxEnabled, bool IsSelectRootPathBtnEnabledbool, bool IsSelectCertificateBtnEnabled) 
-            GetStatus()
-        { 
-            return (Status, IsPortTextBoxEnabled, IsSelectRootPathBtnEnabled, IsSelectCertificateBtnEnabled);
-        }
-
-        public void StopServer()
+        public async Task StopServer()
         {
             try
             {
                 if (m_server == null) return;
 
-                m_server.ShutdownAsync().Wait();
+                var deadline = DateTime.UtcNow.AddSeconds(3);
 
-                SetStatus(true);
+                var isRunning = await IsReadyAsync(deadline);
+
+                if (isRunning)
+                {
+                    await m_server.ShutdownAsync();
+                }
+
+                await SetStatus(true);
 
                 LogData.Data.Logger.Log(Level.Info, "Data Transfer Service stopped");
             }
@@ -102,6 +121,29 @@ namespace iba.Processing
             {
                 LogData.Data.Logger.Log(Level.Exception, $"Data Transfer Service could not stop: {e.Message}");
             }
+        }
+
+        public async Task<bool> IsReadyAsync(DateTime? deadline)
+        {
+            var client = new GrpcClient(Dns.GetHostName(), _data.Port.ToString());
+
+            try
+            {
+                await client.TestConnectAsync(new Empty(), deadline: deadline);
+            }
+            catch (TaskCanceledException)
+            {
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            var isReadyAsync = client.channel.State == ChannelState.Ready;
+            await client.channel.ShutdownAsync();
+
+            return isReadyAsync;
         }
 
         private Server CreateNewServer()
@@ -113,15 +155,15 @@ namespace iba.Processing
             };
         }
 
-        public void Init()
+        public async Task Init()
         {
             if (_data.IsServerEnabled)
             {
-                StartServer();
+                await StartServer();
             }
             else
             {
-                SetStatus(true);
+                await SetStatus(true);
             }
         }
 

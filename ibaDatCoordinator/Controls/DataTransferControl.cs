@@ -88,26 +88,6 @@ namespace iba.Controls
    
         }
 
-        private void cbEnabled_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((CheckBox)sender).Checked)
-            {
-                SaveData();
-                TaskManager.Manager.DataTransferWorkerStartServer();
-
-                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
-                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
-            }
-            else
-            {
-                SaveData();
-                TaskManager.Manager.DataTransferWorkerStopServer();
-
-                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
-                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
-            }
-        }
-
         private void buttonClearClients_Click(object sender, EventArgs e)
         {
             dgvClients.Rows.Clear();
@@ -196,6 +176,27 @@ namespace iba.Controls
             else
             {
                 _data.CertificatePath = tbCertificatePath.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
+
+        private void  buttonConfigurationApply_Click(object sender, EventArgs e)
+        {
+            SaveData();
+
+            if (m_cbEnabled.Checked)
+            {
+            
+                TaskManager.Manager.DataTransferWorkerStartServer();
+
+                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
+                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
+            }
+            else
+            {
+                TaskManager.Manager.DataTransferWorkerStopServer();
+
+                (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
+                    = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
             }
         }
     }

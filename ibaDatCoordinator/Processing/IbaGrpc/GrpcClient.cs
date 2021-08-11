@@ -12,6 +12,7 @@ using iba.Data;
 using Messages.V1;
 using Google.Protobuf.WellKnownTypes;
 using iba.Logging;
+using Empty = Messages.V1.Empty;
 using Status = Messages.V1.Status;
 
 namespace iba.Processing.IbaGrpc
@@ -26,6 +27,12 @@ namespace iba.Processing.IbaGrpc
         {
             m_data = data;
             channel = new Channel($"{m_data.Server}:{m_data.Port}", ChannelCredentials.Insecure);
+            client = new DataTransfer.DataTransferClient(channel);
+        }
+
+        public GrpcClient(string server, string port)
+        {
+            channel = new Channel($"{server}:{port}", ChannelCredentials.Insecure);
             client = new DataTransfer.DataTransferClient(channel);
         }
 
@@ -49,6 +56,15 @@ namespace iba.Processing.IbaGrpc
                     Message = "An error occurred when establishing the connection"
                 };
             }
+        }
+
+        public async Task<Empty> TestConnectAsync(Empty empty, DateTime? deadline)
+        {
+            var connectionCall = client.TestConnectAsync(empty, deadline: deadline);
+
+            var connectionResponse = await connectionCall.ResponseAsync;
+
+            return connectionResponse;
         }
 
         public async Task<TransferResponse> TransferFileAsync(string file, TaskData task)

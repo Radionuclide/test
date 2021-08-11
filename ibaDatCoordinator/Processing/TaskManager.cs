@@ -10,6 +10,7 @@ using iba.Utility;
 using iba.Plugins;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using DevExpress.XtraPrinting.Export.Xl;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
@@ -1190,9 +1191,9 @@ namespace iba.Processing
             }
         }
 
-        public void DataTransferWorkerInit()
+        public async Task DataTransferWorkerInit()
         {
-            DataTransferWorker.Init();
+            await DataTransferWorker.Init();
             
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
@@ -1209,11 +1210,11 @@ namespace iba.Processing
 
         public virtual void DataTransferWorkerStartServer()
         {
-            DataTransferWorker.StartServer();
+            DataTransferWorker.StartServer().Wait();
         }
         public virtual void DataTransferWorkerStopServer()
         {
-            DataTransferWorker.StopServer();
+            DataTransferWorker.StopServer().Wait();
         }
 
         public virtual void DataTransferWorkerSetCallback(ClientManager.UpdateEvent updateDiagnosticInfo)

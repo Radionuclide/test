@@ -11,6 +11,7 @@ using iba.Controls;
 using iba.Data;
 using Messages.V1;
 using Google.Protobuf.WellKnownTypes;
+using Empty = Messages.V1.Empty;
 using Status = Messages.V1.Status;
 
 namespace iba.Processing.IbaGrpc
@@ -59,6 +60,11 @@ namespace iba.Processing.IbaGrpc
             {
                 Status = Status.Ok
             };
+        }
+
+        public override Task<Empty> TestConnect(Empty request, ServerCallContext context)
+        {
+            return Task.FromResult(new Empty());
         }
     }
 }
