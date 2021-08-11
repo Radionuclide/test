@@ -92,6 +92,7 @@ namespace iba.Controls
         {
             if (((CheckBox)sender).Checked)
             {
+                SaveData();
                 TaskManager.Manager.DataTransferWorkerStartServer();
 
                 (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
@@ -99,6 +100,7 @@ namespace iba.Controls
             }
             else
             {
+                SaveData();
                 TaskManager.Manager.DataTransferWorkerStopServer();
 
                 (tbStatus.Text, m_numPort.Enabled, btnRootPath.Enabled, btnCertificatePath.Enabled)
