@@ -41,20 +41,42 @@ namespace iba.Processing.IbaGrpc
         {
             var path = GetFilePath(clientId);
             
+            var extension = Path.GetExtension(path);
+
+            path = Path.ChangeExtension(path, ".temp");
             const int bufferSize = 64 * 1024;
 
-            int milliseconds = CalculateDelayTime(bufferSize, clientId);
+            var milliseconds = CalculateDelayTime(bufferSize, clientId);
 
-            using (var sw = new FileStream(path, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(path, FileMode.OpenOrCreate))
             {
 
                 while (await requestStream.MoveNext())
                 {
                     var byteArray = requestStream.Current.Chunk.ToByteArray();
-                    await sw.WriteAsync(byteArray, 0, byteArray.Length);
+                    await fs.WriteAsync(byteArray, 0, byteArray.Length);
                     DelayWritingChunk(milliseconds);
                 }
             }
+
+            await RenameFile(path, extension);
+        }
+
+        public async Task RenameFile(string path, string extension)
+        {
+            var currentFile = new FileInfo(path);
+
+            var renamedPath = Path.ChangeExtension(path, extension);
+
+            await Task.Factory.StartNew(() =>
+            {
+                if (File.Exists(renamedPath))
+                {
+                    File.Delete(renamedPath);
+                }
+
+                currentFile.MoveTo(Path.ChangeExtension(path, extension));
+            });
         }
 
         private int CalculateDelayTime(int bufferSize, Guid clientId)
