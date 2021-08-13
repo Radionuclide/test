@@ -508,25 +508,25 @@ namespace iba.Controls
                     string curMsg = exc.Message;
                     if (exc is System.Net.Http.HttpRequestException httpExc)
                     {
-                        if (httpExc.InnerException is iba.Kafka.SchemaRegistry.SslVerificationException sslVerExc)
-                        {
-                            // Log extra info
-                            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                            sb.AppendLine("Kafka Schema Registry authentication error details:");
-                            sb.AppendLine();
-                            sb.AppendLine($"Request URI: {sslVerExc.RequestURI}");
-                            sb.AppendLine($"SSL Policy errors: {sslVerExc.SSLErrors}");
-                            sb.AppendLine();
-                            sb.AppendLine($"Certificate:");
-                            sb.AppendLine();
-                            sb.AppendLine(sslVerExc.Certificate);
-                            sb.AppendLine();
-                            sb.AppendLine($"Certificate chain:");
-                            sb.AppendLine();
-                            sb.AppendLine(sslVerExc.Chain);
+                        //if (httpExc.InnerException is iba.Kafka.SchemaRegistry.SslVerificationException sslVerExc)
+                        //{
+                        //    // Log extra info
+                        //    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                        //    sb.AppendLine("Kafka Schema Registry authentication error details:");
+                        //    sb.AppendLine();
+                        //    sb.AppendLine($"Request URI: {sslVerExc.RequestURI}");
+                        //    sb.AppendLine($"SSL Policy errors: {sslVerExc.SSLErrors}");
+                        //    sb.AppendLine();
+                        //    sb.AppendLine($"Certificate:");
+                        //    sb.AppendLine();
+                        //    sb.AppendLine(sslVerExc.Certificate);
+                        //    sb.AppendLine();
+                        //    sb.AppendLine($"Certificate chain:");
+                        //    sb.AppendLine();
+                        //    sb.AppendLine(sslVerExc.Chain);
 
-                            iba.Logging.ibaLogger.DebugFormat(sb.ToString());
-                        }
+                        //    iba.Logging.ibaLogger.DebugFormat(sb.ToString());
+                        //}
                     }
 
                     errorMsg = (errorMsg == null) ? curMsg : string.Concat(errorMsg, Environment.NewLine, curMsg);
