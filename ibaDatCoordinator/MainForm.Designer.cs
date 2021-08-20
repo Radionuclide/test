@@ -78,6 +78,7 @@ namespace iba
             this.watchdogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.snmpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.opcUaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataTransferToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,7 +94,6 @@ namespace iba
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.dataTransferToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -180,7 +180,7 @@ namespace iba
             this.m_navBar.Name = "m_navBar";
             this.m_navBar.PaneFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.m_navBar.SelectedPane = this.m_loggingPane;
-            this.m_navBar.ShowPanes = 7;
+            this.m_navBar.ShowPanes = 8;
             this.m_navBar.SelectedPaneChanged += new System.EventHandler(this.navbar_SelectedPaneChanged);
             // 
             // m_settingsPane
@@ -497,6 +497,12 @@ namespace iba
             resources.ApplyResources(this.opcUaToolStripMenuItem, "opcUaToolStripMenuItem");
             this.opcUaToolStripMenuItem.Click += new System.EventHandler(this.opcUaToolStripMenuItem_Click);
             // 
+            // dataTransferToolStripMenuItem
+            // 
+            this.dataTransferToolStripMenuItem.Name = "dataTransferToolStripMenuItem";
+            resources.ApplyResources(this.dataTransferToolStripMenuItem, "dataTransferToolStripMenuItem");
+            this.dataTransferToolStripMenuItem.Click += new System.EventHandler(this.dataTransferToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
@@ -577,12 +583,6 @@ namespace iba
             // m_openFileDialog
             // 
             this.m_openFileDialog.FileName = "openFileDialog1";
-            // 
-            // dataTransferToolStripMenuItem
-            // 
-            this.dataTransferToolStripMenuItem.Name = "dataTransferToolStripMenuItem";
-            resources.ApplyResources(this.dataTransferToolStripMenuItem, "dataTransferToolStripMenuItem");
-            this.dataTransferToolStripMenuItem.Click += new System.EventHandler(this.dataTransferToolStripMenuItem_Click);
             // 
             // MainForm
             // 
