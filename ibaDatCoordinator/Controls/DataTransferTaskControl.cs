@@ -72,33 +72,38 @@ namespace iba.Controls
             var errormessage = string.Empty;
             var ok = false;
 
-            using (var wait = new WaitCursor())
+            try
             {
-                try
-                {
-                    var client = new GrpcClient(m_data);
-                    var result = await client.TestConnection(m_data);
+                var client = new GrpcClient(m_data);
+                
+                this.Cursor = Cursors.WaitCursor;
+                this.m_btnCheckConnection.Enabled = false;
 
-                    if (result.Status == Status.Ok)
-                    {
-                        ok = true;
-                    }
-                    else
-                    {
-                        errormessage = result.Message;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message);
-                    errormessage = ex.Message;
-                    ok = false;
-                }
+                var result = await client.TestConnectionAsync(m_data);
 
-                m_btnCheckConnection.Text = null;
-                m_btnCheckConnection.Image = iba.Properties.Resources.thumbdown;
-                ((Bitmap)m_btnCheckConnection.Image).MakeTransparent(Color.Magenta);
+
+                if (result.Status == Status.Ok)
+                {
+                    ok = true;
+                }
+                else
+                {
+                    errormessage = result.Message;
+                }
             }
+            catch (Exception ex)
+            {
+                LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message);
+                errormessage = ex.Message;
+                ok = false;
+            }
+
+            this.Cursor = Cursors.Default;
+            this.m_btnCheckConnection.Enabled = true;
+            m_btnCheckConnection.Text = null;
+            m_btnCheckConnection.Image = iba.Properties.Resources.thumbdown;
+            ((Bitmap)m_btnCheckConnection.Image).MakeTransparent(Color.Magenta);
+
 
             if (ok)
             {

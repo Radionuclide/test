@@ -40,7 +40,9 @@ namespace iba.Processing.IbaGrpc
         {
             try
             {
-                var connectionCall = client.ConnectAsync(request);
+                var deadline = DateTime.UtcNow.AddSeconds(5);
+
+                var connectionCall = client.ConnectAsync(request, deadline: deadline);
 
                 var connectionResponse = await connectionCall.ResponseAsync;
 
@@ -159,7 +161,7 @@ namespace iba.Processing.IbaGrpc
             };
         }
 
-        public async Task<ConnectionResponse> TestConnection(DataTransferTaskData dataTransferTaskData)
+        public async Task<ConnectionResponse> TestConnectionAsync(DataTransferTaskData dataTransferTaskData)
         {
             var connectionRequest = CreateConnectionRequest(string.Empty, dataTransferTaskData);
             var connectionResponse = await ConnectAsync(connectionRequest);
