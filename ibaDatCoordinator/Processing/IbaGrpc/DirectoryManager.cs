@@ -56,7 +56,11 @@ namespace iba.Processing.IbaGrpc
                 {
                     var byteArray = requestStream.Current.Chunk.ToByteArray();
                     await fs.WriteAsync(byteArray, 0, byteArray.Length);
-                    DelayWritingChunk(milliseconds);
+
+                    if (milliseconds > 0)
+                    {
+                        DelayWritingChunk(milliseconds);
+                    }
                 }
             }
 
@@ -104,7 +108,7 @@ namespace iba.Processing.IbaGrpc
             const int milliseconds = 1000;
             const int kiloByte = (bufferSize / 1024);
 
-            if (conf.Maxbandwidth > kiloByte)
+            if (conf.Maxbandwidth >= kiloByte)
             {
                 return  (milliseconds / (conf.Maxbandwidth / kiloByte));
             }

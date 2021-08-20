@@ -24,6 +24,7 @@ namespace iba.Controls
         public DataTransferTaskControl()
         {
             InitializeComponent();
+            m_numBandwidth.Maximum = decimal.MaxValue;
         }
 
         public void LeaveCleanup()
@@ -45,7 +46,15 @@ namespace iba.Controls
             m_tbServer.Text = m_data.Server;
             m_numericUpDownPort.Text = m_data.Port;
             m_tbRemotePath.Text = m_data.RemotePath;
-            m_tbMaxBandwidth.Text = m_data.MaxBandwidth.ToString();
+            m_numBandwidth.Text = m_data.MaxBandwidth.ToString();
+            
+            m_chkLimitBandwidth.Checked = m_data.ChkLimitBandwidth;
+            m_cbBandwidth.SelectedIndex = m_data.CbBandwidth;
+            m_numBandwidth.Value = m_data.NumBandwidth;
+
+            m_cbBandwidth.Enabled = m_data.ChkLimitBandwidth;
+            m_numBandwidth.Enabled = m_data.ChkLimitBandwidth;
+
             m_rbDatFile.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.DATFILE;
             m_rbPrevOutput.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT;
         }
@@ -55,8 +64,13 @@ namespace iba.Controls
             m_data.Server = m_tbServer.Text;
             m_data.Port = m_numericUpDownPort.Text;
             m_data.RemotePath = m_tbRemotePath.Text;
-            m_data.MaxBandwidth = int.Parse(m_tbMaxBandwidth.Text);
+            m_data.MaxBandwidth = CalculateMaxBandwidth();
             m_data.ShouldDeleteAfterTransfer = m_cbDeleteAfterTransfer.Checked;
+
+            m_data.ChkLimitBandwidth = m_chkLimitBandwidth.Checked;
+            m_data.CbBandwidth = m_cbBandwidth.SelectedIndex;
+            m_data.NumBandwidth = m_numBandwidth.Value;
+
             if (m_rbPrevOutput.Checked)
                 m_data.WhatFileTransfer = DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT;
             else if (m_rbDatFile.Checked)
@@ -64,6 +78,21 @@ namespace iba.Controls
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
+        }
+
+        private int CalculateMaxBandwidth()
+        {
+            if (!m_chkLimitBandwidth.Checked) return 0;
+
+            switch (m_cbBandwidth.SelectedItem.ToString())
+            {
+                case "kbps":
+                    return int.Parse(m_numBandwidth.Text);
+                case "mbps":
+                    return int.Parse(m_numBandwidth.Text) * 1024;
+            }
+
+            return 0;
         }
 
         private async void m_btnCheckConnection_Click(object sender, EventArgs e)
@@ -119,37 +148,6 @@ namespace iba.Controls
             ((Bitmap)m_btnCheckConnection.Image).MakeTransparent(Color.Magenta);
         }
 
-        private void trackBarMaxBandwidth_Scroll(object sender, EventArgs e)
-        {
-            var trackBar = (sender as TrackBar);
-            if (trackBar?.Value == null) return;
-
-            m_data.MaxBandwidth = trackBar.Value;
-            m_tbMaxBandwidth.Text = trackBar.Value.ToString();
-        }
-
-        private void m_tbMaxBandwidth_TextChanged(object sender, EventArgs e)
-        {
-            var control = (sender as TextBox);
-
-            var result = int.TryParse(control?.Text, out var value);
-
-            if (!result) return;
-
-            if (value > trackBarMaxBandwidth.Maximum)
-            {
-                return;
-            }
-
-            if (value < 64)
-            {
-                trackBarMaxBandwidth.Value = 0;
-                m_tbMaxBandwidth.Text = 0.ToString();
-            }
-
-            trackBarMaxBandwidth.Value = int.Parse(control?.Text ?? string.Empty);
-        }
-
         private void m_btnSelectServer_Click(object sender, EventArgs e)
         {
             using (var ssf = new ServerSelectionForm(new ServerConfiguration(), true))
@@ -163,6 +161,23 @@ namespace iba.Controls
         {
             m_tbServer.Text = server;
             m_numericUpDownPort.Text = port;
+        }
+
+
+        private void m_cbLimitBandwidth_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!(sender is CheckBox checkBox)) return;
+
+            m_cbBandwidth.Enabled = checkBox.Checked;
+            m_numBandwidth.Enabled = checkBox.Checked;
+        }
+
+        private void m_cbBandwidth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sender is ComboBox comboBox)
+            {
+                m_numBandwidth.Minimum = comboBox.SelectedItem.ToString() == "kbps" ? 64 : 1;
+            }
         }
     }
 }

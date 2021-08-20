@@ -80,15 +80,23 @@ namespace iba.Data
             m_hostname = System.Net.Dns.GetHostName();
             m_version = DatCoVersion.GetVersion();
             m_maxBandwidth = 0;
-            m_port = "1";
+            m_port = "30051";
             WhatFileTransfer = WhatFileTransferEnum.DATFILE;
+            CbBandwidth = 0;
+            NumBandwidth = 64;
         }
 
         public enum WhatFileTransferEnum { DATFILE, PREVOUTPUT }
 
         private WhatFileTransferEnum m_WhatFileTransfer;
         private string m_version;
-
+        
+        private bool m_ChkLimitBandwidth;
+        public bool ChkLimitBandwidth
+        {
+            get => m_ChkLimitBandwidth;
+            set => m_ChkLimitBandwidth = value;
+        }
 
         public WhatFileTransferEnum WhatFileTransfer
         {
@@ -101,6 +109,10 @@ namespace iba.Data
             get => m_version;
             set => m_version = value;
         }
+
+        public int CbBandwidth { get; set; }
+        public decimal NumBandwidth { get; set; }
+
 
         public DataTransferTaskData()
             : this(null)
@@ -120,6 +132,9 @@ namespace iba.Data
             cd.m_maxBandwidth = m_maxBandwidth;
             cd.m_WhatFileTransfer = m_WhatFileTransfer;
             cd.m_shouldDeleteAfterTransfer = m_shouldDeleteAfterTransfer;
+            cd.m_ChkLimitBandwidth = m_ChkLimitBandwidth;
+            cd.CbBandwidth = CbBandwidth;
+            cd.NumBandwidth = NumBandwidth;
             return cd;
         }
 
@@ -138,7 +153,10 @@ namespace iba.Data
                 other.m_remotePath == m_remotePath &&
                 other.m_maxBandwidth == m_maxBandwidth &&
                 other.m_WhatFileTransfer == m_WhatFileTransfer &&
-                other.m_shouldDeleteAfterTransfer == m_shouldDeleteAfterTransfer;
+                other.m_shouldDeleteAfterTransfer == m_shouldDeleteAfterTransfer &&
+                other.m_ChkLimitBandwidth == m_ChkLimitBandwidth &&
+                other.CbBandwidth == CbBandwidth &&
+                other.NumBandwidth == NumBandwidth;
         }
     }
 }

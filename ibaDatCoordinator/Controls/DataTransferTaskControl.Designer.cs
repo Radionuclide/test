@@ -36,16 +36,17 @@ namespace iba.Controls
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.m_lblRemotePath = new System.Windows.Forms.Label();
             this.m_tbRemotePath = new System.Windows.Forms.TextBox();
+            this.m_cbDeleteAfterTransfer = new System.Windows.Forms.CheckBox();
             this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.trackBarMaxBandwidth = new System.Windows.Forms.TrackBar();
+            this.m_cbBandwidth = new System.Windows.Forms.ComboBox();
+            this.m_chkLimitBandwidth = new System.Windows.Forms.CheckBox();
+            this.m_numBandwidth = new System.Windows.Forms.NumericUpDown();
             this.m_btnCheckConnection = new System.Windows.Forms.Button();
-            this.m_tbMaxBandwidth = new System.Windows.Forms.TextBox();
-            this.lblMaxBandwidth = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.m_btnSelectServer = new System.Windows.Forms.Button();
             this.m_numericUpDownPort = new System.Windows.Forms.NumericUpDown();
@@ -56,7 +57,6 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
-            this.m_cbDeleteAfterTransfer = new System.Windows.Forms.CheckBox();
             this.m_gbOption.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -65,7 +65,7 @@ namespace iba.Controls
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarMaxBandwidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_numBandwidth)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_numericUpDownPort)).BeginInit();
             this.m_gbSource.SuspendLayout();
@@ -110,6 +110,12 @@ namespace iba.Controls
             resources.ApplyResources(this.m_tbRemotePath, "m_tbRemotePath");
             this.m_tbRemotePath.Name = "m_tbRemotePath";
             // 
+            // m_cbDeleteAfterTransfer
+            // 
+            resources.ApplyResources(this.m_cbDeleteAfterTransfer, "m_cbDeleteAfterTransfer");
+            this.m_cbDeleteAfterTransfer.Name = "m_cbDeleteAfterTransfer";
+            this.m_cbDeleteAfterTransfer.UseVisualStyleBackColor = true;
+            // 
             // m_gbTarget
             // 
             resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
@@ -145,22 +151,33 @@ namespace iba.Controls
             // panel2
             // 
             resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Controls.Add(this.trackBarMaxBandwidth);
+            this.panel2.Controls.Add(this.m_cbBandwidth);
+            this.panel2.Controls.Add(this.m_chkLimitBandwidth);
+            this.panel2.Controls.Add(this.m_numBandwidth);
             this.panel2.Controls.Add(this.m_btnCheckConnection);
-            this.panel2.Controls.Add(this.m_tbMaxBandwidth);
-            this.panel2.Controls.Add(this.lblMaxBandwidth);
             this.panel2.Name = "panel2";
             // 
-            // trackBarMaxBandwidth
+            // m_cbBandwidth
             // 
-            this.trackBarMaxBandwidth.LargeChange = 1024;
-            resources.ApplyResources(this.trackBarMaxBandwidth, "trackBarMaxBandwidth");
-            this.trackBarMaxBandwidth.Maximum = 8192;
-            this.trackBarMaxBandwidth.Name = "trackBarMaxBandwidth";
-            this.trackBarMaxBandwidth.SmallChange = 1024;
-            this.trackBarMaxBandwidth.TickFrequency = 1024;
-            this.trackBarMaxBandwidth.Value = 64;
-            this.trackBarMaxBandwidth.Scroll += new System.EventHandler(this.trackBarMaxBandwidth_Scroll);
+            this.m_cbBandwidth.FormattingEnabled = true;
+            this.m_cbBandwidth.Items.AddRange(new object[] {
+            resources.GetString("m_cbBandwidth.Items"),
+            resources.GetString("m_cbBandwidth.Items1")});
+            resources.ApplyResources(this.m_cbBandwidth, "m_cbBandwidth");
+            this.m_cbBandwidth.Name = "m_cbBandwidth";
+            this.m_cbBandwidth.SelectedIndexChanged += new System.EventHandler(this.m_cbBandwidth_SelectedIndexChanged);
+            // 
+            // m_chkLimitBandwidth
+            // 
+            resources.ApplyResources(this.m_chkLimitBandwidth, "m_chkLimitBandwidth");
+            this.m_chkLimitBandwidth.Name = "m_chkLimitBandwidth";
+            this.m_chkLimitBandwidth.UseVisualStyleBackColor = true;
+            this.m_chkLimitBandwidth.CheckedChanged += new System.EventHandler(this.m_cbLimitBandwidth_CheckedChanged);
+            // 
+            // m_numBandwidth
+            // 
+            resources.ApplyResources(this.m_numBandwidth, "m_numBandwidth");
+            this.m_numBandwidth.Name = "m_numBandwidth";
             // 
             // m_btnCheckConnection
             // 
@@ -169,17 +186,6 @@ namespace iba.Controls
             this.m_btnCheckConnection.Name = "m_btnCheckConnection";
             this.m_btnCheckConnection.UseVisualStyleBackColor = true;
             this.m_btnCheckConnection.Click += new System.EventHandler(this.m_btnCheckConnection_Click);
-            // 
-            // m_tbMaxBandwidth
-            // 
-            resources.ApplyResources(this.m_tbMaxBandwidth, "m_tbMaxBandwidth");
-            this.m_tbMaxBandwidth.Name = "m_tbMaxBandwidth";
-            this.m_tbMaxBandwidth.Leave += new System.EventHandler(this.m_tbMaxBandwidth_TextChanged);
-            // 
-            // lblMaxBandwidth
-            // 
-            resources.ApplyResources(this.lblMaxBandwidth, "lblMaxBandwidth");
-            this.lblMaxBandwidth.Name = "lblMaxBandwidth";
             // 
             // panel1
             // 
@@ -251,12 +257,6 @@ namespace iba.Controls
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
-            // m_cbDeleteAfterTransfer
-            // 
-            resources.ApplyResources(this.m_cbDeleteAfterTransfer, "m_cbDeleteAfterTransfer");
-            this.m_cbDeleteAfterTransfer.Name = "m_cbDeleteAfterTransfer";
-            this.m_cbDeleteAfterTransfer.UseVisualStyleBackColor = true;
-            // 
             // DataTransferTaskControl
             // 
             resources.ApplyResources(this, "$this");
@@ -281,7 +281,7 @@ namespace iba.Controls
             this.tableLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarMaxBandwidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_numBandwidth)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_numericUpDownPort)).EndInit();
@@ -317,11 +317,11 @@ namespace iba.Controls
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label m_lblRemotePath;
         private System.Windows.Forms.TextBox m_tbRemotePath;
-        private System.Windows.Forms.TextBox m_tbMaxBandwidth;
-        private System.Windows.Forms.Label lblMaxBandwidth;
-        private System.Windows.Forms.TrackBar trackBarMaxBandwidth;
         private System.Windows.Forms.NumericUpDown m_numericUpDownPort;
         private System.Windows.Forms.Button m_btnSelectServer;
         private System.Windows.Forms.CheckBox m_cbDeleteAfterTransfer;
+        private System.Windows.Forms.ComboBox m_cbBandwidth;
+        private System.Windows.Forms.CheckBox m_chkLimitBandwidth;
+        private System.Windows.Forms.NumericUpDown m_numBandwidth;
     }
 }
