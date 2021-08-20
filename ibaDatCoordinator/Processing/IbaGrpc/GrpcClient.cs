@@ -38,13 +38,23 @@ namespace iba.Processing.IbaGrpc
             client = new DataTransfer.DataTransferClient(channel);
         }
 
-        public async Task<ConnectionResponse> ConnectAsync(ConnectionRequest request)
+        public async Task<ConnectionResponse> ConnectAsync(ConnectionRequest request, bool testConnection = false)
         {
             try
             {
                 var deadline = DateTime.UtcNow.AddSeconds(5);
 
-                var connectionCall = client.ConnectAsync(request, deadline: deadline);
+                var metadata = new Metadata();
+
+                if (testConnection)
+                {
+                    metadata = new Metadata()
+                    {
+                        new Metadata.Entry("IsTestConnection", "true")
+                    };
+                }
+
+                var connectionCall = client.ConnectAsync(request, deadline: deadline, headers: metadata);
 
                 var connectionResponse = await connectionCall.ResponseAsync;
 
@@ -170,7 +180,7 @@ namespace iba.Processing.IbaGrpc
         public async Task<ConnectionResponse> TestConnectionAsync(DataTransferTaskData dataTransferTaskData)
         {
             var connectionRequest = CreateConnectionRequest(string.Empty, dataTransferTaskData);
-            var connectionResponse = await ConnectAsync(connectionRequest);
+            var connectionResponse = await ConnectAsync(connectionRequest, true);
 
             return connectionResponse;
         }
