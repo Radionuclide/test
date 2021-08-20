@@ -7,6 +7,10 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,12 +31,13 @@ namespace iba.Controls
         private DataTransferData _data;
         private BindingList<DiagnosticsData> _diagnosticsDataList;
         private readonly string _defaultPath = AppDomain.CurrentDomain.BaseDirectory;
+        private readonly string _defaultCertPath = AppDomain.CurrentDomain.BaseDirectory;
         private readonly int _defaultPort = 30051;
         private IPropertyPaneManager _manager;
         public DataTransferControl()
         {
             InitializeComponent();
-            TaskManager.Manager.DataTransferWorkerSetCallback(UpdateDiagnosticInfo);
+            TaskManager.Manager.DataTransferWorkerSetUpdateDiagnosticInfoCallback(UpdateDiagnosticInfo);
             TaskManager.Manager.DataTransferWorkerSetUpdateServerStatusCallback(UpdateServerStatus);
             ConfigureDiagnosticGrid();
             GetAllClients();
@@ -197,16 +202,38 @@ namespace iba.Controls
 
         private async void  buttonConfigurationApply_Click(object sender, EventArgs e)
         {
+            if (!ValidateInput())
+            {
+                return;
+            }
+            
+            SaveData();
+
             if (m_cbEnabled.Checked)
             {
-                SaveData();
                 await Task.Run(TaskManager.Manager.DataTransferWorkerStartServer);
             }
             else
             {
-                SaveData();
                 await Task.Run(TaskManager.Manager.DataTransferWorkerStopServer);
             }
+        }
+
+        private bool ValidateInput()
+        {
+            if (!DirectoryManager.IsValidPath(tbRootPath.Text))
+            {
+                MessageBox.Show($"{lblRootPath.Text} not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (!DirectoryManager.IsValidPath(tbCertificatePath.Text))
+            {
+                MessageBox.Show($"{lblCertificatePath.Text} not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
         }
 
         private void buttonConfigurationReset_Click(object sender, EventArgs e)
@@ -221,7 +248,7 @@ namespace iba.Controls
             m_cbEnabled.Checked = false;
             m_numPort.Value = _defaultPort;
             tbRootPath.Text = _defaultPath;
-            tbCertificatePath.Text = string.Empty;
+            tbCertificatePath.Text = _defaultCertPath;
         }
 
         private void GetAllClients()

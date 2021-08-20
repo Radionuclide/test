@@ -199,7 +199,6 @@
             // 
             resources.ApplyResources(this.tbCertificatePath, "tbCertificatePath");
             this.tbCertificatePath.Name = "tbCertificatePath";
-            this.tbCertificatePath.ReadOnly = true;
             // 
             // lblCertificatePath
             // 
@@ -235,7 +234,6 @@
             // 
             resources.ApplyResources(this.tbRootPath, "tbRootPath");
             this.tbRootPath.Name = "tbRootPath";
-            this.tbRootPath.ReadOnly = true;
             // 
             // tabDiag
             // 

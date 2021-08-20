@@ -4,6 +4,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -116,6 +117,41 @@ namespace iba.Processing.IbaGrpc
                 LogData.Data.Log(Level.Exception, e.Message);
                 throw;
             }
+        }
+
+        public static bool IsValidPath(string path)
+        {
+            var driveCheck = new Regex(@"^[a-zA-Z]:\\$");
+
+            if (string.IsNullOrWhiteSpace(path) || path.Length < 3)
+            {
+                return false;
+            }
+
+            if (!driveCheck.IsMatch(path.Substring(0, 3)))
+            {
+                return false;
+            }
+
+            var strTheseAreInvalidFileNameChars = new string(Path.GetInvalidPathChars());
+            
+            strTheseAreInvalidFileNameChars += @":?*";
+            
+            var containsABadCharacter = new Regex("[" + Regex.Escape(strTheseAreInvalidFileNameChars) + "]");
+
+            if (containsABadCharacter.IsMatch(path.Substring(3, path.Length - 3)))
+            {
+                return false;
+            }
+
+            var driveLetterWithColonAndSlash = Path.GetPathRoot(path);
+
+            if (DriveInfo.GetDrives().All(x => x.Name != driveLetterWithColonAndSlash))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

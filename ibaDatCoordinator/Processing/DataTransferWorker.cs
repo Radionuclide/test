@@ -174,7 +174,7 @@ namespace iba.Processing
             }
         }
 
-        public void SetCallback(Action<DiagnosticsData> updateDiagnosticInfo)
+        public void SetDiagnosticInfoCallback(Action<DiagnosticsData> updateDiagnosticInfo)
         {
             _dataTransferImpl.ClientManager.UpdateDiagnosticInfoCallback += updateDiagnosticInfo;
         }

@@ -1222,9 +1222,9 @@ namespace iba.Processing
             await DataTransferWorker.StopServer();
         }
 
-        public virtual void DataTransferWorkerSetCallback(Action<DiagnosticsData> updateDiagnosticInfo)
+        public virtual void DataTransferWorkerSetUpdateDiagnosticInfoCallback(Action<DiagnosticsData> updateDiagnosticInfo)
         {
-            DataTransferWorker.SetCallback(updateDiagnosticInfo);
+            DataTransferWorker.SetDiagnosticInfoCallback(updateDiagnosticInfo);
         }
 
         public virtual void DataTransferWorkerSetUpdateServerStatusCallback(Action<string> updateServerStatus)
@@ -2268,16 +2268,16 @@ namespace iba.Processing
             }
         }
 
-        public override void DataTransferWorkerSetCallback(Action<DiagnosticsData> updateDiagnosticInfo)
+        public override void DataTransferWorkerSetUpdateDiagnosticInfoCallback(Action<DiagnosticsData> updateDiagnosticInfo)
         {
             try
             {
-                Program.CommunicationObject.Manager.DataTransferWorkerSetCallback(updateDiagnosticInfo);
+                Program.CommunicationObject.Manager.DataTransferWorkerSetUpdateDiagnosticInfoCallback(updateDiagnosticInfo);
             }
             catch (Exception ex)
             {
                 HandleBrokenConnection(ex);
-                Manager.DataTransferWorkerSetCallback(updateDiagnosticInfo);
+                Manager.DataTransferWorkerSetUpdateDiagnosticInfoCallback(updateDiagnosticInfo);
             }
         }
         public override void DataTransferWorkerSetUpdateServerStatusCallback(Action<string> updateServerStatus)
