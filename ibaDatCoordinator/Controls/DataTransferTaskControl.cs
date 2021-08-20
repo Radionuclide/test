@@ -147,18 +147,14 @@ namespace iba.Controls
 
         private void m_btnSelectServer_Click(object sender, EventArgs e)
         {
-            var serverConf = new ServerConfiguration {PortNr = 1};
-
-            using (var ssf = new ServerSelectionForm(serverConf))
+            using (var ssf = new ServerSelectionForm(new ServerConfiguration(), true))
             {
-                ssf.IsDataTransferTaskContext = true;
-                ssf.Text = "Data transfer server selection";
                 ssf.OnServerInfoSelected += FillServerFields;
                 ssf.ShowDialog();
             }
         }
 
-        private void FillServerFields(string server, string port, Program.ServiceEnum onlyDataTransfer)
+        private void FillServerFields(string server, string port)
         {
             m_tbServer.Text = server;
             m_numericUpDownPort.Text = port;

@@ -381,12 +381,6 @@
   <data name="colVersion.HeaderText" xml:space="preserve">
     <value>Version</value>
   </data>
-  <metadata name="colDataTrnasfer.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="colDataTrnasfer.HeaderText" xml:space="preserve">
-    <value>Data Transfer</value>
-  </data>
   <data name="grid.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 90</value>
   </data>
@@ -493,12 +487,6 @@
     <value>colVersion</value>
   </data>
   <data name="&gt;&gt;colVersion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;colDataTrnasfer.Name" xml:space="preserve">
-    <value>colDataTrnasfer</value>
-  </data>
-  <data name="&gt;&gt;colDataTrnasfer.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
