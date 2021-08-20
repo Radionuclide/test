@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Google.Protobuf;
@@ -19,7 +21,7 @@ namespace iba.Processing.IbaGrpc
 {
     class GrpcClient
     {
-        internal  readonly Channel channel;
+        internal readonly Channel channel;
         private DataTransfer.DataTransferClient client;
         private readonly DataTransferTaskData m_data;
 
@@ -50,7 +52,7 @@ namespace iba.Processing.IbaGrpc
             }
             catch (Exception ex)
             {
-                LogData.Data.Log(Level.Exception,  $"{ex.Message}\n{ex.StackTrace}", ex);
+                LogData.Data.Log(Level.Exception, $"{ex.Message}\n{ex.StackTrace}", ex);
 
                 return new ConnectionResponse
                 {
@@ -69,11 +71,12 @@ namespace iba.Processing.IbaGrpc
             return connectionResponse;
         }
 
-        public async Task<TransferResponse> TransferFileAsync(string file, TaskData task)
+        public async Task<TransferResponse> TransferFileAsync(string file, TaskData task,
+            CancellationToken cancellationToken)
         {
             var connectionRequest = CreateConnectionRequest(file, task);
             var connectionResponse = await ConnectAsync(connectionRequest);
-            
+
             m_data.ClientId = connectionResponse.ConfigurationId;
 
             if (connectionResponse.Status == Status.Error)
@@ -85,7 +88,8 @@ namespace iba.Processing.IbaGrpc
                 };
             }
 
-            var options = CreateMetadata(connectionResponse);
+            var options = CreateMetadata(connectionResponse, cancellationToken);
+
 
             using (var call = client.TransferFile(options))
             {
@@ -101,14 +105,16 @@ namespace iba.Processing.IbaGrpc
             }
         }
 
-        private static CallOptions CreateMetadata(ConnectionResponse connectionResponse)
+        private static CallOptions CreateMetadata(ConnectionResponse connectionResponse,
+            CancellationToken cancellationToken)
         {
             var metadata = new Metadata
             {
                 { "configurationId", connectionResponse.ConfigurationId },
             };
 
-            var options = new CallOptions(metadata);
+            var options = new CallOptions(metadata, cancellationToken: cancellationToken);
+
             return options;
         }
 
@@ -156,7 +162,7 @@ namespace iba.Processing.IbaGrpc
                     FileName = fileName,
                     Path = m_data.RemotePath,
                     ApiKey = string.Empty,
-                    Maxbandwidth =  m_data.MaxBandwidth
+                    Maxbandwidth = m_data.MaxBandwidth
                 }
             };
         }

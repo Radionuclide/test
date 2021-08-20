@@ -39,7 +39,8 @@ namespace iba.Processing.IbaGrpc
             return Path.Combine(dir, file);
         }
 
-        public async Task WriteFileAsync(IAsyncStreamReader<TransferRequest> requestStream, Guid clientId)
+        public async Task WriteFileAsync(IAsyncStreamReader<TransferRequest> requestStream, Guid clientId,
+            CancellationToken cancellationToken)
         {
             var path = GetFilePath(clientId);
             
@@ -51,13 +52,23 @@ namespace iba.Processing.IbaGrpc
 
             using (var fs = new FileStream(path, FileMode.OpenOrCreate))
             {
-
                 while (await requestStream.MoveNext())
                 {
                     var byteArray = requestStream.Current.Chunk.ToByteArray();
                     await fs.WriteAsync(byteArray, 0, byteArray.Length);
                     DelayWritingChunk(milliseconds);
                 }
+            }
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                LogData.Data.Log(Level.Info, $"Transfer of file aborted by client");
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+                
+                return;
             }
 
             await RenameFile(path, extension);

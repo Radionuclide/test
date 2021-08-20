@@ -36,6 +36,8 @@ namespace iba.Processing
             get { return m_sd; }
         }
 
+        private readonly List<CancellationTokenSource> _cancellationTokenList = new List<CancellationTokenSource>();
+
         private bool m_stop;
 
         public bool Stop
@@ -51,6 +53,11 @@ namespace iba.Processing
                 if (m_stop)
                     m_waitEvent.Set();
                 //do finalization of custom tasks
+
+                //Stop all data transfer tasks
+                _cancellationTokenList.ForEach(token => token?.Cancel());
+                _cancellationTokenList.Clear();
+
                 foreach (TaskData t in m_cd.Tasks)
                 {
                     ICustomTaskData c = t as ICustomTaskData;
@@ -3068,7 +3075,14 @@ namespace iba.Processing
             else if (task is DataTransferTaskData)
             {
                 DataTransferTaskData dat = task as DataTransferTaskData;
-                TransferFile(DatFile, dat);
+
+                var cancellationTokenSource = new CancellationTokenSource();
+
+                var token = cancellationTokenSource.Token;
+
+                _cancellationTokenList.Add(cancellationTokenSource);
+
+                TransferFile(DatFile, dat, token);
 
                 if (dat.ShouldDeleteAfterTransfer)
                 {
@@ -4493,7 +4507,7 @@ namespace iba.Processing
             }
         }
 
-        internal void TransferFile(string filename, DataTransferTaskData task)
+        internal void TransferFile(string filename, DataTransferTaskData task, CancellationToken cancellationToken)
         {
             string[] filesToCopy = new string[] { filename };
 
@@ -4536,7 +4550,7 @@ namespace iba.Processing
 
                 foreach (var fileToCopy in filesToCopy)
                 {
-                    dataTransferTaskWorker.TransferFile(fileToCopy, task).Wait();
+                    dataTransferTaskWorker.TransferFile(fileToCopy, task, cancellationToken).Wait();
                     Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
                 }
 

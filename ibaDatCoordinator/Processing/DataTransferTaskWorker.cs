@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Grpc.Core;
 using iba.Data;
+using iba.Logging;
 using iba.Processing.IbaGrpc;
-using Messages.V1;
+using Status = Messages.V1.Status;
 
 namespace iba.Processing
 {
@@ -21,15 +24,22 @@ namespace iba.Processing
             client = new GrpcClient(m_data);
         }
 
-        public async Task TransferFile(string file, TaskData task)
+        public async Task TransferFile(string file, TaskData task, CancellationToken cancellationToken)
         {
-            var response = await client.TransferFileAsync(file, task);
-            if (response.Status == Status.Error)
+            try
             {
-                throw new InvalidOperationException(response.Message);
-            }
+                var response = await client.TransferFileAsync(file, task, cancellationToken);
 
-            await client.channel.ShutdownAsync();
+                if (response.Status == Status.Error)
+                {
+                    await client.channel.ShutdownAsync();
+                    throw new InvalidOperationException(response.Message);
+                }
+            }
+            finally
+            {
+                await client.channel.ShutdownAsync();
+            }
         }
     }
 }

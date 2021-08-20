@@ -51,8 +51,9 @@ namespace iba.Processing.IbaGrpc
         public override async Task<TransferResponse> TransferFile(IAsyncStreamReader<TransferRequest> requestStream, ServerCallContext context)
         {
             var configurationId = Guid.Parse(context.RequestHeaders.GetValue("configurationid"));
+            var cancellationToken = context.CancellationToken;
 
-            await _directoryManger.WriteFileAsync(requestStream, configurationId);
+            await _directoryManger.WriteFileAsync(requestStream, configurationId, cancellationToken);
 
             ClientManager.UpdateDiagnosticsInfo(configurationId);
 
