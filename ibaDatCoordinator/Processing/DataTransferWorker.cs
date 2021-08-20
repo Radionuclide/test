@@ -185,5 +185,10 @@ namespace iba.Processing
         {
             OnUpdateServerStatus += statusCallback;
         }
+
+        public List<DiagnosticsData> GetAllClients()
+        {
+            return TransferImpl.ClientManager.GetAllClients();
+        }
     }
 }

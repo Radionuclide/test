@@ -1208,6 +1208,11 @@ namespace iba.Processing
             return DataTransferWorker.Status;
         }
 
+        public virtual List<DiagnosticsData> DataTransferWorkerGetAllClients()
+        {
+            return DataTransferWorker.GetAllClients();
+        }
+
         public virtual async void DataTransferWorkerStartServer()
         {
             await DataTransferWorker.StartServer();
@@ -2224,7 +2229,19 @@ namespace iba.Processing
                 return Manager.DataTransferWorkerGetBriefStatus();
             }
         }
-
+        public override List<DiagnosticsData> DataTransferWorkerGetAllClients()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.DataTransferWorkerGetAllClients();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.DataTransferWorkerGetAllClients();
+            }
+        }
+        
         public override void DataTransferWorkerStartServer()
         {
             try

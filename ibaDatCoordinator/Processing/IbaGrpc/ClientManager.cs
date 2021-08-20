@@ -67,5 +67,21 @@ namespace iba.Processing.IbaGrpc
 
             UpdateDiagnosticInfoCallback?.Invoke(diagnosticsData);
         }
+
+        public List<DiagnosticsData> GetAllClients()
+        {
+            return ClientList.Select(item => new DiagnosticsData
+                {
+                    Filename = item.Value.FileName,
+                    ClientId = item.Key.ToString(),
+                    ClientName = item.Value.ClientName,
+                    ClientVersion = item.Value.ClientVersion,
+                    MaxBandwidth = item.Value.Maxbandwidth,
+                    Path = item.Value.Path,
+                    TaskName = item.Value.TaskName,
+                    TransferredFiles = item.Value.Transferredfiles
+                })
+                .ToList();
+        }
     }
 }

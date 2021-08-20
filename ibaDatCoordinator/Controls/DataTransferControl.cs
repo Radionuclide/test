@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -33,8 +34,8 @@ namespace iba.Controls
             InitializeComponent();
             TaskManager.Manager.DataTransferWorkerSetCallback(UpdateDiagnosticInfo);
             TaskManager.Manager.DataTransferWorkerSetUpdateServerStatusCallback(UpdateServerStatus);
-            
             ConfigureDiagnosticGrid();
+            GetAllClients();
         }
 
 
@@ -147,7 +148,6 @@ namespace iba.Controls
             
             dgvClients.DataSource = _diagnosticsDataList;
 
-
             dgvClients.Columns[nameof(DiagnosticsData.ClientName)].HeaderText = Resources.Hostname;
             dgvClients.Columns[nameof(DiagnosticsData.ClientName)].DisplayIndex = 0;
 
@@ -197,8 +197,6 @@ namespace iba.Controls
 
         private async void  buttonConfigurationApply_Click(object sender, EventArgs e)
         {
-            SaveData();
-
             if (m_cbEnabled.Checked)
             {
                 SaveData();
@@ -224,6 +222,13 @@ namespace iba.Controls
             m_numPort.Value = _defaultPort;
             tbRootPath.Text = _defaultPath;
             tbCertificatePath.Text = string.Empty;
+        }
+
+        private void GetAllClients()
+        {
+            var clients = TaskManager.Manager.DataTransferWorkerGetAllClients();
+            
+            clients.ForEach(item => _diagnosticsDataList.Add(item));
         }
     }
 }
