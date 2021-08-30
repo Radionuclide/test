@@ -75,9 +75,7 @@ namespace iba.Controls
             }
             else
             {
-                m_browseDatFilesButton.Hide();
-                m_checkPathButton.Location = m_browseDatFilesButton.Location;
-                m_toolTip.SetToolTip(m_browseFolderButton, iba.Properties.Resources.browseFolderDatFile);
+                m_toolTip.SetToolTip(m_browseDatFilesButton, iba.Properties.Resources.browseCleanProcessButton);
             }
 
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);

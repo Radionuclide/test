@@ -15,6 +15,7 @@ using iba.HD.Common;
 using iba.HD.Client.Interfaces;
 using iba.HD.Client;
 using Microsoft.Win32;
+using System.ServiceProcess;
 
 namespace iba.Processing
 {
@@ -3909,6 +3910,27 @@ namespace iba.Processing
             }
             catch
             {
+                string msg = IbaAnalyzerErrorMessage();
+                if (msg.Contains("LL_ERR_EXPRESSION"))
+                {
+                    bool spoolStarted = true;
+                    try
+                    {
+                        ServiceController service = new ServiceController("Spooler");
+                        if ((service.Status.Equals(ServiceControllerStatus.Stopped)) ||
+                            (service.Status.Equals(ServiceControllerStatus.StopPending)))
+                        {
+                            spoolStarted = false;
+                        }
+                    }
+                    catch //no access
+                    {
+                    }
+                    if (spoolStarted)
+                        msg = Properties.Resources.reportLL_ERR_EXPRESSION;
+                    else
+                        msg = Properties.Resources.reportLL_ERR_EXPRESSION_Spooler;
+                }
                 Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
                 lock (m_sd.DatFileStates)
                 {

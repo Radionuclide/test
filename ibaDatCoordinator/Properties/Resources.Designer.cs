@@ -302,6 +302,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse for .dat file. If necessary, remove the &quot;Already processed&quot; mark and process it..
+        /// </summary>
+        internal static string browseCleanProcessButton {
+            get {
+                return ResourceManager.GetString("browseCleanProcessButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse for .dat file....
         /// </summary>
         internal static string browseDatFile {
@@ -4196,6 +4205,24 @@ namespace iba.Properties {
         internal static string reportButton {
             get {
                 return ResourceManager.GetString("reportButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report failed: please check analysis and report configuration..
+        /// </summary>
+        internal static string reportLL_ERR_EXPRESSION {
+            get {
+                return ResourceManager.GetString("reportLL_ERR_EXPRESSION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The print spooler service is not started. Please start the service. If that does not adress the problem, please check analysis and report configuration..
+        /// </summary>
+        internal static string reportLL_ERR_EXPRESSION_Spooler {
+            get {
+                return ResourceManager.GetString("reportLL_ERR_EXPRESSION_Spooler", resourceCulture);
             }
         }
         

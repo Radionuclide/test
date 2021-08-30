@@ -1214,6 +1214,9 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="RangeTextFormatter" xml:space="preserve">
     <value>Query range: {0} - {1}</value>
   </data>
+  <data name="browseCleanProcessButton" xml:space="preserve">
+    <value>Browse for .dat file. If necessary, remove the "Already processed" mark and process it.</value>
+  </data>
   <data name="browseDatFile" xml:space="preserve">
     <value>Browse for .dat file...</value>
   </data>
@@ -1904,5 +1907,11 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="ToolTip_BrowsePDO" xml:space="preserve">
     <value>browse for analysis...</value>
+  </data>
+  <data name="reportLL_ERR_EXPRESSION" xml:space="preserve">
+    <value>Report failed: please check analysis and report configuration.</value>
+  </data>
+  <data name="reportLL_ERR_EXPRESSION_Spooler" xml:space="preserve">
+    <value>The print spooler service is not started. Please start the service. If that does not adress the problem, please check analysis and report configuration.</value>
   </data>
 </root>
