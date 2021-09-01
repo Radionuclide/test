@@ -251,6 +251,44 @@ namespace iba.Processing
             return new EventWriterItem(index, eventStamp, duration, bIncoming, !bIncoming, floats, texts, blobs);
         }
 
+        EventWriterConfig CreateEventWriterConfig(HDCreateEventTaskData task, string store)
+        {
+            HdStoreId storeId = null;
+            List<EventWriterSignal> writerSignalConfigs = new List<EventWriterSignal>();
+            foreach (var eventData in task.EventSettings)
+            {
+                if (eventData.StoreName == store && eventData.Active)
+                {
+                    EventWriterSignal signal = new EventWriterSignal(eventData.ID, new HdSegmentText(eventData.Name), "", "");
+
+                    string[] floatFields = new string[eventData.NumericFields.Count];
+                    for (int i = 0; i < eventData.NumericFields.Count; i++)
+                        floatFields[i] = eventData.NumericFields[i].Item1;
+                    signal.FloatFields = floatFields;
+
+                    string[] textFields = new string[eventData.TextFields.Count];
+                    for (int i = 0; i < eventData.TextFields.Count; i++)
+                        textFields[i] = eventData.TextFields[i].Item1;
+                    signal.TextFields = textFields;
+
+                    string[] blobFields = new string[eventData.BlobFields.Count];
+                    for (int i = 0; i < eventData.BlobFields.Count; i++)
+                        blobFields[i] = eventData.BlobFields[i];
+                    signal.BlobFields = blobFields;
+
+                    storeId = task.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.Server, task.ServerPort, eventData.StoreName);
+                    writerSignalConfigs.Add(signal);
+                }
+            }
+
+            EventWriterConfig config = new EventWriterConfig(hdWriterOrigin, storeId, writerSignalConfigs.ToArray(), true);
+            config.Username = task.Username;
+            config.Password = task.HDPassword;
+            config.ServerEventWriterConfig = task.FullEventConfig[store];
+
+            return config;
+        }
+
         SlimEventWriterConfig CreateSlimHDWriterConfig(HDCreateEventTaskData task, string store)
         {
             HdStoreId storeId = null;
@@ -293,18 +331,12 @@ namespace iba.Processing
             {
                 HdStoreId storeId = task.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.Server, task.ServerPort, store);
                 List<EventWriterSignal> writerSignalConfigs = new List<EventWriterSignal>();
+
+                // Create the Writerconfig
                 if (task?.FullEventConfig?.Count > 0)
-                {
-                    EventWriterConfig config = new EventWriterConfig(hdWriterOrigin, storeId, new EventWriterSignal[] { }, true);
-                    config.Username = task.Username;
-                    config.Password = task.HDPassword;
-                    config.ServerEventWriterConfig = task.FullEventConfig[store];
-                    writerConfigs.Add(config);
-                }
+                    writerConfigs.Add(CreateEventWriterConfig(task, store));
                 else
-                {
                     writerConfigs.Add(CreateSlimHDWriterConfig(task, store));
-                }
             }
             return writerConfigs;
         }
@@ -715,66 +747,66 @@ namespace iba.Processing
             return error;
         }
 
-// Deprecated do not use. No support for multiple events and multiple stores per task.
-public void WriteEvents(EventWriterData eventData)
-        {
-            // Write events
-            IHdWriterManager writerManager = null;
-            try
-            {
-                HdWriterConfig cfg = CreateSlimHDWriterConfig(m_data, m_data.EventSettings[0].StoreName);
+        // Deprecated do not use. No support for multiple events and multiple stores per task.
+        //public void WriteEvents(EventWriterData eventData)
+        //{
+        //    // Write events
+        //    IHdWriterManager writerManager = null;
+        //    try
+        //    {
+        //        HdWriterConfig cfg = CreateSlimHDWriterConfig(m_data, m_data.EventSettings[0].StoreName);
 
-                writerManager = HdClient.CreateWriterManager();
+        //        writerManager = HdClient.CreateWriterManager();
 
-                writerManager.StartConfig();
+        //        writerManager.StartConfig();
 
-                IHdWriterSummary summary = writerManager.SetConfig(cfg, null, HdValidationMessage.Ignore);
-                while (summary.Result == WriterConfigResult.Conflict)
-                {
-                    foreach (var cflt in summary.Conflicts)
-                        cflt.Solution = HdWriterSolution.Append;
+        //        IHdWriterSummary summary = writerManager.SetConfig(cfg, null, HdValidationMessage.Ignore);
+        //        while (summary.Result == WriterConfigResult.Conflict)
+        //        {
+        //            foreach (var cflt in summary.Conflicts)
+        //                cflt.Solution = HdWriterSolution.Append;
 
-                    summary = writerManager.SetConfig(cfg, summary, HdValidationMessage.Ignore);
-                }
+        //            summary = writerManager.SetConfig(cfg, summary, HdValidationMessage.Ignore);
+        //        }
 
-                writerManager.EndConfig();
+        //        writerManager.EndConfig();
 
-                if (summary.Result != WriterConfigResult.Valid)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    if (summary.Errors != null && summary.Errors.Count > 0)
-                    {
-                        foreach (var err in summary.Errors)
-                            sb.Append(" ").Append(err.Text).Append(",");
+        //        if (summary.Result != WriterConfigResult.Valid)
+        //        {
+        //            StringBuilder sb = new StringBuilder();
+        //            if (summary.Errors != null && summary.Errors.Count > 0)
+        //            {
+        //                foreach (var err in summary.Errors)
+        //                    sb.Append(" ").Append(err.Text).Append(",");
 
-                        sb.Remove(sb.Length - 1, 1);
-                    }
+        //                sb.Remove(sb.Length - 1, 1);
+        //            }
 
-                    throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
-                }
+        //            throw new HDCreateEventException(string.Format(Properties.Resources.logHDEventTaskConfigError, sb.ToString()));
+        //        }
 
-                writerManager.StartCreate();
-                IHdWriter writer = writerManager.CreateWriter(summary, true, HdValidationMessage.Ignore);
-                writerManager.EndCreate();
+        //        writerManager.StartCreate();
+        //        IHdWriter writer = writerManager.CreateWriter(summary, true, HdValidationMessage.Ignore);
+        //        writerManager.EndCreate();
 
-                if (writer == null || writer.Status != HdWriterStatus.Open)
-                    throw new HDCreateEventException(Properties.Resources.logHDEventTaskActivateError);
+        //        if (writer == null || writer.Status != HdWriterStatus.Open)
+        //            throw new HDCreateEventException(Properties.Resources.logHDEventTaskActivateError);
 
-                writer.Write(eventData);
-            }
-            finally
-            {
-                if (writerManager != null)
-                {
-                    try
-                    {
-                        writerManager.Dispose();
-                    }
-                    catch
-                    { }
-                }
-            }
-        }
+        //        writer.Write(eventData);
+        //    }
+        //    finally
+        //    {
+        //        if (writerManager != null)
+        //        {
+        //            try
+        //            {
+        //                writerManager.Dispose();
+        //            }
+        //            catch
+        //            { }
+        //        }
+        //    }
+        //}
     }
 
     internal class HDCreateEventException : Exception

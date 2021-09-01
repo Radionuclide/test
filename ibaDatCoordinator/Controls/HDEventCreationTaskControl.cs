@@ -103,32 +103,13 @@ namespace iba.Controls
             m_ctrlEvent.SetChannelTreeCtrl(channelTree);
 
             m_toolTip.SetToolTip(m_btnOpenPDO, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
-            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService==Program.ServiceEnum.NOSERVICE?Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone:Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService==Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone:Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_btnBrowsePDO, Properties.Resources.ToolTip_BrowsePDO);
 
             m_toolTip.SetToolTip(m_btnTest, Properties.Resources.HDEventTask_ToolTip_Test);
 
             m_ctrlEvent.EventTrigger = triggerControl;
-            m_ctrlServer.ServerSelectionChanged += (s, e) =>
-            {
-                if (m_ctrlServer.Reader.IsConnected())
-                {
-                    m_ctrlEvent.ReadOnly = false;
-
-                    if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
-                    {
-                        if (m_ctrlServer.Reader.UserManager.IsActive() && user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
-                            m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
-                        else if (!m_ctrlServer.Reader.UserManager.IsActive() || user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
-                            m_ctrlEvent.StoreFilter = null;
-                        m_ctrlEvent.RequestEditRightsHDServer(m_ctrlEvent.GetStoreNames());
-                    }
-                }
-                else
-                {
-                    m_ctrlEvent.ReadOnly = true;
-                    m_ctrlEvent.StoreFilter = null;
-                }
-            };
+            m_ctrlServer.ServerSelectionChanged += OnServerSelectionChanged;
             m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), null, false);
             m_ctrlEvent.EventWizard = new HDEventWizard(m_analyzerManager, GetPriorities());
 
@@ -141,6 +122,34 @@ namespace iba.Controls
             bLoadingChannelTree = false;
             bResetChannelTree = false;
             bDisposeChannelTree = false;
+        }
+
+        private void OnServerSelectionChanged(object sender, EventArgs e)
+        {
+            if(InvokeRequired)
+            {
+                BeginInvoke(new Action<object, EventArgs>(OnServerSelectionChanged), sender, e);
+                return;
+            }
+
+            if (m_ctrlServer.Reader.IsConnected())
+            {
+                m_ctrlEvent.ReadOnly = false;
+
+                if (m_ctrlServer.Reader.UserManager.GetCurrentUser() is PdaClientUser user)
+                {
+                    if (m_ctrlServer.Reader.UserManager.IsActive() && user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.List)
+                        m_ctrlEvent.StoreFilter = user.StoreRights[1].AllowedStores;
+                    else if (!m_ctrlServer.Reader.UserManager.IsActive() || user.StoreRights[1].StoreRange == PdaClientUser.HdStoreRight.StoreRightRange.All)
+                        m_ctrlEvent.StoreFilter = null;
+                    m_ctrlEvent.RequestEditRightsHDServer(m_ctrlEvent.GetStoreNames());
+                }
+            }
+            else
+            {
+                m_ctrlEvent.ReadOnly = true;
+                m_ctrlEvent.StoreFilter = null;
+            }
         }
 
         public void ChannelEditorModified(object sender, EventArgs args)
@@ -408,6 +417,7 @@ namespace iba.Controls
                     }
                     catch (HDCreateEventException)
                     {
+                        //Messages are already displayed via validationForm.AddRange
                         saveSuccessfull = false;
                     }
                     catch (Exception ex)
@@ -453,31 +463,19 @@ namespace iba.Controls
                     foreach (HDCreateEventTaskData.EventData data in localEvents)
                         m_data.EventSettings.Add(data);
                 }
+
                 List<EventConfig > changedConfigs = m_ctrlEvent.ServerEventsChanged();
                 if (changedConfigs!= null && changedConfigs.Count > 0)
                 {
                     DialogResult res = MessageBox.Show(this, iba.Properties.Resources.HDEventsChanged,
                             iba.Properties.Resources.closing, MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                             MessageBoxDefaultButton.Button2);
-                    switch (res)
+                    if (res == DialogResult.Yes)
                     {
-                        case DialogResult.Yes:
-                            if (SaveServerData(changedConfigs))
-                            {
-                                m_data.FullEventConfig.Clear();
-                            }
-                            else
-                            {
-                                var storeNames = m_ctrlEvent.GetStoreNames();
-                                m_data.FullEventConfig.Clear();
-                                foreach (string storeName in storeNames)
-                                {
-                                    m_data.FullEventConfig[storeName] = m_ctrlEvent.SerialzeServerEvents(storeName, m_data.Server, m_data.ServerPort, m_data.Guid, m_data.Name, m_data.Username, m_data.HDPassword);
-                                }
-                            }
-                            break;
-                        case DialogResult.No:
-                            break;
+                        SaveServerData(changedConfigs);
+
+                        //Just clear the full event config even when the apply didn't succeed because we only allow it to be applied from the GUI.
+                        m_data.FullEventConfig.Clear();
                     }
                 }
             }

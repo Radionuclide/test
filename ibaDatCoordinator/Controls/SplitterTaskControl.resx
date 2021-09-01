@@ -397,7 +397,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
     <value>$this</value>
@@ -448,7 +448,7 @@
     <value>m_gbTarget</value>
   </data>
   <data name="&gt;&gt;m_gbTarget.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gbTarget.Parent" xml:space="preserve">
     <value>$this</value>
@@ -667,7 +667,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -862,7 +862,7 @@
     <value>m_monitorGroup</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
     <value>$this</value>
@@ -870,6 +870,9 @@
   <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>279, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -887,6 +890,12 @@
   </data>
   <data name="&gt;&gt;m_openFileDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
+    <value>m_toolTip</value>
+  </data>
+  <data name="&gt;&gt;m_toolTip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>SplitterTaskControl</value>

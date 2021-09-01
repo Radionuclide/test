@@ -1217,6 +1217,9 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="browseCleanProcessButton" xml:space="preserve">
     <value>Browse for .dat file. If necessary, remove the "Already processed" mark and process it.</value>
   </data>
+  <data name="browseDatFile" xml:space="preserve">
+    <value>Browse for .dat file...</value>
+  </data>
   <data name="splitterTaskTitle" xml:space="preserve">
     <value>Split</value>
   </data>
@@ -1639,13 +1642,13 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>iba HDQ files (*.hdq)|*.hdq|iba dat files (*.dat)|*.dat</value>
   </data>
   <data name="HDEventTask_ToolTip_OpenPDO" xml:space="preserve">
-    <value>Open the PDO file with ibaAnalyzer</value>
+    <value>Open the analysis file with ibaAnalyzer</value>
   </data>
   <data name="HDEventTask_ToolTip_Test" xml:space="preserve">
     <value>Test the event generation (this requires a DAT file)</value>
   </data>
   <data name="HDEventTask_ToolTip_UploadPDO" xml:space="preserve">
-    <value>Upload a PDO file to the server</value>
+    <value>Upload the analysis file to the server</value>
   </data>
   <data name="HDEventsChanged" xml:space="preserve">
     <value>Changes are made to the HD offline events configurations. Do you want to save these changes on the HD server?</value>
@@ -1819,7 +1822,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Changes were detected to one or more PDO files. In order to apply these changes,  the source files must be updated. This might automatically stop and start the corresponding job. Do you wish to update these files?</value>
   </data>
   <data name="HDEventTask_ToolTip_UploadPDOStandAlone" xml:space="preserve">
-    <value>Update the PDO file</value>
+    <value>Update the analysis file</value>
   </data>
   <data name="HdFallingEdge" xml:space="preserve">
     <value>on falling edge (Value)</value>
@@ -1955,6 +1958,18 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="ibaFilesNoLicense" xml:space="preserve">
     <value>The .dat file is in an older file format which requires a license, please contact iba Support</value>
+  </data>
+  <data name="browseFolderDatFile" xml:space="preserve">
+    <value>browse for .dat file folder...</value>
+  </data>
+  <data name="ToolTip_BrowsePDO" xml:space="preserve">
+    <value>browse for analysis...</value>
+  </data>
+  <data name="reportLL_ERR_EXPRESSION" xml:space="preserve">
+    <value>Report failed: please check analysis and report configuration.</value>
+  </data>
+  <data name="reportLL_ERR_EXPRESSION_Spooler" xml:space="preserve">
+    <value>The print spooler service is not started. Please start the service. If that does not adress the problem, please check analysis and report configuration.</value>
   </data>
   <data name="UploadTaskButton" xml:space="preserve">
     <value>add new upload task</value>

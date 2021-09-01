@@ -329,6 +329,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse for .dat file....
+        /// </summary>
+        internal static string browseDatFile {
+            get {
+                return ResourceManager.GetString("browseDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to browse for .dat file folder....
+        /// </summary>
+        internal static string browseFolderDatFile {
+            get {
+                return ResourceManager.GetString("browseFolderDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse for file on {0}.
         /// </summary>
         internal static string BrowseForFileOn {
@@ -1581,7 +1599,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open the PDO file with ibaAnalyzer.
+        ///   Looks up a localized string similar to Open the analysis file with ibaAnalyzer.
         /// </summary>
         internal static string HDEventTask_ToolTip_OpenPDO {
             get {
@@ -1599,7 +1617,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload a PDO file to the server.
+        ///   Looks up a localized string similar to Upload the analysis file to the server.
         /// </summary>
         internal static string HDEventTask_ToolTip_UploadPDO {
             get {
@@ -1608,7 +1626,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update the PDO file.
+        ///   Looks up a localized string similar to Update the analysis file.
         /// </summary>
         internal static string HDEventTask_ToolTip_UploadPDOStandAlone {
             get {
@@ -4637,6 +4655,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report failed: please check analysis and report configuration..
+        /// </summary>
+        internal static string reportLL_ERR_EXPRESSION {
+            get {
+                return ResourceManager.GetString("reportLL_ERR_EXPRESSION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The print spooler service is not started. Please start the service. If that does not adress the problem, please check analysis and report configuration..
+        /// </summary>
+        internal static string reportLL_ERR_EXPRESSION_Spooler {
+            get {
+                return ResourceManager.GetString("reportLL_ERR_EXPRESSION_Spooler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report.
         /// </summary>
         internal static string reportTitle {
@@ -5400,6 +5436,15 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("Toolbars16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to browse for analysis....
+        /// </summary>
+        internal static string ToolTip_BrowsePDO {
+            get {
+                return ResourceManager.GetString("ToolTip_BrowsePDO", resourceCulture);
             }
         }
         

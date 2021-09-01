@@ -5,7 +5,7 @@
 #define MAJOR	3
 #define MINOR	0
 #define BUILD	1
-#define BETATAG " BETA1" // use with leading whitespace, empty string "" when not set 
+#define BETATAG ""
 
 
 

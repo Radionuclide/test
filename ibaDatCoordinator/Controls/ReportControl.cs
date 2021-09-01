@@ -41,6 +41,9 @@ namespace iba.Controls
             m_uncControl = new UNCTaskControl();
             m_panelFile.Controls.Add(m_uncControl);
             m_uncControl.Dock = DockStyle.Fill;
+            m_toolTip.SetToolTip(m_executeIBAAButton, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
+            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_browseFileButton, Properties.Resources.ToolTip_BrowsePDO);
         }
 
         //protected override void OnLoad(EventArgs e)

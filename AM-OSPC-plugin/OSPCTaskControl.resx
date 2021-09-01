@@ -804,6 +804,9 @@
   <data name="m_btnUploadPDO.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
   </data>
+  <data name="m_btnUploadPDO.ToolTip" xml:space="preserve">
+    <value>Update or upload the analysis file</value>
+  </data>
   <data name="&gt;&gt;m_btnUploadPDO.Name" xml:space="preserve">
     <value>m_btnUploadPDO</value>
   </data>

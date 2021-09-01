@@ -16,6 +16,7 @@ using iba.HD.Client.Interfaces;
 using iba.HD.Client;
 using iba.Processing.IbaGrpc;
 using Microsoft.Win32;
+using System.ServiceProcess;
 
 namespace iba.Processing
 {
@@ -3485,15 +3486,18 @@ namespace iba.Processing
 						{ //try expression
 							outputfile = EvaluateTextExpression(task.InfoFieldForOutputFile);
 						}
-						if (task.InfoFieldForOutputFileLength == 0)
-						{
-							if (task.InfoFieldForOutputFileStart != 0)
-							{
-								outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
-							}
-						}
-						else
-							outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+                        if (task.InfoFieldForOutputFileLength == 0)
+                        {
+                            if (task.InfoFieldForOutputFileStart != 0)
+                            {
+                                outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
+                            }
+                        }
+                        else
+                        {
+                            int len = Math.Min(outputfile.Length - task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+                            outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, len);
+                        }
 						if (task.InfoFieldForOutputFileRemoveBlanksAll)
 							outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
 						else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
@@ -3609,15 +3613,18 @@ namespace iba.Processing
 						Subdir = "";
 					else
 					{
-						if (task.InfoFieldForSubdirLength == 0)
-						{
-							if (task.InfoFieldForSubdirStart != 0)
-							{
-								Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
-							}
-						}
-						else
-							Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                        if (task.InfoFieldForSubdirLength == 0)
+                        {
+                            if (task.InfoFieldForSubdirStart != 0)
+                            {
+                                Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
+                            }
+                        }
+                        else
+                        {
+                            int len = Math.Min(Subdir.Length - task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                            Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, len);
+                        }
 						if (task.InfoFieldForSubdirRemoveBlanksAll)
 							Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
 						else if (task.InfoFieldForSubdirRemoveBlanksEnd)
@@ -3950,6 +3957,27 @@ namespace iba.Processing
             }
             catch
             {
+                string msg = IbaAnalyzerErrorMessage();
+                if (msg.Contains("LL_ERR_EXPRESSION"))
+                {
+                    bool spoolStarted = true;
+                    try
+                    {
+                        ServiceController service = new ServiceController("Spooler");
+                        if ((service.Status.Equals(ServiceControllerStatus.Stopped)) ||
+                            (service.Status.Equals(ServiceControllerStatus.StopPending)))
+                        {
+                            spoolStarted = false;
+                        }
+                    }
+                    catch //no access
+                    {
+                    }
+                    if (spoolStarted)
+                        msg = Properties.Resources.reportLL_ERR_EXPRESSION;
+                    else
+                        msg = Properties.Resources.reportLL_ERR_EXPRESSION_Spooler;
+                }
                 Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
                 lock (m_sd.DatFileStates)
                 {
@@ -4967,7 +4995,8 @@ namespace iba.Processing
             // Write events
             try
             {
-                worker.WriteEvents(GetTaskStoreNames(task), eventData, HdValidationMessage.Ignore);
+                if(eventData.Count > 0)
+                    worker.WriteEvents(GetTaskStoreNames(task), eventData, HdValidationMessage.Ignore);
 
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                 Log(Logging.Level.Info, iba.Properties.Resources.logHDEventTaskSuccess, filename, task);

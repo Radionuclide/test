@@ -53,7 +53,7 @@ namespace iba
         }
     }
 
-    public class CommunicationObject: MarshalByRefObject
+    public class CommunicationObject : MarshalByRefObject
     {
         private TaskManager m_manager;
         public TaskManager Manager
@@ -74,7 +74,7 @@ namespace iba
                     mySerializer.Serialize(myWriter, dat);
                 }
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.ServerSaveFileProblem + ex.ToString());
             }
@@ -136,7 +136,7 @@ namespace iba
         {
             //Check client version
             int minClientVersion = DatCoVersion.MinimumClientVersion();
-            if(clientVersion < minClientVersion)
+            if (clientVersion < minClientVersion)
             {
                 LogData.Data.Log(Logging.Level.Debug, $"Connection from {clientName} refused because client version {DatCoVersion.FormatVersion(clientVersion)} is not compatible. Minimum client version is {DatCoVersion.FormatVersion(minClientVersion)}.");
                 throw new Exception(String.Format(Properties.Resources.IncompatibleClientVersion, DatCoVersion.FormatVersion(minClientVersion)));
@@ -172,7 +172,7 @@ namespace iba
             m_scriptProc.Start();
         }
 
-		public void KillScript()
+        public void KillScript()
         {
             if (m_scriptProc != null)
             {
@@ -233,7 +233,7 @@ namespace iba
                 }
             }
             catch (Exception ex)
-            { 
+            {
                 myBar.Error = iba.Properties.Resources.RemoveMarkingsProblem + ex.Message;
             }
             finally
@@ -286,7 +286,7 @@ namespace iba
         {
             try
             {
-                using (FileProcessing fp = new FileProcessing(path, username, pass,""))
+                using (FileProcessing fp = new FileProcessing(path, username, pass, ""))
                 {
                     if (!String.IsNullOrEmpty(fp.ErrorString))
                         myBar.Error = iba.Properties.Resources.DeleteFilesProblem + fp.ErrorString;
@@ -311,7 +311,7 @@ namespace iba
             try
             {
                 string regFileName = "";
-                regFileName = Path.Combine(Utility.DataPath.Folder(),"ibaanalyzer.reg");
+                regFileName = Path.Combine(Utility.DataPath.Folder(), "ibaanalyzer.reg");
                 if (!RegistryExporter.ExportIbaAnalyzerKey(regFileName))
                     return "";
                 return regFileName;
@@ -345,7 +345,7 @@ namespace iba
         //    return iba.Controls.IfTaskControl.TestConditionHD(expression, index, pdo, hdqfile, user, pass, out errorMessage);
         //}
 
-        
+
 
         public bool FileExists(string file)
         {
@@ -385,7 +385,7 @@ namespace iba
             ex = null;
             try
             {
-                DataPath.WriteFile(filename,text);
+                DataPath.WriteFile(filename, text);
             }
             catch (Exception ex2)
             {
@@ -425,6 +425,25 @@ namespace iba
                 for (int i = 0; i < fileNames.Length; i++)
                     res[i] = File.Exists(fileNames[i]) ? new ServerFileInfo(fileNames[i]) : null;
 
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logging.ibaLogger.LogFormat(Logging.Level.Exception, "CommunicationObject GetFileInfos: {0}", ex.Message);
+                return new ServerFileInfo[0];
+            }
+        }
+
+        public ServerFileInfo[] GetFileInfos2(string path, string searchstring)
+        {
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(searchstring))
+                return new ServerFileInfo[0];
+            try
+            {
+                string[] fileNames = Directory.GetFiles(path, searchstring);
+                ServerFileInfo[] res = new ServerFileInfo[fileNames.Length];
+                for (int i = 0; i < fileNames.Length; i++)
+                    res[i] = File.Exists(fileNames[i]) ? new ServerFileInfo(fileNames[i]) : null;
                 return res;
             }
             catch (Exception ex)
@@ -938,6 +957,19 @@ namespace iba
             try
             {
                 return m_com.GetFileInfos(fileNames);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return new ServerFileInfo[0];
+            }
+        }
+
+        public ServerFileInfo[] GetFileInfos2(string path, string searchPattern)
+        {
+            try
+            {
+                return m_com.GetFileInfos2(path, searchPattern);
             }
             catch (Exception ex)
             {
