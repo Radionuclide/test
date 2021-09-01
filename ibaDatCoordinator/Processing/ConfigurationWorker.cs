@@ -14,6 +14,7 @@ using System.ComponentModel;
 using iba.HD.Common;
 using iba.HD.Client.Interfaces;
 using iba.HD.Client;
+using iba.Processing.IbaGrpc;
 using Microsoft.Win32;
 
 namespace iba.Processing
@@ -35,6 +36,8 @@ namespace iba.Processing
             get { return m_sd; }
         }
 
+        private readonly List<CancellationTokenSource> _cancellationTokenList = new List<CancellationTokenSource>();
+
         private bool m_stop;
 
         public bool Stop
@@ -50,6 +53,11 @@ namespace iba.Processing
                 if (m_stop)
                     m_waitEvent.Set();
                 //do finalization of custom tasks
+
+                //Stop all data transfer tasks
+                _cancellationTokenList.ForEach(token => token?.Cancel());
+                _cancellationTokenList.Clear();
+
                 foreach (TaskData t in m_cd.Tasks)
                 {
                     ICustomTaskData c = t as ICustomTaskData;
@@ -2603,7 +2611,7 @@ namespace iba.Processing
                         }
                         continue;
                     }
-                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData) && !(task is UploadTaskData))
+                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData) && !(task is UploadTaskData) && !(task is DataTransferTaskData))
                     {
                         m_outPutFilesPrevTask = null;
                     }
@@ -2692,6 +2700,7 @@ namespace iba.Processing
                 {
                     WriteStateInHDQFile(InputFile, completeSucces);
                 }
+
                 m_sd.Changed = true;
             }
 
@@ -3073,6 +3082,24 @@ namespace iba.Processing
                 DoKafkaWriterTask(DatFile, task as KafkaWriterTaskData);
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
                 memoryUsed = ((KafkaWriterTaskData)task).MonitorData.MemoryUsed;
+            }
+            else if (task is DataTransferTaskData)
+            {
+                DataTransferTaskData dat = task as DataTransferTaskData;
+
+                var cancellationTokenSource = new CancellationTokenSource();
+
+                var token = cancellationTokenSource.Token;
+
+                _cancellationTokenList.Add(cancellationTokenSource);
+
+                TransferFile(DatFile, dat, token);
+
+                if (dat.ShouldDeleteAfterTransfer)
+                {
+                    DirectoryManager.DeleteFileAsync(DatFile);
+                    continueProcessing = false;
+                }
             }
             else if (task is CustomTaskData)
             {
@@ -4483,6 +4510,71 @@ namespace iba.Processing
             {
 
                 Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message, filename, task);
+
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+        }
+
+        internal void TransferFile(string filename, DataTransferTaskData task, CancellationToken cancellationToken)
+        {
+            string[] filesToCopy = new string[] { filename };
+
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
+
+            if (task.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT)
+            {
+                if (m_outPutFilesPrevTask == null || m_outPutFilesPrevTask.Length == 0 || string.IsNullOrEmpty(m_outPutFilesPrevTask[0]))
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
+                    return;
+                }
+                if (m_outPutFilesPrevTask != null)
+                {
+                    filesToCopy = m_outPutFilesPrevTask;
+                }
+            }
+            m_outPutFilesPrevTask = null;
+
+            try
+            {
+                //close .dat file first
+                try
+                {
+                    if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+                }
+                catch
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                    if (m_needIbaAnalyzer)
+                    {
+                        RestartIbaAnalyzer();
+                    }
+                }
+                var dataTransferTaskWorker = new DataTransferTaskWorker(task);
+
+                foreach (var fileToCopy in filesToCopy)
+                {
+                    dataTransferTaskWorker.TransferFile(fileToCopy, task, cancellationToken).Wait();
+                    Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
+                }
+
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    if (m_outPutFilesPrevTask != null && m_outPutFilesPrevTask.Length > 0)
+                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFilesPrevTask[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.InnerException?.Message, filename, task);
 
                 lock (m_sd.DatFileStates)
                 {

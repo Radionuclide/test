@@ -90,6 +90,7 @@ namespace iba.Controls
             m_newOPCUAWriterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.OPCUAIcon.Handle);
             m_newUploadTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle);
             m_newKafkaWriterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.kafka.Handle);
+            m_newDataTransferTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle);
 
             m_newReportButton.ToolTipText = iba.Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = iba.Properties.Resources.extractButton;
@@ -104,6 +105,7 @@ namespace iba.Controls
             m_newOPCUAWriterTaskButton.ToolTipText = iba.Properties.Resources.opcUaWriterTaskButton;
             m_newUploadTaskButton.ToolTipText = iba.Properties.Resources.UploadTaskButton;
             m_newKafkaWriterTaskButton.ToolTipText = iba.Properties.Resources.addKafkaWriterTask;
+            m_newDataTransferTaskButton.ToolTipText = iba.Properties.Resources.DataTransferTaskButton;
 
             m_taskCount = m_newTaskToolstrip.Items.Count;
             UpdatePlugins();
@@ -564,6 +566,23 @@ namespace iba.Controls
             var taskData = new UploadTaskData(m_data);
             var treeItemData = new UploadTaskTreeItemData(m_manager, taskData);
             AddNewTaskHelper(taskData, MainForm.UPLOADTASK_INDEX, treeItemData);
+        }        
+        
+        private void m_newDataTransferTaskButton_Click(object sender, EventArgs e)
+        {
+            if (!TestTaskCount())
+                return;
+            var dataTransferTaskData = new DataTransferTaskData(m_data);
+            dataTransferTaskData.SetNextName();
+            m_data.Tasks.Add(dataTransferTaskData);
+            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
+            TreeNode newNode = new TreeNode(dataTransferTaskData.Name, MainForm.DATATRANSFER_TASK_INDEX, MainForm.DATATRANSFER_TASK_INDEX);
+            newNode.Tag = new DataTransferTaskTreeItemData(m_manager, dataTransferTaskData);
+            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(m_data);
+            m_manager.LeftTree.SelectedNode = newNode;
         }
 
         void newCustomTaskButton_Click(object sender, EventArgs e)

@@ -88,7 +88,8 @@ namespace iba.Data
         XmlElement(Type = typeof(KafkaWriterTaskData)),
         XmlElement(Type = typeof(CustomTaskData)),
         XmlElement(Type = typeof(CustomTaskDataUNC)),
-        XmlElement(Type = typeof(UploadTaskData))]
+        XmlElement(Type = typeof(UploadTaskData)),
+        XmlElement(Type = typeof(DataTransferTaskData))]
         public List<TaskData> Tasks
         {
             get { return m_tasks; }

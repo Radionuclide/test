@@ -191,6 +191,12 @@
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTransferControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataTransferControl.Designer.cs">
+      <DependentUpon>DataTransferControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ErrorPluginTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -287,6 +293,12 @@
     <Compile Include="Controls\HDEventWizard.Designer.cs">
       <DependentUpon>HDEventWizard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTransferTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataTransferTaskControl.Designer.cs">
+      <DependentUpon>DataTransferTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UploadTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -299,7 +311,9 @@
     <Compile Include="Controls\TriggerControl.Designer.cs">
       <DependentUpon>TriggerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\DataTransferData.cs" />
     <Compile Include="Data\ErrorPluginTaskData.cs" />
+    <Compile Include="Data\DataTransferTaskData.cs" />
     <Compile Include="Data\UploadTaskData.cs" />
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
@@ -345,7 +359,16 @@
       <DependentUpon>KafkaWriterTaskControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
+    <Compile Include="Processing\DataTransferTaskWorker.cs" />
+    <Compile Include="Processing\DataTransferWorker.cs" />
     <Compile Include="Processing\ErrorPluginTaskWorker.cs" />
+    <Compile Include="Processing\IbaGrpc\ClientManager.cs" />
+    <Compile Include="Processing\IbaGrpc\ConfigurationValidator.cs" />
+    <Compile Include="Processing\IbaGrpc\DataTransferImpl.cs" />
+    <Compile Include="Processing\IbaGrpc\DataTransferServerInfo.cs" />
+    <Compile Include="Processing\IbaGrpc\DiagnosticsData.cs" />
+    <Compile Include="Processing\IbaGrpc\DirectoryManager.cs" />
+    <Compile Include="Processing\IbaGrpc\GrpcClient.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaNodeManager.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaVariable.cs" />
@@ -360,6 +383,7 @@
     <Compile Include="Dialogs\TestSplitterTaskDialog.Designer.cs">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -622,8 +646,15 @@
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataTransferControl.resx">
+      <DependentUpon>DataTransferControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ErrorPluginTaskControl.resx">
       <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataTransferTaskControl.resx">
+      <DependentUpon>DataTransferTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UploadTaskControl.resx">
       <DependentUpon>UploadTaskControl.cs</DependentUpon>
@@ -664,6 +695,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SnmpControl.resx">
       <DependentUpon>SnmpControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SplitterTaskControl.resx">
       <DependentUpon>SplitterTaskControl.cs</DependentUpon>
@@ -856,6 +888,8 @@
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <None Include="Resources\kafka.ico" />
+    <None Include="Resources\DataTransferIcon.ico" />
+    <Protobuf Include="Processing\IbaGrpc\protos\DataTransfer.proto" />
     <None Include="Resources\up.ico" />
     <None Include="Resources\down.ico" />
     <None Include="Resources\UploadTaskIcon.ico" />
@@ -954,6 +988,17 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf">
+      <Version>3.15.8</Version>
+    </PackageReference>
+    <PackageReference Include="Grpc.Core">
+      <Version>2.37.1</Version>
+    </PackageReference>
+    <PackageReference Include="Grpc.Tools">
+      <Version>2.37.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="ibaSnmpLib">
       <Version>1.9.8</Version>
     </PackageReference>
@@ -967,6 +1012,7 @@
       <Version>5.17.10</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"

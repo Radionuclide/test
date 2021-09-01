@@ -38,7 +38,21 @@ namespace iba.Controls
         MinimalStatusData m_data;
 
 
-        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons, m_extractIcons, m_batchfileIcons, m_copydatIcons, m_conditionIcons, m_updateIcons, m_pauseIcons, m_cleanupIcons, m_splitIcons, m_hdCreateEventIcons, m_OpcUaWriterIcons, m_uploadIcons, m_kafkaIcons;
+        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons,
+            m_extractIcons,
+            m_batchfileIcons,
+            m_copydatIcons,
+            m_conditionIcons,
+            m_updateIcons,
+            m_pauseIcons,
+            m_cleanupIcons,
+            m_splitIcons,
+            m_hdCreateEventIcons,
+            m_OpcUaWriterIcons,
+            m_uploadIcons,
+			m_kafkaIcons,
+            m_dataTransferIcons;
+
         Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
         
         Dictionary<DatFileStatus.State, String> m_taskTexts;
@@ -60,6 +74,7 @@ namespace iba.Controls
             m_hdCreateEventIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_OpcUaWriterIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_kafkaIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_dataTransferIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
 
 
@@ -187,6 +202,16 @@ namespace iba.Controls
             m_uploadIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle)));
             m_uploadIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle)));
             m_uploadIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle)));
+            
+            m_dataTransferIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
+            m_dataTransferIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle));
+            m_dataTransferIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle)));
+            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle)));
+            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle)));
+            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle)));
+            m_dataTransferIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle)));
+            m_dataTransferIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle)));
+            m_dataTransferIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle)));
 
             m_kafkaIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
             m_kafkaIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.kafka.Handle));
@@ -397,8 +422,6 @@ namespace iba.Controls
                         else if (task is SplitterTaskData)
                             bitmap = m_splitIcons[value];
                         else if (task is HDCreateEventTaskData)
-                            bitmap = m_hdCreateEventIcons[value];
-                        else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc
                             bitmap = m_cleanupIcons[value];
                         else if (task is OpcUaWriterTaskData)
                             bitmap = m_OpcUaWriterIcons[value];
@@ -406,6 +429,8 @@ namespace iba.Controls
                             bitmap = m_uploadIcons[value];
                         else if (task is KafkaWriterTaskData)
                             bitmap = m_kafkaIcons[value];
+                        else if (task is DataTransferTaskData)
+                            bitmap = m_dataTransferIcons[value];
                         else if (task is ICustomTaskData cust)
                             bitmap = GetImageForCustomTaskData(cust, value);
                         else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc

@@ -27,7 +27,7 @@
 
 !echo "Executing installer with unsigned uninstaller"
 !system "..\InstallFiles\uninstaller_only.exe" = 2
-!delfile "..\InstallFiles\uninstaller_only.exe"
+!delfile /nonfatal "..\InstallFiles\uninstaller_only.exe"
 
 !echo "Signing uninstaller"
 !ifdef SIGN_TIMESTAMP_URL
@@ -441,6 +441,15 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\ibaSnmpLib.dll"
   File "..\ibaDatCoordinator\bin\Release\WinSCPnet.dll"
   File "..\ibaDatCoordinator\bin\Release\WinSCP.exe"
+  File "..\ibaDatCoordinator\bin\Release\Google.Protobuf.dll"
+  File "..\ibaDatCoordinator\bin\Release\Grpc.Core.Api.dll"
+  File "..\ibaDatCoordinator\bin\Release\Grpc.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\grpc_csharp_ext.x64.dll"
+  File "..\ibaDatCoordinator\bin\Release\grpc_csharp_ext.x86.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Memory.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Buffers.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Numerics.Vectors.dll"
   ;OPC UA
   File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"

@@ -61,18 +61,19 @@ namespace iba.Controls
             this.m_newExtractButton = new System.Windows.Forms.ToolStripButton();
             this.m_newBatchfileButton = new System.Windows.Forms.ToolStripButton();
             this.m_newCopyTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newUploadTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newIfTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newUpdateDataTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newPauseTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newCleanupTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newSplitterTaskButton = new System.Windows.Forms.ToolStripButton();
-            this.m_newUploadTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newHdCreateEventTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newKafkaWriterTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newOPCUAWriterTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newDataTransferTaskButton = new System.Windows.Forms.ToolStripButton();
             this.gbJobName = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.m_nameTextBox = new System.Windows.Forms.TextBox();
-            this.m_newOPCUAWriterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.gbNotifications.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudNotifyTime)).BeginInit();
@@ -284,7 +285,8 @@ namespace iba.Controls
             this.m_newSplitterTaskButton,
             this.m_newHdCreateEventTaskButton,
             this.m_newOPCUAWriterTaskButton,
-            this.m_newKafkaWriterTaskButton});
+            this.m_newKafkaWriterTaskButton,
+            this.m_newDataTransferTaskButton});
             this.m_newTaskToolstrip.Name = "m_newTaskToolstrip";
             this.m_newTaskToolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
@@ -379,6 +381,20 @@ namespace iba.Controls
             this.m_newKafkaWriterTaskButton.Name = "m_newKafkaWriterTaskButton";
             this.m_newKafkaWriterTaskButton.Click += new System.EventHandler(this.m_newKafkaWriterTaskButton_Click);
             // 
+            // m_newOPCUAWriterTaskButton
+            // 
+            resources.ApplyResources(this.m_newOPCUAWriterTaskButton, "m_newOPCUAWriterTaskButton");
+            this.m_newOPCUAWriterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newOPCUAWriterTaskButton.Name = "m_newOPCUAWriterTaskButton";
+            this.m_newOPCUAWriterTaskButton.Click += new System.EventHandler(this.m_newOPCUAWriterTaskButton_Click);
+            // 
+            // m_newDataTransferTaskButton
+            // 
+            resources.ApplyResources(this.m_newDataTransferTaskButton, "m_newDataTransferTaskButton");
+            this.m_newDataTransferTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newDataTransferTaskButton.Name = "m_newDataTransferTaskButton";
+            this.m_newDataTransferTaskButton.Click += new System.EventHandler(this.m_newDataTransferTaskButton_Click);
+            // 
             // gbJobName
             // 
             resources.ApplyResources(this.gbJobName, "gbJobName");
@@ -468,5 +484,6 @@ namespace iba.Controls
         private System.Windows.Forms.ToolStripButton m_newOPCUAWriterTaskButton;
         private System.Windows.Forms.ToolStripButton m_newUploadTaskButton;
         private System.Windows.Forms.ToolStripButton m_newKafkaWriterTaskButton;
+        private System.Windows.Forms.ToolStripButton m_newDataTransferTaskButton;
     }
 }

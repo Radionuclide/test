@@ -50,14 +50,15 @@ namespace iba
 		public static readonly int OPCUA_WRITERTASK_INDEX = 14;
         public static readonly int UPLOADTASK_INDEX = 15;
         public static readonly int KAFKAWRITERTASK_INDEX = 16;
+        public static readonly int DATATRANSFER_TASK_INDEX = 17;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int UNKNOWNTASK_INDEX = 17;
-        public static readonly int NEWCONF_INDEX = 18;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 19;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 20;
-        public static readonly int NEW_EVENT_CONF_INDEX = 21;
-        public static readonly int CUSTOMTASK_INDEX = 22;
-        public static readonly int NR_TASKS = 13;
+        public static readonly int UNKNOWNTASK_INDEX = 18;
+        public static readonly int NEWCONF_INDEX = 19;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 20;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 21;
+        public static readonly int NEW_EVENT_CONF_INDEX = 22;
+        public static readonly int CUSTOMTASK_INDEX = 23;
+        public static readonly int NR_TASKS = 14;
 
         private QuitForm m_quitForm;
 
@@ -106,8 +107,9 @@ namespace iba
             m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.watchdog.Handle);
             // added by kolesnik - begin
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = iba.Properties.Resources.snmp_icon;
-            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.opcUaServer_icon; 
+            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.opcUaServer_icon;
             // added by kolesnik - end
+            m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle);
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
             m_loggingPane.LargeImage = m_loggingPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.logging.Handle);
@@ -133,6 +135,7 @@ namespace iba
 			confsImageList.Images.Add(iba.Properties.Resources.OPCUAIcon.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.UploadTaskIcon);
             confsImageList.Images.Add(iba.Properties.Resources.kafka.ToBitmap());
+            confsImageList.Images.Add(iba.Properties.Resources.DataTransferIcon.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.img_question);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
@@ -456,6 +459,22 @@ namespace iba
                 DisableCopyPasteCutDeleteMenuItems();
                 // changed by kolesnik - end
             }
+            else if(m_navBar.SelectedPane == m_dataTransferPane)
+            {
+                SaveRightPaneControl();
+                Control ctrl = propertyPanes["dataTransferControl"] as Control;
+                if (ctrl == null)
+                {
+                    ctrl = new DataTransferControl();
+                    propertyPanes["dataTransferControl"] = ctrl;
+                }
+
+                SetRightPaneControl(ctrl, Properties.Resources.dataTransferTitle, 
+                    TaskManager.Manager.DataTransferData?.Clone());
+                    
+                EnableAllButOnePaneToolStripMenuItems(dataTransferToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+            }
         }
 
         // added by kolesnik - begin
@@ -472,6 +491,7 @@ namespace iba
             watchdogToolStripMenuItem.Enabled = true;
             snmpToolStripMenuItem.Enabled = true;
             opcUaToolStripMenuItem.Enabled = true;
+            dataTransferToolStripMenuItem.Enabled = true;
             settingsToolStripMenuItem.Enabled = true;
 
             // disable the only one of them
@@ -545,6 +565,7 @@ namespace iba
                 // Initialize it here only if the app is standalone
                 TaskManager.Manager.SnmpWorkerInit();
                 TaskManager.Manager.OpcUaWorkerInit();
+                TaskManager.Manager.DataTransferWorkerInit();
             }
             // added by kolesnik - end
         }
@@ -632,6 +653,11 @@ namespace iba
                 {
                     taskNode = new TreeNode(task.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, task as UploadTaskData);
+                }
+                else if (task.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(task.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, task as DataTransferTaskData);
                 }
                 else if(task is ICustomTaskData cust)
                 {
@@ -886,6 +912,7 @@ namespace iba
                 case "SplitterTask":
                 case "CustomTaskUNC":
                 case "UploadTask":
+                case "DataTransferTask":
                 case "CustomTask":
                 case "HDCreateEventTask":
 				case "OPCUAWriterTask":
@@ -1058,6 +1085,8 @@ namespace iba
                         msg = String.Format(iba.Properties.Resources.deleteOPCUATastQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is KafkaWriterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteKafkaTaskQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is DataTransferTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteDataTransferTaskQuestion, node.Text, node.Parent.Text);
                 }
                 DialogResult res = MessageBox.Show(this, msg,
                     iba.Properties.Resources.deleteTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
@@ -1245,6 +1274,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, m_task_copy as UploadTaskData);
                 }
+                else if (m_task_copy.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, m_task_copy as DataTransferTaskData);
+                }
                 else if (m_task_copy is ICustomTaskData cust)
                 {
                     int index = GetCustomTaskImageIndex(cust);
@@ -1350,6 +1384,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, m_task_copy as UploadTaskData);
                 }
+                else if (m_task_copy.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, m_task_copy as DataTransferTaskData);
+                }
                 else if (m_task_copy is ICustomTaskData cust)
                 {
                     int index = GetCustomTaskImageIndex(cust);
@@ -1426,6 +1465,7 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.OPCUAIcon);
             menuImages.Images.Add(iba.Properties.Resources.UploadTaskIcon);
             menuImages.Images.Add(iba.Properties.Resources.kafka);
+            menuImages.Images.Add(iba.Properties.Resources.DataTransferIcon);
 
             int pluginsStartImageIndex = menuImages.Images.Count;
             List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
@@ -1433,7 +1473,7 @@ namespace iba
                 menuImages.Images.Add(info.Icon);
 
             int customcount = filteredPlugins.Count;
-            m_menuItems = new ToolStripMenuItem[19 + customcount];
+            m_menuItems = new ToolStripMenuItem[((int)MenuItemsEnum.NewCustomTask) + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
             m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
             m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(iba.Properties.Resources.cutTitle, menuImages.Images[0], new EventHandler(OnCutMenuItem), Keys.X | Keys.Control);
@@ -1456,6 +1496,7 @@ namespace iba
 			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[14], new EventHandler(OnNewUploadTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[15], new EventHandler(OnNewKafkaTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(iba.Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[15], new EventHandler(OnNewDataTransferTaskMenuItem));
 
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1476,7 +1517,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewCleanupTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSplitterTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
-			m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewOPCUATask]);
+            m_menuItems[(int) MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int) MenuItemsEnum.NewOPCUATask]);
+			m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewDataTransferTask]);
+
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewKafkaTask]);
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1508,7 +1551,8 @@ namespace iba
             NewOPCUATask = 16,
             NewUploadTask = 17,
             NewKafkaTask = 18,
-			NewCustomTask = 19
+            NewDataTransferTask = 19,
+			NewCustomTask = 20
         }
 
 
@@ -1849,6 +1893,24 @@ namespace iba
             // create tree node and do other things common for any task
             AddNewTaskPostHelper(parentConfData, parentNode, taskData, UPLOADTASK_INDEX, treeItemData);
         }
+        private void OnNewDataTransferTaskMenuItem(object sender, EventArgs e)
+        {
+            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
+            TreeNode node = mc.Tag as TreeNode;
+            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
+            if (!TestTaskCount(confData))
+                return;
+            var dataTransferTaskData = new DataTransferTaskData(confData);
+            dataTransferTaskData.SetNextName();
+            confData.Tasks.Add(dataTransferTaskData);
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+            TreeNode newNode = new TreeNode(dataTransferTaskData.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+            newNode.Tag = new DataTransferTaskTreeItemData(this, dataTransferTaskData);
+            node.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+        }
 
         private void OnNewCleanupTaskMenuItem(object sender, EventArgs e)
         {
@@ -1961,7 +2023,10 @@ namespace iba
             m_navBar.SelectedPane = m_opcUaPane;
         }
         // added by kolesnik - end
-
+        private void dataTransferToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_navBar.SelectedPane = m_dataTransferPane;
+        }
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_navBar.SelectedPane = m_settingsPane;
@@ -3504,9 +3569,8 @@ namespace iba
                 languageToolStripMenuItem.DropDownItems.Add(mi);
             }
         }
+
         #endregion
-
-
     }
     #endregion
 

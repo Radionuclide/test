@@ -96,19 +96,13 @@ namespace iba.Services
 
                 Remoting.ServerRemotingManager.SetupRemoting(m_communicationObject, Program.ServicePortNr);
 
-                Hashtable serviceProps = new Hashtable();
-                serviceProps.Add("HostName", Environment.MachineName);
-                serviceProps.Add("PortNr", Program.ServicePortNr.ToString());
-                serviceProps.Add("Version", DatCoVersion.GetVersion());
-                serviceProps.Add("MinimumClientVersion", DatCoVersion.MinimumClientVersion());
-
-                m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress, DatcoServerDefaults.GroupServerPort);
-                m_servicePublisher.PublishServiceEndpoint(serviceProps);
+                m_communicationObject.Manager.PublishService();
 
                 // added by kolesnik - begin
                 m_communicationObject.Manager.SnmpWorkerInit();
                 m_communicationObject.Manager.OpcUaWorkerInit();
                 // added by kolesnik - end
+                m_communicationObject.Manager.DataTransferWorkerInit();
             }
             catch (Exception ex)
             {
