@@ -22,7 +22,7 @@ namespace iba.Processing.IbaGrpc
             _clientManager = clientManager;
         }
 
-        public string GetRootPath()
+        public static string GetRootPath()
         {
             return TaskManager.Manager.DataTransferData.RootPath;
         }
@@ -168,6 +168,14 @@ namespace iba.Processing.IbaGrpc
             }
 
             return true;
+        }
+
+        public static string GetFullPath(string configurationPath)
+        {
+            var remotePath = configurationPath.Trim('/', '\\');
+            var fullPath = Path.GetFullPath(Path.Combine(GetRootPath(), remotePath));
+
+            return fullPath;
         }
     }
 }

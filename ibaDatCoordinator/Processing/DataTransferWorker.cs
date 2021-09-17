@@ -77,7 +77,7 @@ namespace iba.Processing
         {
             try
             {
-                var deadline = DateTime.UtcNow.AddSeconds(3);
+                var deadline = DateTime.UtcNow.AddSeconds(5);
 
                 var isRunning = await IsReadyAsync(deadline);
 
@@ -144,13 +144,11 @@ namespace iba.Processing
             {
                 return false;
             }
-            finally
-            {
-                await client.channel.ShutdownAsync();
-            }
 
             var isReadyAsync = client.channel.State == ChannelState.Ready;
 
+            await client.channel.ShutdownAsync();
+            
             return isReadyAsync;
         }
 

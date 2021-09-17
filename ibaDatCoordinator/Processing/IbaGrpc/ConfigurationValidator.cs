@@ -41,6 +41,10 @@ namespace iba.Processing.IbaGrpc
                     {
                         return CreateConnectionResponse(Status.Error, "Authorization failed");
                     }
+                    if (!CheckRemotePath(configuration))
+                    {
+                        return CreateConnectionResponse(Status.Error, "Remote Path not valid");
+                    }
                 }
                 catch (Exception e)
                 {
@@ -52,13 +56,30 @@ namespace iba.Processing.IbaGrpc
             });
         }
 
+        private bool CheckRemotePath(Configuration configuration)
+        {
+            var remotePath = configuration.Path.Trim('/', '\\');
+
+            if (Path.IsPathRooted(remotePath))
+            {
+                return false;
+            }
+
+            var fullPath = Path.GetFullPath(Path.Combine(DirectoryManager.GetRootPath(), remotePath));
+            
+            return DirectoryManager.IsValidPath(fullPath);
+        }
+
         private bool CheckIfDirectoryIsFree(Configuration configuration)
         {
             var confId = Guid.Parse(configuration.ConfigurationId);
 
+            var fullPath = DirectoryManager.GetFullPath(configuration.Path);
+
             return m_clientManager.ClientList
-                .Where(conf => conf.Key != confId)
-                .All(conf => conf.Value.Path != configuration.Path);
+                .Where(client => client.Key != confId)
+                .Select(client => client.Value.Path)
+                .All(path => path != fullPath);
         }
 
         private static bool CheckVersion(Configuration configuration)

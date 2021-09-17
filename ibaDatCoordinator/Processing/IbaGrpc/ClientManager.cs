@@ -36,7 +36,7 @@ namespace iba.Processing.IbaGrpc
                 (guid, newConfiguration) =>
                 {
                     newConfiguration.FileName = configuration.FileName;
-                    newConfiguration.Path = configuration.Path;
+                    newConfiguration.Path = DirectoryManager.GetFullPath(configuration.Path);
                     newConfiguration.ApiKey = configuration.ApiKey;
                     newConfiguration.ClientName = configuration.ClientName;
                     newConfiguration.ClientVersion = configuration.ClientVersion;
