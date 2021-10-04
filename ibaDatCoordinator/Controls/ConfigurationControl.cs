@@ -572,17 +572,10 @@ namespace iba.Controls
         {
             if (!TestTaskCount())
                 return;
-            var dataTransferTaskData = new DataTransferTaskData(m_data);
-            dataTransferTaskData.SetNextName();
-            m_data.Tasks.Add(dataTransferTaskData);
-            if (m_data.AdjustDependencies()) Program.MainForm.AdjustFrontIcons(m_data);
-            TreeNode newNode = new TreeNode(dataTransferTaskData.Name, MainForm.DATATRANSFER_TASK_INDEX, MainForm.DATATRANSFER_TASK_INDEX);
-            newNode.Tag = new DataTransferTaskTreeItemData(m_manager, dataTransferTaskData);
-            m_manager.LeftTree.SelectedNode.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(m_data);
-            m_manager.LeftTree.SelectedNode = newNode;
+
+            var taskData = new DataTransferTaskData(m_data);
+            var treeItemData = new DataTransferTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.DATATRANSFER_TASK_INDEX, treeItemData);
         }
 
         void newCustomTaskButton_Click(object sender, EventArgs e)

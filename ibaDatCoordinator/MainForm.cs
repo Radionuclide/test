@@ -1496,7 +1496,7 @@ namespace iba
 			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[14], new EventHandler(OnNewUploadTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[15], new EventHandler(OnNewKafkaTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(iba.Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[15], new EventHandler(OnNewDataTransferTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(iba.Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[16], new EventHandler(OnNewDataTransferTaskMenuItem));
 
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1895,21 +1895,15 @@ namespace iba
         }
         private void OnNewDataTransferTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            var dataTransferTaskData = new DataTransferTaskData(confData);
-            dataTransferTaskData.SetNextName();
-            confData.Tasks.Add(dataTransferTaskData);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(dataTransferTaskData.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
-            newNode.Tag = new DataTransferTaskTreeItemData(this, dataTransferTaskData);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            var taskData = new DataTransferTaskData(parentConfData);
+            var treeItemData = new DataTransferTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, DATATRANSFER_TASK_INDEX, treeItemData);
         }
 
         private void OnNewCleanupTaskMenuItem(object sender, EventArgs e)
