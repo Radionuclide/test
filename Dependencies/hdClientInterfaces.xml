@@ -1338,6 +1338,13 @@
             Must be first method call or follow call to "EndCreate" 
             </exception>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdWriterManager.ForceReconnect(System.Guid)">
+            <summary>
+            Force reconnecting to the HD server for the specified origin.
+            This is used by ibaPDA to make sure that after applying a new full event configuration, subsequent slim event configurations will use the latest full config
+            </summary>
+            <param name="originId">The ID of the origin</param>
+        </member>
         <member name="M:iba.HD.Client.Interfaces.IHdWriterManager.SetConfig(iba.HD.Common.HdWriterConfig,iba.HD.Client.Interfaces.IHdWriterSummary,iba.HD.Common.HdValidatorMulti)">
             <summary>
             Sets a new writer configuration for a data origin
