@@ -343,7 +343,7 @@ namespace iba.Processing
 
         public Dictionary<string, EventWriterData> GenerateEvents(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, string dataFile)
         {
-            m_ibaAnalyzer = (ibaAnalyzer)??(ibaAnalyzerExt.Create(true));
+            m_ibaAnalyzer = ibaAnalyzer;
             m_dataFile = dataFile;
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 

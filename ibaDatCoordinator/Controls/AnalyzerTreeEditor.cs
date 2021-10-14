@@ -758,7 +758,9 @@ namespace iba.Controls
                         RecursiveAdd(trnode);
 
                         //Only add the node here to the tree because otherwise we get constant tree updates
-                        tree.Nodes.Add(trnode);
+                        //Insert it in the original location after the customNodes. The FindNode(id) function works based on the location in the tree.
+                        //If a node has a different location in the analyzerTree and the TreeControl, the FindNode will return a wrong node
+                        tree.Nodes.Insert(customNodes.Count, trnode);
                     }
                 }
                 catch (Exception ex)
