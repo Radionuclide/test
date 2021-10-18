@@ -790,10 +790,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbPassword.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 35</value>
+    <value>87, 35</value>
   </data>
   <data name="m_tbPassword.Size" type="System.Drawing.Size, System.Drawing">
-    <value>619, 20</value>
+    <value>607, 20</value>
   </data>
   <data name="m_tbPassword.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -814,10 +814,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbUsername.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 10</value>
+    <value>87, 10</value>
   </data>
   <data name="m_tbUsername.Size" type="System.Drawing.Size, System.Drawing">
-    <value>619, 20</value>
+    <value>607, 20</value>
   </data>
   <data name="m_tbUsername.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -1123,10 +1123,10 @@
     <value>Amazon S3</value>
   </data>
   <data name="m_cbProtocol.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 9</value>
+    <value>87, 9</value>
   </data>
   <data name="m_cbProtocol.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 21</value>
+    <value>290, 21</value>
   </data>
   <data name="m_cbProtocol.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1213,10 +1213,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 36</value>
+    <value>87, 36</value>
   </data>
   <data name="m_tbServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 20</value>
+    <value>290, 20</value>
   </data>
   <data name="m_tbServer.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>

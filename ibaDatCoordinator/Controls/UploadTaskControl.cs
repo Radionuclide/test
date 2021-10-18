@@ -91,6 +91,23 @@ namespace iba.Controls
         {
             var selectedProtocol = (string)((ComboBox)sender).SelectedItem;
             var selectedEncryption = (string)m_cbEncryption.SelectedItem;
+            
+            if (selectedProtocol == "Amazon S3")
+            {
+                m_lbUsername.Text = "Access key ID:";
+                m_lbPassword.Text = "Secret key:";
+                
+                if (string.IsNullOrEmpty(m_tbServer.Text))
+                {
+                    m_tbServer.Text = "s3.amazonaws.com";
+                }
+            }
+            else
+            {
+                m_lbUsername.Text = "Username:";
+                m_lbPassword.Text = "Password:";
+            }
+
 
             var ftpControls = new List<Control>
             {
