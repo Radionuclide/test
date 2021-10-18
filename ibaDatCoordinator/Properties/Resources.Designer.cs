@@ -81,6 +81,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access key ID.
+        /// </summary>
+        internal static string Access_key_ID_ {
+            get {
+                return ResourceManager.GetString("Access_key_ID_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add .dat-File Triggered Job.
         /// </summary>
         internal static string addConfigurationText {
@@ -4185,6 +4194,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The password has been removed by {0}.
         /// </summary>
         internal static string PasswordRemoved {
@@ -4816,6 +4834,15 @@ namespace iba.Properties {
         internal static string Second {
             get {
                 return ResourceManager.GetString("Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secret key.
+        /// </summary>
+        internal static string Secret_key {
+            get {
+                return ResourceManager.GetString("Secret_key", resourceCulture);
             }
         }
         
@@ -5809,6 +5836,15 @@ namespace iba.Properties {
         internal static string UploadTaskTitle {
             get {
                 return ResourceManager.GetString("UploadTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        internal static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
         

@@ -619,7 +619,7 @@
     <value>m_gbOption</value>
   </data>
   <data name="&gt;&gt;m_gbOption.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gbOption.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1306,7 +1306,7 @@
     <value>m_gbTarget</value>
   </data>
   <data name="&gt;&gt;m_gbTarget.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gbTarget.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1432,7 +1432,7 @@
     <value>m_gbSource</value>
   </data>
   <data name="&gt;&gt;m_gbSource.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gbSource.Parent" xml:space="preserve">
     <value>$this</value>

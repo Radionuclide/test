@@ -93,10 +93,6 @@ namespace iba.Controls
             this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "m_privateKeySearchDialog";
-            // 
             // m_gbOption
             // 
             resources.ApplyResources(this.m_gbOption, "m_gbOption");

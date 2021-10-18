@@ -2091,4 +2091,16 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="TaskName" xml:space="preserve">
 	  <value>TaskName</value>
   </data>
+  <data name="Username" xml:space="preserve">
+	  <value>Username</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+	  <value>Password</value>
+  </data>
+  <data name="Access_key_ID_" xml:space="preserve">
+	  <value>Access key ID</value>
+  </data>
+  <data name="Secret_key" xml:space="preserve">
+	  <value>Secret key</value>
+  </data>
 </root>
