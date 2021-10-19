@@ -112,6 +112,7 @@ namespace iba.Data
 
         public int CbBandwidth { get; set; }
         public decimal NumBandwidth { get; set; }
+        public bool ShouldCreateZipArchive { get; set; }
 
 
         public DataTransferTaskData()
@@ -135,6 +136,7 @@ namespace iba.Data
             cd.m_ChkLimitBandwidth = m_ChkLimitBandwidth;
             cd.CbBandwidth = CbBandwidth;
             cd.NumBandwidth = NumBandwidth;
+            cd.ShouldCreateZipArchive = ShouldCreateZipArchive;
             return cd;
         }
 
@@ -156,7 +158,8 @@ namespace iba.Data
                 other.m_shouldDeleteAfterTransfer == m_shouldDeleteAfterTransfer &&
                 other.m_ChkLimitBandwidth == m_ChkLimitBandwidth &&
                 other.CbBandwidth == CbBandwidth &&
-                other.NumBandwidth == NumBandwidth;
+                other.NumBandwidth == NumBandwidth &&
+                other.ShouldCreateZipArchive == ShouldCreateZipArchive;
         }
     }
 }

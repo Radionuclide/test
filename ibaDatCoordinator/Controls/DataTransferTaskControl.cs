@@ -41,6 +41,7 @@ namespace iba.Controls
             m_data = datasource as DataTransferTaskData;
 
             m_cbDeleteAfterTransfer.Checked = m_data.ShouldDeleteAfterTransfer;
+            m_CreateZipArchive.Checked = m_data.ShouldCreateZipArchive;
             m_btnCheckConnection.Image = null;
             m_btnCheckConnection.Text = "?";
             m_tbServer.Text = m_data.Server;
@@ -66,6 +67,7 @@ namespace iba.Controls
             m_data.RemotePath = m_tbRemotePath.Text;
             m_data.MaxBandwidth = CalculateMaxBandwidth();
             m_data.ShouldDeleteAfterTransfer = m_cbDeleteAfterTransfer.Checked;
+            m_data.ShouldCreateZipArchive = m_CreateZipArchive.Checked;
 
             m_data.ChkLimitBandwidth = m_chkLimitBandwidth.Checked;
             m_data.CbBandwidth = m_cbBandwidth.SelectedIndex;

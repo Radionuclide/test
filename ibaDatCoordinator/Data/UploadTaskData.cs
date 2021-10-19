@@ -165,6 +165,8 @@ namespace iba.Data
             set => m_pathToCertificate = value;
         }
 
+        public bool CreateZipArchive { get; set; }
+
         public UploadTaskData()
             : this(null)
         {
@@ -191,7 +193,9 @@ namespace iba.Data
             cd.TlsCertificateFingerprint = TlsCertificateFingerprint;
             cd.m_pathToCertificate = m_pathToCertificate;
             cd.m_pathToPrivateKey = m_pathToPrivateKey;
-            
+            cd.CreateZipArchive = CreateZipArchive;
+
+
             return cd;
         }
 
@@ -218,7 +222,8 @@ namespace iba.Data
                 other.m_sshHostKeyFingerprint == m_sshHostKeyFingerprint &&
                 other.m_tlsCertificateFingerprint == m_tlsCertificateFingerprint &&
                 other.m_pathToCertificate == m_pathToCertificate &&
-                other.m_pathToPrivateKey == m_pathToPrivateKey;
+                other.m_pathToPrivateKey == m_pathToPrivateKey &&
+                other.CreateZipArchive == CreateZipArchive;
         }
     }
 }

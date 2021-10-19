@@ -14,6 +14,7 @@ using iba.Data;
 using Messages.V1;
 using Google.Protobuf.WellKnownTypes;
 using iba.Logging;
+using iba.Utility;
 using Empty = Messages.V1.Empty;
 using Status = Messages.V1.Status;
 
@@ -84,6 +85,11 @@ namespace iba.Processing.IbaGrpc
         public async Task<TransferResponse> TransferFileAsync(string file, TaskData task,
             CancellationToken cancellationToken)
         {
+            if (m_data.ShouldCreateZipArchive)
+            {
+                file = ZipCreator.CreateZipArchive(file);
+            }
+
             var connectionRequest = CreateConnectionRequest(file, task);
             var connectionResponse = await ConnectAsync(connectionRequest);
 
@@ -100,7 +106,6 @@ namespace iba.Processing.IbaGrpc
 
             var options = CreateMetadata(connectionResponse, cancellationToken);
 
-
             using (var call = client.TransferFile(options))
             {
                 var stream = call.RequestStream;
@@ -110,6 +115,9 @@ namespace iba.Processing.IbaGrpc
                 await stream.CompleteAsync();
 
                 var response = await call.ResponseAsync;
+
+                if(m_data.ShouldCreateZipArchive)
+                    File.Delete(file);
 
                 return response;
             }

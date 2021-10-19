@@ -47,6 +47,7 @@ namespace iba.Controls
             m_tbRemotePath.Text = m_data.RemotePath;
             m_tbPathToPrivateKey.Text = m_data.PathToPrivateKey;
             m_tbPathToCertificate.Text = m_data.PathToCertificate;
+            m_createZipArchive.Checked = m_data.CreateZipArchive;
 
             m_cbProtocol.SelectedIndex = (int)m_data.Protocol;
             m_cbEncryption.SelectedIndex = (int)m_data.EncryptionChoice;
@@ -70,6 +71,7 @@ namespace iba.Controls
             m_data.RemotePath = m_tbRemotePath.Text;
             m_data.PathToPrivateKey = m_tbPathToPrivateKey.Text;
             m_data.PathToCertificate = m_tbPathToCertificate.Text;
+            m_data.CreateZipArchive = m_createZipArchive.Checked;
 
             m_data.Protocol = (UploadTaskData.TransferProtocol)m_cbProtocol.SelectedIndex;
             m_data.EncryptionChoice = (UploadTaskData.EncryptionChoiceEnum)m_cbEncryption.SelectedIndex;

@@ -40,6 +40,8 @@ namespace iba.Data
             set { m_whatFile = value; }
         }
 
+        public bool CreateZipArchive { get; set; }
+
         public CopyMoveTaskData()
             : this(null)
         {
@@ -52,6 +54,7 @@ namespace iba.Data
             cd.m_delete = m_delete;
             CopyUNCData(cd);
             cd.m_whatFile = m_whatFile;
+            cd.CreateZipArchive = CreateZipArchive;
             return cd;
         }
 
@@ -64,7 +67,8 @@ namespace iba.Data
             return
                 other.m_removeSource == m_removeSource &&
                 other.m_delete == m_delete &&
-                other.m_whatFile == m_whatFile;
+                other.m_whatFile == m_whatFile &&
+                other.CreateZipArchive == CreateZipArchive;
         }
     }
 }

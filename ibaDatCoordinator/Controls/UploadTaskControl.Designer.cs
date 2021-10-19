@@ -47,6 +47,8 @@ namespace iba.Controls
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.m_lblRemotePath = new System.Windows.Forms.Label();
             this.m_tbRemotePath = new System.Windows.Forms.TextBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.m_createZipArchive = new System.Windows.Forms.CheckBox();
             this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -82,6 +84,7 @@ namespace iba.Controls
             this.m_tlpPathtoCertificate.SuspendLayout();
             this.panel5.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.m_gbTarget.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -106,6 +109,7 @@ namespace iba.Controls
             this.tableLayoutPanel3.Controls.Add(this.panel8, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel7, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel5, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panel6, 0, 2);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
             // panel8
@@ -191,6 +195,19 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_tbRemotePath, "m_tbRemotePath");
             this.m_tbRemotePath.Name = "m_tbRemotePath";
+            // 
+            // panel6
+            // 
+            this.tableLayoutPanel3.SetColumnSpan(this.panel6, 2);
+            this.panel6.Controls.Add(this.m_createZipArchive);
+            resources.ApplyResources(this.panel6, "panel6");
+            this.panel6.Name = "panel6";
+            // 
+            // m_createZipArchive
+            // 
+            resources.ApplyResources(this.m_createZipArchive, "m_createZipArchive");
+            this.m_createZipArchive.Name = "m_createZipArchive";
+            this.m_createZipArchive.UseVisualStyleBackColor = true;
             // 
             // m_gbTarget
             // 
@@ -410,6 +427,8 @@ namespace iba.Controls
             this.panel5.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.m_gbTarget.ResumeLayout(false);
             this.m_gbTarget.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -478,5 +497,7 @@ namespace iba.Controls
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label m_lblRemotePath;
         private System.Windows.Forms.TextBox m_tbRemotePath;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.CheckBox m_createZipArchive;
     }
 }

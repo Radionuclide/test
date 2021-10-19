@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +17,7 @@ using iba.HD.Client;
 using iba.Processing.IbaGrpc;
 using Microsoft.Win32;
 using System.ServiceProcess;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace iba.Processing
 {
@@ -4367,8 +4368,11 @@ namespace iba.Processing
                 int i = 0;
                 foreach (string fileToCopy in filesToCopy)
                 {
-                    string currentext = Path.GetExtension(fileToCopy);
-                    destinations[i] = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + currentext);
+                    var currentExt = task.CreateZipArchive 
+                        ? Path.GetExtension(fileToCopy) + ".zip" 
+                        : Path.GetExtension(fileToCopy);
+
+                    destinations[i] = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + currentExt);
                     i++;
                 }
 
@@ -4423,7 +4427,16 @@ namespace iba.Processing
                             {
                                 m_quotaCleanups[task.Guid].RemoveFile(destinations[i]);
                             }
-                            File.Copy(filesToCopy[i], destinations[i], true);
+
+                            if (task.CreateZipArchive)
+                            {
+                                ZipCreator.CreateZipArchive(filesToCopy[i], destinations[i]);
+                            }
+                            else
+                            {
+                                File.Copy(filesToCopy[i], destinations[i], true);
+                            }
+
                             File.Delete(filesToCopy[i]);
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logMoveTaskSuccess, filename, task);
@@ -4437,7 +4450,15 @@ namespace iba.Processing
                         {
                             m_quotaCleanups[task.Guid].RemoveFile(destinations[i]);
                         }
-                        File.Copy(filesToCopy[i], destinations[i], true);
+
+                        if (task.CreateZipArchive)
+                        {
+                            ZipCreator.CreateZipArchive(filesToCopy[i], destinations[i]);
+                        }
+                        else
+                        {
+                            File.Copy(filesToCopy[i], destinations[i], true);
+                        }
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                     m_outPutFilesPrevTask = destinations;

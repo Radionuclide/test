@@ -52,12 +52,14 @@ namespace iba.Controls
             }
             m_rbDatFile.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.DATFILE;
             m_rbPrevOutput.Checked = m_data.WhatFile == CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;
+            m_cbCreateZipArchive.Checked = m_data.CreateZipArchive;
         }
 
         public void SaveData()
         {
             m_data.RemoveSource = m_rbMove.Checked || m_rbDelete.Checked;
             m_data.ActionDelete = m_rbDelete.Checked;
+            m_data.CreateZipArchive = m_cbCreateZipArchive.Checked;
             
             if (m_rbPrevOutput.Checked)
                 m_data.WhatFile = CopyMoveTaskData.WhatFileEnumA.PREVOUTPUT;

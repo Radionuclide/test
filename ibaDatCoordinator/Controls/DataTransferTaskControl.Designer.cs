@@ -37,6 +37,7 @@ namespace iba.Controls
             this.m_lblRemotePath = new System.Windows.Forms.Label();
             this.m_tbRemotePath = new System.Windows.Forms.TextBox();
             this.m_cbDeleteAfterTransfer = new System.Windows.Forms.CheckBox();
+            this.m_CreateZipArchive = new System.Windows.Forms.CheckBox();
             this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -84,6 +85,7 @@ namespace iba.Controls
             resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
             this.tableLayoutPanel3.Controls.Add(this.panel5, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.m_cbDeleteAfterTransfer, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.m_CreateZipArchive, 1, 1);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
             // panel5
@@ -115,6 +117,12 @@ namespace iba.Controls
             resources.ApplyResources(this.m_cbDeleteAfterTransfer, "m_cbDeleteAfterTransfer");
             this.m_cbDeleteAfterTransfer.Name = "m_cbDeleteAfterTransfer";
             this.m_cbDeleteAfterTransfer.UseVisualStyleBackColor = true;
+            // 
+            // m_CreateZipArchive
+            // 
+            resources.ApplyResources(this.m_CreateZipArchive, "m_CreateZipArchive");
+            this.m_CreateZipArchive.Name = "m_CreateZipArchive";
+            this.m_CreateZipArchive.UseVisualStyleBackColor = true;
             // 
             // m_gbTarget
             // 
@@ -323,5 +331,6 @@ namespace iba.Controls
         private System.Windows.Forms.ComboBox m_cbBandwidth;
         private System.Windows.Forms.CheckBox m_chkLimitBandwidth;
         private System.Windows.Forms.NumericUpDown m_numBandwidth;
+        private System.Windows.Forms.CheckBox m_CreateZipArchive;
     }
 }

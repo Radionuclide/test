@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using iba.Data;
 using iba.Dialogs;
 using iba.Logging;
+using iba.Utility;
 using WinSCP;
 
 namespace iba.Processing
@@ -13,7 +15,7 @@ namespace iba.Processing
     internal class UploadTaskWorker
     {
         private readonly UploadTaskData m_data;
-        private readonly string m_datFile;
+        private string m_datFile;
 
         public UploadTaskWorker(string datFile, UploadTaskData data)
         {
@@ -38,7 +40,17 @@ namespace iba.Processing
                     OverwriteMode = OverwriteMode.Overwrite
                 };
 
+                if (m_data.CreateZipArchive)
+                {
+                    m_datFile = ZipCreator.CreateZipArchive(m_datFile);
+                }
+
                 session.PutFileToDirectory(m_datFile, m_data.RemotePath, false, transferOptions);
+
+                if (m_data.CreateZipArchive)
+                {
+                    File.Delete(m_datFile);
+                }
             }
         }
 
