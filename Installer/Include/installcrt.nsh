@@ -54,6 +54,7 @@
   ${DisableX64FSRedirection}
   ClearErrors
   IfFileExists "$SYSDIR\mfc140u.dll" 0 notinstalled_${UniqueID} ;Do explicit check for MFC dll as well since some installers don't add it
+  IfFileExists "$SYSDIR\vcruntime140_1.dll" 0 notinstalled_${UniqueID} ;Only added by Microsoft Visual C++ 2015-2019 Redistributable (x64) installers
   IfFileExists "$SYSDIR\vcruntime140.dll" 0 notinstalled_${UniqueID}
   GetDLLVersion "$SYSDIR\vcruntime140.dll" $R2 $R3
   IfErrors notinstalled_${UniqueID}
@@ -188,11 +189,11 @@ FunctionEnd
   Push $R6
   Push $R7
 
-  ; Check version of one file (e.g. ucrtbase.dll)
+  ; Check version of one file (e.g. vcruntime140.dll)
   StrCpy $R0 "$PROGRAMFILES\iba\System"
-  GetDLLVersionLocal "..\InstallFiles\CRT\x86\ucrtbase.dll" $R1 $R2
+  GetDLLVersionLocal "..\InstallFiles\CRT\x86\vcruntime140.dll" $R1 $R2
   ClearErrors
-  GetDLLVersion "$R0\ucrtbase.dll" $R3 $R4
+  GetDLLVersion "$R0\vcruntime140.dll" $R3 $R4
   
   !insertmacro CleanupIbaSystemFiles_archindep
 
@@ -211,11 +212,11 @@ FunctionEnd
   Push $R6
   Push $R7
 
-  ; Check version of one file (e.g. ucrtbase.dll)
+  ; Check version of one file (e.g. vcruntime140.dll)
   StrCpy $R0 "$PROGRAMFILES64\iba\System"
-  GetDLLVersionLocal "..\InstallFiles\CRT\x64\ucrtbase.dll" $R1 $R2
+  GetDLLVersionLocal "..\InstallFiles\CRT\x64\vcruntime140.dll" $R1 $R2
   ClearErrors
-  GetDLLVersion "$R0\ucrtbase.dll" $R3 $R4
+  GetDLLVersion "$R0\vcruntime140.dll" $R3 $R4
 
   ; 64-bit version of plugin to search for locking processes
   InitPluginsDir
@@ -327,5 +328,3 @@ LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_GERMAN}  "The following applicat
 LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_GERMAN}  "Clicking Ignore will force the applications to exit"
 LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_FRENCH}  "The following applications need to be closed before installation can proceed:"
 LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_FRENCH}  "Clicking Ignore will force the applications to exit"
-LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_SPANISH} "The following applications need to be closed before installation can proceed:"
-LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_SPANISH} "Clicking Ignore will force the applications to exit"

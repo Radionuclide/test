@@ -1,5 +1,7 @@
 !include "LogicLib.nsh"
 
+!define InstallHistoryFileName "$INSTDIR\..\InstallHistory.txt"
+
 !macro WriteToInstallHistory MSG
   !define UID2 ${__LINE__}
 
@@ -42,7 +44,7 @@
   Push $R0
   
   ;Open file in mode append
-  FileOpen $R0 "$INSTDIR\..\InstallHistory.txt" a
+  FileOpen $R0 "${InstallHistoryFileName}" a
   ${If} $R0 == ""
     Goto end_${UID2}
   ${EndIf}
