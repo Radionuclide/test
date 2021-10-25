@@ -688,6 +688,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server not started.
+        /// </summary>
+        internal static string DatatransferServerNotStarted {
+            get {
+                return ResourceManager.GetString("DatatransferServerNotStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server started.
+        /// </summary>
+        internal static string DatatransferServerStarted {
+            get {
+                return ResourceManager.GetString("DatatransferServerStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add new transfer task.
         /// </summary>
         internal static string DataTransferTaskButton {

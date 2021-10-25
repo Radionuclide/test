@@ -2068,39 +2068,45 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>..\Resources\DataTransferIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Hostname" xml:space="preserve">
-	  <value>Hostname</value>
+    <value>Hostname</value>
   </data>
   <data name="DataTransferControl_ConfigureDiagnosticGrid_Version" xml:space="preserve">
-	  <value>Version</value>
+    <value>Version</value>
   </data>
   <data name="Version" xml:space="preserve">
-	  <value>Version</value>
+    <value>Version</value>
   </data>
   <data name="Path" xml:space="preserve">
-	  <value>Path</value>
+    <value>Path</value>
   </data>
   <data name="TransferredFiles" xml:space="preserve">
-	  <value>Transferred Files</value>
+    <value>Transferred Files</value>
   </data>
   <data name="Last_transferred_file" xml:space="preserve">
-	  <value>Last transferred file</value>
+    <value>Last transferred file</value>
   </data>
   <data name="Max__bandwidth" xml:space="preserve">
-	  <value>Max. bandwidth in KB/s</value>
+    <value>Max. bandwidth in KB/s</value>
   </data>
   <data name="TaskName" xml:space="preserve">
-	  <value>TaskName</value>
+    <value>TaskName</value>
   </data>
   <data name="Username" xml:space="preserve">
-	  <value>Username</value>
+    <value>Username</value>
   </data>
   <data name="Password" xml:space="preserve">
-	  <value>Password</value>
+    <value>Password</value>
   </data>
   <data name="Access_key_ID_" xml:space="preserve">
-	  <value>Access key ID</value>
+    <value>Access key ID</value>
   </data>
   <data name="Secret_key" xml:space="preserve">
-	  <value>Secret key</value>
+    <value>Secret key</value>
+  </data>
+  <data name="DatatransferServerNotStarted" xml:space="preserve">
+    <value>Server not started</value>
+  </data>
+  <data name="DatatransferServerStarted" xml:space="preserve">
+    <value>Server started</value>
   </data>
 </root>

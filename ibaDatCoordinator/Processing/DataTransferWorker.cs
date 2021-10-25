@@ -10,6 +10,7 @@ using Grpc.Core.Interceptors;
 using iba.Data;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
+using iba.Properties;
 using iba.Remoting;
 using Messages.V1;
 
@@ -21,9 +22,6 @@ namespace iba.Processing
         private DataTransferImpl _dataTransferImpl;
         private static readonly string HOST = Dns.GetHostName();
         public string Status { get; set; } = string.Empty;
-        public bool IsPortTextBoxEnabled { get; set; }
-        public bool IsSelectRootPathBtnEnabled { get; set; }
-        public bool IsSelectCertificateBtnEnabled { get; set; }
 
         private Server m_server;
 
@@ -56,21 +54,9 @@ namespace iba.Processing
             set => _dataTransferImpl = value;
         }
 
-        private async Task SetStatus(bool isControlEnabled)
+        private void SetStatus(bool status)
         {
-            await Task.Run(() =>
-            {
-                IsPortTextBoxEnabled = isControlEnabled;
-                IsSelectCertificateBtnEnabled = isControlEnabled;
-                IsSelectRootPathBtnEnabled = isControlEnabled;
-                Status = isControlEnabled ? "Server not started" : "Server started";
-            });
-        }
-
-        public (string status, bool IsPortTextBoxEnabled, bool IsSelectRootPathBtnEnabledbool, bool IsSelectCertificateBtnEnabled) 
-            GetStatus()
-        { 
-            return (Status, IsPortTextBoxEnabled, IsSelectRootPathBtnEnabled, IsSelectCertificateBtnEnabled);
+            Status = status ? Resources.DatatransferServerStarted : Resources.DatatransferServerNotStarted;
         }
 
         public async Task StartServer()
@@ -89,7 +75,7 @@ namespace iba.Processing
                 m_server = CreateNewServer();
                 m_server.Start();
                 
-                await SetStatus(false);
+                SetStatus(true);
 
                 OnUpdateServerStatus?.Invoke(Status);
 
@@ -116,7 +102,7 @@ namespace iba.Processing
                     await m_server.ShutdownAsync();
                 }
 
-                await SetStatus(true);
+                SetStatus(false);
 
                 OnUpdateServerStatus?.Invoke(Status);
 
@@ -169,8 +155,6 @@ namespace iba.Processing
             }
             else
             {
-                await SetStatus(true);
-
                 OnUpdateServerStatus?.Invoke(Status);
             }
         }
