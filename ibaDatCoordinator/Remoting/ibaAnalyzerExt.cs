@@ -354,7 +354,6 @@ namespace iba.Remoting
             return analyzer.GetFileExtractParameters();
         }
 
-
         public void SetFilePassword(string filename, string password)
         {
             try

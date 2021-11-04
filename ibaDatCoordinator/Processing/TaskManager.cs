@@ -919,7 +919,7 @@ namespace iba.Processing
         public void SnmpWorkerInit()
         {
             SnmpWorker.Init();
-                            }
+        }
 
         /// <summary> Gets/sets data of SnmpWorker. 
         /// If data is set, then restart of snmp agent is performed if necessary. </summary>
@@ -1757,6 +1757,24 @@ namespace iba.Processing
             }
 
             return false;
+        }
+
+        private Licensing.LicenseManager licenseManager;
+
+        internal Licensing.LicenseManager LicenseManager
+        {
+            get
+            {
+                if (licenseManager == null)
+                    licenseManager = new Licensing.LicenseManager();
+
+                return licenseManager;
+            }
+        }
+
+        public void InitializeLicenseManager()
+        {
+            LicenseManager.Initialize();
         }
     }
 

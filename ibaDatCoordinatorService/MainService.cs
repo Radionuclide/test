@@ -50,6 +50,8 @@ namespace iba.Services
 
                 SetServicePriority();
 
+                m_communicationObject.Manager.InitializeLicenseManager();
+
                 //if (args.Length > 0 && String.Compare(args[0], "loadnotfromfile", true) == 0)
                 //return;
                 try

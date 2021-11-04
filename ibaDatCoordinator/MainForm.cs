@@ -547,9 +547,15 @@ namespace iba
             SetRenderer();
             UpdateConnectionStatus();
             SetupHelp();
+
+            //Initialize licenses in case app is running standalone
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+                TaskManager.Manager.InitializeLicenseManager();
+
             string returnvalue = "";
             Profiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
-            if (returnvalue != "not set" && Program.RunsWithService == Program.ServiceEnum.NOSERVICE) loadFromFile(returnvalue,true);
+            if (returnvalue != "not set" && Program.RunsWithService == Program.ServiceEnum.NOSERVICE) 
+                loadFromFile(returnvalue,true);
             loadConfigurations();
             loadStatuses();
             UpdateButtons();
@@ -2617,6 +2623,7 @@ namespace iba
             {
                 Font font = node.NodeFont;
                 if (font == null)
+                {
                     if (node.TreeView != null)
                         font = node.TreeView.Font;
                     else
@@ -2626,6 +2633,7 @@ namespace iba
                             font = dummytree.Font;
                         }
                     }
+                }
                 node.NodeFont = new Font(font,FontStyle.Strikeout);
                 node.ForeColor = Color.Gray;
             }

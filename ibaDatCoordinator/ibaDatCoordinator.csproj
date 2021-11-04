@@ -157,6 +157,10 @@
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WibuCmNET, Version=7.30.4811.500, Culture=neutral, PublicKeyToken=01d86e1eb0c69c23, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Wibu\WibuCmNET.dll</HintPath>
+    </Reference>
     <Reference Include="Zyan.SafeDeserializationHelpers">
       <HintPath>..\Dependencies\Zyan.SafeDeserializationHelpers.dll</HintPath>
     </Reference>
@@ -358,6 +362,14 @@
     <Compile Include="Controls\KafkaWriterTaskControl.Designer.cs">
       <DependentUpon>KafkaWriterTaskControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Licensing\License.cs" />
+    <Compile Include="Licensing\LicenseHelper.cs" />
+    <Compile Include="Licensing\LicenseId.cs" />
+    <Compile Include="Licensing\LicenseContents.cs" />
+    <Compile Include="Licensing\LicenseManager.cs" />
+    <Compile Include="Licensing\LicenseOptionInfo.cs" />
+    <Compile Include="Licensing\MarxDongle.cs" />
+    <Compile Include="Licensing\WibuDongle.cs" />
     <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
     <Compile Include="Processing\DataTransferTaskWorker.cs" />
     <Compile Include="Processing\DataTransferWorker.cs" />
