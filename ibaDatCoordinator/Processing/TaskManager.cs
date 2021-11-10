@@ -1781,6 +1781,26 @@ namespace iba.Processing
         {
             licenseManager?.Uninitialize();
         }
+
+        internal void AddLicenseInfoToSupportFile(ICSharpCode.SharpZipLib.Zip.ZipFile zip, string tempDir)
+        {
+            LicenseManager.AddInfoToSupportFile(zip, tempDir);
+
+            //Save information about licenses used by running tasks
+            lock (m_workers)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach(var worker in m_workers.Values)
+                    worker.LogTasksLicenseInfo(sb);
+
+                if(sb.Length > 0)
+                {
+                    string infoFile = Path.Combine(tempDir, "UsedLicenses.txt");
+                    File.WriteAllText(infoFile, sb.ToString());
+                    SupportFileGenerator.AddFile(zip, infoFile, "License\\" + Path.GetFileName(infoFile), delete: true);
+                }
+            }
+        }
     }
 
 

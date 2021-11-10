@@ -147,6 +147,7 @@ namespace iba.Licensing
             {
                 lic.ContainerType = contents.ContainerType;
                 lic.ContainerId = contents.ContainerId;
+                lic.LicenseIdentifier = contents.Identifier;
                 lic.LicenseOk = true;
                 lic.SourceInfo = entry;
                 return lic;
@@ -161,6 +162,7 @@ namespace iba.Licensing
                     {
                         lic.ContainerType = contents.ContainerType;
                         lic.ContainerId = contents.ContainerId;
+                        lic.LicenseIdentifier = contents.Identifier;
                         lic.LicenseOk = true;
                         lic.SourceInfo = entry;
                         return lic;
@@ -198,6 +200,33 @@ namespace iba.Licensing
 
             hcmEntries.Remove(entry);
             api.CmRelease(entry);
+        }
+
+        public static bool SplitContainerId(string id, out ushort boxMask, out uint boxSerial, out string location)
+        {
+            boxMask = 0;
+            boxSerial = 0;
+            location = "";
+
+            if (String.IsNullOrEmpty(id))
+                return false;
+
+            int hyphenIndex = id.IndexOf('-');
+            if (hyphenIndex <= 0)
+                return false;
+
+            if (!UInt16.TryParse(id.Substring(0, hyphenIndex), out boxMask))
+                return false;
+
+            int spaceIndex = id.IndexOf(" (", hyphenIndex);
+            if (spaceIndex <= 0)
+                return false;
+
+            if (!UInt32.TryParse(id.Substring(hyphenIndex + 1, spaceIndex - hyphenIndex - 1), out boxSerial))
+                return false;
+
+            location = id.Substring(spaceIndex + 2, id.Length - spaceIndex - 3);
+            return true;
         }
 
         private HCMSysEntry GetBaseLicense()

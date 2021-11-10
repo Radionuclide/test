@@ -96,7 +96,8 @@ namespace iba.Licensing
             if (licenseServiceAllowed && IsLicenseServiceRunning())
             {
                 lic.ContainerType = "ibaLicenseService";
-                lic.ContainerId = "";
+                lic.ContainerId = "ibaLicenseService";
+                lic.LicenseIdentifier = "";
 
                 //Get license from license service
                 int usedId = CDongleInfo.AcquireAnyLicenseFromLicenseService(ids);
@@ -119,6 +120,7 @@ namespace iba.Licensing
                     lic.LastCheck = DateTime.UtcNow;
                     lic.ContainerType = contents.ContainerType;
                     lic.ContainerId = contents.ContainerId;
+                    lic.LicenseIdentifier = contents.Identifier;
                     return lic;
                 }
             }

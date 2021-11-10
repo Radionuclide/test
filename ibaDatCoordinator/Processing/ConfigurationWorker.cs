@@ -13,6 +13,7 @@ using iba.Plugins;
 using iba.Processing.IbaGrpc;
 using iba.Utility;
 using iba.Licensing;
+using System.Text;
 
 namespace iba.Processing
 {
@@ -1144,7 +1145,7 @@ namespace iba.Processing
                     bOk = false;
                 }
                 else
-                    Log(Logging.Level.Info, String.Format(Properties.Resources.logTaskLicensed, lic.ContainerId), "", task);
+                    Log(Logging.Level.Info, String.Format(Properties.Resources.logTaskLicensed, lic.FullId), "", task);
 
                 m_licensedTasks.Add(task, lic);
             }
@@ -1158,6 +1159,36 @@ namespace iba.Processing
                 TaskManager.Manager.LicenseManager.ReleaseLicense(lic);
             
             m_licensedTasks.Clear();
+        }
+
+        internal void LogTasksLicenseInfo(StringBuilder sb)
+        {
+            try
+            {
+                sb.AppendLine($"Configuration {m_cd.Name}: {(m_sd.Started ? "Running" : "Stopped")}");
+                if (m_sd.Started)
+                {
+                    foreach (TaskData task in m_cd.Tasks)
+                    {
+                        if (m_licensedTasks.TryGetValue(task, out License lic))
+                        {
+                            if (lic.LicenseOk)
+                                sb.AppendLine($"Task {task.Name}: License {lic.LicenseId} found in {lic.FullId}");
+                            else
+                                sb.AppendLine($"Task {task.Name}: License {lic.LicenseId} is not found");
+                        }
+                        else
+                            sb.AppendLine($"Task {task.Name}: No license required");
+                    }
+                }
+
+                sb.AppendLine();
+            }
+            catch(Exception)
+            {
+                //Ignore exceptions because they could happen when the list of tasks or licenses is changed during this support request.
+                //It doesn't make sense to introduce locks to allow support requests during configuration changes
+            }
         }
 
         internal void StartIbaAnalyzer()
@@ -2938,7 +2969,7 @@ namespace iba.Processing
                 else if(!bPrevLicenseOk)
                 {
                     //We got a license for the first time
-                    Log(Logging.Level.Info, String.Format(Properties.Resources.logTaskLicensed, lic.ContainerId), DatFile, task);
+                    Log(Logging.Level.Info, String.Format(Properties.Resources.logTaskLicensed, lic.FullId), DatFile, task);
                 }
             }
 

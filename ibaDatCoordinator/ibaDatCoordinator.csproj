@@ -43,6 +43,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -150,6 +151,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Remoting" />
@@ -370,6 +372,7 @@
     <Compile Include="Licensing\LicenseOptionInfo.cs" />
     <Compile Include="Licensing\MarxDongle.cs" />
     <Compile Include="Licensing\WibuDongle.cs" />
+    <Compile Include="Licensing\WibuInfoCollector.cs" />
     <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
     <Compile Include="Processing\DataTransferTaskWorker.cs" />
     <Compile Include="Processing\DataTransferWorker.cs" />
@@ -431,6 +434,7 @@
     <Compile Include="Utility\CueProvider.cs" />
     <Compile Include="Utility\DatcoServerDefaults.cs" />
     <Compile Include="Utility\FlexibleMessageBox.cs" />
+    <Compile Include="Utility\RegistryEx.cs" />
     <Compile Include="Utility\RegistryMonitor.cs" />
     <Compile Include="Utility\SupportFileGenerator.cs" />
     <Compile Include="Utility\TaskControl.cs" />
@@ -651,6 +655,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\XmlWrapper.cs" />
     <Compile Include="Utility\ZipCreator.cs" />
+    <Compile Include="Utility\ZipFileCreator.cs" />
     <EmbeddedResource Include="Controls\CleanupTaskControl.resx">
       <DependentUpon>CleanupTaskControl.cs</DependentUpon>
       <SubType>Designer</SubType>

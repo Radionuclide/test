@@ -1,5 +1,7 @@
-﻿using System;
+﻿using iba.Utility;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -139,6 +141,28 @@ namespace iba.Licensing
         {
             License newLic = AcquireLicense(lic.LicenseId);
             lic.Update(newLic);
+        }
+
+        public void AddInfoToSupportFile(ICSharpCode.SharpZipLib.Zip.ZipFile zip, string tempDir)
+        {
+            //MARX info
+            LicenseContents marxContents = marxDongle?.Contents;
+            if(marxContents != null && marxContents.ContainerFound)
+            {
+                string dongleFile = Path.Combine(tempDir, !String.IsNullOrEmpty(marxContents.Identifier) ? marxContents.Identifier + ".vwr" : "dongle.vwr");
+                if (SystemInfoCollector.ExportDongleInfo(dongleFile))
+                    SupportFileGenerator.AddFile(zip, dongleFile, "License\\" + Path.GetFileName(dongleFile), delete: true);
+            }
+
+            //WIBU info
+            LicenseContents wibuContents = wibuDongle?.Contents;
+            if(wibuContents != null && wibuContents.ContainerFound)
+            {
+                WibuInfoCollector wibuColl = new WibuInfoCollector();
+                string dongleFile = wibuColl.CollectInfo(wibuContents, tempDir);
+                if(dongleFile != null)
+                    SupportFileGenerator.AddFile(zip, dongleFile, "License\\" + Path.GetFileName(dongleFile), delete: true);
+            }
         }
     }
 }
