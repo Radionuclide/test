@@ -120,5 +120,7 @@ namespace iba.Data
             other.m_dbPass == m_dbPass &&
             other.m_dbTblName == m_dbTblName;
         }
+
+        public override int RequiredLicense => Licensing.LicenseId.UpdateData;
     }
 }

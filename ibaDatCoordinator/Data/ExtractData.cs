@@ -70,5 +70,7 @@ namespace iba.Data
             other.m_fileType == m_fileType &&
             other.m_monitorData.IsSame(m_monitorData);
         }
+
+        public override int RequiredLicense => ExtractToFile ? Licensing.LicenseId.FileExtract : Licensing.LicenseId.DBExtract;
     }
 }

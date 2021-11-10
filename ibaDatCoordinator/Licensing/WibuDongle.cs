@@ -143,7 +143,7 @@ namespace iba.Licensing
             }
 
             //Try to get product code in container
-            if(GetFeature(option.Id, CmAccess.Option.UserLimit, out HCMSysEntry entry))
+            if(GetFeature(option.Id, option.OptionType == LicenseOptionType.Counter ? CmAccess.Option.UserLimit : CmAccess.Option.Stationshare, out HCMSysEntry entry))
             {
                 lic.ContainerType = contents.ContainerType;
                 lic.ContainerId = contents.ContainerId;
@@ -177,7 +177,7 @@ namespace iba.Licensing
             if (!hcmEntries.Contains(entry))
                 return false;
 
-            if(!CheckHandle(entry))
+            if(!CheckHandle(entry) || IsDongleDisabled(entry))
             {
                 lic.SourceInfo = null;
                 hcmEntries.Remove(entry);
@@ -377,7 +377,7 @@ namespace iba.Licensing
                 return false;
 
             //Check if handle is valid because CmAccess2 only does a preliminary check that doesn't go inside the container.
-            if (!CheckHandle(hcmLic))
+            if (!CheckHandle(hcmLic) || IsDongleDisabled(hcmLic))
             {
                 api.CmRelease(hcmLic);
                 return false;

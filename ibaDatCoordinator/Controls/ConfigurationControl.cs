@@ -475,22 +475,22 @@ namespace iba.Controls
         {
             if (!TestTaskCount())
                 return;
-            bool isLicensed = false;
-            try
-            {
-                CDongleInfo info = CDongleInfo.ReadDongle();
-                if (info.IsPluginLicensed(2))
-                    isLicensed = true;
-            }
-            catch 
-            {
-            }
-            if (!isLicensed)
-            {
-                MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
-                        iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
-                return;
-            }
+            //bool isLicensed = false;
+            //try
+            //{
+            //    CDongleInfo info = CDongleInfo.ReadDongle();
+            //    if (info.IsPluginLicensed(2))
+            //        isLicensed = true;
+            //}
+            //catch 
+            //{
+            //}
+            //if (!isLicensed)
+            //{
+            //    MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
+            //            iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            //    return;
+            //}
 
             var taskData = new UpdateDataTaskData(m_data);
             var treeItemData = new UpdateDataTaskTreeItemData(m_manager, taskData);
@@ -592,23 +592,23 @@ namespace iba.Controls
                 taskData = new CustomTaskData(m_data, info);
 
             ICustomTaskData iCust = (ICustomTaskData)taskData;
-            bool isLicensed = false;
-            try
-            {
-                CDongleInfo dInfo = CDongleInfo.ReadDongle();
-                if (dInfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
-                    isLicensed = true;
-            }
-            catch
-            {
-            }
+            //bool isLicensed = false;
+            //try
+            //{
+            //    CDongleInfo dInfo = CDongleInfo.ReadDongle();
+            //    if (dInfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
+            //        isLicensed = true;
+            //}
+            //catch
+            //{
+            //}
 
-            if (!isLicensed)
-            {
-                MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
-                        iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
-                return;
-            }
+            //if (!isLicensed)
+            //{
+            //    MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
+            //            iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            //    return;
+            //}
 
             var treeItemData = new CustomTaskTreeItemData(m_manager, iCust);
             int imageIndex = PluginManager.Manager.GetCustomTaskImageIndex(iCust);

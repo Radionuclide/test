@@ -235,6 +235,8 @@ namespace iba
                 {
                     waiter.ShowDialog(this);
                 }
+
+                TaskManager.Manager.UninitializeLicenseManager();
             }
             
             base.OnClosing(e);
@@ -1781,22 +1783,22 @@ namespace iba
 
         private void OnNewUpdateDataTaskMenuItem(object sender, EventArgs e)
         {
-            bool isLicensed = false;
-            try
-            {
-                var info = CDongleInfo.ReadDongle();
-                if (info.IsPluginLicensed(2))
-                    isLicensed = true;
-            }
-            catch 
-            {
-            }
-            if (!isLicensed)
-            {
-                MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
-                        iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
-                return;
-            }
+            //bool isLicensed = false;
+            //try
+            //{
+            //    var info = CDongleInfo.ReadDongle();
+            //    if (info.IsPluginLicensed(2))
+            //        isLicensed = true;
+            //}
+            //catch 
+            //{
+            //}
+            //if (!isLicensed)
+            //{
+            //    MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
+            //            iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            //    return;
+            //}
 
             // get parent job from tags, check free room
             if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
@@ -1943,22 +1945,22 @@ namespace iba
                 taskData = new CustomTaskData(parentConfData, info);
 
             ICustomTaskData iCust = (ICustomTaskData)taskData;
-            bool isLicensed = false;
-            try
-            {
-                CDongleInfo dInfo = CDongleInfo.ReadDongle();
-                if (dInfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
-                    isLicensed = true;
-            }
-            catch
-            {
-            }
-            if (!isLicensed)
-            {
-                MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
-                        iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
-                return;
-            }
+            //bool isLicensed = false;
+            //try
+            //{
+            //    CDongleInfo dInfo = CDongleInfo.ReadDongle();
+            //    if (dInfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
+            //        isLicensed = true;
+            //}
+            //catch
+            //{
+            //}
+            //if (!isLicensed)
+            //{
+            //    MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
+            //            iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            //    return;
+            //}
             int imageIndex = GetCustomTaskImageIndex(iCust);
             var treeItemData = new CustomTaskTreeItemData(this, iCust);
 

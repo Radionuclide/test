@@ -30,5 +30,14 @@ namespace iba.Licensing
         public bool IsMarx => ContainerType?.StartsWith("MARX") ?? false;
         public bool IsLicenseService => ContainerType?.StartsWith("ibaLicense") ?? false;
 
+        internal void Update(License newLic)
+        {
+            System.Diagnostics.Debug.Assert(LicenseId == newLic.LicenseId);
+            LicenseOk = newLic.LicenseOk;
+            ContainerId = newLic.ContainerId;
+            ContainerType = newLic.ContainerType;
+            LastCheck = newLic.LastCheck;
+            SourceInfo = newLic.SourceInfo;
+        }
     }
 }

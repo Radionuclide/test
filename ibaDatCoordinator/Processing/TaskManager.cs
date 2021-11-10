@@ -215,7 +215,7 @@ namespace iba.Processing
 
         virtual public void StopConfiguration(ConfigurationData data)
         {
-            m_workers[data].Stop = true;
+            m_workers[data].Stop();
         }
 
         virtual public void StopConfiguration(Guid guid)
@@ -224,7 +224,7 @@ namespace iba.Processing
             {
                 if (pair.Key.Guid == guid)
                 {
-                    pair.Value.Stop = true;
+                    pair.Value.Stop();
                     return;
                 }
             }
@@ -233,7 +233,7 @@ namespace iba.Processing
         virtual public void StopAndWaitForConfiguration(ConfigurationData data)
         {
             ConfigurationWorker worker = m_workers[data];
-            worker.Stop = true;
+            worker.Stop();
             worker.Join(60000);
         }
 
@@ -243,7 +243,7 @@ namespace iba.Processing
             {
                 if (pair.Key.Guid == guid)
                 {
-                    pair.Value.Stop = true;
+                    pair.Value.Stop();
                     pair.Value.Join(60000);
                     return;
                 }
@@ -1775,6 +1775,11 @@ namespace iba.Processing
         public void InitializeLicenseManager()
         {
             LicenseManager.Initialize();
+        }
+
+        public void UninitializeLicenseManager()
+        {
+            licenseManager?.Uninitialize();
         }
     }
 

@@ -51,7 +51,7 @@ namespace iba.Licensing
                 if(option == null)
                 {
                     //Assume this is directly a Wibu id. This can come from an unknown plugin.
-                    option = new LicenseOptionInfo(licenseId, $"Unknown {licenseId}");
+                    option = new LicenseOptionInfo(licenseId, $"Unknown license {licenseId}", LicenseOptionType.Counter);
                 }
 
                 if (option.MarxIds != null)
@@ -68,24 +68,35 @@ namespace iba.Licensing
         }
 
         /// <summary>
-        /// Check if license is still valid.
+        /// Check if license is still valid. 
         /// </summary>
         /// <param name="lic">The license to check</param>
         /// <returns>True if license is still valid.</returns>
         public bool CheckLicense(License lic)
         {
+            DateTime now = DateTime.UtcNow;
+            double secondsSinceLastCheck = Math.Abs((now - lic.LastCheck).TotalSeconds);
+
             if (!lic.LicenseOk)
-                return false;
+            {
+                if (secondsSinceLastCheck > 10)
+                    TryAcquireLicense(lic);
+
+                return lic.LicenseOk;
+            }
 
             //Only check when it has been longer than 60s since the last check
-            DateTime now = DateTime.UtcNow;
-            if (Math.Abs((now - lic.LastCheck).TotalSeconds) < 60)
+            if (secondsSinceLastCheck < 60)
                 return true;
 
             lock (licenseLock)
             {
                 lic.LastCheck = now;
                 lic.LicenseOk = lic.IsWibu ? wibuDongle.CheckLicense(lic) : marxDongle.CheckLicense(lic);
+
+                if(!lic.LicenseOk)
+                    TryAcquireLicense(lic);
+
                 return lic.LicenseOk;
             }
         }
@@ -105,6 +116,8 @@ namespace iba.Licensing
                     wibuDongle.ReleaseLicense(lic);
                 else
                     marxDongle.ReleaseLicense(lic);
+
+                lic.LicenseOk = false;
             }
         }
 
@@ -122,5 +135,10 @@ namespace iba.Licensing
             }
         }
 
+        private void TryAcquireLicense(License lic)
+        {
+            License newLic = AcquireLicense(lic.LicenseId);
+            lic.Update(newLic);
+        }
     }
 }

@@ -24,8 +24,6 @@ namespace iba.Licensing
 
         public bool ContainerFound => !String.IsNullOrEmpty(ContainerId);
 
-        public DateTime LastCheck;
-
         public int DemoDays;         //End time of demo in days since 1/1/2016, 0 = no demo
 
     }

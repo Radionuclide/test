@@ -148,6 +148,7 @@ namespace iba.Services
         {
             m_communicationObject.Manager.StopAllGlobalCleanups();
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
+            m_communicationObject.Manager.UninitializeLicenseManager();
             m_communicationObject.SaveConfigurations();
 
             //Stop publishing service

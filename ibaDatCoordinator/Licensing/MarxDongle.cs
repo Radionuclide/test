@@ -59,8 +59,16 @@ namespace iba.Licensing
             bool bRunning = false;
             foreach(var proc in procs)
             {
-                if (!proc.HasExited)
+                try
+                {
+                    if (!proc.HasExited)
+                        bRunning = true;
+                }
+                catch(Exception)
+                {
+                    //An exception can occur when ibaDatCoordinator isn't running with administrator rights
                     bRunning = true;
+                }
 
                 proc.Dispose();
             }
@@ -76,7 +84,7 @@ namespace iba.Licensing
                 return lic;
 
             //Check if there is a container and if it hasn't been too long since the last read
-            if (!contents.ContainerFound || Math.Abs((lastRead - DateTime.UtcNow).TotalSeconds) > 120)
+            if (!contents.ContainerFound || Math.Abs((DateTime.UtcNow - lastRead).TotalSeconds) > 120)
             {
                 ReadContents();
                 if (!contents.ContainerFound)
@@ -108,6 +116,7 @@ namespace iba.Licensing
                 {
                     lic.LicenseOk = true;
                     lic.SourceInfo = id;
+                    lic.LastCheck = DateTime.UtcNow;
                     lic.ContainerType = contents.ContainerType;
                     lic.ContainerId = contents.ContainerId;
                     return lic;
@@ -129,7 +138,7 @@ namespace iba.Licensing
             }
 
             //Check if we need to read again
-            if ((DateTime.UtcNow - lastRead).TotalSeconds > 10)
+            if (Math.Abs((DateTime.UtcNow - lastRead).TotalSeconds) > 120)
                 ReadContents();
 
             return IsOptionAvailable(id);

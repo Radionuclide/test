@@ -6,17 +6,26 @@ using System.Threading.Tasks;
 
 namespace iba.Licensing
 {
+    public enum LicenseOptionType
+    {
+        Counter,
+        YesNo
+    }
+
     public class LicenseOptionInfo
     {
-        public LicenseOptionInfo(int id, string text, int[] marxIds = null, int[] optionalWibuIds = null)
+        public LicenseOptionInfo(int id, string text, LicenseOptionType optionType, int[] marxIds = null, int[] optionalWibuIds = null)
         {
             Id = id;
             Text = text;
+            OptionType = optionType;
             MarxIds = marxIds;
             OptionalWibuIds = optionalWibuIds;
         }
 
         public readonly int Id;
+
+        public readonly LicenseOptionType OptionType;
 
         /// <summary>
         /// null: no Marx byte exists
@@ -25,6 +34,9 @@ namespace iba.Licensing
         /// </summary>
         public readonly int[] MarxIds;
 
+        /// <summary>
+        /// Optional wibu product codes that are acquired in station share mode when the main product code isn't available
+        /// </summary>
         public readonly int[] OptionalWibuIds;
 
         public readonly string Text;
@@ -33,25 +45,42 @@ namespace iba.Licensing
         public override string ToString() => Text;
 
         public static LicenseOptionInfo[] Infos = new LicenseOptionInfo[] {
-            new LicenseOptionInfo(LicenseId.DBExtract, "Database extract", new int[] {49, 169 }, new int[] {LicenseId.AnalyzerDBExtract }),
-            new LicenseOptionInfo(LicenseId.FileExtract, "File extract", new int[] {50, 170 }, new int[] {LicenseId.AnalyzerFileExtract }),
+            new LicenseOptionInfo(LicenseId.DBExtract, "Database extract", LicenseOptionType.Counter, new int[] {49, 169 }, new int[] {LicenseId.AnalyzerDBExtract }),
+            new LicenseOptionInfo(LicenseId.FileExtract, "File extract", LicenseOptionType.Counter, new int[] {50, 170 }, new int[] {LicenseId.AnalyzerFileExtract }),
 
-            new LicenseOptionInfo(LicenseId.ConvertCSV, "Convert CSV to dat"),
-            new LicenseOptionInfo(LicenseId.ConvertDAS, "Convert DAS to dat"),
-            new LicenseOptionInfo(LicenseId.ConvertCOMTRADE, "Convert COMTRADE to dat"),
-            new LicenseOptionInfo(LicenseId.Publish, "Publish task"),
+            new LicenseOptionInfo(LicenseId.ConvertCSV, "Convert CSV to dat", LicenseOptionType.Counter),
+            new LicenseOptionInfo(LicenseId.ConvertDAS, "Convert DAS to dat", LicenseOptionType.Counter),
+            new LicenseOptionInfo(LicenseId.ConvertCOMTRADE, "Convert COMTRADE to dat", LicenseOptionType.Counter),
+            new LicenseOptionInfo(LicenseId.Publish, "Publish task", LicenseOptionType.Counter),
 
-            new LicenseOptionInfo(LicenseId.SinecH1, "Sinec H1 task", new int[] {61001 }),
-            new LicenseOptionInfo(LicenseId.UpdateData, "Update data task", new int[] {61002 }),
-            new LicenseOptionInfo(LicenseId.Roh, "Roh task", new int[] {61003 }),
-            new LicenseOptionInfo(LicenseId.XmlExport, "XML export task", new int[] {61004 }),
-            new LicenseOptionInfo(LicenseId.OSPC, "AM OSPC task", new int[] {61005 }),
-            new LicenseOptionInfo(LicenseId.S7Writer, "S7 writer task", new int[] {61006 })
+            new LicenseOptionInfo(LicenseId.SinecH1, "Sinec H1 task", LicenseOptionType.YesNo, new int[] {61001 }),
+            new LicenseOptionInfo(LicenseId.UpdateData, "Update data task", LicenseOptionType.YesNo, new int[] {61002 }),
+            new LicenseOptionInfo(LicenseId.Roh, "Roh task", LicenseOptionType.YesNo, new int[] {61003 }),
+            new LicenseOptionInfo(LicenseId.XmlExport, "XML export task", LicenseOptionType.YesNo, new int[] {61004 }),
+            new LicenseOptionInfo(LicenseId.OSPC, "AM OSPC task", LicenseOptionType.YesNo, new int[] {61005 }),
+            new LicenseOptionInfo(LicenseId.S7Writer, "S7 writer task", LicenseOptionType.YesNo, new int[] {61006 })
         };
 
         public static LicenseOptionInfo GetOptionInfo(int licenseId)
         {
             return Infos.FirstOrDefault(l => l.Id == licenseId);
+        }
+
+        public static int ConvertMarxPluginBitToLicenseId(int dongleBitPos)
+        {
+            if (dongleBitPos <= 0)
+                return LicenseId.None;
+
+            if (dongleBitPos < 8)
+            {
+                dongleBitPos += 61000;
+                var info = Infos.FirstOrDefault(l => l.MarxIds != null && l.MarxIds.Contains(dongleBitPos));
+                if (info != null)
+                    return info.Id;
+            }
+
+            //A Wibu product code or an unknown dongle bit
+            return dongleBitPos;
         }
     }
 }

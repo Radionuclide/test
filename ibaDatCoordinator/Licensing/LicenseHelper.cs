@@ -17,6 +17,5 @@ namespace iba.Licensing
         {
             return (dt.Date - new DateTime(2016, 1, 1)).Days;
         }
-
     }
 }
