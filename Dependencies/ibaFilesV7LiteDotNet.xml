@@ -2512,29 +2512,10 @@ Tag of the channel identified by this <see cref="T:iba.ibaFilesLiteDotNet.Channe
 Specify <see langword="null" />, an empty <see cref="T:System.String" /> or use the constructor without this parameter to indicate an untagged channel.
 </param>
         </member>
-        <member name="M:iba.ibaFilesLiteDotNet.ChannelID.AssertConsistency">
-            <summary> 
-Performs _ASSERT() that this instance is consistent, see <see cref="M:iba.ibaFilesLiteDotNet.ChannelID.IsConsistent" />. 
-In Release build just does nothing.
-</summary>
-        </member>
-        <member name="M:iba.ibaFilesLiteDotNet.ChannelID.IsConsistent">
-            <summary>
-Checks if this instance is consistent, i.e. has no contradictions between its fields.
-(f.e. if the instance <see cref="P:iba.ibaFilesLiteDotNet.ChannelID.IsExpression" />, then <see cref="P:iba.ibaFilesLiteDotNet.ChannelID.ModuleNumber" /> is irrelevant 
-and should have invalid value <see cref="F:iba.ibaFilesLiteDotNet.ChannelID._invalidInt" />).
-</summary>
-        </member>
         <member name="T:iba.ibaFilesLiteDotNet.ChannelID">
             <summary>
 Class representing a channel id. A channel id is a unique identifier used to retrieve a channel from an iba .dat file.
 </summary>
-        </member>
-        <member name="F:SignalTypeUnknown">
-            <summary> The type of the channel is currently unknown. </summary>
-        </member>
-        <member name="F:NotSupported">
-            <summary> A channel type that is not supported by this version of the library. </summary>
         </member>
         <member name="P:iba.ibaFilesLiteDotNet.IbaModuleReader.Name">
             <summary>

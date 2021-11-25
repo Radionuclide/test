@@ -46,11 +46,6 @@
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
-; .NET Framework
-; English
-!define BASE_URL http://download.microsoft.com/download
-!define URL_DOTNET "${BASE_URL}/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe"
-
 !include "MUI.nsh"
 !include "WinMessages.nsh"
 ;!define LOGICLIB_STRCMP
@@ -268,12 +263,11 @@ Function PreInstall
   Call CheckRequirements
   Call CheckPreviousVersions
 
-  ${If} $WinVer == "8"
-  ${OrIf} $WinVer == "2012"
-  ${OrIf} $WinVer == "10"
-    StrCpy $StartMenuFolder "ibaDatCoordinator" 
+  ${If} $WinVer == "7"
+  ${OrIf} $WinVer == "2008 R2"
+    StrCpy $StartMenuFolder "iba\ibaDatCoordinator" 
   ${Else}
-    StrCpy $StartMenuFolder "iba\ibaDatCoordinator"
+    StrCpy $StartMenuFolder "ibaDatCoordinator"
   ${EndIf}
 
 FunctionEnd
@@ -290,9 +284,11 @@ Function CheckRequirements
   StrCmp $WinVer "2008 R2" OSisOK +1
   StrCmp $WinVer "8" OSisOK +1
   StrCmp $WinVer "10" OSisOK +1
+  StrCmp $WinVer "11" OSisOK +1
   StrCmp $WinVer "2012" OSisOK +1
   StrCmp $WinVer "2016" OSisOK +1
   StrCmp $WinVer "2019" OSisOK +1
+  StrCmp $WinVer "2022" OSisOK +1
     MessageBox MB_OK|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_OS_NOT_SUPPORTED)
     Quit
 
@@ -475,8 +471,8 @@ Section -Common
   
   ; silently install certificate
   SetOutPath "$INSTDIR"
-  File "DigiCertAssuredIDRootCA.crt"
-  Push "$INSTDIR\DigiCertAssuredIDRootCA.crt"
+  File "DigiCertTrustedRootG4.crt"
+  Push "$INSTDIR\DigiCertTrustedRootG4.crt"
   Call AddCertificateToStore
   Pop $9
   ${If} $9 <> "success"
@@ -666,21 +662,23 @@ Section -Post
   DetailPrint "Clearing icon cache"
   ${If} $Is64Bit == 1
     ${DisableX64FSRedirection}
-    ${If} $WinVer == "10"
-    ${OrIf} $WinVer == "2016"
-    ${OrIf} $WinVer == "2019"
-      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
-    ${Else}
+    ${If} $WinVer == "7"
+    ${OrIf} $WinVer == "2008 R2"
+    ${OrIf} $WinVer == "8"
+    ${OrIf} $WinVer == "2012"
       nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
+    ${Else}
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
     ${EndIf}
     ${EnableX64FSRedirection}
   ${Else}
-    ${If} $WinVer == "10"
-    ${OrIf} $WinVer == "2016"
-    ${OrIf} $WinVer == "2019"
-      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
-    ${Else}
+    ${If} $WinVer == "7"
+    ${OrIf} $WinVer == "2008 R2"
+    ${OrIf} $WinVer == "8"
+    ${OrIf} $WinVer == "2012"
       nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
+    ${Else}
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
     ${EndIf}
   ${EndIf}
   
@@ -905,7 +903,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
-  Delete "$INSTDIR\DigiCertAssuredIDRootCA.crt"
+  Delete "$INSTDIR\DigiCertTrustedRootG4.crt"
 
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"
