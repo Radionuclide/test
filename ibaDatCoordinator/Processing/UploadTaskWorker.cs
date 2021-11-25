@@ -3,7 +3,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
+using Azure;
+using Azure.Storage;
+using Azure.Storage.Files.DataLake;
+using Azure.Storage.Files.DataLake.Models;
 using iba.Data;
 using iba.Dialogs;
 using iba.Logging;
@@ -28,29 +33,37 @@ namespace iba.Processing
         /// </summary>
         public void UploadFile()
         {
-            using (var session = new Session())
+            if (m_data.CreateZipArchive)
             {
-                var sessionOptions = SetSessionOptions();
-                ConfigureTlsOrSshOptions(sessionOptions);
+                m_datFile = ZipCreator.CreateZipArchive(m_datFile);
+            }
 
-                session.Open(sessionOptions);
-
-                var transferOptions = new TransferOptions
+            if (m_data.Protocol == UploadTaskData.TransferProtocol.AzureDataLake)
+            {
+                var service = new AzureDataLakeClient(m_datFile, m_data);
+                service.UploadFile();
+            }
+            else
+            {
+                using (var session = new Session())
                 {
-                    OverwriteMode = OverwriteMode.Overwrite
-                };
+                    var sessionOptions = SetSessionOptions();
+                    ConfigureTlsOrSshOptions(sessionOptions);
 
-                if (m_data.CreateZipArchive)
-                {
-                    m_datFile = ZipCreator.CreateZipArchive(m_datFile);
+                    session.Open(sessionOptions);
+
+                    var transferOptions = new TransferOptions
+                    {
+                        OverwriteMode = OverwriteMode.Overwrite
+                    };
+
+                    session.PutFileToDirectory(m_datFile, m_data.RemotePath, false, transferOptions);
                 }
+            }
 
-                session.PutFileToDirectory(m_datFile, m_data.RemotePath, false, transferOptions);
-
-                if (m_data.CreateZipArchive)
-                {
-                    File.Delete(m_datFile);
-                }
+            if (m_data.CreateZipArchive)
+            {
+                File.Delete(m_datFile);
             }
         }
 
@@ -174,24 +187,40 @@ namespace iba.Processing
         {
             errormessage = string.Empty;
 
-            using (var session = new Session())
+            if (m_data.Protocol != UploadTaskData.TransferProtocol.AzureDataLake)
             {
-                SessionOptions sessionOptions = null;
+                using (var session = new Session())
+                {
+                    SessionOptions sessionOptions = null;
+                    try
+                    {
+                        sessionOptions = SetSessionOptions();
+                        ConfigureTlsOrSshOptions(sessionOptions);
+
+                        session.QueryReceived += OnSessionQueryReceived;
+
+                        session.Open(sessionOptions);
+
+                        CheckRemotePath(session);
+                    }
+                    catch (Exception ex)
+                    {
+                        errormessage = ex.Message;
+                        return HandleException(ref errormessage, sessionOptions, session);
+                    }
+                }
+            }
+            else
+            {
                 try
                 {
-                    sessionOptions = SetSessionOptions();
-                    ConfigureTlsOrSshOptions(sessionOptions);
-
-                    session.QueryReceived += OnSessionQueryReceived;
-
-                    session.Open(sessionOptions);
-
-                    CheckRemotePath(session);
+                    var service = new AzureDataLakeClient(m_datFile, m_data);
+                    return service.TestConnection(out errormessage);
                 }
                 catch (Exception ex)
                 {
                     errormessage = ex.Message;
-                    return HandleException(ref errormessage, sessionOptions, session);
+                    return false;
                 }
             }
 
@@ -324,6 +353,110 @@ namespace iba.Processing
                 .Trim(' ', ':');
 
             return fingerprint;
+        }
+    }
+
+    internal class AzureDataLakeClient
+    {
+        private readonly UploadTaskData m_data;
+        private readonly string m_datFile;
+
+        public AzureDataLakeClient(string datFile, UploadTaskData data)
+        {
+            m_datFile = datFile;
+            m_data = data;
+        }
+
+        public void UploadFile()
+        {
+            var sharedKeyCredential = new StorageSharedKeyCredential(m_data.Username, m_data.Password);
+
+            var serviceUri = new Uri("https://" + m_data.Username + ".dfs.core.windows.net");
+
+            DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
+
+            DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.GetFileSystemClient(GetFilesystemPath(m_data.RemotePath));
+            
+            dataLakeFileSystemClient.CreateIfNotExists();
+
+            var fileClient = dataLakeFileSystemClient.GetFileClient(
+                $"{GetFilePath(m_data.RemotePath)}/{Path.GetFileName(m_datFile)}");
+
+            try
+            {
+                fileClient.Upload(m_datFile, m_data.Overwrite);
+            }
+            catch (RequestFailedException ex)
+                when (ex.ErrorCode == "PathAlreadyExists")
+            {
+                //Do not overwrite file
+            }
+        }
+
+        public bool TestConnection(out string errormessage)
+        {
+            errormessage = string.Empty;
+
+            if (string.IsNullOrEmpty(m_data.Username) || string.IsNullOrEmpty(m_data.Password))
+            {
+                errormessage = "Please enter your Account name and Shared key";
+                return false;
+            }
+
+            if (GetFilesystemPath(m_data.RemotePath).Length < 3)
+            {
+                errormessage = "The specified Remote path length is not within the permissible limits";
+                return false;
+            }
+
+            var sharedKeyCredential = new StorageSharedKeyCredential(m_data.Username, m_data.Password);
+            var serviceUri = new Uri("https://" + m_data.Username + ".dfs.core.windows.net");
+            var serviceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
+
+            try
+            {
+                var response = serviceClient.GetProperties();
+                if (response.GetRawResponse().Status == 200)
+                {
+                    return true;
+                }
+            }
+            catch (RequestFailedException ex)
+            {
+                errormessage = $"Unexpected error: {ex.Message}";
+                throw;
+            }
+
+            return false;
+        }
+
+        private static string GetFilesystemPath(string remotePath)
+        {
+            remotePath = FormatPath(remotePath);
+
+            if (!remotePath.Contains("/"))
+            {
+                return remotePath;
+            }
+
+            return remotePath.Substring(0, remotePath.IndexOf("/"));
+        }
+
+        private static string GetFilePath(string remotePath)
+        {
+            remotePath = FormatPath(remotePath);
+            
+            if (!remotePath.Contains("/"))
+            {
+                return string.Empty;
+            }
+
+            return remotePath.Substring(remotePath.IndexOf("/"));
+        }
+
+        private static string FormatPath(string remotePath)
+        {
+            return remotePath.Replace(@"\", "/").Trim('/');
         }
     }
 }

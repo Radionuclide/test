@@ -439,8 +439,19 @@ Section -Common
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaSnmpLib.dll"
+  ;Upload Task
   File "..\ibaDatCoordinator\bin\Release\WinSCPnet.dll"
   File "..\ibaDatCoordinator\bin\Release\WinSCP.exe"
+  File "..\ibaDatCoordinator\bin\Release\Azure.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\Azure.Storage.Blobs.dll"
+  File "..\ibaDatCoordinator\bin\Release\Azure.Storage.Common.dll"
+  File "..\ibaDatCoordinator\bin\Release\Azure.Storage.Files.DataLake.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Threading.Tasks.Extensions.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Diagnostics.DiagnosticSource.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Text.Encodings.Web.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.ValueTuple.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Text.Json.dll"
+  ;GRPC
   File "..\ibaDatCoordinator\bin\Release\Google.Protobuf.dll"
   File "..\ibaDatCoordinator\bin\Release\Grpc.Core.Api.dll"
   File "..\ibaDatCoordinator\bin\Release\Grpc.Core.dll"
@@ -478,7 +489,9 @@ Section -Common
   
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
+  File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe.config"
   File "..\InstallFiles\Protected\DatCoUtil.dll"
+  
   ; runtime
   File "..\InstallFiles\Protected\ibaRuntime.dll"
 
@@ -937,6 +950,25 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
   Delete "$INSTDIR\DigiCertAssuredIDRootCA.crt"
+
+  Delete "$INSTDIR\Azure.Core.dll"
+  Delete "$INSTDIR\Azure.Storage.Blobs.dll"
+  Delete "$INSTDIR\Azure.Storage.Common.dll"
+  Delete "$INSTDIR\Azure.Storage.Files.DataLake.dll"
+  Delete "$INSTDIR\System.Threading.Tasks.Extensions.dll"
+  Delete "$INSTDIR\System.Diagnostics.DiagnosticSource.dll"
+  Delete "$INSTDIR\System.Text.Encodings.Web.dll"
+  Delete "$INSTDIR\System.ValueTuple.dll"
+  Delete "$INSTDIR\System.Text.Json.dll"
+  Delete "$INSTDIR\Google.Protobuf.dll"
+  Delete "$INSTDIR\Grpc.Core.Api.dll"
+  Delete "$INSTDIR\Grpc.Core.dll"
+  Delete "$INSTDIR\grpc_csharp_ext.x64.dll"
+  Delete "$INSTDIR\grpc_csharp_ext.x86.dll"
+  Delete "$INSTDIR\System.Memory.dll"
+  Delete "$INSTDIR\System.Runtime.CompilerServices.Unsafe.dll"
+  Delete "$INSTDIR\System.Buffers.dll"
+  Delete "$INSTDIR\System.Numerics.Vectors.dll"
 
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"

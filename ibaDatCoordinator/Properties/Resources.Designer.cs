@@ -83,9 +83,18 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Access key ID.
         /// </summary>
-        internal static string Access_key_ID_ {
+        internal static string Access_key_ID {
             get {
-                return ResourceManager.GetString("Access_key_ID_", resourceCulture);
+                return ResourceManager.GetString("Access_key_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account name.
+        /// </summary>
+        internal static string AccountName {
+            get {
+                return ResourceManager.GetString("AccountName", resourceCulture);
             }
         }
         
@@ -4934,6 +4943,15 @@ namespace iba.Properties {
         internal static string settingsTitle {
             get {
                 return ResourceManager.GetString("settingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared key.
+        /// </summary>
+        internal static string SharedKey {
+            get {
+                return ResourceManager.GetString("SharedKey", resourceCulture);
             }
         }
         

@@ -2097,7 +2097,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="Access_key_ID_" xml:space="preserve">
+  <data name="Access_key_ID" xml:space="preserve">
     <value>Access key ID</value>
   </data>
   <data name="Secret_key" xml:space="preserve">
@@ -2108,5 +2108,11 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="DatatransferServerStarted" xml:space="preserve">
     <value>Server started</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="SharedKey" xml:space="preserve">
+    <value>Shared key</value>
   </data>
 </root>
