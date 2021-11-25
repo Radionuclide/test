@@ -28,6 +28,6 @@ namespace iba.Licensing
         public const int XmlExport = 14104;
 
         public const int AnalyzerDBExtract = 15210;
-        public const int AnalyzerFileExtract = 15211;
+        public const int AnalyzerFileExtract = 15200;
     }
 }
