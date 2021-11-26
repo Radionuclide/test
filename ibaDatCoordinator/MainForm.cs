@@ -267,6 +267,28 @@ namespace iba
             m_navBar.SelectedPane = m_configPane;
         }
 
+        public void MoveToSettigsTab()
+        {
+            m_navBar.SelectedPane = m_settingsPane;
+        }
+
+        public void MoveToTaskByName(string name)
+        {
+            foreach (TreeNode topLevelNode in m_configTreeView.Nodes)
+                foreach (TreeNode jobLevelNode in topLevelNode.Nodes)
+                    foreach (TreeNode taskLevelNode in jobLevelNode.Nodes)
+                    {
+
+                        TaskData dat = ((taskLevelNode.Tag as TreeItemData)?.DataSource as TaskData);
+                        if (dat != null && dat.Name == name)
+                        {
+                            m_navBar.SelectedPane = m_configPane;
+                            m_configTreeView.SelectedNode = taskLevelNode;
+                            return;
+                        }
+                    }
+        }
+
         private void navbar_SelectedPaneChanged(object sender, EventArgs e)
         {
             if (m_navBar.SelectedPane == m_statusPane)

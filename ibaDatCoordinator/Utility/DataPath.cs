@@ -36,6 +36,14 @@ namespace iba.Utility
             //return rootPath;
         }
 
+        public static string CertificateFolder(Program.ApplicationState state)
+        {
+            var path = Path.Combine(Folder(state), "Certificates");
+
+            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(Path.Combine(path, "Temp"));
+            return path;
+        }
 
         static bool m_IsAdmin;
         public static bool IsAdmin

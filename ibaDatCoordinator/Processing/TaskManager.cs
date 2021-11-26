@@ -18,6 +18,9 @@ using iba.Logging;
 using iba.Processing.IbaGrpc;
 using iba.Processing.IbaOpcUa;
 using IbaSnmpLib;
+using iba.CertificateStore.Manager;
+using System.Security.Cryptography.X509Certificates;
+using iba.CertificateStore;
 
 namespace iba.Processing
 {
@@ -443,17 +446,17 @@ namespace iba.Processing
             if (drive.IsReady)
             {
                 driveInfo.SizeInMb.Value = (uint)(drive.TotalSize >> 20);
-                driveInfo.CurrentFreeSpaceInMb.Value = (uint)(drive.TotalFreeSpace >> 20); 
+                driveInfo.CurrentFreeSpaceInMb.Value = (uint)(drive.TotalFreeSpace >> 20);
             }
 
             // here I use the same formula  as in ServiceSettingsControl.cs, but with conversion to MB:
             // ... = PathUtil.GetSizeReadable((long)(driveSize * (data.PercentageFree / 100.0)));
             //driveInfo.MinFreeSpaceInMb = (uint)(driveInfo.SizeInMb * (gcData.PercentageFree / 100.0)); 
-            driveInfo.MinFreeSpaceInPercent.Value = (uint)gcData.PercentageFree; 
+            driveInfo.MinFreeSpaceInPercent.Value = (uint)gcData.PercentageFree;
 
             driveInfo.RescanTime.Value = (uint)gcData.RescanTime;
 
-            driveInfo.TimeStamp.PutStamp(); 
+            driveInfo.TimeStamp.PutStamp();
         }
 
         public bool ExtMonRefreshJobInfo(ExtMonData.JobInfoBase jobInfo)
@@ -556,10 +559,10 @@ namespace iba.Processing
 
                 ExtMonRefreshJobInfoBase(jobInfo, worker, s);
 
-                jobInfo.PermFailedCount.Value = (uint)s.PermanentErrorFiles.Count; 
-                jobInfo.TimestampJobStarted.Value = worker.TimestampJobStarted; 
-                jobInfo.TimestampLastExecution.Value = worker.TimestampJobLastExecution; 
-                jobInfo.TimestampNextExecution.Value = worker.NextTrigger; 
+                jobInfo.PermFailedCount.Value = (uint)s.PermanentErrorFiles.Count;
+                jobInfo.TimestampJobStarted.Value = worker.TimestampJobStarted;
+                jobInfo.TimestampLastExecution.Value = worker.TimestampJobLastExecution;
+                jobInfo.TimestampNextExecution.Value = worker.NextTrigger;
 
                 jobInfo.TimeStamp.PutStamp();
             }
@@ -605,9 +608,9 @@ namespace iba.Processing
 
                 ExtMonRefreshJobInfoBase(jobInfo, worker, s);
 
-                jobInfo.PermFailedCount.Value = (uint)s.PermanentErrorFiles.Count; 
-                jobInfo.TimestampJobStarted.Value = worker.TimestampJobStarted; 
-                jobInfo.TimestampLastExecution.Value = worker.TimestampJobLastExecution; 
+                jobInfo.PermFailedCount.Value = (uint)s.PermanentErrorFiles.Count;
+                jobInfo.TimestampJobStarted.Value = worker.TimestampJobStarted;
+                jobInfo.TimestampLastExecution.Value = worker.TimestampJobLastExecution;
 
                 jobInfo.TimeStamp.PutStamp();
             }
@@ -629,7 +632,7 @@ namespace iba.Processing
                     ExtMonData.JobStatus.Stopped);
 
             ji.TodoCount.Value = (uint)s.ReadFiles.Count;
-            ji.DoneCount.Value = (uint)s.TotalFilesProcessed; 
+            ji.DoneCount.Value = (uint)s.TotalFilesProcessed;
             //ji.DoneCount.Value = (uint)s.ProcessedFiles.Count; // doesn't show total count, so it is not so helpful
             ji.FailedCount.Value = (uint)s.CountErrors();
 
@@ -693,9 +696,9 @@ namespace iba.Processing
                 {
                     if (worker.TaskLastExecutionDict.TryGetValue(taskData, out ConfigurationWorker.TaskLastExecutionData lastExec))
                     {
-                        taskInfo.Success.Value = lastExec.Success; 
-                        taskInfo.DurationOfLastExecutionInSec.Value = (uint)(lastExec.DurationMs / 1000.0); 
-                        taskInfo.MemoryUsedForLastExecutionInMb.Value = lastExec.MemoryUsed; 
+                        taskInfo.Success.Value = lastExec.Success;
+                        taskInfo.DurationOfLastExecutionInSec.Value = (uint)(lastExec.DurationMs / 1000.0);
+                        taskInfo.MemoryUsedForLastExecutionInMb.Value = lastExec.MemoryUsed;
                     }
                 }
                 catch
@@ -919,7 +922,7 @@ namespace iba.Processing
         public void SnmpWorkerInit()
         {
             SnmpWorker.Init();
-                            }
+        }
 
         /// <summary> Gets/sets data of SnmpWorker. 
         /// If data is set, then restart of snmp agent is performed if necessary. </summary>
@@ -931,9 +934,9 @@ namespace iba.Processing
                 if (SnmpWorker != null)
                 {
                     SnmpWorker.SnmpData = value;
-                        }
-                    }
                 }
+            }
+        }
 
         #endregion
 
@@ -994,7 +997,7 @@ namespace iba.Processing
 
         #endregion
 
-        
+
         #region SNMP Diagnostics
 
         public virtual Tuple<ExtMonWorkerStatus, string> SnmpGetBriefStatus()
@@ -1196,7 +1199,7 @@ namespace iba.Processing
         public async Task DataTransferWorkerInit()
         {
             await DataTransferWorker.Init();
-            
+
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
                 PublishService();
@@ -1270,6 +1273,11 @@ namespace iba.Processing
             m_rememberPassEnabled = false;
             m_criticalTaskSemaphore = new FifoSemaphore(6);
             m_globalCleanup = new GlobalCleanupManager();
+
+            CertificateStoreSerializer.Crypt = new Controls.AppCryptographer();
+            CertificateManager = new CertificateManager(DataPath.CertificateFolder(Program.ApplicationState.SERVICE), "Settings.xml");
+            CertificateManager.Load();
+            m_certManagerJsonAdapter = new CertificateManagerJsonAdapter(CertificateManager);
         }
 
         public static TaskManager Manager
@@ -1368,14 +1376,14 @@ namespace iba.Processing
             }
         }
 
-		private bool m_serviceRestartedClean;
-		public virtual bool ServiceRestartedClean
-		{
-			get { return m_serviceRestartedClean; }
-			set { m_serviceRestartedClean = value; }
-		}
+        private bool m_serviceRestartedClean;
+        public virtual bool ServiceRestartedClean
+        {
+            get { return m_serviceRestartedClean; }
+            set { m_serviceRestartedClean = value; }
+        }
 
-		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
         struct BinaryWatchdogMessageLine
         {
             public int state;
@@ -1415,7 +1423,7 @@ namespace iba.Processing
                 lock (m_workers)
                 {
                     List<ConfigurationData> confs = Configurations;
-                    confs.Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+                    confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
                     for (int i = 0; i < Math.Min(16, confs.Count); i++)
                     {
                         StatusData s = m_workers[confs[i]].Status;
@@ -1644,9 +1652,9 @@ namespace iba.Processing
             {
                 errMessage = ex.Message;
             }
-            if(!string.IsNullOrEmpty(errMessage))
+            if (!string.IsNullOrEmpty(errMessage))
             {
-                LogData.Data.Logger.Log(iba.Logging.Level.Exception, iba.Properties.Resources.RemoveMarkingsProblem + " " + errMessage, new LogExtraData(file,null,data));
+                LogData.Data.Logger.Log(iba.Logging.Level.Exception, iba.Properties.Resources.RemoveMarkingsProblem + " " + errMessage, new LogExtraData(file, null, data));
             }
 
             m_workers[data].ProcessFileDirect(file);
@@ -1757,6 +1765,48 @@ namespace iba.Processing
             }
 
             return false;
+        }
+
+        public CertificateManager CertificateManager { get; private set; }
+        private CertificateManagerJsonAdapter m_certManagerJsonAdapter;
+        public virtual object HandleCertificate(string command, object args = null)
+        {
+            switch (command)
+            {
+                case "GetCertificateUsage":
+                    return m_certManagerJsonAdapter.GetCertificateUsage(args as string);
+                case "Upload":
+                    var certFile = args as Tuple<byte[], string>; // certificate as byte array, its name
+                    string serverFile = Path.Combine(DataPath.CertificateFolder(Program.ApplicationState.SERVICE), "Temp", certFile.Item2);
+                    File.WriteAllBytes(serverFile, certFile.Item1);
+                    break;
+                case "AddCertificate":
+                    return m_certManagerJsonAdapter.AddCertificate(args as string);
+                case "ExportCertificate":
+                    return m_certManagerJsonAdapter.ExportCertificate2(args as string);
+                case "ExportCertificateWithPrivateKey":
+                    return m_certManagerJsonAdapter.ExportCertificateWithPrivateKey(args as string);
+                case "RemoveCertificate":
+                    return m_certManagerJsonAdapter.RemoveCertificate(args as string);
+                case "DownloadToClientTempFile":
+                    bool includePrivateKey = (args as bool?) ?? false;
+                    string serverCertificateTempFile = $@"{DataPath.CertificateFolder(Program.ApplicationState.SERVICE)}\Temp\Export.{(includePrivateKey ? "pfx" : "cer")}";
+                    byte[] cert = File.ReadAllBytes(serverCertificateTempFile);
+                    File.Delete(serverCertificateTempFile);
+                    return cert;
+                case "GenerateCertificate":
+                    return m_certManagerJsonAdapter.GenerateCertificate(args as string);
+                case "EditCertificate":
+                    return m_certManagerJsonAdapter.EditCertificate(args as string);
+                case "GetCertificates":
+                    return m_certManagerJsonAdapter.GetCertificates();
+            }
+            return null;
+        }
+
+        public virtual object KafkaTestConnection(KafkaWriterTaskData data)
+        {
+            return KafkaWriterTaskWorker.TestConnection(data);
         }
     }
 
@@ -3076,6 +3126,32 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+            }
+        }
+
+        public override object HandleCertificate(string command, object args = null)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.HandleCertificate(command, args);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        public override object KafkaTestConnection(KafkaWriterTaskData data)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.KafkaTestConnection(data);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
             }
         }
     }

@@ -173,6 +173,9 @@
     </Compile>
     <Compile Include="CommunicationObject.cs" />
     <Compile Include="Controls\AnalyzerTreeEditor.cs" />
+    <Compile Include="Controls\AppCertificatesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\BatchFileControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1002,6 +1005,18 @@
       <Version>2.37.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="ibaCertificateStore.Core">
+      <Version>8.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="ibaCertificateStore.Forms">
+      <Version>8.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="ibaCertificateStore.Manager">
+      <Version>8.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="ibaCertificateStore.Proxy">
+      <Version>8.0.6</Version>
     </PackageReference>
     <PackageReference Include="ibaSnmpLib">
       <Version>1.9.8</Version>

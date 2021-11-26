@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using Confluent.SchemaRegistry;
+using iba.CertificateStore;
+using iba.CertificateStore.Forms;
+using iba.CertificateStore.Proxy;
 using iba.Controls;
 using IbaAnalyzer;
 
 namespace iba.Data
 {
     [Serializable]
-    public class KafkaWriterTaskData : TaskData
+    public class KafkaWriterTaskData : TaskData, ICertifiable
     {
         public string clusterAddress;
         public string topicName;
@@ -18,8 +21,6 @@ namespace iba.Data
         public List<Param> Params;
         public string identifier;
         public DigitalFormat digitalFormat;
-        private string schemaRegistryAddressCached;
-        private byte[] schemaFingerprintCached;
         public string schemaRegistryAddress;
         public string key;
         public List<string> metadata;
@@ -30,6 +31,12 @@ namespace iba.Data
         public ClusterType ClusterMode { get; set; }
         public ClusterSecurityType ClusterSecurityMode { get; set; }
         public SchemaRegistrySecurityType SchemaRegistrySecurityMode { get; set; }
+        public SASLMechanismType SASLMechanismMode { get; set; }
+        public string SSLClientThumbprint { get; set; }
+        public string SSLCAThumbprint { get; set; }
+        public string SASLUsername { get; set; }
+        public string SASLPass { get; set; }
+        public bool EnableSSLVerification { get; set; }
 
         public enum DigitalFormat
         {
@@ -64,65 +71,19 @@ namespace iba.Data
             SASL_SSL = 3
         }
 
+        public enum SASLMechanismType
+        {
+            PLAIN = 0,
+            SCRAM_SHA_256 = 1,
+            SCRAM_SHA_512 = 2
+        }
+
         public enum SchemaRegistrySecurityType
         {
             HTTP = 0,
             HTTPS = 1,
             HTTP_AUTHENTICATION = 2,
             HTTPS_AUTHENTICATION = 3
-        }
-        public byte[] schemaFingerPrint
-        {
-            get
-            {
-                if (schemaRegistryAddress == schemaRegistryAddressCached && schemaFingerprintCached != null && schemaFingerprintCached.Length > 0)
-                    return schemaFingerprintCached;
-
-                Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
-                schemRegConfig.Url = schemaRegistryAddress;
-                schemRegConfig.RequestTimeoutMs = (int)timeout * 1000;
-
-
-                // Add expert parameters
-                foreach (var kvp in Params)
-                {
-                    if (string.IsNullOrEmpty(kvp.Key))
-                        continue;
-
-                    if (!kvp.Key.StartsWith("schema.registry."))
-                        continue;
-
-                    schemRegConfig.Set(kvp.Key, kvp.Value);
-                }
-
-                Confluent.SchemaRegistry.CachedSchemaRegistryClient schemRegClient = null;
-                try
-                {
-                    schemRegClient = new Confluent.SchemaRegistry.CachedSchemaRegistryClient(schemRegConfig);
-
-                    string subject = Confluent.SchemaRegistry.SubjectNameStrategy.Topic.ConstructValueSubjectName(topicName, null);
-                    System.Threading.Tasks.Task<int> task = schemRegClient.RegisterSchemaAsync(subject, Processing.KafkaWriterTaskWorker.schemaDefault.ToString());
-                    if (!task.Wait((int)timeout * 1000))
-                        throw new TimeoutException();
-
-                    if (!task.IsCompleted)
-                    {
-                        if (task.Exception != null)
-                            throw task.Exception;
-                        else
-                            throw new Exception("Failed to get schema ID from address server.");
-                    }
-                    int schemaId = task.Result;
-                    schemaRegistryAddressCached = schemaRegistryAddress;
-                    schemaFingerprintCached = BitConverter.GetBytes(System.Net.IPAddress.HostToNetworkOrder(schemaId));
-
-                    return schemaFingerprintCached;
-                }
-                finally
-                {
-                    schemRegClient?.Dispose();
-                }
-            }
         }
 
         public string ToText(KafkaRecord rec)
@@ -256,13 +217,17 @@ namespace iba.Data
             topicName = "ibaDatCo-Test";
             clusterAddress = "";
             schemaRegistryAddress = "";
-            schemaRegistryAddressCached = "";
-            schemaFingerprintCached = null;
             key = "";
             AckMode = RequiredAcks.None;
             ClusterMode = ClusterType.Kafka;
             ClusterSecurityMode = ClusterSecurityType.PLAINTEXT;
             SchemaRegistrySecurityMode = SchemaRegistrySecurityType.HTTP;
+            SASLMechanismMode = SASLMechanismType.PLAIN;
+            SSLClientThumbprint = "";
+            SSLCAThumbprint = "";
+            SASLUsername = "";
+            SASLPass = "";
+            EnableSSLVerification = false;
         }
 
         public KafkaWriterTaskData() : this(null) { }
@@ -281,8 +246,6 @@ namespace iba.Data
             d.topicName = topicName;
             d.clusterAddress = clusterAddress;
             d.schemaRegistryAddress = schemaRegistryAddress;
-            d.schemaRegistryAddressCached = schemaRegistryAddressCached;
-            d.schemaFingerprintCached = schemaFingerprintCached;
             d.AckMode = AckMode;
             d.ClusterMode = ClusterMode;
             d.ClusterSecurityMode = ClusterSecurityMode;
@@ -290,6 +253,12 @@ namespace iba.Data
             d.key = key;
             d.metadata = metadata.Select(r => (string)r.Clone()).ToList();
             d.Name = Name;
+            d.SASLMechanismMode = SASLMechanismMode;
+            d.SSLClientThumbprint = SSLClientThumbprint;
+            d.SSLCAThumbprint = SSLCAThumbprint;
+            d.SASLUsername = SASLUsername;
+            d.SASLPass = SASLPass;
+            d.EnableSSLVerification = EnableSSLVerification;
             return d;
         }
 
@@ -310,14 +279,18 @@ namespace iba.Data
                 topicName == other.topicName &&
                 clusterAddress == other.clusterAddress &&
                 schemaRegistryAddress == other.schemaRegistryAddress &&
-                schemaRegistryAddressCached == other.schemaRegistryAddressCached &&
-                schemaFingerprintCached == other.schemaFingerprintCached &&
                 AckMode == other.AckMode &&
                 ClusterMode == other.ClusterMode &&
                 ClusterSecurityMode == other.ClusterSecurityMode &&
                 SchemaRegistrySecurityMode == other.SchemaRegistrySecurityMode &&
                 key == other.key &&
-                metadata.SequenceEqual(other.metadata);
+                metadata.SequenceEqual(other.metadata) &&
+                SASLMechanismMode == other.SASLMechanismMode &&
+                SSLClientThumbprint == other.SSLClientThumbprint &&
+                SSLCAThumbprint == other.SSLCAThumbprint &&
+                SASLUsername == other.SASLUsername &&
+                SASLPass == other.SASLPass &&
+                EnableSSLVerification == other.EnableSSLVerification;
         }
 
         public void EvaluateValues(string filename, IbaAnalyzer.IbaAnalyzer ibaAnalyzer)
@@ -400,6 +373,28 @@ namespace iba.Data
                 return false;
             }
             return true;
+        }
+
+        public IEnumerable<ICertifiable> GetCertifiableChildItems()
+        {
+            yield break;
+        }
+
+        public IEnumerable<ICertificateInfo> GetCertificateInfo()
+        {
+            if (SSLClientThumbprint != null && SSLClientThumbprint != "")
+                yield return new CertificateInfoForwarder(
+                       () => SSLClientThumbprint,
+                       value => SSLClientThumbprint = value,
+                       CertificateRequirement.Valid | CertificateRequirement.Trusted | CertificateRequirement.PrivateKey,
+                       m_name);
+
+            if (SSLCAThumbprint != null && SSLCAThumbprint != "")
+                yield return new CertificateInfoForwarder(
+                   () => SSLCAThumbprint,
+                   value => SSLCAThumbprint = value,
+                   CertificateRequirement.Valid | CertificateRequirement.Trusted | CertificateRequirement.PrivateKey,
+                   m_name);
         }
     }
 }
