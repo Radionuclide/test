@@ -86,6 +86,13 @@ namespace iba.Data
             set { m_monthTriggerWeekDay = value; }
         }
 
+        private bool m_bProcessHistorical;
+        public bool ProcessHistorical
+        {
+            get { return m_bProcessHistorical; }
+            set { m_bProcessHistorical = value; }
+        }
+
         #region ICloneable Members
 
         private bool m_doRepeat;
@@ -304,6 +311,7 @@ namespace iba.Data
             nsjd.m_bUsePreviousTriggerAsStart = m_bUsePreviousTriggerAsStart;
             nsjd.m_preferredTimeBaseTicks = m_preferredTimeBaseTicks;
             nsjd.m_bPreferredTimeBaseIsAuto = m_bPreferredTimeBaseIsAuto;
+            nsjd.m_bProcessHistorical = m_bProcessHistorical;
             return nsjd;
         }
 
@@ -333,7 +341,8 @@ namespace iba.Data
             other.m_startRangeFromTrigger == m_startRangeFromTrigger &&
             other.m_stopRangeFromTrigger == m_stopRangeFromTrigger &&
             other.m_bUsePreviousTriggerAsStart == m_bUsePreviousTriggerAsStart &&
-            other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto;
+            other.m_bPreferredTimeBaseIsAuto == m_bPreferredTimeBaseIsAuto &&
+            other.m_bProcessHistorical == m_bProcessHistorical;
             if (!res) return res;
             if (!m_bPreferredTimeBaseIsAuto) //in case of auto, ticks is not compared
             {

@@ -23,7 +23,7 @@ namespace iba.Controls
         {
             InitializeComponent();
 
-            channelTreeEdit = new iba.Controls.ChannelTreeEdit();
+            channelTreeEdit = ChannelTreeEdit.CreateInstance(null, ChannelTreeFilter.Expressions | ChannelTreeFilter.Analog | ChannelTreeFilter.Digital);
             channelTreeEdit.Size = channelTreeEditPlaceholder.Size;
             channelTreeEdit.Location = channelTreeEditPlaceholder.Location;
             channelTreeEdit.Anchor = channelTreeEditPlaceholder.Anchor;
@@ -37,6 +37,10 @@ namespace iba.Controls
             m_uncControl = new UNCTaskControl();
             panelOut.Controls.Add(m_uncControl);
             m_uncControl.Dock = DockStyle.Fill;
+
+            m_toolTip.SetToolTip(m_executeIBAAButton, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
+            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_browsePDOFileButton, Properties.Resources.ToolTip_BrowsePDO);
         }
 
         private UNCTaskControl m_uncControl;
@@ -49,20 +53,15 @@ namespace iba.Controls
         {
             m_manager = manager;
             m_data = datasource as SplitterTaskData;
-			channelTreeEdit.EditValue = m_data.Expression;
-			m_splitTypeCBox.SelectedIndex = (int)m_data.EdgeConditionType;
+            channelTreeEdit.EditValue = m_data.Expression;
+            m_splitTypeCBox.SelectedIndex = (int)m_data.EdgeConditionType;
             oldPdo = m_pdoFileTextBox.Text = m_data.AnalysisFile;
             oldDat = m_datFileTextBox.Text = m_data.TestDatFile;
 
             m_datFileTextBox.Text = m_data.TestDatFile;
             m_tbPwdDAT.Text = m_data.DatFilePassword;
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                m_testButton.Enabled = true;
-            else
-            {
-                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
-            }
+            UpdateTestButton();
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = m_data.MonitorData.MonitorTime;
@@ -81,6 +80,16 @@ namespace iba.Controls
             }
 
             UpdateSources();
+        }
+
+        private void UpdateTestButton()
+        {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_testButton.Enabled = true;
+            else
+            {
+                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text) && m_executeIBAAButton.Enabled;
+            }
         }
 
         public void SaveData()
@@ -112,7 +121,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            channelTreeEdit.analyzerManager.OnLeave();
+            channelTreeEdit.AnalyzerManager.OnLeave();
         }
 
         #endregion
@@ -169,6 +178,7 @@ namespace iba.Controls
             if (oldDat != newDat)
             {
                 UpdateSources();
+                UpdateTestButton();
                 oldDat = newDat;
             }
         }
@@ -197,7 +207,7 @@ namespace iba.Controls
 
         private void UpdateSources()
         {
-            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+            channelTreeEdit.AnalyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
         }
 
         private void m_btTakeParentPass_Click(object sender, EventArgs e)

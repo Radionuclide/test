@@ -192,6 +192,9 @@ namespace iba.Controls
 
             SetHDServerSettings(m_scheduleData.HDServer, m_scheduleData.HDPort, m_scheduleData.HDUsername, m_scheduleData.HDPassword);
             ChangeHDServer(m_scheduleData.HDServer, m_scheduleData.HDPort, m_scheduleData.HDUsername, m_scheduleData.HDPassword, SelectServer);
+
+            m_cbStartHistorical.Checked = m_scheduleData.ProcessHistorical && TaskManager.Manager.GetOneTimeScheduledConfigurationChanged(m_confData.Guid);
+
         }
 
 
@@ -205,6 +208,7 @@ namespace iba.Controls
             m_confData.LimitTimesTried = m_cbRetry.Checked;
             //base trigger time
             m_scheduleData.BaseTriggerTime = m_dtStart.Value;
+            m_scheduleData.ProcessHistorical = m_cbStartHistorical.Checked;
             //selected trigger type
             m_scheduleData.TriggerType = (ScheduledJobData.TriggerTypeEnum) ( m_rbs.Select((value, index) => new { value, index }).First(z => z.value.Checked).index);
             //daily
@@ -563,6 +567,9 @@ namespace iba.Controls
             StringBuilder sb = new StringBuilder();
 
             DateTime from = DateTime.Now;
+            if (m_cbStartHistorical.Checked)
+                from = m_scheduleData.BaseTriggerTime;
+
             int count = 10;
             for(int i = 0; i < 10; i++)
             {

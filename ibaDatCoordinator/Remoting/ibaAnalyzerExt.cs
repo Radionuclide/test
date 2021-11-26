@@ -419,6 +419,11 @@ namespace iba.Remoting
             return new ibaAnalyzerSignalTreeExt(this.analyzer.GetSignalTree(filter));
         }
 
+        public dynamic GetChannelMetaData(string channelID)
+        {
+            return new ibaAnalyzerChannelMetaDataExt(this.analyzer.GetChannelMetaData(channelID));
+        }
+
         public void SignalTreeImageData(int index, out object pData)
         {
             analyzer.SignalTreeImageData(index, out pData);
@@ -591,6 +596,80 @@ namespace iba.Remoting
         }
     }
 
+    public class ibaAnalyzerChannelMetaDataExt : MarshalByRefObject, IDisposable, IbaAnalyzer.IChannelMetaData
+    {
+        IbaAnalyzer.IChannelMetaData metaData;
+
+        public ibaAnalyzerChannelMetaDataExt(IbaAnalyzer.IChannelMetaData data)
+        {
+            this.metaData = data;
+        }
+
+        #region IDisposable Support
+
+        ~ibaAnalyzerChannelMetaDataExt() => Dispose(false);
+
+        // Public implementation of Dispose pattern callable by consumers.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (metaData == null) return; //redundant call;
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects).
+            }
+            if (metaData != null)
+            {
+                Marshal.ReleaseComObject(metaData);
+            }
+            metaData = null;
+        }
+
+        public string GetInfoField(string infoKey)
+        {
+            return metaData.GetInfoField(infoKey);
+        }
+
+        public string name
+        {
+            get
+            {
+                return metaData.name;
+            }
+        }
+
+        public string Unit
+        {
+            get
+            {
+                return metaData.Unit;
+            }
+        }
+
+        public string Comment1
+        {
+            get
+            {
+                return metaData.Comment1;
+            }
+        }
+
+        public string Comment2
+        {
+            get
+            {
+                return metaData.Comment2;
+            }
+        }
+        #endregion
+    }
+
     public class ibaAnalyzerSignalTreeNodeExt : MarshalByRefObject, IDisposable, IbaAnalyzer.ISignalTreeNode
     {
         IbaAnalyzer.ISignalTreeNode node;
@@ -635,11 +714,11 @@ namespace iba.Remoting
             }
         }
 
-        public string channelId
+        public string channelID
         {
             get
             {
-                return node.channelId;
+                return node.channelID;
             }
         }
 
@@ -1255,6 +1334,23 @@ namespace iba.Remoting
             }
         }
 
+
+        public dynamic GetChannelMetaData(string id)
+        {
+            try
+            {
+                var data = remoteIbaAnalyzer.GetChannelMetaData(id);
+                if (data == null)
+                    return null;
+                return new ibaAnalyzerChannelMetaDataClientWrapper(data as IbaAnalyzer.IChannelMetaData);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
         public void Dispose()
         {
             try
@@ -1398,7 +1494,7 @@ namespace iba.Remoting
 
     public class ibaAnalylerSignalTreeNodeClientWrapper : IDisposable, IbaAnalyzer.ISignalTreeNode
     {
-        IbaAnalyzer.ISignalTreeNode  remoteNode;
+        IbaAnalyzer.ISignalTreeNode remoteNode;
         public ibaAnalylerSignalTreeNodeClientWrapper(IbaAnalyzer.ISignalTreeNode node)
         {
             remoteNode = node;
@@ -1498,13 +1594,13 @@ namespace iba.Remoting
             }
         }
 
-        public string channelId
+        public string channelID
         {
             get
             {
                 try
                 {
-                    return remoteNode.channelId;
+                    return remoteNode.channelID;
                 }
                 catch (Exception ex)
                 {
@@ -1514,7 +1610,7 @@ namespace iba.Remoting
 
             }
         }
-    
+
 
         public int ImageIndex
         {
@@ -1550,4 +1646,110 @@ namespace iba.Remoting
         }
     }
 
+    public class ibaAnalyzerChannelMetaDataClientWrapper : IDisposable, IbaAnalyzer.IChannelMetaData
+    {
+        IbaAnalyzer.IChannelMetaData remoteData;
+
+        public ibaAnalyzerChannelMetaDataClientWrapper(IbaAnalyzer.IChannelMetaData data)
+        {
+            this.remoteData = data;
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                ((IDisposable) remoteData ).Dispose();
+            }
+            catch (Exception)
+            {
+                //HandleBrokenConnection(ex);
+            }
+        }
+
+        public string GetInfoField(string infoKey)
+        {
+            try
+            {
+                return remoteData.GetInfoField(infoKey);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
+        public string name
+        {
+            get
+            {
+                try
+                {
+                    return remoteData.name;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return null;
+                }
+            }
+        }
+
+        public string Unit
+        {
+            get
+            {
+                try
+                {
+                    return remoteData.Unit;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return null;
+                }
+            }
+        }
+
+        public string Comment1
+        {
+            get
+            {
+                try
+                {
+                    return remoteData.Comment1;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return null;
+                }
+            }
+        }
+
+        public string Comment2
+        {
+            get
+            {
+                try
+                {
+                    return remoteData.Comment2;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return null;
+                }
+            }
+        }
+
+        private void HandleBrokenConnection(Exception ex)
+        {
+            if (ex.Message.Contains("E_FAIL")) //ordinary ibaAnalyzer excpetion -> rethrow
+                throw ex;
+            else
+                Program.CommunicationObject.HandleBrokenConnection(ex);
+        }
+    }
 }

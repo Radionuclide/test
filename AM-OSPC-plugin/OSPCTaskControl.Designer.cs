@@ -299,6 +299,7 @@
             resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
             this.m_btnUploadPDO.Image = global::AM_OSPC_plugin.Properties.Resources.img_pdo_upload;
             this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+            this.m_toolTip.SetToolTip(this.m_btnUploadPDO, resources.GetString("m_btnUploadPDO.ToolTip"));
             this.m_btnUploadPDO.UseVisualStyleBackColor = true;
             this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
             // 

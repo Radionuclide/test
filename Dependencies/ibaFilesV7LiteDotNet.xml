@@ -291,6 +291,15 @@ i.e. <paramref name="numberOfSamples" /> will be zero after the first call to th
 </summary>
             <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32,System.Int64[]@)">
+            <inheritdoc />
+            <summary>
+Read an incremental part of the signal data as an array of <see cref="T:System.Int64" /> values.
+<para />Incremental reading is not supported for HD-servers prior to version 1.5.4. For an HD-server prior to 1.5.4 the method will report that there is no data, 
+i.e. <paramref name="numberOfSamples" /> will be zero after the first call to the method.
+</summary>
+            <exception cref="T:System.Exception">Thrown if the connection to the HD-server has been lost.</exception>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaHDChannelReader.IncrementalRead(System.Int32,System.Int32[]@)">
             <inheritdoc />
             <summary>
@@ -810,12 +819,23 @@ The <see cref="T:System.Object" /> that <paramref name="data" /> returns will be
             <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" />
             <seealso cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" />
         </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32,System.Int64[]@)">
+            <inheritdoc />
+            <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
+or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int64" /> values. See remarks.</exception>
+            <remarks> 
+For this method to succeed the samples in the channel should be stored as 64 bit integer values, <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> should return <see cref="T:iba.ibaFilesLiteDotNet.ChannelTypeEnum" />.<c>Int64</c>.
+Additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should have been set to <c>true</c>.
+</remarks>
+        </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.IncrementalRead(System.Int32,System.Int32[]@)">
             <inheritdoc />
             <exception cref="T:System.InvalidOperationException">Thrown if the file the channel belongs to has been closed or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaFileChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
-            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int16" /> values. See remarks.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int32" /> values. See remarks.</exception>
             <remarks> 
 For this method to succeed the samples in the channel should be stored as 32 bit integer values, <see cref="P:iba.ibaFilesLiteDotNet.IbaFileChannelReader.ChannelType" /> should return <see cref="T:iba.ibaFilesLiteDotNet.ChannelTypeEnum" />.<c>Int32</c>.
 Additionally raw mode data reading should have been enabled on the parent instance of <see cref="T:iba.ibaFilesLiteDotNet.IbaFileReader" />, i.e. <see cref="P:iba.ibaFilesLiteDotNet.IbaFileReader.RawMode" /> should have been set to <c>true</c>.
@@ -1380,6 +1400,18 @@ Read an incremental part of the digital signal data as an array of <see cref="T:
 or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" /> has been called in the mean time.</exception>
             <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
             <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Boolean" /> values.</exception>
+        </member>
+        <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32,System.Int64[]@)">
+            <summary>
+Read an incremental part of the signal data as an array of <see cref="T:System.Int64" /> values.
+</summary>
+            <param name="numberOfSamples">The desired number of samples to read.</param>
+            <param name="data"> On return, an array containing the next <paramref name="numberOfSamples" /> values.</param>
+            <returns>The number of samples actually read. This could be less than the requested number of samples <paramref name="numberOfSamples" /> if the end of the data is reached.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.InitIncrementalRead(iba.ibaFilesLiteDotNet.XBaseType,System.Single@,System.Single@)" /> has not been called for this channel 
+or if <see cref="M:iba.ibaFilesLiteDotNet.IbaChannelReader.StopIncrementalRead" />  has been called in the mean time.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="numberOfSamples" /> is negative.</exception>
+            <exception cref="T:System.NotSupportedException">Thrown if the data samples in the channel cannot be represented by an array of  <see cref="T:System.Int64" /> values. </exception>
         </member>
         <member name="M:iba.ibaFilesLiteDotNet.IbaChannelReader.IncrementalRead(System.Int32,System.Int32[]@)">
             <summary>

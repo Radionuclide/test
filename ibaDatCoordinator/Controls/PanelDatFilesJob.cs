@@ -56,7 +56,7 @@ namespace iba.Controls
                         c.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                     else if(c == m_datDirTextBox)
                         c.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-                    else if(c == m_browseFolderButton || c == m_browseDatFilesButton)
+                    else if(c == m_browseFolderButton || c == m_browseDatFilesButton || c == m_checkPathButton)
                         c.Anchor = AnchorStyles.Right | AnchorStyles.Top; //actually this is unchanged
                     else
                         c.Anchor = (c.Anchor & ~AnchorStyles.Top) | AnchorStyles.Bottom;
@@ -70,6 +70,8 @@ namespace iba.Controls
                 m_toolTip.SetToolTip(m_datDirTextBox, iba.Properties.Resources.DatDirDragAndDrop);
                 m_autoStartCheckBox.Visible = false;
                 this.ResumeLayout();
+                m_toolTip.SetToolTip(m_browseDatFilesButton, iba.Properties.Resources.browseDatFile);
+                m_toolTip.SetToolTip(m_browseFolderButton, iba.Properties.Resources.browseFolderDatFile);
             }
             else
             {
@@ -78,7 +80,6 @@ namespace iba.Controls
 
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
             m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
-            m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.browseCleanProcessButton);
 
             ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);

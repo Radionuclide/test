@@ -177,7 +177,7 @@ namespace iba.Data
         public bool IsStructureValid
         {
             get => _isStructureValid;
-            set
+            protected set
             {
                 // this implementation works properly if called from different threads;
                 // lock of the timer is not needed here
@@ -189,12 +189,20 @@ namespace iba.Data
                 // if structure is marked invalid
                 if (!value)
                 {
+                    DebugWriteLine(nameof(ExtMonData), "IsStructureValid --> FALSE");
                     // schedule a delayed tree rebuild, 
                     // if it will not happen earlier
                     _treeValidatorTimer?.Start();
                 }
             }
         }
+
+        /// <summary> Call this to let ExtMonData know that the tree structure is outdated.
+        /// Then it will take care of rebuilding itself.
+        /// Invalidation should be triggered e.g. on adding/deleting/reordering Jobs/Tasks, etc.
+        /// </summary>
+        /// <remarks> Is thread-safe. </remarks>
+        public void InvalidateTree() => IsStructureValid = false;
 
         /// <summary>
         /// The reason for having this timer is a compromise between responsiveness, reliability and computational efforts.
@@ -217,7 +225,7 @@ namespace iba.Data
                 // it will be rebuilt either:
                 //  * on first request to any existing node
                 //  * or automatically on tick of _treeValidatorTimer
-                IsStructureValid = false;
+                InvalidateTree();
             };
 
             // create the timer for delayed tree rebuild
@@ -503,6 +511,8 @@ namespace iba.Data
 
         public static void DebugWriteLine(string sender, string msg)
         {
+            // it's ok to use 'Now' here (rather than 'UtcNow')
+            // because we need just to show the local time (value not used in duration calculation)
             Debug.WriteLine($"{DateTime.Now}. {GetCurrentThreadString()}. {sender}. {msg}");
         }
 
@@ -896,14 +906,14 @@ namespace iba.Data
 
             public class TimeStampWithThreshold
             {
-                public DateTime Stamp { get; private set; } = DateTime.MinValue;
+                public DateTime UtcStamp { get; private set; } = DateTime.MinValue;
 
                 /// <summary> A measure to tell whether some data is fresh enough (and can be used as is) or
                 /// is probably too old (and should be updated before sending via SNMP or OPC UA). </summary>
                 public TimeSpan AgeThreshold { get; }
 
-                public TimeSpan Age => Stamp == DateTime.MinValue
-                        ? TimeSpan.MaxValue : DateTime.Now - Stamp;
+                public TimeSpan Age => UtcStamp == DateTime.MinValue
+                        ? TimeSpan.MaxValue : DateTime.UtcNow - UtcStamp;
 
                 /// <summary> Tells if data is younger than Threshold (then it is treated as fresh enough). </summary>
                 public bool IsUpToDate => Age < AgeThreshold;
@@ -915,7 +925,10 @@ namespace iba.Data
 
                 public void PutStamp()
                 {
-                    Stamp = DateTime.Now;
+                    // it's important to use UtcNow rather than Now, 
+                    // because latter can have issues with duration calculations
+                    // on spring/fall daylight saving switch
+                    UtcStamp = DateTime.UtcNow;
                 }
             }
 

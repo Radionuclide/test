@@ -19,11 +19,12 @@ namespace iba.Controls
     public partial class IfTaskControl : UserControl, IPropertyPane
     {
         private ChannelTreeEdit channelTreeEdit;
+
         public IfTaskControl()
         {
             InitializeComponent();
 
-            channelTreeEdit = new iba.Controls.ChannelTreeEdit();
+            channelTreeEdit = ChannelTreeEdit.CreateInstance(null, ChannelTreeFilter.Expressions | ChannelTreeFilter.Analog | ChannelTreeFilter.Digital);
             channelTreeEdit.Size = channelTreeEditPlaceholder.Size;
             channelTreeEdit.Location = channelTreeEditPlaceholder.Location;
             channelTreeEdit.Anchor = channelTreeEditPlaceholder.Anchor;
@@ -39,7 +40,21 @@ namespace iba.Controls
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
             WindowsAPI.SHAutoComplete(m_datFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
-		}
+
+            m_toolTip.SetToolTip(m_executeIBAAButton, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
+            m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
+            m_toolTip.SetToolTip(m_browsePDOFileButton, Properties.Resources.ToolTip_BrowsePDO);
+        }
+
+        private void UpdateTestButton()
+        {
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
+                m_testButton.Enabled = true;
+            else
+            {
+                m_testButton.Enabled = File.Exists(m_datFileTextBox.Text);
+            }
+        }
 
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
@@ -55,7 +70,6 @@ namespace iba.Controls
             m_tbPwdDAT.Text = m_data.DatFilePassword;
 
 
-            m_testButton.Enabled = DataPath.FileExists(m_datFileTextBox.Text);
             m_XTypeComboBox.SelectedIndex = (int)m_data.XType;
 
             m_cbMemory.Checked = m_data.MonitorData.MonitorMemoryUsage;
@@ -63,7 +77,8 @@ namespace iba.Controls
             m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, m_data.MonitorData.MemoryLimit));
             m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(m_data.MonitorData.TimeLimit.TotalMinutes, 1));
             m_monitorGroup.Enabled = VersionCheck.CheckIbaAnalyzerVersion("5.8.1");
-            m_testButton.Enabled = DataPath.FileExists(m_datFileTextBox.Text); 
+
+            UpdateTestButton();
             UpdateSources();
         }
 
@@ -93,7 +108,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-            channelTreeEdit.analyzerManager.OnLeave();
+            channelTreeEdit.AnalyzerManager.OnLeave();
         }
 
         #endregion
@@ -130,7 +145,7 @@ namespace iba.Controls
 
         private void UpdateSources()
         {
-            channelTreeEdit.analyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
+            channelTreeEdit.AnalyzerManager.UpdateSource(m_pdoFileTextBox.Text, m_datFileTextBox.Text, m_tbPwdDAT.Text, m_data.ParentConfigurationData);
         }
 
         private void m_testButton_Click(object sender, EventArgs e)
@@ -253,12 +268,13 @@ namespace iba.Controls
             {
                 oldDat = newDat;
                 UpdateSources();
+                UpdateTestButton();
             }
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)
 		{
-			Utility.DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(true, this, m_pdoFileTextBox.Text, channelTreeEdit.analyzerManager, m_data.ParentConfigurationData);
+			Utility.DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(true, this, m_pdoFileTextBox.Text, channelTreeEdit.AnalyzerManager, m_data.ParentConfigurationData);
             UpdateSources();
 		}
 

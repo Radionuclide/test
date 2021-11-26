@@ -27,7 +27,7 @@
 
 !echo "Executing installer with unsigned uninstaller"
 !system "..\InstallFiles\uninstaller_only.exe" = 2
-!delfile "..\InstallFiles\uninstaller_only.exe"
+!delfile /nonfatal "..\InstallFiles\uninstaller_only.exe"
 
 !echo "Signing uninstaller"
 !ifdef SIGN_TIMESTAMP_URL
@@ -45,11 +45,6 @@
 ;!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\ibaPda.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
-
-; .NET Framework
-; English
-!define BASE_URL http://download.microsoft.com/download
-!define URL_DOTNET "${BASE_URL}/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe"
 
 !include "MUI.nsh"
 !include "WinMessages.nsh"
@@ -152,7 +147,7 @@ Name "${PRODUCT_NAME} v${PRODUCT_VERSION}"
 !ifdef UNINSTALLER_ONLY
 OutFile "..\InstallFiles\uninstaller_only.exe"
 !else
-OutFile "ibaDatCoordinatorInstall_v${PRODUCT_VERSION}.exe"
+OutFile "ibaDatCoordinatorSetup_v${PRODUCT_VERSION}.exe"
 !endif
 InstallDir "$PROGRAMFILES\iba\ibaDatCoordinator"
 ;InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
@@ -268,12 +263,11 @@ Function PreInstall
   Call CheckRequirements
   Call CheckPreviousVersions
 
-  ${If} $WinVer == "8"
-  ${OrIf} $WinVer == "2012"
-  ${OrIf} $WinVer == "10"
-    StrCpy $StartMenuFolder "ibaDatCoordinator" 
+  ${If} $WinVer == "7"
+  ${OrIf} $WinVer == "2008 R2"
+    StrCpy $StartMenuFolder "iba\ibaDatCoordinator" 
   ${Else}
-    StrCpy $StartMenuFolder "iba\ibaDatCoordinator"
+    StrCpy $StartMenuFolder "ibaDatCoordinator"
   ${EndIf}
 
 FunctionEnd
@@ -290,9 +284,11 @@ Function CheckRequirements
   StrCmp $WinVer "2008 R2" OSisOK +1
   StrCmp $WinVer "8" OSisOK +1
   StrCmp $WinVer "10" OSisOK +1
+  StrCmp $WinVer "11" OSisOK +1
   StrCmp $WinVer "2012" OSisOK +1
   StrCmp $WinVer "2016" OSisOK +1
   StrCmp $WinVer "2019" OSisOK +1
+  StrCmp $WinVer "2022" OSisOK +1
     MessageBox MB_OK|MB_ICONSTOP|MB_SETFOREGROUND $(TEXT_OS_NOT_SUPPORTED)
     Quit
 
@@ -439,8 +435,28 @@ Section -Common
   File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
   File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaSnmpLib.dll"
+  ;Upload Task
   File "..\ibaDatCoordinator\bin\Release\WinSCPnet.dll"
   File "..\ibaDatCoordinator\bin\Release\WinSCP.exe"
+  File "..\ibaDatCoordinator\bin\Release\Azure.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\Azure.Storage.Blobs.dll"
+  File "..\ibaDatCoordinator\bin\Release\Azure.Storage.Common.dll"
+  File "..\ibaDatCoordinator\bin\Release\Azure.Storage.Files.DataLake.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Threading.Tasks.Extensions.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Diagnostics.DiagnosticSource.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Text.Encodings.Web.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.ValueTuple.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Text.Json.dll"
+  ;GRPC
+  File "..\ibaDatCoordinator\bin\Release\Google.Protobuf.dll"
+  File "..\ibaDatCoordinator\bin\Release\Grpc.Core.Api.dll"
+  File "..\ibaDatCoordinator\bin\Release\Grpc.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\grpc_csharp_ext.x64.dll"
+  File "..\ibaDatCoordinator\bin\Release\grpc_csharp_ext.x86.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Memory.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Buffers.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Numerics.Vectors.dll"
   ;OPC UA
   File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
@@ -457,10 +473,21 @@ Section -Common
   File "..\Dependencies\hdClientInterfaces.dll"
   File "..\Dependencies\ibaUser.dll"
   File "..\Dependencies\ibaUser.Forms.dll"
+  ;Kafka
+  File "..\Dependencies\Kafka\x86\libeay32.dll"
+  File "..\Dependencies\Kafka\x86\librdkafka.dll"
+  File "..\Dependencies\Kafka\x86\libzstd.dll"
+  File "..\Dependencies\Kafka\x86\ssleay32.dll"
+  File "..\Dependencies\Kafka\x86\zlibwapi.dll"
+  File "..\Dependencies\Kafka\Avro.dll"
+  File "..\Dependencies\Kafka\Confluent.Kafka.dll"
+  File "..\Dependencies\Kafka\Confluent.SchemaRegistry.dll"
   
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
+  File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe.config"
   File "..\InstallFiles\Protected\DatCoUtil.dll"
+  
   ; runtime
   File "..\InstallFiles\Protected\ibaRuntime.dll"
 
@@ -477,8 +504,8 @@ Section -Common
   
   ; silently install certificate
   SetOutPath "$INSTDIR"
-  File "DigiCertAssuredIDRootCA.crt"
-  Push "$INSTDIR\DigiCertAssuredIDRootCA.crt"
+  File "DigiCertTrustedRootG4.crt"
+  Push "$INSTDIR\DigiCertTrustedRootG4.crt"
   Call AddCertificateToStore
   Pop $9
   ${If} $9 <> "success"
@@ -668,21 +695,23 @@ Section -Post
   DetailPrint "Clearing icon cache"
   ${If} $Is64Bit == 1
     ${DisableX64FSRedirection}
-    ${If} $WinVer == "10"
-    ${OrIf} $WinVer == "2016"
-    ${OrIf} $WinVer == "2019"
-      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
-    ${Else}
+    ${If} $WinVer == "7"
+    ${OrIf} $WinVer == "2008 R2"
+    ${OrIf} $WinVer == "8"
+    ${OrIf} $WinVer == "2012"
       nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
+    ${Else}
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
     ${EndIf}
     ${EnableX64FSRedirection}
   ${Else}
-    ${If} $WinVer == "10"
-    ${OrIf} $WinVer == "2016"
-    ${OrIf} $WinVer == "2019"
-      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
-    ${Else}
+    ${If} $WinVer == "7"
+    ${OrIf} $WinVer == "2008 R2"
+    ${OrIf} $WinVer == "8"
+    ${OrIf} $WinVer == "2012"
       nsExec::Exec '"$SYSDIR\ie4uinit.exe" -ClearIconCache'
+    ${Else}
+      nsExec::Exec '"$SYSDIR\ie4uinit.exe" -show'
     ${EndIf}
   ${EndIf}
   
@@ -882,6 +911,15 @@ Function un.UninstallTasks
   Delete "$INSTDIR\GenuineChannels.dll"
   Delete "$INSTDIR\Zyan.SafeDeserializationHelpers.dll"
 
+  Delete "$INSTDIR\libeay32.dll"
+  Delete "$INSTDIR\librdkafka.dll"
+  Delete "$INSTDIR\libzstd.dll"
+  Delete "$INSTDIR\ssleay32.dll"
+  Delete "$INSTDIR\zlibwapi.dll"
+  Delete "$INSTDIR\Avro.dll"
+  Delete "$INSTDIR\Confluent.Kafka.dll"
+  Delete "$INSTDIR\Confluent.SchemaRegistry.dll"
+
   Delete "$INSTDIR\ibaSnmpLib.dll"
   Delete "$INSTDIR\WinSCPnet.dll"
   Delete "$INSTDIR\WinSCP.exe"
@@ -909,7 +947,26 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"
-  Delete "$INSTDIR\DigiCertAssuredIDRootCA.crt"
+  Delete "$INSTDIR\DigiCertTrustedRootG4.crt"
+
+  Delete "$INSTDIR\Azure.Core.dll"
+  Delete "$INSTDIR\Azure.Storage.Blobs.dll"
+  Delete "$INSTDIR\Azure.Storage.Common.dll"
+  Delete "$INSTDIR\Azure.Storage.Files.DataLake.dll"
+  Delete "$INSTDIR\System.Threading.Tasks.Extensions.dll"
+  Delete "$INSTDIR\System.Diagnostics.DiagnosticSource.dll"
+  Delete "$INSTDIR\System.Text.Encodings.Web.dll"
+  Delete "$INSTDIR\System.ValueTuple.dll"
+  Delete "$INSTDIR\System.Text.Json.dll"
+  Delete "$INSTDIR\Google.Protobuf.dll"
+  Delete "$INSTDIR\Grpc.Core.Api.dll"
+  Delete "$INSTDIR\Grpc.Core.dll"
+  Delete "$INSTDIR\grpc_csharp_ext.x64.dll"
+  Delete "$INSTDIR\grpc_csharp_ext.x86.dll"
+  Delete "$INSTDIR\System.Memory.dll"
+  Delete "$INSTDIR\System.Runtime.CompilerServices.Unsafe.dll"
+  Delete "$INSTDIR\System.Buffers.dll"
+  Delete "$INSTDIR\System.Numerics.Vectors.dll"
 
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"

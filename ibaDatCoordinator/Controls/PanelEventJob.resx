@@ -635,7 +635,7 @@
     <value>NoControl</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>21, 318</value>
+    <value>21, 317</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>236, 13</value>
@@ -668,7 +668,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdQueryEndTimeEnabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>304, 296</value>
+    <value>304, 295</value>
   </data>
   <data name="m_hdQueryEndTimeEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 17</value>
@@ -701,7 +701,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdQueryEnabled.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 273</value>
+    <value>19, 272</value>
   </data>
   <data name="m_hdQueryEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>137, 17</value>
@@ -734,7 +734,7 @@
     <value>False</value>
   </data>
   <data name="dtStopTimeHdQuery.Location" type="System.Drawing.Point, System.Drawing">
-    <value>401, 294</value>
+    <value>401, 293</value>
   </data>
   <data name="dtStopTimeHdQuery.Size" type="System.Drawing.Size, System.Drawing">
     <value>153, 20</value>
@@ -764,7 +764,7 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>21, 296</value>
+    <value>21, 295</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -797,7 +797,7 @@
     <value>False</value>
   </data>
   <data name="dtStartTimeHdQuery.Location" type="System.Drawing.Point, System.Drawing">
-    <value>130, 294</value>
+    <value>130, 293</value>
   </data>
   <data name="dtStartTimeHdQuery.Size" type="System.Drawing.Size, System.Drawing">
     <value>153, 20</value>
@@ -905,7 +905,7 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_pnlEvents.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 92</value>
+    <value>16, 91</value>
   </data>
   <data name="m_pnlEvents.Size" type="System.Drawing.Size, System.Drawing">
     <value>713, 175</value>
@@ -1076,7 +1076,7 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 73</value>
+    <value>13, 72</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>83, 13</value>
@@ -1103,7 +1103,7 @@
     <value>0, 125</value>
   </data>
   <data name="gbTriggers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 339</value>
+    <value>734, 338</value>
   </data>
   <data name="gbTriggers.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1126,464 +1126,38 @@
   <data name="gbOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_cbTimeBase.Name" xml:space="preserve">
-    <value>m_cbTimeBase</value>
+  <data name="m_cbMaxTrigger.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;m_cbTimeBase.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_cbMaxTrigger.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;m_cbTimeBase.Parent" xml:space="preserve">
+  <data name="m_cbMaxTrigger.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 251</value>
+  </data>
+  <data name="m_cbMaxTrigger.Size" type="System.Drawing.Size, System.Drawing">
+    <value>403, 17</value>
+  </data>
+  <data name="m_cbMaxTrigger.TabIndex" type="System.Int32, mscorlib">
+    <value>46</value>
+  </data>
+  <data name="m_cbMaxTrigger.Text" xml:space="preserve">
+    <value>Ignore HDQ file when no outgoing event is found within the maximum time range</value>
+  </data>
+  <data name="&gt;&gt;m_cbMaxTrigger.Name" xml:space="preserve">
+    <value>m_cbMaxTrigger</value>
+  </data>
+  <data name="&gt;&gt;m_cbMaxTrigger.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMaxTrigger.Parent" xml:space="preserve">
     <value>gbOutput</value>
   </data>
-  <data name="&gt;&gt;m_cbTimeBase.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cbMaxTrigger.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_btGenerateTest.Name" xml:space="preserve">
-    <value>m_btGenerateTest</value>
-  </data>
-  <data name="&gt;&gt;m_btGenerateTest.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btGenerateTest.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_btGenerateTest.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_lvStores.Name" xml:space="preserve">
-    <value>m_lvStores</value>
-  </data>
-  <data name="&gt;&gt;m_lvStores.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvStores.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lvStores.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;label31.Name" xml:space="preserve">
-    <value>label31</value>
-  </data>
-  <data name="&gt;&gt;label31.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label31.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label31.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;label26.Name" xml:space="preserve">
-    <value>label26</value>
-  </data>
-  <data name="&gt;&gt;label26.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label26.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label26.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;label27.Name" xml:space="preserve">
-    <value>label27</value>
-  </data>
-  <data name="&gt;&gt;label27.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label27.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label27.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxCaption.Name" xml:space="preserve">
-    <value>m_lblMaxCaption</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxCaption.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxCaption.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxCaption.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsPost.Name" xml:space="preserve">
-    <value>m_nudSecsPost</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsPost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsPost.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsPost.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysMax.Name" xml:space="preserve">
-    <value>m_nudDaysMax</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysMax.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysMax.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysMax.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;label28.Name" xml:space="preserve">
-    <value>label28</value>
-  </data>
-  <data name="&gt;&gt;label28.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label28.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label28.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursMax.Name" xml:space="preserve">
-    <value>m_nudHoursMax</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursMax.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursMax.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursMax.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsPost.Name" xml:space="preserve">
-    <value>m_nudMinsPost</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsPost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsPost.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsPost.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxDays.Name" xml:space="preserve">
-    <value>m_lblMaxDays</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxDays.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxDays.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxDays.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxHours.Name" xml:space="preserve">
-    <value>m_lblMaxHours</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxHours.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxHours.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxHours.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;label29.Name" xml:space="preserve">
-    <value>label29</value>
-  </data>
-  <data name="&gt;&gt;label29.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label29.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsMax.Name" xml:space="preserve">
-    <value>m_nudMinsMax</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsMax.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsMax.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsMax.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;label30.Name" xml:space="preserve">
-    <value>label30</value>
-  </data>
-  <data name="&gt;&gt;label30.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label30.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label30.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxMins.Name" xml:space="preserve">
-    <value>m_lblMaxMins</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxMins.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxMins.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxMins.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursPost.Name" xml:space="preserve">
-    <value>m_nudHoursPost</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursPost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursPost.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursPost.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsMax.Name" xml:space="preserve">
-    <value>m_nudSecsMax</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsMax.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsMax.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsMax.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysPost.Name" xml:space="preserve">
-    <value>m_nudDaysPost</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysPost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysPost.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysPost.ZOrder" xml:space="preserve">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxSecs.Name" xml:space="preserve">
-    <value>m_lblMaxSecs</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxSecs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxSecs.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxSecs.ZOrder" xml:space="preserve">
-    <value>24</value>
-  </data>
-  <data name="&gt;&gt;m_cbPostTrigger.Name" xml:space="preserve">
-    <value>m_cbPostTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_cbPostTrigger.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbPostTrigger.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_cbPostTrigger.ZOrder" xml:space="preserve">
-    <value>25</value>
-  </data>
-  <data name="&gt;&gt;label21.Name" xml:space="preserve">
-    <value>label21</value>
-  </data>
-  <data name="&gt;&gt;label21.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label21.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
-    <value>26</value>
-  </data>
-  <data name="&gt;&gt;label22.Name" xml:space="preserve">
-    <value>label22</value>
-  </data>
-  <data name="&gt;&gt;label22.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label22.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label22.ZOrder" xml:space="preserve">
-    <value>27</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsPre.Name" xml:space="preserve">
-    <value>m_nudSecsPre</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsPre.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsPre.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudSecsPre.ZOrder" xml:space="preserve">
-    <value>28</value>
-  </data>
-  <data name="&gt;&gt;label23.Name" xml:space="preserve">
-    <value>label23</value>
-  </data>
-  <data name="&gt;&gt;label23.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label23.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label23.ZOrder" xml:space="preserve">
-    <value>29</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsPre.Name" xml:space="preserve">
-    <value>m_nudMinsPre</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsPre.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsPre.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudMinsPre.ZOrder" xml:space="preserve">
-    <value>30</value>
-  </data>
-  <data name="&gt;&gt;label24.Name" xml:space="preserve">
-    <value>label24</value>
-  </data>
-  <data name="&gt;&gt;label24.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label24.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
-    <value>31</value>
-  </data>
-  <data name="&gt;&gt;label25.Name" xml:space="preserve">
-    <value>label25</value>
-  </data>
-  <data name="&gt;&gt;label25.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label25.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;label25.ZOrder" xml:space="preserve">
-    <value>32</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursPre.Name" xml:space="preserve">
-    <value>m_nudHoursPre</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursPre.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursPre.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudHoursPre.ZOrder" xml:space="preserve">
-    <value>33</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysPre.Name" xml:space="preserve">
-    <value>m_nudDaysPre</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysPre.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysPre.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_nudDaysPre.ZOrder" xml:space="preserve">
-    <value>34</value>
-  </data>
-  <data name="&gt;&gt;m_cbPreTrigger.Name" xml:space="preserve">
-    <value>m_cbPreTrigger</value>
-  </data>
-  <data name="&gt;&gt;m_cbPreTrigger.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbPreTrigger.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;m_cbPreTrigger.ZOrder" xml:space="preserve">
-    <value>35</value>
-  </data>
-  <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 470</value>
-  </data>
-  <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 437</value>
-  </data>
-  <data name="gbOutput.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="gbOutput.Text" xml:space="preserve">
-    <value>Processed data settings</value>
-  </data>
-  <data name="&gt;&gt;gbOutput.Name" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;gbOutput.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;gbOutput.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gbOutput.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_cbTimeBase.Location" type="System.Drawing.Point, System.Drawing">
-    <value>141, 251</value>
+    <value>141, 273</value>
   </data>
   <data name="m_cbTimeBase.Size" type="System.Drawing.Size, System.Drawing">
     <value>127, 21</value>
@@ -1601,7 +1175,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_cbTimeBase.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1610,7 +1184,7 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 254</value>
+    <value>13, 276</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 13</value>
@@ -1631,139 +1205,10 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="panel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;m_rbtBoth.Name" xml:space="preserve">
-    <value>m_rbtBoth</value>
-  </data>
-  <data name="&gt;&gt;m_rbtBoth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbtBoth.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_rbtBoth.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_lbMaximum.Name" xml:space="preserve">
-    <value>m_lbMaximum</value>
-  </data>
-  <data name="&gt;&gt;m_lbMaximum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbMaximum.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lbMaximum.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lbPre.Name" xml:space="preserve">
-    <value>m_lbPre</value>
-  </data>
-  <data name="&gt;&gt;m_lbPre.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbPre.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lbPre.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lbPost.Name" xml:space="preserve">
-    <value>m_lbPost</value>
-  </data>
-  <data name="&gt;&gt;m_lbPost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbPost.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lbPost.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_lbOutgoing.Name" xml:space="preserve">
-    <value>m_lbOutgoing</value>
-  </data>
-  <data name="&gt;&gt;m_lbOutgoing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbOutgoing.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lbOutgoing.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_lbIncoming.Name" xml:space="preserve">
-    <value>m_lbIncoming</value>
-  </data>
-  <data name="&gt;&gt;m_lbIncoming.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbIncoming.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lbIncoming.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_pbRangeCenter.Name" xml:space="preserve">
-    <value>m_pbRangeCenter</value>
-  </data>
-  <data name="&gt;&gt;m_pbRangeCenter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbRangeCenter.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbRangeCenter.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_rbtOutgoing.Name" xml:space="preserve">
-    <value>m_rbtOutgoing</value>
-  </data>
-  <data name="&gt;&gt;m_rbtOutgoing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbtOutgoing.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_rbtOutgoing.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_rbtIncoming.Name" xml:space="preserve">
-    <value>m_rbtIncoming</value>
-  </data>
-  <data name="&gt;&gt;m_rbtIncoming.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbtIncoming.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;m_rbtIncoming.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 38</value>
-  </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>712, 83</value>
-  </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>43</value>
-  </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>gbOutput</value>
-  </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_rbtBoth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2044,6 +1489,27 @@
   <data name="&gt;&gt;m_rbtIncoming.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 38</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>712, 83</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>43</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>gbOutput</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -2072,7 +1538,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_btGenerateTest.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2084,7 +1550,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btGenerateTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>622, 291</value>
+    <value>622, 317</value>
   </data>
   <data name="m_btGenerateTest.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 23</value>
@@ -2105,13 +1571,19 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_btGenerateTest.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lvStores.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>""</value>
+  </data>
+  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
+    <value>315</value>
+  </data>
   <data name="m_lvStores.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 291</value>
+    <value>16, 317</value>
   </data>
   <data name="m_lvStores.Size" type="System.Drawing.Size, System.Drawing">
     <value>600, 140</value>
@@ -2129,13 +1601,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_lvStores.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="columnHeader1.Text" xml:space="preserve">
-    <value>""</value>
-  </data>
-  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
-    <value>315</value>
+    <value>6</value>
   </data>
   <data name="label31.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2144,7 +1610,7 @@
     <value>NoControl</value>
   </data>
   <data name="label31.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 275</value>
+    <value>13, 301</value>
   </data>
   <data name="label31.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 13</value>
@@ -2165,7 +1631,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label31.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="label26.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2195,7 +1661,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label26.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="label27.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2225,7 +1691,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label27.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_lblMaxCaption.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2255,7 +1721,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_lblMaxCaption.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_nudSecsPost.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2279,7 +1745,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudSecsPost.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_nudDaysMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>141, 225</value>
@@ -2300,7 +1766,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudDaysMax.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="label28.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2330,7 +1796,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label28.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_nudHoursMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>228, 225</value>
@@ -2351,7 +1817,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudHoursMax.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_nudMinsPost.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2375,7 +1841,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudMinsPost.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="m_lblMaxDays.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2405,7 +1871,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_lblMaxDays.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="m_lblMaxHours.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2435,7 +1901,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_lblMaxHours.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="label29.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2465,7 +1931,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="m_nudMinsMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>313, 225</value>
@@ -2486,7 +1952,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudMinsMax.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="label30.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2516,7 +1982,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label30.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>20</value>
   </data>
   <data name="m_lblMaxMins.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2546,7 +2012,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_lblMaxMins.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="m_nudHoursPost.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2570,7 +2036,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudHoursPost.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>22</value>
   </data>
   <data name="m_nudSecsMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>408, 225</value>
@@ -2591,7 +2057,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudSecsMax.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>23</value>
   </data>
   <data name="m_nudDaysPost.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2615,7 +2081,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudDaysPost.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>24</value>
   </data>
   <data name="m_lblMaxSecs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2645,7 +2111,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_lblMaxSecs.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>25</value>
   </data>
   <data name="m_cbPostTrigger.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2675,7 +2141,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_cbPostTrigger.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>26</value>
   </data>
   <data name="label21.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2705,7 +2171,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>27</value>
   </data>
   <data name="label22.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2735,7 +2201,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label22.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>28</value>
   </data>
   <data name="m_nudSecsPre.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2759,7 +2225,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudSecsPre.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>29</value>
   </data>
   <data name="label23.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2789,7 +2255,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label23.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>30</value>
   </data>
   <data name="m_nudMinsPre.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2813,7 +2279,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudMinsPre.ZOrder" xml:space="preserve">
-    <value>30</value>
+    <value>31</value>
   </data>
   <data name="label24.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2843,7 +2309,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
-    <value>31</value>
+    <value>32</value>
   </data>
   <data name="label25.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2873,7 +2339,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;label25.ZOrder" xml:space="preserve">
-    <value>32</value>
+    <value>33</value>
   </data>
   <data name="m_nudHoursPre.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2897,7 +2363,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudHoursPre.ZOrder" xml:space="preserve">
-    <value>33</value>
+    <value>34</value>
   </data>
   <data name="m_nudDaysPre.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2921,7 +2387,7 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_nudDaysPre.ZOrder" xml:space="preserve">
-    <value>34</value>
+    <value>35</value>
   </data>
   <data name="m_cbPreTrigger.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2951,7 +2417,31 @@
     <value>gbOutput</value>
   </data>
   <data name="&gt;&gt;m_cbPreTrigger.ZOrder" xml:space="preserve">
-    <value>35</value>
+    <value>36</value>
+  </data>
+  <data name="gbOutput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 469</value>
+  </data>
+  <data name="gbOutput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>734, 463</value>
+  </data>
+  <data name="gbOutput.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="gbOutput.Text" xml:space="preserve">
+    <value>Processed data settings</value>
+  </data>
+  <data name="&gt;&gt;gbOutput.Name" xml:space="preserve">
+    <value>gbOutput</value>
+  </data>
+  <data name="&gt;&gt;gbOutput.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gbOutput.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbOutput.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -2963,7 +2453,7 @@
     <value>0, 900</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>734, 910</value>
+    <value>734, 935</value>
   </data>
   <data name="&gt;&gt;m_toolTip.Name" xml:space="preserve">
     <value>m_toolTip</value>

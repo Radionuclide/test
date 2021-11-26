@@ -28,6 +28,7 @@ namespace iba.Controls
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplitterTaskControl));
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2 = new iba.Utility.CollapsibleGroupBox();
@@ -57,6 +58,7 @@ namespace iba.Controls
             this.m_nudMemory = new System.Windows.Forms.NumericUpDown();
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox2.SuspendLayout();
             this.m_gbTarget.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -338,5 +340,6 @@ namespace iba.Controls
         private System.Windows.Forms.Button m_btTakeParentPass;
         private System.Windows.Forms.TextBox m_tbPwdDAT;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ToolTip m_toolTip;
     }
 }

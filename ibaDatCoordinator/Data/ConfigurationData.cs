@@ -88,7 +88,8 @@ namespace iba.Data
         XmlElement(Type = typeof(KafkaWriterTaskData)),
         XmlElement(Type = typeof(CustomTaskData)),
         XmlElement(Type = typeof(CustomTaskDataUNC)),
-        XmlElement(Type = typeof(UploadTaskData))]
+        XmlElement(Type = typeof(UploadTaskData)),
+        XmlElement(Type = typeof(DataTransferTaskData))]
         public List<TaskData> Tasks
         {
             get { return m_tasks; }
@@ -599,8 +600,9 @@ namespace iba.Data
                         sw.WriteLine("timebase=" + tb.TotalSeconds.ToString(System.Globalization.CultureInfo.InvariantCulture));
                     }
                 }
-                if (count == 0)
-                    throw new Exception(Properties.Resources.HDQErrorNoStores);
+                //don't throw when no stores, some people use sheduled job without HD data -> TODO: fix in ibaAnalyzer empty store handling...
+               // if (count == 0)
+                //    throw new Exception(Properties.Resources.HDQErrorNoStores);
             }
         }
 

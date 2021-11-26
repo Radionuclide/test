@@ -4,9 +4,11 @@ using System.Linq;
 using System.Xml.Serialization;
 using Confluent.SchemaRegistry;
 using iba.Controls;
+using IbaAnalyzer;
 
 namespace iba.Data
 {
+    [Serializable]
     public class KafkaWriterTaskData : TaskData
     {
         public string clusterAddress;
@@ -19,11 +21,15 @@ namespace iba.Data
         private string schemaRegistryAddressCached;
         private byte[] schemaFingerprintCached;
         public string schemaRegistryAddress;
-        public bool useSchemaRegistryServer;
+        public string key;
+        public List<string> metadata;
         public MonitorData MonitorData { get; set; }
         public string TestDatFile { get; set; }
         public RequiredAcks AckMode { get; set; }
         public DataFormat Format { get; set; }
+        public ClusterType ClusterMode { get; set; }
+        public ClusterSecurityType ClusterSecurityMode { get; set; }
+        public SchemaRegistrySecurityType SchemaRegistrySecurityMode { get; set; }
 
         public enum DigitalFormat
         {
@@ -44,6 +50,27 @@ namespace iba.Data
             All     // An acknowledgment from all brokers is required
         }
 
+        public enum ClusterType
+        {
+            Kafka = 0,
+            EventHub = 1
+        }
+
+        public enum ClusterSecurityType
+        {
+            PLAINTEXT = 0,
+            SSL = 1,
+            SASL_PLAINTEXT = 2,
+            SASL_SSL = 3
+        }
+
+        public enum SchemaRegistrySecurityType
+        {
+            HTTP = 0,
+            HTTPS = 1,
+            HTTP_AUTHENTICATION = 2,
+            HTTPS_AUTHENTICATION = 3
+        }
         public byte[] schemaFingerPrint
         {
             get
@@ -54,6 +81,7 @@ namespace iba.Data
                 Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
                 schemRegConfig.Url = schemaRegistryAddress;
                 schemRegConfig.RequestTimeoutMs = (int)timeout * 1000;
+
 
                 // Add expert parameters
                 foreach (var kvp in Params)
@@ -92,8 +120,7 @@ namespace iba.Data
                 }
                 finally
                 {
-                    if (schemRegClient != null)
-                        schemRegClient.Dispose();
+                    schemRegClient?.Dispose();
                 }
             }
         }
@@ -126,16 +153,11 @@ namespace iba.Data
                 Text = 1,
                 Digital = 2
             }
-
-            public string Metadata { get; set; }
             
-            public ExpressionType DataType
-            {
-                get; set;
-            }
+            public ExpressionType DataType { get; set; }
             public string DataTypeAsString
             {
-                get { return DataTypes[(int)DataType]; }
+                get => DataTypes[(int)DataType];
                 set
                 {
                     if (value == DataTypes[(int)ExpressionType.Number])
@@ -152,11 +174,22 @@ namespace iba.Data
             [XmlIgnore]
             public string TestValue { get; set; }
             public string Name { get; set; }
+            public string Comment1 { get; set; }
+            public string Comment2 { get; set; }
+            public string Unit { get; set; }
+
+            // only valid if Expression is a simple reference to signal
+            public string Id => string.IsNullOrEmpty(Name) ? "" : Expression; 
+
 
             public KafkaRecord()
             {
                 Expression = "";
                 Value = double.NaN;
+                Name = "";
+                Comment1 = "";
+                Comment2 = "";
+                Unit = "";
             }
 
             public object Clone()
@@ -167,7 +200,9 @@ namespace iba.Data
                     Value = this.Value,
                     DataType = this.DataType,
                     Name = this.Name,
-                    Metadata = this.Metadata
+                    Comment1 = this.Comment1,
+                    Comment2 = this.Comment2,
+                    Unit = this.Unit
                 };
             }
             public override bool Equals(object obj)
@@ -176,17 +211,17 @@ namespace iba.Data
                     return false;
                 var rec = (KafkaRecord)obj;
                 return
-                    (
-                        Expression == rec.Expression &&
-                        Name == rec.Name &&
-                        DataType == rec.DataType
-                    );
+                    Expression == rec.Expression &&
+                    Name == rec.Name &&
+                    DataType == rec.DataType &&
+                    Comment1 == rec.Comment1 &&
+                    Comment2 == rec.Comment2 &&
+                    Unit == rec.Unit;
             }
 
             public override int GetHashCode()
             {
                 return Expression.GetHashCode() ^ DataType.GetHashCode() ^ Name.GetHashCode();
-
             }
         }
 
@@ -211,6 +246,7 @@ namespace iba.Data
         {
             Records = new List<KafkaRecord>();
             Params = new List<Param>();
+            metadata = new List<string>();
             MonitorData = new MonitorData();
             timeout = 3;
             Format = DataFormat.JSONGrouped;
@@ -222,8 +258,11 @@ namespace iba.Data
             schemaRegistryAddress = "";
             schemaRegistryAddressCached = "";
             schemaFingerprintCached = null;
-            useSchemaRegistryServer = false;
+            key = "";
             AckMode = RequiredAcks.None;
+            ClusterMode = ClusterType.Kafka;
+            ClusterSecurityMode = ClusterSecurityType.PLAINTEXT;
+            SchemaRegistrySecurityMode = SchemaRegistrySecurityType.HTTP;
         }
 
         public KafkaWriterTaskData() : this(null) { }
@@ -244,9 +283,13 @@ namespace iba.Data
             d.schemaRegistryAddress = schemaRegistryAddress;
             d.schemaRegistryAddressCached = schemaRegistryAddressCached;
             d.schemaFingerprintCached = schemaFingerprintCached;
-            d.useSchemaRegistryServer = useSchemaRegistryServer;
             d.AckMode = AckMode;
-
+            d.ClusterMode = ClusterMode;
+            d.ClusterSecurityMode = ClusterSecurityMode;
+            d.SchemaRegistrySecurityMode = SchemaRegistrySecurityMode;
+            d.key = key;
+            d.metadata = metadata.Select(r => (string)r.Clone()).ToList();
+            d.Name = Name;
             return d;
         }
 
@@ -269,12 +312,17 @@ namespace iba.Data
                 schemaRegistryAddress == other.schemaRegistryAddress &&
                 schemaRegistryAddressCached == other.schemaRegistryAddressCached &&
                 schemaFingerprintCached == other.schemaFingerprintCached &&
-                useSchemaRegistryServer == other.useSchemaRegistryServer &&
-                AckMode == other.AckMode;
+                AckMode == other.AckMode &&
+                ClusterMode == other.ClusterMode &&
+                ClusterSecurityMode == other.ClusterSecurityMode &&
+                SchemaRegistrySecurityMode == other.SchemaRegistrySecurityMode &&
+                key == other.key &&
+                metadata.SequenceEqual(other.metadata);
         }
 
         public void EvaluateValues(string filename, IbaAnalyzer.IbaAnalyzer ibaAnalyzer)
         {
+            bool getMetadata = IsAnalyzerVersionNewer(ibaAnalyzer, 7, 3, 2);
             foreach (var record in Records)
             {
                 if (record.DataType == KafkaRecord.ExpressionType.Text)
@@ -300,7 +348,58 @@ namespace iba.Data
                 {
                     record.Value = ibaAnalyzer.EvaluateDouble(record.Expression, 0);
                 }
+
+                if (getMetadata)
+                {
+                    IChannelMetaData channelMetaData = ibaAnalyzer.GetChannelMetaData(record.Expression);
+
+                    record.Name = channelMetaData.name;
+                    record.Unit = channelMetaData.Unit;
+                    record.Comment1 = channelMetaData.Comment1;
+                    record.Comment2 = channelMetaData.Comment2;
+                }
             }
+        }
+
+        public static bool IsAnalyzerVersionNewer(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, int majorMinVersion, int minorMinVersion = -1, int bugfixMinVersion = -1)
+        {
+            int majorRef = 0, minorRef = 0, bugfixRef = 0;
+            if (!GetIbaAnalyzerVersion(ibaAnalyzer, ref majorRef, ref minorRef, ref bugfixRef))
+                return false;
+            if (majorRef < majorMinVersion)
+                return false;
+            if (minorMinVersion >= 0 && majorRef == majorMinVersion && minorRef < minorMinVersion)
+                return false;
+            if (bugfixMinVersion >= 0 && majorRef == majorMinVersion && minorRef == minorMinVersion && bugfixRef < bugfixMinVersion)
+                return false;
+            return true;
+        }
+        public static bool GetIbaAnalyzerVersion(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, ref int major, ref int minor, ref int bugfix)
+        {
+            string version = ibaAnalyzer.GetVersion();
+            int startindex = version.IndexOf(' ') + 1;
+            if (version[startindex] == 'v') startindex++;
+            int stopindex = startindex + 1;
+            while (stopindex < version.Length && (char.IsDigit(version[stopindex]) || version[stopindex] == '.'))
+                stopindex++;
+            string[] nrs = version.Substring(startindex, stopindex - startindex).Split('.');
+            if (nrs.Length < 3)
+            {
+                return false;
+            }
+            if (!int.TryParse(nrs[0], out major))
+            {
+                return false;
+            }
+            if (!int.TryParse(nrs[1], out minor))
+            {
+                return false;
+            }
+            if (!int.TryParse(nrs[2], out bugfix))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

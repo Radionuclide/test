@@ -474,7 +474,9 @@ namespace iba.Processing
                     {
                         if (m_bSkipChecks || evt.CanBeProcessed)
                         {
-                            matchedEvents.Add(evt);
+                            if (m_ejd.EnableMaxTriggerRange || !(evt is MatchedEventDataRange mEvt && !mEvt.IsMatched()))
+                                matchedEvents.Add(evt);
+
                             kvp.Value.Remove(evt);
                         }
                     }
@@ -909,6 +911,11 @@ namespace iba.Processing
 
                 dtOutgoing = new DateTime(utcTicksOutgoing, DateTimeKind.Utc);
                 bMatched = true;
+            }
+
+            public bool IsMatched()
+            {
+                return bMatched;
             }
             #endregion
         }

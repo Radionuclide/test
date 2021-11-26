@@ -29,24 +29,29 @@ namespace iba.Controls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CopyControl));
-            this.m_gbTarget = new Utility.CollapsibleGroupBox();
+            this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
             this.panelOut = new System.Windows.Forms.Panel();
-            this.groupBox6 = new Utility.CollapsibleGroupBox();
+            this.groupBox6 = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
             this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new Utility.CollapsibleGroupBox();
+            this.groupBox3 = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbMove = new System.Windows.Forms.RadioButton();
             this.m_rbDelete = new System.Windows.Forms.RadioButton();
             this.m_rbCopy = new System.Windows.Forms.RadioButton();
+            this.collapsibleGroupBox1 = new iba.Utility.CollapsibleGroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.m_cbCreateZipArchive = new System.Windows.Forms.CheckBox();
             this.m_gbTarget.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            this.collapsibleGroupBox1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_gbTarget
@@ -132,14 +137,33 @@ namespace iba.Controls
             this.m_rbCopy.TabStop = true;
             this.m_rbCopy.UseVisualStyleBackColor = true;
             // 
+            // collapsibleGroupBox1
+            // 
+            resources.ApplyResources(this.collapsibleGroupBox1, "collapsibleGroupBox1");
+            this.collapsibleGroupBox1.Controls.Add(this.tableLayoutPanel1);
+            this.collapsibleGroupBox1.Name = "collapsibleGroupBox1";
+            this.collapsibleGroupBox1.TabStop = false;
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.m_cbCreateZipArchive, 0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // m_cbCreateZipArchive
+            // 
+            resources.ApplyResources(this.m_cbCreateZipArchive, "m_cbCreateZipArchive");
+            this.m_cbCreateZipArchive.Name = "m_cbCreateZipArchive";
+            this.m_cbCreateZipArchive.UseVisualStyleBackColor = true;
+            // 
             // CopyControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBox6);           
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.collapsibleGroupBox1);
             this.Controls.Add(this.m_gbTarget);
-            this.MinimumSize = new System.Drawing.Size(0, 580);
             this.Name = "CopyControl";
             this.m_gbTarget.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
@@ -148,6 +172,9 @@ namespace iba.Controls
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
+            this.collapsibleGroupBox1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -167,5 +194,8 @@ namespace iba.Controls
         private System.Windows.Forms.RadioButton m_rbDelete;
         private System.Windows.Forms.RadioButton m_rbCopy;
         private System.Windows.Forms.Panel panelOut;
+        private Utility.CollapsibleGroupBox collapsibleGroupBox1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.CheckBox m_cbCreateZipArchive;
     }
 }

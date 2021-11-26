@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -8,7 +10,12 @@ using iba.Data;
 using iba.Utility;
 using iba.Plugins;
 using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using DevExpress.Skins;
+using DevExpress.XtraPrinting.Export.Xl;
 using iba.Logging;
+using iba.Processing.IbaGrpc;
 using iba.Processing.IbaOpcUa;
 using IbaSnmpLib;
 
@@ -1170,7 +1177,62 @@ namespace iba.Processing
 
         #endregion
 
+        #region DataTransferConfiguration
 
+        internal DataTransferWorker DataTransferWorker => DataTransferWorker.GetInstance();
+
+        public virtual DataTransferData DataTransferData
+        {
+            get => DataTransferWorker?.DataTransferData;
+            set
+            {
+                if (DataTransferWorker != null)
+                {
+                    DataTransferWorker.DataTransferData = value;
+                }
+            }
+        }
+
+        public async Task DataTransferWorkerInit()
+        {
+            await DataTransferWorker.Init();
+            
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                PublishService();
+            }
+        }
+
+        public virtual string DataTransferWorkerGetBriefStatus()
+        {
+            return DataTransferWorker.Status;
+        }
+
+        public virtual List<DiagnosticsData> DataTransferWorkerGetAllClients()
+        {
+            return DataTransferWorker.GetAllClients();
+        }
+
+        public virtual async void DataTransferWorkerStartServer()
+        {
+            await DataTransferWorker.StartServer();
+        }
+        public virtual async void DataTransferWorkerStopServer()
+        {
+            await DataTransferWorker.StopServer();
+        }
+
+        public virtual void DataTransferWorkerSetUpdateDiagnosticInfoCallback(Action<DiagnosticsData> updateDiagnosticInfo)
+        {
+            DataTransferWorker.SetDiagnosticInfoCallback(updateDiagnosticInfo);
+        }
+
+        public virtual void DataTransferWorkerSetUpdateServerStatusCallback(Action<string> updateServerStatus)
+        {
+            DataTransferWorker.SetUpdateStatusCallback(updateServerStatus);
+        }
+
+        #endregion
         virtual public bool TestPath(string dir, string user, string pass, out string errormessage, bool createnew, bool testWrite)
         {
             return SharesHandler.TestPath(dir, user, pass, out errormessage, createnew, testWrite);
@@ -1608,17 +1670,17 @@ namespace iba.Processing
             }
         }
 
-        internal void OneTimeEventsSetTimespanChanged(ConfigurationData configData)
+        internal void OneTimeJobsSetHistoricalTimespanChanged(ConfigurationData configData)
         {
+            ConfigurationData oldData = GetConfiguration(configData.Guid);
+
+            if (oldData == null || oldData.JobType != configData.JobType)
+                return;
+
             if (configData.JobType == ConfigurationData.JobTypeEnum.Event)
-            {
-                ConfigurationData oldData = GetConfiguration(configData.Guid);
-
-                if (oldData == null || oldData.JobType != ConfigurationData.JobTypeEnum.Event)
-                    return;
-
                 oldData.EventData.HdQueryTimeSpanChanged = configData.EventData.HdQueryTimeSpanChanged;
-            }
+            else if (configData.JobType == ConfigurationData.JobTypeEnum.Scheduled)
+                oldData.ScheduleData.ProcessHistorical = configData.ScheduleData.ProcessHistorical;
         }
 
         ConfigurationData GetConfiguration(Guid guid)
@@ -1640,6 +1702,13 @@ namespace iba.Processing
             return config?.EventData?.HdQueryTimeSpanChanged ?? false;
         }
 
+        public virtual bool GetOneTimeScheduledConfigurationChanged(Guid guid)
+        {
+            ConfigurationData config = GetConfiguration(guid);
+
+            return config?.ScheduleData?.ProcessHistorical ?? false;
+        }
+
         public virtual void SetOneTimeEventEndTimes(Guid guid, Dictionary<string, long> endTime)
         {
             lock (m_workers)
@@ -1652,7 +1721,45 @@ namespace iba.Processing
                 config.EventData.LastReceivedHistoricalTimeStamp = endTime;
             }
         }
+
+        private ServicePublisher m_servicePublisher;
+
+        public virtual void PublishService()
+        {
+            Hashtable serviceProps = new Hashtable();
+            serviceProps.Add("HostName", Environment.MachineName);
+            serviceProps.Add("PortNr", Program.ServicePortNr.ToString());
+            serviceProps.Add("Version", DatCoVersion.GetVersion());
+            serviceProps.Add("MinimumClientVersion", DatCoVersion.MinimumClientVersion());
+
+            var dataTransferServerInfo = new DataTransferServerInfo
+            {
+                IsServerEnabled = Manager.DataTransferData.IsServerEnabled,
+                Port = Manager.DataTransferData.Port,
+                RunsWithService = Program.RunsWithService
+            };
+            serviceProps.Add("DataTransferServer", dataTransferServerInfo);
+
+            m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress,
+                DatcoServerDefaults.GroupServerPort);
+            m_servicePublisher.PublishServiceEndpoint(serviceProps);
+
+            m_servicePublisher.ProvideProperties += UpdateProps;
+        }
+        private bool UpdateProps(IDictionary props)
+        {
+            if (props["DataTransferServer"] is DataTransferServerInfo serverInfo)
+            {
+                serverInfo.IsServerEnabled = Manager.DataTransferData.IsServerEnabled;
+                serverInfo.Port = Manager.DataTransferData.Port;
+                serverInfo.RunsWithService = Program.RunsWithService;
+                return true;
+            }
+
+            return false;
+        }
     }
+
 
 
     //for remote calls
@@ -2087,7 +2194,113 @@ namespace iba.Processing
 
         #endregion
 
+        #region DataTransferData Configuration
 
+        public override DataTransferData DataTransferData
+        {
+            get
+            {
+                try
+                {
+                    return Program.CommunicationObject.Manager.DataTransferData;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return Manager.DataTransferData;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Program.CommunicationObject.Manager.DataTransferData = value;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    Manager.DataTransferData = value;
+                }
+            }
+        }
+
+        public override string DataTransferWorkerGetBriefStatus()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.DataTransferWorkerGetBriefStatus();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.DataTransferWorkerGetBriefStatus();
+            }
+        }
+        public override List<DiagnosticsData> DataTransferWorkerGetAllClients()
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.DataTransferWorkerGetAllClients();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return Manager.DataTransferWorkerGetAllClients();
+            }
+        }
+        
+        public override void DataTransferWorkerStartServer()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.DataTransferWorkerStartServer();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.DataTransferWorkerStartServer();
+            }
+        }
+
+        public override void DataTransferWorkerStopServer()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.DataTransferWorkerStopServer();
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.DataTransferWorkerStopServer();
+            }
+        }
+
+        public override void DataTransferWorkerSetUpdateDiagnosticInfoCallback(Action<DiagnosticsData> updateDiagnosticInfo)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.DataTransferWorkerSetUpdateDiagnosticInfoCallback(updateDiagnosticInfo);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.DataTransferWorkerSetUpdateDiagnosticInfoCallback(updateDiagnosticInfo);
+            }
+        }
+        public override void DataTransferWorkerSetUpdateServerStatusCallback(Action<string> updateServerStatus)
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.DataTransferWorkerSetUpdateServerStatusCallback(updateServerStatus);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                Manager.DataTransferWorkerSetUpdateServerStatusCallback(updateServerStatus);
+            }
+        }
+
+        #endregion
 
         public override int Count
         {
@@ -2154,6 +2367,19 @@ namespace iba.Processing
             {
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return Manager.GetOneTimeEventConfigurationChanged(guid);
+            }
+        }
+
+        public override bool GetOneTimeScheduledConfigurationChanged(Guid guid)
+        {
+            try
+            {
+                return Program.CommunicationObject.Manager.GetOneTimeScheduledConfigurationChanged(guid);
+            }
+            catch (Exception ex)
+            {
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
+                return Manager.GetOneTimeScheduledConfigurationChanged(guid);
             }
         }
 
@@ -2838,6 +3064,18 @@ namespace iba.Processing
             {
                 if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
                 return null;
+            }
+        }
+
+        public override void PublishService()
+        {
+            try
+            {
+                Program.CommunicationObject.Manager.PublishService();
+            }
+            catch (Exception ex)
+            {
+                if (Program.CommunicationObject != null) Program.CommunicationObject.HandleBrokenConnection(ex);
             }
         }
     }

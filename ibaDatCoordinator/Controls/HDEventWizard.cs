@@ -184,7 +184,7 @@ namespace iba.Client.Archiver
                 Node node = null;
                 try
                 {
-                    node = signalTree.GetSignalNode(selectedSignals[i]?.channelId);
+                    node = signalTree.GetSignalNode(selectedSignals[i]?.channelID);
                 }
                 catch (Exception) { }
                 if (node != null)
@@ -282,7 +282,7 @@ namespace iba.Client.Archiver
             EventWriterSignal eventServerConfig = new EventWriterSignal("", new HdSegmentText(GetTextFromSignal(signal, EventName), GetTextFromSignal(signal, EventComment1), GetTextFromSignal(signal, EventComment2)), Priority, GetTextFromSignal(signal, EventText));
             HDCreateEventTaskData.EventData eventConfig = new HDCreateEventTaskData.EventData();
 
-            eventConfig.PulseSignal = signal.channelId;
+            eventConfig.PulseSignal = signal.channelID;
             eventConfig.TriggerMode = TriggerMode;
             eventConfig.TimeSignal = TimeSignalIncoming;
             eventConfig.TimeSignalOutgoing = TimeSignalOutgoing;

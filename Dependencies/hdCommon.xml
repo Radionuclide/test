@@ -575,6 +575,11 @@
               Looks up a localized string similar to Update signals.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureSignalTreeChunks">
+            <summary>
+              Looks up a localized string similar to Request the ibaHD signals in chunks.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureUserManagement">
             <summary>
               Looks up a localized string similar to User authentication and configuration.
@@ -720,13 +725,21 @@
         </member>
         <member name="P:iba.HD.Common.HdReaderStore.SignalCount">
             <summary>
-            Amount of sigals in the store
+            Number of signals in the store
             </summary>
         </member>
         <member name="M:iba.HD.Common.HdReaderStore.SignalAt(System.Int32)">
             <summary>
             Gets signal at given index
             </summary>
+        </member>
+        <member name="M:iba.HD.Common.HdReaderStore.GetSignalRangeCount(System.Int32,System.Int32@)">
+            <summary>
+            Update the start and count to fall within the bounds of the signals list.
+            </summary>
+            <param name="start">The start from where the signals are requested</param>
+            <param name="count">The number of requested signals. This will be updated if less than maxSignals are needed </param>
+            <returns>a bool indicating if a valid range is requested</returns>
         </member>
         <member name="M:iba.HD.Common.HdReaderSignal.AddInfo(System.String,System.String)">
             <summary>
@@ -1646,6 +1659,130 @@
             <param name="active">
             Both active and invactive bitdecoded signals need to be added to the writer configration
             </param>
+        </member>
+        <member name="T:iba.HD.Common.Zip.WrapperStream">
+            <summary>
+            Required due to .NET Framework 4.8 bug https://github.com/dotnet/runtime/issues/18460 
+            Can be removed in .NET 5
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipArchiveEntryExtensions.Extract(System.IO.Compression.ZipArchiveEntry,System.IO.Stream)">
+            <summary>
+            Extract content of an archive entry to a stream
+            </summary>
+            <param name="entry">Entry instance</param>
+            <param name="stream">Destination stream</param>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.#ctor(System.IO.Stream,System.IO.Compression.ZipArchiveMode)">
+            <summary>
+            Creates an archive
+            To avoid errors, it cannot be called from outside
+            </summary>
+            <param name="stream">Stream to write/read</param>
+            <param name="mode">Write/Read/Update</param>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.Read(System.IO.Stream)">
+            <summary>
+            Opens Zip archive for reading from target stream
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.Update(System.IO.Stream)">
+            <summary>
+            Opens Zip archive for reading and writing from target stream
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.Create">
+            <summary>
+            Creates new Zip File 
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.Copy(System.IO.Stream)">
+            <summary>
+            Creates copy of an archive in a memory
+            </summary>
+            <param name="sourceStream">Archive content</param>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.PathFormatter(System.String,System.Boolean)">
+            <summary>
+            Formats directory/fileName to specific ZIP format
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Zip.ZipFile.Entries">
+            <summary>
+            Entries of an opened archive
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.AddFile(System.String,System.String)">
+            <summary>
+            Adds file to the opened archive
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.AddDirectory(System.String,System.String)">
+            <summary>
+            Adds whole directory to the opened archive
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.Save(System.IO.Stream)">
+            <summary>
+            Writes new Zip archive with current container (directories and files) into stream.
+            Used memory releases
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.ExtractAll(System.String,System.Boolean)">
+            <summary>
+            Extracts all content of an opened zip archive
+            </summary>
+            <param name="directory">Destination folder</param>
+            <param name="overwrite">Overwrite existing files</param>
+        </member>
+        <member name="T:iba.HD.Common.Zip.ZipOutputStream">
+            <summary>
+            Provides functionality to create an archive for instant transfer via stream
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.Zip.ZipOutputStream._archive">
+            <summary>
+            Stream archive instance
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.Zip.ZipOutputStream._currentEntryStream">
+            <summary>
+            Entry, created by "PutNextEntry" method
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.Zip.ZipOutputStream._wrapper">
+            <summary>
+            Stream for accessing currently written bytes and enabling "Stream" mode
+            Required due to .NET Framework 4.8 bug https://github.com/dotnet/runtime/issues/18460 
+            Can be removed in .NET 5
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipOutputStream.#ctor(System.IO.Stream)">
+            <summary>
+            Initiates archive's content construction and writing to the target stream 
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipOutputStream.PutNextEntry(System.String)">
+            <summary>
+            Creates an entry with specified name
+            Opens stream for writing content of the created Entry, which then can be accessed via 'Write' method.
+            Compresses previously created file
+            </summary>
+            <param name="name">Entry's name</param>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipOutputStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Write content of the current file
+            </summary>
+            <param name="buffer"> Entry's content. This method copies count bytes from buffer to the current Entry, created by "PutNextEntry" method.</param>
+            <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream</param>
+            <param name="count">The number of bytes to be written to the current Entry.</param>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipOutputStream.Dispose">
+            <summary>
+            Saves archive to the target stream
+            Releases all resources, used by archive
+            </summary>
         </member>
     </members>
 </doc>

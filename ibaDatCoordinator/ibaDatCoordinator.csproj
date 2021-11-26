@@ -67,13 +67,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Avro">
-      <HintPath>..\Dependencies\KafkaLib\Avro.dll</HintPath>
+      <HintPath>..\Dependencies\Kafka\Avro.dll</HintPath>
     </Reference>
     <Reference Include="Confluent.Kafka">
-      <HintPath>..\Dependencies\KafkaLib\Confluent.Kafka.dll</HintPath>
+      <HintPath>..\Dependencies\Kafka\Confluent.Kafka.dll</HintPath>
     </Reference>
     <Reference Include="Confluent.SchemaRegistry">
-      <HintPath>..\Dependencies\KafkaLib\Confluent.SchemaRegistry.dll</HintPath>
+      <HintPath>..\Dependencies\Kafka\Confluent.SchemaRegistry.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v16.1">
     </Reference>
@@ -129,6 +129,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.ibaAnalyzer">
+      <HintPath>..\Dependencies\ibaAnalyzer\Interop.ibaAnalyzer.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Opc.Ua.Configuration">
       <HintPath>..\Dependencies\OpcUa\Opc.Ua.Configuration.dll</HintPath>
@@ -147,6 +151,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.ServiceProcess" />
@@ -185,6 +190,12 @@
     </Compile>
     <Compile Include="Controls\ConfigurationControl.Designer.cs">
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataTransferControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataTransferControl.Designer.cs">
+      <DependentUpon>DataTransferControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ErrorPluginTaskControl.cs">
       <SubType>UserControl</SubType>
@@ -282,6 +293,12 @@
     <Compile Include="Controls\HDEventWizard.Designer.cs">
       <DependentUpon>HDEventWizard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataTransferTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataTransferTaskControl.Designer.cs">
+      <DependentUpon>DataTransferTaskControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UploadTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -294,7 +311,9 @@
     <Compile Include="Controls\TriggerControl.Designer.cs">
       <DependentUpon>TriggerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\DataTransferData.cs" />
     <Compile Include="Data\ErrorPluginTaskData.cs" />
+    <Compile Include="Data\DataTransferTaskData.cs" />
     <Compile Include="Data\UploadTaskData.cs" />
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
@@ -340,7 +359,16 @@
       <DependentUpon>KafkaWriterTaskControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Processing\ComputedValuesTaskWorker.cs" />
+    <Compile Include="Processing\DataTransferTaskWorker.cs" />
+    <Compile Include="Processing\DataTransferWorker.cs" />
     <Compile Include="Processing\ErrorPluginTaskWorker.cs" />
+    <Compile Include="Processing\IbaGrpc\ClientManager.cs" />
+    <Compile Include="Processing\IbaGrpc\ConfigurationValidator.cs" />
+    <Compile Include="Processing\IbaGrpc\DataTransferImpl.cs" />
+    <Compile Include="Processing\IbaGrpc\DataTransferServerInfo.cs" />
+    <Compile Include="Processing\IbaGrpc\DiagnosticsData.cs" />
+    <Compile Include="Processing\IbaGrpc\DirectoryManager.cs" />
+    <Compile Include="Processing\IbaGrpc\GrpcClient.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaServer.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaNodeManager.cs" />
     <Compile Include="Processing\IbaOpcUa\IbaOpcUaVariable.cs" />
@@ -355,6 +383,7 @@
     <Compile Include="Dialogs\TestSplitterTaskDialog.Designer.cs">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -609,6 +638,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\XmlWrapper.cs" />
+    <Compile Include="Utility\ZipCreator.cs" />
     <EmbeddedResource Include="Controls\CleanupTaskControl.resx">
       <DependentUpon>CleanupTaskControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -617,8 +647,15 @@
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataTransferControl.resx">
+      <DependentUpon>DataTransferControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ErrorPluginTaskControl.resx">
       <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DataTransferTaskControl.resx">
+      <DependentUpon>DataTransferTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UploadTaskControl.resx">
       <DependentUpon>UploadTaskControl.cs</DependentUpon>
@@ -659,6 +696,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SnmpControl.resx">
       <DependentUpon>SnmpControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SplitterTaskControl.resx">
       <DependentUpon>SplitterTaskControl.cs</DependentUpon>
@@ -847,27 +885,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="IbaAnalyzer">
-      <Guid>{13449E7B-9E2F-4C8A-8050-102312D3FC84}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="ibaDatCoordinator.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
     <None Include="Resources\kafka.ico" />
+    <None Include="Resources\DataTransferIcon.ico" />
+    <Protobuf Include="Processing\IbaGrpc\protos\DataTransfer.proto" />
     <None Include="Resources\up.ico" />
     <None Include="Resources\down.ico" />
     <None Include="Resources\UploadTaskIcon.ico" />
     <Content Include="Resources\img_file.png" />
     <None Include="Resources\img_lock.png" />
     <None Include="Resources\img_networkError.ico" />
+    <None Include="Resources\img_import.png" />
     <Content Include="Resources\img_pdo_upload.png" />
     <None Include="Resources\img_unlock.png" />
     <None Include="Resources\img_server.png" />
@@ -959,16 +989,34 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro">
-      <Version>1.7.0</Version>
+    <PackageReference Include="Azure.Storage.Files.DataLake">
+      <Version>12.8.0</Version>
+    </PackageReference>
+    <PackageReference Include="Google.Protobuf">
+      <Version>3.15.8</Version>
+    </PackageReference>
+    <PackageReference Include="Grpc.Core">
+      <Version>2.37.1</Version>
+    </PackageReference>
+    <PackageReference Include="Grpc.Tools">
+      <Version>2.37.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ibaSnmpLib">
       <Version>1.9.8</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Memory">
+      <Version>4.5.4</Version>
     </PackageReference>
     <PackageReference Include="WinSCP">
       <Version>5.17.10</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)Dependencies\hd*.dll" "$(TargetDir)"

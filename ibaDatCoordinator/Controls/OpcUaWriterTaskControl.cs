@@ -8,6 +8,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using iba.Utility;
 using System.IO;
 using DevExpress.XtraGrid.Views.Base;
+using iba.Remoting;
 using Microsoft.Win32;
 
 namespace iba.Controls
@@ -202,7 +203,10 @@ namespace iba.Controls
             downButton.Enabled = (_view.RowCount > 0 && _view.FocusedRowHandle < _view.RowCount - 1);
         }
 
-        public void LeaveCleanup() { }
+        public void LeaveCleanup()
+        {
+            MainForm.InformExtMonDataAboutTreeStructureChange();
+        }
 
 		public void SaveData()
         {
@@ -248,57 +252,15 @@ namespace iba.Controls
 
         private void TestButton_Click(object sender, EventArgs e)
         {
-            IbaAnalyzer.IbaAnalyzer ibaAnalyzer;
-            //register this
             using (new WaitCursor())
             {
-                //start the com object
+                IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
                 try
                 {
-                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
-                }
-                catch (Exception ex2)
-                {
-                    MessageBox.Show(ex2.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-
-            string version = ibaAnalyzer.GetVersion();
-            int startIndex = version.IndexOf(' ') + 1;
-            int stopIndex = startIndex + 1;
-            while (stopIndex < version.Length && (char.IsDigit(version[stopIndex]) || version[stopIndex] == '.'))
-                stopIndex++;
-            string[] nrs = version.Substring(startIndex, stopIndex - startIndex).Split('.');
-            if (nrs.Length < 3)
-            {
-                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            if (!Int32.TryParse(nrs[0], out var major))
-            {
-                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            if (!Int32.TryParse(nrs[1], out var minor))
-            {
-                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            if (!Int32.TryParse(nrs[2], out _))
-            {
-                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (major < 6 || (major == 6 && minor < 5))
-                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            if (major < 6 || (major == 6 && minor < 7))
-                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
-            bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
-            try
-            {
-                using (new WaitCursor())
-                {
+                    ibaAnalyzer = ibaAnalyzerExt.Create(true);
+                   
+                    bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
+                    bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
                     if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if (bUseDatFile) ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
                     var records = (IList<OpcUaWriterTaskData.Record>)dataGrid.DataSource;
@@ -324,14 +286,14 @@ namespace iba.Controls
                                     if (!string.IsNullOrEmpty(str))
                                     {
                                         record.TestValue = str;
-                                        ParentForm.Activate();
                                         break;
                                     }
                                 }
                             }
                             else
                             {
-                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Name), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Name),
+                                        "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 record.TestValue = "";
                             }
                         }
@@ -342,51 +304,48 @@ namespace iba.Controls
                             {
                                 f = ibaAnalyzer.EvaluateDouble(record.Expression, 0);
                             }
-                            catch  //might be old ibaAnalyzer
+                            catch //might be old ibaAnalyzer
                             {
                                 f = ibaAnalyzer.Evaluate(record.Expression, 0);
                             }
 
                             if (double.IsNaN(f) || double.IsInfinity(f))
                             {
-                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Name), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Name), "ibaDatCoordinator", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
                             }
-
                             else
                             {
                                 if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
-                                    record.TestValue = (f == 0.0 ? "false" : "true");
+                                    record.TestValue = (f >= 0.5 ? "true" : "false");
                                 else
                                     record.TestValue = f;
                             }
                         }
                     }
-                    ParentForm.Activate();
                 }
-            }
-            catch (Exception ex3)
-            {
-                string message = ex3.Message;
-                try
+                catch (Exception ex)
                 {
-                    string ibaMessage = ibaAnalyzer.GetLastError();
-                    if (!string.IsNullOrEmpty(ibaMessage))
-                        message = ibaMessage;
+                    string message = ex.Message;
+                    try
+                    {
+                        if (ibaAnalyzer != null)
+                        {
+                            string ibaMessage = ibaAnalyzer.GetLastError();
+                            if (!string.IsNullOrEmpty(ibaMessage))
+                                message = ibaMessage;
+                        }
+                    }
+                    catch { }
+
+                    MessageBox.Show(message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                catch
+                finally
                 {
+                    ParentForm?.Activate();
+                    ((IDisposable)ibaAnalyzer)?.Dispose();
+                    dataGrid.RefreshDataSource();
                 }
-                MessageBox.Show(message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                if (ibaAnalyzer != null && bUseAnalysis)
-                {
-                    ibaAnalyzer.CloseAnalysis();
-                    ibaAnalyzer.CloseDataFiles();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
-                }
-                dataGrid.RefreshDataSource();
             }
         }
 

@@ -50,6 +50,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.gbOutput = new iba.Utility.CollapsibleGroupBox();
+            this.m_cbMaxTrigger = new System.Windows.Forms.CheckBox();
             this.m_cbTimeBase = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -360,6 +361,7 @@
             // gbOutput
             // 
             resources.ApplyResources(this.gbOutput, "gbOutput");
+            this.gbOutput.Controls.Add(this.m_cbMaxTrigger);
             this.gbOutput.Controls.Add(this.m_cbTimeBase);
             this.gbOutput.Controls.Add(this.label5);
             this.gbOutput.Controls.Add(this.panel1);
@@ -398,6 +400,12 @@
             this.gbOutput.Controls.Add(this.m_cbPreTrigger);
             this.gbOutput.Name = "gbOutput";
             this.gbOutput.TabStop = false;
+            // 
+            // m_cbMaxTrigger
+            // 
+            resources.ApplyResources(this.m_cbMaxTrigger, "m_cbMaxTrigger");
+            this.m_cbMaxTrigger.Name = "m_cbMaxTrigger";
+            this.m_cbMaxTrigger.UseVisualStyleBackColor = true;
             // 
             // m_cbTimeBase
             // 
@@ -853,5 +861,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox m_hdQueryEndTimeEnabled;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox m_cbMaxTrigger;
     }
 }

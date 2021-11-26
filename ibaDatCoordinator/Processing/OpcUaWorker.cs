@@ -1037,7 +1037,7 @@ namespace iba.Processing
                 catch { /* logging is not critical */ }
 
                 // failed to rebuild; mark tree invalid to rebuild it later
-                ExtMonInstance.IsStructureValid = false;
+                ExtMonInstance.InvalidateTree();
 
                 return false; // rebuild failed
             }
@@ -1259,7 +1259,7 @@ namespace iba.Processing
                             // mark tree invalid to rebuild it later
                             LogData.Data.Logger.Log(Level.Debug,
                                 $"{nameof(OpcUaWorker)}.{nameof(RefreshGroup)}. Failed to refresh group {xmGroup.Caption}; tree is marked invalid.");
-                            ExtMonInstance.IsStructureValid = false;
+                            ExtMonInstance.InvalidateTree();
                             return false; // data was NOT updated
                         }
                     }
@@ -1417,7 +1417,7 @@ namespace iba.Processing
                 try
                 {
                     // not critical; will do this on next tick
-                    ExtMonData.DebugWriteLine(nameof(OpcUaWorker), $"{nameof(OnMonitoringTimerTick)}. Failed to acquire a lock.");
+                    ExtMonData.DebugWriteLine(nameof(OpcUaWorker), $"{nameof(OnMonitoringTimerTick)}. Failed to acquire a lock (can happen sometimes; is not an error).");
                     LogData.Data.Logger.Log(Level.Debug,
                         $"{nameof(OpcUaWorker)}.{nameof(OnMonitoringTimerTick)}. Failed to acquire a lock. {ExtMonData.GetCurrentThreadString()}.");
                 }

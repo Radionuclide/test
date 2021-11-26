@@ -1,7 +1,9 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 using System.ServiceProcess;
@@ -12,6 +14,7 @@ using System.Runtime.Remoting.Channels.Tcp;
 
 using iba.Utility;
 using iba.Logging;
+using iba.Processing.IbaGrpc;
 
 
 //using DevExpress.XtraGrid;
@@ -46,14 +49,15 @@ namespace iba.Dialogs
         private DataGridView grid;
         private HelpProvider helpProvider;
         private NumericUpDown spPortNr;
+        private iba.Controls.ImageComboBoxItem noneItem;
         private DataGridViewTextBoxColumn colName;
         private DataGridViewTextBoxColumn colIpAddress;
         private DataGridViewTextBoxColumn colPortNr;
         private DataGridViewTextBoxColumn colVersion;
-        private iba.Controls.ImageComboBoxItem noneItem;
         private ServerConfiguration serverConfig;
+        private bool _isDataTransferTaskContext { get; }
 
-        public ServerSelectionForm(ServerConfiguration _serverConfig)
+        public ServerSelectionForm(ServerConfiguration _serverConfig, bool isDataTransferTaskContext = false)
 		{
             serverConfig = _serverConfig;
             //
@@ -93,7 +97,8 @@ namespace iba.Dialogs
             stopTimer = new System.Windows.Forms.Timer();
             stopTimer.Interval = 5000;
             stopTimer.Tick += new EventHandler(OnStopTimerTick);
-		}
+            _isDataTransferTaskContext = isDataTransferTaskContext;
+        }
 
         private void LoadMRUList()
         {
@@ -181,12 +186,12 @@ namespace iba.Dialogs
             this.ckAutoConnect = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.grid = new System.Windows.Forms.DataGridView();
+            this.spPortNr = new System.Windows.Forms.NumericUpDown();
+            this.cbAddress = new iba.Controls.ImageComboBox();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colIpAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPortNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.spPortNr = new System.Windows.Forms.NumericUpDown();
-            this.cbAddress = new iba.Controls.ImageComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spPortNr)).BeginInit();
             this.SuspendLayout();
@@ -259,38 +264,6 @@ namespace iba.Dialogs
             this.grid.SelectionChanged += new System.EventHandler(this.grid_SelectionChanged);
             this.grid.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.grid_MouseDoubleClick);
             // 
-            // colName
-            // 
-            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colName.FillWeight = 40F;
-            resources.ApplyResources(this.colName, "colName");
-            this.colName.Name = "colName";
-            this.colName.ReadOnly = true;
-            // 
-            // colIpAddress
-            // 
-            this.colIpAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colIpAddress.FillWeight = 22F;
-            resources.ApplyResources(this.colIpAddress, "colIpAddress");
-            this.colIpAddress.Name = "colIpAddress";
-            this.colIpAddress.ReadOnly = true;
-            // 
-            // colPortNr
-            // 
-            this.colPortNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colPortNr.FillWeight = 20F;
-            resources.ApplyResources(this.colPortNr, "colPortNr");
-            this.colPortNr.Name = "colPortNr";
-            this.colPortNr.ReadOnly = true;
-            // 
-            // colVersion
-            // 
-            this.colVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colVersion.FillWeight = 22F;
-            resources.ApplyResources(this.colVersion, "colVersion");
-            this.colVersion.Name = "colVersion";
-            this.colVersion.ReadOnly = true;
-            // 
             // spPortNr
             // 
             resources.ApplyResources(this.spPortNr, "spPortNr");
@@ -318,6 +291,38 @@ namespace iba.Dialogs
             this.cbAddress.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbAddress.ImageList = null;
             this.cbAddress.Name = "cbAddress";
+            // 
+            // colName
+            // 
+            this.colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colName.FillWeight = 46.599F;
+            resources.ApplyResources(this.colName, "colName");
+            this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
+            // 
+            // colIpAddress
+            // 
+            this.colIpAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colIpAddress.FillWeight = 25.62944F;
+            resources.ApplyResources(this.colIpAddress, "colIpAddress");
+            this.colIpAddress.Name = "colIpAddress";
+            this.colIpAddress.ReadOnly = true;
+            // 
+            // colPortNr
+            // 
+            this.colPortNr.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colPortNr.FillWeight = 23.29949F;
+            resources.ApplyResources(this.colPortNr, "colPortNr");
+            this.colPortNr.Name = "colPortNr";
+            this.colPortNr.ReadOnly = true;
+            // 
+            // colVersion
+            // 
+            this.colVersion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colVersion.FillWeight = 25.62944F;
+            resources.ApplyResources(this.colVersion, "colVersion");
+            this.colVersion.Name = "colVersion";
+            this.colVersion.ReadOnly = true;
             // 
             // ServerSelectionForm
             // 
@@ -355,9 +360,10 @@ namespace iba.Dialogs
 
             DoInitialSearch();
         }
+        
+        public event Action<string, string> OnServerInfoSelected;
 
-
-		private void btApply_Click(object sender, System.EventArgs e)
+        private void btApply_Click(object sender, System.EventArgs e)
 		{
             Cursor = Cursors.WaitCursor;
 
@@ -368,6 +374,19 @@ namespace iba.Dialogs
 
             serverConfig.PortNr = Convert.ToInt32(spPortNr.Value);
             //clientConfig.AutoReconnect = ckAutoConnect.Checked;
+
+
+            if (_isDataTransferTaskContext)
+            {
+                if (grid.SelectedRows.Count == 0)
+                {
+                    OnServerInfoSelected?.Invoke(cbAddress.Text, spPortNr.Text);
+                }
+                else
+                {
+                    OnServerInfoSelected?.Invoke(serverConfig.Address, serverConfig.PortNr.ToString());
+                }
+            }
 
             SaveMRUList();
 
@@ -399,7 +418,7 @@ namespace iba.Dialogs
                 cbAddress.Text = grid.SelectedRows[0].Cells[0].Value.ToString();
                 string portVal = grid.SelectedRows[0].Cells[2].Value.ToString();
                 int portNr = 0;
-                if(Int32.TryParse(portVal, out portNr))
+                if (Int32.TryParse(portVal, out portNr))
                     spPortNr.SetIntValue(portNr);
             }
             else
@@ -409,9 +428,12 @@ namespace iba.Dialogs
         private void grid_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var hitInfo = grid.HitTest(e.X, e.Y);
+
+
             if((hitInfo.Type == DataGridViewHitTestType.Cell) && btApply.Enabled)
                 btApply_Click(sender, e);
         }
+
 
         private void DoInitialSearch()
         {
@@ -429,7 +451,7 @@ namespace iba.Dialogs
                 stopTimer.Enabled = false;
                 try
                 {
-                    ServiceLocator.StopLocateService(ar);
+                    ServiceLocator.StopLocateService(ar);  
                 }
                 catch(Exception ex)
                 {
@@ -494,18 +516,57 @@ namespace iba.Dialogs
             subItems[2] = host.EndpointProperties["PortNr"] as string;
             subItems[3] = host.EndpointProperties["Version"] as string;
 
-			int version = Math.Abs(DatCoVersion.CurrentVersion());
-			//int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
+            if (_isDataTransferTaskContext)
+            {
+                SetupFormForDataTransferTask(host);
+                return;
+            }
+
+            if (host.EndpointProperties["DataTransferServer"] is DataTransferServerInfo info && info.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                return;
+            }
+
+
+            int version = Math.Abs(DatCoVersion.CurrentVersion());
+            //int clientVersion = Math.Abs(DatCoVersion.MinimumClientVersion());
+
             DataGridViewRow newRow = grid.Rows[grid.Rows.Add(subItems[0], subItems[1], subItems[2], subItems[3], "")];
             newRow.Tag = host;
             if(host.EndpointProperties["MinimumClientVersion"] != null)
             {
-				int reqClientVersion = (int) host.EndpointProperties["MinimumClientVersion"];
+                int reqClientVersion = (int) host.EndpointProperties["MinimumClientVersion"];
                 if (version >= reqClientVersion)
-                    newRow.DefaultCellStyle.ForeColor = Color.Green;	
+                {
+                    newRow.DefaultCellStyle.ForeColor = Color.Green;
+                }
                 else
-                    newRow.DefaultCellStyle.ForeColor = Color.Red;		//need to upgrade manually
+                    newRow.DefaultCellStyle.ForeColor = Color.Red;      //need to upgrade manually
             }
+        }
+
+
+        private void SetupFormForDataTransferTask(ServiceLocator.HostResponse host)
+        {
+            if (!(host.EndpointProperties["DataTransferServer"] is DataTransferServerInfo serverInfo)) 
+                return;
+
+            cbAddress.Text = string.Empty;
+            spPortNr.Text = string.Empty;
+
+            this.Text = "Data transfer server selection";
+
+            var props = host.EndpointProperties;
+
+            var hostname = props["HostName"];
+            var ip = host.IPAddress.ToString();
+            var port = serverInfo.Port;
+            var version = props["Version"];
+
+            var runInfo = serverInfo.IsServerEnabled ? "Running" : "Not Running";
+            var newRow = grid.Rows[grid.Rows.Add(hostname, ip, port, version, runInfo, "")];
+
+            newRow.DefaultCellStyle.ForeColor = serverInfo.IsServerEnabled ? Color.Green : Color.Red;
         }
 
         #endregion

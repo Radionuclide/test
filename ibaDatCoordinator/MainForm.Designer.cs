@@ -37,6 +37,7 @@ namespace iba
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_navBar = new TD.Eyefinder.NavigationBar();
             this.m_settingsPane = new TD.Eyefinder.NavigationPane();
+            this.m_dataTransferPane = new TD.Eyefinder.NavigationPane();
             this.m_opcUaPane = new TD.Eyefinder.NavigationPane();
             this.m_snmpPane = new TD.Eyefinder.NavigationPane();
             this.m_watchdogPane = new TD.Eyefinder.NavigationPane();
@@ -77,6 +78,7 @@ namespace iba
             this.watchdogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.snmpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.opcUaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataTransferToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -165,6 +167,7 @@ namespace iba
             // m_navBar
             // 
             this.m_navBar.Controls.Add(this.m_settingsPane);
+            this.m_navBar.Controls.Add(this.m_dataTransferPane);
             this.m_navBar.Controls.Add(this.m_opcUaPane);
             this.m_navBar.Controls.Add(this.m_snmpPane);
             this.m_navBar.Controls.Add(this.m_watchdogPane);
@@ -177,13 +180,18 @@ namespace iba
             this.m_navBar.Name = "m_navBar";
             this.m_navBar.PaneFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.m_navBar.SelectedPane = this.m_loggingPane;
-            this.m_navBar.ShowPanes = 7;
+            this.m_navBar.ShowPanes = 8;
             this.m_navBar.SelectedPaneChanged += new System.EventHandler(this.navbar_SelectedPaneChanged);
             // 
             // m_settingsPane
             // 
             resources.ApplyResources(this.m_settingsPane, "m_settingsPane");
             this.m_settingsPane.Name = "m_settingsPane";
+            // 
+            // m_dataTransferPane
+            // 
+            resources.ApplyResources(this.m_dataTransferPane, "m_dataTransferPane");
+            this.m_dataTransferPane.Name = "m_dataTransferPane";
             // 
             // m_opcUaPane
             // 
@@ -446,6 +454,7 @@ namespace iba
             this.watchdogToolStripMenuItem,
             this.snmpToolStripMenuItem,
             this.opcUaToolStripMenuItem,
+            this.dataTransferToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.toolStripSeparator1,
             this.languageToolStripMenuItem});
@@ -487,6 +496,12 @@ namespace iba
             this.opcUaToolStripMenuItem.Name = "opcUaToolStripMenuItem";
             resources.ApplyResources(this.opcUaToolStripMenuItem, "opcUaToolStripMenuItem");
             this.opcUaToolStripMenuItem.Click += new System.EventHandler(this.opcUaToolStripMenuItem_Click);
+            // 
+            // dataTransferToolStripMenuItem
+            // 
+            this.dataTransferToolStripMenuItem.Name = "dataTransferToolStripMenuItem";
+            resources.ApplyResources(this.dataTransferToolStripMenuItem, "dataTransferToolStripMenuItem");
+            this.dataTransferToolStripMenuItem.Click += new System.EventHandler(this.dataTransferToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -644,6 +659,7 @@ namespace iba
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private TD.Eyefinder.NavigationPane m_watchdogPane;
         private TD.Eyefinder.NavigationPane m_snmpPane;
+        private TD.Eyefinder.NavigationPane m_dataTransferPane;
         private System.Windows.Forms.ToolStripMenuItem snmpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem watchdogToolStripMenuItem;
         private TD.Eyefinder.NavigationPane m_settingsPane;
@@ -665,6 +681,7 @@ namespace iba
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private TD.Eyefinder.NavigationPane m_opcUaPane;
         private System.Windows.Forms.ToolStripMenuItem opcUaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataTransferToolStripMenuItem;
     }
 }
 

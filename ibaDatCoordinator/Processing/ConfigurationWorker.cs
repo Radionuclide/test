@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +14,10 @@ using System.ComponentModel;
 using iba.HD.Common;
 using iba.HD.Client.Interfaces;
 using iba.HD.Client;
+using iba.Processing.IbaGrpc;
 using Microsoft.Win32;
+using System.ServiceProcess;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace iba.Processing
 {
@@ -35,6 +38,8 @@ namespace iba.Processing
             get { return m_sd; }
         }
 
+        private readonly List<CancellationTokenSource> _cancellationTokenList = new List<CancellationTokenSource>();
+
         private bool m_stop;
 
         public bool Stop
@@ -50,6 +55,11 @@ namespace iba.Processing
                 if (m_stop)
                     m_waitEvent.Set();
                 //do finalization of custom tasks
+
+                //Stop all data transfer tasks
+                _cancellationTokenList.ForEach(token => token?.Cancel());
+                _cancellationTokenList.Clear();
+
                 foreach (TaskData t in m_cd.Tasks)
                 {
                     ICustomTaskData c = t as ICustomTaskData;
@@ -662,6 +672,8 @@ namespace iba.Processing
                     {
                         m_delayedHDQStop = false;
                         ScheduleNextEvent();
+                        TaskManager.Manager.OneTimeJobsSetHistoricalTimespanChanged(m_cd);
+
                         if (m_delayedHDQStop)
                         {
                             m_delayedHDQStop = false;
@@ -673,7 +685,7 @@ namespace iba.Processing
                     {
                         m_hdEventMonitor = new HDEventMonitor();
                         m_hdEventMonitor.UpdateConfiguration(m_cd.EventData, m_cd.Name);
-                        TaskManager.Manager.OneTimeEventsSetTimespanChanged(m_cd);
+                        TaskManager.Manager.OneTimeJobsSetHistoricalTimespanChanged(m_cd);
                         m_hdEventMonitor.Start();
                         m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null, intervalProcessNewEvents, Timeout.Infinite);
                     }
@@ -2601,7 +2613,7 @@ namespace iba.Processing
                         }
                         continue;
                     }
-                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData) && !(task is UploadTaskData))
+                    if (!(task is BatchFileData) && !(task is CopyMoveTaskData) && !(task is UploadTaskData) && !(task is DataTransferTaskData))
                     {
                         m_outPutFilesPrevTask = null;
                     }
@@ -2690,6 +2702,7 @@ namespace iba.Processing
                 {
                     WriteStateInHDQFile(InputFile, completeSucces);
                 }
+
                 m_sd.Changed = true;
             }
 
@@ -2922,7 +2935,10 @@ namespace iba.Processing
         private bool ProcessTask(string DatFile, TaskData task, ref bool failedOnce)
         {
             // added by kolesnik - begin
-            DateTime processingStarted = DateTime.Now;
+            // it's important to use UtcNow rather than Now, 
+            // because latter can have issues with duration calculations
+            // on spring/fall daylight saving switch
+            DateTime utcTimeStampProcessingStarted = DateTime.UtcNow;
             uint memoryUsed = 0;
 			// added by kolesnik - end
 
@@ -3069,6 +3085,24 @@ namespace iba.Processing
                 IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
                 memoryUsed = ((KafkaWriterTaskData)task).MonitorData.MemoryUsed;
             }
+            else if (task is DataTransferTaskData)
+            {
+                DataTransferTaskData dat = task as DataTransferTaskData;
+
+                var cancellationTokenSource = new CancellationTokenSource();
+
+                var token = cancellationTokenSource.Token;
+
+                _cancellationTokenList.Add(cancellationTokenSource);
+
+                TransferFile(DatFile, dat, token);
+
+                if (dat.ShouldDeleteAfterTransfer)
+                {
+                    DirectoryManager.DeleteFileAsync(DatFile);
+                    continueProcessing = false;
+                }
+            }
             else if (task is CustomTaskData)
             {
                 DoCustomTask(DatFile, task as CustomTaskData);
@@ -3087,7 +3121,7 @@ namespace iba.Processing
 
             TaskLastExecutionData lastExec = new TaskLastExecutionData
             {
-                DurationMs = (DateTime.Now - processingStarted).TotalMilliseconds,
+                DurationMs = (DateTime.UtcNow - utcTimeStampProcessingStarted).TotalMilliseconds,
                 MemoryUsed = memoryUsed
             };
 
@@ -3453,15 +3487,18 @@ namespace iba.Processing
 						{ //try expression
 							outputfile = EvaluateTextExpression(task.InfoFieldForOutputFile);
 						}
-						if (task.InfoFieldForOutputFileLength == 0)
-						{
-							if (task.InfoFieldForOutputFileStart != 0)
-							{
-								outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
-							}
-						}
-						else
-							outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+                        if (task.InfoFieldForOutputFileLength == 0)
+                        {
+                            if (task.InfoFieldForOutputFileStart != 0)
+                            {
+                                outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart);
+                            }
+                        }
+                        else
+                        {
+                            int len = Math.Min(outputfile.Length - task.InfoFieldForOutputFileStart, task.InfoFieldForOutputFileLength);
+                            outputfile = outputfile.Substring(task.InfoFieldForOutputFileStart, len);
+                        }
 						if (task.InfoFieldForOutputFileRemoveBlanksAll)
 							outputfile = outputfile.Replace(" ", String.Empty).Replace("\t", String.Empty);
 						else if (task.InfoFieldForOutputFileRemoveBlanksEnd)
@@ -3577,15 +3614,18 @@ namespace iba.Processing
 						Subdir = "";
 					else
 					{
-						if (task.InfoFieldForSubdirLength == 0)
-						{
-							if (task.InfoFieldForSubdirStart != 0)
-							{
-								Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
-							}
-						}
-						else
-							Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                        if (task.InfoFieldForSubdirLength == 0)
+                        {
+                            if (task.InfoFieldForSubdirStart != 0)
+                            {
+                                Subdir = Subdir.Substring(task.InfoFieldForSubdirStart);
+                            }
+                        }
+                        else
+                        {
+                            int len = Math.Min(Subdir.Length - task.InfoFieldForSubdirStart, task.InfoFieldForSubdirLength);
+                            Subdir = Subdir.Substring(task.InfoFieldForSubdirStart, len);
+                        }
 						if (task.InfoFieldForSubdirRemoveBlanksAll)
 							Subdir = Subdir.Replace(" ", String.Empty).Replace("\t", String.Empty);
 						else if (task.InfoFieldForSubdirRemoveBlanksEnd)
@@ -3918,6 +3958,27 @@ namespace iba.Processing
             }
             catch
             {
+                string msg = IbaAnalyzerErrorMessage();
+                if (msg.Contains("LL_ERR_EXPRESSION"))
+                {
+                    bool spoolStarted = true;
+                    try
+                    {
+                        ServiceController service = new ServiceController("Spooler");
+                        if ((service.Status.Equals(ServiceControllerStatus.Stopped)) ||
+                            (service.Status.Equals(ServiceControllerStatus.StopPending)))
+                        {
+                            spoolStarted = false;
+                        }
+                    }
+                    catch //no access
+                    {
+                    }
+                    if (spoolStarted)
+                        msg = Properties.Resources.reportLL_ERR_EXPRESSION;
+                    else
+                        msg = Properties.Resources.reportLL_ERR_EXPRESSION_Spooler;
+                }
                 Log(Logging.Level.Exception, IbaAnalyzerErrorMessage(), filename, task);
                 lock (m_sd.DatFileStates)
                 {
@@ -4307,8 +4368,11 @@ namespace iba.Processing
                 int i = 0;
                 foreach (string fileToCopy in filesToCopy)
                 {
-                    string currentext = Path.GetExtension(fileToCopy);
-                    destinations[i] = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + currentext);
+                    var currentExt = task.CreateZipArchive 
+                        ? Path.GetExtension(fileToCopy) + ".zip" 
+                        : Path.GetExtension(fileToCopy);
+
+                    destinations[i] = Path.Combine(dir, GetOutputFileName(task,fileToCopy) + currentExt);
                     i++;
                 }
 
@@ -4363,7 +4427,16 @@ namespace iba.Processing
                             {
                                 m_quotaCleanups[task.Guid].RemoveFile(destinations[i]);
                             }
-                            File.Copy(filesToCopy[i], destinations[i], true);
+
+                            if (task.CreateZipArchive)
+                            {
+                                ZipCreator.CreateZipArchive(filesToCopy[i], destinations[i]);
+                            }
+                            else
+                            {
+                                File.Copy(filesToCopy[i], destinations[i], true);
+                            }
+
                             File.Delete(filesToCopy[i]);
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logMoveTaskSuccess, filename, task);
@@ -4377,7 +4450,15 @@ namespace iba.Processing
                         {
                             m_quotaCleanups[task.Guid].RemoveFile(destinations[i]);
                         }
-                        File.Copy(filesToCopy[i], destinations[i], true);
+
+                        if (task.CreateZipArchive)
+                        {
+                            ZipCreator.CreateZipArchive(filesToCopy[i], destinations[i]);
+                        }
+                        else
+                        {
+                            File.Copy(filesToCopy[i], destinations[i], true);
+                        }
                     }
                     Log(Logging.Level.Info, iba.Properties.Resources.logCopyTaskSuccess, filename, task);
                     m_outPutFilesPrevTask = destinations;
@@ -4478,6 +4559,71 @@ namespace iba.Processing
             {
 
                 Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message, filename, task);
+
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                }
+            }
+        }
+
+        internal void TransferFile(string filename, DataTransferTaskData task, CancellationToken cancellationToken)
+        {
+            string[] filesToCopy = new string[] { filename };
+
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+            }
+
+            if (task.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT)
+            {
+                if (m_outPutFilesPrevTask == null || m_outPutFilesPrevTask.Length == 0 || string.IsNullOrEmpty(m_outPutFilesPrevTask[0]))
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
+                    return;
+                }
+                if (m_outPutFilesPrevTask != null)
+                {
+                    filesToCopy = m_outPutFilesPrevTask;
+                }
+            }
+            m_outPutFilesPrevTask = null;
+
+            try
+            {
+                //close .dat file first
+                try
+                {
+                    if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+                }
+                catch
+                {
+                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                    if (m_needIbaAnalyzer)
+                    {
+                        RestartIbaAnalyzer();
+                    }
+                }
+                var dataTransferTaskWorker = new DataTransferTaskWorker(task);
+
+                foreach (var fileToCopy in filesToCopy)
+                {
+                    dataTransferTaskWorker.TransferFile(fileToCopy, task, cancellationToken).Wait();
+                    Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
+                }
+
+                lock (m_sd.DatFileStates)
+                {
+                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    if (m_outPutFilesPrevTask != null && m_outPutFilesPrevTask.Length > 0)
+                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFilesPrevTask[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.InnerException?.Message, filename, task);
 
                 lock (m_sd.DatFileStates)
                 {
@@ -4870,7 +5016,8 @@ namespace iba.Processing
             // Write events
             try
             {
-                worker.WriteEvents(GetTaskStoreNames(task), eventData, HdValidationMessage.Ignore);
+                if(eventData.Count > 0)
+                    worker.WriteEvents(GetTaskStoreNames(task), eventData, HdValidationMessage.Ignore);
 
                 m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                 Log(Logging.Level.Info, iba.Properties.Resources.logHDEventTaskSuccess, filename, task);
@@ -5279,7 +5426,14 @@ namespace iba.Processing
 
         private void ScheduleNextEvent()
         {
-            ScheduleNextEvent(DateTime.Now);
+            DateTime startTime = DateTime.Now;
+
+            if (m_cd.ScheduleData.ProcessHistorical)
+            {
+                startTime = m_cd.ScheduleData.BaseTriggerTime;
+                m_cd.ScheduleData.ProcessHistorical = false; // Disable the processing of historical data for next execution
+            }                                                // This would re execute the same hdq files again
+            ScheduleNextEvent(startTime);
         }
 
         private bool m_delayedHDQStop;

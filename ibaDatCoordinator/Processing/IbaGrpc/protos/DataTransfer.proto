@@ -1,0 +1,56 @@
+﻿syntax = "proto3";
+
+//option csharp_namespace = "Messages";
+//option csharp_namespace = "Google.Protobuf.WellKnownTypes";
+import "google/protobuf/timestamp.proto";
+
+package Messages.V1;
+
+service DataTransfer{
+	rpc TransferFile (stream TransferRequest) returns (TransferResponse);
+	rpc Connect (ConnectionRequest) returns (ConnectionResponse);
+	rpc TestConnect(Empty) returns (Empty);
+}
+
+message Configuration{
+	string configurationId = 1;
+	google.protobuf.Timestamp requestDate = 2;
+	string clientName = 3;
+	string taskName = 4;
+	string clientVersion = 5;
+	string fileName = 6;
+	string path = 7;
+	string apiKey = 8;
+	int32 maxbandwidth = 9;
+	int32 transferredfiles = 10;
+}
+
+message ConnectionRequest{	
+	Configuration configurataion = 3;
+}
+
+message ConnectionResponse{
+	string configurationId = 1;
+	google.protobuf.Timestamp requestDate = 2;
+	Status status = 3;
+	string message = 4;
+}
+
+message TransferRequest{
+	bytes chunk = 1;
+}
+ 
+message TransferResponse{
+	Status status = 1;
+	string message = 2;
+}
+
+message Empty{
+
+}
+
+enum Status{
+	OK = 0;
+	Error = 1;
+}
+

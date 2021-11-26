@@ -146,7 +146,31 @@ namespace iba.Processing
                             m_data.EvaluateValues(filename, m_ibaAnalyzer);
                         });
 
-                    var config = new ProducerConfig { BootstrapServers = m_data.clusterAddress };
+                    var config = new ProducerConfig();
+
+                    if (m_data.ClusterMode == KafkaWriterTaskData.ClusterType.Kafka)
+                    {
+                        config.BootstrapServers = m_data.clusterAddress;
+                    }
+                    else
+                    {
+                        config.BootstrapServers = "";
+
+                        string[] connStringParts = m_data.clusterAddress.Split(';');
+                        foreach (string it in connStringParts)
+                        {
+                            if (it.StartsWith("Endpoint=sb://", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                string uri = it.Substring(14, it.Length - 14);
+
+                                // Also remove trailing / if present
+                                if (uri.EndsWith("/"))
+                                    uri = uri.Substring(0, uri.Length - 1);
+
+                                config.BootstrapServers = string.Concat(uri, ":9093");
+                            }
+                        }
+                    }
 
                     config.ClientId = m_data.identifier;
                     config.MessageTimeoutMs = (int)(m_data.timeout*1000);
@@ -163,6 +187,24 @@ namespace iba.Processing
                             break;
                     }
 
+                    switch (m_data.ClusterSecurityMode)
+                    {
+                        case KafkaWriterTaskData.ClusterSecurityType.PLAINTEXT:
+                            config.SecurityProtocol = Confluent.Kafka.SecurityProtocol.Plaintext;
+                            break;
+                        case KafkaWriterTaskData.ClusterSecurityType.SSL:
+                            config.SecurityProtocol = Confluent.Kafka.SecurityProtocol.Ssl;
+                            //// TODO implement sertificate
+                            ////config.EnableSslCertificateVerification = connConfig.ClusterSecurity.SSLConfig.EnableVerification;
+                            break;
+                        case KafkaWriterTaskData.ClusterSecurityType.SASL_PLAINTEXT:
+                            config.SecurityProtocol = Confluent.Kafka.SecurityProtocol.SaslPlaintext;
+                            break;
+                        case KafkaWriterTaskData.ClusterSecurityType.SASL_SSL:
+                            config.SecurityProtocol = Confluent.Kafka.SecurityProtocol.SaslSsl;
+                            ////config.EnableSslCertificateVerification = connConfig.ClusterSecurity.SSLConfig.EnableVerification;
+                            break;
+                    }
                     // Add expert parameters
                     foreach (var kvp in m_data.Params)
                     {
@@ -181,33 +223,60 @@ namespace iba.Processing
                     
                     try
                     {
+                        // todo implement timestamp metadata
                         if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONGrouped)
                         {
                             var p = new ProducerBuilder<string, string>(config).Build();
                             string message = "{ ";
 
+                            // todo maybe change format to   message += $", \"{rec.Name}.Comment1\": \"{rec.Comment1}\""; and change Name matadata to Expression metadata
                             for (int i = 0; i < m_data.Records.Count; i++)
                             {
-                                if (i > 0)
-                                    message += ", ";
-                                message += "\"" + m_data.Records[i].Expression + "\": " + m_data.ToText(m_data.Records[i]);
+                                var rec = m_data.Records[i];
+                                if (i > 0)  message += ", ";
+                                message += $"\"{rec.Expression}\": \"{m_data.ToText(rec)}\"";
+                                if (m_data.metadata.Contains("Identifier"))
+                                    message += $", \"Identifier\": \"{m_data.identifier}\"";
+                                if (m_data.metadata.Contains("Name"))
+                                    message += $", \"Name\": \"{rec.Name}\"";
+                                if (m_data.metadata.Contains("Unit"))
+                                    message += $", \"Unit\": \"{rec.Unit}\"";
+                                if (m_data.metadata.Contains("Comment 1"))
+                                    message += $", \"Comment1\": \"{rec.Comment1}\"";
+                                if (m_data.metadata.Contains("Comment 2"))
+                                    message += $", \"Comment2\": \"{rec.Comment2}\"";
+                                if (m_data.metadata.Contains("Signal ID"))
+                                    message += $", \"Signal ID\": \"{rec.Id}\"";
                             }
                             message += "}";
-                            var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Value = message }).Result;
+                            var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = m_data.key, Value = message }).Result;
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONPerSignal)
                         {
                             var p = new ProducerBuilder<string, string>(config).Build();
                             foreach (var rec in m_data.Records)
                             {
-                                string message = "{ \"Signal\": \"" + rec.Expression + "\", \"Value\": " + m_data.ToText(rec) + "}";
-                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Value = message }).Result;
+                                string message = "";
+                                if (m_data.metadata.Contains("Identifier"))
+                                    message += $", \"Identifier\": \"{m_data.identifier}\"";
+                                if (m_data.metadata.Contains("Name"))
+                                    message += $", \"Name\": \"{rec.Name}\"";
+                                if (m_data.metadata.Contains("Unit"))
+                                    message += $", \"Unit\": \"{rec.Unit}\"";
+                                if (m_data.metadata.Contains("Comment 1"))
+                                    message += $", \"Comment1\": \"{rec.Comment1}\"";
+                                if (m_data.metadata.Contains("Comment 2"))
+                                    message += $", \"Comment2\": \"{rec.Comment2}\"";
+                                if (m_data.metadata.Contains("Signal ID"))
+                                    message += $", \"Signal ID\": \"{rec.Id}\"";
+                                message = $"{{\"Signal\": \"{rec.Expression}\", \"Value\": \"{m_data.ToText(rec)}\"{message}}}";
+                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = m_data.key, Value = message }).Result;
                             }
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.AVRO)
                         {
                             var schemaFingerPrint = schemaFingerPrintDefault;
-                            if (m_data.useSchemaRegistryServer)
+                            if (m_data.schemaRegistryAddress != "")
                                 schemaFingerPrint = m_data.schemaFingerPrint;
                             var schema = schemaDefault;
                             
@@ -228,12 +297,18 @@ namespace iba.Processing
                                 Avro.EnumSchema valTypeSchema = enumField.Schema as Avro.EnumSchema;
                                 r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
                                 r.Add("Signal", rec.Expression);
-                                r.Add("ID", "[" + m_data.identifier + "] ID (data.identifier");
-                                r.Add("Name", rec.Name);
-                                r.Add("Unit", "[" + rec.Name + "] Unit");
-                                r.Add("Comment1", "[" + rec.Name + "] Comment1");
-                                r.Add("Comment2", "[" + rec.Name + "] Comment2");
-                                r.Add("Identifier", "[" + rec.Name + "] Identifier");
+                                if (m_data.metadata.Contains("Identifier"))
+                                    r.Add("Identifier", "[" + m_data.identifier + "]");
+                                if (m_data.metadata.Contains("Name"))
+                                    r.Add("Name", rec.Name);
+                                if (m_data.metadata.Contains("Unit"))
+                                    r.Add("Unit", rec.Unit);
+                                if (m_data.metadata.Contains("Comment 1"))
+                                    r.Add("Comment1", rec.Comment1);
+                                if (m_data.metadata.Contains("Comment 2"))
+                                    r.Add("Comment2", rec.Comment2);
+                                if (m_data.metadata.Contains("Signal ID"))
+                                    r.Add("Signal ID", rec.Id);
 
                                 r.Add("BooleanValue", rec.Value as bool?);
                                 r.Add("DoubleValue", rec.Value as double?);
@@ -255,7 +330,7 @@ namespace iba.Processing
                                     msg.Value = ms.ToArray();
                                 }
 
-                                msg.Key = null;
+                                msg.Key = Encoding.UTF8.GetBytes(m_data.key.ToCharArray());
                                 var dr = p.ProduceAsync(m_data.topicName, msg);
                             }
                         }

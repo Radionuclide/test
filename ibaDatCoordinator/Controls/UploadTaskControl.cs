@@ -9,8 +9,11 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.Utils.Extensions;
+using DevExpress.XtraPrinting.Native;
 using iba.Data;
 using iba.Processing;
+using iba.Properties;
 using iba.Utility;
 
 namespace iba.Controls
@@ -46,6 +49,12 @@ namespace iba.Controls
             m_tbRemotePath.Text = m_data.RemotePath;
             m_tbPathToPrivateKey.Text = m_data.PathToPrivateKey;
             m_tbPathToCertificate.Text = m_data.PathToCertificate;
+            m_createZipArchive.Checked = m_data.CreateZipArchive;
+            m_chkOverwrite.Checked = m_data.Overwrite;
+
+            m_chkAnonymous.Checked = m_data.Anonymous;
+            m_chkAcceptAnySshHostKey.Checked = m_data.AcceptAnySshHostKey;
+            m_chkAcceptAnyTlsCertificate.Checked = m_data.AcceptAnyTlsCertificate;
 
             m_cbProtocol.SelectedIndex = (int)m_data.Protocol;
             m_cbEncryption.SelectedIndex = (int)m_data.EncryptionChoice;
@@ -55,9 +64,7 @@ namespace iba.Controls
             m_rbDatFile.Checked = m_data.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.DATFILE;
             m_rbPrevOutput.Checked = m_data.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.PREVOUTPUT;
 
-            m_chkAnonymous.Checked = m_data.Anonymous;
-            m_chkAcceptAnySshHostKey.Checked = m_data.AcceptAnySshHostKey;
-            m_chkAcceptAnyTlsCertificate.Checked = m_data.AcceptAnyTlsCertificate;
+
         }
 
         public void SaveData()
@@ -69,6 +76,8 @@ namespace iba.Controls
             m_data.RemotePath = m_tbRemotePath.Text;
             m_data.PathToPrivateKey = m_tbPathToPrivateKey.Text;
             m_data.PathToCertificate = m_tbPathToCertificate.Text;
+            m_data.CreateZipArchive = m_createZipArchive.Checked;
+            m_data.Overwrite = m_chkOverwrite.Checked;
 
             m_data.Protocol = (UploadTaskData.TransferProtocol)m_cbProtocol.SelectedIndex;
             m_data.EncryptionChoice = (UploadTaskData.EncryptionChoiceEnum)m_cbEncryption.SelectedIndex;
@@ -87,54 +96,142 @@ namespace iba.Controls
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
         }
 
+        private enum Protocol
+        {
+            FTP,
+            SFTP,
+            SCP,
+            AMAZON_S3,
+            AzureDataLake
+        }
+
+        private enum Encryption
+        {
+            Unencrypted,
+            Explicit,
+            Implicit
+        }
+
         private void m_cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedProtocol = (string)((ComboBox)sender).SelectedItem;
-            var selectedEncryption = (string)m_cbEncryption.SelectedItem;
+            var selectedProtocol = (Protocol)((ComboBox)sender).SelectedIndex;
+            var selectedEncryption = (Encryption)m_cbEncryption.SelectedIndex;
 
-            var ftpControls = new List<Control>
+            ForAllControls(m_gbOption, (control) => control.Visible = true);
+            ForAllControls(m_gbTarget, (control) => control.Visible = true);
+
+            switch (selectedProtocol)
             {
-                m_lbEncryption, m_cbEncryption, m_lbFtpMode, m_cmbMode, m_chkAnonymous
-            };
-
-            ftpControls.ForEach(control => control.Visible = selectedProtocol == "FTP");
-
-            var ftpControlsUnencrypted = new List<Control>
-            {
-                m_chkAcceptAnyTlsCertificate, m_tlpPathtoCertificate
-            };
-
-            ftpControlsUnencrypted.ForEach(control => control.Visible = selectedProtocol == "FTP" && selectedEncryption != "Use only unencrypted FTP (insecure)");
-
-            var sshControls = new List<Control>
-            {
-                m_chkAcceptAnySshHostKey, m_tlpPathToKey
-            };
-
-            sshControls.ForEach(control => control.Visible = selectedProtocol == "SFTP" || selectedProtocol == "SCP");
+                case Protocol.FTP:
+                    SetupFtpControls(selectedEncryption);
+                    break;
+                case Protocol.SFTP:
+                case Protocol.SCP:
+                    SetupSftpAndScpControls();
+                    break;
+                case Protocol.AMAZON_S3:
+                    SetupAmazonS3Controls();
+                    break;
+                case Protocol.AzureDataLake:
+                    SetupAzureControls();
+                    break; 
+            }
 
             SetStandardPorts(selectedProtocol);
         }
 
+        public static void ForAllControls(Control parent, Action<Control> action)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                action(c);
+                ForAllControls(c, action);
+            }
+        }
+
+        private void SetupFtpControls(Encryption selectedEncryption)
+        {
+            m_lbUsername.Text = $"{Resources.Username}:";
+            m_lbPassword.Text = $"{Resources.Password}:";
+
+            if (selectedEncryption == Encryption.Unencrypted)
+            {
+                m_chkAcceptAnyTlsCertificate.Visible = false;
+                m_tlpPathtoCertificate.Visible = false;
+            }
+
+            m_chkAcceptAnySshHostKey.Visible = false;
+            m_tlpPathToKey.Visible = false;
+            m_chkOverwrite.Visible = false;
+        }
+
+        private void SetupSftpAndScpControls()
+        {
+            m_lbUsername.Text = $"{Resources.Username}:";
+            m_lbPassword.Text = $"{Resources.Password}:";
+
+            m_panelFtpEncryption.Visible = false;
+            m_chkAnonymous.Visible = false;
+            m_tlpPathtoCertificate.Visible = false;
+            m_chkAcceptAnyTlsCertificate.Visible = false;
+            m_chkOverwrite.Visible = false;
+        }
+
+        private void SetupAmazonS3Controls()
+        {
+            m_lbUsername.Text = $"{Resources.Access_key_ID}:";
+            m_lbPassword.Text = $"{Resources.Secret_key}:";
+
+            if (string.IsNullOrEmpty(m_tbServer.Text))
+            {
+                m_tbServer.Text = "s3.amazonaws.com";
+            }
+
+            m_panelFtpEncryption.Visible = false;
+            m_chkAnonymous.Visible = false;
+            m_panelChkBoxControls.Visible = false;
+            m_panelFilePath.Visible = false;
+            m_chkOverwrite.Visible = false;
+        }
+
+        private void SetupAzureControls()
+        {
+            m_lbUsername.Text = $"{Resources.AccountName}:";
+            m_lbPassword.Text = $"{Resources.SharedKey}:";
+
+            m_chkAnonymous.Visible = false;
+            m_lbServer.Visible = false;
+            m_tbServer.Visible = false;
+            m_lbPort.Visible = false;
+            m_tbPort.Visible = false;
+            m_panelFtpEncryption.Visible = false;
+            m_panelChkBoxControls.Visible = false;
+            m_panelFilePath.Visible = false;
+        }
+
         private void m_cbEncryption_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedEncryption = (string)((ComboBox)sender).SelectedItem;
-            var selectedProtocol = (string)m_cbProtocol.SelectedItem;
+            var selectedEncryption = (Encryption)((ComboBox)sender).SelectedIndex;
+            var selectedProtocol = (Protocol)m_cbProtocol.SelectedIndex;
 
             var ftpEncryptionControls = new List<Control>
             {
                 m_chkAcceptAnyTlsCertificate, m_tlpPathtoCertificate
             };
-            ftpEncryptionControls.ForEach(control => control.Visible = selectedProtocol == "FTP" && selectedEncryption != "Use only unencrypted FTP (insecure)");
+            ftpEncryptionControls.ForEach(control => control.Visible = selectedProtocol == Protocol.FTP &&
+                                                                       selectedEncryption != Encryption.Unencrypted);
 
             var sshEncryptionControls = new List<Control> { m_chkAcceptAnySshHostKey, m_tlpPathToKey };
-            sshEncryptionControls.ForEach(control => control.Visible = selectedProtocol == "SFTP" || selectedProtocol == "SCP");
+            sshEncryptionControls.ForEach(control => control.Visible = selectedProtocol == Protocol.SFTP || 
+                                                                       selectedProtocol == Protocol.SCP);
 
             SetStandardPorts(selectedProtocol);
         }
 
-        private void SetStandardPorts(string selectedProtocol)
+        private void SetStandardPorts(Protocol selectedProtocol)
         {
+            var selectedEncryption = (Encryption)m_cbEncryption.SelectedIndex;
+
             const string ftp = "21";
             const string implicitFtp = "990";
             const string sftp = "22";
@@ -150,16 +247,20 @@ namespace iba.Controls
 
             switch (selectedProtocol)
             {
-                case "FTP":
-                    m_tbPort.Text = "Require implicit FTP over TLS" == (string)m_cbEncryption.SelectedItem ? implicitFtp : ftp;
+                case Protocol.FTP:
+                    m_tbPort.Text = selectedEncryption == Encryption.Implicit ? implicitFtp : ftp;
                     break;
-                case "SFTP":
-                case "SCP":
+                case Protocol.SFTP:
+                case Protocol.SCP:
                     m_tbPort.Text = sftp;
                     break;
-                case "Amazon S3":
+                case Protocol.AMAZON_S3:
                     m_tbPort.Text = amazonS3;
                     break;
+                case Protocol.AzureDataLake:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(selectedProtocol), selectedProtocol, null);
             }
         }
 
@@ -237,10 +338,10 @@ namespace iba.Controls
 
         private void ConfigureSearchFileTextBox()
         {
-            var SearchPrivateKeyBtn = new Button();
-            var SearchCertificateBtn = new Button();
+            var searchPrivateKeyBtn = new Button();
+            var searchCertificateBtn = new Button();
 
-            var buttonlist = new List<Button> { SearchCertificateBtn, SearchPrivateKeyBtn };
+            var buttonlist = new List<Button> { searchCertificateBtn, searchPrivateKeyBtn };
 
             buttonlist.ForEach(btn => {
                 btn.Size = new Size(25, m_tbPathToPrivateKey.ClientSize.Height + 2);
@@ -258,11 +359,11 @@ namespace iba.Controls
             });
 
 
-            m_tbPathToCertificate.Controls.Add(SearchCertificateBtn);
-            m_tbPathToPrivateKey.Controls.Add(SearchPrivateKeyBtn);
+            m_tbPathToCertificate.Controls.Add(searchCertificateBtn);
+            m_tbPathToPrivateKey.Controls.Add(searchPrivateKeyBtn);
 
-            SendMessage(m_tbPathToCertificate.Handle, 0xd3, (IntPtr)2, (IntPtr)(SearchPrivateKeyBtn.Width << 16));
-            SendMessage(m_tbPathToPrivateKey.Handle, 0xd3, (IntPtr)2, (IntPtr)(SearchPrivateKeyBtn.Width << 16));
+            SendMessage(m_tbPathToCertificate.Handle, 0xd3, (IntPtr)2, (IntPtr)(searchPrivateKeyBtn.Width << 16));
+            SendMessage(m_tbPathToPrivateKey.Handle, 0xd3, (IntPtr)2, (IntPtr)(searchPrivateKeyBtn.Width << 16));
         }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -274,7 +375,7 @@ namespace iba.Controls
 
             var filename = openFileDialog1.FileName;
 
-            if (m_cbProtocol.SelectedItem.ToString() == "FTP")
+            if (m_cbProtocol.SelectedIndex == (int)Protocol.FTP)
             {
                 m_tbPathToCertificate.Text = filename;
             }

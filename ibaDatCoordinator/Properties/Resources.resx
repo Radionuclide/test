@@ -1217,6 +1217,9 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="browseCleanProcessButton" xml:space="preserve">
     <value>Browse for .dat file. If necessary, remove the "Already processed" mark and process it.</value>
   </data>
+  <data name="browseDatFile" xml:space="preserve">
+    <value>Browse for .dat file...</value>
+  </data>
   <data name="splitterTaskTitle" xml:space="preserve">
     <value>Split</value>
   </data>
@@ -1639,13 +1642,13 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>iba HDQ files (*.hdq)|*.hdq|iba dat files (*.dat)|*.dat</value>
   </data>
   <data name="HDEventTask_ToolTip_OpenPDO" xml:space="preserve">
-    <value>Open the PDO file with ibaAnalyzer</value>
+    <value>Open the analysis file with ibaAnalyzer</value>
   </data>
   <data name="HDEventTask_ToolTip_Test" xml:space="preserve">
     <value>Test the event generation (this requires a DAT file)</value>
   </data>
   <data name="HDEventTask_ToolTip_UploadPDO" xml:space="preserve">
-    <value>Upload a PDO file to the server</value>
+    <value>Upload the analysis file to the server</value>
   </data>
   <data name="HDEventsChanged" xml:space="preserve">
     <value>Changes are made to the HD offline events configurations. Do you want to save these changes on the HD server?</value>
@@ -1819,7 +1822,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Changes were detected to one or more PDO files. In order to apply these changes,  the source files must be updated. This might automatically stop and start the corresponding job. Do you wish to update these files?</value>
   </data>
   <data name="HDEventTask_ToolTip_UploadPDOStandAlone" xml:space="preserve">
-    <value>Update the PDO file</value>
+    <value>Update the analysis file</value>
   </data>
   <data name="HdFallingEdge" xml:space="preserve">
     <value>on falling edge (Value)</value>
@@ -1956,6 +1959,18 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ibaFilesNoLicense" xml:space="preserve">
     <value>The .dat file is in an older file format which requires a license, please contact iba Support</value>
   </data>
+  <data name="browseFolderDatFile" xml:space="preserve">
+    <value>browse for .dat file folder...</value>
+  </data>
+  <data name="ToolTip_BrowsePDO" xml:space="preserve">
+    <value>browse for analysis...</value>
+  </data>
+  <data name="reportLL_ERR_EXPRESSION" xml:space="preserve">
+    <value>Report failed: please check analysis and report configuration.</value>
+  </data>
+  <data name="reportLL_ERR_EXPRESSION_Spooler" xml:space="preserve">
+    <value>The print spooler service is not started. Please start the service. If that does not adress the problem, please check analysis and report configuration.</value>
+  </data>
   <data name="UploadTaskButton" xml:space="preserve">
     <value>add new upload task</value>
   </data>
@@ -2012,5 +2027,92 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="NewKafkaTaskTitle" xml:space="preserve">
+    <value>Add Kafka Task</value>
+  </data>
+  <data name="NewOpcUaTaskTitle" xml:space="preserve">
+    <value>Add OPC UA Writer Task</value>
+  </data>
+  <data name="img_import" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_import.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImportParametersFromCSV" xml:space="preserve">
+    <value>Import parameters from a CSV file</value>
+  </data>
+  <data name="CSVFileFilter" xml:space="preserve">
+    <value>CSV files (*.csv)|*.csv</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>File not found. /n Check the file name and try again.</value>
+  </data>
+  <data name="ExportParametersToCSV" xml:space="preserve">
+    <value>Export parameters to a CSV file</value>
+  </data>
+  <data name="dataTransferTitle" xml:space="preserve">
+    <value>Data Transfer Server</value>
+  </data>
+  <data name="DataTransferTaskTitle" xml:space="preserve">
+    <value>Transfer Data</value>
+  </data>
+  <data name="DataTransferTaskButton" xml:space="preserve">
+    <value>add new transfer task</value>
+  </data>
+  <data name="deleteDataTransferTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the Data Transfer options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="NewDataTransferTaskTitle" xml:space="preserve">
+    <value>Add Data Transfer Task</value>
+  </data>
+  <data name="DataTransferIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataTransferIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Hostname" xml:space="preserve">
+    <value>Hostname</value>
+  </data>
+  <data name="DataTransferControl_ConfigureDiagnosticGrid_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="TransferredFiles" xml:space="preserve">
+    <value>Transferred Files</value>
+  </data>
+  <data name="Last_transferred_file" xml:space="preserve">
+    <value>Last transferred file</value>
+  </data>
+  <data name="Max__bandwidth" xml:space="preserve">
+    <value>Max. bandwidth in KB/s</value>
+  </data>
+  <data name="TaskName" xml:space="preserve">
+    <value>TaskName</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Access_key_ID" xml:space="preserve">
+    <value>Access key ID</value>
+  </data>
+  <data name="Secret_key" xml:space="preserve">
+    <value>Secret key</value>
+  </data>
+  <data name="DatatransferServerNotStarted" xml:space="preserve">
+    <value>Server not started</value>
+  </data>
+  <data name="DatatransferServerStarted" xml:space="preserve">
+    <value>Server started</value>
+  </data>
+  <data name="AccountName" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="SharedKey" xml:space="preserve">
+    <value>Shared key</value>
   </data>
 </root>

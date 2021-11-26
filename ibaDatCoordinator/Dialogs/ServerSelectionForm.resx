@@ -442,7 +442,7 @@
     <value>cbAddress</value>
   </data>
   <data name="&gt;&gt;cbAddress.Type" xml:space="preserve">
-    <value>iba.Controls.ImageComboBox, ibaDatCoordinator, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.ImageComboBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cbAddress.Parent" xml:space="preserve">
     <value>$this</value>

@@ -109,7 +109,7 @@ namespace iba.Data
             set => m_encryptionChoice = value;
         }
 
-        public enum TransferProtocol { Ftp, Sftp, Scp, AmazonS3}
+        public enum TransferProtocol { Ftp, Sftp, Scp, AmazonS3, AzureDataLake }
 
         private TransferProtocol m_transferProtocol;
 
@@ -165,6 +165,9 @@ namespace iba.Data
             set => m_pathToCertificate = value;
         }
 
+        public bool CreateZipArchive { get; set; }
+        public bool Overwrite { get; set; }
+
         public UploadTaskData()
             : this(null)
         {
@@ -191,7 +194,9 @@ namespace iba.Data
             cd.TlsCertificateFingerprint = TlsCertificateFingerprint;
             cd.m_pathToCertificate = m_pathToCertificate;
             cd.m_pathToPrivateKey = m_pathToPrivateKey;
-            
+            cd.CreateZipArchive = CreateZipArchive;
+            cd.Overwrite = Overwrite;
+
             return cd;
         }
 
@@ -218,7 +223,9 @@ namespace iba.Data
                 other.m_sshHostKeyFingerprint == m_sshHostKeyFingerprint &&
                 other.m_tlsCertificateFingerprint == m_tlsCertificateFingerprint &&
                 other.m_pathToCertificate == m_pathToCertificate &&
-                other.m_pathToPrivateKey == m_pathToPrivateKey;
+                other.m_pathToPrivateKey == m_pathToPrivateKey &&
+                other.CreateZipArchive == CreateZipArchive &&
+                other.Overwrite == Overwrite;
         }
     }
 }

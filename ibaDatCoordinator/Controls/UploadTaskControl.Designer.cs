@@ -32,11 +32,11 @@ namespace iba.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UploadTaskControl));
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_gbOption = new iba.Utility.CollapsibleGroupBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel8 = new System.Windows.Forms.Panel();
+            this.m_tplOptions = new System.Windows.Forms.TableLayoutPanel();
+            this.m_panelChkBoxControls = new System.Windows.Forms.Panel();
             this.m_chkAcceptAnySshHostKey = new System.Windows.Forms.CheckBox();
             this.m_chkAcceptAnyTlsCertificate = new System.Windows.Forms.CheckBox();
-            this.panel7 = new System.Windows.Forms.Panel();
+            this.m_panelFilePath = new System.Windows.Forms.Panel();
             this.m_tlpPathToKey = new System.Windows.Forms.TableLayoutPanel();
             this.m_tbPathToPrivateKey = new System.Windows.Forms.TextBox();
             this.m_lbFileToPrivateKey = new System.Windows.Forms.Label();
@@ -47,25 +47,27 @@ namespace iba.Controls
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.m_lblRemotePath = new System.Windows.Forms.Label();
             this.m_tbRemotePath = new System.Windows.Forms.TextBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.m_chkOverwrite = new System.Windows.Forms.CheckBox();
+            this.m_createZipArchive = new System.Windows.Forms.CheckBox();
             this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.m_btnCheckConnection = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.m_tplAuthorization = new System.Windows.Forms.TableLayoutPanel();
+            this.m_panelFtp = new System.Windows.Forms.Panel();
             this.m_lbUsername = new System.Windows.Forms.Label();
             this.m_chkAnonymous = new System.Windows.Forms.CheckBox();
             this.m_lbPassword = new System.Windows.Forms.Label();
             this.m_tbPassword = new System.Windows.Forms.TextBox();
             this.m_tbUsername = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.m_btnCheckConnection = new System.Windows.Forms.Button();
+            this.m_tplProtocol = new System.Windows.Forms.TableLayoutPanel();
+            this.m_panelFtpEncryption = new System.Windows.Forms.Panel();
             this.m_lbFtpMode = new System.Windows.Forms.Label();
             this.m_lbEncryption = new System.Windows.Forms.Label();
             this.m_cbEncryption = new System.Windows.Forms.ComboBox();
-            this.m_lbPort = new System.Windows.Forms.Label();
-            this.m_tbPort = new System.Windows.Forms.TextBox();
             this.m_cmbMode = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.m_tbPort = new System.Windows.Forms.TextBox();
+            this.m_lbPort = new System.Windows.Forms.Label();
             this.m_cbProtocol = new System.Windows.Forms.ComboBox();
             this.m_lbProtocol = new System.Windows.Forms.Label();
             this.m_lbServer = new System.Windows.Forms.Label();
@@ -75,49 +77,47 @@ namespace iba.Controls
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
             this.m_gbOption.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.panel8.SuspendLayout();
-            this.panel7.SuspendLayout();
+            this.m_tplOptions.SuspendLayout();
+            this.m_panelChkBoxControls.SuspendLayout();
+            this.m_panelFilePath.SuspendLayout();
             this.m_tlpPathToKey.SuspendLayout();
             this.m_tlpPathtoCertificate.SuspendLayout();
             this.panel5.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.m_gbTarget.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.m_tplAuthorization.SuspendLayout();
+            this.m_panelFtp.SuspendLayout();
+            this.m_tplProtocol.SuspendLayout();
+            this.m_panelFtpEncryption.SuspendLayout();
             this.panel1.SuspendLayout();
             this.m_gbSource.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "m_privateKeySearchDialog";
-            // 
             // m_gbOption
             // 
             resources.ApplyResources(this.m_gbOption, "m_gbOption");
-            this.m_gbOption.Controls.Add(this.tableLayoutPanel3);
+            this.m_gbOption.BackColor = System.Drawing.SystemColors.Control;
+            this.m_gbOption.Controls.Add(this.m_tplOptions);
             this.m_gbOption.Name = "m_gbOption";
             this.m_gbOption.TabStop = false;
             // 
-            // tableLayoutPanel3
+            // m_tplOptions
             // 
-            resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
-            this.tableLayoutPanel3.Controls.Add(this.panel8, 1, 1);
-            this.tableLayoutPanel3.Controls.Add(this.panel7, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.panel5, 0, 0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            resources.ApplyResources(this.m_tplOptions, "m_tplOptions");
+            this.m_tplOptions.Controls.Add(this.m_panelChkBoxControls, 1, 1);
+            this.m_tplOptions.Controls.Add(this.m_panelFilePath, 0, 1);
+            this.m_tplOptions.Controls.Add(this.panel5, 0, 0);
+            this.m_tplOptions.Controls.Add(this.panel6, 0, 2);
+            this.m_tplOptions.Name = "m_tplOptions";
             // 
-            // panel8
+            // m_panelChkBoxControls
             // 
-            resources.ApplyResources(this.panel8, "panel8");
-            this.panel8.Controls.Add(this.m_chkAcceptAnySshHostKey);
-            this.panel8.Controls.Add(this.m_chkAcceptAnyTlsCertificate);
-            this.panel8.Name = "panel8";
+            resources.ApplyResources(this.m_panelChkBoxControls, "m_panelChkBoxControls");
+            this.m_panelChkBoxControls.Controls.Add(this.m_chkAcceptAnySshHostKey);
+            this.m_panelChkBoxControls.Controls.Add(this.m_chkAcceptAnyTlsCertificate);
+            this.m_panelChkBoxControls.Name = "m_panelChkBoxControls";
             // 
             // m_chkAcceptAnySshHostKey
             // 
@@ -131,12 +131,12 @@ namespace iba.Controls
             this.m_chkAcceptAnyTlsCertificate.Name = "m_chkAcceptAnyTlsCertificate";
             this.m_chkAcceptAnyTlsCertificate.UseVisualStyleBackColor = true;
             // 
-            // panel7
+            // m_panelFilePath
             // 
-            resources.ApplyResources(this.panel7, "panel7");
-            this.panel7.Controls.Add(this.m_tlpPathToKey);
-            this.panel7.Controls.Add(this.m_tlpPathtoCertificate);
-            this.panel7.Name = "panel7";
+            resources.ApplyResources(this.m_panelFilePath, "m_panelFilePath");
+            this.m_panelFilePath.Controls.Add(this.m_tlpPathToKey);
+            this.m_panelFilePath.Controls.Add(this.m_tlpPathtoCertificate);
+            this.m_panelFilePath.Name = "m_panelFilePath";
             // 
             // m_tlpPathToKey
             // 
@@ -175,7 +175,7 @@ namespace iba.Controls
             // panel5
             // 
             resources.ApplyResources(this.panel5, "panel5");
-            this.tableLayoutPanel3.SetColumnSpan(this.panel5, 2);
+            this.m_tplOptions.SetColumnSpan(this.panel5, 2);
             this.panel5.Controls.Add(this.tableLayoutPanel5);
             this.panel5.Name = "panel5";
             // 
@@ -196,44 +196,53 @@ namespace iba.Controls
             resources.ApplyResources(this.m_tbRemotePath, "m_tbRemotePath");
             this.m_tbRemotePath.Name = "m_tbRemotePath";
             // 
+            // panel6
+            // 
+            this.m_tplOptions.SetColumnSpan(this.panel6, 2);
+            this.panel6.Controls.Add(this.m_chkOverwrite);
+            this.panel6.Controls.Add(this.m_createZipArchive);
+            resources.ApplyResources(this.panel6, "panel6");
+            this.panel6.Name = "panel6";
+            // 
+            // m_chkOverwrite
+            // 
+            resources.ApplyResources(this.m_chkOverwrite, "m_chkOverwrite");
+            this.m_chkOverwrite.Name = "m_chkOverwrite";
+            this.m_chkOverwrite.UseVisualStyleBackColor = true;
+            // 
+            // m_createZipArchive
+            // 
+            resources.ApplyResources(this.m_createZipArchive, "m_createZipArchive");
+            this.m_createZipArchive.Name = "m_createZipArchive";
+            this.m_createZipArchive.UseVisualStyleBackColor = true;
+            // 
             // m_gbTarget
             // 
             resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
-            this.m_gbTarget.Controls.Add(this.tableLayoutPanel2);
-            this.m_gbTarget.Controls.Add(this.tableLayoutPanel1);
+            this.m_gbTarget.BackColor = System.Drawing.SystemColors.Control;
+            this.m_gbTarget.Controls.Add(this.m_tplAuthorization);
+            this.m_gbTarget.Controls.Add(this.m_tplProtocol);
             this.m_gbTarget.Name = "m_gbTarget";
             this.m_gbTarget.TabStop = false;
             // 
-            // tableLayoutPanel2
+            // m_tplAuthorization
             // 
-            resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
-            this.tableLayoutPanel2.Controls.Add(this.panel4, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.panel3, 0, 0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            resources.ApplyResources(this.m_tplAuthorization, "m_tplAuthorization");
+            this.m_tplAuthorization.BackColor = System.Drawing.SystemColors.Control;
+            this.m_tplAuthorization.Controls.Add(this.m_panelFtp, 0, 0);
+            this.m_tplAuthorization.Controls.Add(this.m_btnCheckConnection, 1, 0);
+            this.m_tplAuthorization.Name = "m_tplAuthorization";
             // 
-            // panel4
+            // m_panelFtp
             // 
-            resources.ApplyResources(this.panel4, "panel4");
-            this.panel4.Controls.Add(this.m_btnCheckConnection);
-            this.panel4.Name = "panel4";
-            // 
-            // m_btnCheckConnection
-            // 
-            this.m_btnCheckConnection.Image = global::iba.Properties.Resources.thumup;
-            resources.ApplyResources(this.m_btnCheckConnection, "m_btnCheckConnection");
-            this.m_btnCheckConnection.Name = "m_btnCheckConnection";
-            this.m_btnCheckConnection.UseVisualStyleBackColor = true;
-            this.m_btnCheckConnection.Click += new System.EventHandler(this.m_btnCheckConnection_Click);
-            // 
-            // panel3
-            // 
-            resources.ApplyResources(this.panel3, "panel3");
-            this.panel3.Controls.Add(this.m_lbUsername);
-            this.panel3.Controls.Add(this.m_chkAnonymous);
-            this.panel3.Controls.Add(this.m_lbPassword);
-            this.panel3.Controls.Add(this.m_tbPassword);
-            this.panel3.Controls.Add(this.m_tbUsername);
-            this.panel3.Name = "panel3";
+            resources.ApplyResources(this.m_panelFtp, "m_panelFtp");
+            this.m_panelFtp.BackColor = System.Drawing.SystemColors.Control;
+            this.m_panelFtp.Controls.Add(this.m_lbUsername);
+            this.m_panelFtp.Controls.Add(this.m_chkAnonymous);
+            this.m_panelFtp.Controls.Add(this.m_lbPassword);
+            this.m_panelFtp.Controls.Add(this.m_tbPassword);
+            this.m_panelFtp.Controls.Add(this.m_tbUsername);
+            this.m_panelFtp.Name = "m_panelFtp";
             // 
             // m_lbUsername
             // 
@@ -265,23 +274,32 @@ namespace iba.Controls
             this.m_tbUsername.Name = "m_tbUsername";
             this.m_tbUsername.TextChanged += new System.EventHandler(this.m_tbUsername_TextChanged);
             // 
-            // tableLayoutPanel1
+            // m_btnCheckConnection
             // 
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            resources.ApplyResources(this.m_btnCheckConnection, "m_btnCheckConnection");
+            this.m_btnCheckConnection.Image = global::iba.Properties.Resources.thumup;
+            this.m_btnCheckConnection.Name = "m_btnCheckConnection";
+            this.m_tplAuthorization.SetRowSpan(this.m_btnCheckConnection, 2);
+            this.m_btnCheckConnection.UseVisualStyleBackColor = true;
+            this.m_btnCheckConnection.Click += new System.EventHandler(this.m_btnCheckConnection_Click);
             // 
-            // panel2
+            // m_tplProtocol
             // 
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Controls.Add(this.m_lbFtpMode);
-            this.panel2.Controls.Add(this.m_lbEncryption);
-            this.panel2.Controls.Add(this.m_cbEncryption);
-            this.panel2.Controls.Add(this.m_lbPort);
-            this.panel2.Controls.Add(this.m_tbPort);
-            this.panel2.Controls.Add(this.m_cmbMode);
-            this.panel2.Name = "panel2";
+            resources.ApplyResources(this.m_tplProtocol, "m_tplProtocol");
+            this.m_tplProtocol.BackColor = System.Drawing.SystemColors.Control;
+            this.m_tplProtocol.Controls.Add(this.m_panelFtpEncryption, 1, 1);
+            this.m_tplProtocol.Controls.Add(this.panel1, 0, 1);
+            this.m_tplProtocol.Name = "m_tplProtocol";
+            // 
+            // m_panelFtpEncryption
+            // 
+            resources.ApplyResources(this.m_panelFtpEncryption, "m_panelFtpEncryption");
+            this.m_panelFtpEncryption.BackColor = System.Drawing.SystemColors.Control;
+            this.m_panelFtpEncryption.Controls.Add(this.m_lbFtpMode);
+            this.m_panelFtpEncryption.Controls.Add(this.m_lbEncryption);
+            this.m_panelFtpEncryption.Controls.Add(this.m_cbEncryption);
+            this.m_panelFtpEncryption.Controls.Add(this.m_cmbMode);
+            this.m_panelFtpEncryption.Name = "m_panelFtpEncryption";
             // 
             // m_lbFtpMode
             // 
@@ -295,30 +313,20 @@ namespace iba.Controls
             // 
             // m_cbEncryption
             // 
-            resources.ApplyResources(this.m_cbEncryption, "m_cbEncryption");
             this.m_cbEncryption.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_cbEncryption.FormattingEnabled = true;
             this.m_cbEncryption.Items.AddRange(new object[] {
             resources.GetString("m_cbEncryption.Items"),
             resources.GetString("m_cbEncryption.Items1"),
             resources.GetString("m_cbEncryption.Items2")});
+            resources.ApplyResources(this.m_cbEncryption, "m_cbEncryption");
             this.m_cbEncryption.Name = "m_cbEncryption";
             this.m_cbEncryption.SelectedIndexChanged += new System.EventHandler(this.m_cbEncryption_SelectedIndexChanged);
             // 
-            // m_lbPort
-            // 
-            resources.ApplyResources(this.m_lbPort, "m_lbPort");
-            this.m_lbPort.Name = "m_lbPort";
-            // 
-            // m_tbPort
-            // 
-            resources.ApplyResources(this.m_tbPort, "m_tbPort");
-            this.m_tbPort.Name = "m_tbPort";
-            // 
             // m_cmbMode
             // 
-            resources.ApplyResources(this.m_cmbMode, "m_cmbMode");
             this.m_cmbMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.m_cmbMode, "m_cmbMode");
             this.m_cmbMode.Items.AddRange(new object[] {
             resources.GetString("m_cmbMode.Items"),
             resources.GetString("m_cmbMode.Items1")});
@@ -327,15 +335,27 @@ namespace iba.Controls
             // panel1
             // 
             resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.m_tbPort);
+            this.panel1.Controls.Add(this.m_lbPort);
             this.panel1.Controls.Add(this.m_cbProtocol);
             this.panel1.Controls.Add(this.m_lbProtocol);
             this.panel1.Controls.Add(this.m_lbServer);
             this.panel1.Controls.Add(this.m_tbServer);
             this.panel1.Name = "panel1";
             // 
+            // m_tbPort
+            // 
+            resources.ApplyResources(this.m_tbPort, "m_tbPort");
+            this.m_tbPort.Name = "m_tbPort";
+            // 
+            // m_lbPort
+            // 
+            resources.ApplyResources(this.m_lbPort, "m_lbPort");
+            this.m_lbPort.Name = "m_lbPort";
+            // 
             // m_cbProtocol
             // 
-            resources.ApplyResources(this.m_cbProtocol, "m_cbProtocol");
             this.m_cbProtocol.BackColor = System.Drawing.SystemColors.Window;
             this.m_cbProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_cbProtocol.FormattingEnabled = true;
@@ -343,7 +363,9 @@ namespace iba.Controls
             resources.GetString("m_cbProtocol.Items"),
             resources.GetString("m_cbProtocol.Items1"),
             resources.GetString("m_cbProtocol.Items2"),
-            resources.GetString("m_cbProtocol.Items3")});
+            resources.GetString("m_cbProtocol.Items3"),
+            resources.GetString("m_cbProtocol.Items4")});
+            resources.ApplyResources(this.m_cbProtocol, "m_cbProtocol");
             this.m_cbProtocol.Name = "m_cbProtocol";
             this.m_cbProtocol.SelectedIndexChanged += new System.EventHandler(this.m_cbProtocol_SelectedIndexChanged);
             // 
@@ -365,6 +387,7 @@ namespace iba.Controls
             // m_gbSource
             // 
             resources.ApplyResources(this.m_gbSource, "m_gbSource");
+            this.m_gbSource.BackColor = System.Drawing.SystemColors.Control;
             this.m_gbSource.Controls.Add(this.tableLayoutPanel4);
             this.m_gbSource.Name = "m_gbSource";
             this.m_gbSource.TabStop = false;
@@ -400,12 +423,12 @@ namespace iba.Controls
             this.Name = "UploadTaskControl";
             this.m_gbOption.ResumeLayout(false);
             this.m_gbOption.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
-            this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
+            this.m_tplOptions.ResumeLayout(false);
+            this.m_tplOptions.PerformLayout();
+            this.m_panelChkBoxControls.ResumeLayout(false);
+            this.m_panelChkBoxControls.PerformLayout();
+            this.m_panelFilePath.ResumeLayout(false);
+            this.m_panelFilePath.PerformLayout();
             this.m_tlpPathToKey.ResumeLayout(false);
             this.m_tlpPathToKey.PerformLayout();
             this.m_tlpPathtoCertificate.ResumeLayout(false);
@@ -414,17 +437,18 @@ namespace iba.Controls
             this.panel5.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.m_gbTarget.ResumeLayout(false);
             this.m_gbTarget.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.m_tplAuthorization.ResumeLayout(false);
+            this.m_tplAuthorization.PerformLayout();
+            this.m_panelFtp.ResumeLayout(false);
+            this.m_panelFtp.PerformLayout();
+            this.m_tplProtocol.ResumeLayout(false);
+            this.m_tplProtocol.PerformLayout();
+            this.m_panelFtpEncryption.ResumeLayout(false);
+            this.m_panelFtpEncryption.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.m_gbSource.ResumeLayout(false);
@@ -449,8 +473,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label m_lbProtocol;
         private System.Windows.Forms.ComboBox m_cbProtocol;
         private System.Windows.Forms.Label m_lbEncryption;
-        private System.Windows.Forms.TextBox m_tbPort;
-        private System.Windows.Forms.Label m_lbPort;
         private System.Windows.Forms.ComboBox m_cmbMode;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.CheckBox m_chkAcceptAnyTlsCertificate;
@@ -462,25 +484,29 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbPathToPrivateKey;
         private System.Windows.Forms.Label m_lbFileToPrivateKey;
         private System.Windows.Forms.ComboBox m_cbEncryption;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TableLayoutPanel m_tplProtocol;
+        private System.Windows.Forms.Panel m_panelFtpEncryption;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TableLayoutPanel m_tplAuthorization;
+        private System.Windows.Forms.Panel m_panelFtp;
         private System.Windows.Forms.Label m_lbUsername;
         private System.Windows.Forms.CheckBox m_chkAnonymous;
         private System.Windows.Forms.Label m_lbPassword;
         private System.Windows.Forms.TextBox m_tbPassword;
         private System.Windows.Forms.TextBox m_tbUsername;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Button m_btnCheckConnection;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.TableLayoutPanel m_tplOptions;
+        private System.Windows.Forms.Panel m_panelChkBoxControls;
+        private System.Windows.Forms.Panel m_panelFilePath;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label m_lbFtpMode;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label m_lblRemotePath;
         private System.Windows.Forms.TextBox m_tbRemotePath;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.CheckBox m_createZipArchive;
+        private System.Windows.Forms.Button m_btnCheckConnection;
+        private System.Windows.Forms.TextBox m_tbPort;
+        private System.Windows.Forms.Label m_lbPort;
+        private System.Windows.Forms.CheckBox m_chkOverwrite;
     }
 }

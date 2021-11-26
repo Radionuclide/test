@@ -19,7 +19,7 @@ namespace iba.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -77,6 +77,24 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("About_Image_80x80", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access key ID.
+        /// </summary>
+        internal static string Access_key_ID {
+            get {
+                return ResourceManager.GetString("Access_key_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account name.
+        /// </summary>
+        internal static string AccountName {
+            get {
+                return ResourceManager.GetString("AccountName", resourceCulture);
             }
         }
         
@@ -325,6 +343,24 @@ namespace iba.Properties {
         internal static string browseCleanProcessButton {
             get {
                 return ResourceManager.GetString("browseCleanProcessButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse for .dat file....
+        /// </summary>
+        internal static string browseDatFile {
+            get {
+                return ResourceManager.GetString("browseDatFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to browse for .dat file folder....
+        /// </summary>
+        internal static string browseFolderDatFile {
+            get {
+                return ResourceManager.GetString("browseFolderDatFile", resourceCulture);
             }
         }
         
@@ -604,6 +640,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CSV files (*.csv)|*.csv.
+        /// </summary>
+        internal static string CSVFileFilter {
+            get {
+                return ResourceManager.GetString("CSVFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap cut {
@@ -629,6 +674,70 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("dat_file", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        internal static string DataTransferControl_ConfigureDiagnosticGrid_Version {
+            get {
+                return ResourceManager.GetString("DataTransferControl_ConfigureDiagnosticGrid_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon DataTransferIcon {
+            get {
+                object obj = ResourceManager.GetObject("DataTransferIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server not started.
+        /// </summary>
+        internal static string DatatransferServerNotStarted {
+            get {
+                return ResourceManager.GetString("DatatransferServerNotStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server started.
+        /// </summary>
+        internal static string DatatransferServerStarted {
+            get {
+                return ResourceManager.GetString("DatatransferServerStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add new transfer task.
+        /// </summary>
+        internal static string DataTransferTaskButton {
+            get {
+                return ResourceManager.GetString("DataTransferTaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer Data.
+        /// </summary>
+        internal static string DataTransferTaskTitle {
+            get {
+                return ResourceManager.GetString("DataTransferTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Transfer Server.
+        /// </summary>
+        internal static string dataTransferTitle {
+            get {
+                return ResourceManager.GetString("dataTransferTitle", resourceCulture);
             }
         }
         
@@ -728,6 +837,15 @@ namespace iba.Properties {
         internal static string deleteCustomTaskQuestion {
             get {
                 return ResourceManager.GetString("deleteCustomTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the Data Transfer options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteDataTransferTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteDataTransferTaskQuestion", resourceCulture);
             }
         }
         
@@ -1234,6 +1352,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export parameters to a CSV file.
+        /// </summary>
+        internal static string ExportParametersToCSV {
+            get {
+                return ResourceManager.GetString("ExportParametersToCSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon extract_running {
@@ -1341,6 +1468,15 @@ namespace iba.Properties {
         internal static string FileChanged_UploadStandalone {
             get {
                 return ResourceManager.GetString("FileChanged_UploadStandalone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File not found. /n Check the file name and try again..
+        /// </summary>
+        internal static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
             }
         }
         
@@ -1499,7 +1635,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open the PDO file with ibaAnalyzer.
+        ///   Looks up a localized string similar to Open the analysis file with ibaAnalyzer.
         /// </summary>
         internal static string HDEventTask_ToolTip_OpenPDO {
             get {
@@ -1517,7 +1653,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload a PDO file to the server.
+        ///   Looks up a localized string similar to Upload the analysis file to the server.
         /// </summary>
         internal static string HDEventTask_ToolTip_UploadPDO {
             get {
@@ -1526,7 +1662,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update the PDO file.
+        ///   Looks up a localized string similar to Update the analysis file.
         /// </summary>
         internal static string HDEventTask_ToolTip_UploadPDOStandAlone {
             get {
@@ -1612,6 +1748,15 @@ namespace iba.Properties {
         internal static string HdRisingEdgeAvg {
             get {
                 return ResourceManager.GetString("HdRisingEdgeAvg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hostname.
+        /// </summary>
+        internal static string Hostname {
+            get {
+                return ResourceManager.GetString("Hostname", resourceCulture);
             }
         }
         
@@ -1903,6 +2048,16 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap img_import {
+            get {
+                object obj = ResourceManager.GetObject("img_import", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap img_key {
             get {
                 object obj = ResourceManager.GetObject("img_key", resourceCulture);
@@ -2021,6 +2176,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import parameters from a CSV file.
+        /// </summary>
+        internal static string ImportParametersFromCSV {
+            get {
+                return ResourceManager.GetString("ImportParametersFromCSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incompatible client version. It should have version {0} or higher. Please upgrade the client..
         /// </summary>
         internal static string IncompatibleClientVersion {
@@ -2135,6 +2299,15 @@ namespace iba.Properties {
         internal static string Last {
             get {
                 return ResourceManager.GetString("Last", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last transferred file.
+        /// </summary>
+        internal static string Last_transferred_file {
+            get {
+                return ResourceManager.GetString("Last_transferred_file", resourceCulture);
             }
         }
         
@@ -3175,6 +3348,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max. bandwidth in KB/s.
+        /// </summary>
+        internal static string Max__bandwidth {
+            get {
+                return ResourceManager.GetString("Max__bandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon memoryexceeded {
@@ -3276,6 +3458,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Data Transfer Task.
+        /// </summary>
+        internal static string NewDataTransferTaskTitle {
+            get {
+                return ResourceManager.GetString("NewDataTransferTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap NewDocument {
@@ -3309,6 +3500,24 @@ namespace iba.Properties {
         internal static string NewIfTaskTitle {
             get {
                 return ResourceManager.GetString("NewIfTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Kafka Task.
+        /// </summary>
+        internal static string NewKafkaTaskTitle {
+            get {
+                return ResourceManager.GetString("NewKafkaTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add OPC UA Writer Task.
+        /// </summary>
+        internal static string NewOpcUaTaskTitle {
+            get {
+                return ResourceManager.GetString("NewOpcUaTaskTitle", resourceCulture);
             }
         }
         
@@ -4012,6 +4221,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The password has been removed by {0}.
         /// </summary>
         internal static string PasswordRemoved {
@@ -4045,6 +4263,15 @@ namespace iba.Properties {
         internal static string pasteTitle {
             get {
                 return ResourceManager.GetString("pasteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string Path {
+            get {
+                return ResourceManager.GetString("Path", resourceCulture);
             }
         }
         
@@ -4473,6 +4700,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report failed: please check analysis and report configuration..
+        /// </summary>
+        internal static string reportLL_ERR_EXPRESSION {
+            get {
+                return ResourceManager.GetString("reportLL_ERR_EXPRESSION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The print spooler service is not started. Please start the service. If that does not adress the problem, please check analysis and report configuration..
+        /// </summary>
+        internal static string reportLL_ERR_EXPRESSION_Spooler {
+            get {
+                return ResourceManager.GetString("reportLL_ERR_EXPRESSION_Spooler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report.
         /// </summary>
         internal static string reportTitle {
@@ -4620,6 +4865,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Secret key.
+        /// </summary>
+        internal static string Secret_key {
+            get {
+                return ResourceManager.GetString("Secret_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Select all days&gt;.
         /// </summary>
         internal static string SelectAllDays {
@@ -4689,6 +4943,15 @@ namespace iba.Properties {
         internal static string settingsTitle {
             get {
                 return ResourceManager.GetString("settingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared key.
+        /// </summary>
+        internal static string SharedKey {
+            get {
+                return ResourceManager.GetString("SharedKey", resourceCulture);
             }
         }
         
@@ -5109,6 +5372,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TaskName.
+        /// </summary>
+        internal static string TaskName {
+            get {
+                return ResourceManager.GetString("TaskName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot add the requested task, the maximum amount of tasks for this job has been reached..
         /// </summary>
         internal static string TasksCountExceeded {
@@ -5231,6 +5503,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to browse for analysis....
+        /// </summary>
+        internal static string ToolTip_BrowsePDO {
+            get {
+                return ResourceManager.GetString("ToolTip_BrowsePDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically run this job on service start or file loading.
         /// </summary>
         internal static string toolTipAutoStart {
@@ -5326,6 +5607,15 @@ namespace iba.Properties {
         internal static string toolTipStopAll {
             get {
                 return ResourceManager.GetString("toolTipStopAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transferred Files.
+        /// </summary>
+        internal static string TransferredFiles {
+            get {
+                return ResourceManager.GetString("TransferredFiles", resourceCulture);
             }
         }
         
@@ -5586,6 +5876,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        internal static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Signal Name.
         /// </summary>
         internal static string UseSignalName {
@@ -5600,6 +5899,15 @@ namespace iba.Properties {
         internal static string Value {
             get {
                 return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        internal static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
         

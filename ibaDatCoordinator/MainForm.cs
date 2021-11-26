@@ -50,14 +50,15 @@ namespace iba
 		public static readonly int OPCUA_WRITERTASK_INDEX = 14;
         public static readonly int UPLOADTASK_INDEX = 15;
         public static readonly int KAFKAWRITERTASK_INDEX = 16;
+        public static readonly int DATATRANSFER_TASK_INDEX = 17;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int UNKNOWNTASK_INDEX = 17;
-        public static readonly int NEWCONF_INDEX = 18;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 19;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 20;
-        public static readonly int NEW_EVENT_CONF_INDEX = 21;
-        public static readonly int CUSTOMTASK_INDEX = 22;
-        public static readonly int NR_TASKS = 13;
+        public static readonly int UNKNOWNTASK_INDEX = 18;
+        public static readonly int NEWCONF_INDEX = 19;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 20;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 21;
+        public static readonly int NEW_EVENT_CONF_INDEX = 22;
+        public static readonly int CUSTOMTASK_INDEX = 23;
+        public static readonly int NR_TASKS = 14;
 
         private QuitForm m_quitForm;
 
@@ -106,8 +107,9 @@ namespace iba
             m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.watchdog.Handle);
             // added by kolesnik - begin
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = iba.Properties.Resources.snmp_icon;
-            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.opcUaServer_icon; 
+            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.opcUaServer_icon;
             // added by kolesnik - end
+            m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle);
             m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
             m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
             m_loggingPane.LargeImage = m_loggingPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.logging.Handle);
@@ -133,6 +135,7 @@ namespace iba
 			confsImageList.Images.Add(iba.Properties.Resources.OPCUAIcon.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.UploadTaskIcon);
             confsImageList.Images.Add(iba.Properties.Resources.kafka.ToBitmap());
+            confsImageList.Images.Add(iba.Properties.Resources.DataTransferIcon.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.img_question);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
             confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
@@ -456,6 +459,22 @@ namespace iba
                 DisableCopyPasteCutDeleteMenuItems();
                 // changed by kolesnik - end
             }
+            else if(m_navBar.SelectedPane == m_dataTransferPane)
+            {
+                SaveRightPaneControl();
+                Control ctrl = propertyPanes["dataTransferControl"] as Control;
+                if (ctrl == null)
+                {
+                    ctrl = new DataTransferControl();
+                    propertyPanes["dataTransferControl"] = ctrl;
+                }
+
+                SetRightPaneControl(ctrl, Properties.Resources.dataTransferTitle, 
+                    TaskManager.Manager.DataTransferData?.Clone());
+                    
+                EnableAllButOnePaneToolStripMenuItems(dataTransferToolStripMenuItem);
+                DisableCopyPasteCutDeleteMenuItems();
+            }
         }
 
         // added by kolesnik - begin
@@ -472,6 +491,7 @@ namespace iba
             watchdogToolStripMenuItem.Enabled = true;
             snmpToolStripMenuItem.Enabled = true;
             opcUaToolStripMenuItem.Enabled = true;
+            dataTransferToolStripMenuItem.Enabled = true;
             settingsToolStripMenuItem.Enabled = true;
 
             // disable the only one of them
@@ -545,6 +565,7 @@ namespace iba
                 // Initialize it here only if the app is standalone
                 TaskManager.Manager.SnmpWorkerInit();
                 TaskManager.Manager.OpcUaWorkerInit();
+                TaskManager.Manager.DataTransferWorkerInit();
             }
             // added by kolesnik - end
         }
@@ -632,6 +653,11 @@ namespace iba
                 {
                     taskNode = new TreeNode(task.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, task as UploadTaskData);
+                }
+                else if (task.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(task.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, task as DataTransferTaskData);
                 }
                 else if(task is ICustomTaskData cust)
                 {
@@ -886,6 +912,7 @@ namespace iba
                 case "SplitterTask":
                 case "CustomTaskUNC":
                 case "UploadTask":
+                case "DataTransferTask":
                 case "CustomTask":
                 case "HDCreateEventTask":
 				case "OPCUAWriterTask":
@@ -937,7 +964,7 @@ namespace iba
                     else if (c4)
                         type = ConfigurationData.JobTypeEnum.Event;
                     ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, type);
-                    new SetNextName(newData);
+                    newData.SetNextName();
                     TaskManager.Manager.AddConfiguration(newData);
                     m_configTreeView.BeginUpdate();
                     node = InsertNewConf(newData);
@@ -1058,6 +1085,8 @@ namespace iba
                         msg = String.Format(iba.Properties.Resources.deleteOPCUATastQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is KafkaWriterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteKafkaTaskQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is DataTransferTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteDataTransferTaskQuestion, node.Text, node.Parent.Text);
                 }
                 DialogResult res = MessageBox.Show(this, msg,
                     iba.Properties.Resources.deleteTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
@@ -1067,7 +1096,6 @@ namespace iba
             //Delete node in tree
             if (node.Tag is ConfigurationTreeItemData)
             {
-                TreeNode parent = node.Parent;
                 if (TaskManager.Manager.IsJobStarted((node.Tag as ConfigurationTreeItemData).ConfigurationData.Guid))
                     return;
                 TreeNode nextNode = node.NextNode;
@@ -1102,6 +1130,7 @@ namespace iba
                 if (confParent.AdjustDependencies()) AdjustFrontIcons(confParent);
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                     TaskManager.Manager.ReplaceConfiguration(confParent);
+                InformExtMonDataAboutTreeStructureChange();
                 node.Remove();
             }
         }
@@ -1134,9 +1163,9 @@ namespace iba
             {
                 SaveRightPaneControl();
                 //code to create new configuration
-                new SetNextName(m_cd_copy);
+                m_cd_copy.SetNextName();
                 foreach (TaskData t in m_cd_copy.Tasks)
-                    new SetNextName(t);
+                    t.SetNextName();
                 TaskManager.Manager.AddConfiguration(m_cd_copy);
                 m_configTreeView.BeginUpdate();
                 node = InsertNewConf(m_cd_copy);
@@ -1154,9 +1183,9 @@ namespace iba
                 SaveRightPaneControl();
                 int index = node.Index;
                 //code to create new configuration
-                new SetNextName(m_cd_copy);
+                m_cd_copy.SetNextName();
                 foreach (TaskData t in m_cd_copy.Tasks)
-                    new SetNextName(t);
+                    t.SetNextName();
                 TaskManager.Manager.AddConfiguration(m_cd_copy);
                 m_configTreeView.BeginUpdate();
                 TreeNode tn = CreateConfigurationNode(m_cd_copy);
@@ -1177,7 +1206,7 @@ namespace iba
                 if (!TestTaskCount(origData))
                     return;
                 m_task_copy.ParentConfigurationData = origData;
-                new SetNextName(m_task_copy);
+                m_task_copy.SetNextName();
                 origData.Tasks.Add(m_task_copy);
                 TreeNode taskNode = null;
                 if (m_task_copy is ReportData)
@@ -1245,6 +1274,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, m_task_copy as UploadTaskData);
                 }
+                else if (m_task_copy.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, m_task_copy as DataTransferTaskData);
+                }
                 else if (m_task_copy is ICustomTaskData cust)
                 {
                     int index = GetCustomTaskImageIndex(cust);
@@ -1279,12 +1313,12 @@ namespace iba
             else if (!(node.Tag is NewConfigurationTreeItemDataBase) && m_task_copy != null)
             {
                 SaveRightPaneControl();
-                ConfigurationData origData = (node.Parent.Tag as ConfigurationTreeItemData).ConfigurationData;
+                ConfigurationData origData = ((ConfigurationTreeItemData)node.Parent.Tag).ConfigurationData;
                 m_task_copy.ParentConfigurationData = origData;
                 if (!TestTaskCount(origData))
                     return;
                 TreeNode taskNode = null;
-                new SetNextName(m_task_copy);
+                m_task_copy.SetNextName();
                 if (m_task_copy is ReportData)
                 {
                     taskNode = new TreeNode(m_task_copy.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
@@ -1349,6 +1383,11 @@ namespace iba
                 {
                     taskNode = new TreeNode(m_task_copy.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
                     taskNode.Tag = new UploadTaskTreeItemData(this, m_task_copy as UploadTaskData);
+                }
+                else if (m_task_copy.GetType() == typeof(DataTransferTaskData))
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
+                    taskNode.Tag = new DataTransferTaskTreeItemData(this, m_task_copy as DataTransferTaskData);
                 }
                 else if (m_task_copy is ICustomTaskData cust)
                 {
@@ -1426,6 +1465,7 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.OPCUAIcon);
             menuImages.Images.Add(iba.Properties.Resources.UploadTaskIcon);
             menuImages.Images.Add(iba.Properties.Resources.kafka);
+            menuImages.Images.Add(iba.Properties.Resources.DataTransferIcon);
 
             int pluginsStartImageIndex = menuImages.Images.Count;
             List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
@@ -1433,7 +1473,7 @@ namespace iba
                 menuImages.Images.Add(info.Icon);
 
             int customcount = filteredPlugins.Count;
-            m_menuItems = new ToolStripMenuItem[19 + customcount];
+            m_menuItems = new ToolStripMenuItem[((int)MenuItemsEnum.NewCustomTask) + customcount];
             m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
             m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
             m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(iba.Properties.Resources.cutTitle, menuImages.Images[0], new EventHandler(OnCutMenuItem), Keys.X | Keys.Control);
@@ -1453,9 +1493,10 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewCleanupTask] = new ToolStripMenuItem(iba.Properties.Resources.NewCleanupTaskTitle, iba.Properties.Resources.broom, new EventHandler(OnNewCleanupTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewSplitterTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSplitterTaskTitle, menuImages.Images[11], new EventHandler(OnNewSplitterTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(iba.Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], new EventHandler(OnNewHDCreateEventTaskMenuItem));
-			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.opcUaWriterTaskButton, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
+			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[14], new EventHandler(OnNewUploadTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.addKafkaWriterTask, menuImages.Images[15], new EventHandler(OnNewKafkaTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[15], new EventHandler(OnNewKafkaTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(iba.Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[16], new EventHandler(OnNewDataTransferTaskMenuItem));
 
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1476,7 +1517,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewCleanupTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSplitterTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
-			m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewOPCUATask]);
+            m_menuItems[(int) MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int) MenuItemsEnum.NewOPCUATask]);
+			m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewDataTransferTask]);
+
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewKafkaTask]);
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1508,7 +1551,8 @@ namespace iba
             NewOPCUATask = 16,
             NewUploadTask = 17,
             NewKafkaTask = 18,
-			NewCustomTask = 19
+            NewDataTransferTask = 19,
+			NewCustomTask = 20
         }
 
 
@@ -1624,319 +1668,296 @@ namespace iba
             return true;
         }
 
+        /// <summary>
+        /// Gets parent <see cref="TreeNode"/> and parent job data from menuItem's tag;
+        /// Checks if there's a room for a new item (max limit of child items not reached).
+        /// </summary>
+        /// <returns>true if another task can be added</returns>
+        private bool AddNewTaskPreHelper(ToolStripMenuItem menuItem, out TreeNode node, out ConfigurationData confData)
+        {
+            node = (TreeNode)menuItem.Tag;
+            confData = ((ConfigurationTreeItemData)node.Tag).ConfigurationData;
+
+            // return true if there's enough room for another new task,
+            // false otherwise (limit reached, cannot add more tasks)
+            return TestTaskCount(confData);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="TreeNode"/> for the task, adds it to job's <see cref="TreeNode"/>,
+        /// adds the task to <see cref="ConfigurationData"/> and does other important post-processing like:
+        /// replacing configuration in TaskManager, informing ExtMonData about changes, etc.
+        /// </summary>
+        private void AddNewTaskPostHelper(ConfigurationData confData, TreeNode parentNode, TaskData taskData, int imageIndex, TreeItemData treeItemData)
+        {
+            taskData.SetNextName();
+            confData.Tasks.Add(taskData);
+            TreeNode newNode = new TreeNode(taskData.Name, imageIndex, imageIndex)
+            {
+                Tag = treeItemData
+            };
+            parentNode.Nodes.Add(newNode);
+            newNode.EnsureVisible();
+            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
+                TaskManager.Manager.ReplaceConfiguration(confData);
+            
+            InformExtMonDataAboutTreeStructureChange();
+        }
+
+        /// <summary>
+        /// Informs ExtMon subsystem about node tree structure change
+        /// (actually, is needed only in Standalone mode, see comments inside)
+        /// </summary>
+        internal static void InformExtMonDataAboutTreeStructureChange()
+        {
+            // in case of Standalone inform ExtMon data immediately;
+            // otherwise do nothing right now, because this will be done on Job Start or Update
+            if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
+            {
+                // inform ExtMonData that job/task tree structure was changed
+                ExtMonData.Instance.InvalidateTree();
+            }
+        }
 
         private void OnNewReportMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            ReportData report = new ReportData(confData);
-            new SetNextName(report);
-            confData.Tasks.Add(report);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(report.Name, REPORTTASK_INDEX, REPORTTASK_INDEX);
-            newNode.Tag = new ReportTreeItemData(this, report);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+
+            var taskData = new ReportData(parentConfData);
+            var treeItemData = new ReportTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, REPORTTASK_INDEX, treeItemData);
         }
 
         private void OnNewExtractMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            ExtractData extract = new ExtractData(confData);
-            new SetNextName(extract);
-            confData.Tasks.Add(extract);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(extract.Name, EXTRACTTASK_INDEX, EXTRACTTASK_INDEX);
-            newNode.Tag = new ExtractTreeItemData(this, extract);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+
+            var taskData = new ExtractData(parentConfData);
+            var treeItemData = new ExtractTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, REPORTTASK_INDEX, treeItemData);
         }
 
         private void OnNewBatchfileMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            BatchFileData bat = new BatchFileData(confData);
-            new SetNextName(bat);
-            confData.Tasks.Add(bat);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(bat.Name, BATCHFILETASK_INDEX, BATCHFILETASK_INDEX);
-            newNode.Tag = new BatchFileTreeItemData(this, bat);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+
+            var taskData = new BatchFileData(parentConfData);
+            var treeItemData = new BatchFileTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, BATCHFILETASK_INDEX, treeItemData);
         }
 
         private void OnNewIfTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            IfTaskData condo = new IfTaskData(confData);
-            new SetNextName(condo);
-            confData.Tasks.Add(condo);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(condo.Name, IFTASK_INDEX, IFTASK_INDEX);
-            newNode.Tag = new IfTaskTreeItemData(this, condo);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+
+            var taskData = new IfTaskData(parentConfData);
+            var treeItemData = new IfTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, IFTASK_INDEX, treeItemData);
         }
 
         private void OnNewUpdateDataTaskMenuItem(object sender, EventArgs e)
         {
-            CDongleInfo info;
-            bool IsLicensed = false;
+            bool isLicensed = false;
             try
             {
-                info = CDongleInfo.ReadDongle();
+                var info = CDongleInfo.ReadDongle();
                 if (info.IsPluginLicensed(2))
-                    IsLicensed = true;
+                    isLicensed = true;
             }
             catch 
             {
             }
-            if (!IsLicensed)
+            if (!isLicensed)
             {
                 MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
                         iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
                 return;
             }
 
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            UpdateDataTaskData udt = new UpdateDataTaskData(confData);
-            new SetNextName(udt);
-            confData.Tasks.Add(udt);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(udt.Name, UPDATEDATATASK_INDEX, UPDATEDATATASK_INDEX);
-            newNode.Tag = new UpdateDataTaskTreeItemData(this, udt);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            var taskData = new UpdateDataTaskData(parentConfData);
+            var treeItemData = new UpdateDataTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, UPDATEDATATASK_INDEX, treeItemData);
         }
 
         private void OnNewCopyTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            CopyMoveTaskData cop = new CopyMoveTaskData(confData);
-            new SetNextName(cop);
-            confData.Tasks.Add(cop);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(cop.Name, COPYTASK_INDEX, COPYTASK_INDEX);
-            newNode.Tag = new CopyTaskTreeItemData(this, cop);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData); 
+
+            var taskData = new CopyMoveTaskData(parentConfData);
+            var treeItemData = new CopyTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, COPYTASK_INDEX, treeItemData);
         }
 
         private void OnNewPauseTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            PauseTaskData pause = new PauseTaskData(confData);
-            new SetNextName(pause);
-            confData.Tasks.Add(pause);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(pause.Name, PAUSETASK_INDEX, PAUSETASK_INDEX);
-            newNode.Tag = new PauseTaskTreeItemData(this, pause);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            var taskData = new PauseTaskData(parentConfData);
+            var treeItemData = new PauseTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, PAUSETASK_INDEX, treeItemData);
         }
 
         private void OnNewHDCreateEventTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            HDCreateEventTaskData createEvent = new HDCreateEventTaskData(confData);
-            new SetNextName(createEvent);
-            confData.Tasks.Add(createEvent);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(createEvent.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
-            newNode.Tag = new HDCreateEventTaskTreeItemData(this, createEvent);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            var taskData = new HDCreateEventTaskData(parentConfData);
+            var treeItemData = new HDCreateEventTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, HDEVENTTASK_INDEX, treeItemData);
         }
 
-		private void OnNewOPCUATaskMenuItem(object sender, EventArgs e)
+        private void OnNewOPCUATaskMenuItem(object sender, EventArgs e)
 		{
-			ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-			TreeNode node = mc.Tag as TreeNode;
-			ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-			if (!TestTaskCount(confData))
-				return;
-			OpcUaWriterTaskData createEvent = new OpcUaWriterTaskData(confData);
-			new SetNextName(createEvent);
-			confData.Tasks.Add(createEvent);
-			if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-				TaskManager.Manager.ReplaceConfiguration(confData);
-			TreeNode newNode = new TreeNode(createEvent.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
-			newNode.Tag = new OpcUaWriterTaskTreeItemData(this, createEvent);
-			node.Nodes.Add(newNode);
-			newNode.EnsureVisible();
-			if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
+                return;
+
+            var taskData = new OpcUaWriterTaskData(parentConfData);
+            var treeItemData = new OpcUaWriterTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, OPCUA_WRITERTASK_INDEX, treeItemData);
         }
 
         private void OnNewKafkaTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            KafkaWriterTaskData createEvent = new KafkaWriterTaskData(confData);
-            new SetNextName(createEvent);
-            confData.Tasks.Add(createEvent);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(createEvent.Name, KAFKAWRITERTASK_INDEX, KAFKAWRITERTASK_INDEX);
-            newNode.Tag = new KafkaWriterTaskTreeItemData(this, createEvent);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            var taskData = new KafkaWriterTaskData(parentConfData);
+            var treeItemData = new KafkaWriterTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, KAFKAWRITERTASK_INDEX, treeItemData);
         }
 
         private void OnNewSplitterTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            SplitterTaskData Splitter = new SplitterTaskData(confData);
-            new SetNextName(Splitter);
-            confData.Tasks.Add(Splitter);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(Splitter.Name, SPLITTERTASK_INDEX, SPLITTERTASK_INDEX);
-            newNode.Tag = new SplitterTaskTreeItemData(this, Splitter);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            var taskData = new SplitterTaskData(parentConfData);
+            var treeItemData = new SplitterTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, SPLITTERTASK_INDEX, treeItemData);
         }
 
         private void OnNewUploadTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            UploadTaskData uploadTaskData = new UploadTaskData(confData);
-            new SetNextName(uploadTaskData);
-            confData.Tasks.Add(uploadTaskData);
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(uploadTaskData.Name, UPLOADTASK_INDEX, UPLOADTASK_INDEX);
-            newNode.Tag = new UploadTaskTreeItemData(this, uploadTaskData);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if (confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            var taskData = new UploadTaskData(parentConfData);
+            var treeItemData = new UploadTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, UPLOADTASK_INDEX, treeItemData);
+        }
+        private void OnNewDataTransferTaskMenuItem(object sender, EventArgs e)
+        {
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
+                return;
+
+            var taskData = new DataTransferTaskData(parentConfData);
+            var treeItemData = new DataTransferTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, DATATRANSFER_TASK_INDEX, treeItemData);
         }
 
         private void OnNewCleanupTaskMenuItem(object sender, EventArgs e)
         {
-            ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            TreeNode node = mc.Tag as TreeNode;
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
                 return;
-            CleanupTaskData cleanup = new CleanupTaskData(confData);
-            new SetNextName(cleanup);
-            confData.Tasks.Add(cleanup);
-            if(Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-            TreeNode newNode = new TreeNode(cleanup.Name, CLEANUPTASK_INDEX, CLEANUPTASK_INDEX);
-            newNode.Tag = new CleanupTaskTreeItemData(this, cleanup);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-            if(confData.AdjustDependencies()) AdjustFrontIcons(confData);
+
+            var taskData = new CleanupTaskData(parentConfData);
+            var treeItemData = new CleanupTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, CLEANUPTASK_INDEX, treeItemData);
         }
 
         private void OnNewCustomTaskMenuItem(object sender, EventArgs e)
         {
             ToolStripMenuItem mc = (ToolStripMenuItem)sender;
-            Pair<TreeNode, PluginTaskInfo> p = mc.Tag as Pair<TreeNode, PluginTaskInfo>;
-            TreeNode node = p.First;
+            var p = (Pair<TreeNode, PluginTaskInfo>)mc.Tag;
+            TreeNode parentNode = p.First;
             PluginTaskInfo info = p.Second;
             
-            ConfigurationData confData = (node.Tag as ConfigurationTreeItemData).ConfigurationData;
-            if (!TestTaskCount(confData))
+            ConfigurationData parentConfData = ((ConfigurationTreeItemData)parentNode.Tag).ConfigurationData;
+            if (!TestTaskCount(parentConfData))
                 return;
-            TaskData cust;
-            if (info is PluginTaskInfoUNC)
-                cust = new CustomTaskDataUNC(confData, info);
-            else
-                cust = new CustomTaskData(confData, info);
 
-            ICustomTaskData icust = (ICustomTaskData)cust;
-            bool IsLicensed = false;
+            TaskData taskData;
+            if (info is PluginTaskInfoUNC)
+                taskData = new CustomTaskDataUNC(parentConfData, info);
+            else
+                taskData = new CustomTaskData(parentConfData, info);
+
+            ICustomTaskData iCust = (ICustomTaskData)taskData;
+            bool isLicensed = false;
             try
             {
-                CDongleInfo dinfo = CDongleInfo.ReadDongle();
-                if (dinfo.IsPluginLicensed(icust.Plugin.DongleBitPos))
-                    IsLicensed = true;
+                CDongleInfo dInfo = CDongleInfo.ReadDongle();
+                if (dInfo.IsPluginLicensed(iCust.Plugin.DongleBitPos))
+                    isLicensed = true;
             }
             catch
             {
             }
-            if (!IsLicensed)
+            if (!isLicensed)
             {
                 MessageBox.Show(this, iba.Properties.Resources.logTaskNotLicensed,
                         iba.Properties.Resources.updateDataTaskTitle, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
                 return;
             }
-            new SetNextName(cust);
-            confData.Tasks.Add(cust);
+            int imageIndex = GetCustomTaskImageIndex(iCust);
+            var treeItemData = new CustomTaskTreeItemData(this, iCust);
 
-            if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
-                TaskManager.Manager.ReplaceConfiguration(confData);
-
-            int imageIndex = GetCustomTaskImageIndex(icust);
-            TreeNode newNode = new TreeNode(icust.Name, imageIndex, imageIndex);
-            newNode.Tag = new CustomTaskTreeItemData(this, icust);
-            node.Nodes.Add(newNode);
-            newNode.EnsureVisible();
-
-            if (confData.AdjustDependencies()) 
-                AdjustFrontIcons(confData);
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, imageIndex, treeItemData);
         }
 
         static public int DataToRootNodeIndex(ConfigurationData data)
@@ -1996,7 +2017,10 @@ namespace iba
             m_navBar.SelectedPane = m_opcUaPane;
         }
         // added by kolesnik - end
-
+        private void dataTransferToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_navBar.SelectedPane = m_dataTransferPane;
+        }
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_navBar.SelectedPane = m_settingsPane;
@@ -2812,6 +2836,7 @@ namespace iba
                     }
                 }
             }
+            InformExtMonDataAboutTreeStructureChange();
         }
 
         public delegate void IbaAnalyzerCall();
@@ -3538,9 +3563,8 @@ namespace iba
                 languageToolStripMenuItem.DropDownItems.Add(mi);
             }
         }
+
         #endregion
-
-
     }
     #endregion
 

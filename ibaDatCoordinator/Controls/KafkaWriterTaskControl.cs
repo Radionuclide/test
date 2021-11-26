@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using iba.Data;
 using Confluent.Kafka;
@@ -9,11 +7,9 @@ using DevExpress.XtraGrid.Views.Grid;
 using iba.Utility;
 using System.IO;
 using System.Collections.Generic;
-using Avro.IO;
-using Confluent.SchemaRegistry;
 using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraEditors.Repository;
-using iba.HD.Common;
+using iba.Remoting;
+using IbaAnalyzer;
 
 namespace iba.Controls
 {
@@ -41,13 +37,12 @@ namespace iba.Controls
             exprGrid.RepositoryItems.Add(channelEditor);
             expressionGridColumn.ColumnEdit = channelEditor;
 
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Unit");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Comment 1");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Comment 2");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Signal names");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Signal ID");
-            repositoryItemCheckedComboBoxEdit1.Items.Add("Identifier");
-            repositoryItemCheckedComboBoxEdit1.ShowButtons = false;
+            metadataComboBox.Properties.Items.Add("Unit");
+            metadataComboBox.Properties.Items.Add("Comment 1");
+            metadataComboBox.Properties.Items.Add("Comment 2");
+            metadataComboBox.Properties.Items.Add("Signal name");
+            metadataComboBox.Properties.Items.Add("Signal ID");
+            metadataComboBox.Properties.Items.Add("Identifier");
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             foreach (var t in KafkaWriterTaskData.KafkaRecord.DataTypes)
@@ -65,7 +60,9 @@ namespace iba.Controls
             expressionGridColumn.Caption = Properties.Resources.ibaAnalyzerExpression;
             testValueGridColumn.Caption = Properties.Resources.TestValue;
             nameGridColumn.Caption = Properties.Resources.Name;
-            metadataGridColumn.Caption = Properties.Resources.Metadata;
+
+            _toolTip.SetToolTip(importParamButton, iba.Properties.Resources.ImportParametersFromCSV);
+            _toolTip.SetToolTip(exportParamButton, iba.Properties.Resources.ExportParametersToCSV);
         }
 
         private void UpdateParamTableButtons()
@@ -85,10 +82,11 @@ namespace iba.Controls
             foreach (var par in _data.Params)
                 _paramTableData.Add((KafkaWriterTaskData.Param)par.Clone());
 
+            foreach (CheckedListBoxItem i in metadataComboBox.Properties.Items)
+                i.CheckState = _data.metadata.Contains(i.ToString()) ? CheckState.Checked : CheckState.Unchecked;
+
             addressTextBox.Text = _data.clusterAddress;
             schemaTextBox.Text = _data.schemaRegistryAddress;
-            useSchemaServerCheckBox.Checked = _data.useSchemaRegistryServer;
-            schemaTextBox.Enabled = _data.useSchemaRegistryServer;
             topicComboBox.Text = _data.topicName;
             digitalFormatComboBox.SelectedIndex = (int)_data.digitalFormat;
             timeoutNumericUpDown.Value =
@@ -100,7 +98,7 @@ namespace iba.Controls
             identifierTextBox.Text = _data.identifier;
             switch (_data.Format)
             {
-                case KafkaWriterTaskData.DataFormat.JSONGrouped :
+                case KafkaWriterTaskData.DataFormat.JSONGrouped:
                     dataFormatComboBox.SelectedIndex = 0;
                     break;
                 case KafkaWriterTaskData.DataFormat.JSONPerSignal:
@@ -124,6 +122,47 @@ namespace iba.Controls
                     break;
             }
 
+            switch (_data.ClusterMode)
+            {
+                case KafkaWriterTaskData.ClusterType.Kafka:
+                    typeComboBox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.ClusterType.EventHub:
+                    typeComboBox.SelectedIndex = 1;
+                    break;
+            }
+
+            switch (_data.ClusterSecurityMode)
+            {
+                case KafkaWriterTaskData.ClusterSecurityType.PLAINTEXT:
+                    clusterConnectionSecurityComboBox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.ClusterSecurityType.SSL:
+                    clusterConnectionSecurityComboBox.SelectedIndex = 1;
+                    break;
+                case KafkaWriterTaskData.ClusterSecurityType.SASL_PLAINTEXT:
+                    clusterConnectionSecurityComboBox.SelectedIndex = 2;
+                    break;
+                case KafkaWriterTaskData.ClusterSecurityType.SASL_SSL:
+                    clusterConnectionSecurityComboBox.SelectedIndex = 3;
+                    break;
+            }
+
+            switch (_data.SchemaRegistrySecurityMode)
+            {
+                case KafkaWriterTaskData.SchemaRegistrySecurityType.HTTP:
+                    schemaRegistryConnectionSecurityComboBox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS:
+                    schemaRegistryConnectionSecurityComboBox.SelectedIndex = 1;
+                    break;
+                case KafkaWriterTaskData.SchemaRegistrySecurityType.HTTP_AUTHENTICATION:
+                    schemaRegistryConnectionSecurityComboBox.SelectedIndex = 2;
+                    break;
+                case KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS_AUTHENTICATION:
+                    schemaRegistryConnectionSecurityComboBox.SelectedIndex = 3;
+                    break;
+            }
 
             UpdateSource();
 
@@ -171,14 +210,21 @@ namespace iba.Controls
 
             _data.clusterAddress = addressTextBox.Text;
             _data.schemaRegistryAddress = schemaTextBox.Text;
-            _data.useSchemaRegistryServer = useSchemaServerCheckBox.Checked;
             _data.topicName = topicComboBox.Text;
             _data.timeout = Decimal.ToDouble(timeoutNumericUpDown.Value);
             _data.identifier = identifierTextBox.Text;
             _data.digitalFormat = (KafkaWriterTaskData.DigitalFormat)digitalFormatComboBox.SelectedIndex;
 
+            _data.metadata.Clear();
+            foreach (CheckedListBoxItem i in metadataComboBox.Properties.Items)
+                if (i.CheckState == CheckState.Checked)
+                    _data.metadata.Add(i.ToString());
+
             _data.Format = (KafkaWriterTaskData.DataFormat)dataFormatComboBox.SelectedIndex;
             _data.AckMode = (KafkaWriterTaskData.RequiredAcks)acknowledgmentComboBox.SelectedIndex;
+            _data.ClusterMode = (KafkaWriterTaskData.ClusterType)typeComboBox.SelectedIndex;
+            _data.ClusterSecurityMode = (KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex;
+            _data.SchemaRegistrySecurityMode = (KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex;
             _data.AnalysisFile = m_pdoFileTextBox.Text;
             _data.TestDatFile = m_datFileTextBox.Text;
 
@@ -239,57 +285,16 @@ namespace iba.Controls
 
         private void m_testButton_Click(object sender, EventArgs e)
         {
-            IbaAnalyzer.IbaAnalyzer ibaAnalyzer;
-            //register this
             using (new WaitCursor())
             {
-                //start the com object
+                IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
                 try
-                {
-                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
-                }
-                catch (Exception ex2)
-                {
-                    MessageBox.Show(ex2.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
+                { 
+                    ibaAnalyzer = ibaAnalyzerExt.Create(true);
+              
+                    bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
+                    bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
 
-            string version = ibaAnalyzer.GetVersion();
-            int startIndex = version.IndexOf(' ') + 1;
-            int stopIndex = startIndex + 1;
-            while (stopIndex < version.Length && (char.IsDigit(version[stopIndex]) || version[stopIndex] == '.'))
-                stopIndex++;
-            string[] nrs = version.Substring(startIndex, stopIndex - startIndex).Split('.');
-            if (nrs.Length < 3)
-            {
-                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            if (!Int32.TryParse(nrs[0], out var major))
-            {
-                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            if (!Int32.TryParse(nrs[1], out var minor))
-            {
-                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            if (!Int32.TryParse(nrs[2], out _))
-            {
-                MessageBox.Show(Properties.Resources.NoVersion, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (major < 6 || (major == 6 && minor < 5))
-                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            if (major < 6 || (major == 6 && minor < 7))
-                MessageBox.Show(string.Format(Properties.Resources.ibaAnalyzerVersionError, version.Substring(startIndex)), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            bool bUseAnalysis = File.Exists(m_pdoFileTextBox.Text);
-            bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
-            try
-            {
-                using (new WaitCursor())
-                {
                     if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if (bUseDatFile) ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
                     var records = (IList<KafkaWriterTaskData.KafkaRecord>)exprGrid.DataSource;
@@ -322,7 +327,8 @@ namespace iba.Controls
                             }
                             else
                             {
-                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Expression), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Expression), "ibaDatCoordinator",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 record.TestValue = "";
                             }
                         }
@@ -333,16 +339,16 @@ namespace iba.Controls
                             {
                                 f = ibaAnalyzer.EvaluateDouble(record.Expression, 0);
                             }
-                            catch  //might be old ibaAnalyzer
+                            catch //might be old ibaAnalyzer
                             {
                                 f = ibaAnalyzer.Evaluate(record.Expression, 0);
                             }
 
                             if (double.IsNaN(f) || double.IsInfinity(f))
                             {
-                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Expression), "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show(String.Format(Properties.Resources.BadEvaluate, record.Expression), "ibaDatCoordinator",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
-
                             else
                             {
                                 if (record.DataType == KafkaWriterTaskData.KafkaRecord.ExpressionType.Digital)
@@ -357,32 +363,31 @@ namespace iba.Controls
                             }
                         }
                     }
+
                     ParentForm.Activate();
                 }
-            }
-            catch (Exception ex3)
-            {
-                string message = ex3.Message;
-                try
+                catch (Exception ex3)
                 {
-                    string ibaMessage = ibaAnalyzer.GetLastError();
-                    if (!string.IsNullOrEmpty(ibaMessage))
-                        message = ibaMessage;
+                    string message = ex3.Message;
+                    try
+                    {
+                        if (ibaAnalyzer != null)
+                        {
+                            string ibaMessage = ibaAnalyzer.GetLastError();
+                            if (!string.IsNullOrEmpty(ibaMessage))
+                                message = ibaMessage;
+                        }
+                    }
+                    catch { }
+
+                    MessageBox.Show(message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                catch
+                finally
                 {
+                    ParentForm?.Activate();
+                    ((IDisposable)ibaAnalyzer)?.Dispose();
+                    exprGrid.RefreshDataSource();
                 }
-                MessageBox.Show(message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                if (ibaAnalyzer != null && bUseAnalysis)
-                {
-                    ibaAnalyzer.CloseAnalysis();
-                    ibaAnalyzer.CloseDataFiles();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
-                }
-                exprGrid.RefreshDataSource();
             }
         }
 
@@ -462,7 +467,7 @@ namespace iba.Controls
             if (!clusterAvailable)
                 return;
 
-            if (schemaTextBox.Text == "" || !useSchemaServerCheckBox.Checked)
+            if (schemaTextBox.Text == "")
             {
                 MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -495,44 +500,45 @@ namespace iba.Controls
                     return;
                 }
             }
-            //catch (AggregateException aggrEx)
-            //{
-            //    foreach (Exception exc in aggrEx.InnerExceptions)
-            //    {
-            //        string curMsg = exc.Message;
-            //        if (exc is System.Net.Http.HttpRequestException httpExc)
-            //        {
-            //            if (httpExc.InnerException is iba.Kafka.SchemaRegistry.SslVerificationException sslVerExc) // TODO
-            //            {
-            //                // Log extra info
-            //                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            //                sb.AppendLine("Kafka Schema Registry authentication error details:");
-            //                sb.AppendLine();
-            //                sb.AppendLine($"Request URI: {sslVerExc.RequestURI}");
-            //                sb.AppendLine($"SSL Policy errors: {sslVerExc.SSLErrors}");
-            //                sb.AppendLine();
-            //                sb.AppendLine($"Certificate:");
-            //                sb.AppendLine();
-            //                sb.AppendLine(sslVerExc.Certificate);
-            //                sb.AppendLine();
-            //                sb.AppendLine($"Certificate chain:");
-            //                sb.AppendLine();
-            //                sb.AppendLine(sslVerExc.Chain);
+            catch (AggregateException aggrEx)
+            {
+                string errorMsg = null;
+                foreach (Exception exc in aggrEx.InnerExceptions)
+                {
+                    string curMsg = exc.Message;
+                    if (exc is System.Net.Http.HttpRequestException httpExc)
+                    {
+                        //if (httpExc.InnerException is iba.Kafka.SchemaRegistry.SslVerificationException sslVerExc)
+                        //{
+                        //    // Log extra info
+                        //    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                        //    sb.AppendLine("Kafka Schema Registry authentication error details:");
+                        //    sb.AppendLine();
+                        //    sb.AppendLine($"Request URI: {sslVerExc.RequestURI}");
+                        //    sb.AppendLine($"SSL Policy errors: {sslVerExc.SSLErrors}");
+                        //    sb.AppendLine();
+                        //    sb.AppendLine($"Certificate:");
+                        //    sb.AppendLine();
+                        //    sb.AppendLine(sslVerExc.Certificate);
+                        //    sb.AppendLine();
+                        //    sb.AppendLine($"Certificate chain:");
+                        //    sb.AppendLine();
+                        //    sb.AppendLine(sslVerExc.Chain);
 
-            //                iba.Logging.ibaLogger.DebugFormat(sb.ToString());
-            //            }
-            //        }
+                        //    iba.Logging.ibaLogger.DebugFormat(sb.ToString());
+                        //}
+                    }
 
-            //        //errorMsg = (errorMsg == null) ? curMsg : string.Concat(errorMsg, Environment.NewLine, curMsg);
-            //    }
-                
-            //}
+                    errorMsg = (errorMsg == null) ? curMsg : string.Concat(errorMsg, Environment.NewLine, curMsg);
+                }
+                if (errorMsg != null)
+                    MessageBox.Show(errorMsg, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                    MessageBox.Show(ex.InnerException.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                else
-                    MessageBox.Show(ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.InnerException != null ? ex.InnerException.Message : ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
             finally
@@ -543,9 +549,94 @@ namespace iba.Controls
             MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void UseSchemaServerCheckBoxCheckedChanged(object sender, EventArgs e)
+        private void OnImportParameters(object sender, EventArgs e)
         {
-            schemaTextBox.Enabled = useSchemaServerCheckBox.Checked;
+            string fileName = "";
+
+            using (OpenFileDialog fd = new OpenFileDialog())
+            {
+                fd.Filter = Properties.Resources.CSVFileFilter;
+                fd.DefaultExt = ".csv";
+                fd.Title = Properties.Resources.ImportParametersFromCSV;
+                fd.Multiselect = false;
+                fd.CheckFileExists = true;
+                if (fd.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                fileName = fd.FileName;
+            }
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                MessageBox.Show(this, Properties.Resources.FileNotFound, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                using (StreamReader sr = File.OpenText(fileName))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (string.IsNullOrEmpty(line))
+                            continue;
+
+                        string[] parts = line.Split(',');
+                        if (parts.Length != 2)
+                            continue;
+
+                        if (_paramTableData.FindIndex(param => param.Key == parts[0]) != -1)
+                            continue;
+
+                        _paramTableData.Add(new KafkaWriterTaskData.Param{Key = parts[0], Value = parts[1]});
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OnExportParameters(object sender, EventArgs e)
+        {
+            string fileName;
+
+            using (SaveFileDialog fd = new SaveFileDialog())
+            {
+                fd.Filter = Properties.Resources.CSVFileFilter;
+                fd.DefaultExt = ".csv";
+                fd.AddExtension = true;
+                fd.Title = Properties.Resources.ExportParametersToCSV;
+                fd.OverwritePrompt = true;
+                fd.ValidateNames = true;
+                if (fd.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                fileName = fd.FileName;
+            }
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                MessageBox.Show(this, Properties.Resources.FileNotFound, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(fileName))
+                {
+                    foreach (KafkaWriterTaskData.Param p in _paramTableData)
+                    {
+                        sw.WriteLine($"{p.Key},{p.Value}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
