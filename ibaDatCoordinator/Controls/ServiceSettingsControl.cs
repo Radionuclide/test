@@ -39,7 +39,7 @@ namespace iba.Controls
                 }
                 int Offset = 30;
                 gb_IbaAnalyzer.Height -= Offset;
-                CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { gb_Password, gb_GlobalCleanup };
+                CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { gb_Password, gb_Certificates, gb_GlobalCleanup };
                 foreach (var box in gboxesLower)
                 {
                     //box.Location = new Point(box.Location.X, box.Location.Y - Offset);
