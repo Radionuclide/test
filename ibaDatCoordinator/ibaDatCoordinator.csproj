@@ -416,6 +416,7 @@
     </Compile>
     <Compile Include="Remoting\FileUploaderImpl.cs" />
     <Compile Include="Remoting\ServerRemotingManager.cs" />
+    <Compile Include="Utility\Btea.cs" />
     <Compile Include="Utility\CircularBuffer.cs" />
     <Compile Include="Utility\Components\BackgroundWorker.cs">
       <SubType>Component</SubType>

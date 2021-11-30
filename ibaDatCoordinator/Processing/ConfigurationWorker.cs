@@ -2986,7 +2986,7 @@ namespace iba.Processing
                 }
                 else if (task is ExtractData)
                 {
-                    Extract(DatFile, task as ExtractData);
+                    Extract(DatFile, task as ExtractData, lic);
                     IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
                     // added by kolesnik - begin
                     memoryUsed = ((ExtractData)task).MonitorData.MemoryUsed;
@@ -3386,9 +3386,14 @@ namespace iba.Processing
 
         internal string[] m_outPutFilesPrevTask;
 
-        void Extract(string filename, ExtractData task)
+        void Extract(string filename, ExtractData task, License lic)
         {
+            bool bLicenseTransferred = TaskManager.Manager.LicenseManager.TransferLicense(lic, m_ibaAnalyzer);
+
             (new ExtractTaskWorker(this, task)).DoWork(filename);
+
+            if(bLicenseTransferred)
+                TaskManager.Manager.LicenseManager.RevokeLicense(lic, m_ibaAnalyzer);
         }
 
         internal string GetOutputDirectoryName(string filename, TaskDataUNC task)

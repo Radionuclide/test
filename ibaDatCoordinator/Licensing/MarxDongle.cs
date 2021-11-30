@@ -167,5 +167,12 @@ namespace iba.Licensing
             return ((byteNr >= 0) && (byteNr < options.Length) && ((options[byteNr] & bitMask) != 0));
         }
 
+        public static string GenerateTransferString(License lic)
+        {
+            if (!(lic.SourceInfo is int byteNr))
+                return null;
+
+            return $"License\tM\t{byteNr}\0";
+        }
     }
 }

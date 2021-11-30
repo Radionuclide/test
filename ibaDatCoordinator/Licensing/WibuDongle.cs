@@ -418,5 +418,52 @@ namespace iba.Licensing
             hcmEntry = hcmLic;
             return true;
         }
+
+        public static string GenerateTransferString(License lic)
+        {
+            HCMSysEntry entry = lic.SourceInfo as HCMSysEntry;
+            if (entry == null)
+                return null;
+
+            var entryInfo = api.CmGetInfo(entry, CmGetInfoOption.EntryInfo) as CmBoxEntry;
+            if (entryInfo == null)
+                return null;
+
+            if (!SplitContainerId(lic.ContainerId, out int boxMask, out uint boxSerial, out string boxLocation))
+                return null;
+
+            return $"License\tW\t{entryInfo.ProductCode}\t{boxMask}\t{boxSerial}\t{boxLocation}\0";
+        }
+
+        private static bool SplitContainerId(string containerId, out int boxMask, out uint boxSerial, out string boxLocation)
+        {
+            boxMask = 0;
+            boxSerial = 0;
+            boxLocation = "";
+            if (String.IsNullOrEmpty(containerId))
+                return false;
+
+            //Format: "boxmask-boxserial (boxlocation)"
+            int index = containerId.IndexOf('-');
+            if (index <= 0)
+                return false;
+
+            if (!Int32.TryParse(containerId.Substring(0, index), out boxMask))
+                return false;
+
+            int index2 = containerId.IndexOf(" (", index);
+            if (index2 <= 0)
+                return false;
+
+            if (!UInt32.TryParse(containerId.Substring(index + 1, index2 - index - 1), out boxSerial))
+                return false;
+
+            if (!containerId.EndsWith(")"))
+                return false;
+
+            boxLocation = containerId.Substring(index2 + 2, containerId.Length - index2 - 2);
+
+            return true;
+        }
     }
 }

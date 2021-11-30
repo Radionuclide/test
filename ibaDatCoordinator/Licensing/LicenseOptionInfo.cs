@@ -14,13 +14,14 @@ namespace iba.Licensing
 
     public class LicenseOptionInfo
     {
-        public LicenseOptionInfo(int id, string text, LicenseOptionType optionType, int[] marxIds = null, int[] optionalWibuIds = null)
+        public LicenseOptionInfo(int id, string text, LicenseOptionType optionType, int[] marxIds = null, int[] optionalWibuIds = null, int analyzerTransferId = -1)
         {
             Id = id;
             Text = text;
             OptionType = optionType;
             MarxIds = marxIds;
             OptionalWibuIds = optionalWibuIds;
+            AnalyzerLicenseTransferId = analyzerTransferId;
         }
 
         public readonly int Id;
@@ -40,13 +41,17 @@ namespace iba.Licensing
         public readonly int[] OptionalWibuIds;
 
         public readonly string Text;
-        //public LicenseType Type;
+
+        /// <summary>
+        /// Id used to transfer license to ibaAnalyzer. -1 if transfer isn't supported
+        /// </summary>
+        public readonly int AnalyzerLicenseTransferId;
 
         public override string ToString() => Text;
 
         public static LicenseOptionInfo[] Infos = new LicenseOptionInfo[] {
-            new LicenseOptionInfo(LicenseId.DBExtract, "Database extract", LicenseOptionType.Counter, new int[] {49, 169 }, new int[] {LicenseId.AnalyzerDBExtract }),
-            new LicenseOptionInfo(LicenseId.FileExtract, "File extract", LicenseOptionType.Counter, new int[] {50, 170 }, new int[] {LicenseId.AnalyzerFileExtract }),
+            new LicenseOptionInfo(LicenseId.DBExtract, "Database extract", LicenseOptionType.Counter, new int[] {49, 169 }, new int[] {LicenseId.AnalyzerDBExtract }, 5),
+            new LicenseOptionInfo(LicenseId.FileExtract, "File extract", LicenseOptionType.Counter, new int[] {50, 170 }, new int[] {LicenseId.AnalyzerFileExtract }, 3),
 
             new LicenseOptionInfo(LicenseId.ConvertCSV, "Convert CSV to dat", LicenseOptionType.Counter),
             new LicenseOptionInfo(LicenseId.ConvertDAS, "Convert DAS to dat", LicenseOptionType.Counter),

@@ -423,6 +423,11 @@ namespace iba.Remoting
             return new ibaAnalyzerChannelMetaDataExt(this.analyzer.GetChannelMetaData(channelID));
         }
 
+        public dynamic GetExpressionMetaData(int index)
+        {
+            return new ibaAnalyzerChannelMetaDataExt(this.analyzer.GetExpressionMetaData(index));
+        }
+
         public void SignalTreeImageData(int index, out object pData)
         {
             analyzer.SignalTreeImageData(index, out pData);
@@ -454,9 +459,44 @@ namespace iba.Remoting
             }
         }
 
+        public int ExpressionCount
+        {
+            get
+            {
+                return analyzer.ExpressionCount;
+            }
+            set
+            {
+                analyzer.ExpressionCount = value;
+            }
+        }
+
         public void EvaluateToArray(string expression, int XType, out double pTimebase, out double xoffset, out object pData)
         {
             analyzer.EvaluateToArray(expression, XType, out pTimebase, out xoffset, out pData);
+        }
+
+        public bool TransferLicense(int licenseId, object licenseData)
+        {
+            try
+            {
+                return analyzer.TransferLicense(licenseId, licenseData);
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
+        
+        public void RevokeLicense(int licenseId)
+        {
+            try
+            {
+                analyzer.RevokeLicense(licenseId);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         #region IDisposable Support
@@ -1350,6 +1390,22 @@ namespace iba.Remoting
             }
         }
 
+        public dynamic GetExpressionMetaData(int index)
+        {
+            try
+            {
+                var data = remoteIbaAnalyzer.GetExpressionMetaData(index);
+                if (data == null)
+                    return null;
+                return new ibaAnalyzerChannelMetaDataClientWrapper(data as IbaAnalyzer.IChannelMetaData);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return null;
+            }
+        }
+
         public void Dispose()
         {
             try
@@ -1403,6 +1459,52 @@ namespace iba.Remoting
             set
             {
                 throw new NotImplementedException();
+            }
+        }
+
+        public int ExpressionCount
+        {
+            get
+            {
+                try
+                {
+                    return remoteIbaAnalyzer.ExpressionCount;
+                }
+                catch (Exception ex)
+                {
+                    HandleBrokenConnection(ex);
+                    return 0;
+                }
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool TransferLicense(int licenseId, object licenseData)
+        {
+            try
+            {
+                return remoteIbaAnalyzer.TransferLicense(licenseId, licenseData);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+                return false;
+            }
+        }
+
+        public void RevokeLicense(int licenseId)
+        {
+            try
+            {
+                remoteIbaAnalyzer.RevokeLicense(licenseId);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
             }
         }
 

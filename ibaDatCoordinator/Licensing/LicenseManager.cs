@@ -123,6 +123,84 @@ namespace iba.Licensing
             }
         }
 
+        public bool TransferLicense(License lic, IbaAnalyzer.IbaAnalyzer analyzer)
+        {
+            try
+            {
+                if (analyzer == null)
+                    return false;
+
+                if (!lic.LicenseOk)
+                    return false;
+
+                LicenseOptionInfo info = LicenseOptionInfo.GetOptionInfo(lic.LicenseId);
+                if (info == null || info.AnalyzerLicenseTransferId < 0)
+                    return false;
+
+                //Pack license information into a text that allows ibaAnalyzer to check the license
+                string licenseText = null;
+                if (lic.IsWibu)
+                    licenseText = WibuDongle.GenerateTransferString(lic);
+                else if (lic.IsMarx)
+                    licenseText = MarxDongle.GenerateTransferString(lic);
+
+                if (String.IsNullOrEmpty(licenseText))
+                    return false;
+
+                //Encode text
+                byte[] licenseTextData = Encoding.Unicode.GetBytes(licenseText);
+
+                //Take current UTC time without the subsecond part
+                DateTime currentTime = DateTime.UtcNow;
+                currentTime = new DateTime((currentTime.Ticks / TimeSpan.TicksPerSecond) * TimeSpan.TicksPerSecond, DateTimeKind.Utc);
+                long fileTime = currentTime.ToFileTimeUtc();
+
+                Random rand = new Random();
+                byte[] randData = new byte[8];
+                rand.NextBytes(randData);
+
+                //Create encryption key consisting of the current UTC time and 8 random bytes
+                uint[] key = new uint[4];
+                key[0] = (uint)(fileTime & 0xFFFFFFFF);
+                key[1] = (uint)((fileTime >> 32) & 0xFFFFFFFF);
+                key[2] = BitConverter.ToUInt32(randData, 0);
+                key[3] = BitConverter.ToUInt32(randData, 4);
+
+                byte[] encryptedData = Btea.Encrypt(licenseTextData, key);
+
+                //The license data consists of the encrypted string followed by the 8 last (random) bytes of the key and a byte containing the seconds of the current time
+                byte[] licenseData = new byte[encryptedData.Length + 12];
+                rand.NextBytes(licenseData);
+                Buffer.BlockCopy(encryptedData, 0, licenseData, 0, encryptedData.Length);
+                Buffer.BlockCopy(key, 8, licenseData, encryptedData.Length, 8);
+                licenseData[encryptedData.Length + 8] = (byte)currentTime.Second;
+
+                return analyzer.TransferLicense(info.AnalyzerLicenseTransferId, licenseData);
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
+
+        public void RevokeLicense(License lic, IbaAnalyzer.IbaAnalyzer analyzer)
+        {
+            try
+            {
+                if (analyzer == null)
+                    return;
+
+                LicenseOptionInfo info = LicenseOptionInfo.GetOptionInfo(lic.LicenseId);
+                if (info == null || info.AnalyzerLicenseTransferId < 0)
+                    return;
+
+                analyzer.RevokeLicense(info.AnalyzerLicenseTransferId);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
         public LicenseContents GetLicenseContents()
         {
             lock (licenseLock)
