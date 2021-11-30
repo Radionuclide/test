@@ -381,13 +381,6 @@ namespace iba.Controls
             this.m_newKafkaWriterTaskButton.Name = "m_newKafkaWriterTaskButton";
             this.m_newKafkaWriterTaskButton.Click += new System.EventHandler(this.m_newKafkaWriterTaskButton_Click);
             // 
-            // m_newOPCUAWriterTaskButton
-            // 
-            resources.ApplyResources(this.m_newOPCUAWriterTaskButton, "m_newOPCUAWriterTaskButton");
-            this.m_newOPCUAWriterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.m_newOPCUAWriterTaskButton.Name = "m_newOPCUAWriterTaskButton";
-            this.m_newOPCUAWriterTaskButton.Click += new System.EventHandler(this.m_newOPCUAWriterTaskButton_Click);
-            // 
             // m_newDataTransferTaskButton
             // 
             resources.ApplyResources(this.m_newDataTransferTaskButton, "m_newDataTransferTaskButton");
