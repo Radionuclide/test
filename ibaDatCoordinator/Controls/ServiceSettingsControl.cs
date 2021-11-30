@@ -569,7 +569,7 @@ namespace iba.Controls
 
         public IEnumerable<ICertifiable> GetCertifiableChildItems()
         {
-            var l = TaskManager.ClientManager.Configurations.SelectMany(c => c.Tasks);
+            var l = TaskManager.Manager.Configurations.SelectMany(c => c.Tasks);
             var r = l.OfType<ICertifiable>();
 
             return r;
