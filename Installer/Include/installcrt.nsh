@@ -324,7 +324,7 @@ FunctionEnd
 
 LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_ENGLISH} "The following applications need to be closed before installation can proceed:"
 LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_ENGLISH} "Clicking Ignore will force the applications to exit"
-LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_GERMAN}  "The following applications need to be closed before installation can proceed:"
-LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_GERMAN}  "Clicking Ignore will force the applications to exit"
-LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_FRENCH}  "The following applications need to be closed before installation can proceed:"
-LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_FRENCH}  "Clicking Ignore will force the applications to exit"
+LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_GERMAN}  "Die folgenden Anwendungen müssen geschlossen werden, bevor die Installation fortgesetzt werden kann:"
+LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_GERMAN}  "Wenn Sie auf Ignorieren klicken, werden die Anwendungen zum Beenden gezwungen"
+LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_FRENCH}  "Les applications suivantes doivent être fermées avant que l'installation puisse se poursuivre:"
+LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_FRENCH}  "Cliquer sur Ignorer forcera les applications à quitter"
