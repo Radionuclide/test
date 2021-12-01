@@ -4,6 +4,7 @@ using System.Text;
 using iba.Plugins;
 using iba.Utility;
 using System.Xml.Serialization;
+using iba.Licensing;
 
 namespace iba.Data
 {
@@ -97,6 +98,8 @@ namespace iba.Data
 
             return m_wrapper.IsSame(other.m_wrapper);
         }
+
+        public override int RequiredLicense => LicenseOptionInfo.ConvertMarxPluginBitToLicenseId(Plugin.DongleBitPos);
     }
 
     [Serializable]
@@ -169,5 +172,7 @@ namespace iba.Data
 
             return m_wrapper.IsSame(other.m_wrapper);
         }
+
+        public override int RequiredLicense => LicenseOptionInfo.ConvertMarxPluginBitToLicenseId(Plugin.DongleBitPos);
     }
 }

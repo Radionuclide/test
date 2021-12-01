@@ -7,12 +7,31 @@
 ;!define UNINSTALLER_ONLY use this to generate the uninstaller
 
 !ifndef PRODUCT_VERSION
-!define PRODUCT_VERSION "2.3.0"
-!define PRODUCT_FILE_VERSION "2.3.0.0"
+!define PRODUCT_VERSION "3.0.0 TEST"
+!define PRODUCT_FILE_VERSION "3.0.0.0"
+!define PROTECTED 0
+!define NO_COMPRESS
 !endif
 
 !define PRODUCT_KEYWORDS "ibaDatCoordinator, data post processing"
 
+;!define PROTECTED: use this when generating an installer for a non-obfuscated and non-protected version
+!ifndef PROTECTED
+!define PROTECTED 1
+!endif
+
+!if ${PROTECTED} == 0
+  !define OBFUSCATE_DIR ""
+  !define PROTECT_DIR ""
+  !macro INSTALL_PROTECTED_RUNTIME
+  !macroend
+!else
+  !define OBFUSCATE_DIR "Obfuscated\"
+  !define PROTECT_DIR "Protected\"
+  !macro INSTALL_PROTECTED_RUNTIME
+    File "..\InstallFiles\Protected\ibaRuntime.dll"
+  !macroend
+!endif
 
 !ifdef DO_UNINSTALLER_SIGNING
 ;Section to generate uninstaller and sign it.
@@ -67,8 +86,12 @@
 !ifdef UNINSTALLER_ONLY
 SetCompress off
 !else
-SetCompressor /SOLID lzma
-!endif
+!ifdef NO_COMPRESS
+SetCompress off
+!else
+SetCompressor lzma
+!endif ; NO_COMPRESS
+!endif ;UNINSTALLER_ONLY
 
 ;--------------------------------
 ;General Interface settings
@@ -223,14 +246,14 @@ Function .onInit
   ${GetParameters} $0
   ${GetOptions} $0 '/installtype=' $InstallTypeSelection
   IfErrors +1 lbl_finishedinstalltype
-  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
+  ReadRegStr $InstallTypeSelection ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
   ${If} $InstallTypeSelection == ""
     strcpy $InstallTypeSelection "1"
   ${EndIf}
 lbl_finishedinstalltype:
   Pop $0
   
-  ;initialize $InstallTypeSelection, when not silent will be overwritten by custom page InstallTypeSelect
+  ;initialize $PortNumber. It will only be applied when it is not zero.
   Push $0
   strcpy $PortNumber "0"
   ${GetParameters} $0
@@ -402,8 +425,8 @@ SectionEnd
   ;Copy files
   SetOutPath "$INSTDIR\${LANGPREFIX}"
   File "..\Passolo\${LANGPREFIX}\ibaDatCoordinator.resources.dll"
-  File "..\InstallFiles\Obfuscated\${LANGPREFIX}\hdClient.resources.dll"
-  File "..\InstallFiles\Obfuscated\${LANGPREFIX}\hdClientFiles.resources.dll"
+  File "..\InstallFiles\${OBFUSCATE_DIR}${LANGPREFIX}\hdClient.resources.dll"
+  File "..\InstallFiles\${OBFUSCATE_DIR}${LANGPREFIX}\hdClientFiles.resources.dll"
   File "..\Dependencies\${LANGPREFIX}\hdCommon.resources.dll"
   File "..\Dependencies\${LANGPREFIX}\hd_plugin.resources.dll"
   File "..\Dependencies\${LANGPREFIX}\ibaUser*.resources.dll"
@@ -457,17 +480,17 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"
   File "..\ibaDatCoordinator\bin\Release\System.Buffers.dll"
   File "..\ibaDatCoordinator\bin\Release\System.Numerics.Vectors.dll"
+  File "..\ibaDatCoordinator\bin\Release\Newtonsoft.Json.dll" ;Use the one from the NuGet package and not the one from OpcUa
   ;OPC UA
   File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
   File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
   File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
-  File "..\Dependencies\OpcUa\Newtonsoft.Json.dll"
   File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"
   ;HD-stuff
-  File "..\InstallFiles\Protected\hdCore.dll"
-  File "..\InstallFiles\Protected\hdClient.dll"
-  File "..\InstallFiles\Obfuscated\hdClientFiles.dll"
+  File "..\InstallFiles\${PROTECT_DIR}hdCore.dll"
+  File "..\InstallFiles\${PROTECT_DIR}hdClient.dll"
+  File "..\InstallFiles\${OBFUSCATE_DIR}hdClientFiles.dll"
   File "..\Dependencies\hdCommon.dll"
   File "..\Dependencies\hdProtoBuf.dll"
   File "..\Dependencies\hdClientInterfaces.dll"
@@ -484,12 +507,14 @@ Section -Common
   File "..\Dependencies\Kafka\Confluent.SchemaRegistry.dll"
   
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
-  File "..\InstallFiles\Protected\ibaDatCoordinator.exe"
+  File "..\InstallFiles\${PROTECT_DIR}ibaDatCoordinator.exe"
   File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe.config"
-  File "..\InstallFiles\Protected\DatCoUtil.dll"
+  File "..\InstallFiles\${PROTECT_DIR}DatCoUtil.dll"
+
+  !insertmacro INSTALL_PROTECTED_RUNTIME
   
-  ; runtime
-  File "..\InstallFiles\Protected\ibaRuntime.dll"
+  ;Wibu
+  File "..\Dependencies\Wibu\WibuCmNET.dll"
 
   File "versions_dat.htm"
   File "LicenseInformation.txt"
@@ -531,9 +556,35 @@ Section -Common
 
 SectionEnd
 
+!include "Include\installCodeMeter.nsh"
+
+Function InstallCodeMeter
+
+  ;Install CodeMeter runtime on all OSes except for Windows 7 and Server 2008 R2
+  ${If} $WinVer == "7"
+  ${OrIf} $WinVer == "2008 R2"
+    Return
+  ${EndIf}
+
+!ifndef NO_DATA
+  ;Check CodeMeter runtime
+  SetOutPath "$INSTDIR"
+  SetCompress off
+  File "..\Dependencies\Wibu\CodeMeterRuntime.exe"
+!ifndef NO_COMPRESS
+  SetCompress auto
+!endif
+!endif ;NO_DATA
+
+  !insertmacro RunCodeMeterInstaller "$INSTDIR\CodeMeterRuntime.exe"
+
+FunctionEnd
+
 Section $(DESC_DATCOOR_NOSERVICE) DATCOOR_NOSERVICE
   SetOverwrite on
   ;MessageBox MB_OK "Debug in DATCOOR_NOSERVICE (1)"
+  
+  Call InstallCodeMeter
   
   SetOutPath "$INSTDIR"
 
@@ -563,10 +614,12 @@ SectionEnd
 Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   SetOverwrite on
   
+  Call InstallCodeMeter
+  
   ;MessageBox MB_OK "Debug in DATCOOR_SERVICE (2)"
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
+  File "..\InstallFiles\${PROTECT_DIR}ibaDatCoordinatorService.exe"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
 
   ;Copy resources
@@ -750,26 +803,26 @@ Function InstalltypeSelect
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "Text" "$(TEXT_INSTALLSERVICE)"
   !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "Text" "$(TEXT_INSTALLCLIENT)"
   !insertmacro MUI_HEADER_TEXT "$(TEXT_SERVICEORSTANDALONE_TITLE)" "$(TEXT_SERVICEORSTANDALONE_SUBTITLE)"
-  StrCpy $0 $InstallTypeSelection
-  ;ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Server"
-  
-  ${If} $0 == "0"
+
+  ;Preset selection
+  ${If} $InstallTypeSelection == "0"
     !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "1"
     !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
-	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
-  ${ElseIf} $0 == "1"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
-    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "1"
-	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
-  ${Else}
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
+  ${ElseIf} $InstallTypeSelection == "2"
     !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
     !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "0"
-	!insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "1"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "1"
+  ${Else}
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 1" "State" "0"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 2" "State" "1"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "serviceorstandalone.ini" "Field 3" "State" "0"
   ${EndIf}
-  
-  
-  
+
+  ;Show page
   !insertmacro MUI_INSTALLOPTIONS_DISPLAY "serviceorstandalone.ini"
+  
+  ;Read what user selected
   !insertmacro MUI_INSTALLOPTIONS_READ $0 "serviceorstandalone.ini" "Field 1" "State"
   !insertmacro MUI_INSTALLOPTIONS_READ $1 "serviceorstandalone.ini" "Field 2" "State"
 	

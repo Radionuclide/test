@@ -50,6 +50,8 @@ namespace iba.Services
 
                 SetServicePriority();
 
+                m_communicationObject.Manager.InitializeLicenseManager();
+
                 //if (args.Length > 0 && String.Compare(args[0], "loadnotfromfile", true) == 0)
                 //return;
                 try
@@ -146,6 +148,7 @@ namespace iba.Services
         {
             m_communicationObject.Manager.StopAllGlobalCleanups();
             m_communicationObject.Manager.StopAndWaitForAllConfigurations();
+            m_communicationObject.Manager.UninitializeLicenseManager();
             m_communicationObject.SaveConfigurations();
 
             //Stop publishing service

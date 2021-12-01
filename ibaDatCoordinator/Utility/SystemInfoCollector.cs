@@ -8,6 +8,7 @@ using System.Management;
 using System.Globalization;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace iba.Utility
 {
@@ -1046,7 +1047,7 @@ namespace iba.Utility
             //Export dongle information
             try
             {
-                RegistryKey dongleViewerKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\ibaDongleViewer.exe", false);
+                RegistryKey dongleViewerKey = RegistryEx.LocalMachine32.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\ibaDongleViewer.exe", false);
                 if (dongleViewerKey == null)
                     return false;
 
@@ -1068,6 +1069,40 @@ namespace iba.Utility
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern IntPtr OpenEventLog(string UNCServerName, string sourceName);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        static extern bool CloseEventLog(IntPtr hEventLog);
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern bool BackupEventLog(IntPtr hEventLog, string backupFile);
+
+        public static string ExportEventLog(string eventLogName, string dir)
+        {
+            try
+            {
+                string fileName = Path.Combine(dir, eventLogName + ".evtx");
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
+
+                IntPtr hEvent = OpenEventLog(null, eventLogName);
+                if (hEvent == IntPtr.Zero)
+                    return null;
+
+                if (!BackupEventLog(hEvent, fileName))
+                    fileName = null;
+
+                CloseEventLog(hEvent);
+
+                return fileName;
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

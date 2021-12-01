@@ -2528,15 +2528,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No license found for custom task &apos;{0}&apos;.
-        /// </summary>
-        internal static string logCustomTaskNotLicensed {
-            get {
-                return ResourceManager.GetString("logCustomTaskNotLicensed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to specified .dat folder does not exist.
         /// </summary>
         internal static string logDatDirError {
@@ -2862,20 +2853,11 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot start the job because no license was found for one or more custom tasks.
+        ///   Looks up a localized string similar to Cannot start the job because no license was found for one or more tasks.
         /// </summary>
         internal static string logLicenseNoStart {
             get {
                 return ResourceManager.GetString("logLicenseNoStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stopped the job because no license was found for one or more custom tasks.
-        /// </summary>
-        internal static string logLicenseStopped {
-            get {
-                return ResourceManager.GetString("logLicenseStopped", resourceCulture);
             }
         }
         
@@ -3146,6 +3128,15 @@ namespace iba.Properties {
         internal static string logSplitSuccess {
             get {
                 return ResourceManager.GetString("logSplitSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License found in container {0}.
+        /// </summary>
+        internal static string logTaskLicensed {
+            get {
+                return ResourceManager.GetString("logTaskLicensed", resourceCulture);
             }
         }
         

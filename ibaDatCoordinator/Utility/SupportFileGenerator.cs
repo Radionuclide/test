@@ -335,11 +335,7 @@ namespace iba.Utility
                 string softwareInfoFile = Path.Combine(destDir, "software_info.txt");
                 SystemInfoCollector.SaveInstalledSoftware(softwareInfoFile);
 
-                zip.BeginUpdate();
-                zip.Add(softwareInfoFile, Path.GetFileName(softwareInfoFile));
-                zip.CommitUpdate();
-
-                File.Delete(softwareInfoFile);
+                AddFile(zip, softwareInfoFile, delete: true);
             }
             catch
             { }
@@ -369,16 +365,7 @@ namespace iba.Utility
                 {
                     string[] logFiles = Directory.GetFiles(logdir, "ibaDatCoordinatorLog*.txt");
                     foreach (string file in logFiles)
-                    {
-                        try
-                        {
-                            zip.BeginUpdate();
-                            zip.Add(file, @"logging\" + Path.GetFileName(file));
-                            zip.CommitUpdate();
-                        }
-                        catch
-                        { }
-                    }
+                        AddFile(zip, file, @"logging\" + Path.GetFileName(file));
                 }
             }
             catch
@@ -390,11 +377,7 @@ namespace iba.Utility
             { //exception.txt
                 string file = Path.Combine(programdir, "exception.txt");
                 if (File.Exists(file))
-                {
-                    zip.BeginUpdate();
-                    zip.Add(file, "exception.txt");
-                    zip.CommitUpdate();
-                }
+                    AddFile(zip, file);
             }
             catch
             {
@@ -416,19 +399,7 @@ namespace iba.Utility
                 //Zip all generated .reg files
                 string[] regFiles = Directory.GetFiles(tempDir, "*.reg");
                 foreach (string file in regFiles)
-                {
-                    try
-                    {
-                        zip.BeginUpdate();
-                        zip.Add(file, Path.GetFileName(file));
-                        zip.CommitUpdate();
-
-                        File.Delete(file);
-                    }
-                    catch
-                    {
-                    }
-                }
+                    AddFile(zip, file, delete: true);
             }
             catch
             {
@@ -440,11 +411,7 @@ namespace iba.Utility
                     serverConfigFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "lastsaved.xml");
 
                 if (File.Exists(serverConfigFile))
-                {
-                    zip.BeginUpdate();
-                    zip.Add(serverConfigFile, Path.GetFileName(serverConfigFile));
-                    zip.CommitUpdate();
-                }
+                    AddFile(zip, serverConfigFile);
             }
             catch
             {
@@ -452,39 +419,32 @@ namespace iba.Utility
 
             var myList = TaskManager.Manager.AdditionalFileNames();
             foreach (var p in myList)
-            {
-                try
-                {
-                    zip.BeginUpdate();
-                    zip.Add(p.Key, p.Value);
-                    zip.CommitUpdate();
-                }
-                catch
-                //catch (Exception ex)
-                {
-                    //MessageBox.Show(ex.Message);
-                }
-            }
+                AddFile(zip, p.Key, p.Value);
 
-            //Save dongle info
-            string dongleFile = Path.Combine(destDir, "dongle.vwr");
-            if (SystemInfoCollector.ExportDongleInfo(dongleFile))
-            {
-                try
-                {
-                    zip.BeginUpdate();
-                    zip.Add(dongleFile, Path.GetFileName(dongleFile));
-                    zip.CommitUpdate();
-
-                    File.Delete(dongleFile);
-                }
-                catch
-                { }
-            }
+            //Save license info
+            TaskManager.Manager.AddLicenseInfoToSupportFile(zip, destDir);
 
             zip.Close();
             zip = null;
         }
 
+        public static void AddFile(ZipFile zip, string file, string nameInZip = null, bool delete = false)
+        {
+            try
+            {
+                if (nameInZip == null)
+                    nameInZip = Path.GetFileName(file);
+
+                zip.BeginUpdate();
+                zip.Add(file, nameInZip);
+                zip.CommitUpdate();
+
+                if (delete)
+                    File.Delete(file);
+            }
+            catch
+            {
+            }
+        }
     }
 }

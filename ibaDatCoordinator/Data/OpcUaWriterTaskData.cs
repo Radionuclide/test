@@ -195,5 +195,7 @@ namespace iba.Data
 
             return true; // ok, no duplicates
         }
+
+        public override int RequiredLicense => Licensing.LicenseId.Publish;
     }
 }

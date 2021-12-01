@@ -215,7 +215,7 @@ namespace iba.Processing
 
         virtual public void StopConfiguration(ConfigurationData data)
         {
-            m_workers[data].Stop = true;
+            m_workers[data].Stop();
         }
 
         virtual public void StopConfiguration(Guid guid)
@@ -224,7 +224,7 @@ namespace iba.Processing
             {
                 if (pair.Key.Guid == guid)
                 {
-                    pair.Value.Stop = true;
+                    pair.Value.Stop();
                     return;
                 }
             }
@@ -233,7 +233,7 @@ namespace iba.Processing
         virtual public void StopAndWaitForConfiguration(ConfigurationData data)
         {
             ConfigurationWorker worker = m_workers[data];
-            worker.Stop = true;
+            worker.Stop();
             worker.Join(60000);
         }
 
@@ -243,7 +243,7 @@ namespace iba.Processing
             {
                 if (pair.Key.Guid == guid)
                 {
-                    pair.Value.Stop = true;
+                    pair.Value.Stop();
                     pair.Value.Join(60000);
                     return;
                 }
@@ -919,7 +919,7 @@ namespace iba.Processing
         public void SnmpWorkerInit()
         {
             SnmpWorker.Init();
-                            }
+        }
 
         /// <summary> Gets/sets data of SnmpWorker. 
         /// If data is set, then restart of snmp agent is performed if necessary. </summary>
@@ -1757,6 +1757,49 @@ namespace iba.Processing
             }
 
             return false;
+        }
+
+        private Licensing.LicenseManager licenseManager;
+
+        internal Licensing.LicenseManager LicenseManager
+        {
+            get
+            {
+                if (licenseManager == null)
+                    licenseManager = new Licensing.LicenseManager();
+
+                return licenseManager;
+            }
+        }
+
+        public void InitializeLicenseManager()
+        {
+            LicenseManager.Initialize();
+        }
+
+        public void UninitializeLicenseManager()
+        {
+            licenseManager?.Uninitialize();
+        }
+
+        internal void AddLicenseInfoToSupportFile(ICSharpCode.SharpZipLib.Zip.ZipFile zip, string tempDir)
+        {
+            LicenseManager.AddInfoToSupportFile(zip, tempDir);
+
+            //Save information about licenses used by running tasks
+            lock (m_workers)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach(var worker in m_workers.Values)
+                    worker.LogTasksLicenseInfo(sb);
+
+                if(sb.Length > 0)
+                {
+                    string infoFile = Path.Combine(tempDir, "UsedLicenses.txt");
+                    File.WriteAllText(infoFile, sb.ToString());
+                    SupportFileGenerator.AddFile(zip, infoFile, "License\\" + Path.GetFileName(infoFile), delete: true);
+                }
+            }
         }
     }
 

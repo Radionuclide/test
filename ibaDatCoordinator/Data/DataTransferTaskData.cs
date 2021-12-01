@@ -161,5 +161,6 @@ namespace iba.Data
                 other.NumBandwidth == NumBandwidth &&
                 other.ShouldCreateZipArchive == ShouldCreateZipArchive;
         }
+
     }
 }

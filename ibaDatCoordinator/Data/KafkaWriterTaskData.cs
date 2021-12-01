@@ -401,5 +401,7 @@ namespace iba.Data
             }
             return true;
         }
+
+        public override int RequiredLicense => Licensing.LicenseId.Publish;
     }
 }

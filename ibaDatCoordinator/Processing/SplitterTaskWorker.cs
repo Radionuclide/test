@@ -388,7 +388,7 @@ namespace iba.Processing
         {
             get
             {
-                return m_worker.Stop;
+                return m_worker.IsStopped;
             }
         }
 
