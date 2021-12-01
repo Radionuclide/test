@@ -551,6 +551,13 @@ SectionEnd
 !include "Include\installCodeMeter.nsh"
 
 Function InstallCodeMeter
+
+  ;Install CodeMeter runtime on all OSes except for Windows 7 and Server 2008 R2
+  ${If} $WinVer == "7"
+  ${OrIf} $WinVer == "2008 R2"
+    Return
+  ${EndIf}
+
 !ifndef NO_DATA
   ;Check CodeMeter runtime
   SetOutPath "$INSTDIR"

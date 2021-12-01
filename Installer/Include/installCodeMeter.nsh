@@ -1,5 +1,3 @@
-;!include "LogicLib.nsh"
-
 Var CodeMeterMajor
 Var CodeMeterMinor
 Var CodeMeterBuild
