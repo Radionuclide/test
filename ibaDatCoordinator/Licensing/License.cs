@@ -24,6 +24,7 @@ namespace iba.Licensing
 
         public DateTime LastCheck;
         internal object SourceInfo;
+        public int SourceId;
 
         public bool ContainerFound => !String.IsNullOrEmpty(ContainerType);
 
@@ -44,6 +45,8 @@ namespace iba.Licensing
             }
         }
 
+        public string Name => LicenseOptionInfo.GetOptionInfo(LicenseId)?.Text ?? $"Unknown license {LicenseId}";
+
         internal void Update(License newLic)
         {
             System.Diagnostics.Debug.Assert(LicenseId == newLic.LicenseId);
@@ -53,6 +56,7 @@ namespace iba.Licensing
             LicenseIdentifier = newLic.LicenseIdentifier;
             LastCheck = newLic.LastCheck;
             SourceInfo = newLic.SourceInfo;
+            SourceId = newLic.SourceId;
         }
     }
 }

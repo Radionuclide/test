@@ -2853,6 +2853,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to License {0} ({1}) acquired from container {2}.
+        /// </summary>
+        internal static string logLicenseAcquired {
+            get {
+                return ResourceManager.GetString("logLicenseAcquired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot start the job because no license was found for one or more tasks.
         /// </summary>
         internal static string logLicenseNoStart {
@@ -3128,15 +3137,6 @@ namespace iba.Properties {
         internal static string logSplitSuccess {
             get {
                 return ResourceManager.GetString("logSplitSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to License found in container {0}.
-        /// </summary>
-        internal static string logTaskLicensed {
-            get {
-                return ResourceManager.GetString("logTaskLicensed", resourceCulture);
             }
         }
         

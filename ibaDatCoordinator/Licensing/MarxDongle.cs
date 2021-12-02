@@ -106,6 +106,7 @@ namespace iba.Licensing
 
                 lic.LicenseOk = true;
                 lic.SourceInfo = usedId;
+                lic.SourceId = usedId;
                 lic.LastCheck = DateTime.UtcNow;
                 return lic;
             }
@@ -117,6 +118,7 @@ namespace iba.Licensing
                 {
                     lic.LicenseOk = true;
                     lic.SourceInfo = id;
+                    lic.SourceId = id;
                     lic.LastCheck = DateTime.UtcNow;
                     lic.ContainerType = contents.ContainerType;
                     lic.ContainerId = contents.ContainerId;

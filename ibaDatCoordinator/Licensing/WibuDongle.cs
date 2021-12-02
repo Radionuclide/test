@@ -150,6 +150,7 @@ namespace iba.Licensing
                 lic.LicenseIdentifier = contents.Identifier;
                 lic.LicenseOk = true;
                 lic.SourceInfo = entry;
+                lic.SourceId = option.Id;
                 return lic;
             }
 
@@ -165,6 +166,7 @@ namespace iba.Licensing
                         lic.LicenseIdentifier = contents.Identifier;
                         lic.LicenseOk = true;
                         lic.SourceInfo = entry;
+                        lic.SourceId = id;
                         return lic;
                     }
                 }
@@ -182,6 +184,7 @@ namespace iba.Licensing
             if(!CheckHandle(entry) || IsDongleDisabled(entry))
             {
                 lic.SourceInfo = null;
+                lic.SourceId = 0;
                 hcmEntries.Remove(entry);
                 api.CmRelease(entry);
                 return false;
@@ -194,6 +197,7 @@ namespace iba.Licensing
         {
             HCMSysEntry entry = lic.SourceInfo as HCMSysEntry;
             lic.SourceInfo = null;
+            lic.SourceId = 0;
 
             if (!hcmEntries.Contains(entry))
                 return;

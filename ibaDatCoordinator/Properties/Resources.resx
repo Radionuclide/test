@@ -622,8 +622,8 @@
   <data name="logLicenseNoStart" xml:space="preserve">
     <value>Cannot start the job because no license was found for one or more tasks</value>
   </data>
-  <data name="logTaskLicensed" xml:space="preserve">
-    <value>License found in container {0}</value>
+  <data name="logLicenseAcquired" xml:space="preserve">
+    <value>License {0} ({1}) acquired from container {2}</value>
   </data>
   <data name="logNoOutputPathSpecified" xml:space="preserve">
     <value>No destination directory specified for the task.</value>

@@ -1138,7 +1138,7 @@ namespace iba.Processing
                     bOk = false;
                 }
                 else
-                    Log(Logging.Level.Info, String.Format(Properties.Resources.logTaskLicensed, lic.FullId), "", task);
+                    Log(Logging.Level.Info, String.Format(Properties.Resources.logLicenseAcquired, lic.Name, lic.SourceId, lic.FullId), "", task);
 
                 m_licensedTasks.Add(task, lic);
             }
@@ -2962,7 +2962,7 @@ namespace iba.Processing
                 else if(!bPrevLicenseOk)
                 {
                     //We got a license for the first time
-                    Log(Logging.Level.Info, String.Format(Properties.Resources.logTaskLicensed, lic.FullId), DatFile, task);
+                    Log(Logging.Level.Info, String.Format(Properties.Resources.logLicenseAcquired, lic.Name, lic.SourceId, lic.FullId), DatFile, task);
                 }
             }
 
