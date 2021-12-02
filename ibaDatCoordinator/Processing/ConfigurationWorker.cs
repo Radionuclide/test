@@ -1127,6 +1127,9 @@ namespace iba.Processing
             bool bOk = true;
             foreach (TaskData task in m_cd.Tasks)
             {
+                if (task.WhenToExecute == TaskData.WhenToDo.DISABLED)
+                    continue;
+
                 int licId = task.RequiredLicense;
                 if (licId == LicenseId.None)
                     continue;
