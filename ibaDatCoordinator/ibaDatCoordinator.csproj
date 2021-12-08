@@ -1039,6 +1039,7 @@ mkdir "$(TargetDir)Plugins"
 move "$(TargetDir)hd_plugin.dll" "$(TargetDir)Plugins"
 copy "$(SolutionDir)Dependencies\PowerCollections.dll" "$(TargetDir)"
 copy "$(SolutionDir)Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" "$(TargetDir)"
+xcopy "$(SolutionDir)Dependencies\Kafka\x86" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
