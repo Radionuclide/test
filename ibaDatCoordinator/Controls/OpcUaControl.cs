@@ -12,6 +12,9 @@ using DevExpress.Utils;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
+using iba.CertificateStore;
+using iba.CertificateStore.Forms;
+using iba.CertificateStore.Proxy;
 using iba.Data;
 using iba.Logging;
 using iba.Processing;
@@ -21,7 +24,7 @@ using iba.Utility;
 
 namespace iba.Controls
 {
-    public partial class OpcUaControl : UserControl, IPropertyPane
+    public partial class OpcUaControl : UserControl, IPropertyPane, ICertificatesControlHost
     {
         #region Construction, Destruction, Init
 
@@ -51,6 +54,8 @@ namespace iba.Controls
             // (if screen DPI is not 100%, then one-line textBoxes and multi-line textBox can be scaled differently;
             // we want to ensure that Description has the same height as Type+Value)
             tbObjDescription.Height = tbObjType.Bottom - tbObjValue.Top;
+
+            serverCertCb = CertificatesComboBox.ReplaceCombobox(ServerCertPlaceholder, "", false);
 
 #if DEBUG
             buttonShowHideDebug.Visible = true;
@@ -90,8 +95,55 @@ namespace iba.Controls
             miColumns.DropDown.Closing +=
                 (o, args) => args.Cancel = (args.CloseReason == ToolStripDropDownCloseReason.ItemClicked);
         }
-        
+
         #endregion
+
+        #region ICertificatesControlHost
+
+        CertificatesComboBox serverCertCb;
+        CertificateInfo serverCertParams;
+        IPropertyPaneManager m_manager;
+        class CertificateInfo : ICertificateInfo
+        {
+            public string Thumbprint { get; set; }
+
+            public CertificateRequirement CertificateRequirements { get; } =
+                CertificateRequirement.Trusted |
+                CertificateRequirement.PrivateKey;
+
+            public string DisplayName { get; } = "Certificate for OPC UA server";
+        }
+
+        public bool IsLocalHost { get; }
+        public string ServerAddress { get; }
+        public ICertificateManagerProxy CertificateManagerProxy { get; } = new CertificateManagerProxyJsonAdapter(new AppCertificateManagerJsonProxy());
+        public bool IsCertificatesReadonly => false;
+        public bool IsReadOnly => false; // set to true in case of user restriction
+        public string UsagePart { get; } = "EX"; // IO and DS are used in PDA
+        public IWin32Window Instance => this;
+        public ContextMenuStrip PopupMenu { get; } = new ContextMenuStrip(); // or reuse the context menu of an other control
+
+        public void OnSaveDataSource()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICertifiable GetCertifiableRootNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ManageCertificates()
+        {
+            (m_manager as MainForm)?.MoveToSettigsTab();
+        }
+
+        public void JumpToCertificateInfoNode(string displayName)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
 
 
         #region IPropertyPane Members
@@ -128,6 +180,11 @@ namespace iba.Controls
             {
                 LogData.Data.Logger.Log(Level.Exception, $@"{nameof(OpcUaControl)}.{nameof(LoadData)}: " + ex.Message);
             }
+            m_manager = manager;
+            serverCertParams = new CertificateInfo();
+            serverCertParams.Thumbprint = _data.serverSertificateThumbprint;
+            serverCertCb.UnsetEnvironment();
+            serverCertCb.SetEnvironment(this, serverCertParams);
         }
 
         public void SaveData()
@@ -259,6 +316,9 @@ namespace iba.Controls
                 _data.Endpoints.Add(new OpcUaData.OpcUaEndPoint(ep));
 
             // certificates
+
+            _data.serverSertificateThumbprint = serverCertParams.Thumbprint;
+
             _data.Certificates.Clear();
             if (CertificatesDataSource != null)
             {
@@ -1335,21 +1395,18 @@ namespace iba.Controls
             }
 
             // try to refresh node's tag
-            try
-            {
-                ExtMonData.GuiTreeNodeTag tag = TaskManager.Manager.OpcUaGetTreeNodeTag(id);
-                tbObjValue.Text = tag.Value;
-                tbObjType.Text = tag.Type;
-                tbObjNodeId.Text = tag.OpcUaNodeId;
-                tbObjDescription.Text = tag.Description;
-            }
-            catch
+            ExtMonData.GuiTreeNodeTag tag = TaskManager.Manager.OpcUaGetTreeNodeTag(id);
+            if (id is null)
             {
                 // reset value that we know that something is wrong
                 tbObjValue.Text = String.Empty;
                 tbObjType.Text = String.Empty;
+                return;
             }
-
+            tbObjValue.Text = tag.Value;
+            tbObjType.Text = tag.Type;
+            tbObjNodeId.Text = tag.OpcUaNodeId;
+            tbObjDescription.Text = tag.Description;
         }
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)

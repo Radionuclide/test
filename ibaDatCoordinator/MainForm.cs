@@ -274,11 +274,15 @@ namespace iba
 
         public void MoveToTaskByName(string name)
         {
+            if (name == OpcUaData.certificateUserName)
+            {
+                m_navBar.SelectedPane = m_opcUaPane;
+                return;
+            }
             foreach (TreeNode topLevelNode in m_configTreeView.Nodes)
                 foreach (TreeNode jobLevelNode in topLevelNode.Nodes)
                     foreach (TreeNode taskLevelNode in jobLevelNode.Nodes)
                     {
-
                         TaskData dat = ((taskLevelNode.Tag as TreeItemData)?.DataSource as TaskData);
                         if (dat != null && dat.Name == name)
                         {

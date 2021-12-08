@@ -11,6 +11,7 @@ using iba.Data;
 using iba.Logging;
 using iba.Processing.IbaOpcUa;
 using iba.Properties;
+using iba.CertificateStore;
 using Opc.Ua;
 using Opc.Ua.Configuration;
 using Timer = System.Timers.Timer;
@@ -315,22 +316,23 @@ namespace iba.Processing
             
             // synchronize between files and _opcUaData.Certificates
             SynchronizeCertificates();
-            
+
             // check own server certificate
-            var serverCert = _opcUaData.GetServerCertificate();
+
+            var serverCert = TaskManager.Manager.CertificateManager.GetCertificate(_opcUaData.serverSertificateThumbprint);
             if (serverCert == null)  
                 throw new InvalidOperationException(Resources.opcUaErrorNoCert); 
-            if (!serverCert.IsTrusted)
-                throw new InvalidOperationException(Resources.opcUaErrorCertNotTrusted); 
-
+            if (!serverCert.Trusted)
+                throw new InvalidOperationException(Resources.opcUaErrorCertNotTrusted);
+            UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = serverCert.Certificate;
             // create list of allowed user certificates
             IbaOpcUaServer.CertifiedUsers.Clear();
-            foreach (var certTag in _opcUaData.Certificates)
+            foreach (var cert in TaskManager.Manager.CertificateManager.GetCertificates())
             {
-                if (!certTag.IsUsedForAuthentication || !certTag.IsTrusted)
+                if (!cert.Permissions.HasFlag(CertificatePermissions.Authentication) || !cert.Trusted)
                     continue;
-                Debug.Assert(certTag.Certificate != null);
-                IbaOpcUaServer.CertifiedUsers.Add(certTag.Certificate);
+                Debug.Assert(cert.Certificate != null);
+                IbaOpcUaServer.CertifiedUsers.Add(cert.Certificate);
             }
         }
 
@@ -837,7 +839,8 @@ namespace iba.Processing
                 // ReSharper disable once InvertIf
                 if (cert.Thumbprint == thumbprint && cert.HasPrivateKey)
                 {
-                    UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = cert;
+                    // removed to use new certificate selector
+                    //UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = cert;
                     _opcUaData.SetServerCertificateFlag(cert.Thumbprint);
                     return;
                 }

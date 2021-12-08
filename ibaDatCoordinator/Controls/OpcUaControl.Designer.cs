@@ -154,6 +154,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.gbDebug = new System.Windows.Forms.GroupBox();
             this.gbStatus = new System.Windows.Forms.GroupBox();
+            this.ServerCertPlaceholder = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerObjectsFooter)).BeginInit();
             this.splitContainerObjectsFooter.Panel1.SuspendLayout();
             this.splitContainerObjectsFooter.Panel2.SuspendLayout();
@@ -865,6 +867,8 @@
             // gbLogon
             // 
             resources.ApplyResources(this.gbLogon, "gbLogon");
+            this.gbLogon.Controls.Add(this.ServerCertPlaceholder);
+            this.gbLogon.Controls.Add(this.label1);
             this.gbLogon.Controls.Add(this.tbPassword);
             this.gbLogon.Controls.Add(this.labelPassword);
             this.gbLogon.Controls.Add(this.cbLogonAnonymous);
@@ -1270,6 +1274,17 @@
             this.gbStatus.Name = "gbStatus";
             this.gbStatus.TabStop = false;
             // 
+            // ServerCertPlaceholder
+            // 
+            this.ServerCertPlaceholder.FormattingEnabled = true;
+            resources.ApplyResources(this.ServerCertPlaceholder, "ServerCertPlaceholder");
+            this.ServerCertPlaceholder.Name = "ServerCertPlaceholder";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
             // OpcUaControl
             // 
             resources.ApplyResources(this, "$this");
@@ -1450,5 +1465,7 @@
 		private DevExpress.XtraGrid.Columns.GridColumn colHostname;
 		private DevExpress.XtraGrid.Columns.GridColumn colPort;
 		private DevExpress.XtraGrid.Columns.GridColumn colURI;
-	}
+        private System.Windows.Forms.ComboBox ServerCertPlaceholder;
+        private System.Windows.Forms.Label label1;
+    }
 }

@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
+using iba.CertificateStore;
 using iba.Utility;
 using Opc.Ua;
 
@@ -15,7 +16,7 @@ namespace iba.Data
 {
     /// <summary> OPC UA configuration data (Endpoints, Security, etc) </summary>
     [Serializable]
-    public class OpcUaData : ICloneable
+    public class OpcUaData : ICloneable, ICertifiable
     {
         public bool Enabled { get; set; }
 
@@ -503,7 +504,8 @@ namespace iba.Data
                 this.SecurityBasic256Sha256Mode == other.SecurityBasic256Sha256Mode &&
                 this.CertificateChangesCounter == other.CertificateChangesCounter &&
                 this.Endpoints.SequenceEqual(other.Endpoints) &&
-                this.Certificates.SequenceEqual(other.Certificates);
+                this.Certificates.SequenceEqual(other.Certificates) &&
+                this.serverSertificateThumbprint == other.serverSertificateThumbprint;
             // ReSharper restore ArrangeThisQualifier
         }
 
@@ -519,6 +521,22 @@ namespace iba.Data
             string epString = Endpoints?.Count == 1 ? Endpoints[0].Uri : $"{Endpoints?.Count}";
 
             return $"{Enabled}, EP:[{epString}]";
+        }
+
+        public string serverSertificateThumbprint;
+
+        public static string certificateUserName = "OPC UA Server";
+
+        public IEnumerable<ICertifiable> GetCertifiableChildItems()  { yield break; }
+
+        public IEnumerable<ICertificateInfo> GetCertificateInfo()
+        {
+            if (serverSertificateThumbprint != null && serverSertificateThumbprint != "")
+                yield return new CertificateInfoForwarder(
+                       () => serverSertificateThumbprint,
+                       value => serverSertificateThumbprint = value,
+                       CertificateRequirement.Valid | CertificateRequirement.Trusted | CertificateRequirement.PrivateKey,
+                       certificateUserName);
         }
     }
 }

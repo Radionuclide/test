@@ -569,10 +569,12 @@ namespace iba.Controls
 
         public IEnumerable<ICertifiable> GetCertifiableChildItems()
         {
-            var l = TaskManager.Manager.Configurations.SelectMany(c => c.Tasks);
-            var r = l.OfType<ICertifiable>();
+            var tasks = TaskManager.Manager.Configurations.SelectMany(c => c.Tasks).OfType<ICertifiable>();
+            var opcData = TaskManager.Manager.OpcUaData;
+            if (opcData != null)
+                tasks = tasks.Concat(new[] { opcData });
 
-            return r;
+            return tasks;
         }
 
         public IEnumerable<ICertificateInfo> GetCertificateInfo()

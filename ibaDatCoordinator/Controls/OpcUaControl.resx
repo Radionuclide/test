@@ -1390,6 +1390,57 @@
   <data name="gbLogon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="ServerCertPlaceholder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>329, 46</value>
+  </data>
+  <data name="ServerCertPlaceholder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>375, 21</value>
+  </data>
+  <data name="ServerCertPlaceholder.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Name" xml:space="preserve">
+    <value>ServerCertPlaceholder</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Parent" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>326, 16</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 13</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>OPC UA server certificate:</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>gbLogon</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="tbPassword.Location" type="System.Drawing.Point, System.Drawing">
     <value>152, 72</value>
   </data>
@@ -1406,13 +1457,13 @@
     <value>tbPassword</value>
   </data>
   <data name="&gt;&gt;tbPassword.Type" xml:space="preserve">
-    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Controls.PasswordEditWithConfirmation, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tbPassword.Parent" xml:space="preserve">
     <value>gbLogon</value>
   </data>
   <data name="&gt;&gt;tbPassword.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="labelPassword.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1439,7 +1490,7 @@
     <value>gbLogon</value>
   </data>
   <data name="&gt;&gt;labelPassword.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="cbLogonAnonymous.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1466,7 +1517,7 @@
     <value>gbLogon</value>
   </data>
   <data name="&gt;&gt;cbLogonAnonymous.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="cbLogonUserName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1493,7 +1544,7 @@
     <value>gbLogon</value>
   </data>
   <data name="&gt;&gt;cbLogonUserName.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="cbLogonCertificate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1520,7 +1571,7 @@
     <value>gbLogon</value>
   </data>
   <data name="&gt;&gt;cbLogonCertificate.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="tbUserName.Location" type="System.Drawing.Point, System.Drawing">
     <value>152, 46</value>
@@ -1541,7 +1592,7 @@
     <value>gbLogon</value>
   </data>
   <data name="&gt;&gt;tbUserName.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="gbLogon.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 31</value>
