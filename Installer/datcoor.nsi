@@ -576,6 +576,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;Copy server files
   SetOutPath "$INSTDIR"
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
+  File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinatorService.exe.config"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
 
   ;Copy resources
@@ -900,6 +901,7 @@ Function un.UninstallTasks
       Quit
   ok:
   Delete "$INSTDIR\ibaDatCoordinator.exe.config"
+  Delete "$INSTDIR\ibaDatCoordinatorService.exe.config"
 
   Delete "$INSTDIR\*.chm"
   Delete "$INSTDIR\ibaLogger.dll"
