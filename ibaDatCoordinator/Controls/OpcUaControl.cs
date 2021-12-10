@@ -1395,18 +1395,20 @@ namespace iba.Controls
             }
 
             // try to refresh node's tag
-            ExtMonData.GuiTreeNodeTag tag = TaskManager.Manager.OpcUaGetTreeNodeTag(id);
-            if (id is null)
+            try
+            {
+                ExtMonData.GuiTreeNodeTag tag = TaskManager.Manager.OpcUaGetTreeNodeTag(id);
+                tbObjValue.Text = tag.Value;
+                tbObjType.Text = tag.Type;
+                tbObjNodeId.Text = tag.OpcUaNodeId;
+                tbObjDescription.Text = tag.Description;
+            }
+            catch
             {
                 // reset value that we know that something is wrong
                 tbObjValue.Text = String.Empty;
                 tbObjType.Text = String.Empty;
-                return;
             }
-            tbObjValue.Text = tag.Value;
-            tbObjType.Text = tag.Type;
-            tbObjNodeId.Text = tag.OpcUaNodeId;
-            tbObjDescription.Text = tag.Description;
         }
 
         private void tvObjects_AfterSelect(object sender, TreeViewEventArgs e)
