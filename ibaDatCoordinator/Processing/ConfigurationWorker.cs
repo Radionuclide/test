@@ -3100,17 +3100,12 @@ namespace iba.Processing
 
                     _cancellationTokenList.Add(cancellationTokenSource);
 
-                    TransferFile(DatFile, dat, token);
-
-                    if (dat.ShouldDeleteAfterTransfer)
-                    {
-                        DirectoryManager.DeleteFileAsync(DatFile);
-                        continueProcessing = false;
-                    }
-                }
-                else if (task is CustomTaskData ct)
-                {
-                    DoCustomTask(DatFile, ct);
+                TransferFile(DatFile, dat, token);
+                continueProcessing = !dat.ShouldDeleteAfterTransfer;
+            }
+            else if (task is CustomTaskData ct)
+            {
+                DoCustomTask(DatFile, ct);
 
                     // added by kolesnik - begin
                     memoryUsed = (ct.Plugin as IPluginTaskDataIbaAnalyzer)?.MonitorData.MemoryUsed ?? 0;
@@ -4524,20 +4519,6 @@ namespace iba.Processing
 
             try
             {
-                //close .dat file first
-                try
-                {
-                    if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
-                }
-                catch
-                {
-                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
-                    if (m_needIbaAnalyzer)
-                    {
-                        RestartIbaAnalyzer();
-                    }
-                }
-
                 foreach (var fileToCopy in filesToCopy)
                 {
                     var uploadTaskWorker = new UploadTaskWorker(fileToCopy, task);
@@ -4591,24 +4572,31 @@ namespace iba.Processing
 
             try
             {
-                //close .dat file first
-                try
-                {
-                    if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
-                }
-                catch
-                {
-                    Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
-                    if (m_needIbaAnalyzer)
-                    {
-                        RestartIbaAnalyzer();
-                    }
-                }
                 var dataTransferTaskWorker = new DataTransferTaskWorker(task);
 
                 foreach (var fileToCopy in filesToCopy)
                 {
                     dataTransferTaskWorker.TransferFile(fileToCopy, task, cancellationToken).Wait();
+
+                    if (task.ShouldDeleteAfterTransfer)
+                    {
+                        //close .dat file first
+                        try
+                        {
+                            if (m_needIbaAnalyzer && m_ibaAnalyzer != null) m_ibaAnalyzer.CloseDataFiles();
+                        }
+                        catch
+                        {
+                            Log(iba.Logging.Level.Exception, iba.Properties.Resources.IbaAnalyzerUndeterminedError, filename, task);
+                            if (m_needIbaAnalyzer)
+                            {
+                                RestartIbaAnalyzer();
+                            }
+                        }
+
+                        DirectoryManager.DeleteFileAsync(fileToCopy);
+                    }
+
                     Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
                 }
 

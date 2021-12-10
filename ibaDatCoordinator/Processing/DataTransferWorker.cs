@@ -63,7 +63,7 @@ namespace iba.Processing
         {
             try
             {
-                var deadline = DateTime.UtcNow.AddSeconds(5);
+                var deadline = DateTime.UtcNow.AddSeconds(10);
 
                 var isRunning = await IsReadyAsync(deadline);
 
@@ -93,7 +93,7 @@ namespace iba.Processing
             {
                 if (m_server == null) return;
 
-                var deadline = DateTime.UtcNow.AddSeconds(3);
+                var deadline = DateTime.UtcNow.AddSeconds(10);
 
                 var isRunning = await IsReadyAsync(deadline);
 

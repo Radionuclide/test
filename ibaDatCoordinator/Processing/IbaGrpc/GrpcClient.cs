@@ -43,7 +43,7 @@ namespace iba.Processing.IbaGrpc
         {
             try
             {
-                var deadline = DateTime.UtcNow.AddSeconds(5);
+                var deadline = DateTime.UtcNow.AddSeconds(30);
 
                 var metadata = new Metadata();
 
