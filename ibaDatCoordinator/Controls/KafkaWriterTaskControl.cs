@@ -28,7 +28,8 @@ namespace iba.Controls
         private readonly GridView _viewExpr;
         private GridView _viewParam;
         CertificatesComboBox clientCertCBox, CACertCBox;
-        CertificateInfo clientCertParams, CACertParams;
+        CertificateInfo CACertParams;
+        CertificateInfoWithPrivateKey clientCertParams;
         IPropertyPaneManager m_manager;
 
 #region ICertificatesControlHost
@@ -99,6 +100,18 @@ namespace iba.Controls
             public string DisplayName { get; } = "Cert for Kafka";
         }
 
+        class CertificateInfoWithPrivateKey : ICertificateInfo
+        {
+            public string Thumbprint { get; set; }
+
+            public CertificateRequirement CertificateRequirements { get; } =
+                CertificateRequirement.Trusted |
+                CertificateRequirement.Valid |
+                CertificateRequirement.PrivateKey;
+
+            public string DisplayName { get; } = "Cert for Kafka";
+        }
+
         private void UpdateParamTableButtons()
         {
             paramRemoveButton.Enabled = _viewParam.FocusedRowHandle >= 0;
@@ -109,7 +122,7 @@ namespace iba.Controls
             m_manager = manager;
             _data = datasource as KafkaWriterTaskData;
 
-            clientCertParams = new CertificateInfo();
+            clientCertParams = new CertificateInfoWithPrivateKey();
             clientCertParams.Thumbprint = _data.SSLClientThumbprint;
             clientCertCBox.UnsetEnvironment(); 
             clientCertCBox.SetEnvironment(this, clientCertParams); 
@@ -511,6 +524,8 @@ namespace iba.Controls
                 return;
 
             var res = Processing.TaskManager.Manager.KafkaTestConnection(_data);
+            if (res is null)
+                return;
             if (res is Exception)
             {
                 MessageBox.Show((res as Exception).Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
