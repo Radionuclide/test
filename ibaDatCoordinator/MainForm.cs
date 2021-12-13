@@ -540,7 +540,7 @@ namespace iba
             }
         }
 
-        protected override void OnLoad(EventArgs e)
+        protected override async void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
@@ -573,9 +573,9 @@ namespace iba
                 // Initialize it here only if the app is standalone
                 TaskManager.Manager.SnmpWorkerInit();
                 TaskManager.Manager.OpcUaWorkerInit();
-                TaskManager.Manager.DataTransferWorkerInit();
+                // added by kolesnik - end
+                await TaskManager.Manager.DataTransferWorkerInit();
             }
-            // added by kolesnik - end
         }
 
         private TreeNode CreateConfigurationNode(ConfigurationData confIt)

@@ -176,7 +176,7 @@ namespace iba.Processing.IbaGrpc
                     RequestDate = Timestamp.FromDateTime(DateTime.UtcNow),
                     ClientName = m_data.Hostname,
                     TaskName = task.Name,
-                    ClientVersion = m_data.Version,
+                    ClientVersion = iba.DatCoVersion.GetVersion(),
                     FileName = fileName,
                     Path = m_data.RemotePath,
                     ApiKey = string.Empty,

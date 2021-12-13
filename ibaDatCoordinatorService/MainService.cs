@@ -31,7 +31,7 @@ namespace iba.Services
 
         private ServicePublisher m_servicePublisher;
 
-        protected override void OnStart(string[] args)
+        protected override async void OnStart(string[] args)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace iba.Services
                 m_communicationObject.Manager.SnmpWorkerInit();
                 m_communicationObject.Manager.OpcUaWorkerInit();
                 // added by kolesnik - end
-                m_communicationObject.Manager.DataTransferWorkerInit();
+                await m_communicationObject.Manager.DataTransferWorkerInit();
             }
             catch (Exception ex)
             {
