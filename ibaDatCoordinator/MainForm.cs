@@ -170,6 +170,8 @@ namespace iba
             statusImgConnectedSecure = Properties.Resources.img_lock;
             statusImgDisconnected = Properties.Resources.img_networkError.ToBitmap();
             statusImgStandalone = Properties.Resources.img_server;
+
+            iba.Controls.AppCertificatesControl.Init();
         }
 
         protected override void OnHandleCreated(EventArgs e)

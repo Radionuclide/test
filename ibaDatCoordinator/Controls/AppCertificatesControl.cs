@@ -8,7 +8,7 @@ namespace iba.Controls
 {
     public class AppCertificatesControl : CertificatesControl
     {
-        static AppCertificatesControl()
+        public static void Init()
         {
             ApplicationName = "ibaDatCoordinator";
         }
