@@ -509,6 +509,7 @@ Section -Common
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\${PROTECT_DIR}ibaDatCoordinator.exe"
   File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe.config"
+  File "..\ibaDatCoordinatorService\bin\Release\ibaDatCoordinatorService.exe.config"
   File "..\InstallFiles\${PROTECT_DIR}DatCoUtil.dll"
 
   !insertmacro INSTALL_PROTECTED_RUNTIME
@@ -942,6 +943,7 @@ Function un.UninstallTasks
       Quit
   ok:
   Delete "$INSTDIR\ibaDatCoordinator.exe.config"
+  Delete "$INSTDIR\ibaDatCoordinatorService.exe.config"
 
   Delete "$INSTDIR\*.chm"
   Delete "$INSTDIR\ibaLogger.dll"
