@@ -339,9 +339,16 @@ namespace iba.Processing
             if (data.schemaRegistryAddress == schemaRegistryAddressCached && schemaFingerprintCached != null && schemaFingerprintCached.Length > 0)
                 return schemaFingerprintCached;
 
-            SchemaRegistryConfig schemRegConfig = new SchemaRegistryConfig();
-            schemRegConfig.Url = data.schemaRegistryAddress;
-            schemRegConfig.RequestTimeoutMs = (int)data.timeout * 1000;
+            SchemaRegistryConfig schemaRegConfig = new SchemaRegistryConfig();
+            schemaRegConfig.Url = data.schemaRegistryAddress;
+            schemaRegConfig.RequestTimeoutMs = (int)data.timeout * 1000;
+            schemaRegConfig.EnableSslCertificateVerification = data.schemaEnableSSLVerification;
+            if (data.SchemaRegistrySecurityMode == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTP_AUTHENTICATION ||
+                data.SchemaRegistrySecurityMode == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS_AUTHENTICATION)
+            {
+                schemaRegConfig.BasicAuthCredentialsSource = AuthCredentialsSource.UserInfo;
+                schemaRegConfig.BasicAuthUserInfo = data.schemaUsername + ":" + data.schemaPass;
+            }
 
 
             // Add expert parameters
@@ -350,16 +357,38 @@ namespace iba.Processing
                 if (string.IsNullOrEmpty(kvp.Key) || !kvp.Key.StartsWith("schema.registry."))
                     continue;
 
-                schemRegConfig.Set(kvp.Key, kvp.Value);
+                schemaRegConfig.Set(kvp.Key, kvp.Value);
             }
 
             CachedSchemaRegistryClient schemRegClient = null;
             try
             {
-                schemRegClient = new Confluent.SchemaRegistry.CachedSchemaRegistryClient(schemRegConfig);
+                if (data.SchemaRegistrySecurityMode == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS ||
+                    data.SchemaRegistrySecurityMode == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS_AUTHENTICATION)
+                {
+                    X509Certificate2 CACert = null;
+                    X509Certificate2 clientCert = null;
+                    if (!String.IsNullOrEmpty(data.schemaSSLCAThumbprint))
+                    {
+                        var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLCAThumbprint);
+                        if (c != null)
+                            CACert = c.Certificate;
+                    }
+                    if (!String.IsNullOrEmpty(data.schemaSSLClientThumbprint))
+                    {
+                        var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLClientThumbprint);
+                        if (c != null)
+                            clientCert = c.Certificate;
+                    }
+                    schemRegClient = new CachedSchemaRegistryClient(schemaRegConfig, CACert, clientCert);
+                }
+                else
+                {
+                    schemRegClient = new CachedSchemaRegistryClient(schemaRegConfig);
+                }
 
                 string subject = SubjectNameStrategy.Topic.ConstructValueSubjectName(data.topicName, null);
-                System.Threading.Tasks.Task<int> task = schemRegClient.RegisterSchemaAsync(subject, Processing.KafkaWriterTaskWorker.schemaDefault.ToString());
+                Task<int> task = schemRegClient.RegisterSchemaAsync(subject, KafkaWriterTaskWorker.schemaDefault.ToString());
                 if (!task.Wait((int)data.timeout * 1000))
                     throw new TimeoutException();
 
@@ -411,7 +440,7 @@ namespace iba.Processing
                 }
             }
 
-            config.EnableSslCertificateVerification = data.EnableSSLVerification;
+            config.EnableSslCertificateVerification = data.enableSSLVerification;
             config.ClientId = data.identifier;
             config.MessageTimeoutMs = (int)(data.timeout * 1000);
             switch (data.AckMode)

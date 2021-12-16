@@ -14,16 +14,16 @@ namespace iba.Data
     [Serializable]
     public class KafkaWriterTaskData : TaskData, ICertifiable
     {
-        public string clusterAddress;
-        public string topicName;
-        public double timeout;//in sec
-        public List<KafkaRecord> Records;
-        public List<Param> Params;
-        public string identifier;
-        public DigitalFormat digitalFormat;
-        public string schemaRegistryAddress;
-        public string key;
-        public List<string> metadata;
+        public string clusterAddress { get; set; }
+        public string topicName { get; set; }
+        public double timeout { get; set; } //in seconds
+        public List<KafkaRecord> Records { get; set; }
+        public List<Param> Params { get; set; }
+        public string identifier { get; set; }
+        public DigitalFormat digitalFormat { get; set; }
+        public string schemaRegistryAddress { get; set; }
+        public string key { get; set; }
+        public List<string> metadata { get; set; }
         public MonitorData MonitorData { get; set; }
         public string TestDatFile { get; set; }
         public RequiredAcks AckMode { get; set; }
@@ -36,7 +36,12 @@ namespace iba.Data
         public string SSLCAThumbprint { get; set; }
         public string SASLUsername { get; set; }
         public string SASLPass { get; set; }
-        public bool EnableSSLVerification { get; set; }
+        public bool enableSSLVerification { get; set; }
+        public string schemaSSLClientThumbprint { get; set; }
+        public string schemaSSLCAThumbprint { get; set; }
+        public string schemaUsername { get; set; }
+        public string schemaPass { get; set; }
+        public bool schemaEnableSSLVerification { get; set; }
 
         public enum DigitalFormat
         {
@@ -214,10 +219,11 @@ namespace iba.Data
             digitalFormat = DigitalFormat.TrueFalse;
             identifier = "";
             AnalysisFile = "";
-            topicName = "ibaDatCo-Test";
+            topicName = "";
             clusterAddress = "";
             schemaRegistryAddress = "";
             key = "";
+            TestDatFile = "";
             AckMode = RequiredAcks.None;
             ClusterMode = ClusterType.Kafka;
             ClusterSecurityMode = ClusterSecurityType.PLAINTEXT;
@@ -227,7 +233,10 @@ namespace iba.Data
             SSLCAThumbprint = "";
             SASLUsername = "";
             SASLPass = "";
-            EnableSSLVerification = false;
+            schemaSSLClientThumbprint = "";
+            schemaSSLCAThumbprint = "";
+            schemaUsername = "";
+            schemaPass = "";
         }
 
         public KafkaWriterTaskData() : this(null) { }
@@ -251,6 +260,7 @@ namespace iba.Data
             d.ClusterSecurityMode = ClusterSecurityMode;
             d.SchemaRegistrySecurityMode = SchemaRegistrySecurityMode;
             d.key = key;
+            d.TestDatFile = TestDatFile;
             d.metadata = metadata.Select(r => (string)r.Clone()).ToList();
             d.Name = Name;
             d.SASLMechanismMode = SASLMechanismMode;
@@ -258,7 +268,12 @@ namespace iba.Data
             d.SSLCAThumbprint = SSLCAThumbprint;
             d.SASLUsername = SASLUsername;
             d.SASLPass = SASLPass;
-            d.EnableSSLVerification = EnableSSLVerification;
+            d.enableSSLVerification = enableSSLVerification;
+            d.schemaSSLClientThumbprint = schemaSSLClientThumbprint;
+            d.schemaSSLCAThumbprint = schemaSSLCAThumbprint;
+            d.schemaUsername = schemaUsername;
+            d.schemaPass = schemaPass;
+            d.schemaEnableSSLVerification = schemaEnableSSLVerification;
             return d;
         }
 
@@ -284,13 +299,19 @@ namespace iba.Data
                 ClusterSecurityMode == other.ClusterSecurityMode &&
                 SchemaRegistrySecurityMode == other.SchemaRegistrySecurityMode &&
                 key == other.key &&
+                TestDatFile == other.TestDatFile &&
                 metadata.SequenceEqual(other.metadata) &&
                 SASLMechanismMode == other.SASLMechanismMode &&
                 SSLClientThumbprint == other.SSLClientThumbprint &&
                 SSLCAThumbprint == other.SSLCAThumbprint &&
                 SASLUsername == other.SASLUsername &&
                 SASLPass == other.SASLPass &&
-                EnableSSLVerification == other.EnableSSLVerification;
+                enableSSLVerification == other.enableSSLVerification &&
+                schemaSSLClientThumbprint == other.schemaSSLClientThumbprint &&
+                schemaSSLCAThumbprint == other.schemaSSLCAThumbprint &&
+                schemaUsername == other.schemaUsername &&
+                schemaPass == other.schemaPass &&
+                schemaEnableSSLVerification == other.schemaEnableSSLVerification;
         }
 
         public void EvaluateValues(string filename, IbaAnalyzer.IbaAnalyzer ibaAnalyzer)
