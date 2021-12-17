@@ -576,7 +576,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;Copy server files
   SetOutPath "$INSTDIR"
   File "..\InstallFiles\Protected\ibaDatCoordinatorService.exe"
-  File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinatorService.exe.config"
+  File "..\ibaDatCoordinatorService\bin\Release\ibaDatCoordinatorService.exe.config"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
 
   ;Copy resources
