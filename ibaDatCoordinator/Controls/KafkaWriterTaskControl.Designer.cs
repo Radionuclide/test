@@ -49,7 +49,6 @@
             this.schemaNameTextBox = new System.Windows.Forms.TextBox();
             this.schemaPassLabel = new System.Windows.Forms.Label();
             this.schemaNameLabel = new System.Windows.Forms.Label();
-            this.testConnectionButton = new System.Windows.Forms.Button();
             this.CACertPlaceholder = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.CACertificateLabel = new System.Windows.Forms.Label();
@@ -88,6 +87,7 @@
             this.importParamButton = new System.Windows.Forms.Button();
             this.exportParamButton = new System.Windows.Forms.Button();
             this.tabConnection = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.exprGrid = new DevExpress.XtraGrid.GridControl();
             this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.expressionGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -145,9 +145,9 @@
             this.m_monitorGroup.Controls.Add(this.m_nudMemory);
             this.m_monitorGroup.Controls.Add(this.m_cbTime);
             this.m_monitorGroup.Controls.Add(this.m_cbMemory);
-            this.m_monitorGroup.Location = new System.Drawing.Point(3, 730);
+            this.m_monitorGroup.Location = new System.Drawing.Point(0, 638);
             this.m_monitorGroup.Name = "m_monitorGroup";
-            this.m_monitorGroup.Size = new System.Drawing.Size(797, 71);
+            this.m_monitorGroup.Size = new System.Drawing.Size(795, 71);
             this.m_monitorGroup.TabIndex = 26;
             this.m_monitorGroup.TabStop = false;
             this.m_monitorGroup.Text = "Monitor ibaAnalyzer";
@@ -257,7 +257,7 @@
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
-            this.tabControl1.Size = new System.Drawing.Size(797, 725);
+            this.tabControl1.Size = new System.Drawing.Size(797, 633);
             this.tabControl1.Style = Crownwood.DotNetMagic.Common.VisualStyle.IDE2005;
             this.tabControl1.TabIndex = 0;
             this.tabControl1.TabPages.AddRange(new Crownwood.DotNetMagic.Controls.TabPage[] {
@@ -279,7 +279,6 @@
             this.tabTarget.Controls.Add(this.schemaNameTextBox);
             this.tabTarget.Controls.Add(this.schemaPassLabel);
             this.tabTarget.Controls.Add(this.schemaNameLabel);
-            this.tabTarget.Controls.Add(this.testConnectionButton);
             this.tabTarget.Controls.Add(this.CACertPlaceholder);
             this.tabTarget.Controls.Add(this.label12);
             this.tabTarget.Controls.Add(this.CACertificateLabel);
@@ -323,7 +322,7 @@
             this.tabTarget.Selected = false;
             this.tabTarget.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabTarget.SelectTextColor = System.Drawing.Color.Empty;
-            this.tabTarget.Size = new System.Drawing.Size(795, 700);
+            this.tabTarget.Size = new System.Drawing.Size(795, 608);
             this.tabTarget.TabIndex = 0;
             this.tabTarget.Text = "tabTarget";
             this.tabTarget.Title = "Connection";
@@ -422,17 +421,6 @@
             this.schemaNameLabel.Size = new System.Drawing.Size(58, 13);
             this.schemaNameLabel.TabIndex = 85;
             this.schemaNameLabel.Text = "Username:";
-            // 
-            // testConnectionButton
-            // 
-            this.testConnectionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.testConnectionButton.Location = new System.Drawing.Point(57, 896);
-            this.testConnectionButton.Margin = new System.Windows.Forms.Padding(2);
-            this.testConnectionButton.Name = "testConnectionButton";
-            this.testConnectionButton.Size = new System.Drawing.Size(143, 21);
-            this.testConnectionButton.TabIndex = 84;
-            this.testConnectionButton.Text = "Test connection";
-            this.testConnectionButton.UseVisualStyleBackColor = true;
             // 
             // CACertPlaceholder
             // 
@@ -605,7 +593,7 @@
             this.paramGrid.MainView = this._viewParam;
             this.paramGrid.Margin = new System.Windows.Forms.Padding(2);
             this.paramGrid.Name = "paramGrid";
-            this.paramGrid.Size = new System.Drawing.Size(532, 210);
+            this.paramGrid.Size = new System.Drawing.Size(532, 118);
             this.paramGrid.TabIndex = 23;
             this.paramGrid.TabStop = false;
             this.paramGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -768,7 +756,7 @@
             this.paramRemoveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.paramRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("paramRemoveButton.Image")));
             this.paramRemoveButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.paramRemoveButton.Location = new System.Drawing.Point(765, 669);
+            this.paramRemoveButton.Location = new System.Drawing.Point(765, 577);
             this.paramRemoveButton.Name = "paramRemoveButton";
             this.paramRemoveButton.Size = new System.Drawing.Size(24, 24);
             this.paramRemoveButton.TabIndex = 25;
@@ -855,6 +843,7 @@
             // 
             // tabConnection
             // 
+            this.tabConnection.Controls.Add(this.button1);
             this.tabConnection.Controls.Add(this.exprGrid);
             this.tabConnection.Controls.Add(this.label8);
             this.tabConnection.Controls.Add(this.expressionAddButton);
@@ -889,11 +878,22 @@
             this.tabConnection.SelectBackColor = System.Drawing.Color.Empty;
             this.tabConnection.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConnection.SelectTextColor = System.Drawing.Color.Empty;
-            this.tabConnection.Size = new System.Drawing.Size(795, 700);
+            this.tabConnection.Size = new System.Drawing.Size(795, 608);
             this.tabConnection.TabIndex = 1;
             this.tabConnection.Text = "tabConnection";
             this.tabConnection.Title = "Target";
             this.tabConnection.ToolTip = "Page";
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(549, 116);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(151, 23);
+            this.button1.TabIndex = 55;
+            this.button1.Text = "Test connection";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.testConnectionButton_Click);
             // 
             // exprGrid
             // 
@@ -905,7 +905,7 @@
             this.exprGrid.Margin = new System.Windows.Forms.Padding(15, 16, 15, 16);
             this.exprGrid.MinimumSize = new System.Drawing.Size(0, 162);
             this.exprGrid.Name = "exprGrid";
-            this.exprGrid.Size = new System.Drawing.Size(749, 491);
+            this.exprGrid.Size = new System.Drawing.Size(749, 399);
             this.exprGrid.TabIndex = 17;
             this.exprGrid.TabStop = false;
             this.exprGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1059,7 +1059,7 @@
             this.expressionRemoveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.expressionRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("expressionRemoveButton.Image")));
             this.expressionRemoveButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.expressionRemoveButton.Location = new System.Drawing.Point(765, 668);
+            this.expressionRemoveButton.Location = new System.Drawing.Point(765, 576);
             this.expressionRemoveButton.Name = "expressionRemoveButton";
             this.expressionRemoveButton.Size = new System.Drawing.Size(24, 24);
             this.expressionRemoveButton.TabIndex = 22;
@@ -1083,7 +1083,7 @@
             this.keyTextBox.Location = new System.Drawing.Point(149, 87);
             this.keyTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.keyTextBox.Name = "keyTextBox";
-            this.keyTextBox.Size = new System.Drawing.Size(457, 20);
+            this.keyTextBox.Size = new System.Drawing.Size(551, 20);
             this.keyTextBox.TabIndex = 52;
             // 
             // dataFormatComboBox
@@ -1256,9 +1256,9 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.m_monitorGroup);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(675, 738);
+            this.MinimumSize = new System.Drawing.Size(675, 714);
             this.Name = "KafkaWriterTaskControl";
-            this.Size = new System.Drawing.Size(797, 810);
+            this.Size = new System.Drawing.Size(797, 714);
             this.m_monitorGroup.ResumeLayout(false);
             this.m_monitorGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
@@ -1328,7 +1328,6 @@
         private System.Windows.Forms.Button importParamButton;
         private System.Windows.Forms.Button exportParamButton;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
-        private System.Windows.Forms.Button testConnectionButton;
         private Crownwood.DotNetMagic.Controls.TabPage tabConnection;
         protected DevExpress.XtraGrid.GridControl exprGrid;
         private DevExpress.XtraGrid.Views.Grid.GridView dataGV;
@@ -1370,5 +1369,6 @@
         private System.Windows.Forms.TextBox schemaNameTextBox;
         private System.Windows.Forms.Label schemaPassLabel;
         private System.Windows.Forms.Label schemaNameLabel;
+        private System.Windows.Forms.Button button1;
     }
 }
