@@ -652,6 +652,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\DataTransferControl.resx">
       <DependentUpon>DataTransferControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ErrorPluginTaskControl.resx">
       <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
@@ -749,6 +750,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\KafkaWriterTaskControl.resx">
       <DependentUpon>KafkaWriterTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>

@@ -1771,6 +1771,7 @@ namespace iba.Processing
         private CertificateManagerJsonAdapter m_certManagerJsonAdapter;
         public virtual object HandleCertificate(string command, object args = null)
         {
+            object ret = null;
             switch (command)
             {
                 case "GetCertificateUsage":
@@ -1781,13 +1782,15 @@ namespace iba.Processing
                     File.WriteAllBytes(serverFile, certFile.Item1);
                     break;
                 case "AddCertificate":
-                    return m_certManagerJsonAdapter.AddCertificate(args as string);
+                    ret = m_certManagerJsonAdapter.AddCertificate(args as string);
+                    break;
                 case "ExportCertificate":
                     return m_certManagerJsonAdapter.ExportCertificate2(args as string);
                 case "ExportCertificateWithPrivateKey":
                     return m_certManagerJsonAdapter.ExportCertificateWithPrivateKey(args as string);
                 case "RemoveCertificate":
-                    return m_certManagerJsonAdapter.RemoveCertificate(args as string);
+                    ret = m_certManagerJsonAdapter.RemoveCertificate(args as string);
+                    break;
                 case "DownloadToClientTempFile":
                     bool includePrivateKey = (args as bool?) ?? false;
                     string serverCertificateTempFile = $@"{DataPath.CertificateFolder(Program.ApplicationState.SERVICE)}\Temp\Export.{(includePrivateKey ? "pfx" : "cer")}";
@@ -1795,13 +1798,16 @@ namespace iba.Processing
                     File.Delete(serverCertificateTempFile);
                     return cert;
                 case "GenerateCertificate":
-                    return m_certManagerJsonAdapter.GenerateCertificate(args as string);
+                    ret = m_certManagerJsonAdapter.GenerateCertificate(args as string);
+                    break;
                 case "EditCertificate":
-                    return m_certManagerJsonAdapter.EditCertificate(args as string);
+                    ret = m_certManagerJsonAdapter.EditCertificate(args as string);
+                    break;
                 case "GetCertificates":
                     return m_certManagerJsonAdapter.GetCertificates();
             }
-            return null;
+            OpcUaWorker.UpdateCerts();
+            return ret;
         }
 
         public virtual object KafkaTestConnection(KafkaWriterTaskData data)

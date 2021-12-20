@@ -32,8 +32,8 @@ namespace iba.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServiceSettingsControl));
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
             this.m_folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.certificatesUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.gb_Certificates = new iba.Utility.CollapsibleGroupBox();
             this.certificatesControl = new iba.Controls.AppCertificatesControl();
             this.gb_GlobalCleanup = new iba.Utility.CollapsibleGroupBox();
@@ -52,6 +52,7 @@ namespace iba.Controls
             this.m_cbRememberPassword = new System.Windows.Forms.CheckBox();
             this.m_passwordStatusLabel = new System.Windows.Forms.Label();
             this.gb_IbaAnalyzer = new iba.Utility.CollapsibleGroupBox();
+            this.m_btTransferAnalyzerSettings = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.m_nudRestartIbaAnalyzer = new System.Windows.Forms.NumericUpDown();
@@ -79,12 +80,11 @@ namespace iba.Controls
             ((System.ComponentModel.ISupportInitialize)(this.m_nudPostponeTime)).BeginInit();
             this.SuspendLayout();
             // 
-            // m_btTransferAnalyzerSettings
+            // certificatesUpdateTimer
             // 
-            resources.ApplyResources(this.m_btTransferAnalyzerSettings, "m_btTransferAnalyzerSettings");
-            this.m_btTransferAnalyzerSettings.Name = "m_btTransferAnalyzerSettings";
-            this.m_toolTip.SetToolTip(this.m_btTransferAnalyzerSettings, resources.GetString("m_btTransferAnalyzerSettings.ToolTip"));
-            this.m_btTransferAnalyzerSettings.UseVisualStyleBackColor = true;
+            this.certificatesUpdateTimer.Enabled = true;
+            this.certificatesUpdateTimer.Interval = 4000;
+            this.certificatesUpdateTimer.Tick += new System.EventHandler(this.certificatesUpdateTimer_Tick);
             // 
             // gb_Certificates
             // 
@@ -219,6 +219,13 @@ namespace iba.Controls
             this.gb_IbaAnalyzer.Controls.Add(this.label5);
             this.gb_IbaAnalyzer.Name = "gb_IbaAnalyzer";
             this.gb_IbaAnalyzer.TabStop = false;
+            // 
+            // m_btTransferAnalyzerSettings
+            // 
+            resources.ApplyResources(this.m_btTransferAnalyzerSettings, "m_btTransferAnalyzerSettings");
+            this.m_btTransferAnalyzerSettings.Name = "m_btTransferAnalyzerSettings";
+            this.m_toolTip.SetToolTip(this.m_btTransferAnalyzerSettings, resources.GetString("m_btTransferAnalyzerSettings.ToolTip"));
+            this.m_btTransferAnalyzerSettings.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -431,5 +438,6 @@ namespace iba.Controls
         private System.Windows.Forms.Button m_btTransferAnalyzerSettings;
         private Utility.CollapsibleGroupBox gb_Certificates;
         private AppCertificatesControl certificatesControl;
+        private System.Windows.Forms.Timer certificatesUpdateTimer;
     }
 }

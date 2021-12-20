@@ -143,6 +143,9 @@ namespace iba.Processing.IbaOpcUa
             {
                 try
                 {
+                    // user with a unknown certificate tries to connect to our server
+                    // we should add his sertificate as untrusted
+                    TaskManager.Manager.CertificateManager.AddCertificate(e.Certificate, false);
                     ClientCertificateRejected?.Invoke(this, EventArgs.Empty);
                 }
                 catch { /* not critical */ }
@@ -186,6 +189,7 @@ namespace iba.Processing.IbaOpcUa
                     {
                         // can happen (improbably) when collection is modified by another thread 
                     }
+                    TaskManager.Manager.CertificateManager.AddCertificate(certToken.Certificate, false);
                     throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
                         $@"User certificate {certToken.Certificate.Thumbprint} is not accepted");
                 default:

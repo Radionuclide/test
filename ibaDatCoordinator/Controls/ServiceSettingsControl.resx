@@ -123,54 +123,20 @@
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>291, 17</value>
   </metadata>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_btTransferAnalyzerSettings.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_btTransferAnalyzerSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>692, 98</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 28</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_btTransferAnalyzerSettings.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.Text" xml:space="preserve">
-    <value>Transfer ibaAnalyzer settings</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.ToolTip" xml:space="preserve">
-    <value>Copies preferences, macros and filters from local account to system account</value>
-  </data>
-  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Name" xml:space="preserve">
-    <value>m_btTransferAnalyzerSettings</value>
-  </data>
-  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_btTransferAnalyzerSettings.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="m_folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>456, 17</value>
   </metadata>
+  <metadata name="certificatesUpdateTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>671, 17</value>
+  </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="gb_Certificates.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="certificatesControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="certificatesControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
@@ -180,6 +146,7 @@
   <data name="certificatesControl.Size" type="System.Drawing.Size, System.Drawing">
     <value>921, 262</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="certificatesControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -741,6 +708,42 @@
   <data name="gb_IbaAnalyzer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_btTransferAnalyzerSettings.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>692, 98</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 28</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Text" xml:space="preserve">
+    <value>Transfer ibaAnalyzer settings</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.ToolTip" xml:space="preserve">
+    <value>Copies preferences, macros and filters from local account to system account</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Name" xml:space="preserve">
+    <value>m_btTransferAnalyzerSettings</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
@@ -1247,6 +1250,12 @@
   </data>
   <data name="&gt;&gt;m_folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;certificatesUpdateTimer.Name" xml:space="preserve">
+    <value>certificatesUpdateTimer</value>
+  </data>
+  <data name="&gt;&gt;certificatesUpdateTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ServiceSettingsControl</value>

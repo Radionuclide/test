@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 using iba.Data;
 using iba.Logging;
 using iba.Processing.IbaOpcUa;
@@ -325,7 +326,8 @@ namespace iba.Processing
             if (!serverCert.Trusted)
                 throw new InvalidOperationException(Resources.opcUaErrorCertNotTrusted);
             UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = serverCert.Certificate;
-            // create list of allowed user certificates
+
+            // CertifiedUsers is used for logon policies
             IbaOpcUaServer.CertifiedUsers.Clear();
             foreach (var cert in TaskManager.Manager.CertificateManager.GetCertificates())
             {
@@ -552,20 +554,52 @@ namespace iba.Processing
             return new List<OpcUaData.CertificateTag>(_opcUaData.Certificates);
         }
 
+        public void UpdateCerts()
+        {
+            var trustedCerts = GetTrustedCertificates();
+            var rejectedCerts = GetRejectedCertificates();
+            var ownCerts = GetOwnCertificates();
+            var allCerts = new List<X509Certificate2>();
+            allCerts.AddRange(trustedCerts);
+            allCerts.AddRange(rejectedCerts);
+            allCerts.AddRange(ownCerts);
+            bool restartServer = false;
+
+            List<CCertificate> certsInStore = TaskManager.Manager.CertificateManager.GetCertificates();
+            var trustedCertsInStore = certsInStore.Where(c => c.Trusted);
+            var rejectedCertsInStore = certsInStore.Where(c => !c.Trusted);
+            var toRemove = new List<CCertificate>();
+            foreach (var c in certsInStore)
+            {
+                X509Certificate2 existedTrusted = trustedCerts.Find(cert => cert.Equals(c.Certificate));
+                X509Certificate2 existedRejected = rejectedCerts.Find(cert => cert.Equals(c.Certificate));
+                if (existedTrusted is null && existedRejected is null)
+                {
+                    AddExistingCertificate(c.Certificate);
+                    SetCertificateTrust(c.Thumbprint, c.Trusted);
+                    restartServer = true;
+                }
+                else if (c.Trusted && existedTrusted is null || !c.Trusted && existedRejected is null)
+                {
+                    SetCertificateTrust(c.Thumbprint, c.Trusted);
+                    restartServer = true;
+                }
+            }
+            foreach (var c in allCerts)
+            {
+                if (certsInStore.Find(cert => cert.Certificate.Equals(c)) is null)
+                {
+                    RemoveCertificateFromAllStores(c.Thumbprint);
+                    restartServer = true;
+                }
+            }
+            if (Status == ExtMonWorkerStatus.Started)
+                RestartServer();
+        }
+
+
         public void SynchronizeCertificates()
         {
-            // check id uniqueness
-            var ids = new HashSet<string>();
-            for (var i = _opcUaData.Certificates.Count - 1; i >= 0; i--)
-            {
-                var thumbprint = _opcUaData.Certificates[i].Thumbprint;
-                if (string.IsNullOrWhiteSpace(thumbprint) || ids.Contains(thumbprint))
-                {
-                    // should not happen
-                    _opcUaData.Certificates.RemoveAt(i); // remove duplicate
-                }
-                ids.Add(thumbprint);
-            }
 
             var trustedCerts = GetTrustedCertificates();
             var rejectedCerts = GetRejectedCertificates();
@@ -840,6 +874,7 @@ namespace iba.Processing
                 if (cert.Thumbprint == thumbprint && cert.HasPrivateKey)
                 {
                     // removed to use new certificate selector
+
                     //UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = cert;
                     _opcUaData.SetServerCertificateFlag(cert.Thumbprint);
                     return;
