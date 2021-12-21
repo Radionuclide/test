@@ -593,7 +593,7 @@ namespace iba.Processing
                     restartServer = true;
                 }
             }
-            if (Status == ExtMonWorkerStatus.Started)
+            if (Status == ExtMonWorkerStatus.Started && restartServer)
                 RestartServer();
         }
 
