@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using iba.CertificateStore;
+using iba.CertificateStore.Manager;
 using Opc.Ua;
 using Opc.Ua.Server;
 
@@ -125,7 +127,10 @@ namespace iba.Processing.IbaOpcUa
             server.SessionManager.SessionClosing += SessionManager_SessionChanged;
             server.SessionManager.SessionCreated += SessionManager_SessionChanged;
 
+
+            CertificateValidator.Update(null, null, null);
             CertificateValidator.CertificateValidation += CertificateValidator_CertificateValidation;
+            CertificateValidator.CacheValidatedCertificates = false;
         }
 
         /// <summary> Occurs if there was a change of any kind (activated, closed, etc) in server sessions.
@@ -139,17 +144,70 @@ namespace iba.Processing.IbaOpcUa
 
         private void CertificateValidator_CertificateValidation(CertificateValidator sender, CertificateValidationEventArgs e)
         {
-            if (e.Error.StatusCode == StatusCodes.BadCertificateUntrusted)
+            try
             {
-                try
+                ICertificateManager certManager = TaskManager.Manager.CertificateManager;
+                var cert = certManager.GetCertificate(e.Certificate.Thumbprint);
+
+                bool bTrusted = false;
+                if (cert == null)
                 {
-                    // user with a unknown certificate tries to connect to our server
-                    // we should add his sertificate as untrusted
-                    TaskManager.Manager.CertificateManager.AddCertificate(e.Certificate, false);
-                    ClientCertificateRejected?.Invoke(this, EventArgs.Empty);
+                    // Add it to the store so it can be accepted later
+                    certManager.AddCertificate(e.Certificate, false);
                 }
-                catch { /* not critical */ }
+                else
+                {
+                    bTrusted = cert.Trusted;
+                    if (bTrusted)
+                        bTrusted = VerifyCertificate(cert.Certificate);
+                }
+
+                e.Accept = bTrusted;
             }
+            catch (Exception)
+            {
+                e.Accept = false;
+            }
+
+            try
+            {
+                if (!e.Accept)
+                    ClientCertificateRejected?.Invoke(this, EventArgs.Empty);
+            }
+            catch 
+            {
+            }
+        }
+
+        private bool VerifyCertificate(X509Certificate2 cert)
+        {
+            X509Chain chain = new X509Chain();
+            chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
+            chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllowUnknownCertificateAuthority;
+
+            try
+            {
+                bool bChainOk = chain.Build(cert);
+                if (!bChainOk)
+                {
+                    foreach (X509ChainStatus chainStatus in chain.ChainStatus)
+                    {
+                        if (chainStatus.Status == X509ChainStatusFlags.UntrustedRoot)
+                            continue;
+
+                        // TODO
+                        //logger.LogError($"Certificate {cert.Thumbprint} is rejected: {chainStatus.Status.ToString()} - {chainStatus.StatusInformation}");
+                    }
+                }
+                else
+                    return true;
+            }
+            catch (Exception ex)
+            {
+            	//TODO
+                //logger.LogError($"Unexpected error verifying certificate {((cert == null) ? "UNKNOWN" : cert.Thumbprint)}: {ex.Message}");
+            }
+            return false;
         }
 
         private void SessionManager_SessionChanged(Session session, SessionEventReason reason)
@@ -178,18 +236,22 @@ namespace iba.Processing.IbaOpcUa
                     try
                     {
                         // certToken.Certificate is always null, so let's compare certificates by raw data
-                        foreach (var user in CertifiedUsers)
+                        foreach (var cert in TaskManager.Manager.CertificateManager.GetCertificates())
                         {
-                            if (user.RawData.SequenceEqual(certToken.CertificateData))
-                                // grant access
-                                return;
+                            if (cert.Certificate.RawData.SequenceEqual(certToken.CertificateData))
+                            {
+                                if (cert.Permissions.HasFlag(CertificatePermissions.Authentication) && cert.Trusted)
+                                    return;
+                                else
+                                    break;
+                            }
                         }
+                        TaskManager.Manager.CertificateManager.AddCertificate(certToken.Certificate, false);
                     }
                     catch
                     {
                         // can happen (improbably) when collection is modified by another thread 
                     }
-                    TaskManager.Manager.CertificateManager.AddCertificate(certToken.Certificate, false);
                     throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
                         $@"User certificate {certToken.Certificate.Thumbprint} is not accepted");
                 default:
@@ -239,7 +301,6 @@ namespace iba.Processing.IbaOpcUa
         public string NamedUserAccountName { get; private set; }
         public string NamedUserAccountPassword { get; private set; }
 
-        public readonly HashSet<X509Certificate2> CertifiedUsers = new HashSet<X509Certificate2>();
 
         public void SetUserAccountConfiguration(string name = null, string password = null)
         {

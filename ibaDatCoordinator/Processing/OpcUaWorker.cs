@@ -92,13 +92,6 @@ namespace iba.Processing
                 // UaAppConfiguration.TraceConfiguration.TraceMasks = // is set in ibaDatCoordinatorOpcUaServerConfig.xml;
                 UaAppConfiguration.TraceConfiguration.ApplySettings();
 
-                try
-                {
-                    // check the application certificate.
-                    UaApplication.CheckApplicationInstanceCertificate(false, 0).Wait();
-                }
-                catch { /* not critical; can be set up later */ }
-
                 // change status from initial (errored) to stopped
                 Status = ExtMonWorkerStatus.Stopped;
 
@@ -326,16 +319,6 @@ namespace iba.Processing
             if (!serverCert.Trusted)
                 throw new InvalidOperationException(Resources.opcUaErrorCertNotTrusted);
             UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = serverCert.Certificate;
-
-            // CertifiedUsers is used for logon policies
-            IbaOpcUaServer.CertifiedUsers.Clear();
-            foreach (var cert in TaskManager.Manager.CertificateManager.GetCertificates())
-            {
-                if (!cert.Permissions.HasFlag(CertificatePermissions.Authentication) || !cert.Trusted)
-                    continue;
-                Debug.Assert(cert.Certificate != null);
-                IbaOpcUaServer.CertifiedUsers.Add(cert.Certificate);
-            }
         }
 
         private void ApplyEndpoints()
@@ -553,50 +536,6 @@ namespace iba.Processing
             SynchronizeCertificates();
             return new List<OpcUaData.CertificateTag>(_opcUaData.Certificates);
         }
-
-        public void UpdateCerts()
-        {
-            var trustedCerts = GetTrustedCertificates();
-            var rejectedCerts = GetRejectedCertificates();
-            var ownCerts = GetOwnCertificates();
-            var allCerts = new List<X509Certificate2>();
-            allCerts.AddRange(trustedCerts);
-            allCerts.AddRange(rejectedCerts);
-            allCerts.AddRange(ownCerts);
-            bool restartServer = false;
-
-            List<CCertificate> certsInStore = TaskManager.Manager.CertificateManager.GetCertificates();
-            var trustedCertsInStore = certsInStore.Where(c => c.Trusted);
-            var rejectedCertsInStore = certsInStore.Where(c => !c.Trusted);
-            var toRemove = new List<CCertificate>();
-            foreach (var c in certsInStore)
-            {
-                X509Certificate2 existedTrusted = trustedCerts.Find(cert => cert.Equals(c.Certificate));
-                X509Certificate2 existedRejected = rejectedCerts.Find(cert => cert.Equals(c.Certificate));
-                if (existedTrusted is null && existedRejected is null)
-                {
-                    AddExistingCertificate(c.Certificate);
-                    SetCertificateTrust(c.Thumbprint, c.Trusted);
-                    restartServer = true;
-                }
-                else if (c.Trusted && existedTrusted is null || !c.Trusted && existedRejected is null)
-                {
-                    SetCertificateTrust(c.Thumbprint, c.Trusted);
-                    restartServer = true;
-                }
-            }
-            foreach (var c in allCerts)
-            {
-                if (certsInStore.Find(cert => cert.Certificate.Equals(c)) is null)
-                {
-                    RemoveCertificateFromAllStores(c.Thumbprint);
-                    restartServer = true;
-                }
-            }
-            if (Status == ExtMonWorkerStatus.Started && restartServer)
-                RestartServer();
-        }
-
 
         public void SynchronizeCertificates()
         {

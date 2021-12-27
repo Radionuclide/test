@@ -1805,9 +1805,6 @@ namespace iba.Processing
                     break;
                 case "GetCertificates":
                     return m_certManagerJsonAdapter.GetCertificates();
-                case "UpdateOPCUAServer":
-                    OpcUaWorker.UpdateCerts();
-                    break;
             }
             return ret;
         }

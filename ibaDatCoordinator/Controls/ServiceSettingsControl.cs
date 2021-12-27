@@ -153,8 +153,6 @@ namespace iba.Controls
             TaskManager.Manager.RememberPassTime = TimeSpan.FromMinutes((double)m_nudRememberTime.Value);
             TaskManager.Manager.MaxResourceIntensiveTasks = (int)m_nudResourceCritical.Value;
             TaskManager.Manager.GlobalCleanupDataList = m_globalCleanupData;
-
-            TaskManager.Manager.HandleCertificate("UpdateOPCUAServer");
         }
 
         #endregion
