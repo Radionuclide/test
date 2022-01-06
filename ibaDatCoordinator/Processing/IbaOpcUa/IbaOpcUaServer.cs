@@ -235,18 +235,23 @@ namespace iba.Processing.IbaOpcUa
                 case X509IdentityToken certToken:
                     try
                     {
+                        bool notFound = true;
                         // certToken.Certificate is always null, so let's compare certificates by raw data
                         foreach (var cert in TaskManager.Manager.CertificateManager.GetCertificates())
                         {
                             if (cert.Certificate.RawData.SequenceEqual(certToken.CertificateData))
                             {
                                 if (cert.Permissions.HasFlag(CertificatePermissions.Authentication) && cert.Trusted)
-                                    return;
+                                    return; // accept
                                 else
+                                {
+                                    notFound = false;
                                     break;
+                                }
                             }
                         }
-                        TaskManager.Manager.CertificateManager.AddCertificate(certToken.Certificate, false);
+                        if (notFound)
+                            TaskManager.Manager.CertificateManager.AddCertificate(certToken.Certificate, false);
                     }
                     catch
                     {
