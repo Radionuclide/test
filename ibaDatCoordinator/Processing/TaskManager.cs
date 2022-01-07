@@ -1069,19 +1069,6 @@ namespace iba.Processing
             }
         }
 
-        public virtual List<OpcUaData.CertificateTag> OpcUaHandleCertificate(string command, object args = null)
-        {
-            try
-            {
-                return OpcUaWorker.HandleCertificate(command, args);
-            }
-            catch (Exception ex)
-            {
-                LogData.Data.Logger.Log(Level.Exception, $"{nameof(OpcUaHandleCertificate)}. {ex.Message}");
-                return null;
-            }
-        }
-
         public virtual OpcUaData.NetworkConfiguration OpcUaGetNetworkConfiguration()
         {
             try
@@ -2140,19 +2127,6 @@ namespace iba.Processing
                     HandleBrokenConnection(ex);
                     Manager.OpcUaData = value;
                 }
-            }
-        }
-
-        public override List<OpcUaData.CertificateTag> OpcUaHandleCertificate(string command, object args = null)
-        {
-            try
-            {
-                return Program.CommunicationObject.Manager.OpcUaHandleCertificate(command, args);
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-                return Manager.OpcUaHandleCertificate(command, args);
             }
         }
 
