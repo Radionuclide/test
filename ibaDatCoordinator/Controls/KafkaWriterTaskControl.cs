@@ -219,6 +219,7 @@ namespace iba.Controls
             _expressionTableData.Clear();
             foreach (var rec in _data.Records)
                 _expressionTableData.Add((KafkaWriterTaskData.KafkaRecord)rec.Clone());
+            _paramTableData.Clear();
             foreach (var par in _data.Params)
                 _paramTableData.Add((KafkaWriterTaskData.Param)par.Clone());
 
