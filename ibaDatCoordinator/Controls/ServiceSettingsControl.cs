@@ -13,14 +13,21 @@ using iba.Data;
 using System.IO;
 using System.Diagnostics;
 using System.IO.Pipes;
+using iba.CertificateStore;
+using iba.CertificateStore.Forms;
+using iba.CertificateStore.Proxy;
+using iba.CertificateStore.Manager;
+using System.Security.Cryptography.X509Certificates;
 
 namespace iba.Controls
 {
-    public partial class ServiceSettingsControl : UserControl, IPropertyPane
+    public partial class ServiceSettingsControl : UserControl, IPropertyPane, ICertificatesControlHost, ICertifiable
     {
         public ServiceSettingsControl()
         {
             InitializeComponent();
+            certificatesControl.SetControlHost(this);
+            certificatesControl.LoadDataSource();
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //hide non relevant 
             {
                 Control[] ToHide = new Control[] {label5, m_tbAnalyzerExe, m_executeIBAAButton,
@@ -32,14 +39,14 @@ namespace iba.Controls
                 }
                 int Offset = 30;
                 gb_IbaAnalyzer.Height -= Offset;
-                CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { gb_Password, gb_GlobalCleanup };
+                CollapsibleGroupBox[] gboxesLower = new CollapsibleGroupBox[] { gb_Password, gb_Certificates, gb_GlobalCleanup };
                 foreach (var box in gboxesLower)
                 {
                     //box.Location = new Point(box.Location.X, box.Location.Y - Offset);
                     box.Top -= Offset;
                 }
                 m_ceManager = new CollapsibleElementManager(this);
-                CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_Processing, gb_IbaAnalyzer, gb_Password, gb_GlobalCleanup };
+                CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_Processing, gb_IbaAnalyzer, gb_Password, gb_Certificates, gb_GlobalCleanup };
                 foreach (var box in gboxes)
                 {
                     box.Init();
@@ -50,7 +57,7 @@ namespace iba.Controls
             {
                 //m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
                 m_ceManager = new CollapsibleElementManager(this);
-                CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_Processing, gb_IbaAnalyzer, gb_Password, gb_GlobalCleanup };
+                CollapsibleGroupBox[] gboxes = new CollapsibleGroupBox[] { gb_Processing, gb_IbaAnalyzer, gb_Password, gb_Certificates, gb_GlobalCleanup };
                 foreach (var box in gboxes)
                 {
                     box.Init();
@@ -61,12 +68,15 @@ namespace iba.Controls
         }
 
         private CollapsibleElementManager m_ceManager;
-
+        IPropertyPaneManager m_manager;
 
         #region IPropertyPane Members
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            m_manager = manager;
+            certificatesControl.LoadDataSource();
+
             m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
             m_nudRestartIbaAnalyzer.Value = Math.Max(1,TaskManager.Manager.MaxIbaAnalyzerCalls);
             m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
@@ -536,6 +546,202 @@ namespace iba.Controls
                 
                 ctl.Enabled = enabled;
             }
+        }
+
+#region ICertificatesControlHost implementation
+        public bool IsLocalHost { get; }
+        public string ServerAddress { get; }
+
+        public void OnSaveDataSource()
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// The root node of the container that contains all certificate infos (that can be assigned with a certificates combo box)
+        /// </summary>
+        /// <returns></returns>
+        public ICertifiable GetCertifiableRootNode()
+        {
+            return this;
+        }
+
+        public IEnumerable<ICertifiable> GetCertifiableChildItems()
+        {
+            var tasks = TaskManager.Manager.Configurations.SelectMany(c => c.Tasks).OfType<ICertifiable>();
+            var opcData = TaskManager.Manager.OpcUaData;
+            if (opcData != null)
+                tasks = tasks.Concat(new[] { opcData });
+
+            return tasks;
+        }
+
+        public IEnumerable<ICertificateInfo> GetCertificateInfo()
+        {
+            yield break;
+        }
+
+        public void ManageCertificates()
+        {
+            // this happens when "Manage certificates" is selected in a certificates combobox
+            // go to the certificates control
+            //tabControl1.SelectedIndex = 0;
+        }
+
+
+        /// <summary>
+        /// Executed on double click in the "Used by" column to go to the double-clicked part that is used by a certificate.
+        /// </summary>
+        /// <param name="displayName"></param>
+        public void JumpToCertificateInfoNode(string displayName)
+        {
+            (m_manager as MainForm)?.MoveToTaskByName(displayName);
+        }
+
+        /// <summary>
+        /// Implement the ICertificateManagerProxy interface on the client side to communicate with the certificate manager on the server side
+        /// 
+        /// CertificateManagerProxyJsonAdapter can be used to implement the JSON interface
+        /// As an alternative, other than JSON serialization can be used by implementing 
+        /// ICertificateManagerProxy instead of ICertificateManagerJsonProxy
+        /// 
+        /// Please DON'T use [Serializable] for serialization.
+        /// </summary>
+        public ICertificateManagerProxy CertificateManagerProxy { get; } = new CertificateManagerProxyJsonAdapter(new AppCertificateManagerJsonProxy());
+        public bool IsCertificatesReadonly => false;
+        public bool IsReadOnly => false; // set to true in case of user restriction
+        public string UsagePart { get; } = "EX"; // IO and DS are used in PDA
+        public IWin32Window Instance => this;
+        public ContextMenuStrip PopupMenu { get; } = new ContextMenuStrip(); // or reuse the context menu of an other control
+
+        #endregion ICertificatesControlHost implementation
+
+        private void certificatesUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            // if a new client tries to connect to our server
+            // OPC UA SDK automatically adds its certificate to "rejected" store.
+            // It is known on the level of the Server,
+            // but in is not known on the level of the control.
+            // Control should be informed somehow to reflect changes in the table here.
+            // I use a timer here, because it is much simpler and more reliable than informing client via event.
+            // This Timer is active ONLY if the OPC UA pane is visible, so it doesn't have any computational impact most of time.
+            certificatesControl.LoadDataSource();
+        }
+    }
+
+    /// <summary>
+    /// On the client side, implement the ICertificateManagerJsonProxy interface.
+    /// 
+    /// This implementation shows what needs to be called on the server side when the client proxy is used.
+    /// </summary>
+    class AppCertificateManagerJsonProxy : ICertificateManagerJsonProxy
+    {
+        public string GetCertificateUsage(string thumbprint)
+        {
+            return TaskManager.Manager.HandleCertificate("GetCertificateUsage", thumbprint) as string;
+        }
+
+        public string PathToUnc(string fileName, bool convertLocal)
+        {
+            // conversion from local to unc path is done in different classes in different applications.
+            return fileName;
+
+            // in real apps: @"\\...";
+            // convertLocal: if true, also convert local files to UNC paths
+        }
+
+        public bool UploadCertificateFile(string certPath)
+        {
+            //string localFile = Path.GetFileName(certPath);
+            byte[] cert = File.ReadAllBytes(certPath);
+            var arg = new Tuple<byte[], string>(cert, Path.GetFileName(certPath));
+            TaskManager.Manager.HandleCertificate("Upload", arg);
+
+            //string serverFile = Path.Combine(serverCertificateDirectory, "Temp", localFile);
+            // upload to the server certificate directory
+            //if (File.Exists(serverFile))
+            //File.Delete(serverFile);
+            //File.Copy(certPath, serverFile); // this should be an upload, not just a file copy
+            // upload and download of files is done differently in different Iba applications
+            return true;
+        }
+
+        public string TryAddCertificateToServerStore(string addCertificateArgs)
+        {
+            string res = TaskManager.Manager.HandleCertificate("AddCertificate", addCertificateArgs) as string;
+
+            //var e = new CAddCertificateResult { Success = false }.ToJson(); // if no communication possible
+            return res;
+        }
+
+        public string AddCertificate(string addCertificateArgs)
+        {
+            return TaskManager.Manager.HandleCertificate("AddCertificate", addCertificateArgs) as string;
+        }
+
+        public CertificateExportState? ExportCertificate(string exportCertificateArgs)
+        {
+            return TaskManager.Manager.HandleCertificate("ExportCertificate", exportCertificateArgs) as CertificateExportState?;
+        }
+
+        public CertificateExportState? ExportCertificateWithPrivateKey(string exportCertificateArgs)
+        {
+            return TaskManager.Manager.HandleCertificate("ExportCertificateWithPrivateKey", exportCertificateArgs) as CertificateExportState?;
+        }
+
+        public void SetPeriodicUpdate()
+        {
+            // if available, set a regularly returning diagnostic signal
+        }
+
+        public bool RemoveCertificate(string thumbprint)
+        {
+            return (TaskManager.Manager.HandleCertificate("RemoveCertificate", thumbprint) as bool?) ?? false;
+        }
+
+        public string DownloadToClientTempFile(bool includePrivateKey)
+        {
+            // download a file Temp\Export.pfx or Temp\Export.cer from the certificates
+            // directory on the server side.
+            // Then open an save file dialog.
+            // returns the location of the downloaded file on the client side.
+            // return null when cancelled
+            // return "" in case of an exception.
+
+
+            var cert = TaskManager.Manager.HandleCertificate("DownloadToClientTempFile", includePrivateKey) as byte[];
+            var tempFile = $@"{DataPath.CertificateFolder(Program.ApplicationState.SERVICE)}\Temp\Export.{(includePrivateKey ? "pfx" : "cer")}";
+
+            File.WriteAllBytes(tempFile, cert);
+            return tempFile;
+        }
+
+        /// <summary>
+        /// whether the server can be reached from the client
+        /// Should be a dynamic value
+        /// </summary>
+        public bool Available { get; } = true;
+        public string ServerAddress { get; } = "localhost";
+
+        public string GenerateCertificate(string cGenerateCertificateArgs)
+        {
+            return TaskManager.Manager.HandleCertificate("GenerateCertificate", cGenerateCertificateArgs) as string;
+        }
+
+        public bool EditCertificate(string cEditCertificateArgs)
+        {
+            return (TaskManager.Manager.HandleCertificate("EditCertificate", cEditCertificateArgs) as bool?) ?? false;
+        }
+
+        /// <summary>
+        /// Get all the certificates from the certificate manager on the certificate manager json endpoint
+        /// 
+        /// !! private key data is NOT included
+        /// </summary>
+        public string[] GetCertificates()
+        {
+            return TaskManager.Manager.HandleCertificate("GetCertificates") as string[];
         }
     }
 }

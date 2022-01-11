@@ -430,6 +430,8 @@ SectionEnd
   File "..\Dependencies\${LANGPREFIX}\hdCommon.resources.dll"
   File "..\Dependencies\${LANGPREFIX}\hd_plugin.resources.dll"
   File "..\Dependencies\${LANGPREFIX}\ibaUser*.resources.dll"
+  File "..\Dependencies\${LANGPREFIX}\ibaCertificateStore.Forms.resources.dll"
+  File "..\Dependencies\${LANGPREFIX}\ibaCertificateStore.Manager.resources.dll"
 
 !macroend
 
@@ -505,6 +507,13 @@ Section -Common
   File "..\Dependencies\Kafka\Avro.dll"
   File "..\Dependencies\Kafka\Confluent.Kafka.dll"
   File "..\Dependencies\Kafka\Confluent.SchemaRegistry.dll"
+  ;Certificate Manager
+  File "..\Dependencies\CertificateManager\ibaCertificateStore.Core.dll"
+  File "..\Dependencies\CertificateManager\ibaCertificateStore.Forms.dll"
+  File "..\Dependencies\CertificateManager\ibaCertificateStore.Manager.dll"
+  File "..\Dependencies\CertificateManager\ibaCertificateStore.Proxy.dll"
+  File "..\Dependencies\CertificateManager\ibaPdaUtilities.dll"
+
   
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\${PROTECT_DIR}ibaDatCoordinator.exe"
@@ -621,6 +630,7 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   ;Copy server files
   SetOutPath "$INSTDIR"
   File "..\InstallFiles\${PROTECT_DIR}ibaDatCoordinatorService.exe"
+  File "..\ibaDatCoordinatorService\bin\Release\ibaDatCoordinatorService.exe.config"
   File "..\ibaDatCoordinatorStatus\bin\release\ibaDatCoordinatorStatus.exe"
 
   ;Copy resources
@@ -926,6 +936,8 @@ SectionEnd
   Delete "$INSTDIR\${LANGPREFIX}\hdCommon.resources.dll"
   Delete "$INSTDIR\${LANGPREFIX}\hd_plugin.resources.dll"
   Delete "$INSTDIR\${LANGPREFIX}\ibaUser*.resources.dll"
+  Delete "$INSTDIR\${LANGPREFIX}\ibaCertificateStore.Forms.resources.dll"
+  Delete "$INSTDIR\${LANGPREFIX}\ibaCertificateStore.Manager.resources.dll"
 
   RMDir "$INSTDIR\${LANGPREFIX}"
 
@@ -974,6 +986,12 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Avro.dll"
   Delete "$INSTDIR\Confluent.Kafka.dll"
   Delete "$INSTDIR\Confluent.SchemaRegistry.dll"
+  
+  Delete "$INSTDIR\ibaCertificateStore.Core.dll"
+  Delete "$INSTDIR\ibaCertificateStore.Forms.dll"
+  Delete "$INSTDIR\ibaCertificateStore.Manager.dll"
+  Delete "$INSTDIR\ibaCertificateStore.Proxy.dll"
+  Delete "$INSTDIR\ibaPdaUtilities.dll"
 
   Delete "$INSTDIR\ibaSnmpLib.dll"
   Delete "$INSTDIR\WinSCPnet.dll"

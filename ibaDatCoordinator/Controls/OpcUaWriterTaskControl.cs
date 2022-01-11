@@ -52,7 +52,7 @@ namespace iba.Controls
 
         private void CellExpressionChanged(object sender, CellValueChangedEventArgs e)
         {
-            if (e.Column != gridColumnExpression) return;
+            if (e.Column != gridColumnExpression || e.Value is null)  return;
             string expression = e.Value.ToString();
 
             if (_view.GetRowCellValue(e.RowHandle, gridColumnName).ToString() == "" && expression != "")
@@ -61,7 +61,7 @@ namespace iba.Controls
 
         private void CellNameChanged(object sender, CellValueChangedEventArgs e)
         {
-            if (e.Column != gridColumnName) return;
+            if (e.Column != gridColumnName || e.Value is null) return;
             string name = e.Value.ToString();
 
             name = EnsureNameUnique(name, e.RowHandle);

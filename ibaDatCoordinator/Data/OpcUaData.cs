@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
+using iba.CertificateStore;
 using iba.Utility;
 using Opc.Ua;
 
@@ -15,7 +16,7 @@ namespace iba.Data
 {
     /// <summary> OPC UA configuration data (Endpoints, Security, etc) </summary>
     [Serializable]
-    public class OpcUaData : ICloneable
+    public class OpcUaData : ICloneable, ICertifiable
     {
         public bool Enabled { get; set; }
 
@@ -275,186 +276,6 @@ namespace iba.Data
         }
 
 
-        #region Certificates
-
-        [Serializable]
-        public class CertificateTag
-        {
-            [XmlIgnore]
-            public X509Certificate2 Certificate;
-
-            public bool IsTrusted;
-            public bool IsUsedForServer;
-            public bool IsUsedForAuthentication;
-            public bool HasPrivateKey;
-
-            private string _thumbprint;
-            public string Thumbprint
-            {
-                get
-                {
-                    if (_thumbprint == null)
-                    {
-                        // get it from Certificate and keep
-                        _thumbprint = Certificate?.Thumbprint;
-                    }
-                    else // is already set
-                    {
-                        // check consistency
-                        Debug.Assert(Certificate == null || Certificate?.Thumbprint == _thumbprint);
-                    }
-
-                    return _thumbprint;
-                }
-                set
-                {
-                    _thumbprint = value;
-                    // check consistency
-                    Debug.Assert(Certificate == null || Certificate?.Thumbprint == _thumbprint);
-                }
-            }
-
-            public override bool Equals(object obj)
-            {
-                var other = obj as CertificateTag;
-                if (other == null)
-                {
-                    return false;
-                }
-
-                // ReSharper disable ArrangeThisQualifier
-                return
-                    this.Thumbprint == other.Thumbprint &&
-
-                    /* these items are not needed to be compared
-                       because thumbprint includes them indirectly:
-                    // this.Name == other.Name && 
-                    // this.Issuer == other.Issuer && // not needed; thumbprint cmp is sufficient
-                    // this.ExpirationDate == other.ExpirationDate && // not needed; thumbprint cmp is sufficient
-                    */
-
-                    /* our app-specific flags (that not contained to Thumbprint) should also be compared: */
-                    this.HasPrivateKey == other.HasPrivateKey &&
-                    this.IsTrusted == other.IsTrusted && 
-                    this.IsUsedForServer == other.IsUsedForServer &&
-                    this.IsUsedForAuthentication == other.IsUsedForAuthentication;
-                // ReSharper restore ArrangeThisQualifier
-            }
-
-            public override int GetHashCode() => Thumbprint?.GetHashCode() ?? 0;
-        }
-
-        public List<CertificateTag> Certificates = new List<CertificateTag>();
-
-        /// <summary> (copied from ibaPda project) </summary>
-        [Serializable]
-        public class CGenerateCertificateArgs
-        {
-            public CGenerateCertificateArgs()
-            {
-                ApplicationName = "";
-                ApplicationUri = "";
-                Lifetime = 120;
-                UseSha256 = true;
-                KeySize = 2048;
-            }
-            public CGenerateCertificateArgs(string appName, string appUri, int lifeTimeMonths, bool bUseSha256, int keySize)
-            {
-                ApplicationName = appName;
-                ApplicationUri = appUri;
-                Lifetime = lifeTimeMonths;
-                UseSha256 = bUseSha256;
-                KeySize = keySize;
-            }
-
-            public string ApplicationName;
-            public string ApplicationUri;
-            public int Lifetime;
-            public bool UseSha256;
-            public int KeySize; // in bytes
-        }
-
-        /// <summary>
-        /// Indicates how many changes were made in certificate configuration.
-        /// This is used to tell whether we should Restart server or not.
-        /// (Certificates are not fully stored in OpcUaData (only some attributes are stored);
-        /// therefore they need a special handling).
-        /// </summary>
-        public int CertificateChangesCounter;
-
-        public CertificateTag GetCertificate(string thumbprint)
-        {
-            if (string.IsNullOrWhiteSpace(thumbprint))
-                return null;
-
-            foreach (var certTag in Certificates)
-            {
-                if (certTag.Thumbprint == thumbprint)
-                    return certTag;
-            }
-            return null;
-        }
-
-        public CertificateTag AddCertificate(X509Certificate2 cert)
-        {
-            var certTag = new CertificateTag
-            {
-                Certificate = cert,
-            };
-            return AddCertificate(certTag);
-        }
-
-        public CertificateTag AddCertificate(CertificateTag certTag)
-        {
-            Debug.Assert(certTag != null);
-            // ensure th is not empty
-            Debug.Assert(!string.IsNullOrWhiteSpace(certTag.Thumbprint));
-
-            if (GetCertificate(certTag.Thumbprint) != null)
-            {
-                // cannot add a certificate, because such th already present in collection
-                Debug.Assert(false);
-                return null;
-            }
-
-            Certificates.Add(certTag);
-            return certTag;
-        }
-
-        public void SetServerCertificateFlag(CertificateTag cert)
-        {
-            // server flag can only be single
-            // reset other flags
-            foreach (var certTag in Certificates)
-            {
-                certTag.IsUsedForServer = false;
-            }
-            cert.IsUsedForServer = true;
-        }
-
-        public void SetServerCertificateFlag(string thumbprint)
-        {
-            CertificateTag certTag = GetCertificate(thumbprint);
-            if (certTag == null)
-            {
-                Debug.Assert(false); // not found
-                return;
-            }
-            SetServerCertificateFlag(certTag);
-        }
-
-        public CertificateTag GetServerCertificate()
-        {
-            foreach (var certTag in Certificates)
-            {
-                if (certTag.IsUsedForServer && certTag.HasPrivateKey)
-                    return certTag;
-            }
-            return null;
-        }
-
-        #endregion
-
         #endregion
 
         /// <summary> Creates a deep copy </summary>
@@ -501,9 +322,8 @@ namespace iba.Data
                 this.SecurityBasic128Mode == other.SecurityBasic128Mode &&
                 this.SecurityBasic256Mode == other.SecurityBasic256Mode &&
                 this.SecurityBasic256Sha256Mode == other.SecurityBasic256Sha256Mode &&
-                this.CertificateChangesCounter == other.CertificateChangesCounter &&
                 this.Endpoints.SequenceEqual(other.Endpoints) &&
-                this.Certificates.SequenceEqual(other.Certificates);
+                this.serverSertificateThumbprint == other.serverSertificateThumbprint;
             // ReSharper restore ArrangeThisQualifier
         }
 
@@ -519,6 +339,22 @@ namespace iba.Data
             string epString = Endpoints?.Count == 1 ? Endpoints[0].Uri : $"{Endpoints?.Count}";
 
             return $"{Enabled}, EP:[{epString}]";
+        }
+
+        public string serverSertificateThumbprint;
+
+        public static string certificateUserName = "OPC UA Server";
+
+        public IEnumerable<ICertifiable> GetCertifiableChildItems()  { yield break; }
+
+        public IEnumerable<ICertificateInfo> GetCertificateInfo()
+        {
+            if (serverSertificateThumbprint != null && serverSertificateThumbprint != "")
+                yield return new CertificateInfoForwarder(
+                       () => serverSertificateThumbprint,
+                       value => serverSertificateThumbprint = value,
+                       CertificateRequirement.Valid | CertificateRequirement.Trusted | CertificateRequirement.PrivateKey,
+                       certificateUserName);
         }
     }
 }

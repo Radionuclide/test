@@ -10,22 +10,104 @@ using System.Collections.Generic;
 using DevExpress.XtraEditors.Controls;
 using iba.Remoting;
 using IbaAnalyzer;
+using iba.CertificateStore.Forms;
+using iba.CertificateStore;
+using iba.CertificateStore.Proxy;
+using System.Security.Cryptography.X509Certificates;
+using System.Linq;
+using System.Collections;
 
 namespace iba.Controls
 {
-    internal partial class KafkaWriterTaskControl : UserControl, IPropertyPane
+    internal partial class KafkaWriterTaskControl : UserControl, IPropertyPane, ICertificatesControlHost
     {
         readonly BindingList<KafkaWriterTaskData.KafkaRecord> _expressionTableData;
         readonly BindingList<KafkaWriterTaskData.Param> _paramTableData;
         private readonly AnalyzerManager _analyzerManager;
-        protected DevExpress.XtraGrid.GridControl exprGrid;
         private KafkaWriterTaskData _data;
         private readonly GridView _viewExpr;
-        private GridView _viewParam;
+        CertificatesComboBox clientCertCBox, CACertCBox, schemaClientCertCBox, schemaCACertCBox;
+        CertificateInfo CACertParams, schemaCACertParams;
+        CertificateInfoWithPrivateKey clientCertParams, schemaClientCertParams;
+        IPropertyPaneManager m_manager;
+        HidebleControlBlock clusterSSL, clusterSASL, schemaSSL, schemaAuth;
+
+        #region ICertificatesControlHost
+        public bool IsLocalHost { get; }
+        public string ServerAddress { get; }
+        public ICertificateManagerProxy CertificateManagerProxy { get; } = new CertificateManagerProxyJsonAdapter(new AppCertificateManagerJsonProxy());
+        public bool IsCertificatesReadonly => false;
+        public bool IsReadOnly => false; // set to true in case of user restriction
+        public string UsagePart { get; } = "EX"; // IO and DS are used in PDA
+        public IWin32Window Instance => this;
+        public ContextMenuStrip PopupMenu { get; } = new ContextMenuStrip(); // or reuse the context menu of an other control
+#endregion
+
+        private class HidebleControlBlock
+        {
+            List<Control> controls = new List<Control>();
+            List<Control> underlyingControls = new List<Control>();
+            int height;
+            bool hidden = false;
+            public HidebleControlBlock(params Control[] controlsParam)
+            {
+                this.controls.AddRange(controlsParam);
+                int topPos = controls.Min(c => c.Location.Y);
+                int lowestPos = controls.Max(c => c.Location.Y);
+                foreach (Control c in controls[0].Parent.Controls)
+                {
+                    int pos = c.Location.Y;
+                    if (pos > lowestPos && c.Anchor.HasFlag(AnchorStyles.Top))
+                        underlyingControls.Add(c);
+                }
+                int underlyingControlPos = underlyingControls.Min(c => c.Location.Y);
+                
+                height = underlyingControlPos - topPos;
+            }
+
+            public void Hide()
+            {
+                if (hidden)
+                    return;
+                hidden = true;
+                var controlsToMove = underlyingControls.Where(c => !c.Anchor.HasFlag(AnchorStyles.Bottom));
+                foreach (var c in controlsToMove)
+                    c.Top -= height;
+                var controlToResize = underlyingControls.Where(c => c.Anchor.HasFlag(AnchorStyles.Bottom));
+                foreach (var c in controlToResize)
+                { 
+                    c.Top -= height;
+                    c.Height += height;
+                }       
+                foreach (var c in controls)
+                    c.Hide();
+            }
+
+            public void Show()
+            {
+                if (!hidden)
+                    return;
+                hidden = false;
+                var controlsToMove = underlyingControls.Where(c => !c.Anchor.HasFlag(AnchorStyles.Bottom));
+                foreach (var c in controlsToMove)
+                    c.Top += height;
+                var controlToResize = underlyingControls.Where(c => c.Anchor.HasFlag(AnchorStyles.Bottom));
+                foreach (var c in controlToResize)
+                {
+                    c.Top += height;
+                    c.Height -= height;
+                }
+                foreach (var c in controls)
+                    c.Show();
+            }
+        }
+
 
         public KafkaWriterTaskControl()
         {
             InitializeComponent();
+
+
             _analyzerManager = new AnalyzerManager();
             _expressionTableData = new BindingList<KafkaWriterTaskData.KafkaRecord>();
             exprGrid.DataSource = _expressionTableData;
@@ -63,22 +145,81 @@ namespace iba.Controls
 
             _toolTip.SetToolTip(importParamButton, iba.Properties.Resources.ImportParametersFromCSV);
             _toolTip.SetToolTip(exportParamButton, iba.Properties.Resources.ExportParametersToCSV);
+
+            clientCertCBox = CertificatesComboBox.ReplaceCombobox(clientCertPlaceholder, "", false);
+            CACertCBox = CertificatesComboBox.ReplaceCombobox(CACertPlaceholder, "", false);
+            schemaClientCertCBox = CertificatesComboBox.ReplaceCombobox(schemaClientCertPlaceholder, "", false);
+            schemaCACertCBox = CertificatesComboBox.ReplaceCombobox(schemaCACertPlaceholder, "", false);
+
+            clusterSSL = new HidebleControlBlock(clientCertificateLabel, enableSSLVerificationCb, CACertificateLabel, clientCertCBox, CACertCBox);
+            clusterSASL = new HidebleControlBlock(SASLMechLabel, SASLMechanismComboBox, SASLNameTextBox, SASLPassTextBox, SASLNameLabel, SASLPassLabel );
+            schemaSSL = new HidebleControlBlock(schemaClientCertificateLabel, schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertificateLabel, schemaCACertCBox );
+            schemaAuth = new HidebleControlBlock(schemaNameLabel, schemaNameTextBox, schemaPassLabel, schemaPassTextBox);
         }
 
-        private void UpdateParamTableButtons()
+        class CertificateInfo : ICertificateInfo
         {
-            paramRemoveButton.Enabled = _viewParam.FocusedRowHandle >= 0;
+            public string Thumbprint { get; set; }
+
+            public CertificateRequirement CertificateRequirements { get; } =
+                CertificateRequirement.Trusted |
+                CertificateRequirement.Valid;
+
+            public string DisplayName { get; } = "Cert for Kafka";
+        }
+
+        class CertificateInfoWithPrivateKey : ICertificateInfo
+        {
+            public string Thumbprint { get; set; }
+
+            public CertificateRequirement CertificateRequirements { get; } =
+                CertificateRequirement.Trusted |
+                CertificateRequirement.Valid |
+                CertificateRequirement.PrivateKey;
+
+            public string DisplayName { get; } = "Cert for Kafka";
         }
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
+            m_manager = manager;
             _data = datasource as KafkaWriterTaskData;
+
+            clientCertParams = new CertificateInfoWithPrivateKey();
+            clientCertParams.Thumbprint = _data.SSLClientThumbprint;
+            clientCertCBox.UnsetEnvironment();
+            clientCertCBox.SetEnvironment(this, clientCertParams);
+
+            CACertParams = new CertificateInfo();
+            CACertParams.Thumbprint = _data.SSLCAThumbprint;
+            CACertCBox.UnsetEnvironment();
+            CACertCBox.SetEnvironment(this, CACertParams);
+
+            schemaClientCertParams = new CertificateInfoWithPrivateKey();
+            schemaClientCertParams.Thumbprint = _data.schemaSSLClientThumbprint;
+            schemaClientCertCBox.UnsetEnvironment();
+            schemaClientCertCBox.SetEnvironment(this, schemaClientCertParams);
+
+            schemaCACertParams = new CertificateInfo();
+            schemaCACertParams.Thumbprint = _data.schemaSSLCAThumbprint;
+            schemaCACertCBox.UnsetEnvironment();
+            schemaCACertCBox.SetEnvironment(this, schemaCACertParams);
+
+            SASLNameTextBox.Text = _data.SASLUsername;
+            SASLPassTextBox.Text = _data.SASLPass;
+            enableSSLVerificationCb.Checked = _data.enableSSLVerification;
+
+            schemaNameTextBox.Text = _data.schemaUsername;
+            schemaPassTextBox.Text = _data.schemaPass;
+            schemaEnableSSLVerificationCb.Checked = _data.schemaEnableSSLVerification;
 
             m_pdoFileTextBox.Text = _data.AnalysisFile;
             m_datFileTextBox.Text = _data.TestDatFile;
+            keyTextBox.Text = _data.key;
             _expressionTableData.Clear();
             foreach (var rec in _data.Records)
                 _expressionTableData.Add((KafkaWriterTaskData.KafkaRecord)rec.Clone());
+            _paramTableData.Clear();
             foreach (var par in _data.Params)
                 _paramTableData.Add((KafkaWriterTaskData.Param)par.Clone());
 
@@ -164,34 +305,27 @@ namespace iba.Controls
                     break;
             }
 
+            switch (_data.SASLMechanismMode)
+            {
+                case KafkaWriterTaskData.SASLMechanismType.PLAIN:
+                    SASLMechanismComboBox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.SASLMechanismType.SCRAM_SHA_256:
+                    SASLMechanismComboBox.SelectedIndex = 1;
+                    break;
+                case KafkaWriterTaskData.SASLMechanismType.SCRAM_SHA_512:
+                    SASLMechanismComboBox.SelectedIndex = 2;
+                    break;
+            }
+
             UpdateSource();
+            UpdateExprTableButtons();
+            UpdateParamTableButtons();
 
             m_cbMemory.Checked = _data.MonitorData.MonitorMemoryUsage;
             m_cbTime.Checked = _data.MonitorData.MonitorTime;
             m_nudMemory.Value = Math.Max(m_nudMemory.Minimum, Math.Min(m_nudMemory.Maximum, _data.MonitorData.MemoryLimit));
             m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(_data.MonitorData.TimeLimit.TotalMinutes, 1));
-        }
-
-        private bool FillTopicList()
-        {
-            try
-            {
-                using (var adminClient = new AdminClientBuilder(new AdminClientConfig { BootstrapServers = addressTextBox.Text }).Build())
-                {
-                    var meta = adminClient.GetMetadata(TimeSpan.FromSeconds(Decimal.ToDouble(timeoutNumericUpDown.Value)));
-
-                    topicComboBox.Invoke((MethodInvoker)delegate {
-                        topicComboBox.Items.Clear();
-                        meta.Topics.ForEach(topic => { topicComboBox.Items.Add(topic.Topic); });
-                    });
-                }
-                return true;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return false;
         }
 
         public void LeaveCleanup() { }
@@ -225,13 +359,32 @@ namespace iba.Controls
             _data.ClusterMode = (KafkaWriterTaskData.ClusterType)typeComboBox.SelectedIndex;
             _data.ClusterSecurityMode = (KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex;
             _data.SchemaRegistrySecurityMode = (KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex;
+            _data.SASLMechanismMode = (KafkaWriterTaskData.SASLMechanismType) schemaRegistryConnectionSecurityComboBox.SelectedIndex;
             _data.AnalysisFile = m_pdoFileTextBox.Text;
             _data.TestDatFile = m_datFileTextBox.Text;
+            _data.key = keyTextBox.Text;
 
             _data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             _data.MonitorData.MonitorTime = m_cbTime.Checked;
             _data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
             _data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
+
+            _data.SSLClientThumbprint = clientCertParams.Thumbprint;
+            _data.SSLCAThumbprint = CACertParams.Thumbprint;
+
+            _data.enableSSLVerification = enableSSLVerificationCb.Checked;
+
+            _data.SASLUsername = SASLNameTextBox.Text;
+            _data.SASLPass = SASLPassTextBox.Text;
+
+
+            _data.schemaSSLClientThumbprint = schemaClientCertParams.Thumbprint;
+            _data.schemaSSLCAThumbprint = schemaCACertParams.Thumbprint;
+
+            _data.schemaEnableSSLVerification = schemaEnableSSLVerificationCb.Checked;
+
+            _data.schemaUsername = schemaNameTextBox.Text;
+            _data.schemaPass = schemaPassTextBox.Text;
         }
 
 
@@ -243,11 +396,17 @@ namespace iba.Controls
 
             UpdateExprTableButtons();
         }
+
         private void UpdateExprTableButtons()
         {
-            expressionCopyButton.Enabled = expressionRemoveButton.Enabled = (_viewExpr.FocusedRowHandle >= 0);
-            upButton.Enabled = (_viewExpr.FocusedRowHandle > 0);
+            expressionCopyButton.Enabled = expressionRemoveButton.Enabled = (_viewExpr.RowCount > 0 && _viewExpr.FocusedRowHandle >= 0);
+            upButton.Enabled = (_viewExpr.RowCount > 0 && _viewExpr.FocusedRowHandle > 0);
             downButton.Enabled = (_viewExpr.RowCount > 0 && _viewExpr.FocusedRowHandle < _viewExpr.RowCount - 1);
+        }
+
+        private void UpdateParamTableButtons()
+        {
+            paramRemoveButton.Enabled = _viewParam.RowCount > 0 && _viewParam.FocusedRowHandle >= 0;
         }
 
         private void m_browsePDOFileButton_Click(object sender, EventArgs e)
@@ -446,6 +605,7 @@ namespace iba.Controls
         {
             _paramTableData.Add(new KafkaWriterTaskData.Param());
             _viewParam.FocusedRowHandle = _paramTableData.Count - 1;
+            UpdateParamTableButtons();
         }
 
         private void paramRemoveButton_Click(object sender, EventArgs e)
@@ -459,93 +619,20 @@ namespace iba.Controls
 
         private void testConnectionButton_Click(object sender, EventArgs e)
         {
+            SaveData();
             if (addressTextBox.Text == "")
                 return;
 
-            bool clusterAvailable = FillTopicList();
-
-            if (!clusterAvailable)
+            var res = Processing.TaskManager.Manager.KafkaTestConnection(_data);
+            if (res is null)
                 return;
-
-            if (schemaTextBox.Text == "")
+            if (res is Exception)
             {
-                MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show((res as Exception).Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-
-            Confluent.SchemaRegistry.CachedSchemaRegistryClient schemRegClient = null;
-            try
-            {
-                Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
-                schemRegConfig.Url = schemaTextBox.Text;
-                schemRegConfig.RequestTimeoutMs = Decimal.ToInt32(timeoutNumericUpDown.Value) * 1000;
-
-                // Add expert parameters
-                foreach (var par in _paramTableData)
-                {
-                    if (string.IsNullOrEmpty(par.Key))
-                        continue;
-
-                    if (!par.Key.StartsWith("schema.registry."))
-                        continue;
-
-                    schemRegConfig.Set(par.Key, par.Value);
-                }
-
-                schemRegClient = new Confluent.SchemaRegistry.CachedSchemaRegistryClient(schemRegConfig);
-                if (!(schemRegClient.GetAllSubjectsAsync()).Wait(Decimal.ToInt32(timeoutNumericUpDown.Value) * 1000))
-                {
-                    MessageBox.Show("Error connecting to schema registry: Timeout.", "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-            catch (AggregateException aggrEx)
-            {
-                string errorMsg = null;
-                foreach (Exception exc in aggrEx.InnerExceptions)
-                {
-                    string curMsg = exc.Message;
-                    if (exc is System.Net.Http.HttpRequestException httpExc)
-                    {
-                        //if (httpExc.InnerException is iba.Kafka.SchemaRegistry.SslVerificationException sslVerExc)
-                        //{
-                        //    // Log extra info
-                        //    System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                        //    sb.AppendLine("Kafka Schema Registry authentication error details:");
-                        //    sb.AppendLine();
-                        //    sb.AppendLine($"Request URI: {sslVerExc.RequestURI}");
-                        //    sb.AppendLine($"SSL Policy errors: {sslVerExc.SSLErrors}");
-                        //    sb.AppendLine();
-                        //    sb.AppendLine($"Certificate:");
-                        //    sb.AppendLine();
-                        //    sb.AppendLine(sslVerExc.Certificate);
-                        //    sb.AppendLine();
-                        //    sb.AppendLine($"Certificate chain:");
-                        //    sb.AppendLine();
-                        //    sb.AppendLine(sslVerExc.Chain);
-
-                        //    iba.Logging.ibaLogger.DebugFormat(sb.ToString());
-                        //}
-                    }
-
-                    errorMsg = (errorMsg == null) ? curMsg : string.Concat(errorMsg, Environment.NewLine, curMsg);
-                }
-                if (errorMsg != null)
-                    MessageBox.Show(errorMsg, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.InnerException != null ? ex.InnerException.Message : ex.Message, "ibaDatCoordinator", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
-            finally
-            {
-                if (schemRegClient != null)
-                    schemRegClient.Dispose();
-            }
+            topicComboBox.Items.Clear();            
+            topicComboBox.Items.AddRange((res as Metadata).Topics.Select(t => t.Topic).ToArray());
             MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -599,6 +686,36 @@ namespace iba.Controls
             }
         }
 
+        private void clusterConnectionSecurityComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.ClusterSecurityType.SSL ||
+                (KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.ClusterSecurityType.SASL_SSL)
+                clusterSSL.Show();
+            else
+                clusterSSL.Hide();
+
+            if ((KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.ClusterSecurityType.SASL_PLAINTEXT ||
+                (KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.ClusterSecurityType.SASL_SSL)
+                clusterSASL.Show();
+            else
+                clusterSASL.Hide();
+        }
+
+        private void schemaRegistryConnectionSecurityComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS ||
+                (KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS_AUTHENTICATION)
+                schemaSSL.Show();
+            else
+                schemaSSL.Hide();
+
+            if ((KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTP_AUTHENTICATION ||
+                (KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS_AUTHENTICATION)
+                schemaAuth.Show();
+            else
+                schemaAuth.Hide();
+        }
+
         private void OnExportParameters(object sender, EventArgs e)
         {
             string fileName;
@@ -637,6 +754,26 @@ namespace iba.Controls
             {
                 MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public void OnSaveDataSource()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICertifiable GetCertifiableRootNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ManageCertificates()
+        {
+            (m_manager as MainForm)?.MoveToSettigsTab();
+        }
+
+        public void JumpToCertificateInfoNode(string displayName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

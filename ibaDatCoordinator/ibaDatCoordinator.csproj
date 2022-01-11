@@ -179,6 +179,9 @@
     </Compile>
     <Compile Include="CommunicationObject.cs" />
     <Compile Include="Controls\AnalyzerTreeEditor.cs" />
+    <Compile Include="Controls\AppCertificatesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\BatchFileControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -226,18 +229,6 @@
     </Compile>
     <Compile Include="Controls\OpcUaIpAddressSelect.Designer.cs">
       <DependentUpon>OpcUaIpAddressSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\OpcUaCertificateEnterPasswordForm.Designer.cs">
-      <DependentUpon>OpcUaCertificateEnterPasswordForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\OpcUaCertificateGenerateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\OpcUaCertificateGenerateForm.Designer.cs">
-      <DependentUpon>OpcUaCertificateGenerateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\OpcUaControl.cs">
       <SubType>UserControl</SubType>
@@ -667,6 +658,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\DataTransferControl.resx">
       <DependentUpon>DataTransferControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ErrorPluginTaskControl.resx">
       <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
@@ -682,13 +674,6 @@
     <EmbeddedResource Include="Controls\GradientWaitingBar.resx" />
     <EmbeddedResource Include="Controls\HDEventCreationTaskControl.resx">
       <DependentUpon>HDEventCreationTaskControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\OpcUaCertificateEnterPasswordForm.resx">
-      <DependentUpon>OpcUaCertificateEnterPasswordForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\OpcUaCertificateGenerateForm.resx">
-      <DependentUpon>OpcUaCertificateGenerateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\OpcUaControl.resx">
       <DependentUpon>OpcUaControl.cs</DependentUpon>
@@ -764,6 +749,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\KafkaWriterTaskControl.resx">
       <DependentUpon>KafkaWriterTaskControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
@@ -1021,6 +1007,18 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="ibaCertificateStore.Core">
+      <Version>8.0.7</Version>
+    </PackageReference>
+    <PackageReference Include="ibaCertificateStore.Forms">
+      <Version>8.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="ibaCertificateStore.Manager">
+      <Version>8.0.7</Version>
+    </PackageReference>
+    <PackageReference Include="ibaCertificateStore.Proxy">
+      <Version>8.0.7</Version>
+    </PackageReference>
     <PackageReference Include="ibaSnmpLib">
       <Version>1.9.8</Version>
     </PackageReference>
@@ -1042,6 +1040,7 @@ mkdir "$(TargetDir)Plugins"
 move "$(TargetDir)hd_plugin.dll" "$(TargetDir)Plugins"
 copy "$(SolutionDir)Dependencies\PowerCollections.dll" "$(TargetDir)"
 copy "$(SolutionDir)Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml" "$(TargetDir)"
+copy "$(SolutionDir)Dependencies\Kafka\x86" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

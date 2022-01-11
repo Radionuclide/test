@@ -123,45 +123,69 @@
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>291, 17</value>
   </metadata>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_btTransferAnalyzerSettings.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_btTransferAnalyzerSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>519, 80</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 23</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_btTransferAnalyzerSettings.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.Text" xml:space="preserve">
-    <value>Transfer ibaAnalyzer settings</value>
-  </data>
-  <data name="m_btTransferAnalyzerSettings.ToolTip" xml:space="preserve">
-    <value>Copies preferences, macros and filters from local account to system account</value>
-  </data>
-  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Name" xml:space="preserve">
-    <value>m_btTransferAnalyzerSettings</value>
-  </data>
-  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Parent" xml:space="preserve">
-    <value>gb_IbaAnalyzer</value>
-  </data>
-  <data name="&gt;&gt;m_btTransferAnalyzerSettings.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="m_folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>456, 17</value>
   </metadata>
+  <metadata name="certificatesUpdateTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>671, 17</value>
+  </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="gb_Certificates.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="certificatesControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="certificatesControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="certificatesControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="certificatesControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>921, 262</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="certificatesControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;certificatesControl.Name" xml:space="preserve">
+    <value>certificatesControl</value>
+  </data>
+  <data name="&gt;&gt;certificatesControl.Type" xml:space="preserve">
+    <value>iba.Controls.AppCertificatesControl, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;certificatesControl.Parent" xml:space="preserve">
+    <value>gb_Certificates</value>
+  </data>
+  <data name="&gt;&gt;certificatesControl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="gb_Certificates.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 362</value>
+  </data>
+  <data name="gb_Certificates.Size" type="System.Drawing.Size, System.Drawing">
+    <value>936, 291</value>
+  </data>
+  <data name="gb_Certificates.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="gb_Certificates.Text" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="&gt;&gt;gb_Certificates.Name" xml:space="preserve">
+    <value>gb_Certificates</value>
+  </data>
+  <data name="&gt;&gt;gb_Certificates.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;gb_Certificates.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gb_Certificates.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="gb_GlobalCleanup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -178,10 +202,13 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+    <value>4, 0</value>
+  </data>
+  <data name="label7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 13</value>
+    <value>150, 17</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -211,10 +238,13 @@
     <value>NoControl</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>122, 0</value>
+    <value>162, 0</value>
+  </data>
+  <data name="label8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 13</value>
+    <value>92, 17</value>
   </data>
   <data name="label8.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -247,10 +277,13 @@
     <value>NoControl</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, 0</value>
+    <value>262, 0</value>
+  </data>
+  <data name="label9.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 13</value>
+    <value>125, 17</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -283,10 +316,13 @@
     <value>NoControl</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>297, 0</value>
+    <value>395, 0</value>
+  </data>
+  <data name="label10.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 13</value>
+    <value>165, 17</value>
   </data>
   <data name="label10.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -319,10 +355,13 @@
     <value>NoControl</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>427, 0</value>
+    <value>568, 0</value>
+  </data>
+  <data name="label11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 13</value>
+    <value>139, 17</value>
   </data>
   <data name="label11.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -355,10 +394,13 @@
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>537, 0</value>
+    <value>715, 0</value>
+  </data>
+  <data name="label12.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 13</value>
+    <value>85, 17</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -385,13 +427,16 @@
     <value>Left</value>
   </data>
   <data name="tbl_GlobalCleanup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
+    <value>4, 19</value>
+  </data>
+  <data name="tbl_GlobalCleanup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tbl_GlobalCleanup.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbl_GlobalCleanup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>604, 221</value>
+    <value>804, 272</value>
   </data>
   <data name="tbl_GlobalCleanup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -409,13 +454,19 @@
     <value>0</value>
   </data>
   <data name="tbl_GlobalCleanup.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label7" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label8" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label9" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label12" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,75,Absolute,100,Absolute,130,Absolute,110,Absolute,70" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label7" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label8" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label9" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label10" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label11" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label12" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,100,Absolute,133,Absolute,173,Absolute,147,Absolute,93" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,25" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="gb_GlobalCleanup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 294</value>
+    <value>20, 660</value>
+  </data>
+  <data name="gb_GlobalCleanup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="gb_GlobalCleanup.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="gb_GlobalCleanup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 240</value>
+    <value>936, 295</value>
   </data>
   <data name="gb_GlobalCleanup.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -427,13 +478,13 @@
     <value>gb_GlobalCleanup</value>
   </data>
   <data name="&gt;&gt;gb_GlobalCleanup.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_GlobalCleanup.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gb_GlobalCleanup.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="gb_Password.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -445,10 +496,13 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>464, 25</value>
+    <value>619, 31</value>
+  </data>
+  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
+    <value>57, 17</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -472,10 +526,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_ClearPassBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>97, 55</value>
+    <value>129, 68</value>
+  </data>
+  <data name="m_ClearPassBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_ClearPassBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 28</value>
   </data>
   <data name="m_ClearPassBtn.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -496,10 +553,13 @@
     <value>1</value>
   </data>
   <data name="m_nudRememberTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>398, 23</value>
+    <value>531, 28</value>
+  </data>
+  <data name="m_nudRememberTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_nudRememberTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+    <value>80, 22</value>
   </data>
   <data name="m_nudRememberTime.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -520,10 +580,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_SetChangePassBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 55</value>
+    <value>21, 68</value>
+  </data>
+  <data name="m_SetChangePassBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_SetChangePassBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 28</value>
   </data>
   <data name="m_SetChangePassBtn.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -553,10 +616,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbRememberPassword.Location" type="System.Drawing.Point, System.Drawing">
-    <value>213, 24</value>
+    <value>284, 30</value>
+  </data>
+  <data name="m_cbRememberPassword.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_cbRememberPassword.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 17</value>
+    <value>236, 21</value>
   </data>
   <data name="m_cbRememberPassword.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -583,10 +649,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_passwordStatusLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 25</value>
+    <value>17, 31</value>
+  </data>
+  <data name="m_passwordStatusLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="m_passwordStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
+    <value>106, 17</value>
   </data>
   <data name="m_passwordStatusLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -607,10 +676,16 @@
     <value>5</value>
   </data>
   <data name="gb_Password.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 204</value>
+    <value>20, 251</value>
+  </data>
+  <data name="gb_Password.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="gb_Password.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="gb_Password.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 84</value>
+    <value>936, 103</value>
   </data>
   <data name="gb_Password.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -622,16 +697,52 @@
     <value>gb_Password</value>
   </data>
   <data name="&gt;&gt;gb_Password.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_Password.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gb_Password.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="gb_IbaAnalyzer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>692, 98</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 28</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.Text" xml:space="preserve">
+    <value>Transfer ibaAnalyzer settings</value>
+  </data>
+  <data name="m_btTransferAnalyzerSettings.ToolTip" xml:space="preserve">
+    <value>Copies preferences, macros and filters from local account to system account</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Name" xml:space="preserve">
+    <value>m_btTransferAnalyzerSettings</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.Parent" xml:space="preserve">
+    <value>gb_IbaAnalyzer</value>
+  </data>
+  <data name="&gt;&gt;m_btTransferAnalyzerSettings.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -643,10 +754,13 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>289, 85</value>
+    <value>385, 105</value>
+  </data>
+  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 13</value>
+    <value>79, 17</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -676,10 +790,13 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 59</value>
+    <value>17, 73</value>
+  </data>
+  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 13</value>
+    <value>500, 17</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -703,10 +820,13 @@
     <value>Bottom, Left</value>
   </data>
   <data name="m_nudRestartIbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>223, 81</value>
+    <value>297, 100</value>
+  </data>
+  <data name="m_nudRestartIbaAnalyzer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_nudRestartIbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+    <value>80, 22</value>
   </data>
   <data name="m_nudRestartIbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -727,10 +847,13 @@
     <value>Bottom, Left</value>
   </data>
   <data name="m_nudMaxIbaAnalyzers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>432, 57</value>
+    <value>576, 70</value>
+  </data>
+  <data name="m_nudMaxIbaAnalyzers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_nudMaxIbaAnalyzers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+    <value>80, 22</value>
   </data>
   <data name="m_nudMaxIbaAnalyzers.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -757,10 +880,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbRestartIbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 84</value>
+    <value>21, 103</value>
+  </data>
+  <data name="m_cbRestartIbaAnalyzer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_cbRestartIbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 17</value>
+    <value>193, 21</value>
   </data>
   <data name="m_cbRestartIbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -784,10 +910,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbAnalyzerExe.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 27</value>
+    <value>104, 33</value>
+  </data>
+  <data name="m_tbAnalyzerExe.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_tbAnalyzerExe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>589, 20</value>
+    <value>784, 22</value>
   </data>
   <data name="m_tbAnalyzerExe.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -811,10 +940,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>672, 25</value>
+    <value>896, 31</value>
+  </data>
+  <data name="m_executeIBAAButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_executeIBAAButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 24</value>
+    <value>32, 30</value>
   </data>
   <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -841,10 +973,13 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 30</value>
+    <value>17, 37</value>
+  </data>
+  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 13</value>
+    <value>81, 17</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -865,10 +1000,16 @@
     <value>8</value>
   </data>
   <data name="gb_IbaAnalyzer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 84</value>
+    <value>20, 103</value>
+  </data>
+  <data name="gb_IbaAnalyzer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="gb_IbaAnalyzer.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="gb_IbaAnalyzer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 114</value>
+    <value>936, 140</value>
   </data>
   <data name="gb_IbaAnalyzer.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -880,13 +1021,13 @@
     <value>gb_IbaAnalyzer</value>
   </data>
   <data name="&gt;&gt;gb_IbaAnalyzer.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_IbaAnalyzer.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gb_IbaAnalyzer.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="gb_Processing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -898,10 +1039,13 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 43</value>
+    <value>17, 53</value>
+  </data>
+  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>387, 13</value>
+    <value>516, 17</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -922,10 +1066,13 @@
     <value>0</value>
   </data>
   <data name="m_nudResourceCritical.Location" type="System.Drawing.Point, System.Drawing">
-    <value>432, 41</value>
+    <value>576, 50</value>
+  </data>
+  <data name="m_nudResourceCritical.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_nudResourceCritical.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+    <value>80, 22</value>
   </data>
   <data name="m_nudResourceCritical.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -949,10 +1096,13 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>289, 20</value>
+    <value>385, 25</value>
+  </data>
+  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 13</value>
+    <value>185, 17</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -973,10 +1123,13 @@
     <value>2</value>
   </data>
   <data name="m_nudPostponeTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>223, 18</value>
+    <value>297, 22</value>
+  </data>
+  <data name="m_nudPostponeTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_nudPostponeTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+    <value>80, 22</value>
   </data>
   <data name="m_nudPostponeTime.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1003,10 +1156,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbPostpone.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 19</value>
+    <value>21, 23</value>
+  </data>
+  <data name="m_cbPostpone.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="m_cbPostpone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 17</value>
+    <value>266, 21</value>
   </data>
   <data name="m_cbPostpone.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1027,10 +1183,16 @@
     <value>4</value>
   </data>
   <data name="gb_Processing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 5</value>
+    <value>20, 6</value>
+  </data>
+  <data name="gb_Processing.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="gb_Processing.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="gb_Processing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>702, 73</value>
+    <value>936, 90</value>
   </data>
   <data name="gb_Processing.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1042,19 +1204,19 @@
     <value>gb_Processing</value>
   </data>
   <data name="&gt;&gt;gb_Processing.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gb_Processing.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;gb_Processing.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>8, 16</value>
   </data>
   <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1062,11 +1224,14 @@
   <data name="$this.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
     <value>0, 550</value>
   </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>720, 250</value>
+    <value>960, 308</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 553</value>
+    <value>960, 970</value>
   </data>
   <data name="&gt;&gt;m_openFileDialog.Name" xml:space="preserve">
     <value>m_openFileDialog</value>
@@ -1085,6 +1250,12 @@
   </data>
   <data name="&gt;&gt;m_folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;certificatesUpdateTimer.Name" xml:space="preserve">
+    <value>certificatesUpdateTimer</value>
+  </data>
+  <data name="&gt;&gt;certificatesUpdateTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ServiceSettingsControl</value>
