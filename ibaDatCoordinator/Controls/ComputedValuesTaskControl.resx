@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="dataGrid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 100</value>
+    <value>7, 100</value>
   </data>
   <data name="gridColumnName.Caption" xml:space="preserve">
     <value>gridColumnName</value>
@@ -215,7 +215,7 @@
     <value>REAL</value>
   </data>
   <data name="dataGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>733, 201</value>
+    <value>746, 201</value>
   </data>
   <data name="dataGrid.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
