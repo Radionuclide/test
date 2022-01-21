@@ -111,6 +111,8 @@ namespace iba.Data
                 m_name = iba.Properties.Resources.cleanupTaskTitle;
             else if (this is OpcUaWriterTaskData)
                 m_name = iba.Properties.Resources.opcUaWriterTaskTitle;
+            else if (this is SnmpWriterTaskData)
+                m_name = iba.Properties.Resources.snmpWriterTaskTitle;
             else if (this is UploadTaskData)
                 m_name = iba.Properties.Resources.UploadTaskTitle;
             else if (this is KafkaWriterTaskData)

@@ -46,11 +46,16 @@ namespace iba.Data
         /// <summary> AgeThreshold (sampling rate) for all values within any <see cref="GlobalCleanupDriveInfo"/> group.
         /// Drive info variables usually do not change too often,
         /// so this value can be considerably bigger than the minimal value</summary>
-        public static TimeSpan DriveInfoAgeThreshold { get; set; } = TimeSpan.FromSeconds(3); 
+        public static TimeSpan DriveInfoAgeThreshold { get; set; } = TimeSpan.FromSeconds(3);
 
+        public enum TargetServer
+        {
+            SNMP,
+            OPCUA
+        };
         #endregion
-        
-        
+
+
         #region Static / Singleton
 
         // ReSharper disable once InconsistentNaming
@@ -91,8 +96,11 @@ namespace iba.Data
         /// <summary> SNMP: PrSpecific.5 </summary>
         public readonly ExtMonFolder FolderEventBasedJobs;
 
+        /// <summary> SNMP: PrSpecific.6 </summary>
+        public readonly ExtMonFolder FolderComputedValuesSnmp;
+
         /// <summary> SNMP: PrSpecific.100 </summary>
-        public readonly ExtMonFolder FolderComputedValues;
+        public readonly ExtMonFolder FolderComputedValuesOpcua;
 
         #endregion
 
@@ -140,10 +148,15 @@ namespace iba.Data
                 @"Event jobs", @"eventJobs", @"EventJobs",
                 @"List of all event jobs.", new IbaSnmpOid(5)));
 
+            //should be present only in Snmp, so we don't put into FolderRoot.Children
+            FolderComputedValuesSnmp = new ExtMonFolder(FolderRoot,
+                @"Computed values", @"computedValues", @"NONE",
+                @"List of all computed values.snmp", new IbaSnmpOid(6));
+
             FolderRoot.Children.Add(
-                FolderComputedValues = new ExtMonFolder(FolderRoot,
-                @"Computed values", @"computedValues", @"ComputedValues",
-                @"List of all computed values.", new IbaSnmpOid(100)));
+                FolderComputedValuesOpcua = new ExtMonFolder(FolderRoot,
+                    @"Computed values", @"NONE", @"ComputedValues",
+                    @"List of all computed values.opc", new IbaSnmpOid(100)));
         }
 
         public void Reset()
@@ -155,7 +168,8 @@ namespace iba.Data
             FolderScheduledJobs.ClearChildren();
             FolderOneTimeJobs.ClearChildren();
             FolderEventBasedJobs.ClearChildren();
-            FolderComputedValues.ClearChildren();
+            FolderComputedValuesOpcua.ClearChildren();
+            FolderComputedValuesSnmp.ClearChildren();
         }
 
         #endregion
@@ -410,9 +424,13 @@ namespace iba.Data
             return jobInfo;
         }
 
-        public ExtMonFolder AddNewComputedValueJob(string jobName, Guid guid)
+        public ExtMonFolder AddNewComputedValueJob(string jobName, Guid guid, TargetServer targetServer)
         {
-            ExtMonFolder parentFolder = Instance.FolderComputedValues; // all computed value nodes are grouped here
+            ExtMonFolder parentFolder; // all computed value nodes are grouped here
+            if (targetServer == TargetServer.OPCUA)
+                parentFolder = Instance.FolderComputedValuesOpcua;
+            else
+                parentFolder = Instance.FolderComputedValuesSnmp;
             var indexWithinFolder = (uint)parentFolder.Children.Count + 1; // is used for SNMP
 
             var jobFolder = new ExtMonFolder(
@@ -430,10 +448,10 @@ namespace iba.Data
             return jobFolder;
         }
 
-        public ComputedValuesInfo AddNewComputedValueTask(ExtMonFolder parentJobFolder, OpcUaWriterTaskData computedValueTaskData)
+        public ComputedValuesInfo AddNewComputedValueTask(ExtMonFolder parentJobFolder, ComputedValuesTaskData computedValuesTaskData)
         {
             var indexWithinFolder = (uint)parentJobFolder.Children.Count + 1; // is used for SNMP
-            var taskInfo = new ComputedValuesInfo(parentJobFolder, indexWithinFolder, computedValueTaskData);
+            var taskInfo = new ComputedValuesInfo(parentJobFolder, indexWithinFolder, computedValuesTaskData);
             parentJobFolder.Children.Add(taskInfo);
             return taskInfo;
         }
@@ -1801,7 +1819,7 @@ namespace iba.Data
         {
             public Guid DataId {get; }
 
-			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, OpcUaWriterTaskData computedValueTaskData)
+			public ComputedValuesInfo(ExtMonFolder parent, uint snmpLeastId, ComputedValuesTaskData computedValueTaskData)
 				: base(parent, GroupUpdateMode.UpdatedContinuouslyByTaskManager,
                     JobAgeThreshold, snmpLeastId, computedValueTaskData.Name, $@"Task{snmpLeastId}")
 			{
@@ -1824,13 +1842,13 @@ namespace iba.Data
                     ExtMonVariableBase child = null;
                     switch (record.DataType) 
                     {
-                        case OpcUaWriterTaskData.Record.ExpressionType.Number:
+                        case ComputedValuesTaskData.Record.ExpressionType.Number:
                             child = AddChildVariable<double>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
                             break;
-                        case OpcUaWriterTaskData.Record.ExpressionType.Text:
+                        case ComputedValuesTaskData.Record.ExpressionType.Text:
                             child = AddChildVariable<string>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
                             break;
-                        case OpcUaWriterTaskData.Record.ExpressionType.Digital:
+                        case ComputedValuesTaskData.Record.ExpressionType.Digital:
                             child = AddChildVariable<bool>(record.Name, snmpMibNameSuffix, description, SNMP_AUTO_LEAST_ID);
                             break;
                         default:
@@ -1845,15 +1863,15 @@ namespace iba.Data
                 UpdateValues(computedValueTaskData);
 			}
 
-            public void UpdateValues(OpcUaWriterTaskData data)
+            public void UpdateValues(ComputedValuesTaskData data)
             {
                 if (Children.Count != data.Records.Count)
                    Debug.Assert(false);
                 for (int i = 0; i < Children.Count; i++)
                 {
-                    if (Children[i] is ExtMonVariable<double> childd && data.Records[i].Value is double vald && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Number)
+                    if (Children[i] is ExtMonVariable<double> childd && data.Records[i].Value is double vald && data.Records[i].DataType == ComputedValuesTaskData.Record.ExpressionType.Number)
                         childd.Value = vald;
-                    else if (Children[i] is ExtMonVariable<string> childs && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Text)
+                    else if (Children[i] is ExtMonVariable<string> childs && data.Records[i].DataType == ComputedValuesTaskData.Record.ExpressionType.Text)
                     {
                         if (data.Records[i].Value is string vals)
                             childs.Value = vals;
@@ -1862,7 +1880,7 @@ namespace iba.Data
                         else
                             Debug.Assert(false);
                     }
-                    else if (Children[i] is ExtMonVariable<bool> childb && data.Records[i].Value is double valb && data.Records[i].DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
+                    else if (Children[i] is ExtMonVariable<bool> childb && data.Records[i].Value is double valb && data.Records[i].DataType == ComputedValuesTaskData.Record.ExpressionType.Digital)
                         childb.Value = valb >= 0.5;
                     else 
                         Debug.Assert(false);

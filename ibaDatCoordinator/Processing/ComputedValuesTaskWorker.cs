@@ -11,10 +11,10 @@ namespace iba.Processing
     class ComputedValuesTaskWorker
     {
         private ConfigurationWorker m_confWorker;
-        private OpcUaWriterTaskData m_task;
+        private ComputedValuesTaskData m_task;
         private StatusData m_sd;
         private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer;
-        internal ComputedValuesTaskWorker(ConfigurationWorker worker, OpcUaWriterTaskData task)
+        internal ComputedValuesTaskWorker(ConfigurationWorker worker, ComputedValuesTaskData task)
         {
             m_confWorker = worker;
             m_task = task;
@@ -22,7 +22,7 @@ namespace iba.Processing
             m_ibaAnalyzer = worker.m_ibaAnalyzer;
         }
 
-        internal void DoWork(string filename)
+        internal void DoWork(string filename, ExtMonData.TargetServer targetServer)
         {
             bool bUseAnalysis = !String.IsNullOrEmpty(m_task.AnalysisFile);
             if (bUseAnalysis && !File.Exists(m_task.AnalysisFile))
@@ -52,7 +52,12 @@ namespace iba.Processing
                         m_task.EvaluateValues(filename, m_ibaAnalyzer);
 
                         ExtMonData od = ExtMonData.Instance;
-                        foreach (var job in od.FolderComputedValues.Children)
+                        List<ExtMonData.ExtMonNode> FolderChilren;
+                        if (targetServer == ExtMonData.TargetServer.OPCUA)
+                            FolderChilren = od.FolderComputedValuesOpcua.Children;
+                        else
+                            FolderChilren = od.FolderComputedValuesSnmp.Children;
+                        foreach (var job in FolderChilren)
                         {
                             if (job is ExtMonData.ExtMonFolder jobFolder)
                                 if (jobFolder.UaBrowseName == $@"Job{{{m_task.ParentConfigurationData.Guid}}}")

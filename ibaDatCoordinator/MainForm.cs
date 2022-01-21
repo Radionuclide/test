@@ -48,17 +48,18 @@ namespace iba
         public static readonly int SPLITTERTASK_INDEX = 12;
         public static readonly int HDEVENTTASK_INDEX = 13;
 		public static readonly int OPCUA_WRITERTASK_INDEX = 14;
-        public static readonly int UPLOADTASK_INDEX = 15;
-        public static readonly int KAFKAWRITERTASK_INDEX = 16;
-        public static readonly int DATATRANSFER_TASK_INDEX = 17;
+        public static readonly int SNMP_WRITERTASK_INDEX = 15;
+        public static readonly int UPLOADTASK_INDEX = 16;
+        public static readonly int KAFKAWRITERTASK_INDEX = 17;
+        public static readonly int DATATRANSFER_TASK_INDEX = 18;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int UNKNOWNTASK_INDEX = 18;
-        public static readonly int NEWCONF_INDEX = 19;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 20;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 21;
-        public static readonly int NEW_EVENT_CONF_INDEX = 22;
-        public static readonly int CUSTOMTASK_INDEX = 23;
-        public static readonly int NR_TASKS = 14;
+        public static readonly int UNKNOWNTASK_INDEX = 19;
+        public static readonly int NEWCONF_INDEX = 20;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 21;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 22;
+        public static readonly int NEW_EVENT_CONF_INDEX = 23;
+        public static readonly int CUSTOMTASK_INDEX = 24;
+        public static readonly int NR_TASKS = 15;
 
         private QuitForm m_quitForm;
 
@@ -133,6 +134,7 @@ namespace iba
             confsImageList.Images.Add(iba.Properties.Resources.SplitDat);
             confsImageList.Images.Add(iba.Properties.Resources.img_computed_values);
 			confsImageList.Images.Add(iba.Properties.Resources.OPCUAIcon.ToBitmap());
+            confsImageList.Images.Add(iba.Properties.Resources.snmp_icon);
             confsImageList.Images.Add(iba.Properties.Resources.UploadTaskIcon);
             confsImageList.Images.Add(iba.Properties.Resources.kafka.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.DataTransferIcon.ToBitmap());
@@ -665,10 +667,15 @@ namespace iba
                     taskNode = new TreeNode(task.Name, HDEVENTTASK_INDEX, HDEVENTTASK_INDEX);
                     taskNode.Tag = new HDCreateEventTaskTreeItemData(this, task as HDCreateEventTaskData);
                 }
-				else if (task is OpcUaWriterTaskData)
-				{
-					taskNode = new TreeNode(task.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
-					taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, task as OpcUaWriterTaskData);
+                else if (task is OpcUaWriterTaskData)
+                {
+                    taskNode = new TreeNode(task.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
+                    taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, task as OpcUaWriterTaskData);
+                }
+                else if (task is SnmpWriterTaskData)
+                {
+                    taskNode = new TreeNode(task.Name, SNMP_WRITERTASK_INDEX, SNMP_WRITERTASK_INDEX);
+                    taskNode.Tag = new SnmpWriterTaskTreeItemData(this, task as SnmpWriterTaskData);
                 }
                 else if (task is KafkaWriterTaskData)
                 {
@@ -952,6 +959,7 @@ namespace iba
                 case "CustomTask":
                 case "HDCreateEventTask":
 				case "OPCUAWriterTask":
+                case "SNMPWriterTask":
                 case "KafkaWriterTask":
                 case "task":
                     {
@@ -1119,6 +1127,8 @@ namespace iba
                             node.Text, node.Parent.Text);
                     else if (node.Tag is OpcUaWriterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteOPCUATastQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is SnmpWriterTaskTreeItemData)
+                        msg = String.Format(iba.Properties.Resources.deleteSNMPTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is KafkaWriterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteKafkaTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is DataTransferTaskTreeItemData)
@@ -1290,6 +1300,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
                     taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, m_task_copy as OpcUaWriterTaskData);
                 }
+                else if (m_task_copy is SnmpWriterTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, SNMP_WRITERTASK_INDEX, SNMP_WRITERTASK_INDEX);
+                    taskNode.Tag = new SnmpWriterTaskTreeItemData(this, m_task_copy as SnmpWriterTaskData);
+                }
                 else if (m_task_copy is KafkaWriterTaskData)
                 {
                     taskNode = new TreeNode(m_task_copy.Name, KAFKAWRITERTASK_INDEX, KAFKAWRITERTASK_INDEX);
@@ -1400,6 +1415,11 @@ namespace iba
                     taskNode = new TreeNode(m_task_copy.Name, OPCUA_WRITERTASK_INDEX, OPCUA_WRITERTASK_INDEX);
                     taskNode.Tag = new OpcUaWriterTaskTreeItemData(this, m_task_copy as OpcUaWriterTaskData);
                 }
+                else if (m_task_copy is SnmpWriterTaskData)
+                {
+                    taskNode = new TreeNode(m_task_copy.Name, SNMP_WRITERTASK_INDEX, SNMP_WRITERTASK_INDEX);
+                    taskNode.Tag = new SnmpWriterTaskTreeItemData(this, m_task_copy as SnmpWriterTaskData);
+                }
                 else if (m_task_copy is KafkaWriterTaskData)
                 {
                     taskNode = new TreeNode(m_task_copy.Name, KAFKAWRITERTASK_INDEX, KAFKAWRITERTASK_INDEX);
@@ -1499,6 +1519,7 @@ namespace iba
             menuImages.Images.Add(iba.Properties.Resources.SplitDat);
             menuImages.Images.Add(iba.Properties.Resources.img_computed_values);
             menuImages.Images.Add(iba.Properties.Resources.OPCUAIcon);
+            menuImages.Images.Add(iba.Properties.Resources.snmp_icon);
             menuImages.Images.Add(iba.Properties.Resources.UploadTaskIcon);
             menuImages.Images.Add(iba.Properties.Resources.kafka);
             menuImages.Images.Add(iba.Properties.Resources.DataTransferIcon);
@@ -1530,9 +1551,10 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewSplitterTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSplitterTaskTitle, menuImages.Images[11], new EventHandler(OnNewSplitterTaskMenuItem));
             m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(iba.Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], new EventHandler(OnNewHDCreateEventTaskMenuItem));
 			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[14], new EventHandler(OnNewUploadTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[15], new EventHandler(OnNewKafkaTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(iba.Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[16], new EventHandler(OnNewDataTransferTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewSNMPTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSnmpTaskTitle, menuImages.Images[14], new EventHandler(OnNewSNMPTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[15], new EventHandler(OnNewUploadTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[16], new EventHandler(OnNewKafkaTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(iba.Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[17], new EventHandler(OnNewDataTransferTaskMenuItem));
 
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1553,8 +1575,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewCleanupTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSplitterTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
-            m_menuItems[(int) MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int) MenuItemsEnum.NewOPCUATask]);
-			m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewDataTransferTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewOPCUATask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSNMPTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewDataTransferTask]);
 
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewKafkaTask]);
             for (int i = 0; i < filteredPlugins.Count; i++)
@@ -1585,10 +1608,11 @@ namespace iba
             NewSplitterTask = 14,
             NewHDCreateEventTask = 15,
             NewOPCUATask = 16,
-            NewUploadTask = 17,
-            NewKafkaTask = 18,
-            NewDataTransferTask = 19,
-			NewCustomTask = 20
+            NewSNMPTask = 17,
+            NewUploadTask = 18,
+            NewKafkaTask = 19,
+            NewDataTransferTask = 20,
+			NewCustomTask = 21
         }
 
 
@@ -1872,6 +1896,19 @@ namespace iba
 
             // create tree node and do other things common for any task
             AddNewTaskPostHelper(parentConfData, parentNode, taskData, OPCUA_WRITERTASK_INDEX, treeItemData);
+        }
+
+        private void OnNewSNMPTaskMenuItem(object sender, EventArgs e)
+        {
+            // get parent job from tags, check free room
+            if (!AddNewTaskPreHelper((ToolStripMenuItem)sender, out var parentNode, out var parentConfData))
+                return;
+
+            var taskData = new SnmpWriterTaskData(parentConfData);
+            var treeItemData = new SnmpWriterTaskTreeItemData(this, taskData);
+
+            // create tree node and do other things common for any task
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, SNMP_WRITERTASK_INDEX, treeItemData);
         }
 
         private void OnNewKafkaTaskMenuItem(object sender, EventArgs e)

@@ -737,6 +737,47 @@ namespace iba
 	}
     #endregion
 
+    #region SNMPWriterTaskTreeItemData
+    public class SnmpWriterTaskTreeItemData : TreeItemData
+    {
+        public SnmpWriterTaskTreeItemData(IPropertyPaneManager propManager, SnmpWriterTaskData tdc)
+            : base(propManager)
+        {
+            m_tdc = tdc;
+        }
+
+        public override string What
+        {
+            get { return "SNMPWriterTask"; }
+        }
+
+        protected SnmpWriterTaskData m_tdc;
+
+        public override object DataSource
+        {
+            get
+            {
+                return m_tdc;
+            }
+            set
+            {
+                m_tdc = value as SnmpWriterTaskData;
+            }
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["SNMPWriterTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new OpcUaWriterTaskControl());
+                manager.PropertyPanes["SNMPWriterTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
     #region KafkaWriterTaskTreeItemData
     public class KafkaWriterTaskTreeItemData : TreeItemData
     {

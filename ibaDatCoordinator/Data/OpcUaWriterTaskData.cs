@@ -6,21 +6,35 @@ using System.Xml.Serialization;
 
 namespace iba.Data
 {
+    public class OpcUaWriterTaskData : ComputedValuesTaskData
+    {
+        public OpcUaWriterTaskData(ConfigurationData parent) : base(parent) { }
+        public OpcUaWriterTaskData() : this(null) { }
+
+    }
+
+    public class SnmpWriterTaskData : ComputedValuesTaskData
+    {
+        public SnmpWriterTaskData(ConfigurationData parent) : base(parent) { }
+        public SnmpWriterTaskData() : this(null) { }
+    }
+
+
     [Serializable]
-    public class OpcUaWriterTaskData : TaskData
+    public abstract class ComputedValuesTaskData : TaskData
     {
         [NonSerialized]
         internal AnalyzerManager m_analyzerManager;
         public List<Record> Records;
         public MonitorData MonitorData { get; set; }
 
-        public OpcUaWriterTaskData(ConfigurationData parent)
+        public ComputedValuesTaskData(ConfigurationData parent)
             : base(parent)
         {
             Records = new List<Record>();
             MonitorData = new MonitorData();
         }
-        public OpcUaWriterTaskData() : this(null) { }
+        public ComputedValuesTaskData() : this(null) { }
 
         [Serializable]
         public class Record : ICloneable
@@ -156,8 +170,12 @@ namespace iba.Data
         }
 
 		public override TaskData CloneInternal()
-		{
-            OpcUaWriterTaskData d = new OpcUaWriterTaskData(null);
+        {
+            ComputedValuesTaskData d;
+            if (this is OpcUaWriterTaskData)
+                d = new OpcUaWriterTaskData(null);
+            else
+                d = new SnmpWriterTaskData(null);
             d.Records = Records.Select(r => (Record)r.Clone()).ToList();
             d.AnalysisFile = AnalysisFile;
             d.TestDatFile = TestDatFile;
@@ -167,7 +185,7 @@ namespace iba.Data
 
         public override bool IsSameInternal(TaskData taskData)
         {
-            if (!(taskData is OpcUaWriterTaskData other)) return false;
+            if (!(taskData is ComputedValuesTaskData other)) return false;
             if (other == this) return true;
 
             return
@@ -177,10 +195,10 @@ namespace iba.Data
                     MonitorData == other.MonitorData;
 		}
 
-        /// <summary> Ensures there are no duplicate names in <see cref="OpcUaWriterTaskData"/> records.
+        /// <summary> Ensures there are no duplicate names in <see cref="ComputedValuesTaskData"/> records.
         /// Logs the Exception if duplicates are detected. </summary>
         /// <returns> true=ok if there are no duplicates, false=problems if we have duplicates </returns>
-        public static bool AssertNoDuplicates(OpcUaWriterTaskData cvTask)
+        public static bool AssertNoDuplicates(ComputedValuesTaskData cvTask)
         {
             var duplicatedName = cvTask.Records.GroupBy(r => r.Name).
                 Where(g => g.Count() > 1).Select(y => y.Key).FirstOrDefault();

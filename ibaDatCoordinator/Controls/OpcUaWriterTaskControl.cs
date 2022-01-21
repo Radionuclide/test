@@ -15,8 +15,8 @@ namespace iba.Controls
 {
 	public partial class OpcUaWriterTaskControl : UserControl, IPropertyPane
     {
-        readonly BindingList<OpcUaWriterTaskData.Record> _expressionTableData;
-        OpcUaWriterTaskData _data;
+        readonly BindingList<ComputedValuesTaskData.Record> _expressionTableData;
+        ComputedValuesTaskData _data;
         [NonSerialized]
         private readonly AnalyzerManager _analyzerManager;
 
@@ -32,7 +32,7 @@ namespace iba.Controls
             gridColumnExpression.ColumnEdit = channelEditor;
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
-            foreach (var t in OpcUaWriterTaskData.Record.DataTypes)
+            foreach (var t in ComputedValuesTaskData.Record.DataTypes)
                 typeComboBox.Items.Add(t);
             gridColumn1.ColumnEdit = typeComboBox;
 
@@ -44,7 +44,7 @@ namespace iba.Controls
             gridColumnName.View.CellValueChanged += CellNameChanged;
             gridColumnExpression.View.CellValueChanged += CellExpressionChanged;
 
-            _expressionTableData = new BindingList<OpcUaWriterTaskData.Record>();
+            _expressionTableData = new BindingList<ComputedValuesTaskData.Record>();
             dataGrid.DataSource = _expressionTableData;
             _view = (GridView)dataGrid.MainView;
             _view.FocusedRowChanged += (sender, e) => UpdateTableButtons();
@@ -73,7 +73,7 @@ namespace iba.Controls
 
         private string EnsureNameUnique(string name, int row, bool sourceAlreadyUpdated = true)
         {
-            var list = (BindingList<OpcUaWriterTaskData.Record>)dataGrid.DataSource;
+            var list = (BindingList<ComputedValuesTaskData.Record>)dataGrid.DataSource;
             if (name == "")
             {
                 name = dataGV.GetRowCellValue(row, gridColumnExpression).ToString();
@@ -98,7 +98,7 @@ namespace iba.Controls
 
         public void LoadData(object datasource, IPropertyPaneManager manager)
 		{
-			_data = (OpcUaWriterTaskData)datasource;
+			_data = (ComputedValuesTaskData)datasource;
             if (_data.m_analyzerManager is null)
                 _data.m_analyzerManager = _analyzerManager;
             m_pdoFileTextBox.Text = _data.AnalysisFile;
@@ -106,7 +106,7 @@ namespace iba.Controls
 
             _expressionTableData.Clear();
             foreach (var rec in _data.Records)
-                _expressionTableData.Add((OpcUaWriterTaskData.Record)rec.Clone());
+                _expressionTableData.Add((ComputedValuesTaskData.Record)rec.Clone());
             UpdateTableButtons();
 
             string ibaAnalyzerExe;
@@ -140,7 +140,7 @@ namespace iba.Controls
 
 		private void ButtonExpressionAdd_Click(object sender, EventArgs e)
 		{
-            _expressionTableData.Add(new OpcUaWriterTaskData.Record());
+            _expressionTableData.Add(new ComputedValuesTaskData.Record());
 			_view.FocusedRowHandle = _expressionTableData.Count - 1;
 			_view.ShowEditor();
 
@@ -160,9 +160,9 @@ namespace iba.Controls
 		{
 			if ((_view.FocusedRowHandle >= 0) &&
 				(_view.FocusedRowHandle < _expressionTableData.Count) &&
-				_view.GetRow(_view.FocusedRowHandle) is OpcUaWriterTaskData.Record oldRow)
+				_view.GetRow(_view.FocusedRowHandle) is ComputedValuesTaskData.Record oldRow)
 			{
-                var newRow = (OpcUaWriterTaskData.Record)oldRow.Clone();
+                var newRow = (ComputedValuesTaskData.Record)oldRow.Clone();
                 string removedNumberSuffix = System.Text.RegularExpressions.Regex.Replace(newRow.Name, "_[0-9]{1,3}$", "");
                 if (removedNumberSuffix.Length > 0)
                     newRow.Name = removedNumberSuffix;
@@ -263,12 +263,12 @@ namespace iba.Controls
                     bool bUseDatFile = File.Exists(m_datFileTextBox.Text);
                     if (bUseAnalysis) ibaAnalyzer.OpenAnalysis(m_pdoFileTextBox.Text);
                     if (bUseDatFile) ibaAnalyzer.OpenDataFile(0, m_datFileTextBox.Text);
-                    var records = (IList<OpcUaWriterTaskData.Record>)dataGrid.DataSource;
-                    foreach (OpcUaWriterTaskData.Record record in records)
+                    var records = (IList<ComputedValuesTaskData.Record>)dataGrid.DataSource;
+                    foreach (ComputedValuesTaskData.Record record in records)
                     {
                         if (string.IsNullOrEmpty(record.Expression)) continue;
 
-                        if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Text)
+                        if (record.DataType == ComputedValuesTaskData.Record.ExpressionType.Text)
                         {
                             object oValues = null;
 
@@ -316,7 +316,7 @@ namespace iba.Controls
                             }
                             else
                             {
-                                if (record.DataType == OpcUaWriterTaskData.Record.ExpressionType.Digital)
+                                if (record.DataType == ComputedValuesTaskData.Record.ExpressionType.Digital)
                                     record.TestValue = (f >= 0.5 ? "true" : "false");
                                 else
                                     record.TestValue = f;

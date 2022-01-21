@@ -88,6 +88,7 @@ namespace iba.Controls
             m_newSplitterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle);
             m_newHdCreateEventTaskButton.Image = iba.Properties.Resources.img_computed_values;
             m_newOPCUAWriterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.OPCUAIcon.Handle);
+            m_newSNMPWriterTaskButton.Image = iba.Properties.Resources.snmp_icon;
             m_newUploadTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle);
             m_newKafkaWriterTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.kafka.Handle);
             m_newDataTransferTaskButton.Image = Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle);
@@ -103,6 +104,7 @@ namespace iba.Controls
             m_newSplitterTaskButton.ToolTipText = iba.Properties.Resources.splittertaskButton;
             m_newHdCreateEventTaskButton.ToolTipText = iba.Properties.Resources.hdcreateeventtaskButton;
             m_newOPCUAWriterTaskButton.ToolTipText = iba.Properties.Resources.opcUaWriterTaskButton;
+            m_newSNMPWriterTaskButton.ToolTipText = iba.Properties.Resources.snmpWriterTaskButton;
             m_newUploadTaskButton.ToolTipText = iba.Properties.Resources.UploadTaskButton;
             m_newKafkaWriterTaskButton.ToolTipText = iba.Properties.Resources.addKafkaWriterTask;
             m_newDataTransferTaskButton.ToolTipText = iba.Properties.Resources.DataTransferTaskButton;
@@ -529,7 +531,16 @@ namespace iba.Controls
             var taskData = new OpcUaWriterTaskData(m_data);
             var treeItemData = new OpcUaWriterTaskTreeItemData(m_manager, taskData);
             AddNewTaskHelper(taskData, MainForm.OPCUA_WRITERTASK_INDEX, treeItemData);
+        }
 
+        private void m_newSNMPWriterTaskButton_Click(object sender, EventArgs e)
+        {
+            if (!TestTaskCount())
+                return;
+
+            var taskData = new SnmpWriterTaskData(m_data);
+            var treeItemData = new SnmpWriterTaskTreeItemData(m_manager, taskData);
+            AddNewTaskHelper(taskData, MainForm.SNMP_WRITERTASK_INDEX, treeItemData);
         }
 
         private void m_newKafkaWriterTaskButton_Click(object sender, EventArgs e)

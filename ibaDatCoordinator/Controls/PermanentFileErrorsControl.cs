@@ -51,7 +51,8 @@ namespace iba.Controls
             m_OpcUaWriterIcons,
             m_uploadIcons,
 			m_kafkaIcons,
-            m_dataTransferIcons;
+            m_dataTransferIcons,
+            m_SnmpWriterIcons;
 
         Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
         
@@ -75,6 +76,7 @@ namespace iba.Controls
             m_OpcUaWriterIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_kafkaIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_dataTransferIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_SnmpWriterIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
 
 
@@ -192,7 +194,16 @@ namespace iba.Controls
             m_OpcUaWriterIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(iba.Properties.Resources.OPCUAIcon.Handle)));
             m_OpcUaWriterIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(iba.Properties.Resources.OPCUAIcon.Handle)));
 
-            
+            m_SnmpWriterIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
+            m_SnmpWriterIcons.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.snmp_icon);
+            m_SnmpWriterIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, iba.Properties.Resources.snmp_icon));
+            m_SnmpWriterIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.snmp_icon));
+            m_SnmpWriterIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.snmp_icon));
+            m_SnmpWriterIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.snmp_icon));
+            m_SnmpWriterIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.snmp_icon));
+            m_SnmpWriterIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, iba.Properties.Resources.snmp_icon));
+            m_SnmpWriterIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.snmp_icon));
+
             m_uploadIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
             m_uploadIcons.Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle));
             m_uploadIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(iba.Properties.Resources.UploadTaskIcon.Handle)));
@@ -425,6 +436,8 @@ namespace iba.Controls
                             bitmap = m_cleanupIcons[value];
                         else if (task is OpcUaWriterTaskData)
                             bitmap = m_OpcUaWriterIcons[value];
+                        else if (task is SnmpWriterTaskData)
+                            bitmap = m_SnmpWriterIcons[value];
                         else if (task is UploadTaskData)
                             bitmap = m_uploadIcons[value];
                         else if (task is KafkaWriterTaskData)

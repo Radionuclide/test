@@ -1878,17 +1878,26 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="OPCUAIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OPCIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="snmpWriterTaskButton" xml:space="preserve">
+    <value>add a new SNMP Writer Task</value>
+  </data>
   <data name="opcUaWriterTaskButton" xml:space="preserve">
     <value>add a new OPC-UA Writer Task</value>
   </data>
   <data name="opcUaWriterTaskTitle" xml:space="preserve">
     <value>OPC UA writer</value>
   </data>
+  <data name="snmpWriterTaskTitle" xml:space="preserve">
+    <value>SNMP writer</value>
+  </data>
   <data name="sychronizeList" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SychronizeList.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="deleteOPCUATastQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the OPC UA Computed values options "{0}" of Job "{1}" ?</value>
+  </data>
+  <data name="deleteSNMPTaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the SNMP Computed values options "{0}" of Job "{1}" ?</value>
   </data>
   <data name="logComputedValuesUpdated" xml:space="preserve">
     <value>computed values updated</value>
@@ -2030,6 +2039,9 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="NewOpcUaTaskTitle" xml:space="preserve">
     <value>Add OPC UA Writer Task</value>
+  </data>
+  <data name="NewSnmpTaskTitle" xml:space="preserve">
+    <value>Add SNMP Writer Task</value>
   </data>
   <data name="img_import" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_import.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

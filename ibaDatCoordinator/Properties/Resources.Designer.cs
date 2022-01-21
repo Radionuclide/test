@@ -959,6 +959,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the SNMP Computed values options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        /// </summary>
+        internal static string deleteSNMPTaskQuestion {
+            get {
+                return ResourceManager.GetString("deleteSNMPTaskQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the Splitter options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteSplitterTaskQuestion {
@@ -3531,6 +3540,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add SNMP Writer Task.
+        /// </summary>
+        internal static string NewSnmpTaskTitle {
+            get {
+                return ResourceManager.GetString("NewSnmpTaskTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Splitter Task.
         /// </summary>
         internal static string NewSplitterTaskTitle {
@@ -5080,6 +5098,24 @@ namespace iba.Properties {
         internal static string snmpTitle {
             get {
                 return ResourceManager.GetString("snmpTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add a new SNMP Writer Task.
+        /// </summary>
+        internal static string snmpWriterTaskButton {
+            get {
+                return ResourceManager.GetString("snmpWriterTaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SNMP writer.
+        /// </summary>
+        internal static string snmpWriterTaskTitle {
+            get {
+                return ResourceManager.GetString("snmpWriterTaskTitle", resourceCulture);
             }
         }
         

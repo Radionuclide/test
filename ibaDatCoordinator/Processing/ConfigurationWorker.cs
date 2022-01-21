@@ -3084,6 +3084,12 @@ namespace iba.Processing
                     IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
                     memoryUsed = ((OpcUaWriterTaskData)task).MonitorData.MemoryUsed;
                 }
+                else if (task is SnmpWriterTaskData)
+                {
+                    DoOPCUAWriterTask(DatFile, task as OpcUaWriterTaskData);
+                    IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                    memoryUsed = ((OpcUaWriterTaskData)task).MonitorData.MemoryUsed;
+                }
                 else if (task is KafkaWriterTaskData)
                 {
                     DoKafkaWriterTask(DatFile, task as KafkaWriterTaskData);
@@ -5317,9 +5323,15 @@ namespace iba.Processing
             }
             Log(Logging.Level.Info, iba.Properties.Resources.logUDTaskSuccess + " - " + iba.Properties.Resources.logUDTCreationTime + " " + worker.Created.ToString(), filename, task);
         }
+
         private void DoOPCUAWriterTask(string filename, OpcUaWriterTaskData task)
         {
-            (new ComputedValuesTaskWorker(this, task)).DoWork(filename);
+            (new ComputedValuesTaskWorker(this, task)).DoWork(filename, ExtMonData.TargetServer.OPCUA);
+        }
+
+        private void DoSNMPWriterTask(string filename, SnmpWriterTaskData task)
+        {
+            (new ComputedValuesTaskWorker(this, task)).DoWork(filename, ExtMonData.TargetServer.SNMP);
         }
 
         private void DoKafkaWriterTask(string filename, KafkaWriterTaskData task)

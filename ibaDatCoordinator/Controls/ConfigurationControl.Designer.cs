@@ -70,6 +70,7 @@ namespace iba.Controls
             this.m_newHdCreateEventTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newKafkaWriterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newOPCUAWriterTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newSNMPWriterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newDataTransferTaskButton = new System.Windows.Forms.ToolStripButton();
             this.gbJobName = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -285,6 +286,7 @@ namespace iba.Controls
             this.m_newSplitterTaskButton,
             this.m_newHdCreateEventTaskButton,
             this.m_newOPCUAWriterTaskButton,
+            this.m_newSNMPWriterTaskButton,
             this.m_newKafkaWriterTaskButton,
             this.m_newDataTransferTaskButton});
             this.m_newTaskToolstrip.Name = "m_newTaskToolstrip";
@@ -373,6 +375,13 @@ namespace iba.Controls
             this.m_newOPCUAWriterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.m_newOPCUAWriterTaskButton.Name = "m_newOPCUAWriterTaskButton";
             this.m_newOPCUAWriterTaskButton.Click += new System.EventHandler(this.m_newOPCUAWriterTaskButton_Click);
+            // 
+            // m_newSNMPWriterTaskButton
+            // 
+            resources.ApplyResources(this.m_newSNMPWriterTaskButton, "m_newSNMPWriterTaskButton");
+            this.m_newSNMPWriterTaskButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.m_newSNMPWriterTaskButton.Name = "m_newSNMPWriterTaskButton";
+            this.m_newSNMPWriterTaskButton.Click += new System.EventHandler(this.m_newSNMPWriterTaskButton_Click);
             // 
             // m_newKafkaWriterTaskButton
             // 
@@ -475,6 +484,7 @@ namespace iba.Controls
         private System.Windows.Forms.ToolStripButton m_newSplitterTaskButton;
         private System.Windows.Forms.ToolStripButton m_newHdCreateEventTaskButton;
         private System.Windows.Forms.ToolStripButton m_newOPCUAWriterTaskButton;
+        private System.Windows.Forms.ToolStripButton m_newSNMPWriterTaskButton;
         private System.Windows.Forms.ToolStripButton m_newUploadTaskButton;
         private System.Windows.Forms.ToolStripButton m_newKafkaWriterTaskButton;
         private System.Windows.Forms.ToolStripButton m_newDataTransferTaskButton;
