@@ -242,11 +242,11 @@
     <Compile Include="Controls\OpcUaEndpointSelectionForm.Designer.cs">
       <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\OpcUaWriterTaskControl.cs">
+    <Compile Include="Controls\ComputedValuesTaskControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\OpcUaWriterTaskControl.Designer.cs">
-      <DependentUpon>OpcUaWriterTaskControl.cs</DependentUpon>
+    <Compile Include="Controls\ComputedValuesTaskControl.Designer.cs">
+      <DependentUpon>ComputedValuesTaskControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\PanelEventJob.cs">
       <SubType>UserControl</SubType>
@@ -311,13 +311,15 @@
     <Compile Include="Data\DataTransferData.cs" />
     <Compile Include="Data\ErrorPluginTaskData.cs" />
     <Compile Include="Data\DataTransferTaskData.cs" />
+    <Compile Include="Data\OpcUaWriterTaskData.cs" />
+    <Compile Include="Data\SnmpWriterTaskData.cs" />
     <Compile Include="Data\UploadTaskData.cs" />
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
     <Compile Include="Data\HDCreateEventTaskData.cs" />
     <Compile Include="Data\KafkaWriterTaskData.cs" />
     <Compile Include="Data\OpcUaData.cs" />
-    <Compile Include="Data\OpcUaWriterTaskData.cs" />
+    <Compile Include="Data\ComputedValuesTaskData.cs" />
     <Compile Include="Data\PluginTaskDataWrapper.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
     <Compile Include="Dialogs\About.cs">
@@ -683,8 +685,8 @@
       <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\OpcUaWriterTaskControl.resx">
-      <DependentUpon>OpcUaWriterTaskControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\ComputedValuesTaskControl.resx">
+      <DependentUpon>ComputedValuesTaskControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PanelEventJob.resx">

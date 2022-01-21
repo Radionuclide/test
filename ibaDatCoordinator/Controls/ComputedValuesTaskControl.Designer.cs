@@ -1,6 +1,6 @@
 ﻿namespace iba.Controls
 {
-	partial class OpcUaWriterTaskControl
+	partial class ComputedValuesTaskControl
 	{
 		/// <summary> 
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OpcUaWriterTaskControl));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ComputedValuesTaskControl));
             this.dataGrid = new DevExpress.XtraGrid.GridControl();
             this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumnName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -321,7 +321,7 @@
             this.downButton.UseVisualStyleBackColor = true;
             this.downButton.Click += new System.EventHandler(this.DownButton_Click);
             // 
-            // OpcUaWriterTaskControl
+            // ComputedValuesTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -341,7 +341,7 @@
             this.Controls.Add(this.buttonExpressionRemove);
             this.Controls.Add(this.buttonExpressionAdd);
             this.Controls.Add(this.dataGrid);
-            this.Name = "OpcUaWriterTaskControl";
+            this.Name = "ComputedValuesTaskControl";
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemComboBoxS7DataTypes)).EndInit();

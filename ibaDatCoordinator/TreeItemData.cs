@@ -729,7 +729,7 @@ namespace iba
 			Control ctrl = manager.PropertyPanes["OPCUAWriterTaskControl"] as Control;
 			if (ctrl == null)
 			{
-				ctrl = new CommonTaskControl(new OpcUaWriterTaskControl());
+				ctrl = new CommonTaskControl(new ComputedValuesTaskControl());
 				manager.PropertyPanes["OPCUAWriterTaskControl"] = ctrl;
 			}
 			return ctrl;
@@ -770,7 +770,7 @@ namespace iba
             Control ctrl = manager.PropertyPanes["SNMPWriterTaskControl"] as Control;
             if (ctrl == null)
             {
-                ctrl = new CommonTaskControl(new OpcUaWriterTaskControl());
+                ctrl = new CommonTaskControl(new ComputedValuesTaskControl());
                 manager.PropertyPanes["SNMPWriterTaskControl"] = ctrl;
             }
             return ctrl;

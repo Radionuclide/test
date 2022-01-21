@@ -13,7 +13,7 @@ using Microsoft.Win32;
 
 namespace iba.Controls
 {
-	public partial class OpcUaWriterTaskControl : UserControl, IPropertyPane
+	public partial class ComputedValuesTaskControl : UserControl, IPropertyPane
     {
         readonly BindingList<ComputedValuesTaskData.Record> _expressionTableData;
         ComputedValuesTaskData _data;
@@ -22,7 +22,7 @@ namespace iba.Controls
 
         private readonly GridView _view;
 
-        public OpcUaWriterTaskControl()
+        public ComputedValuesTaskControl()
 		{
             InitializeComponent();
             _analyzerManager = new AnalyzerManager();
