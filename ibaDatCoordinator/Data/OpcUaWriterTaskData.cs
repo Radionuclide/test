@@ -1,5 +1,8 @@
-﻿namespace iba.Data
+﻿using System;
+
+namespace iba.Data
 {
+    [Serializable]
     public class OpcUaWriterTaskData : ComputedValuesTaskData
     {
         public OpcUaWriterTaskData(ConfigurationData parent) : base(parent) { }
