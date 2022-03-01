@@ -85,9 +85,36 @@ namespace iba.DatCoordinator.Status
             m_timer.Enabled = true;
             m_iconEx.Visible = true;
             string output = iba.Utility.PathUtil.FindAnalyzerPath();
+            UpdateIbaAnalyzerExe();
+        }
+
+        private FileSystemWatcher fswt = null;
+        void UpdateIbaAnalyzerExe()
+        {
+            if (m_tbAnalyzerExe.InvokeRequired)
+            {
+                m_tbAnalyzerExe.BeginInvoke(new Action(UpdateIbaAnalyzerExe));
+                return;
+            }
+            if (fswt != null)
+            {
+                fswt.Deleted -= Fswt_Deleted;
+                fswt.Dispose();
+                fswt = null;
+            }
+            string output = iba.Utility.PathUtil.FindAnalyzerPath();
             m_tbAnalyzerExe.Text = output;
-            m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
-            //m_registerButton.Enabled = File.Exists(m_tbAnalyzerExe.Text);
+            if (m_executeIBAAButton.Enabled = File.Exists(m_tbAnalyzerExe.Text))
+            {
+                fswt = new FileSystemWatcher(Path.GetDirectoryName(output), "*.exe");
+                fswt.Deleted += Fswt_Deleted;
+                fswt.EnableRaisingEvents = true;
+            }
+        }
+
+        private void Fswt_Deleted(object sender, FileSystemEventArgs e)
+        {
+            UpdateIbaAnalyzerExe();
         }
 
         private bool firstFailure = true;
@@ -163,7 +190,7 @@ namespace iba.DatCoordinator.Status
                     m_btnStart.Enabled = false;
                     m_btnStop.Enabled = true;
                     m_btnRestart.Enabled = true;
-                    m_btnOptimize.Enabled = true;
+                    m_btnOptimize.Enabled = RegistryOptimizer.OptimizationPossible;
                     m_btTransferAnalyzerSettings.Enabled = true;
                     m_iconEx.Icon = ServiceRunningIconSmall;
                     this.Icon = ServiceRunningIcon;
@@ -645,6 +672,13 @@ namespace iba.DatCoordinator.Status
         
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
+            if (!File.Exists(m_tbAnalyzerExe.Text)) //in case filesystemwatcher did not fire...
+            {
+                UpdateIbaAnalyzerExe();
+                if (!File.Exists(m_tbAnalyzerExe.Text)) 
+                    return;
+            }
+
             try
             {
                 using (Process ibaProc = new Process())
@@ -800,6 +834,21 @@ namespace iba.DatCoordinator.Status
             procInfo.FileName = Path.Combine(dir,"ibaDatCoordinator.exe");
             procInfo.Arguments = "/service";
             System.Diagnostics.Process.Start(procInfo);
+        }
+
+        private void m_tbAnalyzerExe_Click(object sender, EventArgs e)
+        {
+            UpdateIbaAnalyzerExe();
+        }
+
+        private void StatusForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (fswt != null)
+            {
+                fswt.Deleted -= Fswt_Deleted;
+                fswt.Dispose();
+                fswt = null;
+            }
         }
     }
 }

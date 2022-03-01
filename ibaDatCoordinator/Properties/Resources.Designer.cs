@@ -3703,7 +3703,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to no ibaAnalyzer registered.
+        ///   Looks up a localized string similar to no ibaAnalyzer detected (click this textbox to search again) .
         /// </summary>
         internal static string noIbaAnalyser {
             get {
@@ -4613,6 +4613,24 @@ namespace iba.Properties {
         internal static string regOptFormatProblem {
             get {
                 return ResourceManager.GetString("regOptFormatProblem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ibaDatCoordinator installer has detected the Windows registry can be optimized to allow for more ibaAnalyzers to run simultaneously..
+        /// </summary>
+        internal static string regOptInstaller {
+            get {
+                return ResourceManager.GetString("regOptInstaller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you wish to perform this action now? (Recommended, alternatively it can also be performed from the ibaDatCoordinator Service status application at a later time.).
+        /// </summary>
+        internal static string regOptInstaller2 {
+            get {
+                return ResourceManager.GetString("regOptInstaller2", resourceCulture);
             }
         }
         

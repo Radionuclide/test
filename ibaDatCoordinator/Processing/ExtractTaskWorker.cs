@@ -289,12 +289,12 @@ namespace iba.Processing
             return GetPrimeExtractExtension(task) + ",*" + secondary;
         }
 
-        private string GetBothExtractExtensions()
+        internal string GetBothExtractExtensions()
         {
             return GetBothExtractExtensions(m_task);
         }
 
-        internal static string GetPrimeExtractExtension(ExtractData task)
+        private static string GetPrimeExtractExtension(ExtractData task)
         {
             switch (task.FileType)
             {
@@ -330,16 +330,22 @@ namespace iba.Processing
 
         private static int m_exportFileTypeAsInt = -1;
 
-        private static bool IsExternalVideoExport(ExtractData task)
+
+
+        private static bool IsExternalVideoExport(ExtractData task, IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null)
         {
             if (task.m_bExternalVideoResultIsCached)
                 return task.m_bExternalVideoCacheResult;
             m_exportFileTypeAsInt = -1;
             bool res = false;
-            IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null;
+            bool dispose = false;
             try
             {
-                ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                if (ibaAnalyzer == null)
+                {
+                    ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                    dispose = true;
+                }
                 ibaAnalyzer.OpenAnalysis(task.AnalysisFile);
                 string parameters = ibaAnalyzer.GetFileExtractParameters();
                 if (!string.IsNullOrEmpty(parameters))
@@ -355,7 +361,7 @@ namespace iba.Processing
             {
                 try
                 {
-                    if (ibaAnalyzer != null)
+                    if (dispose)
                         System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
                 }
                 catch { }
@@ -365,10 +371,10 @@ namespace iba.Processing
             return res;
         }
 
-        static public int FileTypeAsInt (ExtractData task)
+        static public int FileTypeAsInt (ExtractData task, IbaAnalyzer.IbaAnalyzer ibaAnalyzer = null)
         {
             if (!task.m_bExternalVideoResultIsCached)
-                IsExternalVideoExport(task);
+                IsExternalVideoExport(task, ibaAnalyzer);
             return m_exportFileTypeAsInt;
         }
     }

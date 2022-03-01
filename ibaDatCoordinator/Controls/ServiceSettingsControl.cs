@@ -80,7 +80,8 @@ namespace iba.Controls
             m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
             m_nudRestartIbaAnalyzer.Value = Math.Max(1,TaskManager.Manager.MaxIbaAnalyzerCalls);
             m_nudRestartIbaAnalyzer.Enabled = m_cbRestartIbaAnalyzer.Checked;
-            m_nudMaxIbaAnalyzers.Value = Math.Max(1, TaskManager.Manager.MaxSimultaneousIbaAnalyzers);
+            m_nudMaxIbaAnalyzers.Maximum = RegistryOptimizer.OptimizationPossible ? 6 : 60;
+            m_nudMaxIbaAnalyzers.Value = Math.Min(Math.Max(1, TaskManager.Manager.MaxSimultaneousIbaAnalyzers),m_nudMaxIbaAnalyzers.Maximum);
             m_cbPostpone.Checked = TaskManager.Manager.DoPostponeProcessing;
             m_nudPostponeTime.Value = TaskManager.Manager.PostponeMinutes;
             m_nudPostponeTime.Enabled = m_cbPostpone.Checked;

@@ -27,8 +27,8 @@ namespace iba.Data
 
             m_maxRows = 50;
             m_logLevel = 0;
-            Profiler.ProfileInt(true, "LastState", "LastMaxRows", ref m_maxRows, 50);
-            Profiler.ProfileInt(true, "LastState", "LastLogLevel", ref m_logLevel, 0);
+            DatCoProfiler.ProfileInt(true, "LastState", "LastMaxRows", ref m_maxRows, 50);
+            DatCoProfiler.ProfileInt(true, "LastState", "LastLogLevel", ref m_logLevel, 0);
 
             m_cacheErrors = new List<Event>();
             m_cacheWarnings = new List<Event>();
@@ -66,7 +66,7 @@ namespace iba.Data
             set
             {
                 m_maxRows = Math.Max(1, value);
-                Profiler.ProfileInt(false, "LastState", "LastMaxRows", ref m_maxRows, 50);
+                DatCoProfiler.ProfileInt(false, "LastState", "LastMaxRows", ref m_maxRows, 50);
                 if (m_control != null) //gui present
                     if (m_grid.Rows.Count > m_maxRows) m_control.BeginInvoke(m_clearSomeRowsDelegate);
             }
@@ -81,7 +81,7 @@ namespace iba.Data
             {
                 int prevLevel = m_logLevel;
                 m_logLevel = value;
-                Profiler.ProfileInt(false, "LastState", "LastLogLevel", ref m_logLevel, 0);
+                DatCoProfiler.ProfileInt(false, "LastState", "LastLogLevel", ref m_logLevel, 0);
                 if (m_control != null) //gui present
                     if (prevLevel != m_logLevel) m_control.BeginInvoke(m_updateFilterDelegate);
             }

@@ -200,7 +200,7 @@ namespace iba.Controls
         public void OnLeave()
         {
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE || Program.ServiceIsLocal) return;
-            if (Analyzer is ibaAnalylerClientWrapper && ((ibaAnalylerClientWrapper)Analyzer).TestStale())
+            if (Analyzer is ibaAnalyzerClientWrapper && ((ibaAnalyzerClientWrapper)Analyzer).TestStale())
             {
                 bFilesOpened = false;
                 Analyzer = null;
@@ -756,10 +756,7 @@ namespace iba.Controls
                         Node trnode = new Node(node.Text, node.ImageIndex);
                         trnode.Tag = node;
                         RecursiveAdd(trnode);
-
-                        //Only add the node here to the tree because otherwise we get constant tree updates
-                        //Insert it in the original location after the customNodes. The FindNode(id) function works based on the location in the tree.
-                        //If a node has a different location in the analyzerTree and the TreeControl, the FindNode will return a wrong node
+                        //insert the root node (all other nodes are inserted by RecursiveAdd), it should be inserted right after the custom nodes...
                         tree.Nodes.Insert(customNodes.Count, trnode);
                     }
                 }

@@ -1,35 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Lifetime;
-using System.Text;
-using System.Threading.Tasks;
-using iba.Data;
+﻿using iba.Data;
 using iba.Logging;
 using iba.Utility;
-using IbaAnalyzer;
-using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Lifetime;
 
 namespace iba.Remoting
 {
     public class ibaAnalyzerExt : MarshalByRefObject, ISponsor, IDisposable, IbaAnalyzer.IbaAnalyzer
     {
         private LifePulse pulse;
-        public ibaAnalyzerExt(IbaAnalyzer.IbaAnalyzer analyzer, bool noninteractieve, LifePulse pulse = null)
+        public ibaAnalyzerExt(IbaAnalyzer.IbaAnalyzer analyzer, bool noninteractieve, LifePulse pulse = null, bool takeOwnership=false)
         {
             this.pulse = pulse;
-            m_bAnalyzerOwned = analyzer == null;
-            if (m_bAnalyzerOwned)
+            if (takeOwnership)
             {
-                if (noninteractieve)
-                    this.analyzer = new IbaAnalyzer.IbaAnalysisNonInteractive();
-                else
-                    this.analyzer = new IbaAnalyzer.IbaAnalysis(); //tree images work with these
+                this.analyzer = analyzer;
+                m_bAnalyzerOwned = true;
             }
             else
-                this.analyzer = analyzer;
+            {
+                m_bAnalyzerOwned = analyzer == null;
+                if (m_bAnalyzerOwned)
+                {
+                    if (noninteractieve)
+                        this.analyzer = new IbaAnalyzer.IbaAnalysisNonInteractive();
+                    else
+                        this.analyzer = new IbaAnalyzer.IbaAnalysis(); //tree images work with these
+                }
+                else
+                    this.analyzer = analyzer;
+            }
         }
 
         bool m_bAnalyzerOwned;
@@ -297,7 +300,7 @@ namespace iba.Remoting
         public static IbaAnalyzer.IbaAnalyzer Create(bool noninteractive) //factory method
         {
             if (!Program.IsServer && Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)
-                return new ibaAnalylerClientWrapper(Program.CommunicationObject.GetRemoteIbaAnalyzer(noninteractive));
+                return new ibaAnalyzerClientWrapper(Program.CommunicationObject.GetRemoteIbaAnalyzer(noninteractive));
             else
                 return new ibaAnalyzerExt(null, noninteractive);
         }
@@ -525,9 +528,11 @@ namespace iba.Remoting
                 {
                     analyzer.CloseAnalysis();
                     analyzer.CloseDataFiles();
+                    //analyzer.Quit();
                 }
-                catch
+                catch (Exception ex)
                 {
+                    ibaLogger.Log("issue disposing ibaAnalyzer: " + ex.Message);
                 }
                 Marshal.ReleaseComObject(analyzer);
             }
@@ -817,10 +822,10 @@ namespace iba.Remoting
         }
     }
 
-    public class ibaAnalylerClientWrapper : IDisposable, IbaAnalyzer.IbaAnalyzer
+    public class ibaAnalyzerClientWrapper : IDisposable, IbaAnalyzer.IbaAnalyzer
     {
         ibaAnalyzerExt remoteIbaAnalyzer;
-        public ibaAnalylerClientWrapper(ibaAnalyzerExt ibaAnalyzer)
+        public ibaAnalyzerClientWrapper(ibaAnalyzerExt ibaAnalyzer)
         {
             remoteIbaAnalyzer = ibaAnalyzer;
         }
@@ -1351,7 +1356,7 @@ namespace iba.Remoting
                 var tree = remoteIbaAnalyzer.GetSignalTree(filter);
                 if (tree == null)
                     return null;
-                return new ibaAnalylerSignalTreeClientWrapper(tree as IbaAnalyzer.ISignalTree);
+                return new ibaAnalyzerSignalTreeClientWrapper(tree as IbaAnalyzer.ISignalTree);
             }
             catch (Exception ex)
             {
@@ -1532,12 +1537,13 @@ namespace iba.Remoting
             }
             return false;
         }
+
     }
 
-    public class ibaAnalylerSignalTreeClientWrapper : IDisposable, IbaAnalyzer.ISignalTree
+    public class ibaAnalyzerSignalTreeClientWrapper : IDisposable, IbaAnalyzer.ISignalTree
     {
         IbaAnalyzer.ISignalTree remoteTree;
-        public ibaAnalylerSignalTreeClientWrapper(IbaAnalyzer.ISignalTree tree)
+        public ibaAnalyzerSignalTreeClientWrapper(IbaAnalyzer.ISignalTree tree)
         {
             remoteTree = tree;
         }
@@ -1560,7 +1566,7 @@ namespace iba.Remoting
             {
                 var node = remoteTree.GetRootNode();
                 if (node == null) return null;
-                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+                return new ibaAnalyzerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
             }
             catch (Exception ex)
             {
@@ -1575,7 +1581,7 @@ namespace iba.Remoting
             {
                 var node = remoteTree.FindNodeWithID(channelId);
                 if (node == null) return null;
-                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+                return new ibaAnalyzerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
             }
             catch (Exception ex)
             {
@@ -1593,10 +1599,10 @@ namespace iba.Remoting
         }
     }
 
-    public class ibaAnalylerSignalTreeNodeClientWrapper : IDisposable, IbaAnalyzer.ISignalTreeNode
+    public class ibaAnalyzerSignalTreeNodeClientWrapper : IDisposable, IbaAnalyzer.ISignalTreeNode
     {
         IbaAnalyzer.ISignalTreeNode remoteNode;
-        public ibaAnalylerSignalTreeNodeClientWrapper(IbaAnalyzer.ISignalTreeNode node)
+        public ibaAnalyzerSignalTreeNodeClientWrapper(IbaAnalyzer.ISignalTreeNode node)
         {
             remoteNode = node;
         }
@@ -1627,7 +1633,7 @@ namespace iba.Remoting
             {
                 var node = remoteNode.GetFirstChildNode();
                 if (node == null) return null;
-                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+                return new ibaAnalyzerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
             }
             catch (Exception ex)
             {
@@ -1642,7 +1648,7 @@ namespace iba.Remoting
             {
                 var node = remoteNode.GetSiblingNode();
                 if (node == null) return null;
-                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+                return new ibaAnalyzerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
             }
             catch (Exception ex)
             {
@@ -1657,7 +1663,7 @@ namespace iba.Remoting
             {
                 var node = remoteNode.GetParentNode();
                 if (node == null) return null;
-                return new ibaAnalylerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
+                return new ibaAnalyzerSignalTreeNodeClientWrapper(node as IbaAnalyzer.ISignalTreeNode);
             }
             catch (Exception ex)
             {

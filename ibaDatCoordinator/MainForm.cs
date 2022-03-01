@@ -197,7 +197,7 @@ namespace iba
             SaveRightPaneControl();
            
             string s = String.IsNullOrEmpty(m_filename) ? "not set" : m_filename;
-            Profiler.ProfileString(false, "LastState", "LastSavedFile", ref s, "not set");
+            DatCoProfiler.ProfileString(false, "LastState", "LastSavedFile", ref s, "not set");
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
             {
@@ -585,7 +585,7 @@ namespace iba
                 TaskManager.Manager.InitializeLicenseManager();
 
             string returnvalue = "";
-            Profiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
+            DatCoProfiler.ProfileString(true, "LastState", "LastSavedFile", ref returnvalue, "not set");
             if (returnvalue != "not set" && Program.RunsWithService == Program.ServiceEnum.NOSERVICE) 
                 loadFromFile(returnvalue,true);
             loadConfigurations();
@@ -831,7 +831,15 @@ namespace iba
             }
 
             m_configTreeView.EndUpdate();
-            m_configTreeView.SelectedNode = firstNode;
+            try
+            {
+                m_bLoadingConfigurations = true;
+                m_configTreeView.SelectedNode = firstNode;
+            }
+            finally
+            {
+                m_bLoadingConfigurations = false;
+            }
             UpdateTreePositions();
             UpdateButtons();
         }
@@ -1027,6 +1035,8 @@ namespace iba
             }
         }
 
+        private bool m_bLoadingConfigurations = false;
+
         public void SetRightPaneControl(Control newControl, string title, object datasource)
         {
             //Save data from old control
@@ -1035,7 +1045,7 @@ namespace iba
             {
                 Debug.Assert(m_rightPane.Controls.Count == 1, "Only 1 control allowed in rightpane");
                 IPropertyPane pane = m_rightPane.Controls[0] as IPropertyPane;
-                if (pane != null)
+                if (pane != null && !m_bLoadingConfigurations)
                 {
                     pane.SaveData();
                     pane.LeaveCleanup();
@@ -3560,7 +3570,7 @@ namespace iba
                 LanguageHelper.SelectedLanguage = culture.Name;
             }
 
-            Profiler.ProfileString(false, "Client", "Language", ref LanguageHelper.SelectedLanguage, "");
+            DatCoProfiler.ProfileString(false, "Client", "Language", ref LanguageHelper.SelectedLanguage, "");
             if (culture.Name != System.Globalization.CultureInfo.CurrentUICulture.Name)
             {
                 string message;

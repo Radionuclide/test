@@ -124,7 +124,7 @@ namespace iba.Utility
 
                 DateTime dtNow = DateTime.Now;
                 string initialPath = "";
-                Profiler.ProfileString(true, "Client", "SupportFileDir", ref initialPath, "");
+                DatCoProfiler.ProfileString(true, "Client", "SupportFileDir", ref initialPath, "");
                 if (!String.IsNullOrEmpty(initialPath))
                     fd.InitialDirectory = initialPath;
 
@@ -133,7 +133,7 @@ namespace iba.Utility
                 if (fd.ShowDialog(parent) == DialogResult.OK)
                 {
                     initialPath = Path.GetDirectoryName(fd.FileName);
-                    Profiler.ProfileString(false, "Client", "SupportFileDir", ref initialPath, "");
+                    DatCoProfiler.ProfileString(false, "Client", "SupportFileDir", ref initialPath, "");
                     return fd.FileName;
                 }
                 return null;

@@ -37,7 +37,7 @@ namespace iba.Utility
             }
 
             //No command line overrides so use the registry setting
-            Profiler.ProfileString(true, "Client", "Language", ref SelectedLanguage, "");
+            DatCoProfiler.ProfileString(true, "Client", "Language", ref SelectedLanguage, "");
             if (SelectedLanguage != "")
             {
                 try

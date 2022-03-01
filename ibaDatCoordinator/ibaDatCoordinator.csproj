@@ -773,7 +773,7 @@
     <Compile Include="Utility\Path.cs" />
     <Compile Include="Utility\PathCleaner.cs" />
     <Compile Include="Utility\PluginManager.cs" />
-    <Compile Include="Utility\Profiler.cs" />
+    <Compile Include="Utility\DatCoProfiler.cs" />
     <Compile Include="Utility\RegistryExporter.cs" />
     <Compile Include="Utility\RippleDateTimePicker.cs">
       <SubType>Component</SubType>

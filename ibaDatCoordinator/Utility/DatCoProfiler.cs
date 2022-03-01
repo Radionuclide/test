@@ -1,9 +1,10 @@
 using System;
 using Microsoft.Win32;
 
-namespace iba.Utility
+namespace iba.Utility //utility2 rather than utility to avoid conflict warnings with profiler in pda
 {
-	public class Profiler
+	//01/03/22 renamed Profiler to DatcoProfiler to avoid conflict warning with pda Profiler
+	public class DatCoProfiler
 	{
 		public static void ProfileInt(bool bLoading, string section, string entry, ref int val, int defaultVal)
 		{
@@ -166,7 +167,7 @@ namespace iba.Utility
 		}
 
 		static System.Globalization.NumberFormatInfo ni;
-		static Profiler()
+		static DatCoProfiler()
 		{
 			ni = new System.Globalization.NumberFormatInfo();
 			ni.NumberDecimalSeparator = ".";

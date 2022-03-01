@@ -19,7 +19,7 @@ namespace iba.DatCoordinator.Status.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,24 @@ namespace iba.DatCoordinator.Status.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force stop.
+        /// </summary>
+        internal static string ForceStopCaption {
+            get {
+                return ResourceManager.GetString("ForceStopCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This action will forcefully stop the ibaDatCoordinator service and any associated ibaAnalyzer processes. This can result in unsaved work, or an inconsistent state of the output of the various tasks..
+        /// </summary>
+        internal static string ForceStopWarning {
+            get {
+                return ResourceManager.GetString("ForceStopWarning", resourceCulture);
             }
         }
         

@@ -84,12 +84,6 @@ namespace iba.Processing
                     m_ibaAnalyzer.GetStartTime(ref dtStart, ref microSeconds);                    
                     dtStart = dtStart.AddTicks(microSeconds * 10);
 
-                    if (sfi.UtcOffsetValid)
-                    {
-                        var currOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
-                        var fileOffset = TimeSpan.FromMinutes(sfi.UtcOffset);
-                        dtEnd = dtEnd.AddTicks((currOffset - fileOffset).Ticks);
-                    }
 
                     startTime = dtStart;
                     endTime = dtEnd;
@@ -148,7 +142,8 @@ namespace iba.Processing
             return "";
         }
 
-        EventWriterItem GenerateEvent(HDCreateEventTaskData.EventData eventData, int index, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, Dictionary<string, Tuple<string[], double[]>> textValues, double stamp = double.NaN, double from = double.NaN, double to = double.NaN, bool bIncoming = true)
+        // TODO Clean this method up. This has become cluttered with logic that is not used any more.
+        EventWriterItem GenerateEvent(HDCreateEventTaskData.EventData eventData, int index, IbaAnalyzerMonitor monitor, DateTime startTime, DateTime stopTime, long prevEventTicks, Dictionary<string, Tuple<string[], double[]>> textValues, double stamp = double.NaN, double from = double.NaN, double to = double.NaN, bool bIncoming = true)
         {
             bool bUseSinglePoint = !double.IsNaN(from) && from == to;
             bool bUseRange = !double.IsNaN(from) && !bUseSinglePoint;
@@ -247,6 +242,8 @@ namespace iba.Processing
                 duration = (long)(to - from) * TimeSpan.TicksPerSecond;
             else if (double.IsNaN(from))
                 duration = eventStamp - startTime.Ticks;
+            else if (!bIncoming)
+                duration = eventStamp - prevEventTicks;
 
             return new EventWriterItem(index, eventStamp, duration, bIncoming, !bIncoming, floats, texts, blobs);
         }
@@ -516,10 +513,13 @@ namespace iba.Processing
                             if (bInPulse)
                                 intervals.Add(Tuple.Create(currStart, xoffset + (pulseValues.Length - 1) * timebase, bGenerateIncomming, false));
 
+                            // Initialize to the start of the datfile.
+                            // This could be used in case the fallingRising slope is set
+                            EventWriterItem incoming = new EventWriterItem(-1, startTime.Ticks, true, false);
+                            EventWriterItem prevIncoming = new EventWriterItem(-1, startTime.Ticks, false, true);
                             // Create events
                             foreach (var interval in intervals)
                             {
-                                EventWriterItem incoming;
                                 EventWriterItem outgoing;
 
                                 double stamp = (eventData.Slope == HDCreateEventTaskData.TriggerSlope.Rising || eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling) ? interval.Item1 : interval.Item2;
@@ -530,7 +530,8 @@ namespace iba.Processing
                                 //Generate the incoming event
                                 if (interval.Item3)
                                 {
-                                    incoming = GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, true);
+                                    prevIncoming = incoming;
+                                    incoming = GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, startTime.Ticks, textResults, stamp, from, to, true);
 
                                     // Add the incoming event to the list of generated events
                                     if (generated.ContainsKey(eventData.StoreName))
@@ -554,7 +555,9 @@ namespace iba.Processing
 
                                     if (eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling || eventData.Slope == HDCreateEventTaskData.TriggerSlope.FallingRising)
                                     {
-                                        outgoing = GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, stamp, from, to, false);
+                                        long incomingTicks = eventData.Slope == HDCreateEventTaskData.TriggerSlope.RisingFalling ? incoming.Stamp : prevIncoming.Stamp;
+
+                                        outgoing = GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, incomingTicks, textResults, stamp, from, to, false);
 
                                         // Add the outgoing event to the list of generated events
                                         if (generated.ContainsKey(eventData.StoreName))
@@ -570,12 +573,12 @@ namespace iba.Processing
                         {
                             // One event for the entire file
                             if (generated.ContainsKey(eventData.StoreName))
-                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, double.NaN, double.NaN, double.NaN, true));
+                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, startTime.Ticks, textResults, double.NaN, double.NaN, double.NaN, true));
                             else
-                                generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, double.NaN, double.NaN, double.NaN, true) });
+                                generated[eventData.StoreName] = new EventWriterData(new List<EventWriterItem>() { GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, startTime.Ticks, textResults, double.NaN, double.NaN, double.NaN, true) });
 
                             if (!string.IsNullOrEmpty(eventData.TimeSignalOutgoing) && eventData.TimeSignalOutgoing != HDCreateEventTaskData.UnassignedExpression)
-                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, textResults, double.NaN, double.NaN, double.NaN, false));
+                                generated[eventData.StoreName].Items.Add(GenerateEvent(eventData, eventIndex[eventData.StoreName], mon, startTime, endTime, startTime.Ticks, textResults, double.NaN, double.NaN, double.NaN, false));
 
                         }
                         //events.Add(GenerateEvent(eventData, j, mon, startTime, endTime, textResults)); // One event for the entire file

@@ -3,8 +3,8 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator Sinec-H1 Plugin"
 
-!define PRODUCT_VERSION "2.4.0.1"
-!define PRODUCT_FILE_VERSION "2.4.0.1"
+!define PRODUCT_VERSION "2.4.3.0"
+!define PRODUCT_FILE_VERSION "2.4.3.0"
 
 !include "PluginInstaller.nsh"
  

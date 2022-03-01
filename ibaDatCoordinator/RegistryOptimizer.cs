@@ -11,7 +11,113 @@ namespace iba
 {
     class RegistryOptimizer
     {
-        public static void DoWork()
+        private static bool cached = false;
+        private static bool cachedValue;
+        public static bool OptimizationPossible
+        {
+            get
+            {
+                try
+                {
+                    if (cached) return cachedValue;
+                    RegistryKey keySubSystems = Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Session Manager\SubSystems", false);
+
+                    string keySubSystemsText = keySubSystems.GetValue("Windows", "", RegistryValueOptions.DoNotExpandEnvironmentNames) as string;
+                    int keySubSystemsStartVals = keySubSystemsText.IndexOf("SharedSection=");
+                    if (keySubSystemsStartVals < 0) return false;
+                    keySubSystemsStartVals += 14;
+                    int keySubSystemsStopVals = keySubSystemsText.IndexOf("Windows=On") - 1;
+                    if (keySubSystemsStopVals < keySubSystemsStartVals)
+                    {
+                        cached = true;
+                        return cachedValue = false;
+                    }
+                    string subsystemstring = keySubSystemsText.Substring(keySubSystemsStartVals, keySubSystemsStopVals - keySubSystemsStartVals);
+                    string[] vals = subsystemstring.Split(',');
+                    int v1, v2, v3;
+                    if (vals.Length == 2 && int.TryParse(vals[0], out v1) && int.TryParse(vals[0], out v2))
+                    {
+                        v3 = v2;
+                    }
+                    else if (!(vals.Length == 3 && int.TryParse(vals[0], out v1) && int.TryParse(vals[1], out v2) && int.TryParse(vals[2], out v3)))
+                    {
+                        cached = true;
+                        return cachedValue = false;
+                    }
+
+                    bool RegistrySubSystemsOK = true;
+
+                    bool isOS64Bit = Environment.Is64BitOperatingSystem; 
+                    if (v2 < 12288 && !isOS64Bit)
+                    {
+                        v2 = 12288;
+                        RegistrySubSystemsOK = false;
+                    }
+                    if (v2 < 20480 && isOS64Bit)
+                    {
+                        v2 = 20480;
+                        RegistrySubSystemsOK = false;
+                    }
+                    if (v3 < 2048 && !isOS64Bit)
+                    {
+                        v3 = 2048;
+                        RegistrySubSystemsOK = false;
+                    }
+                    if (v3 < 4096 && isOS64Bit)
+                    {
+                        v3 = 4096;
+                        RegistrySubSystemsOK = false;
+                    }
+
+                    bool GDIHandles32OK = true;
+                    bool UserHandles32OK = true;
+                    bool GDIHandles64OK = true;
+                    bool UserHandles64OK = true;
+
+
+                    RegistryKey keyHandles = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", true);
+                    UInt32 gdiVal = Convert.ToUInt32(keyHandles.GetValue("GDIProcessHandleQuota"));
+                    if (gdiVal < 16384)
+                    {
+                        GDIHandles32OK = false;
+                        gdiVal = 16384;
+                    }
+                    UInt32 userVal = Convert.ToUInt32(keyHandles.GetValue("USERProcessHandleQuota"));
+                    if (userVal < 18000)
+                    {
+                        UserHandles32OK = false;
+                        userVal = 18000;
+                    }
+
+                    if (isOS64Bit)
+                    {
+                        keyHandles = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", true);
+                        gdiVal = Convert.ToUInt32(keyHandles.GetValue("GDIProcessHandleQuota"));
+                        if (gdiVal < 16384)
+                        {
+                            GDIHandles64OK = false;
+                            gdiVal = 16384;
+                        }
+                        userVal = Convert.ToUInt32(keyHandles.GetValue("USERProcessHandleQuota"));
+                        if (userVal < 18000)
+                        {
+                            UserHandles64OK = false;
+                            userVal = 18000;
+                        }
+                    }
+
+                    cached = true;
+                    return cachedValue = !(RegistrySubSystemsOK && GDIHandles32OK && UserHandles32OK && GDIHandles64OK && UserHandles64OK);
+                }
+                catch (Exception)
+                {
+                    cached = true;
+                    return cachedValue = false;
+                }
+            }
+        }
+
+        public static void DoWork(bool fromInstaller=false)
         {
             int action = 1; //1 = reading, 2 = exporting
             try
@@ -22,13 +128,14 @@ namespace iba
                 int keySubSystemsStartVals = keySubSystemsText.IndexOf("SharedSection=");
                 if (keySubSystemsStartVals < 0)
                 {
-                    MessageBox.Show(iba.Properties.Resources.regOptFormatProblem, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!fromInstaller) MessageBox.Show(iba.Properties.Resources.regOptFormatProblem, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
                 keySubSystemsStartVals += 14;
                 int keySubSystemsStopVals = keySubSystemsText.IndexOf("Windows=On") - 1;
                 if (keySubSystemsStopVals < keySubSystemsStartVals)
                 {
-                    MessageBox.Show(iba.Properties.Resources.regOptFormatProblem, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!fromInstaller) MessageBox.Show(iba.Properties.Resources.regOptFormatProblem, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 string subsystemstring = keySubSystemsText.Substring(keySubSystemsStartVals, keySubSystemsStopVals - keySubSystemsStartVals);
@@ -40,13 +147,13 @@ namespace iba
                 }
                 else if (!(vals.Length == 3 && int.TryParse(vals[0], out v1) && int.TryParse(vals[1], out v2) && int.TryParse(vals[2], out v3)))
                 {
-                    MessageBox.Show(iba.Properties.Resources.regOptFormatProblem, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!fromInstaller) MessageBox.Show(iba.Properties.Resources.regOptFormatProblem, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 bool RegistrySubSystemsOK = true;
 
-                bool isOS64Bit = IsOS64Bit();
+                bool isOS64Bit = Environment.Is64BitOperatingSystem;
                 if (v2 < 12288 && !isOS64Bit)
                 {
                     v2 = 12288;
@@ -68,25 +175,48 @@ namespace iba
                     RegistrySubSystemsOK = false;
                 }
 
-                bool GDIHandlesOK = true;
-                bool UserHandlesOK = true;
-                RegistryKey keyHandles = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", true);
+                bool GDIHandles32OK = true;
+                bool UserHandles32OK = true;
+                bool GDIHandles64OK = true;
+                bool UserHandles64OK = true;
+
+
+                RegistryKey keyHandles = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", true);
                 UInt32 gdiVal = Convert.ToUInt32(keyHandles.GetValue("GDIProcessHandleQuota"));
                 if (gdiVal < 16384)
                 {
-                    GDIHandlesOK = false;
+                    GDIHandles32OK = false;
                     gdiVal = 16384;
                 }
                 UInt32 userVal = Convert.ToUInt32(keyHandles.GetValue("USERProcessHandleQuota"));
                 if (userVal < 18000)
                 {
-                    UserHandlesOK = false;
+                    UserHandles32OK = false;
                     userVal = 18000;
                 }
 
-                if (RegistrySubSystemsOK && GDIHandlesOK && UserHandlesOK)
+                RegistryKey keyHandles64 = null;
+
+                if (isOS64Bit)
                 {
-                    MessageBox.Show(iba.Properties.Resources.regOptEveryThingOK, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    keyHandles64 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", true);
+                    gdiVal = Convert.ToUInt32(keyHandles64.GetValue("GDIProcessHandleQuota"));
+                    if (gdiVal < 16384)
+                    {
+                        GDIHandles64OK = false;
+                        gdiVal = 16384;
+                    }
+                    userVal = Convert.ToUInt32(keyHandles64.GetValue("USERProcessHandleQuota"));
+                    if (userVal < 18000)
+                    {
+                        UserHandles64OK = false;
+                        userVal = 18000;
+                    }
+                }
+
+                if (RegistrySubSystemsOK && GDIHandles32OK && UserHandles32OK && GDIHandles64OK && UserHandles64OK)
+                {
+                    if (!fromInstaller) MessageBox.Show(iba.Properties.Resources.regOptEveryThingOK, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 else
@@ -94,10 +224,19 @@ namespace iba
                     string msg = iba.Properties.Resources.regOptListKeys + Environment.NewLine + Environment.NewLine;
                     if (!RegistrySubSystemsOK)
                         msg += "     " + keySubSystems.Name + Environment.NewLine;
-                    if (!GDIHandlesOK || !UserHandlesOK)
+                    if (!GDIHandles32OK || !UserHandles32OK || !GDIHandles64OK || !UserHandles64OK)
                         msg += "     " + keyHandles.Name + Environment.NewLine;
-                    if (MessageBox.Show(msg, "ibaDatCoordinator", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK)
-                        return;
+                    if (fromInstaller)
+                    {
+                        msg = iba.Properties.Resources.regOptInstaller + Environment.NewLine + msg + iba.Properties.Resources.regOptInstaller2;
+                        if (MessageBox.Show(msg, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                            return;
+                    }
+                    else
+                    {
+                        if (MessageBox.Show(msg, "ibaDatCoordinator", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) != DialogResult.OK)
+                            return;
+                    }
                 }
 
                 //take a backup
@@ -118,10 +257,15 @@ namespace iba
                     sb.Append(keySubSystemsText.Substring(keySubSystemsStopVals));
                     keySubSystems.SetValue("Windows", sb.ToString(), RegistryValueKind.ExpandString);
                 }
-                if (!GDIHandlesOK)
+                if (!GDIHandles32OK)
                     keyHandles.SetValue("GDIProcessHandleQuota", gdiVal, RegistryValueKind.DWord);
-                if (!UserHandlesOK)
+                if (!UserHandles32OK)
                     keyHandles.SetValue("USERProcessHandleQuota", userVal, RegistryValueKind.DWord);
+
+                if (!GDIHandles64OK && keyHandles64 != null)
+                    keyHandles64.SetValue("GDIProcessHandleQuota", gdiVal, RegistryValueKind.DWord);
+                if (!UserHandles64OK && keyHandles64 != null)
+                    keyHandles64.SetValue("USERProcessHandleQuota", userVal, RegistryValueKind.DWord);
 
                 //TODO: Ask to reboot system, with option to postpone
                 if (MessageBox.Show(iba.Properties.Resources.regOptRestart, "ibaDatCoordinator", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -183,63 +327,6 @@ namespace iba
             catch 
             { 
             }
-        }
-
-        [DllImport("kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-        public extern static IntPtr LoadLibrary(string libraryName);
-
-        [DllImport("kernel32", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
-        public extern static IntPtr GetProcAddress(IntPtr hwnd, string procedureName);
-
-        private delegate bool IsWow64ProcessDelegate([In] IntPtr handle, [Out] out bool isWow64Process);
-
-        public static bool IsOS64Bit()
-        {
-            if (IntPtr.Size == 8 || (IntPtr.Size == 4 && Is32BitProcessOn64BitProcessor()))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private static IsWow64ProcessDelegate GetIsWow64ProcessDelegate()
-        {
-            IntPtr handle = LoadLibrary("kernel32");
-
-            if (handle != IntPtr.Zero)
-            {
-                IntPtr fnPtr = GetProcAddress(handle, "IsWow64Process");
-
-                if (fnPtr != IntPtr.Zero)
-                {
-                    return (IsWow64ProcessDelegate)Marshal.GetDelegateForFunctionPointer((IntPtr)fnPtr, typeof(IsWow64ProcessDelegate));
-                }
-            }
-
-            return null;
-        }
-
-        private static bool Is32BitProcessOn64BitProcessor()
-        {
-            IsWow64ProcessDelegate fnDelegate = GetIsWow64ProcessDelegate();
-
-            if (fnDelegate == null)
-            {
-                return false;
-            }
-
-            bool isWow64;
-            bool retVal = fnDelegate.Invoke(Process.GetCurrentProcess().Handle, out isWow64);
-
-            if (retVal == false)
-            {
-                return false;
-            }
-
-            return isWow64;
         }
     }
 

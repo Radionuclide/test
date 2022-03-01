@@ -1702,10 +1702,26 @@
             </summary>
             <param name="sourceStream">Archive content</param>
         </member>
-        <member name="M:iba.HD.Common.Zip.ZipFile.PathFormatter(System.String,System.Boolean)">
+        <member name="M:iba.HD.Common.Zip.ZipFile.LocalPathFormatter(System.String,System.Boolean,System.String)">
             <summary>
-            Formats directory/fileName to specific ZIP format
+            Formats local zipPath to zip requirements. Local path is required. Zip path is optional.
             </summary>
+            <param name="localPath">Full path please</param>
+            <param name="isDirectory">Is it directory?</param>
+            <param name="zipPath">Path inside of an archive if you please.
+            If null or empty then <paramref name="localPath"/> last subName will be used 
+            and file will be in the achive root</param>
+            <returns>Formatted string. Use it in CreateEntry method</returns>
+            <exception cref="T:System.IO.IOException"></exception>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.StreamPathFormatter(System.String,System.Boolean)">
+            <summary>
+            Formats stream zipPath to zip requirements. Zip path is required.
+            </summary>
+            <param name="zipPath"></param>
+            <param name="isDirectory"></param>
+            <returns>Formatted string. Use it in CreateEntry method</returns>
+            <exception cref="T:System.Exception"></exception>
         </member>
         <member name="P:iba.HD.Common.Zip.ZipFile.Entries">
             <summary>
@@ -1716,11 +1732,13 @@
             <summary>
             Adds file to the opened archive
             </summary>
+            <exception cref="T:System.Exception"></exception>
         </member>
         <member name="M:iba.HD.Common.Zip.ZipFile.AddDirectory(System.String,System.String)">
             <summary>
             Adds whole directory to the opened archive
             </summary>
+            <exception cref="T:System.Exception"></exception>
         </member>
         <member name="M:iba.HD.Common.Zip.ZipFile.Save(System.IO.Stream)">
             <summary>

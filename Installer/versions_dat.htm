@@ -183,17 +183,40 @@
 			<OL>
 			</OL>
 		<p>&nbsp; </p>
-		<P class="header1">Version 2.4.2 - 2021-08-30</P>
+		<P class="header1">Version 2.4.3 - 2022-02-03</P>
+
+			<p class="header2">Improvements (I)</p>
+			<OL>
+			<li>Event job: Calculate the range between incoming and outgoing events using the duration field if available. This allows to match overlapping events. #20437</li>
+			<li>The path to the ibaAnalyzer executable was never updated after program start. Now the path is updated when ibaAnalyzer is uninstalled and can be updated by clicking on it after ibaAnalyzer is reinstalled. #20475</li>
+			</OL>
+			
+			<p class="header2">Bugfixes (B)</p>
+			<OL>
+			<li>Starting the ibaHD import task could crash the ibaDatCoodinator service. #20282</li>
+			<li>Offline events created on .dat files which have a different utc offset than the system could have wrong duration values. #20438</li>
+			<li>When loading an XML file while the current configuration is modified, the modifications could overwrite the settings from the loaded file. #20475</li>
+			</OL>
+		<p>&nbsp; </p>
+		<P class="header1">Version 2.4.2 - 2021-12-16</P>
+			<p class="header2">New features (N)</p>
+			<OL>
+			<li>The installer will query if the user wants to perform the registry optimizations to allow for more ibaAnalyzers to run simultaneously.</li>
+			<li>While stopping the ibaDatCoodinator service through the status application, a button is present that provides the option to abort the service and related ibaAnalyzer processes forcefully.</li>
+			</OL>
 			<p class="header2">Improvements (I)</p>
 			<OL>
 			<li>Selecting an infofield or expression for the subfolder or output filename: specifiying a length that exceeds the infofield length will no longer result in an error, the remainder of the infofield will be used.</li>
 			<li>When the report task fails, a better error message is given, it will also advice to start the print spooler service if the print spooler service was not started already.  #18050</li>
+			<li>Support for Windows 11, Windows Server 2022.  #19994</li>
+			<li>Performance improvement while starting jobs.</li>
 			</OL>
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
 			<li>Saving changes to the event configuration in the ibaHD Offline event tasks could lead to a crash of the connected ibaHD-Server. #19178</li>
 			<li>Crash when processing certain files with corrupt headers, fixed with updating ibaFiles to 7.3.1</li>
 			<li>The "clean and reprocess" button for the .dat triggered jobs had vanished. #19464</li>
+			<li>Undeterministic release of ibaAnalyzer instances caused problems when too many were still in existance and newly ones were trying to be created.</li>
 			</OL>
 		<p>&nbsp; </p>
 		<P class="header1">Version 2.4.1 - 2021-06-14</P>

@@ -709,6 +709,9 @@ Section $(DESC_DATCOOR_SERVICE) DATCOOR_SERVICE
   
   !insertmacro WriteToInstallHistory "Finished installing client-server version of ${PRODUCT_NAME} v${PRODUCT_VERSION}"
   
+  ;see if registry optimizations can be done
+  IfSilent +2 +1
+  Exec "$INSTDIR\ibaDatCoordinatorStatus.exe /optimizeregistryInstaller"
 SectionEnd
 
 Section $(DESC_DATCOOR_CLIENT) DATCOOR_CLIENT

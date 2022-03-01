@@ -109,7 +109,7 @@ namespace iba.Dialogs
             cbAddress.Items.Add(noneItem);
 
             String mruList = "";
-            Profiler.ProfileString(true,"Client", "ServersMRUList", ref mruList, "");
+            DatCoProfiler.ProfileString(true,"Client", "ServersMRUList", ref mruList, "");
             string[] list = mruList.Split(':');
             foreach(string s in list)
             {
@@ -147,7 +147,7 @@ namespace iba.Dialogs
                     sb.Append(s);
             }
             string res = sb.ToString();
-            Profiler.ProfileString(false,"Client", "ServersMRUList", ref res ,"");
+            DatCoProfiler.ProfileString(false,"Client", "ServersMRUList", ref res ,"");
         }
 
         /// <summary>

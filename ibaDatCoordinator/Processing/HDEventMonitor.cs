@@ -20,8 +20,8 @@ namespace iba.Processing
         bool m_bSkipChecks;
 
         int errorCode;
-        Dictionary<string, LiveStoreData> m_liveData;
-        Dictionary<string, QueryStoreData> m_queryData;
+        Dictionary<string, HdStoreData> m_liveData;
+        Dictionary<string, HdStoreData> m_queryData;
 
         object m_dataSetLock;
         HashSet<EventReaderData> m_liveDataSet;
@@ -56,8 +56,8 @@ namespace iba.Processing
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
             m_hdReader.Advance += OnHdAdvance;
 
-            m_liveData = new Dictionary<string, LiveStoreData>();
-            m_queryData = new Dictionary<string, QueryStoreData>();
+            m_liveData = new Dictionary<string, HdStoreData>();
+            m_queryData = new Dictionary<string, HdStoreData>();
 
             m_dataSetLock = new object();
             m_liveDataSet = new HashSet<EventReaderData>();
@@ -115,7 +115,7 @@ namespace iba.Processing
             {
                 m_hdReader.Advance -= OnHdAdvance;
 
-                foreach (LiveStoreData storeData in m_liveData.Values)
+                foreach (HdStoreData storeData in m_liveData.Values)
                 {
                     if (storeData.SubsetId >= 0)
                         m_hdReader.EventManager.RemoveSubset(storeData.SubsetId);
@@ -124,7 +124,7 @@ namespace iba.Processing
                         m_hdReader.EventManager.CancelRequest(storeData.RequestId);
                 }
 
-                foreach (QueryStoreData storeData in m_queryData.Values)
+                foreach (HdStoreData storeData in m_queryData.Values)
                 {
                     if (storeData.RequestId >= 0)
                         m_hdReader.EventManager.CancelRequest(storeData.RequestId);
@@ -222,12 +222,12 @@ namespace iba.Processing
                 subIds.Add(subId);
             }
 
-            LiveStoreData liveStoreData;
-            QueryStoreData queryStoreData;
+            HdStoreData liveStoreData;
+            HdStoreData queryStoreData;
 
             EventStoreSubset subset;
-            var newLiveData = new Dictionary<string, LiveStoreData>();
-            var newQueryData = new Dictionary<string, QueryStoreData>();
+            var newLiveData = new Dictionary<string, HdStoreData>();
+            var newQueryData = new Dictionary<string, HdStoreData>();
 
             bool updated = m_liveData.Count != idsPerStore.Count;
 
@@ -240,7 +240,7 @@ namespace iba.Processing
                 if (liveStoreData == null)
                 {
                     updated = true;
-                    liveStoreData = new LiveStoreData(subset);
+                    liveStoreData = new HdStoreData(subset);
                 }
 
                 if (!liveStoreData.Subset.Equals(subset))
@@ -260,7 +260,7 @@ namespace iba.Processing
                 if (!m_queryData.TryGetValue(kvp.Key, out queryStoreData))
                 {
                     updated = true;
-                    queryStoreData = new QueryStoreData(subset);
+                    queryStoreData = new HdStoreData(subset);
 
                     long endTime = 0;
                     if (m_ejd.LastReceivedHistoricalTimeStamp?.TryGetValue(subset.StoreName, out endTime) ?? false)
@@ -284,7 +284,7 @@ namespace iba.Processing
                 newQueryData.Add(kvp.Key, queryStoreData);
             }
 
-            Dictionary<string, LiveStoreData> lLiveData = m_liveData;
+            Dictionary<string, HdStoreData> lLiveData = m_liveData;
             foreach (var data in lLiveData.Values)
             {
                 bool bDelete = true;
@@ -306,7 +306,7 @@ namespace iba.Processing
                 }
             }
 
-            Dictionary<string, QueryStoreData> lqueryData = m_queryData;
+            Dictionary<string, HdStoreData> lqueryData = m_queryData;
             foreach (var data in lqueryData.Values)
             {
                 bool bDelete = true;
@@ -360,7 +360,7 @@ namespace iba.Processing
                 //Update start time to prevent job executions for old event occurrences
                 //Lowest receive time is enough (rest is handled by the hashset)
                 long lowestReceiveTime = DateTime.MaxValue.Ticks;
-                Dictionary<string, LiveStoreData> lLiveData = m_liveData;
+                Dictionary<string, HdStoreData> lLiveData = m_liveData;
 
                 foreach (var storeData in lLiveData.Values)
                 {
@@ -385,7 +385,7 @@ namespace iba.Processing
 
         void OnHdAdvance(IList<string> storeNames, IList<long> stamps)
         {
-            LiveStoreData storeData;
+            HdStoreData storeData;
 
             for (int i = 0; i < storeNames.Count && i < stamps.Count; i++)
             {
@@ -444,7 +444,7 @@ namespace iba.Processing
         void OnCleanupTimerTick(object state)
         {
             long lowestReceiveTime = DateTime.MaxValue.Ticks;
-            Dictionary<string, LiveStoreData> lLiveData = m_liveData;
+            Dictionary<string, HdStoreData> lLiveData = m_liveData;
 
             foreach (var storeData in lLiveData.Values)
             {
@@ -492,7 +492,7 @@ namespace iba.Processing
         {
             if (m_hdReader != null && m_hdReader.IsConnected())
             {
-                Dictionary<string, LiveStoreData> lLiveData = m_liveData;
+                Dictionary<string, HdStoreData> lLiveData = m_liveData;
                 foreach (var storeData in lLiveData.Values)
                 {
                     if (storeData.SubsetId == -1)
@@ -525,7 +525,7 @@ namespace iba.Processing
                             {
                                 storeData.RequestId = m_hdReader != null ? m_hdReader.EventManager.AddLiveRequest(storeData.SubsetId, range) : -1;
 
-                                m_hdReader?.EventManager.SendRequest(storeData.RequestId, Response);
+                                m_hdReader?.EventManager.SendRequest(storeData.RequestId, LiveResponse);
                             }
                         }
                     }
@@ -537,7 +537,7 @@ namespace iba.Processing
 
         void OnNewSubsetId(string storeName, int newSubsetId)
         {
-            LiveStoreData storeData;
+            HdStoreData storeData;
 
             if (m_liveData.TryGetValue(storeName, out storeData))
                 storeData.SubsetId = newSubsetId;
@@ -548,7 +548,7 @@ namespace iba.Processing
             return $"store:{store};event:{subId};".ToUpper();
         }
 
-        void Response(EventResponse response)
+        void Response(EventResponse response, Dictionary<string, HdStoreData> lStoreData, long startTimeTicks, bool resetReceiveTime)
         {
             if (response == null)
                 return;
@@ -569,8 +569,7 @@ namespace iba.Processing
             }
 
             List<EventReaderData> newEvents = new List<EventReaderData>();
-            Dictionary<string, LiveStoreData> lLiveData = m_liveData;
-            foreach (var storeData in lLiveData.Values)
+            foreach (var storeData in lStoreData.Values)
             {
                 if (storeData.RequestId == response.RequestId)
                 {
@@ -606,7 +605,7 @@ namespace iba.Processing
                                     if (m_ejd.RangeCenter == EventJobRangeCenter.Outgoing && !data.TriggerOut)
                                         continue;
 
-                                    if (!m_bSkipChecks && data.UtcTicks < m_startTimeTicks)
+                                    if (!m_bSkipChecks && data.UtcTicks < startTimeTicks)
                                         continue;
 
                                     if (m_liveDataSet.Add(data))
@@ -624,7 +623,26 @@ namespace iba.Processing
                                             if (data.TriggerIn)
                                                 lMatchedEvents.Add(new MatchedEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.MaxTriggerRange));
                                             else if (data.TriggerOut && lMatchedEvents.Count > 0)
-                                                (lMatchedEvents[lMatchedEvents.Count - 1] as MatchedEventDataRange)?.Match(data.UtcTicks);
+                                            {
+                                                int matchIndex = lMatchedEvents.Count - 1;
+
+                                                // If the event duration is set, use this to get a more robust match.
+                                                // Without duration the matching will be wrong in case of overlapping incoming/outgoing pairs
+                                                if (data.Duration != 0)
+                                                {
+                                                    for (int i = lMatchedEvents.Count - 1; i >= 0; i--)
+                                                    {
+                                                        if (lMatchedEvents[i].StartTime.Ticks == data.UtcTicks - data.Duration)
+                                                        {
+                                                            matchIndex = i;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+
+                                                if (lMatchedEvents[matchIndex].StartTime.Ticks < data.UtcTicks)
+                                                    (lMatchedEvents[matchIndex] as MatchedEventDataRange)?.Match(data.UtcTicks);
+                                            }
                                         }
                                         else //incorrect events are already filtered out
                                             lMatchedEvents.Add(new SingleEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero));
@@ -640,22 +658,32 @@ namespace iba.Processing
 
                     if (response.Final)
                     {
-                        if (response.Final && storeData.RequestId == response.RequestId)
+                        if (storeData.RequestId == response.RequestId)
+                        {
                             storeData.RequestId = -1;
+
+                            if (resetReceiveTime)
+                                storeData.ReceiveTime = DateTime.MinValue.Ticks;
+                        }
                     }
                 }
             }
         }
+
+        void LiveResponse(EventResponse response)
+        {
+            Response(response, m_liveData, m_startTimeTicks, false);
+        }
         #endregion
 
         #region LiveStoreData
-        class LiveStoreData
+        class HdStoreData
         {
             public int RequestId, SubsetId;
             public EventStoreSubset Subset;
             public long ReceiveTime, AdvanceTime;
 
-            public LiveStoreData(EventStoreSubset subset)
+            public HdStoreData(EventStoreSubset subset)
             {
                 RequestId = -1;
 
@@ -670,25 +698,11 @@ namespace iba.Processing
 
         #region Query data
 
-        class QueryStoreData
-        {
-            public int RequestId;
-            public EventStoreSubset Subset;
-            public long ReceiveTime;
-
-            public QueryStoreData(EventStoreSubset subset)
-            {
-                RequestId = -1;
-
-                Subset = subset;
-            }
-        }
-
         void QueryHistoricalEvents()
         {
             if (m_hdReader != null && m_hdReader.IsConnected())
             {
-                Dictionary<string, QueryStoreData> lQueryData = m_queryData;
+                Dictionary<string, HdStoreData> lQueryData = m_queryData;
                 foreach (var storeData in lQueryData.Values)
                 {
                     if (storeData.RequestId == -1)
@@ -730,104 +744,7 @@ namespace iba.Processing
 
         void QueryResponse(EventResponse response)
         {
-            if (response == null)
-                return;
-
-            if (response.ErrorCode != errorCode)
-            {
-                errorCode = response.ErrorCode;
-                if (errorCode != 0)
-                {
-                    ibaLogger.LogFormat(Level.Warning, "Event job <<{0}>>: {1} (error code: {2})", m_jobName, response.Error, response.ErrorCode);
-                    return;
-                }
-            }
-            else if (errorCode == 0 && !string.IsNullOrWhiteSpace(response.Error))
-            {
-                ibaLogger.LogFormat(Level.Warning, "Event job <<{0}>>: {1}", m_jobName, response.Error);
-                return;
-            }
-
-            List<EventReaderData> newEvents = new List<EventReaderData>();
-            Dictionary<string, QueryStoreData> lQueryData = m_queryData;
-            foreach (var storeData in lQueryData.Values)
-            {
-                if (storeData.RequestId == response.RequestId)
-                {
-                    long receiveTime = storeData.ReceiveTime;
-                    if (response.Events != null)
-                    {
-                        // Incoming events should be processed before outgoing
-                        response.Events.Sort((a, b) =>
-                        {
-                            if (b.UtcTicks == a.UtcTicks)
-                            {
-                                if (b.TriggerIn && a.TriggerOut)
-                                    return 1;
-                                if (b.TriggerOut && a.TriggerIn)
-                                    return -1;
-
-                                return 0;
-                            }
-
-                            return a.UtcTicks.CompareTo(b.UtcTicks);
-                        });
-
-                        lock (m_dataSetLock)
-                        {
-                            lock (m_matchedEventsLock)
-                            {
-                                foreach (var data in response.Events)
-                                {
-                                    if (m_ejd.RangeCenter == EventJobRangeCenter.Incoming && !data.TriggerIn)
-                                        continue;
-
-                                    if (m_ejd.RangeCenter == EventJobRangeCenter.Outgoing && !data.TriggerOut)
-                                        continue;
-
-                                    if (!m_bSkipChecks && data.UtcTicks < m_ejd.StartTimeHdQueryTicksUTC)
-                                        continue;
-
-                                    if (m_liveDataSet.Add(data))
-                                    {
-                                        string id = CreateEventID(data.Store, data.Id);
-                                        List<EventDataRange> lMatchedEvents = null;
-                                        if (!m_dictMatchedEvents.TryGetValue(id, out lMatchedEvents))
-                                        {
-                                            lMatchedEvents = new List<EventDataRange>();
-                                            m_dictMatchedEvents[id] = lMatchedEvents;
-                                        }
-
-                                        if (m_ejd.RangeCenter == EventJobRangeCenter.Both)
-                                        {
-                                            if (data.TriggerIn)
-                                                lMatchedEvents.Add(new MatchedEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero, m_ejd.MaxTriggerRange));
-                                            else if (data.TriggerOut && lMatchedEvents.Count > 0)
-                                                (lMatchedEvents[lMatchedEvents.Count - 1] as MatchedEventDataRange)?.Match(data.UtcTicks);
-                                        }
-                                        else //incorrect events are already filtered out
-                                            lMatchedEvents.Add(new SingleEventDataRange(data.Name, data.UtcTicks, m_ejd.EnablePreTriggerRange ? m_ejd.PreTriggerRange : TimeSpan.Zero, m_ejd.EnablePostTriggerRange ? m_ejd.PostTriggerRange : TimeSpan.Zero));
-
-                                        // The default query orders the results in descending order. 
-                                        // Ascending is only supported from ibaHD 2.5 onwards.
-                                        receiveTime = Math.Min(receiveTime, data.UtcTicks);
-                                    }
-                                }
-                            }
-                        }
-                        storeData.ReceiveTime = receiveTime;
-                    }
-
-                    if (response.Final)
-                    {
-                        if (response.Final && storeData.RequestId == response.RequestId)
-                        {
-                            storeData.RequestId = -1;
-                            storeData.ReceiveTime = DateTime.MinValue.Ticks;
-                        }
-                    }
-                }
-            }
+            Response(response, m_queryData, m_ejd.StartTimeHdQueryTicksUTC, true);
         }
         #endregion
 

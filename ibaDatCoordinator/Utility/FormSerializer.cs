@@ -47,38 +47,38 @@ namespace iba.Utility
             WindowPlacement wndP = new WindowPlacement();
             wndP.length = Marshal.SizeOf(wndP);
             GetWindowPlacement(form.Handle, ref wndP);
-            Profiler.ProfileInt(false, name, "Flags", ref wndP.flags, wndP.flags);
-            Profiler.ProfileInt(false, name, "ShowCmd", ref wndP.showCmd, wndP.showCmd);
-            Profiler.ProfileInt(false, name, "MinPositionX", ref wndP.ptMinPosition.x, wndP.ptMinPosition.x);
-            Profiler.ProfileInt(false, name, "MinPositionY", ref wndP.ptMinPosition.y, wndP.ptMinPosition.y);
-            Profiler.ProfileInt(false, name, "MaxPositionX", ref wndP.ptMaxPosition.x, wndP.ptMaxPosition.x);
-            Profiler.ProfileInt(false, name, "MaxPositionY", ref wndP.ptMaxPosition.y, wndP.ptMaxPosition.y);
-            Profiler.ProfileInt(false, name, "NormalPositionLeft", ref wndP.rcNormalPosition.left, wndP.rcNormalPosition.left);
-            Profiler.ProfileInt(false, name, "NormalPositionRight", ref wndP.rcNormalPosition.right, wndP.rcNormalPosition.right);
-            Profiler.ProfileInt(false, name, "NormalPositionTop", ref wndP.rcNormalPosition.top, wndP.rcNormalPosition.top);
-            Profiler.ProfileInt(false, name, "NormalPositionBottom", ref wndP.rcNormalPosition.bottom, wndP.rcNormalPosition.bottom);
+            DatCoProfiler.ProfileInt(false, name, "Flags", ref wndP.flags, wndP.flags);
+            DatCoProfiler.ProfileInt(false, name, "ShowCmd", ref wndP.showCmd, wndP.showCmd);
+            DatCoProfiler.ProfileInt(false, name, "MinPositionX", ref wndP.ptMinPosition.x, wndP.ptMinPosition.x);
+            DatCoProfiler.ProfileInt(false, name, "MinPositionY", ref wndP.ptMinPosition.y, wndP.ptMinPosition.y);
+            DatCoProfiler.ProfileInt(false, name, "MaxPositionX", ref wndP.ptMaxPosition.x, wndP.ptMaxPosition.x);
+            DatCoProfiler.ProfileInt(false, name, "MaxPositionY", ref wndP.ptMaxPosition.y, wndP.ptMaxPosition.y);
+            DatCoProfiler.ProfileInt(false, name, "NormalPositionLeft", ref wndP.rcNormalPosition.left, wndP.rcNormalPosition.left);
+            DatCoProfiler.ProfileInt(false, name, "NormalPositionRight", ref wndP.rcNormalPosition.right, wndP.rcNormalPosition.right);
+            DatCoProfiler.ProfileInt(false, name, "NormalPositionTop", ref wndP.rcNormalPosition.top, wndP.rcNormalPosition.top);
+            DatCoProfiler.ProfileInt(false, name, "NormalPositionBottom", ref wndP.rcNormalPosition.bottom, wndP.rcNormalPosition.bottom);
         }
 
         public static void LoadSettings(Form form, string name, bool onlyNormalPosition=false)
         {
-            if (!Profiler.KeyExists(name)) return;
+            if (!DatCoProfiler.KeyExists(name)) return;
 
             WindowPlacement wndP = new WindowPlacement();
             wndP.length = Marshal.SizeOf(wndP);
             GetWindowPlacement(form.Handle, ref wndP);
             if(!onlyNormalPosition)
             {
-                Profiler.ProfileInt(true, name, "Flags", ref wndP.flags, wndP.flags);
-                Profiler.ProfileInt(true, name, "ShowCmd", ref wndP.showCmd, wndP.showCmd);
-                Profiler.ProfileInt(true, name, "MinPositionX", ref wndP.ptMinPosition.x, wndP.ptMinPosition.x);
-                Profiler.ProfileInt(true, name, "MinPositionY", ref wndP.ptMinPosition.y, wndP.ptMinPosition.y);
-                Profiler.ProfileInt(true, name, "MaxPositionX", ref wndP.ptMaxPosition.x, wndP.ptMaxPosition.x);
-                Profiler.ProfileInt(true, name, "MaxPositionY", ref wndP.ptMaxPosition.y, wndP.ptMaxPosition.y);
+                DatCoProfiler.ProfileInt(true, name, "Flags", ref wndP.flags, wndP.flags);
+                DatCoProfiler.ProfileInt(true, name, "ShowCmd", ref wndP.showCmd, wndP.showCmd);
+                DatCoProfiler.ProfileInt(true, name, "MinPositionX", ref wndP.ptMinPosition.x, wndP.ptMinPosition.x);
+                DatCoProfiler.ProfileInt(true, name, "MinPositionY", ref wndP.ptMinPosition.y, wndP.ptMinPosition.y);
+                DatCoProfiler.ProfileInt(true, name, "MaxPositionX", ref wndP.ptMaxPosition.x, wndP.ptMaxPosition.x);
+                DatCoProfiler.ProfileInt(true, name, "MaxPositionY", ref wndP.ptMaxPosition.y, wndP.ptMaxPosition.y);
             }
-            Profiler.ProfileInt(true, name, "NormalPositionLeft", ref wndP.rcNormalPosition.left, wndP.rcNormalPosition.left);
-            Profiler.ProfileInt(true, name, "NormalPositionRight", ref wndP.rcNormalPosition.right, wndP.rcNormalPosition.right);
-            Profiler.ProfileInt(true, name, "NormalPositionTop", ref wndP.rcNormalPosition.top, wndP.rcNormalPosition.top);
-            Profiler.ProfileInt(true, name, "NormalPositionBottom", ref wndP.rcNormalPosition.bottom, wndP.rcNormalPosition.bottom);
+            DatCoProfiler.ProfileInt(true, name, "NormalPositionLeft", ref wndP.rcNormalPosition.left, wndP.rcNormalPosition.left);
+            DatCoProfiler.ProfileInt(true, name, "NormalPositionRight", ref wndP.rcNormalPosition.right, wndP.rcNormalPosition.right);
+            DatCoProfiler.ProfileInt(true, name, "NormalPositionTop", ref wndP.rcNormalPosition.top, wndP.rcNormalPosition.top);
+            DatCoProfiler.ProfileInt(true, name, "NormalPositionBottom", ref wndP.rcNormalPosition.bottom, wndP.rcNormalPosition.bottom);
             SetWindowPlacement(form.Handle, ref wndP);
             if(form.WindowState == FormWindowState.Maximized)
                 form.Bounds = new System.Drawing.Rectangle(wndP.rcNormalPosition.left, wndP.rcNormalPosition.top,

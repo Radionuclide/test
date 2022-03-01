@@ -26,7 +26,7 @@ namespace iba.Dialogs
             m_data = data;
             m_stw = new SplitterTaskWorker(data);
             string to = "";
-            Profiler.ProfileString(true, "SplitterTestDlg","OutputFolder", ref to, "");
+            DatCoProfiler.ProfileString(true, "SplitterTestDlg","OutputFolder", ref to, "");
             m_targetFolderTextBox.Text = to;
             m_btPerform.Enabled = true;
             m_btPerform.Image = iba.Properties.Resources.Stop;
@@ -45,7 +45,7 @@ namespace iba.Dialogs
             UseWaitCursor = false;
             m_bAborted = true;
             string to = m_targetFolderTextBox.Text;
-            Profiler.ProfileString(false, "SplitterTestDlg", "OutputFolder", ref to, "");
+            DatCoProfiler.ProfileString(false, "SplitterTestDlg", "OutputFolder", ref to, "");
             Close();
         }
 

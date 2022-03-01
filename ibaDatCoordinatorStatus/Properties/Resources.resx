@@ -193,4 +193,10 @@
   <data name="ibaDatCoordinator" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ibaDatCoordinator.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ForceStopCaption" xml:space="preserve">
+    <value>Force stop</value>
+  </data>
+  <data name="ForceStopWarning" xml:space="preserve">
+    <value>This action will forcefully stop the ibaDatCoordinator service and any associated ibaAnalyzer processes. This can result in unsaved work, or an inconsistent state of the output of the various tasks.</value>
+  </data>
 </root>

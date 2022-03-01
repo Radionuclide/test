@@ -33,15 +33,12 @@ namespace iba.DatCoordinator.Status.Dialogs
             this.m_progressBar = new System.Windows.Forms.ProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.forceStopBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // m_progressBar
             // 
-            this.m_progressBar.AccessibleDescription = null;
-            this.m_progressBar.AccessibleName = null;
             resources.ApplyResources(this.m_progressBar, "m_progressBar");
-            this.m_progressBar.BackgroundImage = null;
-            this.m_progressBar.Font = null;
             this.m_progressBar.Name = "m_progressBar";
             this.m_progressBar.Step = 5;
             this.m_progressBar.UseWaitCursor = true;
@@ -57,18 +54,21 @@ namespace iba.DatCoordinator.Status.Dialogs
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // forceStopBtn
+            // 
+            resources.ApplyResources(this.forceStopBtn, "forceStopBtn");
+            this.forceStopBtn.Name = "forceStopBtn";
+            this.forceStopBtn.UseVisualStyleBackColor = true;
+            this.forceStopBtn.Click += new System.EventHandler(this.forceStopBtn_Click);
+            // 
             // StopServiceDialog
             // 
-            this.AccessibleDescription = null;
-            this.AccessibleName = null;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = null;
             this.ControlBox = false;
+            this.Controls.Add(this.forceStopBtn);
             this.Controls.Add(this.m_progressBar);
-            this.Font = null;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = null;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StopServiceDialog";
@@ -85,5 +85,6 @@ namespace iba.DatCoordinator.Status.Dialogs
         private System.Windows.Forms.ProgressBar m_progressBar;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button forceStopBtn;
     }
 }

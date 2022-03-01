@@ -69,10 +69,11 @@ namespace iba.DatCoordinator.Status.Dialogs
                 {
                     myController.Stop();
                 }
-                myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(3.0));
+                myController.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(10.0));
                 if (myController.Status != System.ServiceProcess.ServiceControllerStatus.Stopped)
                 {
-                    MessageBox.Show(String.Format(Properties.Resources.ServiceConnectProblem3, Properties.Resources.ServiceConnectProblem4, Environment.NewLine), Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (!m_stoppingForceFully)
+                        MessageBox.Show(String.Format(Properties.Resources.ServiceConnectProblem3, Properties.Resources.ServiceConnectProblem4, Environment.NewLine), Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     m_result = false;
                     return;
                 }
@@ -84,7 +85,8 @@ namespace iba.DatCoordinator.Status.Dialogs
             }
             catch (Exception ex)
             {
-                MessageBox.Show(String.Format(Properties.Resources.ServiceConnectProblem3, ex.Message, Environment.NewLine), Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                if (!m_stoppingForceFully)
+                    MessageBox.Show(String.Format(Properties.Resources.ServiceConnectProblem3, ex.Message, Environment.NewLine), Properties.Resources.ServiceConnectProblemCaption, MessageBoxButtons.OK, MessageBoxIcon.Error); 
                 m_result = false;
                 return;
             }
@@ -99,6 +101,49 @@ namespace iba.DatCoordinator.Status.Dialogs
         {
             m_progressBar.PerformStep();
             if (m_progressBar.Value >= m_progressBar.Maximum) m_progressBar.Value = m_progressBar.Minimum;
+        }
+
+        private bool m_stoppingForceFully = false;
+
+        private void forceStopBtn_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(Properties.Resources.ForceStopWarning, Properties.Resources.ForceStopCaption, MessageBoxButtons.OKCancel,MessageBoxIcon.Warning) == DialogResult.Cancel)
+                return;
+            m_stoppingForceFully = true;
+            if (!Program.IsAdmin) //elevated process start the service
+            {
+                if (System.Environment.OSVersion.Version.Major < 6)
+                {
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    m_result = false;
+                    return;
+                }
+                System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+                procInfo.UseShellExecute = true;
+                procInfo.ErrorDialog = true;
+
+                procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+                procInfo.FileName = Application.ExecutablePath;
+
+                procInfo.Arguments = "/stopforce";
+                procInfo.Verb = "runas";
+
+                try
+                {
+                    System.Diagnostics.Process.Start(procInfo);
+                }
+                catch
+                {
+                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    m_result = false;
+                    return;
+                }
+            }
+            else
+            {
+                Program.StopForceFully();
+            }
+            m_result = true;
         }
     }
 }

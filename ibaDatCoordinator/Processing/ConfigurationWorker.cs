@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -298,21 +298,20 @@ namespace iba.Processing
                 if (m_toUpdate.JobType == ConfigurationData.JobTypeEnum.Event)
                     m_hdEventMonitor?.UpdateConfiguration(m_toUpdate.EventData, m_toUpdate.Name);
 
+                ConfigurationData oldConfigurationData = m_cd;
+                m_cd = m_toUpdate.Clone_AlsoCopyGuids();
+                NotifyClientsOfUpdate();
+
                 if (m_sd.Started)
                 {
                     DisposeFswt();
                     if (m_cd.OnetimeJob) SharesHandler.Handler.ReleaseFromConfiguration(m_cd); //in case of onetimejob only tasks were added
                 }
 
-                ConfigurationData oldConfigurationData = m_cd;
-                m_cd = m_toUpdate.Clone_AlsoCopyGuids();
-                NotifyClientsOfUpdate();
-
                 if (bAddNetworkReferences)
                 {
                     AddNetworkReferences();
                 }
-
 
                 //also update statusdata
                 m_sd.CorrConfigurationData = m_cd;
@@ -340,167 +339,167 @@ namespace iba.Processing
                             p.Value.States.Add(p2.Key, p2.Value);
                         }
                     }
-                }
-
-                if (m_notifier != null)
-                {
-                    m_notifier.Send();
-                }
-                m_notifier = new Notifier(m_cd);
-
-
-                //test if output type specified in datco file matches output type specified in pdo
-
-                foreach (TaskData task in m_cd.Tasks)
-                {
-
-                    //check if fileType matches
-                    ExtractData ed = task as ExtractData;
-                    if (ed != null && ed.ExtractToFile)
+                    if (m_notifier != null)
                     {
-                        ExtractData.ExtractFileType[] indexToType =
-                                {ExtractData.ExtractFileType.BINARY, ExtractData.ExtractFileType.TEXT,
-                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS,ExtractData.ExtractFileType.PARQUET};
-                        ed.m_bExternalVideoResultIsCached = false;
-                        int index = ExtractTaskWorker.FileTypeAsInt(ed);
-                        if (index >= 0 && index < indexToType.Length && indexToType[index] != ed.FileType)
+                        m_notifier.Send();
+                    }
+                    m_notifier = new Notifier(m_cd);
+
+                    //test if output type specified in datco file matches output type specified in pdo
+
+                    IbaAnalyzer.IbaAnalyzer ibaAnalyzer = IbaAnalyzerCollection.Collection.ClaimIbaAnalyzer(m_cd);
+
+                    foreach (TaskData task in m_cd.Tasks)
+                    {
+
+                        //check if fileType matches
+                        ExtractData ed = task as ExtractData;
+                        if (ed != null && ed.ExtractToFile)
                         {
-                            string errorMessage = string.Format(iba.Properties.Resources.WarningFileTypeMismatch, ed.FileType, indexToType[index]);
-                            Log(Logging.Level.Warning, errorMessage, string.Empty, task);
-                            ed.FileType = indexToType[index];
+                            ExtractData.ExtractFileType[] indexToType =
+                                    {ExtractData.ExtractFileType.BINARY, ExtractData.ExtractFileType.TEXT,
+                                        ExtractData.ExtractFileType.COMTRADE, ExtractData.ExtractFileType.TDMS,ExtractData.ExtractFileType.PARQUET};
+                            ed.m_bExternalVideoResultIsCached = false;
+                            int index = ExtractTaskWorker.FileTypeAsInt(ed, ibaAnalyzer);
+                            if (index >= 0 && index < indexToType.Length && indexToType[index] != ed.FileType)
+                            {
+                                string errorMessage = string.Format(iba.Properties.Resources.WarningFileTypeMismatch, ed.FileType, indexToType[index]);
+                                Log(Logging.Level.Warning, errorMessage, string.Empty, task);
+                                ed.FileType = indexToType[index];
+                            }
                         }
                     }
-                }
+                    IbaAnalyzerCollection.Collection.RelinquishIbaAnalyzer(ibaAnalyzer, false, m_cd);
 
-                //update unc tasks
-                if (m_cd.OnetimeJob) //one time job, reset all quotacleanups
-                {
-                    m_quotaCleanups.Clear();
-                }
-                else
-                {
-                    List<Guid> toDelete = new List<Guid>();
-                    //remove old
-                    foreach (KeyValuePair<Guid, FileQuotaCleanup> pair in m_quotaCleanups)
+                    //update unc tasks
+                    if (m_cd.OnetimeJob) //one time job, reset all quotacleanups
                     {
-                        TaskDataUNC task = m_cd.Tasks.Find(delegate (TaskData t) { return t.Guid == pair.Key; }) as TaskDataUNC;
-                        if (task == null || !task.UsesQuota)
-                            toDelete.Add(pair.Key);
-                        else
+                        m_quotaCleanups.Clear();
+                    }
+                    else
+                    {
+                        List<Guid> toDelete = new List<Guid>();
+                        //remove old
+                        foreach (KeyValuePair<Guid, FileQuotaCleanup> pair in m_quotaCleanups)
                         {
-                            ExtractData ed = task as ExtractData;
-                            if (ed != null)
-                            {
-                                if (ed.ExtractToFile)
-                                    pair.Value.ResetTask(task, ExtractTaskWorker.GetBothExtractExtensions(ed));
-                                else
-                                    toDelete.Add(pair.Key);
-                            }
+                            TaskDataUNC task = m_cd.Tasks.Find(delegate (TaskData t) { return t.Guid == pair.Key; }) as TaskDataUNC;
+                            if (task == null || !task.UsesQuota)
+                                toDelete.Add(pair.Key);
                             else
                             {
-                                CopyMoveTaskData cmtd = task as CopyMoveTaskData;
-                                if (cmtd != null)
+                                ExtractData ed = task as ExtractData;
+                                if (ed != null)
                                 {
-                                    if (cmtd.ActionDelete)
-                                        toDelete.Add(pair.Key);
+                                    if (ed.ExtractToFile)
+                                        pair.Value.ResetTask(task, ExtractTaskWorker.GetBothExtractExtensions(ed));
                                     else
-                                        pair.Value.ResetTask(task, ".dat");
+                                        toDelete.Add(pair.Key);
                                 }
                                 else
                                 {
-                                    ReportData rd = task as ReportData;
-                                    if (rd != null)
+                                    CopyMoveTaskData cmtd = task as CopyMoveTaskData;
+                                    if (cmtd != null)
                                     {
-                                        if (rd.Output == ReportData.OutputChoice.FILE)
-                                        {
-                                            if (rd.Extension == "html" || rd.Extension == "htm")
-                                                pair.Value.ResetTask(task, "." + rd.Extension + ",*.jpg");
-                                            else
-                                                pair.Value.ResetTask(task, "." + rd.Extension);
-                                        }
-                                        else
+                                        if (cmtd.ActionDelete)
                                             toDelete.Add(pair.Key);
+                                        else
+                                            pair.Value.ResetTask(task, ".dat");
                                     }
                                     else
                                     {
-                                        if (task is UpdateDataTaskData || task is SplitterTaskData)
+                                        ReportData rd = task as ReportData;
+                                        if (rd != null)
                                         {
-                                            pair.Value.ResetTask(task, ".dat");
+                                            if (rd.Output == ReportData.OutputChoice.FILE)
+                                            {
+                                                if (rd.Extension == "html" || rd.Extension == "htm")
+                                                    pair.Value.ResetTask(task, "." + rd.Extension + ",*.jpg");
+                                                else
+                                                    pair.Value.ResetTask(task, "." + rd.Extension);
+                                            }
+                                            else
+                                                toDelete.Add(pair.Key);
                                         }
                                         else
-                                            toDelete.Add(pair.Key);
+                                        {
+                                            if (task is UpdateDataTaskData || task is SplitterTaskData)
+                                            {
+                                                pair.Value.ResetTask(task, ".dat");
+                                            }
+                                            else
+                                                toDelete.Add(pair.Key);
+                                        }
                                     }
                                 }
                             }
                         }
+                        foreach (Guid guid in toDelete)
+                            m_quotaCleanups.Remove(guid);
                     }
-                    //no need to add new tasks to the list, they will get added when first executed
-                    foreach (Guid guid in toDelete)
-                        m_quotaCleanups.Remove(guid);
+                    m_needIbaAnalyzer = false;
+                    //lastly, execute plugin actions that need to happen in the case of an update
+                    foreach (TaskData t in m_cd.Tasks)
+                    {
+                        TaskData oldtask = null;
+                        ICustomTaskData c_old = null;
+                        try
+                        {
+                            oldtask = oldConfigurationData.Tasks[t.Index];
+                            c_old = oldtask as ICustomTaskData;
+                        }
+                        catch
+                        {
+                            oldtask = null;
+                            c_old = null;
+                        }
+
+                        ICustomTaskData c_new = t as ICustomTaskData;
+                        if (c_old != null && c_new != null && c_old.Guid == c_new.Guid)
+                        {
+                            IPluginTaskWorker w = c_old.Plugin.GetWorker();
+                            if (!w.OnApply(c_new.Plugin, m_cd))
+                                Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                            c_new.Plugin.SetWorker(w);
+                        }
+                        else if (c_new != null)
+                        {
+                            IPluginTaskWorker w = c_new.Plugin.GetWorker();
+                            if (!w.OnApply(c_new.Plugin, m_cd))
+                                Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
+                        }
+
+
+                        TaskDataUNC uncTask = t as TaskDataUNC;
+
+                        //see if a report or extract or if task is present
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData || t is KafkaWriterTaskData ||
+                            (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
+                            || (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
+                            || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
+                            )
+                            m_needIbaAnalyzer = true;
+
+
+                        if (uncTask != null && uncTask.Subfolder != TaskDataUNC.SubfolderChoice.NONE
+                            && uncTask.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
+                        {
+                            uncTask.DoDirCleanupNow = true;
+                        }
+                    }
+
+                    if (m_licensedTasks.Count > 0)
+                    {
+                        //Only during the actual update of a running configuration the licenses should be refreshed
+                        ReleaseLicenses();
+                        AcquireLicenses();
+                    }
+
+                    Log(Logging.Level.Info, iba.Properties.Resources.UpdateHappened);
+                    m_toUpdate = null;
                 }
-                m_needIbaAnalyzer = false;
-                //lastly, execute plugin actions that need to happen in the case of an update
-                foreach (TaskData t in m_cd.Tasks)
-                {
-                    TaskData oldtask = null;
-                    ICustomTaskData c_old = null;
-                    try
-                    {
-                        oldtask = oldConfigurationData.Tasks[t.Index];
-                        c_old = oldtask as ICustomTaskData;
-                    }
-                    catch
-                    {
-                        oldtask = null;
-                        c_old = null;
-                    }
 
-                    ICustomTaskData c_new = t as ICustomTaskData;
-                    if (c_old != null && c_new != null && c_old.Guid == c_new.Guid)
-                    {
-                        IPluginTaskWorker w = c_old.Plugin.GetWorker();
-                        if (!w.OnApply(c_new.Plugin, m_cd))
-                            Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
-                        c_new.Plugin.SetWorker(w);
-                    }
-                    else if (c_new != null)
-                    {
-                        IPluginTaskWorker w = c_new.Plugin.GetWorker();
-                        if (!w.OnApply(c_new.Plugin, m_cd))
-                            Log(iba.Logging.Level.Exception, w.GetLastError(), String.Empty, t);
-                    }
-
-
-                    TaskDataUNC uncTask = t as TaskDataUNC;
-
-                    //see if a report or extract or if task is present
-                    if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData || t is KafkaWriterTaskData ||
-                        (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
-                        || (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
-                        || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
-                        )
-                        m_needIbaAnalyzer = true;
-
-
-                    if (uncTask != null && uncTask.Subfolder != TaskDataUNC.SubfolderChoice.NONE
-                        && uncTask.OutputLimitChoice == TaskDataUNC.OutputLimitChoiceEnum.LimitDirectories)
-                    {
-                        uncTask.DoDirCleanupNow = true;
-                    }
-                }
-
-                if(m_licensedTasks.Count > 0)
-                {
-                    //Only during the actual update of a running configuration the licenses should be refreshed
-                    ReleaseLicenses();
-                    AcquireLicenses();
-                }
-
-                Log(Logging.Level.Info, iba.Properties.Resources.UpdateHappened);
-                m_toUpdate = null;
+                return true;
             }
-
-            return true;
         }
 
         public ConfigurationWorker(ConfigurationData cd)
@@ -2494,7 +2493,8 @@ namespace iba.Processing
                         m_sd.TotalFilesProcessed++;
                     }
                 }
-              
+
+                 bool bAnalyzerError = false;
                 try
                 {
                     if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered) //exclusive access required when getting from PDA
@@ -2505,6 +2505,7 @@ namespace iba.Processing
                     }
                     if(m_needIbaAnalyzer)
                     {
+                        bAnalyzerError = true;
                         m_ibaAnalyzer.OpenDataFile(0, inputFile); //works both with hdq and .dat
                         try
                         {
@@ -2523,15 +2524,20 @@ namespace iba.Processing
                 catch (Exception ex)
                 {
                     string errmsg = ex.Message;
-                    try
+                    if (bAnalyzerError)
                     {
-                        errmsg = m_ibaAnalyzer.GetLastError();
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            string analyzerError = m_ibaAnalyzer.GetLastError();
+                            if (!String.IsNullOrEmpty(analyzerError))
+                                errmsg = analyzerError;
+                        }
+                        catch
+                        {
 
+                        }
                     }
-                    Log(Logging.Level.Exception,errmsg);
+                    Log(Logging.Level.Exception, errmsg, inputFile);
                     //Log(Logging.Level.Debug, ex.ToString());
                     if (!m_needIbaAnalyzer) return;
                     try
@@ -2593,7 +2599,7 @@ namespace iba.Processing
                             }
                         }
                         continue;
-                    }
+                    } 
                     if (!(task is BatchFileData) && !(task is CopyMoveTaskData) && !(task is UploadTaskData) && !(task is DataTransferTaskData))
                     {
                         m_outPutFilesPrevTask = null;

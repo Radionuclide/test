@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using iba.Data;
 using iba.Remoting;
 
@@ -82,7 +83,7 @@ namespace iba.Processing
                     }
                     else
                     {
-                        ibaAnalyzer = new ibaAnalyzerExt(ibaAnalyzer,true);
+                        ibaAnalyzer = new ibaAnalyzerExt(ibaAnalyzer,true,null,true);
                         if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
                             ibaAnalyzer.SetFilePassword("", cd.FileEncryptionPassword);
                         TrySetHDCredentials(ibaAnalyzer, cd);
@@ -152,9 +153,10 @@ namespace iba.Processing
             }
             try
             {
+                int id = -1;
                 try
                 {
-                    Log(iba.Logging.Level.Debug, string.Format("Stopping ibaAnalyzer with process ID: {0}", ibaAnalyzer.GetProcessID()), cd);
+                    Log(iba.Logging.Level.Debug, string.Format("Stopping ibaAnalyzer with process ID: {0}", id=ibaAnalyzer.GetProcessID()), cd);
                 }
                 catch
                 {
@@ -162,11 +164,55 @@ namespace iba.Processing
 
                 ibaAnalyzerExt wrapper = ibaAnalyzer as ibaAnalyzerExt;
                 if (wrapper != null)
+                {
                     wrapper.Dispose();
+                }
                 else
                 {
                     System.Diagnostics.Debug.Assert(false, "We should be only handling ibaAnalyzer wrappers.");
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+                }
+
+
+                int count = 0;
+                if (id > 0)
+                {
+                    try
+                    {
+                        var process = System.Diagnostics.Process.GetProcessById(id);
+                        DateTime startTime = DateTime.Now;
+                        while (!process.HasExited)
+                        {
+                            Thread.Sleep(100);
+                            if (DateTime.Now - startTime > TimeSpan.FromMinutes(1))
+                            {
+                                try
+                                {
+                                    if (++count < 5) //try each minute, 4 times, 5th time, let it go
+                                    {
+                                        process.Kill();
+                                        if (process.WaitForExit(10000))
+                                            Log(iba.Logging.Level.Info, string.Format("kill succesfull for pid {0} after {1} attempt", id, count), cd);
+                                        else
+                                            Log(iba.Logging.Level.Exception, string.Format("kill failed for pid {0} after {1} attempt", id, count), cd);
+                                    }
+                                    else
+                                        return false;
+                                }
+                                catch
+                                {
+                                    Log(iba.Logging.Level.Exception, string.Format("kill failed for pid {0}", id), cd);
+                                }
+                                startTime = DateTime.Now;
+                            }
+                        }
+                        DateTime endTime = DateTime.Now;
+                        Log(iba.Logging.Level.Debug, string.Format("ibaAnalyzer {1} has exited after {0} seconds ", (endTime-startTime).TotalSeconds, id), cd);
+                    }
+                    catch //getprocessbyId failed
+                    {
+                        Log(iba.Logging.Level.Debug, string.Format("no ibaAnalyzer process with id {0} found ",id), cd);
+                    }
                 }
             }
             catch (Exception ex)
@@ -197,8 +243,8 @@ namespace iba.Processing
                 ibaAnalyzer = ClaimIbaAnalyzer(cd); //try claiming
             }
             else
-            {
-                ibaAnalyzer = new ibaAnalyzerExt(newIbaAnalyzer,true);
+            {             
+                ibaAnalyzer = new ibaAnalyzerExt(newIbaAnalyzer, true, null, true);
                 if (!String.IsNullOrEmpty(cd.FileEncryptionPassword))
                     ibaAnalyzer.SetFilePassword("", cd.FileEncryptionPassword);
                 TrySetHDCredentials(ibaAnalyzer, cd);

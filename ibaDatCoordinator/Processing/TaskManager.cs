@@ -197,9 +197,18 @@ namespace iba.Processing
 
         virtual public void StartAllEnabledConfigurationsNoOneTime()
         {
-            foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
-                if (kvp.Key.Enabled && (kvp.Key.JobType != ConfigurationData.JobTypeEnum.OneTime))
-                    StartConfiguration(kvp.Key);
+            //System.Threading.ThreadPriority savedPriority = System.Threading.Thread.CurrentThread.Priority;
+            //System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
+            try
+            {
+                foreach (KeyValuePair<ConfigurationData, ConfigurationWorker> kvp in m_workers)
+                    if (kvp.Key.Enabled && (kvp.Key.JobType != ConfigurationData.JobTypeEnum.OneTime))
+                        StartConfiguration(kvp.Key);
+            }
+            finally
+            {
+                //System.Threading.Thread.CurrentThread.Priority = savedPriority;
+            }
         }
 
         virtual public void StopAllConfigurations()
@@ -211,7 +220,7 @@ namespace iba.Processing
         virtual public void StartConfiguration(ConfigurationData data)
         {
             m_workers[data].ConfigurationToUpdate = data;
-            m_workers[data].Start();
+            System.Threading.Tasks.Task.Run(() => m_workers[data].Start());
 
             ExtMonConfigurationChanged?.Invoke(this, EventArgs.Empty);
         }

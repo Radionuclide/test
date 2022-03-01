@@ -254,7 +254,7 @@
     <value>stopped processing configuration</value>
   </data>
   <data name="noIbaAnalyser" xml:space="preserve">
-    <value>no ibaAnalyzer registered</value>
+    <value>no ibaAnalyzer detected (click this textbox to search again) </value>
   </data>
   <data name="addConfigurationText" xml:space="preserve">
     <value>Add .dat-File Triggered Job</value>
@@ -2123,5 +2123,11 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="SharedKey" xml:space="preserve">
     <value>Shared key</value>
+  </data>
+  <data name="regOptInstaller" xml:space="preserve">
+    <value>The ibaDatCoordinator installer has detected the Windows registry can be optimized to allow for more ibaAnalyzers to run simultaneously.</value>
+  </data>
+  <data name="regOptInstaller2" xml:space="preserve">
+    <value>Do you wish to perform this action now? (Recommended, alternatively it can also be performed from the ibaDatCoordinator Service status application at a later time.)</value>
   </data>
 </root>

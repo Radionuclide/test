@@ -202,7 +202,7 @@ namespace iba.Processing.IbaOpcUa
                 else
                     return true;
             }
-            catch (Exception ex)
+            catch (Exception/* ex*/)
             {
             	//TODO
                 //logger.LogError($"Unexpected error verifying certificate {((cert == null) ? "UNKNOWN" : cert.Thumbprint)}: {ex.Message}");
