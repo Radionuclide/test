@@ -3092,9 +3092,9 @@ namespace iba.Processing
                 }
                 else if (task is SnmpWriterTaskData)
                 {
-                    DoOPCUAWriterTask(DatFile, task as OpcUaWriterTaskData);
+                    DoSNMPWriterTask(DatFile, task as SnmpWriterTaskData);
                     IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
-                    memoryUsed = ((OpcUaWriterTaskData)task).MonitorData.MemoryUsed;
+                    memoryUsed = ((SnmpWriterTaskData)task).MonitorData.MemoryUsed;
                 }
                 else if (task is KafkaWriterTaskData)
                 {
