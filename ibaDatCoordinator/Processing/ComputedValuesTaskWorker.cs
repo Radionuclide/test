@@ -120,10 +120,15 @@ namespace iba.Processing
                 }
             }
 
-            if (!(TaskManager.Manager.OpcUaData?.Enabled ?? false))
+            if (targetServer == ExtMonData.TargetServer.OPCUA &&!(TaskManager.Manager.OpcUaData?.Enabled ?? false))
             {
                 m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
                 m_confWorker.Log(Logging.Level.Warning, iba.Properties.Resources.logOPCUAServerDisabled, filename, m_task);
+            }
+            else if (targetServer == ExtMonData.TargetServer.SNMP && !(TaskManager.Manager.SnmpData?.Enabled ?? false))
+            {
+                m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
+                m_confWorker.Log(Logging.Level.Warning, iba.Properties.Resources.logSNMPServerDisabled, filename, m_task);
             }
         }
     }

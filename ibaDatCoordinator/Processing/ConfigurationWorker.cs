@@ -472,7 +472,7 @@ namespace iba.Processing
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData || t is KafkaWriterTaskData ||
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData || t is KafkaWriterTaskData || t is SnmpWriterTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
                             || (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
                             || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)

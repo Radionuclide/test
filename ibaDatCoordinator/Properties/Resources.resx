@@ -2130,4 +2130,7 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="regOptInstaller2" xml:space="preserve">
     <value>Do you wish to perform this action now? (Recommended, alternatively it can also be performed from the ibaDatCoordinator Service status application at a later time.)</value>
   </data>
+  <data name="logSNMPServerDisabled" xml:space="preserve">
+    <value>SNMP server is disabled</value>
+  </data>
 </root>

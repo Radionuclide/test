@@ -3132,6 +3132,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SNMP server is disabled.
+        /// </summary>
+        internal static string logSNMPServerDisabled {
+            get {
+                return ResourceManager.GetString("logSNMPServerDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Splitter task started.
         /// </summary>
         internal static string logSplitStarted {
