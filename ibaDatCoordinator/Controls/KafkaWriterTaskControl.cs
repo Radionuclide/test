@@ -228,6 +228,7 @@ namespace iba.Controls
 
             addressTextBox.Text = _data.clusterAddress;
             schemaTextBox.Text = _data.schemaRegistryAddress;
+            topicComboBox.Items.Clear();
             topicComboBox.Text = _data.topicName;
             digitalFormatComboBox.SelectedIndex = (int)_data.digitalFormat;
             timeoutNumericUpDown.Value =
@@ -631,8 +632,16 @@ namespace iba.Controls
                 MessageBox.Show((res as Exception).Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            topicComboBox.Items.Clear();            
-            topicComboBox.Items.AddRange((res as Metadata).Topics.Select(t => t.Topic).ToArray());
+            var selectedTopic = topicComboBox.SelectedItem;
+            topicComboBox.Items.Clear();
+            topicComboBox.Items.AddRange(res as string[]);
+            if (selectedTopic != null && selectedTopic as string != "")
+            {
+                int ind = topicComboBox.Items.IndexOf(selectedTopic);
+                topicComboBox.SelectedIndex = ind != -1 ? ind : 0;
+            }
+            else if (topicComboBox.Items.Count > 0)
+                topicComboBox.SelectedIndex = 0;
             MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

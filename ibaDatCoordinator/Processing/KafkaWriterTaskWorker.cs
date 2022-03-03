@@ -12,6 +12,7 @@ using Confluent.SchemaRegistry;
 using iba.Utility;
 using iba.ibaFilesLiteDotNet;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Serialization;
 
 namespace iba.Processing
 {
@@ -524,18 +525,20 @@ namespace iba.Processing
         internal static object TestConnection(KafkaWriterTaskData data)
         {
             CachedSchemaRegistryClient schemRegClient = null;
-            Metadata res = null;
+            IAdminClient adminClient = null;
             try 
             {
+                string[] topics = {};
                 var conf = InitConfig(data);
 
-                var adminClient = new AdminClientBuilder(conf);
-                InitIBuilder(data, adminClient);
+                var adminClientBuilder = new AdminClientBuilder(conf);
+                InitIBuilder(data, adminClientBuilder);
+                adminClient = adminClientBuilder.Build();
 
-                res = adminClient.Build().GetMetadata(TimeSpan.FromSeconds(data.timeout));
-
+                Metadata m = adminClient.GetMetadata(TimeSpan.FromSeconds(data.timeout));
+                topics = m.Topics.Select(t => t.Topic).ToArray();
                 if (data.schemaRegistryAddress == "")
-                    return res;
+                    return topics;
 
                 Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
                 schemRegConfig.Url = data.schemaRegistryAddress;
@@ -555,6 +558,7 @@ namespace iba.Processing
                 {
                     throw new Exception("Error connecting to schema registry: Timeout.");
                 }
+                return topics;
             }
             catch (AggregateException aggrEx)
             {
@@ -592,14 +596,16 @@ namespace iba.Processing
             }
             catch (Exception e)
             {
-                return e;
+                return new Exception(e.Message);
             }
             finally
             {
                 if (schemRegClient != null)
                     schemRegClient.Dispose();
+                if (adminClient != null)
+                    adminClient.Dispose();
             }
-            return res;
+            return null;
         }    
     }
 }
