@@ -2428,7 +2428,7 @@ namespace iba
         //    string readmeFile = "";
         //    try
         //    {
-        //        readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "License_Agreement_DatCoordinator.pdf");
+        //        readmeFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "License_ibaDatCoordinator.pdf");
         //        System.Diagnostics.Process.Start(readmeFile);
         //    }
         //    catch (System.Exception ex)

@@ -129,7 +129,7 @@ Page custom PreInstall
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 ;!define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBackButton"
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE License_Agreement_DatCoordinator.rtf
+!insertmacro MUI_PAGE_LICENSE License_ibaDatCoordinator.rtf
 Page custom InstalltypeSelect
 Page custom ServiceAccountPage
 ;!insertmacro MUI_PAGE_COMPONENTS
@@ -528,7 +528,7 @@ Section -Common
 
   File "versions_dat.htm"
   File "LicenseInformation.txt"
-  File "License_Agreement_DatCoordinator.pdf"
+  File "License_ibaDatCoordinator.pdf"
   File "Support.htm"
   
   ; dongle viewer
@@ -1019,7 +1019,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcp100.dll"
   Delete "$INSTDIR\versions_dat.htm"
   Delete "$INSTDIR\LicenseInformation.txt"
-  Delete "$INSTDIR\License_Agreement_DatCoordinator.pdf"
+  Delete "$INSTDIR\License_ibaDatCoordinator.pdf"
   Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"

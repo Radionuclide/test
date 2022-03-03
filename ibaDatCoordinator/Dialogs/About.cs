@@ -90,7 +90,7 @@ namespace iba.Dialogs
 		{
 			try
 			{
-                Process.Start(Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "License_Agreement_DatCoordinator.pdf"));
+                Process.Start(Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "License_ibaDatCoordinator.pdf"));
 			}
 			catch (Exception)
 			{
