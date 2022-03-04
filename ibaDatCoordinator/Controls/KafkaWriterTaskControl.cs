@@ -107,6 +107,7 @@ namespace iba.Controls
         {
             InitializeComponent();
 
+            tabControl1.SelectedIndex = 0;
 
             _analyzerManager = new AnalyzerManager();
             _expressionTableData = new BindingList<KafkaWriterTaskData.KafkaRecord>();
@@ -208,10 +209,15 @@ namespace iba.Controls
             SASLNameTextBox.Text = _data.SASLUsername;
             SASLPassTextBox.Text = _data.SASLPass;
             enableSSLVerificationCb.Checked = _data.enableSSLVerification;
+            enableSSLVerificationCb_CheckedChanged(null, null);
+
+            schemaRegistryCb.Checked = _data.enableSchema;
+            schemaRegistryCb_CheckedChanged(null, null);
 
             schemaNameTextBox.Text = _data.schemaUsername;
             schemaPassTextBox.Text = _data.schemaPass;
             schemaEnableSSLVerificationCb.Checked = _data.schemaEnableSSLVerification;
+            schemaEnableSSLVerificationCb_CheckedChanged(null, null);
 
             m_pdoFileTextBox.Text = _data.AnalysisFile;
             m_datFileTextBox.Text = _data.TestDatFile;
@@ -370,6 +376,8 @@ namespace iba.Controls
             _data.MonitorData.MemoryLimit = (uint)m_nudMemory.Value;
             _data.MonitorData.TimeLimit = TimeSpan.FromMinutes((double)m_nudTime.Value);
 
+            _data.enableSchema = schemaRegistryCb.Checked;
+
             _data.SSLClientThumbprint = clientCertParams.Thumbprint;
             _data.SSLCAThumbprint = CACertParams.Thumbprint;
 
@@ -377,7 +385,6 @@ namespace iba.Controls
 
             _data.SASLUsername = SASLNameTextBox.Text;
             _data.SASLPass = SASLPassTextBox.Text;
-
 
             _data.schemaSSLClientThumbprint = schemaClientCertParams.Thumbprint;
             _data.schemaSSLCAThumbprint = schemaCACertParams.Thumbprint;
@@ -643,6 +650,26 @@ namespace iba.Controls
             else if (topicComboBox.Items.Count > 0)
                 topicComboBox.SelectedIndex = 0;
             MessageBox.Show(Properties.Resources.ConnectionTestSucceeded, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void schemaRegistryCb_CheckedChanged(object sender, EventArgs e)
+        {
+            Control[] controls = { schemaTextBox, schemaRegistryConnectionSecurityComboBox, schemaNameTextBox, schemaPassTextBox,
+                schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertCBox, schemaNameLabel, schemaPassLabel, schemaClientCertificateLabel, schemaCACertificateLabel, schemaRegSecurityLabel };
+            foreach (var c in controls)
+                c.Enabled = schemaRegistryCb.Checked;
+        }
+
+        private void enableSSLVerificationCb_CheckedChanged(object sender, EventArgs e)
+        {
+            CACertificateLabel.Enabled = enableSSLVerificationCb.Checked;
+            CACertCBox.Enabled = enableSSLVerificationCb.Checked;
+        }
+
+        private void schemaEnableSSLVerificationCb_CheckedChanged(object sender, EventArgs e)
+        {
+            schemaCACertificateLabel.Enabled = schemaEnableSSLVerificationCb.Checked;
+            schemaCACertCBox.Enabled = schemaEnableSSLVerificationCb.Checked;
         }
 
         private void OnImportParameters(object sender, EventArgs e)

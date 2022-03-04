@@ -37,6 +37,7 @@ namespace iba.Data
         public string SASLUsername { get; set; }
         public string SASLPass { get; set; }
         public bool enableSSLVerification { get; set; }
+        public bool enableSchema { get; set; }
         public string schemaSSLClientThumbprint { get; set; }
         public string schemaSSLCAThumbprint { get; set; }
         public string schemaUsername { get; set; }
@@ -237,6 +238,7 @@ namespace iba.Data
             schemaSSLCAThumbprint = "";
             schemaUsername = "";
             schemaPass = "";
+            enableSchema = false;
         }
 
         public KafkaWriterTaskData() : this(null) { }
@@ -274,6 +276,7 @@ namespace iba.Data
             d.schemaUsername = schemaUsername;
             d.schemaPass = schemaPass;
             d.schemaEnableSSLVerification = schemaEnableSSLVerification;
+            d.enableSchema = enableSchema;
             return d;
         }
 
@@ -311,7 +314,8 @@ namespace iba.Data
                 schemaSSLCAThumbprint == other.schemaSSLCAThumbprint &&
                 schemaUsername == other.schemaUsername &&
                 schemaPass == other.schemaPass &&
-                schemaEnableSSLVerification == other.schemaEnableSSLVerification;
+                schemaEnableSSLVerification == other.schemaEnableSSLVerification &&
+                enableSchema == other.enableSchema;
         }
 
         public void EvaluateValues(string filename, IbaAnalyzer.IbaAnalyzer ibaAnalyzer)

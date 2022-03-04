@@ -40,6 +40,8 @@
             this._toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
             this.tabTarget = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.schemaRegistryCb = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.schemaCACertPlaceholder = new System.Windows.Forms.ComboBox();
             this.schemaCACertificateLabel = new System.Windows.Forms.Label();
             this.schemaEnableSSLVerificationCb = new System.Windows.Forms.CheckBox();
@@ -74,10 +76,9 @@
             this.SASLMechLabel = new System.Windows.Forms.Label();
             this.paramAddButton = new System.Windows.Forms.Button();
             this.clientCertPlaceholder = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.schemaRegistryConnectionSecurityComboBox = new System.Windows.Forms.ComboBox();
             this.schemaTextBox = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
+            this.schemaRegSecurityLabel = new System.Windows.Forms.Label();
             this.paramRemoveButton = new System.Windows.Forms.Button();
             this.clusterConnectionSecurityComboBox = new System.Windows.Forms.ComboBox();
             this.identifierTextBox = new System.Windows.Forms.TextBox();
@@ -87,7 +88,6 @@
             this.importParamButton = new System.Windows.Forms.Button();
             this.exportParamButton = new System.Windows.Forms.Button();
             this.tabConnection = new Crownwood.DotNetMagic.Controls.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
             this.exprGrid = new DevExpress.XtraGrid.GridControl();
             this.dataGV = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.expressionGridColumn = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -145,9 +145,9 @@
             this.m_monitorGroup.Controls.Add(this.m_nudMemory);
             this.m_monitorGroup.Controls.Add(this.m_cbTime);
             this.m_monitorGroup.Controls.Add(this.m_cbMemory);
-            this.m_monitorGroup.Location = new System.Drawing.Point(0, 638);
+            this.m_monitorGroup.Location = new System.Drawing.Point(0, 640);
             this.m_monitorGroup.Name = "m_monitorGroup";
-            this.m_monitorGroup.Size = new System.Drawing.Size(795, 71);
+            this.m_monitorGroup.Size = new System.Drawing.Size(726, 72);
             this.m_monitorGroup.TabIndex = 26;
             this.m_monitorGroup.TabStop = false;
             this.m_monitorGroup.Text = "Monitor ibaAnalyzer";
@@ -253,11 +253,11 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.OfficeDockSides = false;
             this.tabControl1.OfficeStyle = Crownwood.DotNetMagic.Controls.OfficeStyle.SoftWhite;
-            this.tabControl1.SelectedIndex = 1;
+            this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
-            this.tabControl1.Size = new System.Drawing.Size(797, 633);
+            this.tabControl1.Size = new System.Drawing.Size(728, 635);
             this.tabControl1.Style = Crownwood.DotNetMagic.Common.VisualStyle.IDE2005;
             this.tabControl1.TabIndex = 0;
             this.tabControl1.TabPages.AddRange(new Crownwood.DotNetMagic.Controls.TabPage[] {
@@ -270,6 +270,8 @@
             // 
             this.tabTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabTarget.Controls.Add(this.schemaRegistryCb);
+            this.tabTarget.Controls.Add(this.button1);
             this.tabTarget.Controls.Add(this.schemaCACertPlaceholder);
             this.tabTarget.Controls.Add(this.schemaCACertificateLabel);
             this.tabTarget.Controls.Add(this.schemaEnableSSLVerificationCb);
@@ -300,10 +302,9 @@
             this.tabTarget.Controls.Add(this.SASLMechLabel);
             this.tabTarget.Controls.Add(this.paramAddButton);
             this.tabTarget.Controls.Add(this.clientCertPlaceholder);
-            this.tabTarget.Controls.Add(this.label11);
             this.tabTarget.Controls.Add(this.schemaRegistryConnectionSecurityComboBox);
             this.tabTarget.Controls.Add(this.schemaTextBox);
-            this.tabTarget.Controls.Add(this.label18);
+            this.tabTarget.Controls.Add(this.schemaRegSecurityLabel);
             this.tabTarget.Controls.Add(this.paramRemoveButton);
             this.tabTarget.Controls.Add(this.clusterConnectionSecurityComboBox);
             this.tabTarget.Controls.Add(this.identifierTextBox);
@@ -319,30 +320,50 @@
             this.tabTarget.Name = "tabTarget";
             this.tabTarget.Padding = new System.Windows.Forms.Padding(3);
             this.tabTarget.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabTarget.Selected = false;
             this.tabTarget.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabTarget.SelectTextColor = System.Drawing.Color.Empty;
-            this.tabTarget.Size = new System.Drawing.Size(795, 608);
+            this.tabTarget.Size = new System.Drawing.Size(726, 610);
             this.tabTarget.TabIndex = 0;
             this.tabTarget.Text = "tabTarget";
             this.tabTarget.Title = "Connection";
             this.tabTarget.ToolTip = "Page";
+            // 
+            // schemaRegistryCb
+            // 
+            this.schemaRegistryCb.AutoSize = true;
+            this.schemaRegistryCb.Location = new System.Drawing.Point(8, 251);
+            this.schemaRegistryCb.Name = "schemaRegistryCb";
+            this.schemaRegistryCb.Size = new System.Drawing.Size(144, 17);
+            this.schemaRegistryCb.TabIndex = 94;
+            this.schemaRegistryCb.Text = "Schema registry address:";
+            this.schemaRegistryCb.UseVisualStyleBackColor = true;
+            this.schemaRegistryCb.CheckedChanged += new System.EventHandler(this.schemaRegistryCb_CheckedChanged);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(405, 32);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(285, 25);
+            this.button1.TabIndex = 56;
+            this.button1.Text = "Test connection and populate topic list";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // schemaCACertPlaceholder
             // 
             this.schemaCACertPlaceholder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.schemaCACertPlaceholder.FormattingEnabled = true;
-            this.schemaCACertPlaceholder.Location = new System.Drawing.Point(351, 403);
+            this.schemaCACertPlaceholder.Location = new System.Drawing.Point(332, 405);
             this.schemaCACertPlaceholder.Margin = new System.Windows.Forms.Padding(2);
             this.schemaCACertPlaceholder.Name = "schemaCACertPlaceholder";
-            this.schemaCACertPlaceholder.Size = new System.Drawing.Size(354, 21);
+            this.schemaCACertPlaceholder.Size = new System.Drawing.Size(358, 21);
             this.schemaCACertPlaceholder.TabIndex = 93;
             // 
             // schemaCACertificateLabel
             // 
             this.schemaCACertificateLabel.AutoSize = true;
-            this.schemaCACertificateLabel.Location = new System.Drawing.Point(228, 406);
+            this.schemaCACertificateLabel.Location = new System.Drawing.Point(209, 408);
             this.schemaCACertificateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.schemaCACertificateLabel.Name = "schemaCACertificateLabel";
             this.schemaCACertificateLabel.Size = new System.Drawing.Size(73, 13);
@@ -352,18 +373,19 @@
             // schemaEnableSSLVerificationCb
             // 
             this.schemaEnableSSLVerificationCb.AutoSize = true;
-            this.schemaEnableSSLVerificationCb.Location = new System.Drawing.Point(230, 380);
+            this.schemaEnableSSLVerificationCb.Location = new System.Drawing.Point(209, 380);
             this.schemaEnableSSLVerificationCb.Margin = new System.Windows.Forms.Padding(2);
             this.schemaEnableSSLVerificationCb.Name = "schemaEnableSSLVerificationCb";
             this.schemaEnableSSLVerificationCb.Size = new System.Drawing.Size(136, 17);
             this.schemaEnableSSLVerificationCb.TabIndex = 91;
             this.schemaEnableSSLVerificationCb.Text = "Enable SSL verification";
             this.schemaEnableSSLVerificationCb.UseVisualStyleBackColor = true;
+            this.schemaEnableSSLVerificationCb.CheckedChanged += new System.EventHandler(this.schemaEnableSSLVerificationCb_CheckedChanged);
             // 
             // schemaClientCertificateLabel
             // 
             this.schemaClientCertificateLabel.AutoSize = true;
-            this.schemaClientCertificateLabel.Location = new System.Drawing.Point(228, 356);
+            this.schemaClientCertificateLabel.Location = new System.Drawing.Point(209, 358);
             this.schemaClientCertificateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.schemaClientCertificateLabel.Name = "schemaClientCertificateLabel";
             this.schemaClientCertificateLabel.Size = new System.Drawing.Size(85, 13);
@@ -375,37 +397,37 @@
             this.schemaClientCertPlaceholder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.schemaClientCertPlaceholder.FormattingEnabled = true;
-            this.schemaClientCertPlaceholder.Location = new System.Drawing.Point(351, 353);
+            this.schemaClientCertPlaceholder.Location = new System.Drawing.Point(332, 355);
             this.schemaClientCertPlaceholder.Margin = new System.Windows.Forms.Padding(2);
             this.schemaClientCertPlaceholder.Name = "schemaClientCertPlaceholder";
-            this.schemaClientCertPlaceholder.Size = new System.Drawing.Size(354, 21);
+            this.schemaClientCertPlaceholder.Size = new System.Drawing.Size(358, 21);
             this.schemaClientCertPlaceholder.TabIndex = 89;
             // 
             // schemaPassTextBox
             // 
             this.schemaPassTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.schemaPassTextBox.Location = new System.Drawing.Point(305, 327);
+            this.schemaPassTextBox.Location = new System.Drawing.Point(332, 328);
             this.schemaPassTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.schemaPassTextBox.Name = "schemaPassTextBox";
             this.schemaPassTextBox.PasswordChar = '●';
-            this.schemaPassTextBox.Size = new System.Drawing.Size(224, 20);
+            this.schemaPassTextBox.Size = new System.Drawing.Size(151, 20);
             this.schemaPassTextBox.TabIndex = 88;
             // 
             // schemaNameTextBox
             // 
             this.schemaNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.schemaNameTextBox.Location = new System.Drawing.Point(305, 301);
+            this.schemaNameTextBox.Location = new System.Drawing.Point(332, 301);
             this.schemaNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.schemaNameTextBox.Name = "schemaNameTextBox";
-            this.schemaNameTextBox.Size = new System.Drawing.Size(224, 20);
+            this.schemaNameTextBox.Size = new System.Drawing.Size(151, 20);
             this.schemaNameTextBox.TabIndex = 87;
             // 
             // schemaPassLabel
             // 
             this.schemaPassLabel.AutoSize = true;
-            this.schemaPassLabel.Location = new System.Drawing.Point(228, 330);
+            this.schemaPassLabel.Location = new System.Drawing.Point(209, 331);
             this.schemaPassLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.schemaPassLabel.Name = "schemaPassLabel";
             this.schemaPassLabel.Size = new System.Drawing.Size(56, 13);
@@ -415,7 +437,7 @@
             // schemaNameLabel
             // 
             this.schemaNameLabel.AutoSize = true;
-            this.schemaNameLabel.Location = new System.Drawing.Point(228, 304);
+            this.schemaNameLabel.Location = new System.Drawing.Point(209, 304);
             this.schemaNameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.schemaNameLabel.Name = "schemaNameLabel";
             this.schemaNameLabel.Size = new System.Drawing.Size(58, 13);
@@ -427,10 +449,10 @@
             this.CACertPlaceholder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CACertPlaceholder.FormattingEnabled = true;
-            this.CACertPlaceholder.Location = new System.Drawing.Point(364, 221);
+            this.CACertPlaceholder.Location = new System.Drawing.Point(332, 221);
             this.CACertPlaceholder.Margin = new System.Windows.Forms.Padding(2);
             this.CACertPlaceholder.Name = "CACertPlaceholder";
-            this.CACertPlaceholder.Size = new System.Drawing.Size(425, 21);
+            this.CACertPlaceholder.Size = new System.Drawing.Size(358, 21);
             this.CACertPlaceholder.TabIndex = 83;
             // 
             // label12
@@ -446,7 +468,7 @@
             // CACertificateLabel
             // 
             this.CACertificateLabel.AutoSize = true;
-            this.CACertificateLabel.Location = new System.Drawing.Point(227, 224);
+            this.CACertificateLabel.Location = new System.Drawing.Point(209, 224);
             this.CACertificateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.CACertificateLabel.Name = "CACertificateLabel";
             this.CACertificateLabel.Size = new System.Drawing.Size(73, 13);
@@ -455,7 +477,7 @@
             // 
             // timeoutNumericUpDown
             // 
-            this.timeoutNumericUpDown.Location = new System.Drawing.Point(229, 430);
+            this.timeoutNumericUpDown.Location = new System.Drawing.Point(209, 431);
             this.timeoutNumericUpDown.Margin = new System.Windows.Forms.Padding(2);
             this.timeoutNumericUpDown.Minimum = new decimal(new int[] {
             1,
@@ -475,17 +497,17 @@
             // 
             this.SASLPassTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SASLPassTextBox.Location = new System.Drawing.Point(565, 144);
+            this.SASLPassTextBox.Location = new System.Drawing.Point(546, 144);
             this.SASLPassTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.SASLPassTextBox.Name = "SASLPassTextBox";
             this.SASLPassTextBox.PasswordChar = '●';
-            this.SASLPassTextBox.Size = new System.Drawing.Size(224, 20);
+            this.SASLPassTextBox.Size = new System.Drawing.Size(144, 20);
             this.SASLPassTextBox.TabIndex = 81;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 459);
+            this.label9.Location = new System.Drawing.Point(8, 461);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(121, 13);
@@ -496,16 +518,16 @@
             // 
             this.SASLNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SASLNameTextBox.Location = new System.Drawing.Point(565, 118);
+            this.SASLNameTextBox.Location = new System.Drawing.Point(546, 118);
             this.SASLNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.SASLNameTextBox.Name = "SASLNameTextBox";
-            this.SASLNameTextBox.Size = new System.Drawing.Size(224, 20);
+            this.SASLNameTextBox.Size = new System.Drawing.Size(144, 20);
             this.SASLNameTextBox.TabIndex = 80;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 432);
+            this.label3.Location = new System.Drawing.Point(8, 438);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(90, 13);
@@ -515,18 +537,19 @@
             // enableSSLVerificationCb
             // 
             this.enableSSLVerificationCb.AutoSize = true;
-            this.enableSSLVerificationCb.Location = new System.Drawing.Point(230, 197);
+            this.enableSSLVerificationCb.Location = new System.Drawing.Point(209, 197);
             this.enableSSLVerificationCb.Margin = new System.Windows.Forms.Padding(2);
             this.enableSSLVerificationCb.Name = "enableSSLVerificationCb";
             this.enableSSLVerificationCb.Size = new System.Drawing.Size(136, 17);
             this.enableSSLVerificationCb.TabIndex = 79;
             this.enableSSLVerificationCb.Text = "Enable SSL verification";
             this.enableSSLVerificationCb.UseVisualStyleBackColor = true;
+            this.enableSSLVerificationCb.CheckedChanged += new System.EventHandler(this.enableSSLVerificationCb_CheckedChanged);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(8, 483);
+            this.label10.Location = new System.Drawing.Point(8, 486);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(111, 13);
@@ -536,7 +559,7 @@
             // clientCertificateLabel
             // 
             this.clientCertificateLabel.AutoSize = true;
-            this.clientCertificateLabel.Location = new System.Drawing.Point(228, 173);
+            this.clientCertificateLabel.Location = new System.Drawing.Point(209, 173);
             this.clientCertificateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.clientCertificateLabel.Name = "clientCertificateLabel";
             this.clientCertificateLabel.Size = new System.Drawing.Size(85, 13);
@@ -556,7 +579,7 @@
             // SASLPassLabel
             // 
             this.SASLPassLabel.AutoSize = true;
-            this.SASLPassLabel.Location = new System.Drawing.Point(478, 147);
+            this.SASLPassLabel.Location = new System.Drawing.Point(459, 147);
             this.SASLPassLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SASLPassLabel.Name = "SASLPassLabel";
             this.SASLPassLabel.Size = new System.Drawing.Size(56, 13);
@@ -567,16 +590,16 @@
             // 
             this.addressTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addressTextBox.Location = new System.Drawing.Point(228, 61);
+            this.addressTextBox.Location = new System.Drawing.Point(209, 61);
             this.addressTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.addressTextBox.Name = "addressTextBox";
-            this.addressTextBox.Size = new System.Drawing.Size(465, 20);
+            this.addressTextBox.Size = new System.Drawing.Size(481, 20);
             this.addressTextBox.TabIndex = 7;
             // 
             // SASLNameLabel
             // 
             this.SASLNameLabel.AutoSize = true;
-            this.SASLNameLabel.Location = new System.Drawing.Point(478, 121);
+            this.SASLNameLabel.Location = new System.Drawing.Point(459, 121);
             this.SASLNameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SASLNameLabel.Name = "SASLNameLabel";
             this.SASLNameLabel.Size = new System.Drawing.Size(58, 13);
@@ -589,11 +612,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.paramGrid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2);
-            this.paramGrid.Location = new System.Drawing.Point(228, 483);
+            this.paramGrid.Location = new System.Drawing.Point(209, 486);
             this.paramGrid.MainView = this._viewParam;
             this.paramGrid.Margin = new System.Windows.Forms.Padding(2);
             this.paramGrid.Name = "paramGrid";
-            this.paramGrid.Size = new System.Drawing.Size(532, 118);
+            this.paramGrid.Size = new System.Drawing.Size(481, 117);
             this.paramGrid.TabIndex = 23;
             this.paramGrid.TabStop = false;
             this.paramGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -652,7 +675,7 @@
             "PLAIN",
             "SCRAM-SHA-256",
             "SCRAM-SHA-512"});
-            this.SASLMechanismComboBox.Location = new System.Drawing.Point(364, 118);
+            this.SASLMechanismComboBox.Location = new System.Drawing.Point(332, 118);
             this.SASLMechanismComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.SASLMechanismComboBox.Name = "SASLMechanismComboBox";
             this.SASLMechanismComboBox.Size = new System.Drawing.Size(109, 21);
@@ -666,16 +689,16 @@
             "None",
             "Leader",
             "All"});
-            this.acknowledgmentComboBox.Location = new System.Drawing.Point(228, 456);
+            this.acknowledgmentComboBox.Location = new System.Drawing.Point(209, 458);
             this.acknowledgmentComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.acknowledgmentComboBox.Name = "acknowledgmentComboBox";
-            this.acknowledgmentComboBox.Size = new System.Drawing.Size(121, 21);
+            this.acknowledgmentComboBox.Size = new System.Drawing.Size(109, 21);
             this.acknowledgmentComboBox.TabIndex = 11;
             // 
             // SASLMechLabel
             // 
             this.SASLMechLabel.AutoSize = true;
-            this.SASLMechLabel.Location = new System.Drawing.Point(228, 121);
+            this.SASLMechLabel.Location = new System.Drawing.Point(209, 121);
             this.SASLMechLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SASLMechLabel.Name = "SASLMechLabel";
             this.SASLMechLabel.Size = new System.Drawing.Size(93, 13);
@@ -688,7 +711,7 @@
             this.paramAddButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.paramAddButton.Image = ((System.Drawing.Image)(resources.GetObject("paramAddButton.Image")));
             this.paramAddButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.paramAddButton.Location = new System.Drawing.Point(765, 483);
+            this.paramAddButton.Location = new System.Drawing.Point(695, 486);
             this.paramAddButton.Name = "paramAddButton";
             this.paramAddButton.Size = new System.Drawing.Size(24, 24);
             this.paramAddButton.TabIndex = 24;
@@ -700,21 +723,11 @@
             this.clientCertPlaceholder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.clientCertPlaceholder.FormattingEnabled = true;
-            this.clientCertPlaceholder.Location = new System.Drawing.Point(364, 170);
+            this.clientCertPlaceholder.Location = new System.Drawing.Point(332, 170);
             this.clientCertPlaceholder.Margin = new System.Windows.Forms.Padding(2);
             this.clientCertPlaceholder.Name = "clientCertPlaceholder";
-            this.clientCertPlaceholder.Size = new System.Drawing.Size(425, 21);
+            this.clientCertPlaceholder.Size = new System.Drawing.Size(358, 21);
             this.clientCertPlaceholder.TabIndex = 63;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(8, 251);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(125, 13);
-            this.label11.TabIndex = 53;
-            this.label11.Text = "Schema registry address:";
             // 
             // schemaRegistryConnectionSecurityComboBox
             // 
@@ -725,9 +738,9 @@
             "HTTPS",
             "HTTP + Authentication",
             "HTTPS + Authentication"});
-            this.schemaRegistryConnectionSecurityComboBox.Location = new System.Drawing.Point(228, 274);
+            this.schemaRegistryConnectionSecurityComboBox.Location = new System.Drawing.Point(209, 274);
             this.schemaRegistryConnectionSecurityComboBox.Name = "schemaRegistryConnectionSecurityComboBox";
-            this.schemaRegistryConnectionSecurityComboBox.Size = new System.Drawing.Size(140, 21);
+            this.schemaRegistryConnectionSecurityComboBox.Size = new System.Drawing.Size(142, 21);
             this.schemaRegistryConnectionSecurityComboBox.TabIndex = 62;
             this.schemaRegistryConnectionSecurityComboBox.SelectedIndexChanged += new System.EventHandler(this.schemaRegistryConnectionSecurityComboBox_SelectedIndexChanged);
             // 
@@ -735,20 +748,20 @@
             // 
             this.schemaTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.schemaTextBox.Location = new System.Drawing.Point(228, 248);
+            this.schemaTextBox.Location = new System.Drawing.Point(209, 248);
             this.schemaTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.schemaTextBox.Name = "schemaTextBox";
-            this.schemaTextBox.Size = new System.Drawing.Size(465, 20);
+            this.schemaTextBox.Size = new System.Drawing.Size(481, 20);
             this.schemaTextBox.TabIndex = 16;
             // 
-            // label18
+            // schemaRegSecurityLabel
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(8, 277);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(180, 13);
-            this.label18.TabIndex = 61;
-            this.label18.Text = "Schema registry connection security:";
+            this.schemaRegSecurityLabel.AutoSize = true;
+            this.schemaRegSecurityLabel.Location = new System.Drawing.Point(8, 277);
+            this.schemaRegSecurityLabel.Name = "schemaRegSecurityLabel";
+            this.schemaRegSecurityLabel.Size = new System.Drawing.Size(180, 13);
+            this.schemaRegSecurityLabel.TabIndex = 61;
+            this.schemaRegSecurityLabel.Text = "Schema registry connection security:";
             // 
             // paramRemoveButton
             // 
@@ -756,7 +769,7 @@
             this.paramRemoveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.paramRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("paramRemoveButton.Image")));
             this.paramRemoveButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.paramRemoveButton.Location = new System.Drawing.Point(765, 577);
+            this.paramRemoveButton.Location = new System.Drawing.Point(695, 579);
             this.paramRemoveButton.Name = "paramRemoveButton";
             this.paramRemoveButton.Size = new System.Drawing.Size(24, 24);
             this.paramRemoveButton.TabIndex = 25;
@@ -772,9 +785,9 @@
             "SSL",
             "SASL/PLAINTEXT",
             "SASL/SSL"});
-            this.clusterConnectionSecurityComboBox.Location = new System.Drawing.Point(228, 89);
+            this.clusterConnectionSecurityComboBox.Location = new System.Drawing.Point(209, 89);
             this.clusterConnectionSecurityComboBox.Name = "clusterConnectionSecurityComboBox";
-            this.clusterConnectionSecurityComboBox.Size = new System.Drawing.Size(136, 21);
+            this.clusterConnectionSecurityComboBox.Size = new System.Drawing.Size(109, 21);
             this.clusterConnectionSecurityComboBox.TabIndex = 60;
             this.clusterConnectionSecurityComboBox.SelectedIndexChanged += new System.EventHandler(this.clusterConnectionSecurityComboBox_SelectedIndexChanged);
             // 
@@ -782,10 +795,10 @@
             // 
             this.identifierTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.identifierTextBox.Location = new System.Drawing.Point(228, 8);
+            this.identifierTextBox.Location = new System.Drawing.Point(209, 8);
             this.identifierTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.identifierTextBox.Name = "identifierTextBox";
-            this.identifierTextBox.Size = new System.Drawing.Size(465, 20);
+            this.identifierTextBox.Size = new System.Drawing.Size(481, 20);
             this.identifierTextBox.TabIndex = 13;
             // 
             // label17
@@ -814,16 +827,16 @@
             this.typeComboBox.Items.AddRange(new object[] {
             "Kafka",
             "Event Hub"});
-            this.typeComboBox.Location = new System.Drawing.Point(228, 34);
+            this.typeComboBox.Location = new System.Drawing.Point(209, 34);
             this.typeComboBox.Name = "typeComboBox";
-            this.typeComboBox.Size = new System.Drawing.Size(135, 21);
+            this.typeComboBox.Size = new System.Drawing.Size(109, 21);
             this.typeComboBox.TabIndex = 58;
             // 
             // importParamButton
             // 
             this.importParamButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.importParamButton.Image = global::iba.Properties.Resources.img_import;
-            this.importParamButton.Location = new System.Drawing.Point(765, 514);
+            this.importParamButton.Location = new System.Drawing.Point(695, 517);
             this.importParamButton.Name = "importParamButton";
             this.importParamButton.Size = new System.Drawing.Size(24, 24);
             this.importParamButton.TabIndex = 56;
@@ -834,7 +847,7 @@
             // 
             this.exportParamButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.exportParamButton.Image = global::iba.Properties.Resources.img_export;
-            this.exportParamButton.Location = new System.Drawing.Point(765, 545);
+            this.exportParamButton.Location = new System.Drawing.Point(695, 548);
             this.exportParamButton.Name = "exportParamButton";
             this.exportParamButton.Size = new System.Drawing.Size(24, 24);
             this.exportParamButton.TabIndex = 57;
@@ -843,7 +856,6 @@
             // 
             // tabConnection
             // 
-            this.tabConnection.Controls.Add(this.button1);
             this.tabConnection.Controls.Add(this.exprGrid);
             this.tabConnection.Controls.Add(this.label8);
             this.tabConnection.Controls.Add(this.expressionAddButton);
@@ -876,24 +888,14 @@
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
             this.tabConnection.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabConnection.Selected = false;
             this.tabConnection.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConnection.SelectTextColor = System.Drawing.Color.Empty;
-            this.tabConnection.Size = new System.Drawing.Size(795, 608);
+            this.tabConnection.Size = new System.Drawing.Size(726, 610);
             this.tabConnection.TabIndex = 1;
             this.tabConnection.Text = "tabConnection";
             this.tabConnection.Title = "Target";
             this.tabConnection.ToolTip = "Page";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(549, 116);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(151, 23);
-            this.button1.TabIndex = 55;
-            this.button1.Text = "Test connection";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.testConnectionButton_Click);
             // 
             // exprGrid
             // 
@@ -905,7 +907,7 @@
             this.exprGrid.Margin = new System.Windows.Forms.Padding(15, 16, 15, 16);
             this.exprGrid.MinimumSize = new System.Drawing.Size(0, 162);
             this.exprGrid.Name = "exprGrid";
-            this.exprGrid.Size = new System.Drawing.Size(749, 399);
+            this.exprGrid.Size = new System.Drawing.Size(680, 401);
             this.exprGrid.TabIndex = 17;
             this.exprGrid.TabStop = false;
             this.exprGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -992,7 +994,7 @@
             this.expressionAddButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.expressionAddButton.Image = ((System.Drawing.Image)(resources.GetObject("expressionAddButton.Image")));
             this.expressionAddButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.expressionAddButton.Location = new System.Drawing.Point(765, 201);
+            this.expressionAddButton.Location = new System.Drawing.Point(695, 201);
             this.expressionAddButton.Name = "expressionAddButton";
             this.expressionAddButton.Size = new System.Drawing.Size(24, 24);
             this.expressionAddButton.TabIndex = 18;
@@ -1004,7 +1006,7 @@
             this.m_executeIBAAButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
             this.m_executeIBAAButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_executeIBAAButton.Location = new System.Drawing.Point(736, 6);
+            this.m_executeIBAAButton.Location = new System.Drawing.Point(666, 6);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.Size = new System.Drawing.Size(24, 24);
             this.m_executeIBAAButton.TabIndex = 2;
@@ -1026,7 +1028,7 @@
             this.m_browsePDOFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browsePDOFileButton.Image = global::iba.Properties.Resources.open;
             this.m_browsePDOFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browsePDOFileButton.Location = new System.Drawing.Point(706, 6);
+            this.m_browsePDOFileButton.Location = new System.Drawing.Point(636, 6);
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_browsePDOFileButton.Size = new System.Drawing.Size(24, 24);
             this.m_browsePDOFileButton.TabIndex = 1;
@@ -1059,7 +1061,7 @@
             this.expressionRemoveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.expressionRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("expressionRemoveButton.Image")));
             this.expressionRemoveButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.expressionRemoveButton.Location = new System.Drawing.Point(765, 576);
+            this.expressionRemoveButton.Location = new System.Drawing.Point(695, 579);
             this.expressionRemoveButton.Name = "expressionRemoveButton";
             this.expressionRemoveButton.Size = new System.Drawing.Size(24, 24);
             this.expressionRemoveButton.TabIndex = 22;
@@ -1072,7 +1074,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_pdoFileTextBox.Location = new System.Drawing.Point(149, 8);
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-            this.m_pdoFileTextBox.Size = new System.Drawing.Size(551, 20);
+            this.m_pdoFileTextBox.Size = new System.Drawing.Size(481, 20);
             this.m_pdoFileTextBox.TabIndex = 0;
             this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
             // 
@@ -1083,7 +1085,7 @@
             this.keyTextBox.Location = new System.Drawing.Point(149, 87);
             this.keyTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.keyTextBox.Name = "keyTextBox";
-            this.keyTextBox.Size = new System.Drawing.Size(551, 20);
+            this.keyTextBox.Size = new System.Drawing.Size(481, 20);
             this.keyTextBox.TabIndex = 52;
             // 
             // dataFormatComboBox
@@ -1105,7 +1107,7 @@
             this.m_btnUploadPDO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
             this.m_btnUploadPDO.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_btnUploadPDO.Location = new System.Drawing.Point(765, 6);
+            this.m_btnUploadPDO.Location = new System.Drawing.Point(695, 6);
             this.m_btnUploadPDO.Name = "m_btnUploadPDO";
             this.m_btnUploadPDO.Padding = new System.Windows.Forms.Padding(1);
             this.m_btnUploadPDO.Size = new System.Drawing.Size(24, 24);
@@ -1119,7 +1121,7 @@
             this.expressionCopyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.expressionCopyButton.Image = ((System.Drawing.Image)(resources.GetObject("expressionCopyButton.Image")));
             this.expressionCopyButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.expressionCopyButton.Location = new System.Drawing.Point(765, 233);
+            this.expressionCopyButton.Location = new System.Drawing.Point(695, 233);
             this.expressionCopyButton.Name = "expressionCopyButton";
             this.expressionCopyButton.Size = new System.Drawing.Size(24, 24);
             this.expressionCopyButton.TabIndex = 19;
@@ -1154,7 +1156,7 @@
             this.m_testButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_testButton.Image = global::iba.Properties.Resources.sychronizeList;
             this.m_testButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_testButton.Location = new System.Drawing.Point(736, 32);
+            this.m_testButton.Location = new System.Drawing.Point(666, 32);
             this.m_testButton.Name = "m_testButton";
             this.m_testButton.Size = new System.Drawing.Size(24, 24);
             this.m_testButton.TabIndex = 6;
@@ -1166,7 +1168,7 @@
             this.upButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.upButton.Image = ((System.Drawing.Image)(resources.GetObject("upButton.Image")));
             this.upButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.upButton.Location = new System.Drawing.Point(765, 265);
+            this.upButton.Location = new System.Drawing.Point(695, 265);
             this.upButton.Margin = new System.Windows.Forms.Padding(2);
             this.upButton.Name = "upButton";
             this.upButton.Size = new System.Drawing.Size(24, 24);
@@ -1189,7 +1191,7 @@
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_browseDatFileButton.Image = global::iba.Properties.Resources.open;
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_browseDatFileButton.Location = new System.Drawing.Point(706, 32);
+            this.m_browseDatFileButton.Location = new System.Drawing.Point(636, 32);
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_browseDatFileButton.Size = new System.Drawing.Size(24, 24);
             this.m_browseDatFileButton.TabIndex = 5;
@@ -1202,7 +1204,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_datFileTextBox.Location = new System.Drawing.Point(149, 34);
             this.m_datFileTextBox.Name = "m_datFileTextBox";
-            this.m_datFileTextBox.Size = new System.Drawing.Size(551, 20);
+            this.m_datFileTextBox.Size = new System.Drawing.Size(481, 20);
             this.m_datFileTextBox.TabIndex = 4;
             // 
             // topicComboBox
@@ -1213,7 +1215,7 @@
             this.topicComboBox.Location = new System.Drawing.Point(149, 60);
             this.topicComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.topicComboBox.Name = "topicComboBox";
-            this.topicComboBox.Size = new System.Drawing.Size(551, 21);
+            this.topicComboBox.Size = new System.Drawing.Size(481, 21);
             this.topicComboBox.TabIndex = 9;
             // 
             // label154t5
@@ -1231,7 +1233,7 @@
             this.downButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.downButton.Image = ((System.Drawing.Image)(resources.GetObject("downButton.Image")));
             this.downButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.downButton.Location = new System.Drawing.Point(765, 297);
+            this.downButton.Location = new System.Drawing.Point(695, 297);
             this.downButton.Margin = new System.Windows.Forms.Padding(2);
             this.downButton.Name = "downButton";
             this.downButton.Size = new System.Drawing.Size(24, 24);
@@ -1258,7 +1260,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(675, 714);
             this.Name = "KafkaWriterTaskControl";
-            this.Size = new System.Drawing.Size(797, 714);
+            this.Size = new System.Drawing.Size(728, 718);
             this.m_monitorGroup.ResumeLayout(false);
             this.m_monitorGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).EndInit();
@@ -1315,10 +1317,9 @@
         private System.Windows.Forms.Label SASLMechLabel;
         private System.Windows.Forms.Button paramAddButton;
         private System.Windows.Forms.ComboBox clientCertPlaceholder;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox schemaRegistryConnectionSecurityComboBox;
         private System.Windows.Forms.TextBox schemaTextBox;
-        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label schemaRegSecurityLabel;
         private System.Windows.Forms.Button paramRemoveButton;
         private System.Windows.Forms.ComboBox clusterConnectionSecurityComboBox;
         private System.Windows.Forms.TextBox identifierTextBox;
@@ -1370,5 +1371,6 @@
         private System.Windows.Forms.Label schemaPassLabel;
         private System.Windows.Forms.Label schemaNameLabel;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox schemaRegistryCb;
     }
 }
