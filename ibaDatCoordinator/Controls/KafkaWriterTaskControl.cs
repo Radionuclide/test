@@ -8,6 +8,7 @@ using iba.Utility;
 using System.IO;
 using System.Collections.Generic;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.Utils;
 using iba.Remoting;
 using IbaAnalyzer;
 using iba.CertificateStore.Forms;
@@ -15,7 +16,10 @@ using iba.CertificateStore;
 using iba.CertificateStore.Proxy;
 using System.Security.Cryptography.X509Certificates;
 using System.Linq;
-using System.Collections;
+using System.Drawing;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraGrid.Columns;
 
 namespace iba.Controls
 {
@@ -31,7 +35,8 @@ namespace iba.Controls
         CertificateInfoWithPrivateKey clientCertParams, schemaClientCertParams;
         IPropertyPaneManager m_manager;
         HidebleControlBlock clusterSSL, clusterSASL, schemaSSL, schemaAuth;
-
+        IEnumerable<Control> ctrlsToHide; //controls not used in Event Hub mode
+        List<Point> controlPositions = new List<Point>();
         #region ICertificatesControlHost
         public bool IsLocalHost { get; }
         public string ServerAddress { get; }
@@ -41,7 +46,7 @@ namespace iba.Controls
         public string UsagePart { get; } = "EX"; // IO and DS are used in PDA
         public IWin32Window Instance => this;
         public ContextMenuStrip PopupMenu { get; } = new ContextMenuStrip(); // or reuse the context menu of an other control
-#endregion
+        #endregion
 
         private class HidebleControlBlock
         {
@@ -61,41 +66,43 @@ namespace iba.Controls
                         underlyingControls.Add(c);
                 }
                 int underlyingControlPos = underlyingControls.Min(c => c.Location.Y);
-                
+
                 height = underlyingControlPos - topPos;
             }
 
             public void Hide()
             {
-                if (hidden)
-                    return;
-                hidden = true;
-                var controlsToMove = underlyingControls.Where(c => !c.Anchor.HasFlag(AnchorStyles.Bottom));
-                foreach (var c in controlsToMove)
-                    c.Top -= height;
-                var controlToResize = underlyingControls.Where(c => c.Anchor.HasFlag(AnchorStyles.Bottom));
-                foreach (var c in controlToResize)
-                { 
-                    c.Top -= height;
-                    c.Height += height;
-                }       
+                if (!hidden)
+                {
+                    hidden = true;
+                    var controlsToMove = underlyingControls.Where(c => !c.Anchor.HasFlag(AnchorStyles.Bottom));
+                    foreach (var c in controlsToMove)
+                        c.Top -= height;
+                    var controlToResize = underlyingControls.Where(c => c.Anchor.HasFlag(AnchorStyles.Bottom));
+                    foreach (var c in controlToResize)
+                    {
+                        c.Top -= height;
+                        c.Height += height;
+                    }
+                }
                 foreach (var c in controls)
                     c.Hide();
             }
 
             public void Show()
             {
-                if (!hidden)
-                    return;
-                hidden = false;
-                var controlsToMove = underlyingControls.Where(c => !c.Anchor.HasFlag(AnchorStyles.Bottom));
-                foreach (var c in controlsToMove)
-                    c.Top += height;
-                var controlToResize = underlyingControls.Where(c => c.Anchor.HasFlag(AnchorStyles.Bottom));
-                foreach (var c in controlToResize)
+                if (hidden)
                 {
-                    c.Top += height;
-                    c.Height -= height;
+                    hidden = false;
+                    var controlsToMove = underlyingControls.Where(c => !c.Anchor.HasFlag(AnchorStyles.Bottom));
+                    foreach (var c in controlsToMove)
+                        c.Top += height;
+                    var controlToResize = underlyingControls.Where(c => c.Anchor.HasFlag(AnchorStyles.Bottom));
+                    foreach (var c in controlToResize)
+                    {
+                        c.Top += height;
+                        c.Height -= height;
+                    }
                 }
                 foreach (var c in controls)
                     c.Show();
@@ -143,6 +150,10 @@ namespace iba.Controls
             expressionGridColumn.Caption = Properties.Resources.ibaAnalyzerExpression;
             testValueGridColumn.Caption = Properties.Resources.TestValue;
             nameGridColumn.Caption = Properties.Resources.Name;
+            _viewExpr.ShownEditor += ShowToolTipOnFocus;
+            _viewExpr.HiddenEditor += OnLostFocusHideTooltip;
+            keyTextBox.GotFocus += ShowToolTipOnFocus;
+            keyTextBox.LostFocus += OnLostFocusHideTooltip;
 
             _toolTip.SetToolTip(importParamButton, iba.Properties.Resources.ImportParametersFromCSV);
             _toolTip.SetToolTip(exportParamButton, iba.Properties.Resources.ExportParametersToCSV);
@@ -153,9 +164,13 @@ namespace iba.Controls
             schemaCACertCBox = CertificatesComboBox.ReplaceCombobox(schemaCACertPlaceholder, "", false);
 
             clusterSSL = new HidebleControlBlock(clientCertificateLabel, enableSSLVerificationCb, CACertificateLabel, clientCertCBox, CACertCBox);
-            clusterSASL = new HidebleControlBlock(SASLMechLabel, SASLMechanismComboBox, SASLNameTextBox, SASLPassTextBox, SASLNameLabel, SASLPassLabel );
-            schemaSSL = new HidebleControlBlock(schemaClientCertificateLabel, schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertificateLabel, schemaCACertCBox );
+            clusterSASL = new HidebleControlBlock(SASLMechLabel, SASLMechanismComboBox, SASLNameTextBox, SASLPassTextBox, SASLNameLabel, SASLPassLabel);
+            schemaSSL = new HidebleControlBlock(schemaClientCertificateLabel, schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertificateLabel, schemaCACertCBox);
             schemaAuth = new HidebleControlBlock(schemaNameLabel, schemaNameTextBox, schemaPassLabel, schemaPassTextBox);
+
+
+            var ctrlsToNotHide = new Control[] { idLabel, identifierTextBox, typeLabel, testConnectionBtn, addressTextBox, clusterTypeComboBox, enableSSLVerificationCb, CACertificateLabel, CACertCBox, messageTimeoutLabel, timeoutNumericUpDown, connectionStrLabel };
+            ctrlsToHide = tabControl1.TabPages[0].Controls.Cast<Control>().Where(c => !ctrlsToNotHide.Contains(c));
         }
 
         class CertificateInfo : ICertificateInfo
@@ -273,10 +288,10 @@ namespace iba.Controls
             switch (_data.ClusterMode)
             {
                 case KafkaWriterTaskData.ClusterType.Kafka:
-                    typeComboBox.SelectedIndex = 0;
+                    clusterTypeComboBox.SelectedIndex = 0;
                     break;
                 case KafkaWriterTaskData.ClusterType.EventHub:
-                    typeComboBox.SelectedIndex = 1;
+                    clusterTypeComboBox.SelectedIndex = 1;
                     break;
             }
 
@@ -363,10 +378,10 @@ namespace iba.Controls
 
             _data.Format = (KafkaWriterTaskData.DataFormat)dataFormatComboBox.SelectedIndex;
             _data.AckMode = (KafkaWriterTaskData.RequiredAcks)acknowledgmentComboBox.SelectedIndex;
-            _data.ClusterMode = (KafkaWriterTaskData.ClusterType)typeComboBox.SelectedIndex;
+            _data.ClusterMode = (KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex;
             _data.ClusterSecurityMode = (KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex;
             _data.SchemaRegistrySecurityMode = (KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex;
-            _data.SASLMechanismMode = (KafkaWriterTaskData.SASLMechanismType) schemaRegistryConnectionSecurityComboBox.SelectedIndex;
+            _data.SASLMechanismMode = (KafkaWriterTaskData.SASLMechanismType)schemaRegistryConnectionSecurityComboBox.SelectedIndex;
             _data.AnalysisFile = m_pdoFileTextBox.Text;
             _data.TestDatFile = m_datFileTextBox.Text;
             _data.key = keyTextBox.Text;
@@ -394,7 +409,24 @@ namespace iba.Controls
             _data.schemaUsername = schemaNameTextBox.Text;
             _data.schemaPass = schemaPassTextBox.Text;
         }
+        public void ShowToolTipOnFocus(object sender, EventArgs e)
+        {
+            if (_viewExpr.FocusedColumn == nameGridColumn && _viewExpr.ActiveEditor != null)
+            {
+                var pos = _viewExpr.ActiveEditor.Location;
+                pos.Y += keyTextBox.Height; // keyTextBox.Height ~= grid row height; we want to show tooltip a bit lower
+                placeholdersToolTip.Show(Properties.Resources.KafkaPlaceholdersHint, exprGrid, pos);
+            }
+            else if (keyTextBox.Focused)
+            {
+                placeholdersToolTip.Show(Properties.Resources.KafkaPlaceholdersHint, tabConnection, metadataComboBox.Location);
+            }
+        }
 
+        public void OnLostFocusHideTooltip(object sender, EventArgs e)
+        {
+            placeholdersToolTip.Hide(this);
+        }
 
         private void buttonExpressionAdd_Click(object sender, System.EventArgs e)
         {
@@ -670,6 +702,58 @@ namespace iba.Controls
         {
             schemaCACertificateLabel.Enabled = schemaEnableSSLVerificationCb.Checked;
             schemaCACertCBox.Enabled = schemaEnableSSLVerificationCb.Checked;
+        }
+
+        private void typeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_data.ClusterMode == (KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex)
+                return;
+            _data.ClusterMode = (KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex;
+            SuspendLayout();
+            var controlsToMoveEventHub = new Control[] { enableSSLVerificationCb, CACertificateLabel, CACertCBox, messageTimeoutLabel, timeoutNumericUpDown, secLabel };
+            var pos = clusterConnSecurityLabel.Location;
+            if (clusterTypeComboBox.SelectedIndex == 0)//Kafka
+            {
+                connectionStrLabel.Visible = false;
+                clusterAddressLabel.Visible = true;
+                foreach (Control c in ctrlsToHide)
+                    c.Visible = true;
+
+                for (int i = 0; i < controlPositions.Count; i++)
+                    controlsToMoveEventHub[i].Location = controlPositions[i];
+                CACertCBox.Width = clientCertCBox.Width;
+                clusterConnectionSecurityComboBox_SelectedIndexChanged(null, null);
+                schemaRegistryConnectionSecurityComboBox_SelectedIndexChanged(null, null);
+            }
+            else // event hub
+            {
+                controlPositions.Clear();
+                foreach (var c in controlsToMoveEventHub)
+                    controlPositions.Add(c.Location);
+                connectionStrLabel.Location = clusterAddressLabel.Location;
+                connectionStrLabel.Visible = true;
+                clusterAddressLabel.Visible = false;
+
+                var Xshift = clusterConnSecurityLabel.Location.X - enableSSLVerificationCb.Location.X;
+                var Yshift = clusterConnSecurityLabel.Location.Y - enableSSLVerificationCb.Location.Y;
+                enableSSLVerificationCb.Location = new Point(enableSSLVerificationCb.Location.X + Xshift, enableSSLVerificationCb.Location.Y + Yshift);
+                CACertificateLabel.Location = new Point(CACertificateLabel.Location.X + Xshift, CACertificateLabel.Location.Y + Yshift);
+                CACertCBox.Location = new Point(identifierTextBox.Location.X, CACertCBox.Location.Y + Yshift);
+                CACertCBox.Width = identifierTextBox.Width;
+                Yshift = SASLPassLabel.Location.Y - messageTimeoutLabel.Location.Y;
+
+
+                messageTimeoutLabel.Location = new Point(messageTimeoutLabel.Location.X, messageTimeoutLabel.Location.Y +Yshift);
+                timeoutNumericUpDown.Location = new Point(timeoutNumericUpDown.Location.X, timeoutNumericUpDown.Location.Y + Yshift);
+                secLabel.Location = new Point(secLabel.Location.X, secLabel.Location.Y + Yshift);
+
+                foreach (Control c in ctrlsToHide)
+                    c.Visible = false;
+                foreach (Control c in controlsToMoveEventHub)
+                    c.Visible = true;
+
+            }
+            ResumeLayout();
         }
 
         private void OnImportParameters(object sender, EventArgs e)

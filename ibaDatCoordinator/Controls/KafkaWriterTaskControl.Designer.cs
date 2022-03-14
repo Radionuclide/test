@@ -40,8 +40,10 @@
             this._toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
             this.tabTarget = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.secLabel = new System.Windows.Forms.Label();
+            this.connectionStrLabel = new System.Windows.Forms.Label();
             this.schemaRegistryCb = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.testConnectionBtn = new System.Windows.Forms.Button();
             this.schemaCACertPlaceholder = new System.Windows.Forms.ComboBox();
             this.schemaCACertificateLabel = new System.Windows.Forms.Label();
             this.schemaEnableSSLVerificationCb = new System.Windows.Forms.CheckBox();
@@ -52,17 +54,17 @@
             this.schemaPassLabel = new System.Windows.Forms.Label();
             this.schemaNameLabel = new System.Windows.Forms.Label();
             this.CACertPlaceholder = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.idLabel = new System.Windows.Forms.Label();
             this.CACertificateLabel = new System.Windows.Forms.Label();
             this.timeoutNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.SASLPassTextBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.SASLNameTextBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.messageTimeoutLabel = new System.Windows.Forms.Label();
             this.enableSSLVerificationCb = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.clientCertificateLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.clusterAddressLabel = new System.Windows.Forms.Label();
             this.SASLPassLabel = new System.Windows.Forms.Label();
             this.addressTextBox = new System.Windows.Forms.TextBox();
             this.SASLNameLabel = new System.Windows.Forms.Label();
@@ -82,9 +84,9 @@
             this.paramRemoveButton = new System.Windows.Forms.Button();
             this.clusterConnectionSecurityComboBox = new System.Windows.Forms.ComboBox();
             this.identifierTextBox = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.typeComboBox = new System.Windows.Forms.ComboBox();
+            this.clusterConnSecurityLabel = new System.Windows.Forms.Label();
+            this.typeLabel = new System.Windows.Forms.Label();
+            this.clusterTypeComboBox = new System.Windows.Forms.ComboBox();
             this.importParamButton = new System.Windows.Forms.Button();
             this.exportParamButton = new System.Windows.Forms.Button();
             this.tabConnection = new Crownwood.DotNetMagic.Controls.TabPage();
@@ -119,6 +121,7 @@
             this.label154t5 = new System.Windows.Forms.Label();
             this.downButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.placeholdersToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.m_monitorGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_nudMemory)).BeginInit();
@@ -158,7 +161,7 @@
             this.label4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label4.Location = new System.Drawing.Point(412, 46);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 13);
+            this.label4.Size = new System.Drawing.Size(127, 16);
             this.label4.TabIndex = 5;
             this.label4.Text = "minutes to complete";
             // 
@@ -168,7 +171,7 @@
             this.label7.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label7.Location = new System.Drawing.Point(412, 24);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(92, 13);
+            this.label7.Size = new System.Drawing.Size(118, 16);
             this.label7.TabIndex = 2;
             this.label7.Text = "Mbytes of memory";
             // 
@@ -187,7 +190,7 @@
             0,
             0});
             this.m_nudTime.Name = "m_nudTime";
-            this.m_nudTime.Size = new System.Drawing.Size(78, 20);
+            this.m_nudTime.Size = new System.Drawing.Size(78, 22);
             this.m_nudTime.TabIndex = 4;
             this.m_nudTime.Value = new decimal(new int[] {
             5,
@@ -210,7 +213,7 @@
             0,
             0});
             this.m_nudMemory.Name = "m_nudMemory";
-            this.m_nudMemory.Size = new System.Drawing.Size(78, 20);
+            this.m_nudMemory.Size = new System.Drawing.Size(78, 22);
             this.m_nudMemory.TabIndex = 1;
             this.m_nudMemory.Value = new decimal(new int[] {
             1024,
@@ -270,8 +273,10 @@
             // 
             this.tabTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabTarget.Controls.Add(this.secLabel);
+            this.tabTarget.Controls.Add(this.connectionStrLabel);
             this.tabTarget.Controls.Add(this.schemaRegistryCb);
-            this.tabTarget.Controls.Add(this.button1);
+            this.tabTarget.Controls.Add(this.testConnectionBtn);
             this.tabTarget.Controls.Add(this.schemaCACertPlaceholder);
             this.tabTarget.Controls.Add(this.schemaCACertificateLabel);
             this.tabTarget.Controls.Add(this.schemaEnableSSLVerificationCb);
@@ -282,17 +287,17 @@
             this.tabTarget.Controls.Add(this.schemaPassLabel);
             this.tabTarget.Controls.Add(this.schemaNameLabel);
             this.tabTarget.Controls.Add(this.CACertPlaceholder);
-            this.tabTarget.Controls.Add(this.label12);
+            this.tabTarget.Controls.Add(this.idLabel);
             this.tabTarget.Controls.Add(this.CACertificateLabel);
             this.tabTarget.Controls.Add(this.timeoutNumericUpDown);
             this.tabTarget.Controls.Add(this.SASLPassTextBox);
             this.tabTarget.Controls.Add(this.label9);
             this.tabTarget.Controls.Add(this.SASLNameTextBox);
-            this.tabTarget.Controls.Add(this.label3);
+            this.tabTarget.Controls.Add(this.messageTimeoutLabel);
             this.tabTarget.Controls.Add(this.enableSSLVerificationCb);
             this.tabTarget.Controls.Add(this.label10);
             this.tabTarget.Controls.Add(this.clientCertificateLabel);
-            this.tabTarget.Controls.Add(this.label2);
+            this.tabTarget.Controls.Add(this.clusterAddressLabel);
             this.tabTarget.Controls.Add(this.SASLPassLabel);
             this.tabTarget.Controls.Add(this.addressTextBox);
             this.tabTarget.Controls.Add(this.SASLNameLabel);
@@ -308,9 +313,9 @@
             this.tabTarget.Controls.Add(this.paramRemoveButton);
             this.tabTarget.Controls.Add(this.clusterConnectionSecurityComboBox);
             this.tabTarget.Controls.Add(this.identifierTextBox);
-            this.tabTarget.Controls.Add(this.label17);
-            this.tabTarget.Controls.Add(this.label14);
-            this.tabTarget.Controls.Add(this.typeComboBox);
+            this.tabTarget.Controls.Add(this.clusterConnSecurityLabel);
+            this.tabTarget.Controls.Add(this.typeLabel);
+            this.tabTarget.Controls.Add(this.clusterTypeComboBox);
             this.tabTarget.Controls.Add(this.importParamButton);
             this.tabTarget.Controls.Add(this.exportParamButton);
             this.tabTarget.InactiveBackColor = System.Drawing.Color.Empty;
@@ -328,26 +333,46 @@
             this.tabTarget.Title = "Connection";
             this.tabTarget.ToolTip = "Page";
             // 
+            // secLabel
+            // 
+            this.secLabel.AutoSize = true;
+            this.secLabel.Location = new System.Drawing.Point(256, 434);
+            this.secLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.secLabel.Name = "secLabel";
+            this.secLabel.Size = new System.Drawing.Size(15, 16);
+            this.secLabel.TabIndex = 96;
+            this.secLabel.Text = "s";
+            // 
+            // connectionStrLabel
+            // 
+            this.connectionStrLabel.AutoSize = true;
+            this.connectionStrLabel.Location = new System.Drawing.Point(8, 585);
+            this.connectionStrLabel.Name = "connectionStrLabel";
+            this.connectionStrLabel.Size = new System.Drawing.Size(113, 16);
+            this.connectionStrLabel.TabIndex = 95;
+            this.connectionStrLabel.Text = "Connection string:";
+            // 
             // schemaRegistryCb
             // 
             this.schemaRegistryCb.AutoSize = true;
             this.schemaRegistryCb.Location = new System.Drawing.Point(8, 251);
             this.schemaRegistryCb.Name = "schemaRegistryCb";
-            this.schemaRegistryCb.Size = new System.Drawing.Size(144, 17);
+            this.schemaRegistryCb.Size = new System.Drawing.Size(180, 20);
             this.schemaRegistryCb.TabIndex = 94;
             this.schemaRegistryCb.Text = "Schema registry address:";
             this.schemaRegistryCb.UseVisualStyleBackColor = true;
             this.schemaRegistryCb.CheckedChanged += new System.EventHandler(this.schemaRegistryCb_CheckedChanged);
             // 
-            // button1
+            // testConnectionBtn
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(405, 32);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(285, 25);
-            this.button1.TabIndex = 56;
-            this.button1.Text = "Test connection and populate topic list";
-            this.button1.UseVisualStyleBackColor = true;
+            this.testConnectionBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.testConnectionBtn.Location = new System.Drawing.Point(405, 32);
+            this.testConnectionBtn.Name = "testConnectionBtn";
+            this.testConnectionBtn.Size = new System.Drawing.Size(285, 25);
+            this.testConnectionBtn.TabIndex = 56;
+            this.testConnectionBtn.Text = "Test connection and populate topic list";
+            this.testConnectionBtn.UseVisualStyleBackColor = true;
+            this.testConnectionBtn.Click += new System.EventHandler(this.testConnectionButton_Click);
             // 
             // schemaCACertPlaceholder
             // 
@@ -357,7 +382,7 @@
             this.schemaCACertPlaceholder.Location = new System.Drawing.Point(332, 405);
             this.schemaCACertPlaceholder.Margin = new System.Windows.Forms.Padding(2);
             this.schemaCACertPlaceholder.Name = "schemaCACertPlaceholder";
-            this.schemaCACertPlaceholder.Size = new System.Drawing.Size(358, 21);
+            this.schemaCACertPlaceholder.Size = new System.Drawing.Size(358, 24);
             this.schemaCACertPlaceholder.TabIndex = 93;
             // 
             // schemaCACertificateLabel
@@ -366,7 +391,7 @@
             this.schemaCACertificateLabel.Location = new System.Drawing.Point(209, 408);
             this.schemaCACertificateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.schemaCACertificateLabel.Name = "schemaCACertificateLabel";
-            this.schemaCACertificateLabel.Size = new System.Drawing.Size(73, 13);
+            this.schemaCACertificateLabel.Size = new System.Drawing.Size(89, 16);
             this.schemaCACertificateLabel.TabIndex = 92;
             this.schemaCACertificateLabel.Text = "CA certificate:";
             // 
@@ -376,7 +401,7 @@
             this.schemaEnableSSLVerificationCb.Location = new System.Drawing.Point(209, 380);
             this.schemaEnableSSLVerificationCb.Margin = new System.Windows.Forms.Padding(2);
             this.schemaEnableSSLVerificationCb.Name = "schemaEnableSSLVerificationCb";
-            this.schemaEnableSSLVerificationCb.Size = new System.Drawing.Size(136, 17);
+            this.schemaEnableSSLVerificationCb.Size = new System.Drawing.Size(165, 20);
             this.schemaEnableSSLVerificationCb.TabIndex = 91;
             this.schemaEnableSSLVerificationCb.Text = "Enable SSL verification";
             this.schemaEnableSSLVerificationCb.UseVisualStyleBackColor = true;
@@ -388,7 +413,7 @@
             this.schemaClientCertificateLabel.Location = new System.Drawing.Point(209, 358);
             this.schemaClientCertificateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.schemaClientCertificateLabel.Name = "schemaClientCertificateLabel";
-            this.schemaClientCertificateLabel.Size = new System.Drawing.Size(85, 13);
+            this.schemaClientCertificateLabel.Size = new System.Drawing.Size(104, 16);
             this.schemaClientCertificateLabel.TabIndex = 90;
             this.schemaClientCertificateLabel.Text = "Client certificate:";
             // 
@@ -400,7 +425,7 @@
             this.schemaClientCertPlaceholder.Location = new System.Drawing.Point(332, 355);
             this.schemaClientCertPlaceholder.Margin = new System.Windows.Forms.Padding(2);
             this.schemaClientCertPlaceholder.Name = "schemaClientCertPlaceholder";
-            this.schemaClientCertPlaceholder.Size = new System.Drawing.Size(358, 21);
+            this.schemaClientCertPlaceholder.Size = new System.Drawing.Size(358, 24);
             this.schemaClientCertPlaceholder.TabIndex = 89;
             // 
             // schemaPassTextBox
@@ -411,7 +436,7 @@
             this.schemaPassTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.schemaPassTextBox.Name = "schemaPassTextBox";
             this.schemaPassTextBox.PasswordChar = '●';
-            this.schemaPassTextBox.Size = new System.Drawing.Size(151, 20);
+            this.schemaPassTextBox.Size = new System.Drawing.Size(151, 22);
             this.schemaPassTextBox.TabIndex = 88;
             // 
             // schemaNameTextBox
@@ -421,7 +446,7 @@
             this.schemaNameTextBox.Location = new System.Drawing.Point(332, 301);
             this.schemaNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.schemaNameTextBox.Name = "schemaNameTextBox";
-            this.schemaNameTextBox.Size = new System.Drawing.Size(151, 20);
+            this.schemaNameTextBox.Size = new System.Drawing.Size(151, 22);
             this.schemaNameTextBox.TabIndex = 87;
             // 
             // schemaPassLabel
@@ -430,7 +455,7 @@
             this.schemaPassLabel.Location = new System.Drawing.Point(209, 331);
             this.schemaPassLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.schemaPassLabel.Name = "schemaPassLabel";
-            this.schemaPassLabel.Size = new System.Drawing.Size(56, 13);
+            this.schemaPassLabel.Size = new System.Drawing.Size(71, 16);
             this.schemaPassLabel.TabIndex = 86;
             this.schemaPassLabel.Text = "Password:";
             // 
@@ -440,7 +465,7 @@
             this.schemaNameLabel.Location = new System.Drawing.Point(209, 304);
             this.schemaNameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.schemaNameLabel.Name = "schemaNameLabel";
-            this.schemaNameLabel.Size = new System.Drawing.Size(58, 13);
+            this.schemaNameLabel.Size = new System.Drawing.Size(74, 16);
             this.schemaNameLabel.TabIndex = 85;
             this.schemaNameLabel.Text = "Username:";
             // 
@@ -452,18 +477,18 @@
             this.CACertPlaceholder.Location = new System.Drawing.Point(332, 221);
             this.CACertPlaceholder.Margin = new System.Windows.Forms.Padding(2);
             this.CACertPlaceholder.Name = "CACertPlaceholder";
-            this.CACertPlaceholder.Size = new System.Drawing.Size(358, 21);
+            this.CACertPlaceholder.Size = new System.Drawing.Size(358, 24);
             this.CACertPlaceholder.TabIndex = 83;
             // 
-            // label12
+            // idLabel
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 11);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(50, 13);
-            this.label12.TabIndex = 48;
-            this.label12.Text = "Identifier:";
+            this.idLabel.AutoSize = true;
+            this.idLabel.Location = new System.Drawing.Point(8, 11);
+            this.idLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.idLabel.Name = "idLabel";
+            this.idLabel.Size = new System.Drawing.Size(61, 16);
+            this.idLabel.TabIndex = 48;
+            this.idLabel.Text = "Identifier:";
             // 
             // CACertificateLabel
             // 
@@ -471,7 +496,7 @@
             this.CACertificateLabel.Location = new System.Drawing.Point(209, 224);
             this.CACertificateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.CACertificateLabel.Name = "CACertificateLabel";
-            this.CACertificateLabel.Size = new System.Drawing.Size(73, 13);
+            this.CACertificateLabel.Size = new System.Drawing.Size(89, 16);
             this.CACertificateLabel.TabIndex = 82;
             this.CACertificateLabel.Text = "CA certificate:";
             // 
@@ -485,7 +510,7 @@
             0,
             0});
             this.timeoutNumericUpDown.Name = "timeoutNumericUpDown";
-            this.timeoutNumericUpDown.Size = new System.Drawing.Size(41, 20);
+            this.timeoutNumericUpDown.Size = new System.Drawing.Size(41, 22);
             this.timeoutNumericUpDown.TabIndex = 12;
             this.timeoutNumericUpDown.Value = new decimal(new int[] {
             1,
@@ -501,7 +526,7 @@
             this.SASLPassTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.SASLPassTextBox.Name = "SASLPassTextBox";
             this.SASLPassTextBox.PasswordChar = '●';
-            this.SASLPassTextBox.Size = new System.Drawing.Size(144, 20);
+            this.SASLPassTextBox.Size = new System.Drawing.Size(144, 22);
             this.SASLPassTextBox.TabIndex = 81;
             // 
             // label9
@@ -510,7 +535,7 @@
             this.label9.Location = new System.Drawing.Point(8, 461);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(121, 13);
+            this.label9.Size = new System.Drawing.Size(152, 16);
             this.label9.TabIndex = 39;
             this.label9.Text = "Acknowledgment mode:";
             // 
@@ -521,18 +546,18 @@
             this.SASLNameTextBox.Location = new System.Drawing.Point(546, 118);
             this.SASLNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.SASLNameTextBox.Name = "SASLNameTextBox";
-            this.SASLNameTextBox.Size = new System.Drawing.Size(144, 20);
+            this.SASLNameTextBox.Size = new System.Drawing.Size(144, 22);
             this.SASLNameTextBox.TabIndex = 80;
             // 
-            // label3
+            // messageTimeoutLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 438);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 13);
-            this.label3.TabIndex = 22;
-            this.label3.Text = "Message timeout:";
+            this.messageTimeoutLabel.AutoSize = true;
+            this.messageTimeoutLabel.Location = new System.Drawing.Point(8, 432);
+            this.messageTimeoutLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.messageTimeoutLabel.Name = "messageTimeoutLabel";
+            this.messageTimeoutLabel.Size = new System.Drawing.Size(114, 16);
+            this.messageTimeoutLabel.TabIndex = 22;
+            this.messageTimeoutLabel.Text = "Message timeout:";
             // 
             // enableSSLVerificationCb
             // 
@@ -540,7 +565,7 @@
             this.enableSSLVerificationCb.Location = new System.Drawing.Point(209, 197);
             this.enableSSLVerificationCb.Margin = new System.Windows.Forms.Padding(2);
             this.enableSSLVerificationCb.Name = "enableSSLVerificationCb";
-            this.enableSSLVerificationCb.Size = new System.Drawing.Size(136, 17);
+            this.enableSSLVerificationCb.Size = new System.Drawing.Size(165, 20);
             this.enableSSLVerificationCb.TabIndex = 79;
             this.enableSSLVerificationCb.Text = "Enable SSL verification";
             this.enableSSLVerificationCb.UseVisualStyleBackColor = true;
@@ -552,7 +577,7 @@
             this.label10.Location = new System.Drawing.Point(8, 486);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(111, 13);
+            this.label10.Size = new System.Drawing.Size(143, 16);
             this.label10.TabIndex = 42;
             this.label10.Text = "Additional parameters:";
             // 
@@ -562,27 +587,27 @@
             this.clientCertificateLabel.Location = new System.Drawing.Point(209, 173);
             this.clientCertificateLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.clientCertificateLabel.Name = "clientCertificateLabel";
-            this.clientCertificateLabel.Size = new System.Drawing.Size(85, 13);
+            this.clientCertificateLabel.Size = new System.Drawing.Size(104, 16);
             this.clientCertificateLabel.TabIndex = 78;
             this.clientCertificateLabel.Text = "Client certificate:";
             // 
-            // label2
+            // clusterAddressLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 64);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 13);
-            this.label2.TabIndex = 20;
-            this.label2.Text = "Cluster address:";
+            this.clusterAddressLabel.AutoSize = true;
+            this.clusterAddressLabel.Location = new System.Drawing.Point(8, 64);
+            this.clusterAddressLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.clusterAddressLabel.Name = "clusterAddressLabel";
+            this.clusterAddressLabel.Size = new System.Drawing.Size(105, 16);
+            this.clusterAddressLabel.TabIndex = 20;
+            this.clusterAddressLabel.Text = "Cluster address:";
             // 
             // SASLPassLabel
             // 
             this.SASLPassLabel.AutoSize = true;
-            this.SASLPassLabel.Location = new System.Drawing.Point(459, 147);
+            this.SASLPassLabel.Location = new System.Drawing.Point(459, 146);
             this.SASLPassLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SASLPassLabel.Name = "SASLPassLabel";
-            this.SASLPassLabel.Size = new System.Drawing.Size(56, 13);
+            this.SASLPassLabel.Size = new System.Drawing.Size(71, 16);
             this.SASLPassLabel.TabIndex = 77;
             this.SASLPassLabel.Text = "Password:";
             // 
@@ -593,16 +618,16 @@
             this.addressTextBox.Location = new System.Drawing.Point(209, 61);
             this.addressTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.addressTextBox.Name = "addressTextBox";
-            this.addressTextBox.Size = new System.Drawing.Size(481, 20);
+            this.addressTextBox.Size = new System.Drawing.Size(481, 22);
             this.addressTextBox.TabIndex = 7;
             // 
             // SASLNameLabel
             // 
             this.SASLNameLabel.AutoSize = true;
-            this.SASLNameLabel.Location = new System.Drawing.Point(459, 121);
+            this.SASLNameLabel.Location = new System.Drawing.Point(459, 120);
             this.SASLNameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SASLNameLabel.Name = "SASLNameLabel";
-            this.SASLNameLabel.Size = new System.Drawing.Size(58, 13);
+            this.SASLNameLabel.Size = new System.Drawing.Size(74, 16);
             this.SASLNameLabel.TabIndex = 76;
             this.SASLNameLabel.Text = "Username:";
             // 
@@ -678,7 +703,7 @@
             this.SASLMechanismComboBox.Location = new System.Drawing.Point(332, 118);
             this.SASLMechanismComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.SASLMechanismComboBox.Name = "SASLMechanismComboBox";
-            this.SASLMechanismComboBox.Size = new System.Drawing.Size(109, 21);
+            this.SASLMechanismComboBox.Size = new System.Drawing.Size(109, 24);
             this.SASLMechanismComboBox.TabIndex = 75;
             // 
             // acknowledgmentComboBox
@@ -692,7 +717,7 @@
             this.acknowledgmentComboBox.Location = new System.Drawing.Point(209, 458);
             this.acknowledgmentComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.acknowledgmentComboBox.Name = "acknowledgmentComboBox";
-            this.acknowledgmentComboBox.Size = new System.Drawing.Size(109, 21);
+            this.acknowledgmentComboBox.Size = new System.Drawing.Size(109, 24);
             this.acknowledgmentComboBox.TabIndex = 11;
             // 
             // SASLMechLabel
@@ -701,7 +726,7 @@
             this.SASLMechLabel.Location = new System.Drawing.Point(209, 121);
             this.SASLMechLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.SASLMechLabel.Name = "SASLMechLabel";
-            this.SASLMechLabel.Size = new System.Drawing.Size(93, 13);
+            this.SASLMechLabel.Size = new System.Drawing.Size(117, 16);
             this.SASLMechLabel.TabIndex = 74;
             this.SASLMechLabel.Text = "SASL mechanism:";
             // 
@@ -726,7 +751,7 @@
             this.clientCertPlaceholder.Location = new System.Drawing.Point(332, 170);
             this.clientCertPlaceholder.Margin = new System.Windows.Forms.Padding(2);
             this.clientCertPlaceholder.Name = "clientCertPlaceholder";
-            this.clientCertPlaceholder.Size = new System.Drawing.Size(358, 21);
+            this.clientCertPlaceholder.Size = new System.Drawing.Size(358, 24);
             this.clientCertPlaceholder.TabIndex = 63;
             // 
             // schemaRegistryConnectionSecurityComboBox
@@ -740,7 +765,7 @@
             "HTTPS + Authentication"});
             this.schemaRegistryConnectionSecurityComboBox.Location = new System.Drawing.Point(209, 274);
             this.schemaRegistryConnectionSecurityComboBox.Name = "schemaRegistryConnectionSecurityComboBox";
-            this.schemaRegistryConnectionSecurityComboBox.Size = new System.Drawing.Size(142, 21);
+            this.schemaRegistryConnectionSecurityComboBox.Size = new System.Drawing.Size(142, 24);
             this.schemaRegistryConnectionSecurityComboBox.TabIndex = 62;
             this.schemaRegistryConnectionSecurityComboBox.SelectedIndexChanged += new System.EventHandler(this.schemaRegistryConnectionSecurityComboBox_SelectedIndexChanged);
             // 
@@ -751,15 +776,16 @@
             this.schemaTextBox.Location = new System.Drawing.Point(209, 248);
             this.schemaTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.schemaTextBox.Name = "schemaTextBox";
-            this.schemaTextBox.Size = new System.Drawing.Size(481, 20);
+            this.schemaTextBox.Size = new System.Drawing.Size(481, 22);
             this.schemaTextBox.TabIndex = 16;
             // 
             // schemaRegSecurityLabel
             // 
             this.schemaRegSecurityLabel.AutoSize = true;
             this.schemaRegSecurityLabel.Location = new System.Drawing.Point(8, 277);
+            this.schemaRegSecurityLabel.MaximumSize = new System.Drawing.Size(180, 32);
             this.schemaRegSecurityLabel.Name = "schemaRegSecurityLabel";
-            this.schemaRegSecurityLabel.Size = new System.Drawing.Size(180, 13);
+            this.schemaRegSecurityLabel.Size = new System.Drawing.Size(176, 32);
             this.schemaRegSecurityLabel.TabIndex = 61;
             this.schemaRegSecurityLabel.Text = "Schema registry connection security:";
             // 
@@ -787,7 +813,7 @@
             "SASL/SSL"});
             this.clusterConnectionSecurityComboBox.Location = new System.Drawing.Point(209, 89);
             this.clusterConnectionSecurityComboBox.Name = "clusterConnectionSecurityComboBox";
-            this.clusterConnectionSecurityComboBox.Size = new System.Drawing.Size(109, 21);
+            this.clusterConnectionSecurityComboBox.Size = new System.Drawing.Size(109, 24);
             this.clusterConnectionSecurityComboBox.TabIndex = 60;
             this.clusterConnectionSecurityComboBox.SelectedIndexChanged += new System.EventHandler(this.clusterConnectionSecurityComboBox_SelectedIndexChanged);
             // 
@@ -798,39 +824,40 @@
             this.identifierTextBox.Location = new System.Drawing.Point(209, 8);
             this.identifierTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.identifierTextBox.Name = "identifierTextBox";
-            this.identifierTextBox.Size = new System.Drawing.Size(481, 20);
+            this.identifierTextBox.Size = new System.Drawing.Size(481, 22);
             this.identifierTextBox.TabIndex = 13;
             // 
-            // label17
+            // clusterConnSecurityLabel
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(8, 92);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(137, 13);
-            this.label17.TabIndex = 59;
-            this.label17.Text = "Cluster connection security:";
+            this.clusterConnSecurityLabel.AutoSize = true;
+            this.clusterConnSecurityLabel.Location = new System.Drawing.Point(8, 92);
+            this.clusterConnSecurityLabel.Name = "clusterConnSecurityLabel";
+            this.clusterConnSecurityLabel.Size = new System.Drawing.Size(169, 16);
+            this.clusterConnSecurityLabel.TabIndex = 59;
+            this.clusterConnSecurityLabel.Text = "Cluster connection security:";
             // 
-            // label14
+            // typeLabel
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 37);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(34, 13);
-            this.label14.TabIndex = 54;
-            this.label14.Text = "Type:";
+            this.typeLabel.AutoSize = true;
+            this.typeLabel.Location = new System.Drawing.Point(8, 37);
+            this.typeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.typeLabel.Name = "typeLabel";
+            this.typeLabel.Size = new System.Drawing.Size(43, 16);
+            this.typeLabel.TabIndex = 54;
+            this.typeLabel.Text = "Type:";
             // 
-            // typeComboBox
+            // clusterTypeComboBox
             // 
-            this.typeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.typeComboBox.FormattingEnabled = true;
-            this.typeComboBox.Items.AddRange(new object[] {
+            this.clusterTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.clusterTypeComboBox.FormattingEnabled = true;
+            this.clusterTypeComboBox.Items.AddRange(new object[] {
             "Kafka",
             "Event Hub"});
-            this.typeComboBox.Location = new System.Drawing.Point(209, 34);
-            this.typeComboBox.Name = "typeComboBox";
-            this.typeComboBox.Size = new System.Drawing.Size(109, 21);
-            this.typeComboBox.TabIndex = 58;
+            this.clusterTypeComboBox.Location = new System.Drawing.Point(209, 34);
+            this.clusterTypeComboBox.Name = "clusterTypeComboBox";
+            this.clusterTypeComboBox.Size = new System.Drawing.Size(109, 24);
+            this.clusterTypeComboBox.TabIndex = 58;
+            this.clusterTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.typeComboBox_SelectedIndexChanged);
             // 
             // importParamButton
             // 
@@ -984,7 +1011,7 @@
             this.label8.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label8.Location = new System.Drawing.Point(8, 11);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(89, 13);
+            this.label8.Size = new System.Drawing.Size(114, 16);
             this.label8.TabIndex = 26;
             this.label8.Text = "Optional analysis:";
             // 
@@ -1019,7 +1046,7 @@
             this.label16.Location = new System.Drawing.Point(8, 116);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(55, 13);
+            this.label16.Size = new System.Drawing.Size(68, 16);
             this.label16.TabIndex = 54;
             this.label16.Text = "Metadata:";
             // 
@@ -1051,7 +1078,7 @@
             this.label13.Location = new System.Drawing.Point(8, 169);
             this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(105, 13);
+            this.label13.Size = new System.Drawing.Size(132, 16);
             this.label13.TabIndex = 50;
             this.label13.Text = "Digital values format:";
             // 
@@ -1074,7 +1101,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_pdoFileTextBox.Location = new System.Drawing.Point(149, 8);
             this.m_pdoFileTextBox.Name = "m_pdoFileTextBox";
-            this.m_pdoFileTextBox.Size = new System.Drawing.Size(481, 20);
+            this.m_pdoFileTextBox.Size = new System.Drawing.Size(481, 22);
             this.m_pdoFileTextBox.TabIndex = 0;
             this.m_pdoFileTextBox.TextChanged += new System.EventHandler(this.m_pdoFileTextBox_TextChanged);
             // 
@@ -1085,7 +1112,7 @@
             this.keyTextBox.Location = new System.Drawing.Point(149, 87);
             this.keyTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.keyTextBox.Name = "keyTextBox";
-            this.keyTextBox.Size = new System.Drawing.Size(481, 20);
+            this.keyTextBox.Size = new System.Drawing.Size(481, 22);
             this.keyTextBox.TabIndex = 52;
             // 
             // dataFormatComboBox
@@ -1099,7 +1126,7 @@
             this.dataFormatComboBox.Location = new System.Drawing.Point(149, 139);
             this.dataFormatComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.dataFormatComboBox.Name = "dataFormatComboBox";
-            this.dataFormatComboBox.Size = new System.Drawing.Size(116, 21);
+            this.dataFormatComboBox.Size = new System.Drawing.Size(116, 24);
             this.dataFormatComboBox.TabIndex = 10;
             // 
             // m_btnUploadPDO
@@ -1138,7 +1165,7 @@
             this.digitalFormatComboBox.Location = new System.Drawing.Point(149, 166);
             this.digitalFormatComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.digitalFormatComboBox.Name = "digitalFormatComboBox";
-            this.digitalFormatComboBox.Size = new System.Drawing.Size(116, 21);
+            this.digitalFormatComboBox.Size = new System.Drawing.Size(116, 24);
             this.digitalFormatComboBox.TabIndex = 14;
             // 
             // label15
@@ -1147,7 +1174,7 @@
             this.label15.Location = new System.Drawing.Point(8, 90);
             this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(28, 13);
+            this.label15.Size = new System.Drawing.Size(34, 16);
             this.label15.TabIndex = 51;
             this.label15.Text = "Key:";
             // 
@@ -1182,7 +1209,7 @@
             this.label5.Location = new System.Drawing.Point(8, 142);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.Size = new System.Drawing.Size(80, 16);
             this.label5.TabIndex = 24;
             this.label5.Text = "Data format:";
             // 
@@ -1204,7 +1231,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_datFileTextBox.Location = new System.Drawing.Point(149, 34);
             this.m_datFileTextBox.Name = "m_datFileTextBox";
-            this.m_datFileTextBox.Size = new System.Drawing.Size(481, 20);
+            this.m_datFileTextBox.Size = new System.Drawing.Size(481, 22);
             this.m_datFileTextBox.TabIndex = 4;
             // 
             // topicComboBox
@@ -1215,7 +1242,7 @@
             this.topicComboBox.Location = new System.Drawing.Point(149, 60);
             this.topicComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.topicComboBox.Name = "topicComboBox";
-            this.topicComboBox.Size = new System.Drawing.Size(481, 21);
+            this.topicComboBox.Size = new System.Drawing.Size(481, 24);
             this.topicComboBox.TabIndex = 9;
             // 
             // label154t5
@@ -1224,7 +1251,7 @@
             this.label154t5.Location = new System.Drawing.Point(8, 63);
             this.label154t5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label154t5.Name = "label154t5";
-            this.label154t5.Size = new System.Drawing.Size(37, 13);
+            this.label154t5.Size = new System.Drawing.Size(46, 16);
             this.label154t5.TabIndex = 18;
             this.label154t5.Text = "Topic:";
             // 
@@ -1247,7 +1274,7 @@
             this.label6.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label6.Location = new System.Drawing.Point(8, 37);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(87, 13);
+            this.label6.Size = new System.Drawing.Size(109, 16);
             this.label6.TabIndex = 31;
             this.label6.Text = "Example .dat file:";
             // 
@@ -1294,17 +1321,17 @@
         private Crownwood.DotNetMagic.Controls.TabControl tabControl1;
         private Crownwood.DotNetMagic.Controls.TabPage tabTarget;
         private System.Windows.Forms.ComboBox CACertPlaceholder;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label idLabel;
         private System.Windows.Forms.Label CACertificateLabel;
         private System.Windows.Forms.NumericUpDown timeoutNumericUpDown;
         private System.Windows.Forms.TextBox SASLPassTextBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox SASLNameTextBox;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label messageTimeoutLabel;
         private System.Windows.Forms.CheckBox enableSSLVerificationCb;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label clientCertificateLabel;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label clusterAddressLabel;
         private System.Windows.Forms.Label SASLPassLabel;
         private System.Windows.Forms.TextBox addressTextBox;
         private System.Windows.Forms.Label SASLNameLabel;
@@ -1323,9 +1350,9 @@
         private System.Windows.Forms.Button paramRemoveButton;
         private System.Windows.Forms.ComboBox clusterConnectionSecurityComboBox;
         private System.Windows.Forms.TextBox identifierTextBox;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.ComboBox typeComboBox;
+        private System.Windows.Forms.Label clusterConnSecurityLabel;
+        private System.Windows.Forms.Label typeLabel;
+        private System.Windows.Forms.ComboBox clusterTypeComboBox;
         private System.Windows.Forms.Button importParamButton;
         private System.Windows.Forms.Button exportParamButton;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
@@ -1370,7 +1397,10 @@
         private System.Windows.Forms.TextBox schemaNameTextBox;
         private System.Windows.Forms.Label schemaPassLabel;
         private System.Windows.Forms.Label schemaNameLabel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button testConnectionBtn;
         private System.Windows.Forms.CheckBox schemaRegistryCb;
+        private System.Windows.Forms.Label connectionStrLabel;
+        private System.Windows.Forms.Label secLabel;
+        private System.Windows.Forms.ToolTip placeholdersToolTip;
     }
 }

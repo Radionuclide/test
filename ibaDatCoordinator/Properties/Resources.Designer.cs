@@ -2276,6 +2276,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following placeholders are available:
+        ///
+        ///$identifire: Identifier defined in data storage configuration
+        ///$signalid: Signal ID
+        ///$signalname: Signal name
+        ///$unit: Signal unit
+        ///$comment1: Signal comment 1
+        ///$comment2: Signal comment 2
+        ///
+        ///When using a grouped data format, signal related placeholders will be replaced by empty text.
+        /// </summary>
+        internal static string KafkaPlaceholdersHint {
+            get {
+                return ResourceManager.GetString("KafkaPlaceholdersHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kafka.
         /// </summary>
         internal static string kafkaWriterTastTitle {

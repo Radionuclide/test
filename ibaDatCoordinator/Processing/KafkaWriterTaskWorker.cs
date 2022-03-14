@@ -369,7 +369,7 @@ namespace iba.Processing
                 {
                     X509Certificate2 CACert = null;
                     X509Certificate2 clientCert = null;
-                    if (!String.IsNullOrEmpty(data.schemaSSLCAThumbprint))
+                    if (!String.IsNullOrEmpty(data.schemaSSLCAThumbprint) && data.schemaEnableSSLVerification)
                     {
                         var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLCAThumbprint);
                         if (c != null)
@@ -439,6 +439,11 @@ namespace iba.Processing
                         config.BootstrapServers = string.Concat(uri, ":9093");
                     }
                 }
+
+                config.SecurityProtocol = SecurityProtocol.SaslSsl;
+                config.SaslMechanism = SaslMechanism.Plain;
+                config.SaslUsername = "$ConnectionString";
+                config.SaslPassword = data.clusterAddress;
             }
 
             config.EnableSslCertificateVerification = data.enableSSLVerification;
@@ -513,7 +518,7 @@ namespace iba.Processing
                     throw new Exception("No client certificate found with thumbprint " + data.SSLClientThumbprint);
                 builder.SetSSLClientCert(cert.Certificate);
             }
-            if (data.SSLCAThumbprint != null && data.SSLCAThumbprint != "")
+            if (data.enableSSLVerification && data.SSLCAThumbprint != null && data.SSLCAThumbprint != "")
             {
                 var cert = TaskManager.Manager.CertificateManager.GetCertificate(data.SSLCAThumbprint);
                 if (cert is null)
