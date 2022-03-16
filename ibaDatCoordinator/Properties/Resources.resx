@@ -1929,8 +1929,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ibaAnalyzerExpression" xml:space="preserve">
     <value>ibaAnalyzer Expression</value>
   </data>
-  <data name="OpcUaVariableName" xml:space="preserve">
-    <value>OPC UA variable name</value>
+  <data name="VariableName" xml:space="preserve">
+    <value>Variable name</value>
   </data>
   <data name="TestValue" xml:space="preserve">
     <value>Test value</value>
@@ -2133,16 +2133,24 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="logSNMPServerDisabled" xml:space="preserve">
     <value>SNMP server is disabled</value>
   </data>
-  <data name="KafkaPlaceholdersHint" xml:space="preserve">
+  <data name="KafkaPlaceholdersKeyHint" xml:space="preserve">
     <value>The following placeholders are available:
 
-$identifire: Identifier defined in data storage configuration
-$signalid: Signal ID
+$identifier: Identifier defined in data storage configuration
 $signalname: Signal name
 $unit: Signal unit
 $comment1: Signal comment 1
 $comment2: Signal comment 2
 
 When using a grouped data format, signal related placeholders will be replaced by empty text</value>
+  </data>
+  <data name="KafkaPlaceholdersSignalHint" xml:space="preserve">
+    <value>The following placeholders are available:
+
+$identifier: Identifier defined in data storage configuration
+$signalname: Signal name
+$unit: Signal unit
+$comment1: Signal comment 1
+$comment2: Signal comment 2</value>
   </data>
 </root>

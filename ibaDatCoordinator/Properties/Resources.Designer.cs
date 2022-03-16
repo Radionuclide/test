@@ -2278,8 +2278,7 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The following placeholders are available:
         ///
-        ///$identifire: Identifier defined in data storage configuration
-        ///$signalid: Signal ID
+        ///$identifier: Identifier defined in data storage configuration
         ///$signalname: Signal name
         ///$unit: Signal unit
         ///$comment1: Signal comment 1
@@ -2287,9 +2286,24 @@ namespace iba.Properties {
         ///
         ///When using a grouped data format, signal related placeholders will be replaced by empty text.
         /// </summary>
-        internal static string KafkaPlaceholdersHint {
+        internal static string KafkaPlaceholdersKeyHint {
             get {
-                return ResourceManager.GetString("KafkaPlaceholdersHint", resourceCulture);
+                return ResourceManager.GetString("KafkaPlaceholdersKeyHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following placeholders are available:
+        ///
+        ///$identifier: Identifier defined in data storage configuration
+        ///$signalname: Signal name
+        ///$unit: Signal unit
+        ///$comment1: Signal comment 1
+        ///$comment2: Signal comment 2.
+        /// </summary>
+        internal static string KafkaPlaceholdersSignalHint {
+            get {
+                return ResourceManager.GetString("KafkaPlaceholdersSignalHint", resourceCulture);
             }
         }
         
@@ -4193,15 +4207,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OPC UA variable name.
-        /// </summary>
-        internal static string OpcUaVariableName {
-            get {
-                return ResourceManager.GetString("OpcUaVariableName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to add a new OPC-UA Writer Task.
         /// </summary>
         internal static string opcUaWriterTaskButton {
@@ -5971,6 +5976,15 @@ namespace iba.Properties {
         internal static string Value {
             get {
                 return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable name.
+        /// </summary>
+        internal static string VariableName {
+            get {
+                return ResourceManager.GetString("VariableName", resourceCulture);
             }
         }
         

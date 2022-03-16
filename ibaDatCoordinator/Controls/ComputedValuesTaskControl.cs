@@ -39,7 +39,7 @@ namespace iba.Controls
             gridColumn1.Caption = Properties.Resources.DataType;
             gridColumnExpression.Caption = Properties.Resources.ibaAnalyzerExpression;
             gridColumn11.Caption = Properties.Resources.TestValue;
-            gridColumnName.Caption = Properties.Resources.OpcUaVariableName;
+            gridColumnName.Caption = Properties.Resources.VariableName;
 
             gridColumnName.View.CellValueChanged += CellNameChanged;
             gridColumnExpression.View.CellValueChanged += CellExpressionChanged;

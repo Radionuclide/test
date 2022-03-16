@@ -121,6 +121,29 @@ namespace iba.Processing
             return true;
         }
 
+        string ReplacePlaceholders(KafkaWriterTaskData.KafkaRecord rec, string str)
+        {
+            str = str.Replace("$identifier", m_data.identifier);
+            str = str.Replace("$signalname", rec.Name);
+            str = str.Replace("$unit", rec.Unit);
+            str = str.Replace("$comment1", rec.Comment1);
+            str = str.Replace("$comment2", rec.Comment2);
+
+            return str;
+        }
+
+        string ReplacePlasholdersKey(string str)
+        {
+            str = str.Replace("$identifier", m_data.identifier);
+            str = str.Replace("$signalname", "");
+            str = str.Replace("$unit", "");
+            str = str.Replace("$comment1", "");
+            str = str.Replace("$comment2", "");
+
+            return str;
+        }
+
+
         internal void DoWork(string filename)
         {
             bool bUseAnalysis = !String.IsNullOrEmpty(m_data.AnalysisFile);
@@ -165,29 +188,28 @@ namespace iba.Processing
                             var b = new ProducerBuilder<string, string>(config);
                             InitIBuilder(m_data, b);
                             var p = b.Build();
-                            string message = "{ ";
+                            string message = "{ \n";
 
                             // todo maybe change format to   message += $", \"{rec.Name}.Comment1\": \"{rec.Comment1}\""; and change Name matadata to Expression metadata
                             for (int i = 0; i < m_data.Records.Count; i++)
                             {
                                 var rec = m_data.Records[i];
-                                if (i > 0)  message += ", ";
-                                message += $"\"{rec.Expression}\": \"{m_data.ToText(rec)}\"";
+                                if (i > 0)  
+                                    message += ",\n ";
+                                message += $"\"{ReplacePlaceholders(rec, m_data.signalReference)}\": {m_data.ToText(rec)}";
                                 if (m_data.metadata.Contains("Identifier"))
-                                    message += $", \"Identifier\": \"{m_data.identifier}\"";
+                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Identifier\": \"{m_data.identifier}\"";
                                 if (m_data.metadata.Contains("Name"))
-                                    message += $", \"Name\": \"{rec.Name}\"";
+                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Name\": \"{rec.Name}\"";
                                 if (m_data.metadata.Contains("Unit"))
-                                    message += $", \"Unit\": \"{rec.Unit}\"";
+                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Unit\": \"{rec.Unit}\"";
                                 if (m_data.metadata.Contains("Comment 1"))
-                                    message += $", \"Comment1\": \"{rec.Comment1}\"";
+                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Comment1\": \"{rec.Comment1}\"";
                                 if (m_data.metadata.Contains("Comment 2"))
-                                    message += $", \"Comment2\": \"{rec.Comment2}\"";
-                                if (m_data.metadata.Contains("Signal ID"))
-                                    message += $", \"Signal ID\": \"{rec.Id}\"";
+                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Comment2\": \"{rec.Comment2}\"";
                             }
-                            message += "}";
-                            var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = m_data.key, Value = message }).Result;
+                            message += "\n}";
+                            var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlasholdersKey(m_data.key), Value = message }).Result;
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONPerSignal)
                         {
@@ -196,21 +218,19 @@ namespace iba.Processing
                             var p = b.Build();
                             foreach (var rec in m_data.Records)
                             {
-                                string message = "";
+                                string message = $"{{ \n\"Signal\": \"{ReplacePlaceholders(rec, m_data.signalReference)}\",\n \"Value\":{m_data.ToText(rec)}";
                                 if (m_data.metadata.Contains("Identifier"))
-                                    message += $", \"Identifier\": \"{m_data.identifier}\"";
+                                    message += $",\n \"Identifier\": \"{m_data.identifier}\"";
                                 if (m_data.metadata.Contains("Name"))
-                                    message += $", \"Name\": \"{rec.Name}\"";
+                                    message += $",\n \"Name\": \"{rec.Name}\"";
                                 if (m_data.metadata.Contains("Unit"))
-                                    message += $", \"Unit\": \"{rec.Unit}\"";
+                                    message += $",\n \"Unit\": \"{rec.Unit}\"";
                                 if (m_data.metadata.Contains("Comment 1"))
-                                    message += $", \"Comment1\": \"{rec.Comment1}\"";
+                                    message += $",\n \"Comment1\": \"{rec.Comment1}\"";
                                 if (m_data.metadata.Contains("Comment 2"))
-                                    message += $", \"Comment2\": \"{rec.Comment2}\"";
-                                if (m_data.metadata.Contains("Signal ID"))
-                                    message += $", \"Signal ID\": \"{rec.Id}\"";
-                                message = $"{{\"Signal\": \"{rec.Expression}\", \"Value\": \"{m_data.ToText(rec)}\"{message}}}";
-                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = m_data.key, Value = message }).Result;
+                                    message += $",\n \"Comment2\": \"{rec.Comment2}\"";
+                                message += "\n}";
+                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholders(rec, m_data.key), Value = message }).Result;
                             }
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.AVRO)
@@ -236,9 +256,9 @@ namespace iba.Processing
                                 schema.TryGetField("ValueType", out Avro.Field enumField);
                                 Avro.EnumSchema valTypeSchema = enumField.Schema as Avro.EnumSchema;
                                 r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
-                                r.Add("Signal", rec.Expression);
+                                r.Add("Signal", ReplacePlaceholders(rec, m_data.signalReference));
                                 if (m_data.metadata.Contains("Identifier"))
-                                    r.Add("Identifier", "[" + m_data.identifier + "]");
+                                    r.Add("Identifier", m_data.identifier);
                                 if (m_data.metadata.Contains("Name"))
                                     r.Add("Name", rec.Name);
                                 if (m_data.metadata.Contains("Unit"))
@@ -247,8 +267,6 @@ namespace iba.Processing
                                     r.Add("Comment1", rec.Comment1);
                                 if (m_data.metadata.Contains("Comment 2"))
                                     r.Add("Comment2", rec.Comment2);
-                                if (m_data.metadata.Contains("Signal ID"))
-                                    r.Add("Signal ID", rec.Id);
 
                                 r.Add("BooleanValue", rec.Value as bool?);
                                 r.Add("DoubleValue", rec.Value as double?);
@@ -270,7 +288,7 @@ namespace iba.Processing
                                     msg.Value = ms.ToArray();
                                 }
 
-                                msg.Key = Encoding.UTF8.GetBytes(m_data.key.ToCharArray());
+                                msg.Key = Encoding.UTF8.GetBytes(ReplacePlaceholders(rec, m_data.key).ToCharArray());
                                 var dr = p.ProduceAsync(m_data.topicName, msg);
                             }
                         }

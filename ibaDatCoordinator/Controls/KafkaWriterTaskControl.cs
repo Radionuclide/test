@@ -122,6 +122,8 @@ namespace iba.Controls
             _viewExpr = (GridView)exprGrid.MainView;
             _viewExpr.FocusedRowChanged += (sender, e) => UpdateExprTableButtons();
 
+            expressionGridColumn.View.CellValueChanged += CellExpressionChanged;
+
             var channelEditor = new RepositoryItemChannelTreeEdit(_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Text);
             channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             exprGrid.RepositoryItems.Add(channelEditor);
@@ -130,8 +132,7 @@ namespace iba.Controls
             metadataComboBox.Properties.Items.Add("Unit");
             metadataComboBox.Properties.Items.Add("Comment 1");
             metadataComboBox.Properties.Items.Add("Comment 2");
-            metadataComboBox.Properties.Items.Add("Signal name");
-            metadataComboBox.Properties.Items.Add("Signal ID");
+            metadataComboBox.Properties.Items.Add("Name");
             metadataComboBox.Properties.Items.Add("Identifier");
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
@@ -150,10 +151,12 @@ namespace iba.Controls
             expressionGridColumn.Caption = Properties.Resources.ibaAnalyzerExpression;
             testValueGridColumn.Caption = Properties.Resources.TestValue;
             nameGridColumn.Caption = Properties.Resources.Name;
-            _viewExpr.ShownEditor += ShowToolTipOnFocus;
-            _viewExpr.HiddenEditor += OnLostFocusHideTooltip;
             keyTextBox.GotFocus += ShowToolTipOnFocus;
             keyTextBox.LostFocus += OnLostFocusHideTooltip;
+            signalRefTextBox.GotFocus += ShowToolTipOnFocus;
+            signalRefTextBox.LostFocus += OnLostFocusHideTooltip;
+            tabConnection.Click += OnLostFocusHideTooltip;
+
 
             _toolTip.SetToolTip(importParamButton, iba.Properties.Resources.ImportParametersFromCSV);
             _toolTip.SetToolTip(exportParamButton, iba.Properties.Resources.ExportParametersToCSV);
@@ -237,6 +240,7 @@ namespace iba.Controls
             m_pdoFileTextBox.Text = _data.AnalysisFile;
             m_datFileTextBox.Text = _data.TestDatFile;
             keyTextBox.Text = _data.key;
+            signalRefTextBox.Text = _data.signalReference;
             _expressionTableData.Clear();
             foreach (var rec in _data.Records)
                 _expressionTableData.Add((KafkaWriterTaskData.KafkaRecord)rec.Clone());
@@ -385,6 +389,7 @@ namespace iba.Controls
             _data.AnalysisFile = m_pdoFileTextBox.Text;
             _data.TestDatFile = m_datFileTextBox.Text;
             _data.key = keyTextBox.Text;
+            _data.signalReference = signalRefTextBox.Text;
 
             _data.MonitorData.MonitorMemoryUsage = m_cbMemory.Checked;
             _data.MonitorData.MonitorTime = m_cbTime.Checked;
@@ -411,21 +416,33 @@ namespace iba.Controls
         }
         public void ShowToolTipOnFocus(object sender, EventArgs e)
         {
-            if (_viewExpr.FocusedColumn == nameGridColumn && _viewExpr.ActiveEditor != null)
+            if (keyTextBox.Focused)
             {
-                var pos = _viewExpr.ActiveEditor.Location;
-                pos.Y += keyTextBox.Height; // keyTextBox.Height ~= grid row height; we want to show tooltip a bit lower
-                placeholdersToolTip.Show(Properties.Resources.KafkaPlaceholdersHint, exprGrid, pos);
+                placeholdersKeyToolTip.Show(Properties.Resources.KafkaPlaceholdersKeyHint, tabConnection, metadataComboBox.Location);
             }
-            else if (keyTextBox.Focused)
+            else if (signalRefTextBox.Focused)
             {
-                placeholdersToolTip.Show(Properties.Resources.KafkaPlaceholdersHint, tabConnection, metadataComboBox.Location);
+                placeholdersToolTip.Show(Properties.Resources.KafkaPlaceholdersSignalHint, tabConnection, dataFormatComboBox.Location);
             }
         }
+
 
         public void OnLostFocusHideTooltip(object sender, EventArgs e)
         {
             placeholdersToolTip.Hide(this);
+            placeholdersKeyToolTip.Hide(this);
+        }
+
+        private void CellExpressionChanged(object sender, CellValueChangedEventArgs e)
+        {
+            if (e.Column != expressionGridColumn || e.Value is null) return;
+            string expression = e.Value.ToString();
+
+            if (expression.StartsWith("[") && expression.EndsWith("]"))
+                expression = expression.Substring(1, expression.Length - 2);
+
+            if (_viewExpr.GetRowCellValue(e.RowHandle, nameGridColumn).ToString() == "" && expression != "")
+                _viewExpr.SetRowCellValue(e.RowHandle, nameGridColumn, expression);
         }
 
         private void buttonExpressionAdd_Click(object sender, System.EventArgs e)

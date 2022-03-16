@@ -43,6 +43,7 @@ namespace iba.Data
         public string schemaUsername { get; set; }
         public string schemaPass { get; set; }
         public bool schemaEnableSSLVerification { get; set; }
+        public string signalReference { get; set; }
 
         public enum DigitalFormat
         {
@@ -120,7 +121,10 @@ namespace iba.Data
                 Text = 1,
                 Digital = 2
             }
-            
+
+            [XmlIgnore]
+            public string TestValue { get; set; }
+            public object Value { get; set; }
             public ExpressionType DataType { get; set; }
             public string DataTypeAsString
             {
@@ -136,18 +140,10 @@ namespace iba.Data
                 }
             }
             public string Expression { get; set; }
-            public object Value { get; set; }
-
-            [XmlIgnore]
-            public string TestValue { get; set; }
             public string Name { get; set; }
             public string Comment1 { get; set; }
             public string Comment2 { get; set; }
             public string Unit { get; set; }
-
-            // only valid if Expression is a simple reference to signal
-            public string Id => string.IsNullOrEmpty(Name) ? "" : Expression; 
-
 
             public KafkaRecord()
             {
@@ -238,6 +234,7 @@ namespace iba.Data
             schemaSSLCAThumbprint = "";
             schemaUsername = "";
             schemaPass = "";
+            signalReference = "$signalname";
             enableSchema = false;
         }
 
@@ -275,6 +272,7 @@ namespace iba.Data
             d.schemaSSLCAThumbprint = schemaSSLCAThumbprint;
             d.schemaUsername = schemaUsername;
             d.schemaPass = schemaPass;
+            d.signalReference = signalReference;
             d.schemaEnableSSLVerification = schemaEnableSSLVerification;
             d.enableSchema = enableSchema;
             return d;
@@ -314,6 +312,7 @@ namespace iba.Data
                 schemaSSLCAThumbprint == other.schemaSSLCAThumbprint &&
                 schemaUsername == other.schemaUsername &&
                 schemaPass == other.schemaPass &&
+                signalReference == other.signalReference &&
                 schemaEnableSSLVerification == other.schemaEnableSSLVerification &&
                 enableSchema == other.enableSchema;
         }
