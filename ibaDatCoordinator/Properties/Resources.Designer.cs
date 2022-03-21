@@ -19,7 +19,7 @@ namespace iba.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -697,6 +697,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The configured Data Transfer Server certificate is not trusted.
+        /// </summary>
+        internal static string DataTransferServerErrorCertNotTrusted {
+            get {
+                return ResourceManager.GetString("DataTransferServerErrorCertNotTrusted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server not started.
         /// </summary>
         internal static string DatatransferServerNotStarted {
@@ -720,6 +729,15 @@ namespace iba.Properties {
         internal static string DataTransferTaskButton {
             get {
                 return ResourceManager.GetString("DataTransferTaskButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The configured Data Transfer Task certificate is not trusted.
+        /// </summary>
+        internal static string DataTransferTaskErrorCertNotTrusted {
+            get {
+                return ResourceManager.GetString("DataTransferTaskErrorCertNotTrusted", resourceCulture);
             }
         }
         

@@ -175,10 +175,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbRemotePath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 3</value>
+    <value>108, 3</value>
   </data>
   <data name="m_tbRemotePath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>657, 20</value>
+    <value>656, 20</value>
   </data>
   <data name="m_tbRemotePath.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -361,7 +361,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gbOption.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_gbTarget.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -808,7 +808,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gbTarget.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_gbSource.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -934,7 +934,28 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gbSource.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
+  </data>
+  <data name="ServerCertPlaceholder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 213</value>
+  </data>
+  <data name="ServerCertPlaceholder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>382, 21</value>
+  </data>
+  <data name="ServerCertPlaceholder.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Name" xml:space="preserve">
+    <value>ServerCertPlaceholder</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

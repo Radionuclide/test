@@ -43,10 +43,9 @@
             this.panelFooter = new System.Windows.Forms.Panel();
             this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
             this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.ServerCertPlaceholder = new System.Windows.Forms.ComboBox();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
-            this.btnCertificatePath = new System.Windows.Forms.Button();
-            this.tbCertificatePath = new System.Windows.Forms.TextBox();
-            this.lblCertificatePath = new System.Windows.Forms.Label();
+            this.lblCertificate = new System.Windows.Forms.Label();
             this.gbGeneral = new System.Windows.Forms.GroupBox();
             this.gbDirectory = new System.Windows.Forms.GroupBox();
             this.btnRootPath = new System.Windows.Forms.Button();
@@ -179,31 +178,24 @@
             this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
             // 
+            // ServerCertPlaceholder
+            // 
+            this.ServerCertPlaceholder.FormattingEnabled = true;
+            resources.ApplyResources(this.ServerCertPlaceholder, "ServerCertPlaceholder");
+            this.ServerCertPlaceholder.Name = "ServerCertPlaceholder";
+            // 
             // gbSecurity
             // 
             resources.ApplyResources(this.gbSecurity, "gbSecurity");
-            this.gbSecurity.Controls.Add(this.btnCertificatePath);
-            this.gbSecurity.Controls.Add(this.tbCertificatePath);
-            this.gbSecurity.Controls.Add(this.lblCertificatePath);
+            this.gbSecurity.Controls.Add(this.ServerCertPlaceholder);
+            this.gbSecurity.Controls.Add(this.lblCertificate);
             this.gbSecurity.Name = "gbSecurity";
             this.gbSecurity.TabStop = false;
             // 
-            // btnCertificatePath
+            // lblCertificate
             // 
-            resources.ApplyResources(this.btnCertificatePath, "btnCertificatePath");
-            this.btnCertificatePath.Name = "btnCertificatePath";
-            this.btnCertificatePath.UseVisualStyleBackColor = true;
-            this.btnCertificatePath.Click += new System.EventHandler(this.btnRootPathOrBtnCertificatePath_Click);
-            // 
-            // tbCertificatePath
-            // 
-            resources.ApplyResources(this.tbCertificatePath, "tbCertificatePath");
-            this.tbCertificatePath.Name = "tbCertificatePath";
-            // 
-            // lblCertificatePath
-            // 
-            resources.ApplyResources(this.lblCertificatePath, "lblCertificatePath");
-            this.lblCertificatePath.Name = "lblCertificatePath";
+            resources.ApplyResources(this.lblCertificate, "lblCertificate");
+            this.lblCertificate.Name = "lblCertificate";
             // 
             // gbGeneral
             // 
@@ -304,10 +296,9 @@
         private System.Windows.Forms.GroupBox gbDirectory;
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.GroupBox gbSecurity;
-        private System.Windows.Forms.TextBox tbCertificatePath;
-        private System.Windows.Forms.Label lblCertificatePath;
+        private System.Windows.Forms.Label lblCertificate;
         private System.Windows.Forms.Button btnRootPath;
         private System.Windows.Forms.TextBox tbRootPath;
-        private System.Windows.Forms.Button btnCertificatePath;
+        private System.Windows.Forms.ComboBox ServerCertPlaceholder;
     }
 }

@@ -2153,4 +2153,10 @@ $unit: Signal unit
 $comment1: Signal comment 1
 $comment2: Signal comment 2</value>
   </data>
+  <data name="DataTransferServerErrorCertNotTrusted" xml:space="preserve">
+    <value>The configured Data Transfer Server certificate is not trusted</value>
+  </data>
+  <data name="DataTransferTaskErrorCertNotTrusted" xml:space="preserve">
+    <value>The configured Data Transfer Task certificate is not trusted</value>
+  </data>
 </root>

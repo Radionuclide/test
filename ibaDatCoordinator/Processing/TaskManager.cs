@@ -1866,9 +1866,16 @@ namespace iba.Processing
                 case "GetCertificates":
                     return m_certManagerJsonAdapter.GetCertificates();
                 case "GetCertificateWithoutPK":
-                    var r = CertificateManager.GetCertificate(args as string);
-                    byte[] certBytes = r.Certificate.Export(X509ContentType.Cert);
-                    return certBytes;
+                    var cCertificate = CertificateManager.GetCertificate(args as string);
+
+                    if (cCertificate != null)
+                    {
+                        byte[] certBytes = cCertificate.Certificate.Export(X509ContentType.Cert);
+                        Tuple<byte[], bool> tuple = new(certBytes, cCertificate.Trusted);
+                        return tuple;
+                    }
+
+                    return null;
             }
             return "Invalid command parameter";
         }

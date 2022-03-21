@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using DevExpress.XtraSplashScreen;
+using iba.CertificateStore;
 using iba.Utility;
 
 namespace iba.Data
 {
     [Serializable]
-    public class DataTransferTaskData : TaskData
+    public class DataTransferTaskData : TaskData, ICertifiable
     {
         private string m_clientId;
         public string ClientId
@@ -113,7 +115,7 @@ namespace iba.Data
         public int CbBandwidth { get; set; }
         public decimal NumBandwidth { get; set; }
         public bool ShouldCreateZipArchive { get; set; }
-
+        public string ServerCertificateThumbprint { get; set; }
 
         public DataTransferTaskData()
             : this(null)
@@ -137,6 +139,7 @@ namespace iba.Data
             cd.CbBandwidth = CbBandwidth;
             cd.NumBandwidth = NumBandwidth;
             cd.ShouldCreateZipArchive = ShouldCreateZipArchive;
+            cd.ServerCertificateThumbprint = ServerCertificateThumbprint;
             return cd;
         }
 
@@ -159,8 +162,24 @@ namespace iba.Data
                 other.m_ChkLimitBandwidth == m_ChkLimitBandwidth &&
                 other.CbBandwidth == CbBandwidth &&
                 other.NumBandwidth == NumBandwidth &&
-                other.ShouldCreateZipArchive == ShouldCreateZipArchive;
+                other.ShouldCreateZipArchive == ShouldCreateZipArchive &&
+                other.ServerCertificateThumbprint == ServerCertificateThumbprint;
+        }
+        public static string certificateUserName = "Transfer Data";
+
+        public IEnumerable<ICertifiable> GetCertifiableChildItems()
+        {
+            yield break;
         }
 
+        public IEnumerable<ICertificateInfo> GetCertificateInfo()
+        {
+            if (ServerCertificateThumbprint != null && ServerCertificateThumbprint != "")
+                yield return new CertificateInfoForwarder(
+                    () => ServerCertificateThumbprint,
+                    value => ServerCertificateThumbprint = value,
+                    CertificateRequirement.Valid | CertificateRequirement.Trusted,
+                    certificateUserName);
+        }
     }
 }

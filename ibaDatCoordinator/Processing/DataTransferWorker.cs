@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using DevExpress.XtraWaitForm;
 using Grpc.Core;
-using Grpc.Core.Interceptors;
 using iba.Data;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
 using iba.Properties;
-using iba.Remoting;
+using iba.Utility;
 using Messages.V1;
 
 namespace iba.Processing
@@ -63,15 +60,8 @@ namespace iba.Processing
         {
             try
             {
-                var deadline = DateTime.UtcNow.AddSeconds(10);
-
-                var isRunning = await IsReadyAsync(deadline);
-
-                if (isRunning)
-                {
-                    await StopServer();
-                }
-
+                await StopServer();
+                
                 m_server = CreateNewServer();
                 m_server.Start();
                 
@@ -89,18 +79,11 @@ namespace iba.Processing
 
         public async Task StopServer()
         {
+            if (m_server == null) return;
+
             try
             {
-                if (m_server == null) return;
-
-                var deadline = DateTime.UtcNow.AddSeconds(10);
-
-                var isRunning = await IsReadyAsync(deadline);
-
-                if (isRunning)
-                {
-                    await m_server.ShutdownAsync();
-                }
+                await m_server.ShutdownAsync();
 
                 SetStatus(false);
 
@@ -114,37 +97,37 @@ namespace iba.Processing
             }
         }
 
-        public async Task<bool> IsReadyAsync(DateTime? deadline)
-        {
-            var client = new GrpcClient(Dns.GetHostName(), _data.Port.ToString());
-
-            try
-            {
-                await client.TestConnectAsync(new Empty(), deadline: deadline);
-            }
-            catch (TaskCanceledException)
-            {
-                return false;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            var isReadyAsync = client.channel.State == ChannelState.Ready;
-
-            await client.channel.ShutdownAsync();
-            
-            return isReadyAsync;
-        }
-
         private Server CreateNewServer()
         {
-            return new Server
-            {
-                Services = { DataTransfer.BindService(TransferImpl) },
-                Ports = { new ServerPort(HOST, _data.Port, ServerCredentials.Insecure) },
-            };
+            var server = new Server();
+
+            var sslCredentials = CreateChannelCredentials();
+
+            server.Services.Add(DataTransfer.BindService(TransferImpl));
+            server.Ports.Add(HOST, _data.Port, sslCredentials);
+
+            return server;
+        }
+
+        private ServerCredentials CreateChannelCredentials()
+        {
+            var serverCert = TaskManager.Manager.CertificateManager.GetCertificate(DataTransferData.ServerCertificateThumbprint);
+
+            if (serverCert == null)
+                return ServerCredentials.Insecure;
+            if (!serverCert.Trusted)
+                throw new InvalidOperationException(Resources.DataTransferServerErrorCertNotTrusted);
+
+            var certificate = CertificateExtractor.GetCertificate(serverCert.Certificate);
+
+            var exportableCert = new X509Certificate2(serverCert.Certificate.Export(X509ContentType.Pkcs12, ""), "",
+                X509KeyStorageFlags.Exportable | X509KeyStorageFlags.EphemeralKeySet);
+
+            var privateKey = CertificateExtractor.GetPrivateKey(exportableCert);
+
+            var keypair = new KeyCertificatePair(certificate, privateKey);
+
+            return new SslServerCredentials(new List<KeyCertificatePair>() { keypair });
         }
 
         public async Task Init()
@@ -155,6 +138,7 @@ namespace iba.Processing
             }
             else
             {
+                Status = Resources.DatatransferServerNotStarted;
                 OnUpdateServerStatus?.Invoke(Status);
             }
         }

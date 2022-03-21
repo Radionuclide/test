@@ -58,6 +58,7 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
+            this.ServerCertPlaceholder = new System.Windows.Forms.ComboBox();
             this.m_gbOption.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -265,10 +266,17 @@ namespace iba.Controls
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
+            // ServerCertPlaceholder
+            // 
+            this.ServerCertPlaceholder.FormattingEnabled = true;
+            resources.ApplyResources(this.ServerCertPlaceholder, "ServerCertPlaceholder");
+            this.ServerCertPlaceholder.Name = "ServerCertPlaceholder";
+            // 
             // DataTransferTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ServerCertPlaceholder);
             this.Controls.Add(this.m_gbOption);
             this.Controls.Add(this.m_gbTarget);
             this.Controls.Add(this.m_gbSource);
@@ -332,5 +340,6 @@ namespace iba.Controls
         private System.Windows.Forms.CheckBox m_chkLimitBandwidth;
         private System.Windows.Forms.NumericUpDown m_numBandwidth;
         private System.Windows.Forms.CheckBox m_CreateZipArchive;
+        private System.Windows.Forms.ComboBox ServerCertPlaceholder;
     }
 }

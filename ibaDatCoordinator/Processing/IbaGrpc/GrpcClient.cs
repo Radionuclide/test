@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Google.Protobuf;
 using Grpc.Core;
 using iba.Data;
@@ -15,8 +9,10 @@ using Messages.V1;
 using Google.Protobuf.WellKnownTypes;
 using iba.Logging;
 using iba.Utility;
-using Empty = Messages.V1.Empty;
 using Status = Messages.V1.Status;
+using iba.Properties;
+using System.Security.Cryptography.X509Certificates;
+using iba.CertificateStore;
 
 namespace iba.Processing.IbaGrpc
 {
@@ -28,22 +24,42 @@ namespace iba.Processing.IbaGrpc
 
         public GrpcClient(DataTransferTaskData data)
         {
+            var credentials = CreateSslCredentials(data.ServerCertificateThumbprint);
+
             m_data = data;
-            channel = new Channel($"{m_data.Server}:{m_data.Port}", ChannelCredentials.Insecure);
+            channel = new Channel($"{m_data.Server}:{m_data.Port}", credentials);
             client = new DataTransfer.DataTransferClient(channel);
         }
 
-        public GrpcClient(string server, string port)
+        public ChannelCredentials CreateSslCredentials(string thumbPrint)
         {
-            channel = new Channel($"{server}:{port}", ChannelCredentials.Insecure);
-            client = new DataTransfer.DataTransferClient(channel);
+            var certBytes = TaskManager.Manager.HandleCertificate("GetCertificateWithoutPK", thumbPrint);
+
+            if (certBytes == null)
+            {
+                return ChannelCredentials.Insecure;
+            }
+
+            var result = (Tuple<byte[], bool>)certBytes;
+
+            CCertificate serverCert = new(cert: new X509Certificate2(result.Item1), bTrusted: result.Item2);
+
+            if (serverCert == null)
+                return ChannelCredentials.Insecure;
+            if (!serverCert.Trusted)
+                throw new InvalidOperationException(Resources.DataTransferTaskErrorCertNotTrusted);
+
+            var credentials = new SslCredentials(CertificateExtractor.GetCertificate(serverCert.Certificate));
+
+            return credentials;
         }
 
         public async Task<ConnectionResponse> ConnectAsync(ConnectionRequest request, bool testConnection = false)
         {
             try
             {
-                var deadline = DateTime.UtcNow.AddSeconds(30);
+                var delay = testConnection ? 10 : 20;
+                var deadline = DateTime.UtcNow.AddSeconds(delay);
 
                 var metadata = new Metadata();
 
@@ -71,15 +87,6 @@ namespace iba.Processing.IbaGrpc
                     Message = "An error occurred when establishing the connection"
                 };
             }
-        }
-
-        public async Task<Empty> TestConnectAsync(Empty empty, DateTime? deadline)
-        {
-            var connectionCall = client.TestConnectAsync(empty, deadline: deadline);
-
-            var connectionResponse = await connectionCall.ResponseAsync;
-
-            return connectionResponse;
         }
 
         public async Task<TransferResponse> TransferFileAsync(string file, TaskData task,

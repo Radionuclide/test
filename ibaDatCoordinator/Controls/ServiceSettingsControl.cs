@@ -570,10 +570,15 @@ namespace iba.Controls
 
         public IEnumerable<ICertifiable> GetCertifiableChildItems()
         {
-            var tasks = TaskManager.Manager.Configurations.SelectMany(c => c.Tasks).OfType<ICertifiable>();
-            var opcData = TaskManager.Manager.OpcUaData;
-            if (opcData != null)
-                tasks = tasks.Concat(new[] { opcData });
+            var tasks = TaskManager.Manager.Configurations.SelectMany(c => c.Tasks).OfType<ICertifiable>().ToList();
+
+            List<ICertifiable> certifiables = new()
+            {
+                TaskManager.Manager.OpcUaData,
+                TaskManager.Manager.DataTransferData
+            };
+
+            certifiables.Where(item => item != null).ToList().ForEach(certifiable => tasks.Add(certifiable));
 
             return tasks;
         }

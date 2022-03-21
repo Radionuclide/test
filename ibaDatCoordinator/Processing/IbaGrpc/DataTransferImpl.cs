@@ -96,10 +96,5 @@ namespace iba.Processing.IbaGrpc
                 Status = Status.Ok
             };
         }
-
-        public override Task<Empty> TestConnect(Empty request, ServerCallContext context)
-        {
-            return Task.FromResult(new Empty());
-        }
     }
 }

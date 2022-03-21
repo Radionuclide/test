@@ -1,32 +1,22 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevExpress.XtraPrinting.Native;
-using iba.Annotations;
+using iba.CertificateStore;
+using iba.CertificateStore.Forms;
+using iba.CertificateStore.Proxy;
 using iba.Data;
 using iba.Logging;
 using iba.Processing;
 using iba.Processing.IbaGrpc;
 using iba.Properties;
-using Messages.V1;
 
 
 namespace iba.Controls
 {
-    public partial class DataTransferControl : UserControl, IPropertyPane
+    public partial class DataTransferControl : UserControl, IPropertyPane, ICertificatesControlHost
     {
         private DataTransferData _data;
         private BindingList<DiagnosticsData> _diagnosticsDataList;
@@ -41,6 +31,7 @@ namespace iba.Controls
             TaskManager.Manager.DataTransferWorkerSetUpdateServerStatusCallback(UpdateServerStatus);
             ConfigureDiagnosticGrid();
             GetAllClients();
+            serverCertCb = CertificatesComboBox.ReplaceCombobox(ServerCertPlaceholder, useRegistry: false);
         }
 
 
@@ -54,17 +45,24 @@ namespace iba.Controls
                 if (_data?.Port == null || _data?.RootPath == null)
                 {
                     SetDefaultSettings();
-                    return;
+                }
+                else
+                {
+                    m_cbEnabled.Checked = _data.IsServerEnabled;
+                    m_numPort.Value = _data.Port;
+
+                    tbRootPath.Text = _data.RootPath;
                 }
 
                 tbStatus.Text = await Task.Run((Func<String>)TaskManager.Manager.DataTransferWorkerGetBriefStatus);
 
-                m_cbEnabled.Checked = _data.IsServerEnabled;
-                m_numPort.Value = _data.Port;
+                serverCertParams = new CertificateInfo
+                {
+                    Thumbprint = _data.ServerCertificateThumbprint
+                };
 
-                tbRootPath.Text = _data.RootPath;
-                tbCertificatePath.Text = _data.CertificatePath;
-                m_numPort.Text = _data.Port.ToString();
+                serverCertCb.UnsetEnvironment();
+                serverCertCb.SetEnvironment(this, serverCertParams);
             }
             catch (Exception e)
             {
@@ -79,7 +77,7 @@ namespace iba.Controls
                 _data.IsServerEnabled = m_cbEnabled.Checked;
                 _data.Port = (int)m_numPort.Value;
                 _data.RootPath = tbRootPath.Text;
-                _data.CertificatePath = tbCertificatePath.Text;
+                _data.ServerCertificateThumbprint = serverCertParams.Thumbprint;
                 TaskManager.Manager.DataTransferData = _data.Clone() as DataTransferData;
             }
             catch (Exception e)
@@ -184,20 +182,12 @@ namespace iba.Controls
         private void btnRootPathOrBtnCertificatePath_Click(object sender, EventArgs e)
         {
             folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop;
-            var isRootPath = ((Button)sender).Text.Equals("Select root path");
+            folderBrowserDialog.Description = "Select root directory";
 
-            folderBrowserDialog.Description = isRootPath ? "Select root directory" : "Select path to certificate";
+            if (folderBrowserDialog.ShowDialog() != DialogResult.OK) 
+                return;
 
-            if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
-
-            if (isRootPath)
-            {
-                _data.RootPath = tbRootPath.Text = folderBrowserDialog.SelectedPath;
-            }
-            else
-            {
-                _data.CertificatePath = tbCertificatePath.Text = folderBrowserDialog.SelectedPath;
-            }
+            _data.RootPath = tbRootPath.Text = folderBrowserDialog.SelectedPath;
         }
 
         private async void  buttonConfigurationApply_Click(object sender, EventArgs e)
@@ -227,9 +217,9 @@ namespace iba.Controls
                 return false;
             }
 
-            if (!DirectoryManager.IsValidPath(tbCertificatePath.Text))
+            if (m_numPort.Value == 0)
             {
-                MessageBox.Show($"{lblCertificatePath.Text} not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Port number 0 is not allowed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -248,7 +238,6 @@ namespace iba.Controls
             m_cbEnabled.Checked = false;
             m_numPort.Value = _defaultPort;
             tbRootPath.Text = _defaultPath;
-            tbCertificatePath.Text = _defaultCertPath;
         }
 
         private void GetAllClients()
@@ -257,5 +246,48 @@ namespace iba.Controls
             
             clients.ForEach(item => _diagnosticsDataList.Add(item));
         }
+
+        #region ICertificatesControlHost
+
+        CertificatesComboBox serverCertCb;
+        private CertificateInfo serverCertParams;
+
+        public void OnSaveDataSource()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICertifiable GetCertifiableRootNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ManageCertificates()
+        {
+            (_manager as MainForm)?.MoveToSettigsTab();
+        }
+
+        public void JumpToCertificateInfoNode(string displayName)
+        {
+            throw new NotImplementedException();
+        }
+
+        class CertificateInfo : ICertificateInfo
+        {
+            public string Thumbprint { get; set; }
+            public CertificateRequirement CertificateRequirements { get; }
+            public string DisplayName => "Certificate for Data Transfer Server";
+        }
+
+        public bool IsLocalHost { get; }
+        public string ServerAddress { get; }
+        public ICertificateManagerProxy CertificateManagerProxy { get; } = new CertificateManagerProxyJsonAdapter(new AppCertificateManagerJsonProxy());
+        public bool IsCertificatesReadonly => false;
+        public bool IsReadOnly { get; }
+        public string UsagePart => "EX";
+        public IWin32Window Instance => this;
+        public ContextMenuStrip PopupMenu => new ContextMenuStrip();
+
+        #endregion
     }
 }

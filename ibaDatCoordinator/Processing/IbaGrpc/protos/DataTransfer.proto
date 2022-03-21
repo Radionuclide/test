@@ -9,7 +9,6 @@ package Messages.V1;
 service DataTransfer{
 	rpc TransferFile (stream TransferRequest) returns (TransferResponse);
 	rpc Connect (ConnectionRequest) returns (ConnectionResponse);
-	rpc TestConnect(Empty) returns (Empty);
 }
 
 message Configuration{

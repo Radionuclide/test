@@ -285,6 +285,13 @@ namespace iba
                 m_navBar.SelectedPane = m_opcUaPane;
                 return;
             }
+
+            if (name == DataTransferData.certificateUserName)
+            {
+                m_navBar.SelectedPane = m_dataTransferPane;
+                return;
+            }
+
             foreach (TreeNode topLevelNode in m_configTreeView.Nodes)
                 foreach (TreeNode jobLevelNode in topLevelNode.Nodes)
                     foreach (TreeNode taskLevelNode in jobLevelNode.Nodes)

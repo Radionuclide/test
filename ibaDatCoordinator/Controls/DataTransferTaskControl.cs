@@ -10,6 +10,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using iba.CertificateStore;
+using iba.CertificateStore.Forms;
+using iba.CertificateStore.Proxy;
 using iba.Data;
 using iba.Dialogs;
 using iba.Processing;
@@ -19,12 +22,13 @@ using Messages.V1;
 
 namespace iba.Controls
 {
-    public partial class DataTransferTaskControl : UserControl, IPropertyPane
+    public partial class DataTransferTaskControl : UserControl, IPropertyPane, ICertificatesControlHost
     {
         public DataTransferTaskControl()
         {
             InitializeComponent();
             m_numBandwidth.Maximum = decimal.MaxValue;
+            serverCertCb = CertificatesComboBox.ReplaceCombobox(ServerCertPlaceholder, useRegistry: false);
         }
 
         public void LeaveCleanup()
@@ -58,6 +62,14 @@ namespace iba.Controls
 
             m_rbDatFile.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.DATFILE;
             m_rbPrevOutput.Checked = m_data.WhatFileTransfer == DataTransferTaskData.WhatFileTransferEnum.PREVOUTPUT;
+
+            serverCertParams = new CertificateInfo
+            {
+                Thumbprint = m_data.ServerCertificateThumbprint
+            };
+
+            serverCertCb.UnsetEnvironment();
+            serverCertCb.SetEnvironment(this, serverCertParams);
         }
 
         public void SaveData()
@@ -80,6 +92,7 @@ namespace iba.Controls
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
+            m_data.ServerCertificateThumbprint = serverCertParams.Thumbprint;
         }
 
         private int CalculateMaxBandwidth()
@@ -181,5 +194,47 @@ namespace iba.Controls
                 m_numBandwidth.Minimum = comboBox.SelectedItem.ToString() == "kbps" ? 64 : 1;
             }
         }
+
+        #region ICertificatesControlHost
+
+        CertificatesComboBox serverCertCb;
+        private CertificateInfo serverCertParams;
+
+        public void OnSaveDataSource()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICertifiable GetCertifiableRootNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ManageCertificates()
+        {
+            (m_manager as MainForm)?.MoveToSettigsTab();
+        }
+
+        public void JumpToCertificateInfoNode(string displayName)
+        {
+            throw new NotImplementedException();
+        }
+
+        class CertificateInfo : ICertificateInfo
+        {
+            public string Thumbprint { get; set; }
+            public CertificateRequirement CertificateRequirements { get; }
+            public string DisplayName => "Certificate for Data Transfer Task";
+        }
+
+        public bool IsLocalHost { get; }
+        public string ServerAddress { get; }
+        public ICertificateManagerProxy CertificateManagerProxy { get; } = new CertificateManagerProxyJsonAdapter(new AppCertificateManagerJsonProxy());
+        public bool IsCertificatesReadonly => false;
+        public bool IsReadOnly { get; }
+        public string UsagePart => "EX";
+        public IWin32Window Instance => this;
+        public ContextMenuStrip PopupMenu => new ContextMenuStrip();
+        #endregion
     }
 }
