@@ -38,9 +38,9 @@ namespace AM_OSPC_plugin
 
 		private DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit m_channelEditor;
 		private IAnalyzerManagerUpdateSource m_analyzer;
-		public void SetGridAnalyzer(RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		public void SetGridAnalyzer(object e, IAnalyzerManagerUpdateSource analyzer)
 		{
-			m_channelEditor = e;
+			m_channelEditor = e as DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit;
 			m_analyzer = analyzer;
 		}
         public IPluginTaskData CreateTask(string taskname, IJobData parentjob)

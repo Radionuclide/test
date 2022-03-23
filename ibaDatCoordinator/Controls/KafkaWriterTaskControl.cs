@@ -20,6 +20,7 @@ using System.Drawing;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraGrid.Columns;
+using DevExpress.Data.Extensions;
 
 namespace iba.Controls
 {

@@ -110,7 +110,7 @@ namespace iba.Controls
 
             m_ctrlEvent.EventTrigger = triggerControl;
             m_ctrlServer.ServerSelectionChanged += OnServerSelectionChanged;
-            m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), null, false);
+            m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), false);
             m_ctrlEvent.EventWizard = new HDEventWizard(m_analyzerManager, GetPriorities());
 
             WindowsAPI.SHAutoComplete(m_tbPDO.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |
@@ -311,7 +311,10 @@ namespace iba.Controls
             if (m_data.FullEventConfig?.Count > 0 && MessageBox.Show(this, iba.Properties.Resources.ReloadHdEvents,
                             iba.Properties.Resources.ReloadHdEventsCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                             MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-                m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), m_data.FullEventConfig.Values, m_ctrlEvent.ReadOnly);
+            {
+                m_ctrlEvent.InitializeEventConfig(m_ctrlServer.Reader, new List<string>(), m_ctrlEvent.ReadOnly);
+                m_ctrlEvent.LoadDataSource(m_data.FullEventConfig.Values);
+            }
             else
                 m_ctrlEvent.StoreFilter = null;      // Set the storeFilter to null as all dataStores should be shown. This will also request edit locks on all hd event stores.
 
@@ -343,7 +346,7 @@ namespace iba.Controls
 
         private void LoadLocalData(HDCreateEventTaskData data)
         {
-            List<LocalEventData> treeData = new List<LocalEventData>();
+            List<ControlEventTreeData> treeDatas = new List<ControlEventTreeData>();
             foreach (HDCreateEventTaskData.EventData signal in data.EventSettings)
             {
                 LocalEventData localEvent = new LocalEventData(signal.ID, signal.StoreName);
@@ -352,9 +355,12 @@ namespace iba.Controls
                 localEvent.TextChannels = signal.TextFields;
                 localEvent.Tag = signal;
 
-                treeData.Add(localEvent);
+                ControlEventTreeData treeData = new ControlEventTreeData(new EventWriterSignal(signal.ID, new HdSegmentText(signal.Name), "", ""));
+                treeData.LocalEventData = localEvent;
+
+                treeDatas.Add(treeData);
             }
-            m_ctrlEvent.InitializeLocalEvents(treeData);
+            m_ctrlEvent.InitializeLocalEvents(treeDatas);
         }
 
         public void LeaveCleanup()

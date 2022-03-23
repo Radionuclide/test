@@ -441,10 +441,9 @@ Section -Common
 
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaLogger.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaLogger.dll"
   File "..\Dependencies\Eyefinder.dll"
-  File "..\Dependencies\DotNetMagic2005.DLL"
-  File "..\Dependencies\DotNetMagic.DLL"
+  File "..\ibaDatCoordinator\bin\Release\DotNetMagic2005.DLL"
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr100.dll"
@@ -453,12 +452,7 @@ Section -Common
   File "..\Dependencies\ibaFilesV7LiteDotNet.dll"
   File "..\Dependencies\GenuineChannels.dll"
   File "..\Dependencies\Zyan.SafeDeserializationHelpers.dll"
-  File "..\Dependencies\DevExpress.XtraEditors.v16.1.dll"
-  File "..\Dependencies\DevExpress.XtraGrid.v16.1.dll"
-  File "..\Dependencies\DevExpress.Data.v16.1.dll"
-  File "..\Dependencies\DevExpress.Utils.v16.1.dll"
-  File "..\Dependencies\DevExpress.Sparkline.v16.1.Core.dll"
-  File "..\Dependencies\DevExpress.Printing.v16.1.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\DevExpress.*.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaSnmpLib.dll"
   ;Upload Task
   File "..\ibaDatCoordinator\bin\Release\WinSCPnet.dll"
@@ -508,11 +502,11 @@ Section -Common
   File "..\Dependencies\Kafka\Confluent.Kafka.dll"
   File "..\Dependencies\Kafka\Confluent.SchemaRegistry.dll"
   ;Certificate Manager
-  File "..\Dependencies\CertificateManager\ibaCertificateStore.Core.dll"
-  File "..\Dependencies\CertificateManager\ibaCertificateStore.Forms.dll"
-  File "..\Dependencies\CertificateManager\ibaCertificateStore.Manager.dll"
-  File "..\Dependencies\CertificateManager\ibaCertificateStore.Proxy.dll"
-  File "..\Dependencies\CertificateManager\ibaPdaUtilities.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Forms.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Manager.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Proxy.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaPdaUtilities.dll"
 
   
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
@@ -965,7 +959,6 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Eyefinder.dll"
   Delete "$INSTDIR\DatCoUtil.dll"
   Delete "$INSTDIR\DatCoordinatorPlugins.dll"
-  Delete "$INSTDIR\DotNetMagic.dll"
   Delete "$INSTDIR\DotNetMagic2005.dll"
   Delete "$INSTDIR\ibaFilesV7LiteDotNet.dll"
   
@@ -1006,12 +999,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Newtonsoft.Json.dll"
   Delete "$INSTDIR\ibaDatCoordinatorOpcUaServerConfig.xml"
 
-  Delete "$INSTDIR\DevExpress.XtraEditors.v16.1.dll"
-  Delete "$INSTDIR\DevExpress.XtraGrid.v16.1.dll"
-  Delete "$INSTDIR\DevExpress.Data.v16.1.dll"
-  Delete "$INSTDIR\DevExpress.Utils.v16.1.dll"
-  Delete "$INSTDIR\DevExpress.Sparkline.v16.1.Core.dll"
-  Delete "$INSTDIR\DevExpress.Printing.v16.1.Core.dll"
+  Delete "$INSTDIR\DevExpress.*.dll"
 
   Delete "$INSTDIR\ICSharpCode.TextEditor.dll"
   Delete "$INSTDIR\ICSharpCode.SharpZipLib.dll"

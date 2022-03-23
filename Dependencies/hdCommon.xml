@@ -95,11 +95,6 @@
             <exception cref="T:System.ServiceModel.FaultException">
             </exception>
         </member>
-        <member name="F:iba.HD.Common.HdCertificate.Password">
-            <summary>
-            Encrypted password of the certificate
-            </summary>
-        </member>
         <member name="M:iba.HD.Common.IHdConfigContract.IsValidVersion(System.String)">
             <summary>
             Checks service version
@@ -510,6 +505,11 @@
               Looks up a localized string similar to Read diagnostic data.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderDynEvents">
+            <summary>
+              Looks up a localized string similar to Read dynamic event based store data.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEvent">
             <summary>
               Looks up a localized string similar to Read event based store data.
@@ -548,6 +548,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderLicenseRead">
             <summary>
               Looks up a localized string similar to Read license options.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderSupportFile">
+            <summary>
+              Looks up a localized string similar to Generate support file.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderTime">
@@ -598,6 +603,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterComputedValue">
             <summary>
               Looks up a localized string similar to Write computed value data to event based store.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterDynEvents">
+            <summary>
+              Looks up a localized string similar to Write dynamic event based store data.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEvent">
@@ -700,23 +710,6 @@
               Looks up a localized string similar to Maximal HD store acquisition signal count ({0}) exceeded by {1} signals.
             </summary>
         </member>
-        <member name="M:iba.HD.Common.IHdCertificateContract.ExportCertificate(System.String,iba.HD.Common.ExportFormat,System.String)">
-            <summary>
-            Export a certificate from the ibaHD certificate manager
-            </summary>
-            <param name="thumbprint">The thumbprint of the requested certificate </param>
-            <param name="format">The export format of the certificate </param>
-            <param name="password">The certificate password for protecting the private key </param>
-            <returns>A keyvaluepair containing the exported certificate encrypted and an error message in case the export has failed.</returns>
-        </member>
-        <member name="M:iba.HD.Common.IHdCertificateContract.ImportCertificate(System.String,System.String)">
-            <summary>
-            import a certificate into the ibaHD certificate manager
-            </summary>
-            <param name="certificate">The encrypted certificate. First converted to base64, then UncCrypt.EncryptStrong</param>
-            <param name="encryptedPassword">The certificate password for protecting the private key. This is encrypted using UncCrypt.EncrytStrong </param>
-            <returns>The thumbPrint of the imported certificate</returns>
-        </member>
         <member name="P:iba.HD.Common.HdLogEntry.Counter">
             <summary>
             Windows application event log stamp accuracy = 1 second. Counter is
@@ -728,11 +721,6 @@
             Number of signals in the store
             </summary>
         </member>
-        <member name="M:iba.HD.Common.HdReaderStore.SignalAt(System.Int32)">
-            <summary>
-            Gets signal at given index
-            </summary>
-        </member>
         <member name="M:iba.HD.Common.HdReaderStore.GetSignalRangeCount(System.Int32,System.Int32@)">
             <summary>
             Update the start and count to fall within the bounds of the signals list.
@@ -740,6 +728,36 @@
             <param name="start">The start from where the signals are requested</param>
             <param name="count">The number of requested signals. This will be updated if less than maxSignals are needed </param>
             <returns>a bool indicating if a valid range is requested</returns>
+        </member>
+        <member name="P:iba.HD.Common.DynEventReaderStore.SignalCount">
+            <summary>
+            A correct implementation where we iterate over the signals would be very slow.
+            A solution where a counter is used requires specific managing when requesting subsets of the signals, adding/removing,...
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.DynEventReaderStore.GetFolder(System.String,System.Collections.Generic.List{System.String},iba.HD.Common.DynEventFolder)">
+            <summary>
+            Request a folder based on the folderID
+            </summary>
+            <param name="folderID">The requested folderID</param>
+            <param name="path">A list that will contain the path of the found signal</param>
+            <param name="parent"></param>
+            <returns></returns>
+        </member>
+        <member name="M:iba.HD.Common.DynEventReaderStore.GetParentFolder(System.String)">
+            <summary>
+            Find the parent folder of the given event id
+            </summary>
+            <param name="eventId">The ID of the event</param>
+            <returns>The parent folder containing the requested event</returns>
+        </member>
+        <member name="M:iba.HD.Common.DynEventReaderStore.GetParentFolder(iba.HD.Common.DynEventFolder,System.String)">
+            <summary>
+            Recursive helper method for obtaining the parent folder of the given event
+            </summary>
+            <param name="root">The root folder from where the recursive search is started</param>
+            <param name="eventId">The ID of the searched event</param>
+            <returns>The parent folder of the found event, null if not found</returns>
         </member>
         <member name="M:iba.HD.Common.HdReaderSignal.AddInfo(System.String,System.String)">
             <summary>
@@ -751,12 +769,37 @@
             Gets infofield values with given key as integer. Might throw parsing exception.
             </summary>
         </member>
+        <member name="M:iba.HD.Common.HdReaderSignal.GetInfoLongs(System.String)">
+            <summary>
+            Gets infofield values with given key as long. Might throw parsing exception.
+            </summary>
+        </member>
         <member name="M:iba.HD.Common.HdReaderSignal.GetInfoFloats(System.String)">
             <summary>
             Gets infofield values with given key as float. Might throw parsing exception.
             </summary>
         </member>
         <member name="M:iba.HD.Common.HdReaderSignal.GetInfoStrings(System.String)">
+            <summary>
+            Gets infofield values with given key as string. Returs null if not available.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.DynEventReaderSignal.GetInfoInts(System.String)">
+            <summary>
+            Gets infofield values with given key as integer. Might throw parsing exception.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.DynEventReaderSignal.GetInfoLongs(System.String)">
+            <summary>
+            Gets infofield values with given key as integer. Might throw parsing exception.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.DynEventReaderSignal.GetInfoFloats(System.String)">
+            <summary>
+            Gets infofield values with given key as float. Might throw parsing exception.
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.DynEventReaderSignal.GetInfoStrings(System.String)">
             <summary>
             Gets infofield values with given key as string. Returs null if not available.
             </summary>
@@ -807,7 +850,7 @@
             When true the server will return the last valid value in case no data is found for the requested time range
             </summary>
         </member>
-        <member name="M:iba.HD.Common.EventStoreSubset.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:iba.HD.Common.EventStoreSubset.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{iba.HD.Common.InfoFieldFilter})">
             <summary>
             Creates a store subset
             </summary>
@@ -823,6 +866,28 @@
             <remarks>
             Deprecated since v1.4.1
             </remarks>
+        </member>
+        <member name="M:iba.HD.Common.IHdProgressCallback.ReportProgress(System.Int32,System.String)">
+            <summary>
+            Report progress of the support file generation
+            </summary>
+            <param name="percent">Current percentage</param>
+            <param name="msg">Current step</param>
+        </member>
+        <member name="M:iba.HD.Common.IHdProgressCallback.Completed(System.String,System.Boolean)">
+            <summary>
+            Function gets called when the operation has completed
+            </summary>
+            <param name="result">The result of the operation</param>
+            <param name="success">Operation was successful or not</param>
+        </member>
+        <member name="M:iba.HD.Common.IHdSupportFileContract.GenerateSupportFile(iba.HD.Common.HdSupportOptions)">
+            <summary>
+            Generate support file on the server side. 
+            The Completed callback will return the file name of the generated support file. 
+            It can be retrieved via the IHdTransferContract.
+            </summary>
+            <param name="options">Extra items to include in support file</param>
         </member>
         <member name="M:iba.HD.Common.FileDownloadRequest.#ctor(System.String)">
             <param name="path">
@@ -1459,6 +1524,11 @@
             Allows activation of previously set configuration only
             </summary>
         </member>
+        <member name="M:iba.HD.Common.IHdWriterContract.UpdateConfig(iba.HD.Common.HdWriterReport,System.Collections.Generic.List{iba.HD.Common.DynEventWriterSignal})">
+            <summary>
+            Allows to update a running configuration. Currently, only DynEvents stores are supported
+            </summary>
+        </member>
         <member name="M:iba.HD.Common.IHdWriterContract.Write(iba.HD.Common.HdWriterData)">
             <summary>
             Writes data to the store
@@ -1726,6 +1796,11 @@
         <member name="P:iba.HD.Common.Zip.ZipFile.Entries">
             <summary>
             Entries of an opened archive
+            </summary>
+        </member>
+        <member name="M:iba.HD.Common.Zip.ZipFile.AddFile(System.String)">
+            <summary>
+            Adds file to the opened archive
             </summary>
         </member>
         <member name="M:iba.HD.Common.Zip.ZipFile.AddFile(System.String,System.String)">

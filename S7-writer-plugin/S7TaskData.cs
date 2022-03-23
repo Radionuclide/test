@@ -10,7 +10,7 @@ using S7_writer;
 namespace S7_writer_plugin
 {
     [Serializable]
-    public class S7TaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer, IGridAnalyzer
+    public class S7TaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer
 	{
 
         #region IPluginTaskData Members
