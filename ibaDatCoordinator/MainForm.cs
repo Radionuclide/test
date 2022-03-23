@@ -77,6 +77,10 @@ namespace iba
 
         public MainForm()
         {
+            DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            defaultLookAndFeel.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.Flat;
+            defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
+
             m_firstConnectToService = true;
             InitializeComponent();
 

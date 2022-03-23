@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,11 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ibaLogger">
-      <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
-    </Reference>
     <Reference Include="Interop.ibaAnalyzer">
       <HintPath>..\Dependencies\ibaAnalyzer\Interop.ibaAnalyzer.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -111,6 +110,9 @@
   <ItemGroup>
     <PackageReference Include="DevExpress.Win.Grid">
       <Version>21.2.4</Version>
+    </PackageReference>
+    <PackageReference Include="ibaLogger">
+      <Version>2.13.2</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

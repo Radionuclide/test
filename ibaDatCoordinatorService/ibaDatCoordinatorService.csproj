@@ -66,10 +66,6 @@
     <ApplicationIcon>ibaDatCoordinator_server.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
@@ -140,6 +136,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ibaDatCoordinator_server.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ibaLogger">
+      <Version>2.13.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

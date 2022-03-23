@@ -62,10 +62,6 @@
     <Reference Include="ibaFilesV7LiteDotNet">
       <HintPath>..\Dependencies\ibaFilesV7LiteDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="ibaLogger, Version=2.1.0.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -207,6 +203,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ibaLogger">
+      <Version>2.13.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

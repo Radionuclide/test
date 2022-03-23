@@ -86,8 +86,11 @@ copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinatorService\bin\debug\plugins"<
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Reference Include="ibaLogger">
-      <HintPath>..\Dependencies\ibaLogger.dll</HintPath>
+    <Reference Include="ibaLogger, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DatCoordinatorPlugins\bin\$(Configuration)\ibaLogger.dll</HintPath>
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

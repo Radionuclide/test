@@ -441,10 +441,9 @@ Section -Common
 
   ;Copy server files
   SetOutPath "$INSTDIR"
-  File "..\Dependencies\ibaLogger.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaLogger.dll"
   File "..\Dependencies\Eyefinder.dll"
-  File "..\Dependencies\DotNetMagic2005.DLL"
-  File "..\Dependencies\DotNetMagic.DLL"
+  File "..\ibaDatCoordinator\bin\Release\DotNetMagic2005.DLL"
   File "..\Dependencies\ICSharpCode.TextEditor.dll"
   File "..\Dependencies\ICSharpCode.SharpZipLib.dll"
   File "..\Dependencies\msvcr100.dll"
@@ -960,7 +959,6 @@ Function un.UninstallTasks
   Delete "$INSTDIR\Eyefinder.dll"
   Delete "$INSTDIR\DatCoUtil.dll"
   Delete "$INSTDIR\DatCoordinatorPlugins.dll"
-  Delete "$INSTDIR\DotNetMagic.dll"
   Delete "$INSTDIR\DotNetMagic2005.dll"
   Delete "$INSTDIR\ibaFilesV7LiteDotNet.dll"
   
