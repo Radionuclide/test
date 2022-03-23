@@ -259,7 +259,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.OfficeDockSides = false;
             this.tabControl1.OfficeStyle = Crownwood.DotNetMagic.Controls.OfficeStyle.SoftWhite;
-            this.tabControl1.SelectedIndex = 1;
+            this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowArrows = false;
             this.tabControl1.ShowClose = false;
             this.tabControl1.ShowDropSelect = false;
@@ -328,7 +328,6 @@
             this.tabTarget.Name = "tabTarget";
             this.tabTarget.Padding = new System.Windows.Forms.Padding(3);
             this.tabTarget.SelectBackColor = System.Drawing.Color.Empty;
-            this.tabTarget.Selected = false;
             this.tabTarget.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabTarget.SelectTextColor = System.Drawing.Color.Empty;
             this.tabTarget.Size = new System.Drawing.Size(726, 610);
@@ -921,6 +920,7 @@
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
             this.tabConnection.SelectBackColor = System.Drawing.Color.Empty;
+            this.tabConnection.Selected = false;
             this.tabConnection.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConnection.SelectTextColor = System.Drawing.Color.Empty;
             this.tabConnection.Size = new System.Drawing.Size(726, 610);
