@@ -1756,25 +1756,32 @@ namespace iba.Processing
 
         public virtual void PublishService()
         {
-            Hashtable serviceProps = new Hashtable();
-            serviceProps.Add("HostName", Environment.MachineName);
-            serviceProps.Add("PortNr", Program.ServicePortNr.ToString());
-            serviceProps.Add("Version", DatCoVersion.GetVersion());
-            serviceProps.Add("MinimumClientVersion", DatCoVersion.MinimumClientVersion());
-
-            var dataTransferServerInfo = new DataTransferServerInfo
+            try
             {
-                IsServerEnabled = Manager.DataTransferData.IsServerEnabled,
-                Port = Manager.DataTransferData.Port,
-                RunsWithService = Program.RunsWithService
-            };
-            serviceProps.Add("DataTransferServer", dataTransferServerInfo);
+                Hashtable serviceProps = new Hashtable();
+                serviceProps.Add("HostName", Environment.MachineName);
+                serviceProps.Add("PortNr", Program.ServicePortNr.ToString());
+                serviceProps.Add("Version", DatCoVersion.GetVersion());
+                serviceProps.Add("MinimumClientVersion", DatCoVersion.MinimumClientVersion());
 
-            m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress,
-                DatcoServerDefaults.GroupServerPort);
-            m_servicePublisher.PublishServiceEndpoint(serviceProps);
+                var dataTransferServerInfo = new DataTransferServerInfo
+                {
+                    IsServerEnabled = Manager.DataTransferData.IsServerEnabled,
+                    Port = Manager.DataTransferData.Port,
+                    RunsWithService = Program.RunsWithService
+                };
+                serviceProps.Add("DataTransferServer", dataTransferServerInfo);
 
-            m_servicePublisher.ProvideProperties += UpdateProps;
+                m_servicePublisher = new ServicePublisher(DatcoServerDefaults.ServerGuid, DatcoServerDefaults.GroupAddress,
+                    DatcoServerDefaults.GroupServerPort);
+                m_servicePublisher.PublishServiceEndpoint(serviceProps);
+
+                m_servicePublisher.ProvideProperties += UpdateProps;
+            }
+            catch(Exception ex)
+            {
+                LogData.Data?.Logger?.Log(Level.Exception, $"Failed to create service publisher: {ex.Message}");
+            }
         }
         private bool UpdateProps(IDictionary props)
         {

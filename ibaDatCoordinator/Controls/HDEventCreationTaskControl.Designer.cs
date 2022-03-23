@@ -167,7 +167,6 @@
             resources.ApplyResources(this.m_ctrlEvent, "m_ctrlEvent");
             this.m_ctrlEvent.EventTrigger = null;
             this.m_ctrlEvent.EventWizard = null;
-            this.m_ctrlEvent.Local = false;
             this.m_ctrlEvent.Name = "m_ctrlEvent";
             this.m_ctrlEvent.ReadOnly = true;
             // 

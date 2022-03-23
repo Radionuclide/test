@@ -233,7 +233,7 @@ namespace iba.Processing
 
             foreach (var kvp in idsPerStore)
             {
-                subset = new EventStoreSubset(kvp.Key, kvp.Value);
+                subset = new EventStoreSubset(kvp.Key, kvp.Value, null);
 
                 m_liveData.TryGetValue(kvp.Key, out liveStoreData);
 

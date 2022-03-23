@@ -13,7 +13,7 @@ using DevExpress.XtraGrid.Views.Grid;
 
 namespace S7_writer_plugin
 {
-	public partial class S7TaskControl : UserControl, IPluginControl, IGridAnalyzer
+	public partial class S7TaskControl : UserControl, IPluginControl
 	{
         private IDatCoHost m_datcoHost;
 

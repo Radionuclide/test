@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace AM_OSPC_plugin
 {
     [Serializable]
-    public class OSPCTaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer, IGridAnalyzer
+    public class OSPCTaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer
 	{
 
         #region IPluginTaskData Members

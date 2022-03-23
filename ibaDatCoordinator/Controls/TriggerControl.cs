@@ -164,7 +164,20 @@ namespace iba.Controls
             ignoreChanges = false;
         }
 
-        public LocalEventData StoreSignal(LocalEventData localEventData)
+        //Called when multiple events are selected -> only change active state
+        public void LoadSignals(IEnumerable<LocalEventData> localEventData)
+        {
+            bool bFirst = true;
+            foreach (LocalEventData localData in localEventData)
+            {
+                if (bFirst)
+                    SetActive((localData?.Active ?? false) ? CheckState.Checked : CheckState.Unchecked);
+                else if (localData?.Active != Active)
+                    SetActive(CheckState.Indeterminate);
+            }
+        }
+
+        public LocalEventData StoreSignal(LocalEventData localEventData, string propertyName)
         {
             HDCreateEventTaskData.EventData m_data = localEventData.Tag as HDCreateEventTaskData.EventData;
 

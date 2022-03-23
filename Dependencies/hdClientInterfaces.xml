@@ -387,6 +387,52 @@
             Request id required to send request
             </returns>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.AddAlarmLiveRequest(System.Int32,iba.HD.Common.TimeRangeUtc,System.Boolean)">
+            <summary>
+            Adds Alarm requests
+            </summary>
+            <param name="subsetId">
+            Id of event subset to be used
+            </param>
+            <param name="range">
+            Data request time range
+            </param>
+            <param name="inclOutgoing">
+            true if both incoming and outgoing alarms are requested, false for only outgoing requests
+            </param>
+            <returns>
+            Request id required to send request
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.AddParetoRequest(System.Int32,iba.HD.Common.TimeRangeUtc,System.Boolean)">
+            <summary>
+            Adds Pareto requests
+            </summary>
+            <param name="subsetId">
+            Id of event subset to be used
+            </param>
+            <param name="range">
+            Data request time range
+            </param>
+            <param name="alarmsOnly">
+            true to filter out regular events and only count occurrences of alarms
+            false to calculate the pareto count of all requested ids.
+            </param>
+            <returns>
+            Request id required to send request
+            </returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdEventManager.SendParetoRequest(System.Int32,System.Action{iba.HD.Common.ParetoResponse})">
+            <summary>
+            Sends the pareto request with given id
+            </summary>
+            <param name="requestId">
+            id of the request to send
+            </param>
+            <param name="callback">
+            Delegate that will be called when requested data arrives; might be called more than once for a single request
+            </param>
+        </member>
         <member name="M:iba.HD.Client.Interfaces.IHdEventManager.SendRequest(System.Int32,System.Action{iba.HD.Common.EventResponse})">
             <summary>
             Sends the request with given id
@@ -877,6 +923,21 @@
             Gets the current signal information
             </summary>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdReader.EventConfigs">
+            <summary>
+            Deprecated: This should not be used for performance reasons.
+            Use GetUserConfig(string storeName) instead
+            Only use this function if the readerfeature HdApi is not present (pre ibaHD 2.5.0)
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdReader.GetEventConfig(System.String)">
+            <summary>
+            Gets the event config of a the requested store
+            Only use if readerfeature HdApi is present.
+            </summary>
+            <param name="storeName">The store the event config is requested from.</param>
+            <returns>the matching eventconfig, null if the storename doe not exist</returns>
+        </member>
         <member name="E:iba.HD.Client.Interfaces.IHdReader.SignalsUpdated">
             <summary>
             Fired when signals are updated
@@ -885,6 +946,11 @@
         <member name="E:iba.HD.Client.Interfaces.IHdReader.SignalDataUpdated">
             <summary>
             Fired when signal data is updated
+            </summary>
+        </member>
+        <member name="E:iba.HD.Client.Interfaces.IHdReader.DynSignalsAdded">
+            <summary>
+            Fired when new signals are dynamically added or updated
             </summary>
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdReader.CreateSignalTree(System.Boolean)">
@@ -901,6 +967,30 @@
             </summary>
             <param name="incServerName">include server part</param>
             <param name="incStoreName">include store part</param>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdReader.GetDynEventReaderSignal(System.String)">
+            <summary>
+            Request a DynEventReaderSignal based on the given HdId
+            </summary>
+            <param name="HdId">the hdId of the requested signal</param>
+            <returns>The requested DynEventSignal</returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdReader.GetDynEventFolder(System.String,System.String)">
+            <summary>
+            Get a single DynEventFolder containing the DynEventReaderSignals and empty subFolders
+            </summary>
+            <param name="storeName">name of the store</param>
+            <param name="path">the path of the requested folder</param>
+            <returns>The requested DynEventFolder with stubs as children</returns>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdReader.GetDynEventSubFolder(iba.HD.Common.DynEventFolder,System.String,System.String)">
+            <summary>
+            Add all subfolders and signals to the given folder
+            </summary>
+            <param name="folder">the folder where the child signals are needed for</param>
+            <param name="storeName">name of the store</param>
+            <param name="path">the path of the folder</param>
+            <returns>The folder containing all its subfolders and signals</returns>
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdReader.GetSegmentFirst(iba.HD.Common.HdSegmentRequest)">
             <summary>
@@ -955,17 +1045,6 @@
             <summary>
             Gets the HD user manager
             </summary>
-        </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdReader.GetSupportZip">
-            <summary>
-            Gets support files
-            </summary>
-            <exception cref="T:System.Exception">
-            Thrown when support files could not be retrieved
-            </exception>
-            <returns>
-            Zip file
-            </returns>
         </member>
         <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.Control">
             <summary>
@@ -1042,6 +1121,11 @@
             Gets or sets attached signal filter
             </summary>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.SignalIdFilter">
+            <summary>
+            Gets or sets the selected signalID filter set. Only items in this collection will be shown
+            </summary>
+        </member>
         <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.ShowAttachments">
             <summary>
             Show attached backups if there are any
@@ -1100,9 +1184,31 @@
             Gets all checked signal ids
             </summary>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.GetCheckedSignalIds(System.String,System.Boolean)">
+            <summary>
+            Gets all checked signal ids
+            </summary>
+            <param name="rootHdId"> Only return child signals of this HdID </param>
+            <param name="reduceIntoFolders"> Reduce the number of checked signals by only including a folder id if an entire folder is checked </param>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.IsPathVisible(System.String)">
+            <summary>
+            returns if the node with a given path is visible or not
+            </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.IsAllChecked">
+            <summary>
+            returns if all signals are checked or not
+            </summary>
+        </member>
         <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CheckAll">
             <summary>
             Checks all signals
+            </summary>
+        </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdSignalTree.AutoCheck">
+            <summary>
+            Automatically check newly added signals
             </summary>
         </member>
         <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UncheckAll">
@@ -1110,7 +1216,13 @@
             Uncheck all signals
             </summary>
         </member>
-        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CheckSignalIds(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.UpdateInfoFieldFilter(System.Collections.Generic.IList{iba.HD.Common.InfoFieldFilter})">
+            <summary>
+            Add or remove a signal filter based on infoField values.
+            </summary>
+            <param name="values">The new list containing the infoField values used to filter the signals</param>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.CheckSignalIds(System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
             <summary>
             Sets all checked signal ids
             </summary>
@@ -1490,6 +1602,26 @@
             <summary>
             An indication of the rate at which data is being written
             </summary>
+        </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdWriter.UpdateConfig(iba.HD.Client.Interfaces.IHdWriterSummary,System.Collections.Generic.List{iba.HD.Common.DynEventWriterSignal})">
+            <summary>
+            Sets a new writer configuration for a data origin
+            </summary>
+            <remarks>
+            To remove an origin, don't call "SetConfig" for that origin
+            </remarks>
+            <param name="summary">
+            Offers solutions to possible conflicts. Can be null.
+            </param>
+            <returns>
+            Configuration process summary
+            </returns>
+            <exception cref="T:iba.HD.Client.Interfaces.OperationOrderException">
+            Must follow call to "StartConfig" or "SetConfig" 
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            settings and summary for different origin or store
+            </exception>
         </member>
     </members>
 </doc>

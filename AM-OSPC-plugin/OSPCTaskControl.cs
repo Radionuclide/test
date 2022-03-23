@@ -15,7 +15,7 @@ using DevExpress.XtraGrid.Views.Grid;
 
 namespace AM_OSPC_plugin
 {
-    public partial class OSPCTaskControl : UserControl, IPluginControl, IGridAnalyzer
+    public partial class OSPCTaskControl : UserControl, IPluginControl
 	{
         private IDatCoHost m_datcoHost;
 		[NonSerialized]

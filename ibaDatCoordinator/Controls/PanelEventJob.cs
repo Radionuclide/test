@@ -461,7 +461,7 @@ namespace iba.Controls
                 return;
 
             m_treeEvents.CheckedChanged -= m_treeEvents_CheckedChanged;
-            m_treeEvents.CheckSignalIds(m_currEvents);
+            m_treeEvents.CheckSignalIds(m_currEvents, true);
             m_treeEvents.ExpandAll();
             m_treeEvents.CheckedChanged += m_treeEvents_CheckedChanged;
         }

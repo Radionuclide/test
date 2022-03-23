@@ -67,7 +67,7 @@ namespace iba.Plugins
 		/// </summary>
 		/// <param name="editor">DevExpress tree editor - RepositoryItemChannelTreeEdit </param>
 		/// <param name="analyzer">AnalyzerManager class </param>
-		void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit editor, IAnalyzerManagerUpdateSource analyzer);
+		void SetGridAnalyzer(object editor, IAnalyzerManagerUpdateSource analyzer);
 	}
 
 	/// <summary>
