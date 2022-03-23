@@ -502,11 +502,11 @@ Section -Common
   File "..\Dependencies\Kafka\Confluent.Kafka.dll"
   File "..\Dependencies\Kafka\Confluent.SchemaRegistry.dll"
   ;Certificate Manager
-  File "..\Dependencies\CertificateManager\ibaCertificateStore.Core.dll"
-  File "..\Dependencies\CertificateManager\ibaCertificateStore.Forms.dll"
-  File "..\Dependencies\CertificateManager\ibaCertificateStore.Manager.dll"
-  File "..\Dependencies\CertificateManager\ibaCertificateStore.Proxy.dll"
-  File "..\Dependencies\CertificateManager\ibaPdaUtilities.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Forms.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Manager.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Proxy.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaPdaUtilities.dll"
 
   
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"

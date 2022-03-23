@@ -41,10 +41,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AM-OSPC-plugin", "AM-OSPC-plugin\AM-OSPC-plugin.csproj", "{DB217ADE-CAC5-44C2-AE89-600E77A0DDAF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AM-OSPC-protocol", "AM-OSPC-protocol\AM-OSPC-protocol.vcxproj", "{7FDB294F-85C6-43A5-A053-100EC865A77B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B217D62-C82B-4DE3-A4B0-AF359E4FB562} = {4B217D62-C82B-4DE3-A4B0-AF359E4FB562}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S7-writer-plugin", "S7-writer-plugin\S7-writer-plugin.csproj", "{492634F7-0E80-4B9A-9F14-144CDF1ECD79}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "S7-writer", "S7-writer\S7-writer.vcxproj", "{E46810BD-E3BD-4F49-B54A-E07B9FFF2937}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B217D62-C82B-4DE3-A4B0-AF359E4FB562} = {4B217D62-C82B-4DE3-A4B0-AF359E4FB562}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ibaDatCoordinatorStatus", "ibaDatCoordinatorStatus\ibaDatCoordinatorStatus.csproj", "{B35988FF-174E-487C-93DB-812CDFA88151}"
 EndProject
