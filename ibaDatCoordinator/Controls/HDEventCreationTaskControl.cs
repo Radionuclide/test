@@ -577,7 +577,7 @@ namespace iba.Controls
                         if (localEventData.Tag != null && localEventData.Tag is HDCreateEventTaskData.EventData)
                             eventData = (HDCreateEventTaskData.EventData)localEventData.Tag;
 
-                        eventData.ID = sigNode.id;
+                        eventData.ID = sigNode.Id;
                         eventData.Name = eventWriterSignal.Name;
                         eventData.StoreName = store;
 
