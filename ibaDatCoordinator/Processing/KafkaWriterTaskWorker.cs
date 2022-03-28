@@ -132,7 +132,7 @@ namespace iba.Processing
             return str;
         }
 
-        string ReplacePlasholdersKey(string str)
+        string ReplacePlaceholdersKey(string str)
         {
             str = str.Replace("$identifier", m_data.identifier);
             str = str.Replace("$signalname", "");
@@ -185,9 +185,9 @@ namespace iba.Processing
                         // todo implement timestamp metadata
                         if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONGrouped)
                         {
-                            var b = new ProducerBuilder<string, string>(config);
-                            InitIBuilder(m_data, b);
-                            var p = b.Build();
+                            var producerBuilder = new ProducerBuilder<string, string>(config);
+                            InitIBuilder(m_data, producerBuilder);
+                            
                             string message = "{ \n";
 
                             // todo maybe change format to   message += $", \"{rec.Name}.Comment1\": \"{rec.Comment1}\""; and change Name matadata to Expression metadata
@@ -209,13 +209,15 @@ namespace iba.Processing
                                     message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Comment2\": \"{rec.Comment2}\"";
                             }
                             message += "\n}";
-                            var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlasholdersKey(m_data.key), Value = message }).Result;
+                            using (var p = producerBuilder.Build())
+                            {
+                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholdersKey(m_data.key), Value = message }).Result;
+                            }
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONPerSignal)
                         {
-                            var b = new ProducerBuilder<string, string>(config);
-                            InitIBuilder(m_data, b);
-                            var p = b.Build();
+                            var producerBuilder = new ProducerBuilder<string, string>(config);
+                            InitIBuilder(m_data, producerBuilder);
                             foreach (var rec in m_data.Records)
                             {
                                 string message = $"{{ \n\"Signal\": \"{ReplacePlaceholders(rec, m_data.signalReference)}\",\n \"Value\":{m_data.ToText(rec)}";
@@ -230,7 +232,10 @@ namespace iba.Processing
                                 if (m_data.metadata.Contains("Comment 2"))
                                     message += $",\n \"Comment2\": \"{rec.Comment2}\"";
                                 message += "\n}";
-                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholders(rec, m_data.key), Value = message }).Result;
+                                using (var p = producerBuilder.Build())
+                                {
+                                    var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholders(rec, m_data.key), Value = message }).Result;
+                                }
                             }
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.AVRO)
@@ -242,7 +247,6 @@ namespace iba.Processing
                             
                             ProducerBuilder<byte[], byte[]> producerBuilder = new Confluent.Kafka.ProducerBuilder<byte[], byte[]>(config);
                             InitIBuilder(m_data, producerBuilder);
-                            var p = producerBuilder.Build();
 
                             foreach (var rec in m_data.Records)
                             {
@@ -289,7 +293,10 @@ namespace iba.Processing
                                 }
 
                                 msg.Key = Encoding.UTF8.GetBytes(ReplacePlaceholders(rec, m_data.key).ToCharArray());
-                                var dr = p.ProduceAsync(m_data.topicName, msg);
+                                using (var p = producerBuilder.Build())
+                                {
+                                    var dr = p.ProduceAsync(m_data.topicName, msg);
+                                }
                             }
                         }
                     }
