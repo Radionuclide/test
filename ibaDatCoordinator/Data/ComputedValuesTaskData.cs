@@ -174,11 +174,11 @@ namespace iba.Data
             if (!(taskData is ComputedValuesTaskData other)) return false;
             if (other == this) return true;
 
-            return
-                    Records.SequenceEqual(other.Records) &&
+            bool seq = Records.SequenceEqual(other.Records);
+            return seq &&
                     AnalysisFile == other.AnalysisFile &&
                     TestDatFile == other.TestDatFile &&
-                    MonitorData == other.MonitorData;
+                    MonitorData.IsSame(other.MonitorData);
 		}
 
         /// <summary> Ensures there are no duplicate names in <see cref="ComputedValuesTaskData"/> records.
