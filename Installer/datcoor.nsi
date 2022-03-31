@@ -430,8 +430,8 @@ SectionEnd
   File "..\Dependencies\${LANGPREFIX}\hdCommon.resources.dll"
   File "..\Dependencies\${LANGPREFIX}\hd_plugin.resources.dll"
   File "..\Dependencies\${LANGPREFIX}\ibaUser*.resources.dll"
-  File "..\Dependencies\${LANGPREFIX}\ibaCertificateStore.Forms.resources.dll"
-  File "..\Dependencies\${LANGPREFIX}\ibaCertificateStore.Manager.resources.dll"
+  File "..\InstallFiles\${LANGPREFIX}\ibaCertificateStore.Forms.resources.dll"
+  File "..\InstallFiles\${LANGPREFIX}\ibaCertificateStore.Manager.resources.dll"
 
 !macroend
 
@@ -507,8 +507,8 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Manager.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Proxy.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaPdaUtilities.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaIcons.dll"
 
-  
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\${PROTECT_DIR}ibaDatCoordinator.exe"
   File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinator.exe.config"
@@ -988,6 +988,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\ibaCertificateStore.Manager.dll"
   Delete "$INSTDIR\ibaCertificateStore.Proxy.dll"
   Delete "$INSTDIR\ibaPdaUtilities.dll"
+  Delete "$INSTDIR\ibaIcons.dll"
 
   Delete "$INSTDIR\ibaSnmpLib.dll"
   Delete "$INSTDIR\WinSCPnet.dll"
