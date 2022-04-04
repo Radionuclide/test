@@ -615,7 +615,7 @@ namespace iba
                 TaskManager.Manager.SnmpWorkerInit();
                 TaskManager.Manager.OpcUaWorkerInit();
                 // added by kolesnik - end
-                await TaskManager.Manager.DataTransferWorkerInit();
+                TaskManager.Manager.DataTransferWorkerInit();
             }
         }
 

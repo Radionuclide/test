@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,8 +30,6 @@ namespace iba.Controls
         public DataTransferControl()
         {
             InitializeComponent();
-            TaskManager.Manager.DataTransferWorkerSetUpdateDiagnosticInfoCallback(UpdateDiagnosticInfo);
-            TaskManager.Manager.DataTransferWorkerSetUpdateServerStatusCallback(UpdateServerStatus);
             ConfigureDiagnosticGrid();
             GetAllClients();
             serverCertCb = CertificatesComboBox.ReplaceCombobox(ServerCertPlaceholder, useRegistry: false);
@@ -55,7 +55,9 @@ namespace iba.Controls
                     tbRootPath.Text = _data.RootPath;
                 }
 
-                tbStatus.Text = await Task.Run((Func<String>)TaskManager.Manager.DataTransferWorkerGetBriefStatus);
+                tbStatus.Text = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
+
+                DiagnoseDataTimer.Enabled = true;
 
                 serverCertParams = new CertificateInfo
                 {
@@ -80,6 +82,7 @@ namespace iba.Controls
                 _data.RootPath = tbRootPath.Text;
                 _data.ServerCertificateThumbprint = serverCertParams.Thumbprint;
                 TaskManager.Manager.DataTransferData = _data.Clone() as DataTransferData;
+
             }
             catch (Exception e)
             {
@@ -89,56 +92,7 @@ namespace iba.Controls
 
         public void LeaveCleanup()
         {
-   
-        }
-
-        public void UpdateServerStatusSafe(string status)
-        {
-            if (this.tbStatus.InvokeRequired)
-            {
-                var callback = new Action<string>(UpdateServerStatusSafe);
-                this.Invoke(callback, new object[] { status });
-            }
-            else
-            {
-                tbStatus.Text = status;
-            }
-        }
-
-        public void UpdateServerStatus(string status)
-        {
-            UpdateServerStatusSafe(status);
-        }
-
-        private void UpdateDiagnosticInfoSafe(DiagnosticsData diagnosticsData)
-        {
-            if (this.dgvClients.InvokeRequired)
-            {
-                var callback = new Action<DiagnosticsData>(UpdateDiagnosticInfoSafe);
-                this.Invoke(callback, new object[] { diagnosticsData });
-            }
-            else
-            {
-                var elem = _diagnosticsDataList.FirstOrDefault(x => x.ClientId == diagnosticsData.ClientId);
-
-                if (elem == null)
-                {
-                    _diagnosticsDataList.Add(diagnosticsData);
-                    return;
-                }
-
-                elem.ClientName = diagnosticsData.ClientName;
-                elem.TaskName = diagnosticsData.TaskName;
-                elem.Filename = diagnosticsData.Filename;
-                elem.Path = diagnosticsData.Path;
-                elem.MaxBandwidth = diagnosticsData.MaxBandwidth;
-                elem.TransferredFiles = diagnosticsData.TransferredFiles;
-            }
-        }
-
-        public void UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)
-        {
-            UpdateDiagnosticInfoSafe(diagnosticsData);
+            DiagnoseDataTimer.Enabled = false;
         }
 
         private void buttonClearClients_Click(object sender, EventArgs e)
@@ -191,7 +145,7 @@ namespace iba.Controls
             _data.RootPath = tbRootPath.Text = folderBrowserDialog.SelectedPath;
         }
 
-        private async void  buttonConfigurationApply_Click(object sender, EventArgs e)
+        private void  buttonConfigurationApply_Click(object sender, EventArgs e)
         {
             if (!ValidateInput())
             {
@@ -202,12 +156,14 @@ namespace iba.Controls
 
             if (m_cbEnabled.Checked)
             {
-                await Task.Run((Action)TaskManager.Manager.DataTransferWorkerStartServer);
+                 TaskManager.Manager.DataTransferWorkerStartServer();
             }
             else
             {
-                await Task.Run((Action)TaskManager.Manager.DataTransferWorkerStopServer);
+                TaskManager.Manager.DataTransferWorkerStopServer();
             }
+
+            tbStatus.Text = TaskManager.Manager.DataTransferWorkerGetBriefStatus();
         }
 
         private bool ValidateInput()
@@ -243,9 +199,29 @@ namespace iba.Controls
 
         private void GetAllClients()
         {
-            var clients = TaskManager.Manager.DataTransferWorkerGetAllClients();
-            
-            clients.ForEach(item => _diagnosticsDataList.Add(item));
+            var list = TaskManager.Manager.DataTransferWorkerGetAllClients();
+
+            foreach (var diagnosticsData in list)
+            {
+                var elem = _diagnosticsDataList.FirstOrDefault(x => x.ClientId == diagnosticsData.ClientId);
+
+                if (elem == null)
+                {
+                    _diagnosticsDataList.Add(diagnosticsData);
+                    return;
+                }
+
+                elem.ClientName = diagnosticsData.ClientName;
+                elem.TaskName = diagnosticsData.TaskName;
+                elem.Filename = diagnosticsData.Filename;
+                elem.Path = diagnosticsData.Path;
+                elem.MaxBandwidth = diagnosticsData.MaxBandwidth;
+                elem.TransferredFiles = diagnosticsData.TransferredFiles;
+            }
+        }
+        private void DiagnoseDataTimer_Tick(object sender, EventArgs e)
+        {
+            GetAllClients();
         }
 
         #region ICertificatesControlHost

@@ -104,7 +104,7 @@ namespace iba.Services
                 m_communicationObject.Manager.SnmpWorkerInit();
                 m_communicationObject.Manager.OpcUaWorkerInit();
                 // added by kolesnik - end
-                await m_communicationObject.Manager.DataTransferWorkerInit();
+                m_communicationObject.Manager.DataTransferWorkerInit();
             }
             catch (Exception ex)
             {

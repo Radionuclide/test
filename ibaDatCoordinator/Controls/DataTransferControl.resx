@@ -564,6 +564,21 @@
   <data name="gbDirectory.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="btnRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="btnRootPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>597, 20</value>
+  </data>
+  <data name="btnRootPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 23</value>
+  </data>
+  <data name="btnRootPath.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btnRootPath.Text" xml:space="preserve">
+    <value>Select root path</value>
+  </data>
   <data name="&gt;&gt;btnRootPath.Name" xml:space="preserve">
     <value>btnRootPath</value>
   </data>
@@ -575,6 +590,18 @@
   </data>
   <data name="&gt;&gt;btnRootPath.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="tbRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="tbRootPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 22</value>
+  </data>
+  <data name="tbRootPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>463, 20</value>
+  </data>
+  <data name="tbRootPath.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="&gt;&gt;tbRootPath.Name" xml:space="preserve">
     <value>tbRootPath</value>
@@ -631,7 +658,7 @@
     <value>tabConfiguration</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.14.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabConfiguration.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -664,7 +691,7 @@
     <value>tabDiag</value>
   </data>
   <data name="&gt;&gt;tabDiag.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.1.14.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabPage, DotNetMagic2005, Version=6.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabDiag.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -676,64 +703,13 @@
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>Crownwood.DotNetMagic.Controls.TabControl, DotNetMagic2005, Version=6.1.14.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>Crownwood.DotNetMagic.Controls.TabControl, DotNetMagic2005, Version=6.3.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="btnRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Right</value>
-  </data>
-  <data name="btnRootPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>597, 20</value>
-  </data>
-  <data name="btnRootPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 23</value>
-  </data>
-  <data name="btnRootPath.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="btnRootPath.Text" xml:space="preserve">
-    <value>Select root path</value>
-  </data>
-  <data name="&gt;&gt;btnRootPath.Name" xml:space="preserve">
-    <value>btnRootPath</value>
-  </data>
-  <data name="&gt;&gt;btnRootPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnRootPath.Parent" xml:space="preserve">
-    <value>gbDirectory</value>
-  </data>
-  <data name="&gt;&gt;btnRootPath.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tbRootPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
-  </data>
-  <data name="tbRootPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 22</value>
-  </data>
-  <data name="tbRootPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>463, 20</value>
-  </data>
-  <data name="tbRootPath.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tbRootPath.Name" xml:space="preserve">
-    <value>tbRootPath</value>
-  </data>
-  <data name="&gt;&gt;tbRootPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbRootPath.Parent" xml:space="preserve">
-    <value>gbDirectory</value>
-  </data>
-  <data name="&gt;&gt;tbRootPath.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="gbStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -762,6 +738,9 @@
   <data name="&gt;&gt;gbStatus.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <metadata name="DiagnoseDataTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>180, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -782,6 +761,12 @@
   </data>
   <data name="&gt;&gt;folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DiagnoseDataTimer.Name" xml:space="preserve">
+    <value>DiagnoseDataTimer</value>
+  </data>
+  <data name="&gt;&gt;DiagnoseDataTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>DataTransferControl</value>

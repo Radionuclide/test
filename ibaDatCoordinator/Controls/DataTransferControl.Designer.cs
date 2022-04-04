@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataTransferControl));
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.dgvClients = new System.Windows.Forms.DataGridView();
@@ -43,8 +44,8 @@
             this.panelFooter = new System.Windows.Forms.Panel();
             this.tabControl1 = new Crownwood.DotNetMagic.Controls.TabControl();
             this.tabConfiguration = new Crownwood.DotNetMagic.Controls.TabPage();
-            this.ServerCertPlaceholder = new System.Windows.Forms.ComboBox();
             this.gbSecurity = new System.Windows.Forms.GroupBox();
+            this.ServerCertPlaceholder = new System.Windows.Forms.ComboBox();
             this.lblCertificate = new System.Windows.Forms.Label();
             this.gbGeneral = new System.Windows.Forms.GroupBox();
             this.gbDirectory = new System.Windows.Forms.GroupBox();
@@ -52,6 +53,7 @@
             this.tbRootPath = new System.Windows.Forms.TextBox();
             this.tabDiag = new Crownwood.DotNetMagic.Controls.TabPage();
             this.gbStatus = new System.Windows.Forms.GroupBox();
+            this.DiagnoseDataTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvClients)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.m_numPort)).BeginInit();
             this.panelFooter.SuspendLayout();
@@ -178,12 +180,6 @@
             this.tabConfiguration.SelectTextBackColor = System.Drawing.Color.Empty;
             this.tabConfiguration.SelectTextColor = System.Drawing.Color.Empty;
             // 
-            // ServerCertPlaceholder
-            // 
-            this.ServerCertPlaceholder.FormattingEnabled = true;
-            resources.ApplyResources(this.ServerCertPlaceholder, "ServerCertPlaceholder");
-            this.ServerCertPlaceholder.Name = "ServerCertPlaceholder";
-            // 
             // gbSecurity
             // 
             resources.ApplyResources(this.gbSecurity, "gbSecurity");
@@ -191,6 +187,12 @@
             this.gbSecurity.Controls.Add(this.lblCertificate);
             this.gbSecurity.Name = "gbSecurity";
             this.gbSecurity.TabStop = false;
+            // 
+            // ServerCertPlaceholder
+            // 
+            this.ServerCertPlaceholder.FormattingEnabled = true;
+            resources.ApplyResources(this.ServerCertPlaceholder, "ServerCertPlaceholder");
+            this.ServerCertPlaceholder.Name = "ServerCertPlaceholder";
             // 
             // lblCertificate
             // 
@@ -249,6 +251,10 @@
             this.gbStatus.Name = "gbStatus";
             this.gbStatus.TabStop = false;
             // 
+            // DiagnoseDataTimer
+            // 
+            this.DiagnoseDataTimer.Tick += new System.EventHandler(this.DiagnoseDataTimer_Tick);
+            // 
             // DataTransferControl
             // 
             resources.ApplyResources(this, "$this");
@@ -300,5 +306,6 @@
         private System.Windows.Forms.Button btnRootPath;
         private System.Windows.Forms.TextBox tbRootPath;
         private System.Windows.Forms.ComboBox ServerCertPlaceholder;
+        private System.Windows.Forms.Timer DiagnoseDataTimer;
     }
 }

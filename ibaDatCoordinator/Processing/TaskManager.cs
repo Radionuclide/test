@@ -1218,9 +1218,9 @@ namespace iba.Processing
             }
         }
 
-        public async Task DataTransferWorkerInit()
+        public void DataTransferWorkerInit()
         {
-            await DataTransferWorker.Init();
+            DataTransferWorker.Init();
 
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
@@ -1238,23 +1238,18 @@ namespace iba.Processing
             return DataTransferWorker.GetAllClients();
         }
 
-        public virtual async void DataTransferWorkerStartServer()
+        public virtual void DataTransferWorkerStartServer()
         {
-            await DataTransferWorker.StartServer();
+            DataTransferWorker.StartServer();
         }
-        public virtual async void DataTransferWorkerStopServer()
+        public virtual void DataTransferWorkerStopServer()
         {
-            await DataTransferWorker.StopServer();
-        }
-
-        public virtual void DataTransferWorkerSetUpdateDiagnosticInfoCallback(Action<DiagnosticsData> updateDiagnosticInfo)
-        {
-            DataTransferWorker.SetDiagnosticInfoCallback(updateDiagnosticInfo);
+            DataTransferWorker.StopServer();
         }
 
-        public virtual void DataTransferWorkerSetUpdateServerStatusCallback(Action<string> updateServerStatus)
+        public virtual DiagnosticsData UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)
         {
-            DataTransferWorker.SetUpdateStatusCallback(updateServerStatus);
+            return diagnosticsData;
         }
 
         #endregion
@@ -2395,28 +2390,16 @@ namespace iba.Processing
             }
         }
 
-        public override void DataTransferWorkerSetUpdateDiagnosticInfoCallback(Action<DiagnosticsData> updateDiagnosticInfo)
+        public override DiagnosticsData UpdateDiagnosticInfo(DiagnosticsData diagnosticsData)
         {
             try
             {
-                Program.CommunicationObject.Manager.DataTransferWorkerSetUpdateDiagnosticInfoCallback(updateDiagnosticInfo);
+                return Program.CommunicationObject.Manager.UpdateDiagnosticInfo(diagnosticsData);
             }
             catch (Exception ex)
             {
                 HandleBrokenConnection(ex);
-                Manager.DataTransferWorkerSetUpdateDiagnosticInfoCallback(updateDiagnosticInfo);
-            }
-        }
-        public override void DataTransferWorkerSetUpdateServerStatusCallback(Action<string> updateServerStatus)
-        {
-            try
-            {
-                Program.CommunicationObject.Manager.DataTransferWorkerSetUpdateServerStatusCallback(updateServerStatus);
-            }
-            catch (Exception ex)
-            {
-                HandleBrokenConnection(ex);
-                Manager.DataTransferWorkerSetUpdateServerStatusCallback(updateServerStatus);
+                return Manager.UpdateDiagnosticInfo(diagnosticsData);
             }
         }
 

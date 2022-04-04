@@ -14,13 +14,11 @@ namespace iba.Processing.IbaGrpc
 {
     public class ClientManager
     {
-        public event Action<DiagnosticsData> UpdateDiagnosticInfoCallback;
-        private readonly ConcurrentDictionary<Guid, Configuration> m_clientList;
-        public ConcurrentDictionary<Guid, Configuration> ClientList => m_clientList;
+        public ConcurrentDictionary<Guid, Configuration> ClientList { get; }
 
         public ClientManager()
         {
-            m_clientList = new ConcurrentDictionary<Guid, Configuration>();
+            ClientList = new ConcurrentDictionary<Guid, Configuration>();
         }
 
         public Configuration GetClientInfo(Guid guid)
@@ -65,7 +63,7 @@ namespace iba.Processing.IbaGrpc
                 TransferredFiles = data.Transferredfiles
             };
 
-            UpdateDiagnosticInfoCallback?.Invoke(diagnosticsData);
+            TaskManager.Manager.UpdateDiagnosticInfo(diagnosticsData);
         }
 
         public List<DiagnosticsData> GetAllClients()

@@ -56,18 +56,16 @@ namespace iba.Processing
             Status = status ? Resources.DatatransferServerStarted : Resources.DatatransferServerNotStarted;
         }
 
-        public async Task StartServer()
+        public void StartServer()
         {
             try
             {
-                await StopServer();
+                StopServer();
                 
                 m_server = CreateNewServer();
                 m_server.Start();
                 
                 SetStatus(true);
-
-                OnUpdateServerStatus?.Invoke(Status);
 
                 LogData.Data.Logger.Log(Level.Info, $"Data Transfer Service started on port: {_data.Port}");
             }
@@ -77,17 +75,14 @@ namespace iba.Processing
             }
         }
 
-        public async Task StopServer()
+        public void StopServer()
         {
             if (m_server == null) return;
 
             try
             {
-                await m_server.ShutdownAsync();
-
                 SetStatus(false);
-
-                OnUpdateServerStatus?.Invoke(Status);
+                m_server.ShutdownAsync();
 
                 LogData.Data.Logger.Log(Level.Info, "Data Transfer Service stopped");
             }
@@ -130,30 +125,18 @@ namespace iba.Processing
             return new SslServerCredentials(new List<KeyCertificatePair>() { keypair });
         }
 
-        public async Task Init()
+        public void Init()
         {
             if (_data.IsServerEnabled)
             {
-                await StartServer();
+                StartServer();
             }
             else
             {
                 Status = Resources.DatatransferServerNotStarted;
-                OnUpdateServerStatus?.Invoke(Status);
             }
         }
 
-        public void SetDiagnosticInfoCallback(Action<DiagnosticsData> updateDiagnosticInfo)
-        {
-            _dataTransferImpl.ClientManager.UpdateDiagnosticInfoCallback += updateDiagnosticInfo;
-        }
-
-        public event Action<string> OnUpdateServerStatus;
-
-        public void SetUpdateStatusCallback(Action<string> statusCallback)
-        {
-            OnUpdateServerStatus += statusCallback;
-        }
 
         public List<DiagnosticsData> GetAllClients()
         {
