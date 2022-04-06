@@ -436,7 +436,7 @@ namespace iba.Controls
             else
                 m_toolTip.SetToolTip(lbl, String.Empty);
             
-            return String.Concat(newText, volumeLabel) ;
+            return String.Concat(newText, volumeLabel);
         }
 
         private void AddQuotaToTableLayout(GlobalCleanupData data, long driveSize, int colIdx, int rowIdx)
@@ -625,14 +625,16 @@ namespace iba.Controls
 
         private void certificatesUpdateTimer_Tick(object sender, EventArgs e)
         {
-            // if a new client tries to connect to our server
-            // OPC UA SDK automatically adds its certificate to "rejected" store.
-            // It is known on the level of the Server,
-            // but in is not known on the level of the control.
-            // Control should be informed somehow to reflect changes in the table here.
-            // I use a timer here, because it is much simpler and more reliable than informing client via event.
-            // This Timer is active ONLY if the OPC UA pane is visible, so it doesn't have any computational impact most of time.
+            // This Timer is active ONLY if the Settings pane is visible, so it doesn't have any computational impact most of time.
             certificatesControl.LoadDataSource();
+        }
+
+        public bool IsCertificateTableTimerTicking
+        {
+            set
+            {
+                certificatesUpdateTimer.Enabled = value;
+            }
         }
     }
 

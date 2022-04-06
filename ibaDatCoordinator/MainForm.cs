@@ -518,6 +518,19 @@ namespace iba
                 EnableAllButOnePaneToolStripMenuItems(dataTransferToolStripMenuItem);
                 DisableCopyPasteCutDeleteMenuItems();
             }
+
+            //certificates table update timer should work only if Settings tab is visible
+            if (m_navBar.SelectedPane == m_settingsPane)
+            {
+                var ctrl = propertyPanes["settingsControl"] as ServiceSettingsControl;
+                ctrl.IsCertificateTableTimerTicking = true;
+            }
+            else
+            {
+                var ctrl = propertyPanes["settingsControl"] as ServiceSettingsControl;
+                if(ctrl != null)
+                    ctrl.IsCertificateTableTimerTicking = false;
+            }
         }
 
         // added by kolesnik - begin

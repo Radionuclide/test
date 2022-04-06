@@ -82,8 +82,8 @@ namespace iba.Controls
             // 
             // certificatesUpdateTimer
             // 
-            this.certificatesUpdateTimer.Enabled = true;
-            this.certificatesUpdateTimer.Interval = 4000;
+            this.certificatesUpdateTimer.Enabled = false;
+            this.certificatesUpdateTimer.Interval = 5000;
             this.certificatesUpdateTimer.Tick += new System.EventHandler(this.certificatesUpdateTimer_Tick);
             // 
             // gb_Certificates
