@@ -27,7 +27,7 @@ namespace iba.Controls
         {
             InitializeComponent();
             certificatesControl.SetControlHost(this);
-            certificatesControl.LoadDataSource();
+            LoadCertificatesIfDifferent();
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //hide non relevant 
             {
                 Control[] ToHide = new Control[] {label5, m_tbAnalyzerExe, m_executeIBAAButton,
@@ -75,7 +75,7 @@ namespace iba.Controls
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_manager = manager;
-            certificatesControl.LoadDataSource();
+            LoadCertificatesIfDifferent();
 
             m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
             m_nudRestartIbaAnalyzer.Value = Math.Max(1,TaskManager.Manager.MaxIbaAnalyzerCalls);
@@ -626,7 +626,21 @@ namespace iba.Controls
         private void certificatesUpdateTimer_Tick(object sender, EventArgs e)
         {
             // This Timer is active ONLY if the Settings pane is visible, so it doesn't have any computational impact most of time.
-            certificatesControl.LoadDataSource();
+            LoadCertificatesIfDifferent();
+        }
+
+        public static string[] currentlCertsList { get; private set; }
+        public static string[] currentlCertsListEncrypted { get; private set; }
+        private void LoadCertificatesIfDifferent()
+        {
+            var certs = (TaskManager.Manager.HandleCertificate("GetCertificates") as string[]);
+            var encr = certs.Select(a => Crypt.Decrypt(a)).ToArray<string>();
+            if (currentlCertsList == null || !currentlCertsListEncrypted.SequenceEqual<string>(encr))
+            {
+                currentlCertsListEncrypted = encr;
+                currentlCertsList = certs;
+                certificatesControl.LoadDataSource();
+            }
         }
 
         public bool IsCertificateTableTimerTicking
@@ -749,7 +763,7 @@ namespace iba.Controls
         /// </summary>
         public string[] GetCertificates()
         {
-            return TaskManager.Manager.HandleCertificate("GetCertificates") as string[];
+            return ServiceSettingsControl.currentlCertsList;
         }
     }
 }
