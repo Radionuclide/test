@@ -88,7 +88,7 @@
 			// m_browseFolderButton
 			// 
 			resources.ApplyResources(this.m_browseFolderButton, "m_browseFolderButton");
-			this.m_browseFolderButton.Image = global::iba.Properties.Resources.open;
+			this.m_browseFolderButton.Image = Icons.Gui.All.Images.FolderOpen();
 			this.m_browseFolderButton.Name = "m_browseFolderButton";
 			this.m_browseFolderButton.UseVisualStyleBackColor = true;
 			this.m_browseFolderButton.Click += new System.EventHandler(this.m_browseFolderButton_Click);

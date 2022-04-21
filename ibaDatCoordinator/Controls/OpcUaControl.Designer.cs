@@ -537,7 +537,7 @@
             // buttonEndpointCopy
             // 
             resources.ApplyResources(this.buttonEndpointCopy, "buttonEndpointCopy");
-            this.buttonEndpointCopy.Image = global::iba.Properties.Resources.copy;
+            this.buttonEndpointCopy.Image = Icons.Gui.All.Images.Copy();
             this.buttonEndpointCopy.Name = "buttonEndpointCopy";
             this.buttonEndpointCopy.TabStop = false;
             this.buttonEndpointCopy.UseVisualStyleBackColor = true;

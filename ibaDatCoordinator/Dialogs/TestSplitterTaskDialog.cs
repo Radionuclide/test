@@ -29,7 +29,7 @@ namespace iba.Dialogs
             DatCoProfiler.ProfileString(true, "SplitterTestDlg","OutputFolder", ref to, "");
             m_targetFolderTextBox.Text = to;
             m_btPerform.Enabled = true;
-            m_btPerform.Image = iba.Properties.Resources.Stop;
+            m_btPerform.Image = Icons.Gui.All.Images.StopFilledRed();
             readyToSplit = false;
             WindowsAPI.SHAutoComplete(m_targetFolderTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_DIRS |
             SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_ON | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_ON);
@@ -91,7 +91,7 @@ namespace iba.Dialogs
                     }
                 }
                 m_bRunning = true;
-                m_btPerform.Image = iba.Properties.Resources.Stop;
+                m_btPerform.Image = Icons.Gui.All.Images.StopFilledRed();
                 m_toolTip.SetToolTip(m_btPerform, iba.Properties.Resources.CancelStr);
                 m_browseFolderButton.Enabled = false;
                 m_targetFolderTextBox.Enabled = false;

@@ -100,7 +100,7 @@ namespace iba.Controls
 			// m_browseBATCHFileButton
 			// 
 			resources.ApplyResources(this.m_browseBATCHFileButton, "m_browseBATCHFileButton");
-			this.m_browseBATCHFileButton.Image = global::iba.Properties.Resources.open;
+			this.m_browseBATCHFileButton.Image = Icons.Gui.All.Images.FolderOpen();
 			this.m_browseBATCHFileButton.Name = "m_browseBATCHFileButton";
 			this.m_browseBATCHFileButton.UseVisualStyleBackColor = true;
 			this.m_browseBATCHFileButton.Click += new System.EventHandler(this.m_browseBATCHFileButton_Click);
@@ -213,7 +213,7 @@ namespace iba.Controls
 			// m_browseDatFileButton
 			// 
 			resources.ApplyResources(this.m_browseDatFileButton, "m_browseDatFileButton");
-			this.m_browseDatFileButton.Image = global::iba.Properties.Resources.open;
+			this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
 			this.m_browseDatFileButton.Name = "m_browseDatFileButton";
 			this.m_browseDatFileButton.UseVisualStyleBackColor = true;
 			this.m_browseDatFileButton.Click += new System.EventHandler(this.m_browseDatFileButton_Click);
@@ -251,7 +251,7 @@ namespace iba.Controls
 			// m_executeBatchFile
 			// 
 			resources.ApplyResources(this.m_executeBatchFile, "m_executeBatchFile");
-			this.m_executeBatchFile.Image = global::iba.Properties.Resources.DOS;
+			this.m_executeBatchFile.Image = Icons.Gui.All.Images.TerminalCode();
 			this.m_executeBatchFile.Name = "m_executeBatchFile";
 			this.m_executeBatchFile.UseVisualStyleBackColor = true;
 			this.m_executeBatchFile.Click += new System.EventHandler(this.m_executeBatchFile_Click);

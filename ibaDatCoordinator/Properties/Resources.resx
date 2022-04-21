@@ -123,10 +123,6 @@
   <data name="logBatchfileFailed" xml:space="preserve">
     <value>script failed with exitcode: {0}</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="pasteTitle" xml:space="preserve">
     <value>Paste</value>
   </data>
@@ -139,14 +135,12 @@
   <data name="logBatchfileTimeout" xml:space="preserve">
     <value>script timed out</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="copydat_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\copydat.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DOS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="greenarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\greenarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -223,9 +217,6 @@
   <data name="logRemoveDirectoryFailed" xml:space="preserve">
     <value>failed to remove old folder</value>
   </data>
-  <data name="open" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\open.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="copyTitle" xml:space="preserve">
     <value>Copy</value>
   </data>
@@ -237,9 +228,6 @@
   </data>
   <data name="deleteReportQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the Report options "{0}" of Job "{1}" ?</value>
-  </data>
-  <data name="Start" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Start.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Timeout" xml:space="preserve">
     <value>timed out! (see logfile)</value>
@@ -321,9 +309,6 @@
   </data>
   <data name="logReportSuccess" xml:space="preserve">
     <value>report successfully completed</value>
-  </data>
-  <data name="paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\paste.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="WhenToDo4" xml:space="preserve">
     <value>execute after 1st failure</value>
@@ -436,9 +421,6 @@
   <data name="SaveFileProblem" xml:space="preserve">
     <value>Problem saving file:</value>
   </data>
-  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ReadStatusError" xml:space="preserve">
     <value>Could not read status of the dat-file</value>
   </data>
@@ -450,9 +432,6 @@
   </data>
   <data name="statText0" xml:space="preserve">
     <value>This is the statusdata for Job : {0}</value>
-  </data>
-  <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logExtractFailed" xml:space="preserve">
     <value>extractor failed</value>
@@ -712,9 +691,6 @@
   <data name="CleanupDirectoriesFailed" xml:space="preserve">
     <value>Error cleaning up directories: </value>
   </data>
-  <data name="Fax" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Fax.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="NewDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NewDocument.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -796,9 +772,6 @@
   <data name="NewUpdateDataTaskTitle" xml:space="preserve">
     <value>Add Update Data Task</value>
   </data>
-  <data name="updatedatatask" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\updatedatatask.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="updatedatataskButton" xml:space="preserve">
     <value>add a new update data task</value>
   </data>
@@ -810,9 +783,6 @@
   </data>
   <data name="NewPauseTaskTitle" xml:space="preserve">
     <value>Add Pause Task</value>
-  </data>
-  <data name="pausetask" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\time.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="pausetaskButton" xml:space="preserve">
     <value>add a new pause task</value>
@@ -970,9 +940,6 @@
   <data name="undoChangesButton" xml:space="preserve">
     <value>Undo changes in jobconfiguration since last apply</value>
   </data>
-  <data name="undoconfs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\undoconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="WarningInfofieldFailed" xml:space="preserve">
     <value>Failed to obtain infofield or expression '{0}' from the .dat file. The .dat file filename will be used as output filename.</value>
   </data>
@@ -1087,12 +1054,6 @@
   <data name="TooltipRed" xml:space="preserve">
     <value>Time base unacceptable due to limited memory resources</value>
   </data>
-  <data name="minus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\minus.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plus.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="OneTimeJobsNodeParent" xml:space="preserve">
     <value>One Time Jobs</value>
   </data>
@@ -1180,9 +1141,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="logFailDeterminePreviousTrigger2" xml:space="preserve">
     <value>Previous trigger inside deadband of current trigger, please review trigger settings of Job {0}</value>
-  </data>
-  <data name="broom" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\broom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="cleanuptaskButton" xml:space="preserve">
     <value>add new cleanup task</value>
@@ -1380,9 +1338,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="snmp_images" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\snmp_images.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="snmp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\snmp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="cannotAccessTargetSystem" xml:space="preserve">
     <value>The target system cannot be accessed:</value>
   </data>
@@ -1526,9 +1481,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="HDEventTaskTitle" xml:space="preserve">
     <value>HD offline events</value>
-  </data>
-  <data name="img_computed_values" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_computed_values.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NewHDCreateEventTaskTitle" xml:space="preserve">
     <value>Add HD Offline Events Task</value>
@@ -1860,9 +1812,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="IncompatibleServerVersion" xml:space="preserve">
     <value>Incompatible server version. Server has version {0}. It should have version {1} or higher. Please upgrade the server or downgrade the client.</value>
   </data>
-  <data name="img_question" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="GenerateFloatFieldFailed" xml:space="preserve">
     <value>Failed to generate float field {0}: {1}</value>
   </data>
@@ -2158,5 +2107,17 @@ $comment2: Signal comment 2</value>
   </data>
   <data name="DataTransferTaskErrorCertNotTrusted" xml:space="preserve">
     <value>The configured Data Transfer Task certificate is not trusted</value>
+  </data>
+  <data name="broom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\broom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_computed_values" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_computed_values.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plus.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

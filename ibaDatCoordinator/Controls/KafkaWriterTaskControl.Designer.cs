@@ -1077,7 +1077,7 @@
             // m_browsePDOFileButton
             // 
             this.m_browsePDOFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_browsePDOFileButton.Image = global::iba.Properties.Resources.open;
+            this.m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen();
             this.m_browsePDOFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_browsePDOFileButton.Location = new System.Drawing.Point(636, 6);
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
@@ -1240,7 +1240,7 @@
             // m_browseDatFileButton
             // 
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_browseDatFileButton.Image = global::iba.Properties.Resources.open;
+            this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_browseDatFileButton.Location = new System.Drawing.Point(636, 32);
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";

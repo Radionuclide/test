@@ -370,7 +370,7 @@ namespace iba.Controls
             Button btn = new Button();
             btn.Left = lbl.Left + lbl.Width + 5;
             btn.Size = new Size(24, 24);
-            btn.Image = global::iba.Properties.Resources.open;
+            btn.Image = Icons.Gui.All.Images.FolderOpen();
             btn.Enabled = (Program.RunsWithService == Program.ServiceEnum.CONNECTED || Program.RunsWithService == Program.ServiceEnum.NOSERVICE);
             btn.Click += (s, e) =>
             {

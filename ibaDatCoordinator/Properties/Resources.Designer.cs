@@ -593,16 +593,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap copy {
-            get {
-                object obj = ResourceManager.GetObject("copy", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon copydat_running {
@@ -645,16 +635,6 @@ namespace iba.Properties {
         internal static string CSVFileFilter {
             get {
                 return ResourceManager.GetString("CSVFileFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap cut {
-            get {
-                object obj = ResourceManager.GetObject("cut", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -1059,16 +1039,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap DOS {
-            get {
-                object obj = ResourceManager.GetObject("DOS", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon down {
@@ -1431,16 +1401,6 @@ namespace iba.Properties {
         internal static string Failure {
             get {
                 return ResourceManager.GetString("Failure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Fax {
-            get {
-                object obj = ResourceManager.GetObject("Fax", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -3444,16 +3404,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap minus {
-            get {
-                object obj = ResourceManager.GetObject("minus", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The following plugins are missing: .
         /// </summary>
         internal static string missingPlugins {
@@ -4243,16 +4193,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap open {
-            get {
-                object obj = ResourceManager.GetObject("open", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Problem opening file:.
         /// </summary>
         internal static string OpenFileProblem {
@@ -4307,16 +4247,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap paste {
-            get {
-                object obj = ResourceManager.GetObject("paste", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Paste.
         /// </summary>
         internal static string pasteTitle {
@@ -4331,16 +4261,6 @@ namespace iba.Properties {
         internal static string Path {
             get {
                 return ResourceManager.GetString("Path", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap pausetask {
-            get {
-                object obj = ResourceManager.GetObject("pausetask", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -5035,16 +4955,6 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap snmp_icon {
-            get {
-                object obj = ResourceManager.GetObject("snmp_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap snmp_images {
             get {
                 object obj = ResourceManager.GetObject("snmp_images", resourceCulture);
@@ -5263,16 +5173,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Start {
-            get {
-                object obj = ResourceManager.GetObject("Start", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start this job.
         /// </summary>
         internal static string startButton {
@@ -5342,16 +5242,6 @@ namespace iba.Properties {
         internal static string StatusBarError {
             get {
                 return ResourceManager.GetString("StatusBarError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Stop {
-            get {
-                object obj = ResourceManager.GetObject("Stop", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -5787,16 +5677,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap undoconfs {
-            get {
-                object obj = ResourceManager.GetObject("undoconfs", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unexpected error while processing .dat File :.
         /// </summary>
         internal static string UnexpectedErrorDatFile {
@@ -5848,16 +5728,6 @@ namespace iba.Properties {
             get {
                 object obj = ResourceManager.GetObject("up", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap updatedatatask {
-            get {
-                object obj = ResourceManager.GetObject("updatedatatask", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

@@ -325,7 +325,6 @@ namespace iba
             // m_stopButton
             // 
             resources.ApplyResources(this.m_stopButton, "m_stopButton");
-            this.m_stopButton.Image = global::iba.Properties.Resources.Stop;
             this.m_stopButton.Name = "m_stopButton";
             this.m_stopButton.UseVisualStyleBackColor = true;
             this.m_stopButton.Click += new System.EventHandler(this.m_stopButton_Click);
@@ -333,7 +332,6 @@ namespace iba
             // m_startButton
             // 
             resources.ApplyResources(this.m_startButton, "m_startButton");
-            this.m_startButton.Image = global::iba.Properties.Resources.Start;
             this.m_startButton.Name = "m_startButton";
             this.m_startButton.UseVisualStyleBackColor = true;
             this.m_startButton.Click += new System.EventHandler(this.m_startButton_Click);

@@ -109,7 +109,7 @@ namespace iba.Controls
             // m_browseFileButton
             // 
             resources.ApplyResources(this.m_browseFileButton, "m_browseFileButton");
-            this.m_browseFileButton.Image = global::iba.Properties.Resources.open;
+            this.m_browseFileButton.Image = Icons.Gui.All.Images.FolderOpen();
             this.m_browseFileButton.Name = "m_browseFileButton";
             this.m_browseFileButton.UseVisualStyleBackColor = true;
             this.m_browseFileButton.Click += new System.EventHandler(this.m_browseFileButton_Click);

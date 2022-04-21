@@ -109,38 +109,39 @@ namespace iba
             statusToolStripMenuItem.Enabled = true;
             m_filename = null;
             CreateMenuItems();
-            m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.watchdog.Handle);
+            CreateToolStripItemsIcons();
+            m_watchdogPane.LargeImage = m_watchdogPane.SmallImage =Icons.Gui.All.Images.TcpIp();
             // added by kolesnik - begin
-            m_snmpPane.LargeImage = m_snmpPane.SmallImage = iba.Properties.Resources.snmp_icon;
-            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = iba.Properties.Resources.opcUaServer_icon;
+            m_snmpPane.LargeImage = m_snmpPane.SmallImage = Icons.Gui.All.Images.Snmp();
+            m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = Icons.Gui.All.Images.Opcua();
             // added by kolesnik - end
-            m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.DataTransferIcon.Handle);
-            m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.status.Handle);
-            m_configPane.LargeImage = m_configPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.configuration.Handle);
-            m_loggingPane.LargeImage = m_loggingPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.logging.Handle);
-            m_settingsPane.LargeImage = m_settingsPane.SmallImage = Bitmap.FromHicon(iba.Properties.Resources.settings.Handle);
-            m_toolTip.SetToolTip(m_startButton, iba.Properties.Resources.toolTipStartAll);
-            m_toolTip.SetToolTip(m_stopButton, iba.Properties.Resources.toolTipStopAll);
+            m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Bitmap.FromHicon(Properties.Resources.DataTransferIcon.Handle);
+            m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(Properties.Resources.status.Handle);
+            m_configPane.LargeImage = m_configPane.SmallImage = Icons.Gui.All.Images.Batch();
+            m_loggingPane.LargeImage = m_loggingPane.SmallImage = Icons.Gui.All.Images.Table();
+            m_settingsPane.LargeImage = m_settingsPane.SmallImage = Icons.Gui.All.Images.ToolboxService();
+            m_toolTip.SetToolTip(m_startButton, Properties.Resources.toolTipStartAll);
+            m_toolTip.SetToolTip(m_stopButton, Properties.Resources.toolTipStopAll);
 
             ImageList confsImageList = new ImageList();
-            confsImageList.Images.Add(iba.Properties.Resources.configuration);
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration.ToBitmap()));
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.event_configuration.ToBitmap()));
+            confsImageList.Images.Add(Icons.Gui.All.Images.FileDat());
+            confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
+            confsImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
             confsImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
-            confsImageList.Images.Add(iba.Properties.Resources.report_running);
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.extract_running.ToBitmap()));
-            confsImageList.Images.Add(iba.Properties.Resources.batchfile_running);
-            confsImageList.Images.Add(iba.Properties.Resources.copydat_running);
-            confsImageList.Images.Add(iba.Properties.Resources.iftask);
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.updatedatatask));
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.pausetask));
-            confsImageList.Images.Add(iba.Properties.Resources.broom);
-            confsImageList.Images.Add(iba.Properties.Resources.SplitDat);
-            confsImageList.Images.Add(iba.Properties.Resources.img_computed_values);
-			confsImageList.Images.Add(iba.Properties.Resources.OPCUAIcon.ToBitmap());
-            confsImageList.Images.Add(iba.Properties.Resources.snmp_icon);
-            confsImageList.Images.Add(iba.Properties.Resources.UploadTaskIcon);
-            confsImageList.Images.Add(iba.Properties.Resources.kafka.ToBitmap());
+            confsImageList.Images.Add(Icons.Gui.All.Images.Report2());
+            confsImageList.Images.Add(Icons.Gui.All.Images.DatabaseImport());
+            confsImageList.Images.Add(Icons.Gui.All.Images.TerminalCode());
+            confsImageList.Images.Add(Icons.Gui.All.Images.Copy());
+            confsImageList.Images.Add(Icons.Gui.All.Images.Condition());
+            confsImageList.Images.Add(Icons.Gui.All.Images.DatabaseRefresh());
+            confsImageList.Images.Add(Icons.Gui.All.Images.PauseOutline());
+            confsImageList.Images.Add(Icons.Gui.All.Images.CleanErase());
+            confsImageList.Images.Add(Icons.Gui.All.Images.SplitDivide());
+            confsImageList.Images.Add(Icons.Gui.All.Images.HdFlash());
+			confsImageList.Images.Add(Icons.Gui.All.Images.Opcua());
+            confsImageList.Images.Add(Icons.Gui.All.Images.Snmp());
+            confsImageList.Images.Add(Icons.Gui.All.Images.Extract());
+            confsImageList.Images.Add(Icons.Gui.All.Images.ApacheKafka());
             confsImageList.Images.Add(iba.Properties.Resources.DataTransferIcon.ToBitmap());
             confsImageList.Images.Add(iba.Properties.Resources.img_question);
             confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
@@ -178,6 +179,20 @@ namespace iba
             statusImgStandalone = Properties.Resources.img_server;
 
             iba.Controls.AppCertificatesControl.Init();
+        }
+
+        private void CreateToolStripItemsIcons()
+        {
+            newToolStripMenuItem.Image = Icons.Gui.All.Images.FileDocumentOutlineEmpty();
+            openToolStripMenuItem.Image = Icons.Gui.All.Images.FolderOpen();
+            saveToolStripMenuItem.Image = Icons.Gui.Standard.Images.Save();
+                
+            copyToolStripMenuItem.Image = Icons.Gui.Standard.Images.Copy();
+            cutToolStripMenuItem.Image = Icons.Gui.Standard.Images.Cut();
+            pasteToolStripMenuItem.Image = Icons.Gui.Standard.Images.Paste();
+            deleteToolStripMenuItem.Image = Icons.Gui.Standard.Images.Delete();
+
+            snmpToolStripMenuItem.Image = Icons.Gui.All.Images.Snmp();
         }
 
         protected override void OnHandleCreated(EventArgs e)
@@ -1542,24 +1557,24 @@ namespace iba
             MyImageList il = new MyImageList();
             ImageList menuImages = new ImageList();
             menuImages.ColorDepth = ColorDepth.Depth32Bit;
-            menuImages.Images.Add(iba.Properties.Resources.cut);
-            menuImages.Images.Add(iba.Properties.Resources.copy);
-            menuImages.Images.Add(iba.Properties.Resources.paste);
-            menuImages.Images.Add(iba.Properties.Resources.report_running);
-            menuImages.Images.Add(iba.Properties.Resources.extract_running);
-            menuImages.Images.Add(iba.Properties.Resources.batchfile_running);
-            menuImages.Images.Add(iba.Properties.Resources.copydat_running);
-            menuImages.Images.Add(iba.Properties.Resources.iftask);
-            menuImages.Images.Add(iba.Properties.Resources.updatedatatask);
-            menuImages.Images.Add(iba.Properties.Resources.pausetask);
-            menuImages.Images.Add(iba.Properties.Resources.broom);
-            menuImages.Images.Add(iba.Properties.Resources.SplitDat);
-            menuImages.Images.Add(iba.Properties.Resources.img_computed_values);
-            menuImages.Images.Add(iba.Properties.Resources.OPCUAIcon);
-            menuImages.Images.Add(iba.Properties.Resources.snmp_icon);
-            menuImages.Images.Add(iba.Properties.Resources.UploadTaskIcon);
-            menuImages.Images.Add(iba.Properties.Resources.kafka);
-            menuImages.Images.Add(iba.Properties.Resources.DataTransferIcon);
+            menuImages.Images.Add(Icons.Gui.All.Images.Cut());
+            menuImages.Images.Add(Icons.Gui.All.Images.Copy());
+            menuImages.Images.Add(Icons.Gui.All.Images.Paste());
+            menuImages.Images.Add(Icons.Gui.All.Images.Report2());
+            menuImages.Images.Add(Icons.Gui.All.Images.DatabaseImport());
+            menuImages.Images.Add(Icons.Gui.All.Images.TerminalCode());
+            menuImages.Images.Add(Icons.Gui.All.Images.Copy());
+            menuImages.Images.Add(Icons.Gui.All.Images.Condition());
+            menuImages.Images.Add(Icons.Gui.All.Images.DatabaseRefresh());
+            menuImages.Images.Add(Icons.Gui.All.Images.PauseOutline());
+            menuImages.Images.Add(Icons.Gui.All.Images.CleanErase());
+            menuImages.Images.Add(Icons.Gui.All.Images.SplitDivide());
+            menuImages.Images.Add(Icons.Gui.All.Images.HdFlash());
+            menuImages.Images.Add(Icons.Gui.All.Images.Opcua());
+            menuImages.Images.Add(Icons.Gui.All.Images.Snmp());
+            menuImages.Images.Add(Icons.Gui.All.Images.ApacheKafka());
+            menuImages.Images.Add(Icons.Gui.All.Images.Extract());
+            menuImages.Images.Add(Properties.Resources.DataTransferIcon);
 
             int pluginsStartImageIndex = menuImages.Images.Count;
             List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
@@ -1568,30 +1583,30 @@ namespace iba
 
             int customcount = filteredPlugins.Count;
             m_menuItems = new ToolStripMenuItem[((int)MenuItemsEnum.NewCustomTask) + customcount];
-            m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(iba.Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], new EventHandler(OnDeleteMenuItem), Keys.Delete);
-            m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(iba.Properties.Resources.collapseTitle, null,new EventHandler(OnCollapseAllMenuItem));
-            m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(iba.Properties.Resources.cutTitle, menuImages.Images[0], new EventHandler(OnCutMenuItem), Keys.X | Keys.Control);
-            m_menuItems[(int)MenuItemsEnum.Copy] = new ToolStripMenuItem(iba.Properties.Resources.copyTitle, menuImages.Images[1], new EventHandler(OnCopyMenuItem), Keys.C | Keys.Control);
-            m_menuItems[(int)MenuItemsEnum.Paste] = new ToolStripMenuItem(iba.Properties.Resources.pasteTitle, menuImages.Images[2], new EventHandler(OnPasteMenuItem), Keys.V | Keys.Control);
-            m_menuItems[(int)MenuItemsEnum.NewTask] = new ToolStripMenuItem(iba.Properties.Resources.NewTaskTitle, null, null, iba.Properties.Resources.NewTaskTitle);
+            m_menuItems[(int)MenuItemsEnum.Delete] = new ToolStripMenuItem(Properties.Resources.deleteTitle, il.List.Images[MyImageList.Delete], OnDeleteMenuItem, Keys.Delete);
+            m_menuItems[(int)MenuItemsEnum.CollapseAll] = new ToolStripMenuItem(Properties.Resources.collapseTitle, null,OnCollapseAllMenuItem);
+            m_menuItems[(int)MenuItemsEnum.Cut] = new ToolStripMenuItem(Properties.Resources.cutTitle, menuImages.Images[0], OnCutMenuItem, Keys.X | Keys.Control);
+            m_menuItems[(int)MenuItemsEnum.Copy] = new ToolStripMenuItem(Properties.Resources.copyTitle, menuImages.Images[1], OnCopyMenuItem, Keys.C | Keys.Control);
+            m_menuItems[(int)MenuItemsEnum.Paste] = new ToolStripMenuItem(Properties.Resources.pasteTitle, menuImages.Images[2], OnPasteMenuItem, Keys.V | Keys.Control);
+            m_menuItems[(int)MenuItemsEnum.NewTask] = new ToolStripMenuItem(Properties.Resources.NewTaskTitle, null, null, Properties.Resources.NewTaskTitle);
             
 
-            m_menuItems[(int)MenuItemsEnum.NewTask] = new ToolStripMenuItem(iba.Properties.Resources.NewTaskTitle);
-            m_menuItems[(int)MenuItemsEnum.NewReport] = new ToolStripMenuItem(iba.Properties.Resources.NewReportTitle, menuImages.Images[3], new EventHandler(OnNewReportMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewExtract] = new ToolStripMenuItem(iba.Properties.Resources.NewExtractTitle,  menuImages.Images[4], new EventHandler(OnNewExtractMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewBatchfile] = new ToolStripMenuItem(iba.Properties.Resources.NewBatchfileTitle, menuImages.Images[5], new EventHandler(OnNewBatchfileMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewCopyTask] = new ToolStripMenuItem(iba.Properties.Resources.NewCopyTaskTitle, menuImages.Images[6], new EventHandler(OnNewCopyTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewIfTask] = new ToolStripMenuItem(iba.Properties.Resources.NewIfTaskTitle, menuImages.Images[7], new EventHandler(OnNewIfTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUpdateDataTaskTitle, iba.Properties.Resources.updatedatatask, new EventHandler(OnNewUpdateDataTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewPauseTask] = new ToolStripMenuItem(iba.Properties.Resources.NewPauseTaskTitle, iba.Properties.Resources.pausetask, new EventHandler(OnNewPauseTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewCleanupTask] = new ToolStripMenuItem(iba.Properties.Resources.NewCleanupTaskTitle, iba.Properties.Resources.broom, new EventHandler(OnNewCleanupTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewSplitterTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSplitterTaskTitle, menuImages.Images[11], new EventHandler(OnNewSplitterTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(iba.Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], new EventHandler(OnNewHDCreateEventTaskMenuItem));
-			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(iba.Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[13], new EventHandler(OnNewOPCUATaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewSNMPTask] = new ToolStripMenuItem(iba.Properties.Resources.NewSnmpTaskTitle, menuImages.Images[14], new EventHandler(OnNewSNMPTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(iba.Properties.Resources.NewUploadTaskTitle, menuImages.Images[15], new EventHandler(OnNewUploadTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(iba.Properties.Resources.NewKafkaTaskTitle, menuImages.Images[16], new EventHandler(OnNewKafkaTaskMenuItem));
-            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(iba.Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[17], new EventHandler(OnNewDataTransferTaskMenuItem));
+            m_menuItems[(int)MenuItemsEnum.NewTask] = new ToolStripMenuItem(Properties.Resources.NewTaskTitle);
+            m_menuItems[(int)MenuItemsEnum.NewReport] = new ToolStripMenuItem(Properties.Resources.NewReportTitle, menuImages.Images[3], OnNewReportMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewExtract] = new ToolStripMenuItem(Properties.Resources.NewExtractTitle,  menuImages.Images[4], OnNewExtractMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewBatchfile] = new ToolStripMenuItem(Properties.Resources.NewBatchfileTitle, menuImages.Images[5], OnNewBatchfileMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewCopyTask] = new ToolStripMenuItem(Properties.Resources.NewCopyTaskTitle, menuImages.Images[6], OnNewCopyTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewIfTask] = new ToolStripMenuItem(Properties.Resources.NewIfTaskTitle, menuImages.Images[7], OnNewIfTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewUpdateDataTask] = new ToolStripMenuItem(Properties.Resources.NewUpdateDataTaskTitle, menuImages.Images[8], OnNewUpdateDataTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewPauseTask] = new ToolStripMenuItem(Properties.Resources.NewPauseTaskTitle, menuImages.Images[9], OnNewPauseTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewCleanupTask] = new ToolStripMenuItem(Properties.Resources.NewCleanupTaskTitle, menuImages.Images[10], OnNewCleanupTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewSplitterTask] = new ToolStripMenuItem(Properties.Resources.NewSplitterTaskTitle, menuImages.Images[11], OnNewSplitterTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask] = new ToolStripMenuItem(Properties.Resources.NewHDCreateEventTaskTitle, menuImages.Images[12], OnNewHDCreateEventTaskMenuItem);
+			m_menuItems[(int)MenuItemsEnum.NewOPCUATask] = new ToolStripMenuItem(Properties.Resources.NewOpcUaTaskTitle, menuImages.Images[13], OnNewOPCUATaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewSNMPTask] = new ToolStripMenuItem(Properties.Resources.NewSnmpTaskTitle, menuImages.Images[14], OnNewSNMPTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewKafkaTask] = new ToolStripMenuItem(Properties.Resources.NewKafkaTaskTitle, menuImages.Images[15], OnNewKafkaTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewUploadTask] = new ToolStripMenuItem(Properties.Resources.NewUploadTaskTitle, menuImages.Images[16], OnNewUploadTaskMenuItem);
+            m_menuItems[(int)MenuItemsEnum.NewDataTransferTask] = new ToolStripMenuItem(Properties.Resources.NewDataTransferTaskTitle, menuImages.Images[17], OnNewDataTransferTaskMenuItem);
 
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
@@ -1614,9 +1629,9 @@ namespace iba
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewHDCreateEventTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewOPCUATask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewSNMPTask]);
+            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewKafkaTask]);
             m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewDataTransferTask]);
 
-            m_menuItems[(int)MenuItemsEnum.NewTask].DropDown.Items.Add(m_menuItems[(int)MenuItemsEnum.NewKafkaTask]);
             for (int i = 0; i < filteredPlugins.Count; i++)
             {
                 var item = m_menuItems[i + (int)MenuItemsEnum.NewCustomTask];

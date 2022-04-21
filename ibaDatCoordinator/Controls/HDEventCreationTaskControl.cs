@@ -61,14 +61,14 @@ namespace iba.Controls
             m_pulseEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 
             m_timeEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields);
-            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.EndTime, Properties.Resources.EndTime, Properties.Resources.pausetask);
-            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Properties.Resources.pausetask);
+            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.EndTime, Properties.Resources.EndTime, Icons.Gui.All.Images.PauseOutline());
+            m_timeEditor.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Icons.Gui.All.Images.PauseOutline());
             m_timeEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 
             m_timeEditorOut = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields);
             m_timeEditorOut.AddSpecialNode(HDCreateEventTaskData.UnassignedExpression, Properties.Resources.HDEventTask_ChannelUnassigned, Properties.Resources.img_warning);
-            m_timeEditorOut.AddSpecialNode(HDCreateEventTaskData.EndTime, Properties.Resources.EndTime, Properties.Resources.pausetask);
-            m_timeEditorOut.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Properties.Resources.pausetask);
+            m_timeEditorOut.AddSpecialNode(HDCreateEventTaskData.EndTime, Properties.Resources.EndTime, Icons.Gui.All.Images.PauseOutline());
+            m_timeEditorOut.AddSpecialNode(HDCreateEventTaskData.StartTime, Properties.Resources.StartTime, Icons.Gui.All.Images.PauseOutline());
             m_timeEditorOut.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 
             m_channelEditor = new RepositoryItemChannelTreeEdit(m_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Text | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields);
