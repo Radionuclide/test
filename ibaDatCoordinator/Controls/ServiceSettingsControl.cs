@@ -27,7 +27,9 @@ namespace iba.Controls
         {
             InitializeComponent();
             certificatesControl.SetControlHost(this);
-            LoadCertificatesIfDifferent();
+            bool certListUpdated = LoadCertificatesIfDifferent();
+            if (certListUpdated)
+                certificatesControl.LoadDataSource();
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //hide non relevant 
             {
                 Control[] ToHide = new Control[] {label5, m_tbAnalyzerExe, m_executeIBAAButton,
@@ -75,7 +77,9 @@ namespace iba.Controls
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_manager = manager;
-            LoadCertificatesIfDifferent();
+            bool certListUpdated = LoadCertificatesIfDifferent();
+            if (certListUpdated)
+                certificatesControl.LoadDataSource();
 
             m_cbRestartIbaAnalyzer.Checked = TaskManager.Manager.IsIbaAnalyzerCallsLimited;
             m_nudRestartIbaAnalyzer.Value = Math.Max(1,TaskManager.Manager.MaxIbaAnalyzerCalls);
@@ -626,12 +630,14 @@ namespace iba.Controls
         private void certificatesUpdateTimer_Tick(object sender, EventArgs e)
         {
             // This Timer is active ONLY if the Settings pane is visible, so it doesn't have any computational impact most of time.
-            LoadCertificatesIfDifferent();
+            bool certListUpdated = LoadCertificatesIfDifferent();
+            if (certListUpdated)
+                certificatesControl.LoadDataSource();
         }
 
         public static string[] currentlCertsList { get; private set; }
         public static string[] currentlCertsListEncrypted { get; private set; }
-        private void LoadCertificatesIfDifferent()
+        public static bool LoadCertificatesIfDifferent()
         {
             var certs = (TaskManager.Manager.HandleCertificate("GetCertificates") as string[]);
             var encr = certs.Select(a => Crypt.Decrypt(a)).ToArray<string>();
@@ -639,8 +645,9 @@ namespace iba.Controls
             {
                 currentlCertsListEncrypted = encr;
                 currentlCertsList = certs;
-                certificatesControl.LoadDataSource();
+                return true;
             }
+            return false;
         }
 
         public bool IsCertificateTableTimerTicking
@@ -763,6 +770,7 @@ namespace iba.Controls
         /// </summary>
         public string[] GetCertificates()
         {
+            ServiceSettingsControl.LoadCertificatesIfDifferent();
             return ServiceSettingsControl.currentlCertsList;
         }
     }
