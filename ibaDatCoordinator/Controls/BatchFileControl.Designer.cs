@@ -108,7 +108,7 @@ namespace iba.Controls
 			// m_saveButton
 			// 
 			resources.ApplyResources(this.m_saveButton, "m_saveButton");
-			this.m_saveButton.Image = global::iba.Properties.Resources.Speichern;
+			this.m_saveButton.Image = Icons.Gui.Standard.Images.Save();
 			this.m_saveButton.Name = "m_saveButton";
 			this.m_saveButton.UseVisualStyleBackColor = true;
 			this.m_saveButton.Click += new System.EventHandler(this.m_saveButton_Click);

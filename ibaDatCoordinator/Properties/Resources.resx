@@ -136,9 +136,6 @@
     <value>script timed out</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="copydat_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\copydat.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -172,12 +169,6 @@
   <data name="reportTitle" xml:space="preserve">
     <value>Report</value>
   </data>
-  <data name="status" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\status.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="logging" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logging.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="NewReportTitle" xml:space="preserve">
     <value>Add Report Task</value>
   </data>
@@ -196,9 +187,6 @@
   <data name="statText1" xml:space="preserve">
     <value>The job is {0}</value>
   </data>
-  <data name="extract_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\db.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="logNotificationAccessDenied" xml:space="preserve">
     <value>the user does not have access to the requested information</value>
   </data>
@@ -210,9 +198,6 @@
   </data>
   <data name="redarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\redarrow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\configuration.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logRemoveDirectoryFailed" xml:space="preserve">
     <value>failed to remove old folder</value>
@@ -328,9 +313,6 @@
   <data name="NewCopyTaskTitle" xml:space="preserve">
     <value>Add Copy Task</value>
   </data>
-  <data name="batchfile_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\batchfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ServerSaveFileProblem" xml:space="preserve">
     <value>Problem saving file at server side</value>
   </data>
@@ -342,9 +324,6 @@
   </data>
   <data name="logNotificationFailed" xml:space="preserve">
     <value>notification failed</value>
-  </data>
-  <data name="report_running" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\report.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logNextTasksIgnored" xml:space="preserve">
     <value>file was successfuly moved, subsequent tasks will be ignored</value>
@@ -387,9 +366,6 @@
   </data>
   <data name="collapseTitle" xml:space="preserve">
     <value>Collapse All</value>
-  </data>
-  <data name="Speichern" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Speichern.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="invalidEmail" xml:space="preserve">
     <value>The recipient e-mail address is invalid or not supplied</value>
@@ -454,9 +430,6 @@
   <data name="ibalogo_transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ibalogo_transparent.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="watchdog" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\watchdog.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="watchdogTitle" xml:space="preserve">
     <value>TCP/IP Watchdog</value>
   </data>
@@ -489,12 +462,6 @@
   </data>
   <data name="UpdateHappened" xml:space="preserve">
     <value>the jobconfiguration was updated</value>
-  </data>
-  <data name="refreshconfs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refreshconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="refreshdats" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refreshdats.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="closing" xml:space="preserve">
     <value>Closing</value>
@@ -549,9 +516,6 @@
   </data>
   <data name="deleteIfTaskQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the condition options "{0}" of Job "{1}" ? (dependent tasks will not be deleted)</value>
-  </data>
-  <data name="iftask" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\iftask.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="iftaskTitle" xml:space="preserve">
     <value>Condition</value>
@@ -630,9 +594,6 @@
   </data>
   <data name="PriorityApp" xml:space="preserve">
     <value>Priority of application:</value>
-  </data>
-  <data name="settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\settings.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="settingsTitle" xml:space="preserve">
     <value>Settings</value>
@@ -895,9 +856,6 @@
   <data name="addScheduledConfigurationText" xml:space="preserve">
     <value>Add Scheduled Job</value>
   </data>
-  <data name="onetimeconfiguration" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\onetimeconfiguration.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="onetime_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\onetime_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1035,9 +993,6 @@
   </data>
   <data name="Third" xml:space="preserve">
     <value>Third</value>
-  </data>
-  <data name="scheduled_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\scheduled_configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="scheduled_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\scheduled_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1184,9 +1139,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="NewSplitterTaskTitle" xml:space="preserve">
     <value>Add Splitter Task</value>
   </data>
-  <data name="SplitDat" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SplitDat.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="splittertaskButton" xml:space="preserve">
     <value>add new splitter task</value>
   </data>
@@ -1249,9 +1201,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="snmpTitle" xml:space="preserve">
     <value>SNMP server</value>
-  </data>
-  <data name="Eye" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ClientConnected" xml:space="preserve">
     <value>ibaDatCoordinator client {0} has connected</value>
@@ -1380,9 +1329,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="addEventConfigurationText" xml:space="preserve">
     <value>Add Event Job</value>
   </data>
-  <data name="event_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\event_configuration.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="event_configuration_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\event_configuration_new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1472,9 +1418,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="About_Image_80x80" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\about80x80.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dat_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dat-file.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ibaAnalyzer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ibaAnalyzer_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1647,26 +1590,11 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="img_export" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="img_key" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_key.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="img_opcuaclient_cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_opcuaclient_cert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="img_opcuaserver_cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_opcuaserver_cert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="img_shldgreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_shldgreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="img_shldred" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_shldred.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="opcUaServer_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\opcUaServer_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\remove.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="opcUaErrorTryingToGetNetworkConfiguration" xml:space="preserve">
     <value>Error trying to get network configuration from server</value>
@@ -1794,17 +1722,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="PluginIsOutdated" xml:space="preserve">
     <value>Plugin "{0}" is outdated, please install latest version.</value>
   </data>
-  <data name="img_lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_lock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="img_networkError" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_networkError.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="img_unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="img_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_server.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IncompatibleClientVersion" xml:space="preserve">
     <value>Incompatible client version. It should have version {0} or higher. Please upgrade the client.</value>
@@ -1824,9 +1743,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="ErrorWriteEvents" xml:space="preserve">
     <value>Failed to write events</value>
   </data>
-  <data name="OPCUAIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OPCIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="snmpWriterTaskButton" xml:space="preserve">
     <value>add a new SNMP Writer Task</value>
   </data>
@@ -1838,9 +1754,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="snmpWriterTaskTitle" xml:space="preserve">
     <value>SNMP writer</value>
-  </data>
-  <data name="sychronizeList" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SychronizeList.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="deleteOPCUATastQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the OPC UA Computed values options "{0}" of Job "{1}" ?</value>
@@ -1944,14 +1857,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="logUploadTaskSuccess" xml:space="preserve">
     <value>file successfully uploaded</value>
   </data>
-  <data name="UploadTaskIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UploadTaskIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="addKafkaWriterTask" xml:space="preserve">
     <value>add a new Kafka Writer Task</value>
-  </data>
-  <data name="kafka" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\kafka.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="kafkaWriterTastTitle" xml:space="preserve">
     <value>Kafka</value>
@@ -2108,16 +2015,31 @@ $comment2: Signal comment 2</value>
   <data name="DataTransferTaskErrorCertNotTrusted" xml:space="preserve">
     <value>The configured Data Transfer Task certificate is not trusted</value>
   </data>
-  <data name="broom" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\broom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="img_computed_values" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_computed_values.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="img_question" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plus.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_computed_values" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_computed_values.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="status" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\status.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eye" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="img_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_server.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="onetimeconfiguration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\onetimeconfiguration.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refreshconfs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refreshconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="refreshdats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refreshdats.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

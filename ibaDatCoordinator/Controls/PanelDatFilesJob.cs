@@ -22,9 +22,6 @@ namespace iba.Controls
             InitializeComponent();
             m_oneTimeJob = oneTimeJob;
 
-			var b = Bitmap.FromHicon(iba.Properties.Resources.dat_file.Handle);
-			m_browseDatFilesButton.Image = new Bitmap(b, new Size(16, 16));
-
             if(oneTimeJob) //make this a onetime job dialog
             {
                 this.SuspendLayout();
@@ -80,10 +77,6 @@ namespace iba.Controls
 
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
             m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
-
-            ((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
-            ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
-            ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
         }
 
         private bool busy = false;

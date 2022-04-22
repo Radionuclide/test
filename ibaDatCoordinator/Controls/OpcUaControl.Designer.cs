@@ -528,7 +528,7 @@
             // buttonEndpointRemove
             // 
             resources.ApplyResources(this.buttonEndpointRemove, "buttonEndpointRemove");
-            this.buttonEndpointRemove.Image = global::iba.Properties.Resources.remove;
+            this.buttonEndpointRemove.Image = Icons.Gui.Standard.Images.Delete();
             this.buttonEndpointRemove.Name = "buttonEndpointRemove";
             this.buttonEndpointRemove.TabStop = false;
             this.buttonEndpointRemove.UseVisualStyleBackColor = true;

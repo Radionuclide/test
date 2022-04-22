@@ -104,13 +104,14 @@ namespace iba
 
             //load plugins
             PluginManager.Manager.LoadPlugins();
-
+            
             configurationToolStripMenuItem.Enabled = false;
             statusToolStripMenuItem.Enabled = true;
             m_filename = null;
             CreateMenuItems();
             CreateToolStripItemsIcons();
-            m_watchdogPane.LargeImage = m_watchdogPane.SmallImage =Icons.Gui.All.Images.TcpIp();
+            
+            m_watchdogPane.LargeImage = m_watchdogPane.SmallImage = Icons.Gui.All.Images.TcpIp();
             // added by kolesnik - begin
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = Icons.Gui.All.Images.Snmp();
             m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = Icons.Gui.All.Images.Opcua();
@@ -127,7 +128,7 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.FileDat());
             confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
             confsImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
-            confsImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
+            confsImageList.Images.Add(Properties.Resources.onetimeconfiguration);
             confsImageList.Images.Add(Icons.Gui.All.Images.Report2());
             confsImageList.Images.Add(Icons.Gui.All.Images.DatabaseImport());
             confsImageList.Images.Add(Icons.Gui.All.Images.TerminalCode());
@@ -142,26 +143,28 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.Snmp());
             confsImageList.Images.Add(Icons.Gui.All.Images.Extract());
             confsImageList.Images.Add(Icons.Gui.All.Images.ApacheKafka());
-            confsImageList.Images.Add(iba.Properties.Resources.DataTransferIcon.ToBitmap());
-            confsImageList.Images.Add(iba.Properties.Resources.img_question);
-            confsImageList.Images.Add(iba.Properties.Resources.configuration_new);
-            confsImageList.Images.Add(iba.Properties.Resources.onetime_configuration_new);
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration_new.ToBitmap()));
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.event_configuration_new.ToBitmap()));
+            confsImageList.Images.Add(Properties.Resources.DataTransferIcon.ToBitmap());
+            confsImageList.Images.Add(Properties.Resources.img_question);
+            confsImageList.Images.Add(Properties.Resources.configuration_new);
+            confsImageList.Images.Add(Properties.Resources.onetime_configuration_new);
+            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(Properties.Resources.scheduled_configuration_new.ToBitmap()));
+            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(Properties.Resources.event_configuration_new.ToBitmap()));
             m_configTreeView.ImageList = confsImageList;
+            
             UpdateImageListConfTree();
                         
-            ImageList confsImageList2 = new ImageList();
-            confsImageList2.Images.Add(iba.Properties.Resources.greenarrow);
-            confsImageList2.Images.Add(iba.Properties.Resources.redarrow); 
-            confsImageList2.Images.Add(iba.Properties.Resources.redarrow1);
+            ImageList confsImageList2 = new();
+            confsImageList2.Images.Add(Properties.Resources.greenarrow);
+            confsImageList2.Images.Add(Properties.Resources.redarrow); 
+            confsImageList2.Images.Add(Properties.Resources.redarrow1);
             m_configTreeView.StateImageList = confsImageList2;
-            ImageList statImageList = new ImageList();
-            statImageList.Images.Add(iba.Properties.Resources.configuration);
-            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.scheduled_configuration.ToBitmap()));
-            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(iba.Properties.Resources.event_configuration.ToBitmap()));
-            statImageList.Images.Add(iba.Properties.Resources.onetimeconfiguration);
-            statImageList.Images.Add(iba.Properties.Resources.brokenfile);
+
+            ImageList statImageList = new();
+            statImageList.Images.Add(Icons.Gui.All.Images.FileDat());
+            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(Icons.Gui.All.Images.ScheduleCalendarDate()));
+            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(Icons.Gui.All.Images.FlashFilledGreen()));
+            statImageList.Images.Add(Properties.Resources.onetimeconfiguration);
+            statImageList.Images.Add(Properties.Resources.brokenfile);
             m_statusTreeView.ImageList = statImageList;
 
             CreateLanguageMenuItems();
@@ -169,12 +172,12 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
                 m_menuStrip.Items.Remove(serviceToolStripMenuItem);
-                this.Icon = iba.Properties.Resources.standalone;
+                this.Icon = Properties.Resources.standalone;
             }
             m_navBar.SelectedPane = m_configPane;
 
-            statusImgConnectedInsecure = Properties.Resources.img_unlock;
-            statusImgConnectedSecure = Properties.Resources.img_lock;
+            statusImgConnectedInsecure = Icons.Gui.All.Images.LockClosedOrange();
+            statusImgConnectedSecure = Icons.Gui.All.Images.LockOpenOrange();
             statusImgDisconnected = Properties.Resources.img_networkError.ToBitmap();
             statusImgStandalone = Properties.Resources.img_server;
 
@@ -192,7 +195,14 @@ namespace iba
             pasteToolStripMenuItem.Image = Icons.Gui.Standard.Images.Paste();
             deleteToolStripMenuItem.Image = Icons.Gui.Standard.Images.Delete();
 
+            configurationToolStripMenuItem.Image = Icons.Gui.All.Images.Batch();
+            dataTransferToolStripMenuItem.Image = Bitmap.FromHicon(Properties.Resources.DataTransferIcon.Handle);
+            statusToolStripMenuItem.Image = Bitmap.FromHicon(Properties.Resources.status.Handle);
+            loggingToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
+            watchdogToolStripMenuItem.Image = Icons.Gui.All.Images.TcpIp();
             snmpToolStripMenuItem.Image = Icons.Gui.All.Images.Snmp();
+            opcUaToolStripMenuItem.Image = Icons.Gui.All.Images.Opcua();
+            settingsToolStripMenuItem.Image = Icons.Gui.All.Images.ToolboxService();
         }
 
         protected override void OnHandleCreated(EventArgs e)

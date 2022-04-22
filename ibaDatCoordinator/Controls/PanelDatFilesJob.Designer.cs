@@ -110,7 +110,7 @@
 			// m_undoChangesBtn
 			// 
 			resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
-			this.m_undoChangesBtn.Image = Icons.Gui.All.Images.Upload(32);
+			this.m_undoChangesBtn.Image = Icons.Gui.All.Images.Download(32);
 			this.m_undoChangesBtn.Name = "m_undoChangesBtn";
 			this.m_undoChangesBtn.UseVisualStyleBackColor = true;
 			// 
@@ -184,7 +184,7 @@
 			// m_applyToRunningBtn
 			// 
 			resources.ApplyResources(this.m_applyToRunningBtn, "m_applyToRunningBtn");
-			this.m_applyToRunningBtn.Image = Icons.Gui.All.Images.Download(32);
+			this.m_applyToRunningBtn.Image = Icons.Gui.All.Images.Upload(32);
 			this.m_applyToRunningBtn.Name = "m_applyToRunningBtn";
 			this.m_applyToRunningBtn.UseVisualStyleBackColor = true;
 			// 
@@ -292,7 +292,7 @@
 			// m_browseDatFilesButton
 			// 
 			resources.ApplyResources(this.m_browseDatFilesButton, "m_browseDatFilesButton");
-			this.m_browseDatFilesButton.Image = Icons.Gui.All.Images.FolderOpen(16);
+			this.m_browseDatFilesButton.Image = Icons.Gui.All.Images.FileDatFolder(16);
 			this.m_browseDatFilesButton.Name = "m_browseDatFilesButton";
 			this.m_browseDatFilesButton.UseVisualStyleBackColor = true;
 			this.m_browseDatFilesButton.Click += new System.EventHandler(this.m_browseDatFilesButton_Click);

@@ -22,7 +22,7 @@ namespace iba.Dialogs
         public TestSplitterTaskDialog(SplitterTaskData data)
         {
             InitializeComponent();
-            this.Icon = iba.Properties.Resources.SplitDat;
+            this.Icon = Icon.FromHandle(((Bitmap)Icons.Gui.All.Images.SplitDivide()).GetHicon());
             m_data = data;
             m_stw = new SplitterTaskWorker(data);
             string to = "";
@@ -198,7 +198,7 @@ namespace iba.Dialogs
                 return;
             }
             m_toolTip.SetToolTip(m_btPerform, iba.Properties.Resources.SplitDialogTestButtonTooltipText);
-            m_btPerform.Image = m_btPerformImage = Bitmap.FromHicon(iba.Properties.Resources.SplitDat.Handle);
+            m_btPerform.Image = m_btPerformImage = Icons.Gui.All.Images.SplitDivide();
             m_btPerform.Enabled = true;
             m_bRunning = false;
             readyToSplit = true;

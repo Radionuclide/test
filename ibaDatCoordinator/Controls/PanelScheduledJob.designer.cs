@@ -296,6 +296,7 @@
             // m_undoChangesBtn
             // 
             resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
+            this.m_undoChangesBtn.Image = Icons.Gui.All.Images.Download(32);
             this.m_undoChangesBtn.Name = "m_undoChangesBtn";
             this.m_undoChangesBtn.UseVisualStyleBackColor = true;
             // 
@@ -334,18 +335,21 @@
             // m_stopButton
             // 
             resources.ApplyResources(this.m_stopButton, "m_stopButton");
+            this.m_stopButton.Image = Icons.Gui.All.Images.StopFilledRed(32);
             this.m_stopButton.Name = "m_stopButton";
             this.m_stopButton.UseVisualStyleBackColor = true;
             // 
             // m_applyToRunningBtn
             // 
             resources.ApplyResources(this.m_applyToRunningBtn, "m_applyToRunningBtn");
+            this.m_applyToRunningBtn.Image = Icons.Gui.All.Images.Upload(32);
             this.m_applyToRunningBtn.Name = "m_applyToRunningBtn";
             this.m_applyToRunningBtn.UseVisualStyleBackColor = true;
             // 
             // m_startButton
             // 
             resources.ApplyResources(this.m_startButton, "m_startButton");
+            this.m_startButton.Image = Icons.Gui.All.Images.GoFilledGreen(32);
             this.m_startButton.Name = "m_startButton";
             this.m_startButton.UseVisualStyleBackColor = true;
             // 

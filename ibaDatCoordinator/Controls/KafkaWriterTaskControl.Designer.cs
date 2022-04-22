@@ -1205,7 +1205,7 @@
             // m_testButton
             // 
             this.m_testButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_testButton.Image = global::iba.Properties.Resources.sychronizeList;
+            this.m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
             this.m_testButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_testButton.Location = new System.Drawing.Point(666, 32);
             this.m_testButton.Name = "m_testButton";

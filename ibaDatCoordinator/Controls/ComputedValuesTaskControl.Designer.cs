@@ -226,7 +226,7 @@
             // m_testButton
             // 
             resources.ApplyResources(this.m_testButton, "m_testButton");
-            this.m_testButton.Image = global::iba.Properties.Resources.sychronizeList;
+            this.m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
             this.m_testButton.Name = "m_testButton";
             this.m_testButton.UseVisualStyleBackColor = true;
             this.m_testButton.Click += new System.EventHandler(this.TestButton_Click);
