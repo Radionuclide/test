@@ -36,8 +36,7 @@ namespace iba.Controls
         CertificateInfoWithPrivateKey clientCertParams, schemaClientCertParams;
         IPropertyPaneManager m_manager;
         HidebleControlBlock clusterSSL, clusterSASL, schemaSSL, schemaAuth;
-        IEnumerable<Control> ctrlsToHide; //controls not used in Event Hub mode
-        List<Point> controlPositions = new List<Point>();
+        InterfaceModeSwitcher _modeSwitcher;
         #region ICertificatesControlHost
         public bool IsLocalHost { get; }
         public string ServerAddress { get; }
@@ -110,6 +109,77 @@ namespace iba.Controls
             }
         }
 
+        // Switch interface layout between Kafka and EventHub
+        private class InterfaceModeSwitcher
+        {
+            KafkaWriterTaskData.ClusterType currentlySelectedType;
+            List<Control> ctrlsToHideInEventHubMode; //controls not used in Event Hub mode
+            KafkaWriterTaskControl parent;
+            List<Point> controlPositions = new List<Point>();
+
+            public InterfaceModeSwitcher(KafkaWriterTaskControl ctrl)
+            {
+                parent = ctrl;
+                currentlySelectedType = KafkaWriterTaskData.ClusterType.Kafka;
+                var ctrlsToNotHideInEventHubMode = new Control[] { parent.idLabel, parent.identifierTextBox, parent.typeLabel, parent.testConnectionBtn, parent.addressTextBox, parent.clusterTypeComboBox, parent.enableSSLVerificationCb, parent.CACertificateLabel, parent.CACertCBox, parent.messageTimeoutLabel, parent.timeoutNumericUpDown, parent.connectionStrLabel };
+                ctrlsToHideInEventHubMode = parent.tabControl1.TabPages[0].Controls.Cast<Control>().Where(c => !ctrlsToNotHideInEventHubMode.Contains(c)).ToList<Control>();
+
+            }
+
+            // Kafka mode is selected by default.
+            // When mode changes to Event Hub, we remember control locations and restore them when change to Kafka
+            public void SwitchInterface(KafkaWriterTaskData.ClusterType type)
+            {
+                if (currentlySelectedType == type)
+                    return;
+                currentlySelectedType = type;
+                parent.SuspendLayout();
+                var controlsToMoveEventHub = new Control[] { parent.enableSSLVerificationCb, parent.CACertificateLabel, parent.CACertCBox, parent.messageTimeoutLabel, parent.timeoutNumericUpDown, parent.secLabel };
+                var pos = parent.clusterConnSecurityLabel.Location;
+                if (type == KafkaWriterTaskData.ClusterType.Kafka)
+                {
+                    parent.connectionStrLabel.Visible = false;
+                    parent.clusterAddressLabel.Visible = true;
+                    foreach (Control c in ctrlsToHideInEventHubMode)
+                        c.Visible = true;
+
+                    for (int i = 0; i < controlPositions.Count; i++)
+                        controlsToMoveEventHub[i].Location = controlPositions[i];
+                    parent.CACertCBox.Width = parent.clientCertCBox.Width;
+                    parent.clusterConnectionSecurityComboBox_SelectedIndexChanged(null, null);
+                    parent.schemaRegistryConnectionSecurityComboBox_SelectedIndexChanged(null, null);
+                }
+                else // event hub
+                {
+                    controlPositions.Clear();
+                    foreach (var c in controlsToMoveEventHub)
+                        controlPositions.Add(c.Location);
+                    parent.connectionStrLabel.Location = parent.clusterAddressLabel.Location;
+                    parent.connectionStrLabel.Visible = true;
+                    parent.clusterAddressLabel.Visible = false;
+
+                    var Xshift = parent.clusterConnSecurityLabel.Location.X - parent.enableSSLVerificationCb.Location.X;
+                    var Yshift = parent.clusterConnSecurityLabel.Location.Y - parent.enableSSLVerificationCb.Location.Y;
+                    parent.enableSSLVerificationCb.Location = new Point(parent.enableSSLVerificationCb.Location.X + Xshift, parent.enableSSLVerificationCb.Location.Y + Yshift);
+                    parent.CACertificateLabel.Location = new Point(parent.CACertificateLabel.Location.X + Xshift, parent.CACertificateLabel.Location.Y + Yshift);
+                    parent.CACertCBox.Location = new Point(parent.identifierTextBox.Location.X, parent.CACertCBox.Location.Y + Yshift);
+                    parent.CACertCBox.Width = parent.identifierTextBox.Width;
+                    Yshift = parent.SASLPassLabel.Location.Y - parent.messageTimeoutLabel.Location.Y;
+
+
+                    parent.messageTimeoutLabel.Location = new Point(parent.messageTimeoutLabel.Location.X, parent.messageTimeoutLabel.Location.Y + Yshift);
+                    parent.timeoutNumericUpDown.Location = new Point(parent.timeoutNumericUpDown.Location.X, parent.timeoutNumericUpDown.Location.Y + Yshift);
+                    parent.secLabel.Location = new Point(parent.secLabel.Location.X, parent.secLabel.Location.Y + Yshift);
+
+                    foreach (Control c in ctrlsToHideInEventHubMode)
+                        c.Visible = false;
+                    foreach (Control c in controlsToMoveEventHub)
+                        c.Visible = true;
+
+                }
+                parent.ResumeLayout();
+            }
+        }
 
         public KafkaWriterTaskControl()
         {
@@ -172,9 +242,7 @@ namespace iba.Controls
             schemaSSL = new HidebleControlBlock(schemaClientCertificateLabel, schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertificateLabel, schemaCACertCBox);
             schemaAuth = new HidebleControlBlock(schemaNameLabel, schemaNameTextBox, schemaPassLabel, schemaPassTextBox);
 
-
-            var ctrlsToNotHide = new Control[] { idLabel, identifierTextBox, typeLabel, testConnectionBtn, addressTextBox, clusterTypeComboBox, enableSSLVerificationCb, CACertificateLabel, CACertCBox, messageTimeoutLabel, timeoutNumericUpDown, connectionStrLabel };
-            ctrlsToHide = tabControl1.TabPages[0].Controls.Cast<Control>().Where(c => !ctrlsToNotHide.Contains(c));
+            _modeSwitcher = new InterfaceModeSwitcher(this);
         }
 
         class CertificateInfo : ICertificateInfo
@@ -290,16 +358,6 @@ namespace iba.Controls
                     break;
             }
 
-            switch (_data.ClusterMode)
-            {
-                case KafkaWriterTaskData.ClusterType.Kafka:
-                    clusterTypeComboBox.SelectedIndex = 0;
-                    break;
-                case KafkaWriterTaskData.ClusterType.EventHub:
-                    clusterTypeComboBox.SelectedIndex = 1;
-                    break;
-            }
-
             switch (_data.ClusterSecurityMode)
             {
                 case KafkaWriterTaskData.ClusterSecurityType.PLAINTEXT:
@@ -342,6 +400,16 @@ namespace iba.Controls
                     break;
                 case KafkaWriterTaskData.SASLMechanismType.SCRAM_SHA_512:
                     SASLMechanismComboBox.SelectedIndex = 2;
+                    break;
+            }
+
+            switch (_data.ClusterMode)
+            {
+                case KafkaWriterTaskData.ClusterType.Kafka:
+                    clusterTypeComboBox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.ClusterType.EventHub:
+                    clusterTypeComboBox.SelectedIndex = 1;
                     break;
             }
 
@@ -724,54 +792,7 @@ namespace iba.Controls
 
         private void typeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_data.ClusterMode == (KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex)
-                return;
-            _data.ClusterMode = (KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex;
-            SuspendLayout();
-            var controlsToMoveEventHub = new Control[] { enableSSLVerificationCb, CACertificateLabel, CACertCBox, messageTimeoutLabel, timeoutNumericUpDown, secLabel };
-            var pos = clusterConnSecurityLabel.Location;
-            if (clusterTypeComboBox.SelectedIndex == 0)//Kafka
-            {
-                connectionStrLabel.Visible = false;
-                clusterAddressLabel.Visible = true;
-                foreach (Control c in ctrlsToHide)
-                    c.Visible = true;
-
-                for (int i = 0; i < controlPositions.Count; i++)
-                    controlsToMoveEventHub[i].Location = controlPositions[i];
-                CACertCBox.Width = clientCertCBox.Width;
-                clusterConnectionSecurityComboBox_SelectedIndexChanged(null, null);
-                schemaRegistryConnectionSecurityComboBox_SelectedIndexChanged(null, null);
-            }
-            else // event hub
-            {
-                controlPositions.Clear();
-                foreach (var c in controlsToMoveEventHub)
-                    controlPositions.Add(c.Location);
-                connectionStrLabel.Location = clusterAddressLabel.Location;
-                connectionStrLabel.Visible = true;
-                clusterAddressLabel.Visible = false;
-
-                var Xshift = clusterConnSecurityLabel.Location.X - enableSSLVerificationCb.Location.X;
-                var Yshift = clusterConnSecurityLabel.Location.Y - enableSSLVerificationCb.Location.Y;
-                enableSSLVerificationCb.Location = new Point(enableSSLVerificationCb.Location.X + Xshift, enableSSLVerificationCb.Location.Y + Yshift);
-                CACertificateLabel.Location = new Point(CACertificateLabel.Location.X + Xshift, CACertificateLabel.Location.Y + Yshift);
-                CACertCBox.Location = new Point(identifierTextBox.Location.X, CACertCBox.Location.Y + Yshift);
-                CACertCBox.Width = identifierTextBox.Width;
-                Yshift = SASLPassLabel.Location.Y - messageTimeoutLabel.Location.Y;
-
-
-                messageTimeoutLabel.Location = new Point(messageTimeoutLabel.Location.X, messageTimeoutLabel.Location.Y +Yshift);
-                timeoutNumericUpDown.Location = new Point(timeoutNumericUpDown.Location.X, timeoutNumericUpDown.Location.Y + Yshift);
-                secLabel.Location = new Point(secLabel.Location.X, secLabel.Location.Y + Yshift);
-
-                foreach (Control c in ctrlsToHide)
-                    c.Visible = false;
-                foreach (Control c in controlsToMoveEventHub)
-                    c.Visible = true;
-
-            }
-            ResumeLayout();
+            _modeSwitcher.SwitchInterface((KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex);
         }
 
         private void OnImportParameters(object sender, EventArgs e)
