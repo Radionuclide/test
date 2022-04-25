@@ -273,6 +273,8 @@ namespace iba.Controls
             m_manager = manager;
             _data = datasource as KafkaWriterTaskData;
 
+            _modeSwitcher.SwitchInterface(KafkaWriterTaskData.ClusterType.Kafka);
+
             clientCertParams = new CertificateInfoWithPrivateKey();
             clientCertParams.Thumbprint = _data.SSLClientThumbprint;
             clientCertCBox.UnsetEnvironment();
@@ -454,7 +456,7 @@ namespace iba.Controls
             _data.ClusterMode = (KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex;
             _data.ClusterSecurityMode = (KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex;
             _data.SchemaRegistrySecurityMode = (KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex;
-            _data.SASLMechanismMode = (KafkaWriterTaskData.SASLMechanismType)schemaRegistryConnectionSecurityComboBox.SelectedIndex;
+            _data.SASLMechanismMode = (KafkaWriterTaskData.SASLMechanismType)SASLMechanismComboBox.SelectedIndex;
             _data.AnalysisFile = m_pdoFileTextBox.Text;
             _data.TestDatFile = m_datFileTextBox.Text;
             _data.key = keyTextBox.Text;

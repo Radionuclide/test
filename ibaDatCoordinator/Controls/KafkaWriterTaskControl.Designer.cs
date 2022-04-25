@@ -354,6 +354,7 @@
             this.connectionStrLabel.Size = new System.Drawing.Size(113, 16);
             this.connectionStrLabel.TabIndex = 95;
             this.connectionStrLabel.Text = "Connection string:";
+            this.connectionStrLabel.Visible = false;
             // 
             // schemaRegistryCb
             // 
