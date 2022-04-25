@@ -401,9 +401,10 @@ namespace iba.Controls
             bool saveSuccessfull = true;
             if (!m_ctrlEvent.ReadOnly)
             {
-                using (var validationForm = new HdFormValidation("save HD events"))
+                using (var validationForm = new HdFormValidation(Properties.Resources.SaveHDEvents))
                 {
-                    validationForm.Text = "Save HD events";
+                    validationForm.Text = Properties.Resources.SaveHDEvents;
+                    validationForm.ShowCopyButton = true;
 
                     try
                     {

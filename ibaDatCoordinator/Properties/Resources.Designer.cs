@@ -4589,6 +4589,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save ibaHD-Server events.
+        /// </summary>
+        internal static string SaveHDEvents {
+            get {
+                return ResourceManager.GetString("SaveHDEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save current jobs ?.
         /// </summary>
         internal static string saveQuestion {
