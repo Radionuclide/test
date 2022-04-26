@@ -28,15 +28,15 @@ namespace iba.Controls
     {
         readonly BindingList<KafkaWriterTaskData.KafkaRecord> _expressionTableData;
         readonly BindingList<KafkaWriterTaskData.Param> _paramTableData;
-        private readonly AnalyzerManager _analyzerManager;
-        private KafkaWriterTaskData _data;
-        private readonly GridView _viewExpr;
+        readonly AnalyzerManager _analyzerManager;
+        KafkaWriterTaskData _data;
+        readonly GridView _viewExpr;
         CertificatesComboBox clientCertCBox, CACertCBox, schemaClientCertCBox, schemaCACertCBox;
         CertificateInfo CACertParams, schemaCACertParams;
         CertificateInfoWithPrivateKey clientCertParams, schemaClientCertParams;
         IPropertyPaneManager m_manager;
         HidebleControlBlock clusterSSL, clusterSASL, schemaSSL, schemaAuth;
-        InterfaceModeSwitcher _modeSwitcher;
+        KafkaWriterTaskControlEventHub eventHubControl;
         #region ICertificatesControlHost
         public bool IsLocalHost { get; }
         public string ServerAddress { get; }
@@ -109,81 +109,16 @@ namespace iba.Controls
             }
         }
 
-        // Switch interface layout between Kafka and EventHub
-        private class InterfaceModeSwitcher
-        {
-            KafkaWriterTaskData.ClusterType currentlySelectedType;
-            List<Control> ctrlsToHideInEventHubMode; //controls not used in Event Hub mode
-            KafkaWriterTaskControl parent;
-            List<Point> controlPositions = new List<Point>();
-
-            public InterfaceModeSwitcher(KafkaWriterTaskControl ctrl)
-            {
-                parent = ctrl;
-                currentlySelectedType = KafkaWriterTaskData.ClusterType.Kafka;
-                var ctrlsToNotHideInEventHubMode = new Control[] { parent.idLabel, parent.identifierTextBox, parent.typeLabel, parent.testConnectionBtn, parent.addressTextBox, parent.clusterTypeComboBox, parent.enableSSLVerificationCb, parent.CACertificateLabel, parent.CACertCBox, parent.messageTimeoutLabel, parent.timeoutNumericUpDown, parent.connectionStrLabel };
-                ctrlsToHideInEventHubMode = parent.tabControl1.TabPages[0].Controls.Cast<Control>().Where(c => !ctrlsToNotHideInEventHubMode.Contains(c)).ToList<Control>();
-
-            }
-
-            // Kafka mode is selected by default.
-            // When mode changes to Event Hub, we remember control locations and restore them when change to Kafka
-            public void SwitchInterface(KafkaWriterTaskData.ClusterType type)
-            {
-                if (currentlySelectedType == type)
-                    return;
-                currentlySelectedType = type;
-                parent.SuspendLayout();
-                var controlsToMoveEventHub = new Control[] { parent.enableSSLVerificationCb, parent.CACertificateLabel, parent.CACertCBox, parent.messageTimeoutLabel, parent.timeoutNumericUpDown, parent.secLabel };
-                var pos = parent.clusterConnSecurityLabel.Location;
-                if (type == KafkaWriterTaskData.ClusterType.Kafka)
-                {
-                    parent.connectionStrLabel.Visible = false;
-                    parent.clusterAddressLabel.Visible = true;
-                    foreach (Control c in ctrlsToHideInEventHubMode)
-                        c.Visible = true;
-
-                    for (int i = 0; i < controlPositions.Count; i++)
-                        controlsToMoveEventHub[i].Location = controlPositions[i];
-                    parent.CACertCBox.Width = parent.clientCertCBox.Width;
-                    parent.clusterConnectionSecurityComboBox_SelectedIndexChanged(null, null);
-                    parent.schemaRegistryConnectionSecurityComboBox_SelectedIndexChanged(null, null);
-                }
-                else // event hub
-                {
-                    controlPositions.Clear();
-                    foreach (var c in controlsToMoveEventHub)
-                        controlPositions.Add(c.Location);
-                    parent.connectionStrLabel.Location = parent.clusterAddressLabel.Location;
-                    parent.connectionStrLabel.Visible = true;
-                    parent.clusterAddressLabel.Visible = false;
-
-                    var Xshift = parent.clusterConnSecurityLabel.Location.X - parent.enableSSLVerificationCb.Location.X;
-                    var Yshift = parent.clusterConnSecurityLabel.Location.Y - parent.enableSSLVerificationCb.Location.Y;
-                    parent.enableSSLVerificationCb.Location = new Point(parent.enableSSLVerificationCb.Location.X + Xshift, parent.enableSSLVerificationCb.Location.Y + Yshift);
-                    parent.CACertificateLabel.Location = new Point(parent.CACertificateLabel.Location.X + Xshift, parent.CACertificateLabel.Location.Y + Yshift);
-                    parent.CACertCBox.Location = new Point(parent.identifierTextBox.Location.X, parent.CACertCBox.Location.Y + Yshift);
-                    parent.CACertCBox.Width = parent.identifierTextBox.Width;
-                    Yshift = parent.SASLPassLabel.Location.Y - parent.messageTimeoutLabel.Location.Y;
-
-
-                    parent.messageTimeoutLabel.Location = new Point(parent.messageTimeoutLabel.Location.X, parent.messageTimeoutLabel.Location.Y + Yshift);
-                    parent.timeoutNumericUpDown.Location = new Point(parent.timeoutNumericUpDown.Location.X, parent.timeoutNumericUpDown.Location.Y + Yshift);
-                    parent.secLabel.Location = new Point(parent.secLabel.Location.X, parent.secLabel.Location.Y + Yshift);
-
-                    foreach (Control c in ctrlsToHideInEventHubMode)
-                        c.Visible = false;
-                    foreach (Control c in controlsToMoveEventHub)
-                        c.Visible = true;
-
-                }
-                parent.ResumeLayout();
-            }
-        }
 
         public KafkaWriterTaskControl()
         {
             InitializeComponent();
+
+            eventHubControl = new KafkaWriterTaskControlEventHub();
+            tabTarget.Controls.Add(eventHubControl);
+            eventHubControl.Width = tabTarget.Width;
+            eventHubControl.Location = panelKafka.Location;
+            eventHubControl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
             tabControl1.SelectedIndex = 0;
 
@@ -241,8 +176,6 @@ namespace iba.Controls
             clusterSASL = new HidebleControlBlock(SASLMechLabel, SASLMechanismComboBox, SASLNameTextBox, SASLPassTextBox, SASLNameLabel, SASLPassLabel);
             schemaSSL = new HidebleControlBlock(schemaClientCertificateLabel, schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertificateLabel, schemaCACertCBox);
             schemaAuth = new HidebleControlBlock(schemaNameLabel, schemaNameTextBox, schemaPassLabel, schemaPassTextBox);
-
-            _modeSwitcher = new InterfaceModeSwitcher(this);
         }
 
         class CertificateInfo : ICertificateInfo
@@ -272,8 +205,6 @@ namespace iba.Controls
         {
             m_manager = manager;
             _data = datasource as KafkaWriterTaskData;
-
-            _modeSwitcher.SwitchInterface(KafkaWriterTaskData.ClusterType.Kafka);
 
             clientCertParams = new CertificateInfoWithPrivateKey();
             clientCertParams.Thumbprint = _data.SSLClientThumbprint;
@@ -327,13 +258,11 @@ namespace iba.Controls
             topicComboBox.Items.Clear();
             topicComboBox.Text = _data.topicName;
             digitalFormatComboBox.SelectedIndex = (int)_data.digitalFormat;
-            timeoutNumericUpDown.Value =
-                new Decimal(
-                Math.Min(
-                    Math.Max(_data.timeout, Decimal.ToDouble(timeoutNumericUpDown.Minimum)),
-                    Decimal.ToDouble(timeoutNumericUpDown.Maximum))
-            );
+            messageTimeout = _data.timeout;
             identifierTextBox.Text = _data.identifier;
+
+            CopyToEventHub();
+
             switch (_data.Format)
             {
                 case KafkaWriterTaskData.DataFormat.JSONGrouped:
@@ -425,10 +354,29 @@ namespace iba.Controls
             m_nudTime.Value = (Decimal)Math.Min(300, Math.Max(_data.MonitorData.TimeLimit.TotalMinutes, 1));
         }
 
+        private double messageTimeout
+        {
+            get
+            {
+                return Decimal.ToDouble(timeoutNumericUpDown.Value);
+            }
+            set
+            {
+                timeoutNumericUpDown.Value =
+                   new Decimal(
+                   Math.Min(
+                       Math.Max(value, Decimal.ToDouble(timeoutNumericUpDown.Minimum)),
+                       Decimal.ToDouble(timeoutNumericUpDown.Maximum))
+               );
+            }
+        }
+
         public void LeaveCleanup() { }
 
         public void SaveData()
         {
+            if (clusterTypeComboBox.SelectedIndex == 1) //EventHub
+                CopyFromEventHub();
             _data.Records.Clear();
             foreach (var rec in _expressionTableData)
                 if (!String.IsNullOrWhiteSpace(rec.Expression))
@@ -442,7 +390,7 @@ namespace iba.Controls
             _data.clusterAddress = addressTextBox.Text;
             _data.schemaRegistryAddress = schemaTextBox.Text;
             _data.topicName = topicComboBox.Text;
-            _data.timeout = Decimal.ToDouble(timeoutNumericUpDown.Value);
+            _data.timeout = messageTimeout;
             _data.identifier = identifierTextBox.Text;
             _data.digitalFormat = (KafkaWriterTaskData.DigitalFormat)digitalFormatComboBox.SelectedIndex;
 
@@ -794,9 +742,41 @@ namespace iba.Controls
 
         private void typeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _modeSwitcher.SwitchInterface((KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex);
+            if (clusterTypeComboBox.SelectedIndex == 0) //Kafka
+            {
+                if (panelKafka.Visible == false) // switch from EventHub to Kafka
+                    CopyFromEventHub();
+                panelKafka.Visible = true;
+                eventHubControl.Visible = false;
+            }
+            else
+            {
+                if (panelKafka.Visible == true) // switch from Kafka to EventHub
+                    CopyToEventHub();
+                panelKafka.Visible = false;
+                eventHubControl.Visible = true;
+            }
         }
 
+        private void CopyFromEventHub()
+        {
+            addressTextBox.Text = eventHubControl.connectionString;
+            enableSSLVerificationCb.Checked = eventHubControl.enableSSLVerification;
+            messageTimeout = eventHubControl.messageTimeout;
+            CACertParams.Thumbprint = eventHubControl.ceThumbprint;
+            // refresh CACertCBox to apply certificate change
+            CACertCBox.UnsetEnvironment();
+            CACertCBox.SetEnvironment(this, CACertParams);
+            CACertCBox.Enabled = enableSSLVerificationCb.Checked;
+        }
+
+        private void CopyToEventHub()
+        {
+            eventHubControl.connectionString = addressTextBox.Text;
+            eventHubControl.enableSSLVerification = enableSSLVerificationCb.Checked;
+            eventHubControl.ceThumbprint = CACertParams.Thumbprint;
+            eventHubControl.messageTimeout = messageTimeout ;
+        }
         private void OnImportParameters(object sender, EventArgs e)
         {
             string fileName = "";

@@ -198,6 +198,12 @@
     <Compile Include="Controls\ImageComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\KafkaWriterTaskControlEventHub.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\KafkaWriterTaskControlEventHub.Designer.cs">
+      <DependentUpon>KafkaWriterTaskControlEventHub.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\OpcUaIpAddressSelect.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -643,6 +649,9 @@
     <EmbeddedResource Include="Controls\DataTransferTaskControl.resx">
       <DependentUpon>DataTransferTaskControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\KafkaWriterTaskControlEventHub.resx">
+      <DependentUpon>KafkaWriterTaskControlEventHub.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UploadTaskControl.resx">
       <DependentUpon>UploadTaskControl.cs</DependentUpon>
