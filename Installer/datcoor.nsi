@@ -464,6 +464,7 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\System.Threading.Tasks.Extensions.dll"
   File "..\ibaDatCoordinator\bin\Release\System.Diagnostics.DiagnosticSource.dll"
   File "..\ibaDatCoordinator\bin\Release\System.Text.Encodings.Web.dll"
+  File "..\ibaDatCoordinator\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll"
   File "..\ibaDatCoordinator\bin\Release\System.ValueTuple.dll"
   File "..\ibaDatCoordinator\bin\Release\System.Text.Json.dll"
   ;GRPC
@@ -1032,6 +1033,8 @@ Function un.UninstallTasks
   Delete "$INSTDIR\System.Runtime.CompilerServices.Unsafe.dll"
   Delete "$INSTDIR\System.Buffers.dll"
   Delete "$INSTDIR\System.Numerics.Vectors.dll"
+  Delete "$INSTDIR\ibaDatCoordinator\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll"
+
 
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"
