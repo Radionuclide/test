@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 
 namespace XmlExtract
@@ -14,6 +15,8 @@ namespace XmlExtract
         public StandortType Standort { get; set; }
         public MaterialArtType MaterialArt { get; set; }
         public string Aggregat { get; set; }
+
+        public List<string> Vektoren { get; set; } = new List<string>();
 
         public string Error { get; set; }
     }

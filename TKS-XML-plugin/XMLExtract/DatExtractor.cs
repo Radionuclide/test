@@ -88,6 +88,9 @@ namespace XmlExtract
 
             foreach (IbaChannelReader channel in reader.Channels)
             {
+                if (info.Vektoren.Any(n => channel.Name.StartsWith(n)))
+                    continue;
+
                 var signalId = channel.ResolveSignalId(data.IdField);
                 if (signalId.Contains("__IE__") || signalId.Contains("__SE__"))
                 {
@@ -99,8 +102,14 @@ namespace XmlExtract
                     MessungType mes = GetMessung(info, channel, signalId);
                     met.Messung.Add(mes);
                 }
-
             }
+
+            foreach (var vectorName in info.Vektoren)
+            {
+                var mes = GetVectorMessung(vectorName, info, reader.Channels, "");
+                met.Messung.Add(mes);
+            }
+
 
             if (met.Einzelwerte.Einzelwert.Count > 0)
                 met.Einzelwerte.Aggregat = info.Aggregat;
@@ -138,14 +147,68 @@ namespace XmlExtract
 
             if (channelData != null)
             {
-                spur.Raster1D.SegmentgroesseX = channelData.Interval;
-                spur.Raster1D.SegmentOffsetX = channelData.XOffset;
+                var r1d = new Raster1DType
+                {
+                    SegmentgroesseX = channelData.Interval,
+                    SegmentOffsetX = channelData.XOffset,
+                };
 
                 if (channelData.Data != null)
-                    spur.Raster1D.WerteList = channelData.Data;
+                    r1d.WerteList = channelData.Data;
 
+                spur.Raster1D.Add(r1d);
                 mes.Spur.Add(spur);
             }
+            return mes;
+        }
+
+        private MessungType GetVectorMessung(string vectorName, Info info, IList<IbaChannelReader> channels, string signalId)
+        {
+            var mes = new MessungType();
+            mes.Bandlaufrichtung = info.Bandlaufrichtung;
+            mes.Endprodukt = info.Endprodukt;
+            mes.Messzeitpunkt = info.Messzeitpunkt;
+            mes.Aggregat = info.Aggregat;
+            mes.Gruppe = ResolveGruppe.Resolve(vectorName);
+            mes.LetzteMsgAmDurchsatz = false;
+
+            // mes.IDMessgeraet = $"MI__{signalId}";
+            mes.IDMessgeraet = $"0";
+
+            var spur = new SpurType();
+            spur.Bezeichner = vectorName;
+
+            var firstChannel = channels.First(c => c.Name.StartsWith(vectorName));
+            spur.DimensionX = firstChannel.DefaultXBaseType == XBaseType.LENGTH ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
+            var channelUnit = firstChannel.Unit;
+            spur.Einheit = _resolveEinheit.Parse(channelUnit);
+            if (spur.Einheit == null && !String.IsNullOrEmpty(channelUnit))
+                spur.EinheitLokal = channelUnit;
+
+
+
+
+            foreach (var channel in channels.Where(c => c.Name.StartsWith(vectorName)))
+            {
+                ChannelData channelData = GetChannelData(channel);
+
+                if (channelData != null)
+                {
+                    var r1d = new Raster1DType
+                    {
+                        SegmentgroesseX = channelData.Interval,
+                        SegmentOffsetX = channelData.XOffset,
+                    };
+
+                    if (channelData.Data != null)
+                        r1d.WerteList = channelData.Data;
+
+                    spur.Raster1D.Add(r1d);
+                }
+
+            }
+
+            mes.Spur.Add(spur);
             return mes;
         }
 

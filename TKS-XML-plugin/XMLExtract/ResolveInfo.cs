@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
-
+using System.Linq;
 using iba.TKS_XML_Plugin.Properties;
 using iba.ibaFilesLiteDotNet;
 
@@ -21,6 +21,7 @@ namespace XmlExtract
         private const string DE_BANDLAUFRICHTUNG = "$DE_BANDLAUFRICHTUNG";
         private const string DE_ENDPRODUKT = "$DE_ENDPRODUKT";
         private const string DE_AGGREGAT = "$DE_AGGREGAT";
+        private const string VECTOR_PREFIX = "Vector_name_";
         // ReSharper restore InconsistentNaming
 
         private static List<string> _missingFields;
@@ -93,6 +94,9 @@ namespace XmlExtract
 
             info.Messzeitpunkt = GetMesszeit(reader);
 
+            var vectornames = reader.InfoFields.Where(i => i.Key.StartsWith(VECTOR_PREFIX)).Select(i => i.Value);
+            info.Vektoren.AddRange(vectornames);
+            
             info.Error = FormatError();
             return info;
         }

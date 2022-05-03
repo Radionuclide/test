@@ -58,14 +58,13 @@ namespace XmlExtract
     {
         
         private System.Nullable<MaterialArtType> materialArtField;
-        
 
         public string LokalerIdent { get; set; }
 
         public string TKSIdent { get; set; }
         
         /// <summary>
-        /// BO, DO, DU, SI oder Anderer
+        /// BO, DO, DU, SI, SA oder Anderer
         /// </summary>
         public string Standort { get; set; }
         
@@ -289,10 +288,6 @@ namespace XmlExtract
         [System.Xml.Serialization.XmlEnumAttribute("A/qm")]
         Aqm,
         
-        /// <summary>
-        /// cm-1
-        /// </summary>
-        [System.Xml.Serialization.XmlEnumAttribute("cm-1")]
         cm1,
         
         s,
@@ -315,13 +310,13 @@ namespace XmlExtract
         [System.Xml.Serialization.XmlEnumAttribute("g/l")]
         gl,
         
-        /// <summary>
-        /// I-Unit
-        /// </summary>
-        [System.Xml.Serialization.XmlEnumAttribute("I-Unit")]
         IUnit,
         
         pH,
+        
+        ppm,
+        
+        kg,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -332,7 +327,13 @@ namespace XmlExtract
     public partial class EinzelwertComplexType
     {
         
+        /// <summary>
+        /// z.B. BEFB02
+        /// </summary>
         public string Aggregat { get; set; }
+        public System.DateTime Messzeitpunkt { get; set; }
+        [XmlIgnore]
+        public bool MesszeitpunktSpecified => Messzeitpunkt != null;
         [System.Xml.Serialization.XmlElementAttribute("Einzelwert")]
         public List<EinzelwertType> Einzelwert { get; set; }
         
@@ -360,8 +361,8 @@ namespace XmlExtract
         /// Anz. der Werte, wird berechnet wenn fehlend.
         /// </summary>
         public int AnzahlX { get; set; }
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool AnzahlXSpecified { get; set; }
+        [XmlIgnore]
+        public bool AnzahlXSpecified => AnzahlX > 0;
         /// <summary>
         /// Schrittlaenge zwischen zwei Messpunkten, in der spez. x-Richtung und Dimension (Sekunde oder Meter)
         /// </summary>
@@ -370,6 +371,21 @@ namespace XmlExtract
         /// Darf weggelassen werden, dann wird 0 angenommen.
         /// </summary>
         public float SegmentOffsetX { get; set; }
+        [XmlIgnore]
+        public bool SegmentOffsetXSpecified => SegmentOffsetX != 0.0;
+        /// <summary>
+        /// Fehlt, wenn y-z-unabhaengig oder 0
+        /// </summary>
+        public float SegmentOffsetY { get; set; }
+        [XmlIgnore]
+        public bool SegmentOffsetYSpecified => SegmentOffsetY != 0.0;
+        /// <summary>
+        /// Fehlt wenn z-unabhaengig oder 0
+        /// </summary>
+        public float SegmentOffsetZ { get; set; }
+        [XmlIgnore]
+        public bool SegmentOffsetZSpecified => SegmentOffsetZ != 0.0;
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string WerteX
         {
@@ -421,6 +437,10 @@ namespace XmlExtract
 
         public string EinheitLokal { get; set; }
 
+        private System.Nullable<BezugDimensionEnum> dimensionYField;
+        
+        private System.Nullable<BezugDimensionEnum> dimensionZField;
+        
         /// <summary>
         /// Name der Messreihe im statischen Modell
         /// </summary>
@@ -429,7 +449,7 @@ namespace XmlExtract
         /// Darf weggelassen werden; dann werden die Werte berechnet.
         /// </summary>
         public StatistikType Statistik { get; set; }
-        /// added by iba
+        // added by iba
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeStatistik()
         {
@@ -446,24 +466,25 @@ namespace XmlExtract
         /// <summary>
         /// Darf weggelassen werden; dann wird true angenommen.
         /// </summary>
+        [System.ComponentModel.DefaultValueAttribute(true)]
         public bool isAbsolut { get; set; }
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool isAbsolutSpecified { get; set; }
         /// <summary>
         /// Richtung der x-Achse (oder Dimension Zeit, Windungen)
         /// </summary>
         public BezugDimensionEnum DimensionX { get; set; }
-        public Raster1DType Raster1D { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute("Raster1D")]
+        public List<Raster1DType> Raster1D { get; set; }
         
         /// <summary>
         /// SpurType class constructor
         /// </summary>
         public SpurType()
         {
-            this.Raster1D = new Raster1DType();
+            this.Raster1D = new List<Raster1DType>();
             this.Statistik = new StatistikType();
             this.DimensionX = BezugDimensionEnum.Laenge;
-            this.Bezugswert = 0.0;
+            this.Bezugswert = 0;
+            this.isAbsolut = true;
         }
         
         /// <summary>
@@ -503,6 +524,82 @@ namespace XmlExtract
                 }
             }
         }
+        
+        /// <summary>
+        /// Fehlt, wenn Messung unabhaengig von 2. und 3. Dimension.
+        /// </summary>
+        public BezugDimensionEnum DimensionY
+        {
+            get
+            {
+                if (this.dimensionYField.HasValue)
+                {
+                    return this.dimensionYField.Value;
+                }
+                else
+                {
+                    return default(BezugDimensionEnum);
+                }
+            }
+            set
+            {
+                this.dimensionYField = value;
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool DimensionYSpecified
+        {
+            get
+            {
+                return this.dimensionYField.HasValue;
+            }
+            set
+            {
+                if (value==false)
+                {
+                    this.dimensionYField = null;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Fehlt, wenn Messung unabhaengig von  3. Dimension.
+        /// </summary>
+        public BezugDimensionEnum DimensionZ
+        {
+            get
+            {
+                if (this.dimensionZField.HasValue)
+                {
+                    return this.dimensionZField.Value;
+                }
+                else
+                {
+                    return default(BezugDimensionEnum);
+                }
+            }
+            set
+            {
+                this.dimensionZField = value;
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool DimensionZSpecified
+        {
+            get
+            {
+                return this.dimensionZField.HasValue;
+            }
+            set
+            {
+                if (value==false)
+                {
+                    this.dimensionZField = null;
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -520,7 +617,7 @@ namespace XmlExtract
         Maximum,
         
         StdDev,
-    
+        
         Test,
     }
     
