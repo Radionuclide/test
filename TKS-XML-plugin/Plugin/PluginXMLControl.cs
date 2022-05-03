@@ -28,7 +28,7 @@ namespace iba.TKS_XML_Plugin
 
         #region IPluginControl Members
 
-        PluginXMLTask m_data;
+        private PluginXMLTask m_data;
         public void LoadData(object datasource, ICommonTaskControl parentcontrol)
         {
             m_data = datasource as PluginXMLTask;
@@ -37,6 +37,7 @@ namespace iba.TKS_XML_Plugin
             m_rbDU.Checked = m_data.StandOrt == StandortType.DU;
             m_rbBO.Checked = m_data.StandOrt == StandortType.BO;
             m_rbSI.Checked = m_data.StandOrt == StandortType.SI;
+            m_rbSA.Checked = m_data.StandOrt == StandortType.SA;
             m_rbAnderer.Checked = m_data.StandOrt == StandortType.Anderer;
             
             m_rbName.Checked = m_data.IdField == IdFieldLocation.Name;
@@ -56,6 +57,8 @@ namespace iba.TKS_XML_Plugin
                 m_data.StandOrt = StandortType.DO;
             else if (m_rbSI.Checked)
                 m_data.StandOrt = StandortType.SI;
+            else if (m_rbSA.Checked)
+                m_data.StandOrt = StandortType.SA;
             else if (m_rbAnderer.Checked)
                 m_data.StandOrt = StandortType.Anderer;
             else /* if (m_rbDU.Checked) */

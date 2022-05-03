@@ -30,21 +30,19 @@
         {
             this.m_gbStandort = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.m_rbDU = new System.Windows.Forms.RadioButton();
-            this.m_rbDO = new System.Windows.Forms.RadioButton();
             this.m_rbBO = new System.Windows.Forms.RadioButton();
+            this.m_rbDO = new System.Windows.Forms.RadioButton();
+            this.m_rbDU = new System.Windows.Forms.RadioButton();
+            this.m_rbSI = new System.Windows.Forms.RadioButton();
             this.m_rbAnderer = new System.Windows.Forms.RadioButton();
             this.m_txtAndererStandort = new System.Windows.Forms.TextBox();
-            this.m_rbSI = new System.Windows.Forms.RadioButton();
+            this.m_rbSA = new System.Windows.Forms.RadioButton();
             this.m_gbId = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbComment2 = new System.Windows.Forms.RadioButton();
             this.m_rbComment1 = new System.Windows.Forms.RadioButton();
             this.m_rbName = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.m_gbSchemaLocation = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_txtSchemaLocation = new System.Windows.Forms.TextBox();
@@ -55,7 +53,6 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.m_gbId.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
             this.m_gbSchemaLocation.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.m_grpXsdLocation.SuspendLayout();
@@ -76,49 +73,27 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 6;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnCount = 7;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.m_rbDO, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.m_rbBO, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_rbAnderer, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_txtAndererStandort, 5, 0);
-            this.tableLayoutPanel1.Controls.Add(this.m_rbSI, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_rbDO, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.m_rbDU, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_rbSI, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_rbAnderer, 5, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_txtAndererStandort, 6, 0);
+            this.tableLayoutPanel1.Controls.Add(this.m_rbSA, 4, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 15);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(654, 24);
             this.tableLayoutPanel1.TabIndex = 4;
-            // 
-            // m_rbDU
-            // 
-            this.m_rbDU.AutoSize = true;
-            this.m_rbDU.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_rbDU.Location = new System.Drawing.Point(295, 3);
-            this.m_rbDU.Name = "m_rbDU";
-            this.m_rbDU.Size = new System.Drawing.Size(67, 17);
-            this.m_rbDU.TabIndex = 3;
-            this.m_rbDU.TabStop = true;
-            this.m_rbDU.Text = "Duisburg";
-            this.m_rbDU.UseVisualStyleBackColor = true;
-            // 
-            // m_rbDO
-            // 
-            this.m_rbDO.AutoSize = true;
-            this.m_rbDO.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_rbDO.Location = new System.Drawing.Point(120, 3);
-            this.m_rbDO.Name = "m_rbDO";
-            this.m_rbDO.Size = new System.Drawing.Size(71, 17);
-            this.m_rbDO.TabIndex = 2;
-            this.m_rbDO.TabStop = true;
-            this.m_rbDO.Text = "Dortmund";
-            this.m_rbDO.UseVisualStyleBackColor = true;
             // 
             // m_rbBO
             // 
@@ -127,41 +102,77 @@
             this.m_rbBO.Location = new System.Drawing.Point(3, 3);
             this.m_rbBO.Name = "m_rbBO";
             this.m_rbBO.Size = new System.Drawing.Size(64, 17);
-            this.m_rbBO.TabIndex = 1;
+            this.m_rbBO.TabIndex = 0;
             this.m_rbBO.TabStop = true;
             this.m_rbBO.Text = "Bochum";
             this.m_rbBO.UseVisualStyleBackColor = true;
+            // 
+            // m_rbDO
+            // 
+            this.m_rbDO.AutoSize = true;
+            this.m_rbDO.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_rbDO.Location = new System.Drawing.Point(96, 3);
+            this.m_rbDO.Name = "m_rbDO";
+            this.m_rbDO.Size = new System.Drawing.Size(71, 17);
+            this.m_rbDO.TabIndex = 1;
+            this.m_rbDO.TabStop = true;
+            this.m_rbDO.Text = "Dortmund";
+            this.m_rbDO.UseVisualStyleBackColor = true;
+            // 
+            // m_rbDU
+            // 
+            this.m_rbDU.AutoSize = true;
+            this.m_rbDU.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_rbDU.Location = new System.Drawing.Point(189, 3);
+            this.m_rbDU.Name = "m_rbDU";
+            this.m_rbDU.Size = new System.Drawing.Size(67, 17);
+            this.m_rbDU.TabIndex = 2;
+            this.m_rbDU.TabStop = true;
+            this.m_rbDU.Text = "Duisburg";
+            this.m_rbDU.UseVisualStyleBackColor = true;
+            // 
+            // m_rbSI
+            // 
+            this.m_rbSI.AutoSize = true;
+            this.m_rbSI.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.m_rbSI.Location = new System.Drawing.Point(282, 3);
+            this.m_rbSI.Name = "m_rbSI";
+            this.m_rbSI.Size = new System.Drawing.Size(75, 17);
+            this.m_rbSI.TabIndex = 3;
+            this.m_rbSI.TabStop = true;
+            this.m_rbSI.Text = "Siegerland";
+            this.m_rbSI.UseVisualStyleBackColor = true;
             // 
             // m_rbAnderer
             // 
             this.m_rbAnderer.AutoSize = true;
             this.m_rbAnderer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_rbAnderer.Location = new System.Drawing.Point(471, 3);
+            this.m_rbAnderer.Location = new System.Drawing.Point(468, 3);
             this.m_rbAnderer.Name = "m_rbAnderer";
             this.m_rbAnderer.Size = new System.Drawing.Size(62, 17);
-            this.m_rbAnderer.TabIndex = 4;
+            this.m_rbAnderer.TabIndex = 5;
             this.m_rbAnderer.TabStop = true;
             this.m_rbAnderer.Text = "Anderer";
             this.m_rbAnderer.UseVisualStyleBackColor = true;
             // 
             // m_txtAndererStandort
             // 
-            this.m_txtAndererStandort.Location = new System.Drawing.Point(539, 3);
+            this.m_txtAndererStandort.Location = new System.Drawing.Point(536, 3);
             this.m_txtAndererStandort.Name = "m_txtAndererStandort";
             this.m_txtAndererStandort.Size = new System.Drawing.Size(100, 20);
-            this.m_txtAndererStandort.TabIndex = 5;
+            this.m_txtAndererStandort.TabIndex = 6;
             // 
-            // m_rbSI
+            // m_rbSA
             // 
-            this.m_rbSI.AutoSize = true;
-            this.m_rbSI.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.m_rbSI.Location = new System.Drawing.Point(354, 3);
-            this.m_rbSI.Name = "m_rbSI";
-            this.m_rbSI.Size = new System.Drawing.Size(75, 17);
-            this.m_rbSI.TabIndex = 6;
-            this.m_rbSI.TabStop = true;
-            this.m_rbSI.Text = "Siegerland";
-            this.m_rbSI.UseVisualStyleBackColor = true;
+            this.m_rbSA.AutoSize = true;
+            this.m_rbSA.Location = new System.Drawing.Point(375, 3);
+            this.m_rbSA.Name = "m_rbSA";
+            this.m_rbSA.Size = new System.Drawing.Size(61, 17);
+            this.m_rbSA.TabIndex = 4;
+            this.m_rbSA.TabStop = true;
+            this.m_rbSA.Text = "Galmed";
+            this.m_rbSA.UseVisualStyleBackColor = true;
+            // 
             // m_gbId
             // 
             this.m_gbId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -236,44 +247,6 @@
             this.groupBox1.Size = new System.Drawing.Size(200, 100);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 3;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.Controls.Add(this.radioButton1, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(200, 100);
-            this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.radioButton1.Location = new System.Drawing.Point(3, 3);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(60, 17);
-            this.radioButton1.TabIndex = 3;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Kommentar 2";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.radioButton2.Location = new System.Drawing.Point(153, 3);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(87, 17);
-            this.radioButton2.TabIndex = 2;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Kommentar 1";
-            this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // m_gbSchemaLocation
             // 
@@ -358,8 +331,6 @@
             this.m_gbId.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
             this.m_gbSchemaLocation.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -384,9 +355,6 @@
         private System.Windows.Forms.RadioButton m_rbName;
         private System.Windows.Forms.RadioButton m_rbAnderer;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.GroupBox m_gbSchemaLocation;
         private System.Windows.Forms.TextBox m_txtSchemaLocation;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
@@ -395,5 +363,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TextBox m_txtXsdLocation;
         private System.Windows.Forms.RadioButton m_rbSI;
+        private System.Windows.Forms.RadioButton m_rbSA;
     }
 }

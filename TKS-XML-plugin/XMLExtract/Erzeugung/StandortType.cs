@@ -5,14 +5,16 @@ using System.Text;
 namespace XmlExtract
 {
     /// <summary>
-    /// Gueltige TKS-Standorte. BO, DO, DU oder Anderer
+    /// Gueltige TKS-Standorte. BO, DO, DU, SI, SA oder Anderer
+    /// Entspricht dem StandortType aus dem XSD, erweitert um "Anderer"
     /// </summary>
     public enum StandortType
     {
-        BO,
-        DO,
-        DU,
-        SI,
+        BO, //Bochum
+        DO, //Dortmund 
+        DU, //Duisburg
+        SI, //Siegerland
+        SA, //Galmed (Spanien)
         Anderer,
     }
 }
