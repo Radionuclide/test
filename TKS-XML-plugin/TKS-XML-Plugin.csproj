@@ -96,6 +96,7 @@
     <Compile Include="XMLExtract\IExtractorData.cs" />
     <Compile Include="XMLExtract\Info.cs" />
     <Compile Include="XMLExtract\ResolveEinheit.cs" />
+    <Compile Include="XMLExtract\ResolveIsEinzelWert.cs" />
     <Compile Include="XMLExtract\ResolveGruppe.cs" />
     <Compile Include="XMLExtract\ResolveInfo.cs" />
     <Compile Include="XMLExtract\Vector.cs" />
