@@ -1,17 +1,15 @@
 ﻿
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml.Serialization;
+using System.Collections.Generic;
+using iba.ibaFilesLiteDotNet;
 using iba.Plugins;
 
 namespace XmlExtract
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Globalization;
-    using System.Xml.Serialization;
-    using System.Collections.Generic;
-    using iba.ibaFilesLiteDotNet;
-
 
     public class DatExtractor : IDisposable
     {
@@ -30,7 +28,7 @@ namespace XmlExtract
         }
 
         public DatExtractor(IJobData jobData)
-            :this()
+            : this()
         {
             _pass = jobData?.FileEncryptionPassword ?? String.Empty;
         }
@@ -136,7 +134,7 @@ namespace XmlExtract
             mes.LetzteMsgAmDurchsatz = false;
 
             mes.IDMessgeraet = $"MI__{signalId}";
-            
+
             var spur = new SpurType();
             spur.Bezeichner = signalId;
             spur.DimensionX = channel.DefaultXBaseType == XBaseType.LENGTH ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
@@ -195,6 +193,7 @@ namespace XmlExtract
                 ;
 
             var yOffset = (float)vector.ZoneOffset;
+            var rasterList = new List<Raster1DType>();
             foreach (var channel in vectorChannels)
             {
                 ChannelData channelData = GetChannelData(channel);
@@ -211,14 +210,76 @@ namespace XmlExtract
                     if (channelData.Data != null)
                         r1d.WerteList = channelData.Data;
 
-                    spur.Raster1D.Add(r1d);
+                    rasterList.Add(r1d);
                     yOffset += channel.InfoFields.GetValueAsFloat("Vector_ZoneWidth", 1);
                 }
-
             }
+
+            if (spur.DimensionX == BezugDimensionEnum.Breite)
+            {
+
+                var zoneWidth = 1.0f;
+                var segmentSizeY = 1.0f;
+
+                var secondRasterEntry = rasterList.Skip(1).FirstOrDefault();
+                if (secondRasterEntry != null)
+                {
+                    zoneWidth = secondRasterEntry.SegmentOffsetY;
+                    segmentSizeY = secondRasterEntry.SegmentgroesseX;
+                }
+
+                var (maxFrames, minOffsetFrames) = rasterList.GetLimits();
+                List<List<float>> matrix = FillMatrixWithNaN(rasterList, maxFrames, minOffsetFrames);
+
+                var transposedMatrix = matrix.Transpose();
+
+                var rasterListNew = new List<Raster1DType>();
+
+                //Add minSegmentXoffset as initial offsetY.
+                var offsetY = minOffsetFrames * segmentSizeY;
+                foreach (var row in transposedMatrix)
+                {
+                    var r1d = new Raster1DType
+                    {
+                        SegmentgroesseX = zoneWidth,
+                        SegmentOffsetY = offsetY,
+                        WerteList = row.ToList(),
+                    };
+
+                    rasterListNew.Add(r1d);
+                    offsetY += segmentSizeY;
+                }
+
+                rasterList = rasterListNew;
+            }
+
+
+
+            spur.Raster1D = rasterList;
+
 
             mes.Spur.Add(spur);
             return mes;
+
+        }
+
+        private static List<List<float>> FillMatrixWithNaN(List<Raster1DType> rasterList, int maxFrames, float minOffsetFrames)
+        {
+            var floatList = new List<List<float>>(rasterList.Count);
+            foreach (var raster1D in rasterList)
+            {
+                var l = new List<float>(maxFrames);
+                var prefixFrames = raster1D.GetSegmentOffsetXFrames() - minOffsetFrames;
+                var suffixFrames = maxFrames - prefixFrames - raster1D.WerteList.Count;
+
+                l.AddRange(Enumerable.Repeat(Single.NaN, (int)prefixFrames));
+                l.AddRange(raster1D.WerteList);
+                l.AddRange(Enumerable.Repeat(Single.NaN, (int)suffixFrames));
+
+                floatList.Add(l);
+            }
+
+            return floatList;
         }
 
 
@@ -304,19 +365,5 @@ namespace XmlExtract
             Dispose(false);
         }
         #endregion
-    }
-
-    static class DatExtractorExtensons
-    {
-        public static float GetValueAsFloat(this IDictionary<string, string> infoFields, string keyName, float defaultvalue)
-        {
-            if (infoFields.TryGetValue(keyName, out var value))
-            {
-                if (Single.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var widthValue))
-                    return widthValue;
-            }
-
-            return defaultvalue;
-        }
     }
 }
