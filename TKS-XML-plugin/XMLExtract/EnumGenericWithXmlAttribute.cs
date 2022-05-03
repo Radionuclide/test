@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace XmlExtract
 {
-    static class EnumWithXmlAttribute<T> where T : struct, IConvertible
+    public static class EnumWithXmlAttribute<T> where T : struct, IConvertible
     {
         private static readonly Dictionary<string, T> SensitiveXmlNames = new Dictionary<string, T>();
         private static readonly Dictionary<string, T> InsensitiveXmlNames = new Dictionary<string, T>();

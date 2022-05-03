@@ -11,7 +11,7 @@ namespace XmlExtract
 
     internal class ResolveEinheit
     {
-        private readonly static Dictionary<string, EinheitEnum> _specialsMap = new Dictionary<string, EinheitEnum>() { 
+        private static readonly Dictionary<string, EinheitEnum> _specialsMap = new Dictionary<string, EinheitEnum>() { 
             { "µm", EinheitEnum.mikrom },
             { "°C", EinheitEnum.gradC },
             { "g/m²", EinheitEnum.gqm },
@@ -35,8 +35,7 @@ namespace XmlExtract
 
         public string Parse(string unit)
         {
-            EinheitEnum einheit;
-            if (EnumWithXmlAttribute<EinheitEnum>.TryParse(unit, true, out einheit))
+            if (EnumWithXmlAttribute<EinheitEnum>.TryParse(unit, true, out var einheit))
                 return EnumWithXmlAttribute<EinheitEnum>.GetXmlName(einheit);
 
             if (_specialsMap.TryGetValue(unit, out einheit))
@@ -95,7 +94,7 @@ namespace XmlExtract
             }
             catch (Exception ex)
             {
-                Error = String.Format("Loading EinheitEnum from {0} failed: {0}", ex.Message, filename);
+                Error = $"Loading EinheitEnum from {filename} failed: {ex.Message}";
             }
 
         }

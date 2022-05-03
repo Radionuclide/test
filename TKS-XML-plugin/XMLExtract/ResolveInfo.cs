@@ -12,22 +12,22 @@ namespace XmlExtract
 
     internal class ResolveInfo
     {
-        const string DE_BUNDNR = "$DE_BUNDNR";
-        const string DE_TKSIDENT = "$DE_TKSIDENT";
-        const string DE_MATERIALART = "$DE_MATERIALART";
-        const string DE_MESSZEITPUNKT = "$DE_MESSZEITPUNKT";
-        const string STARTTIME = "starttime";
-        const string DE_BANDLAUFRICHTUNG = "$DE_BANDLAUFRICHTUNG";
-        const string DE_ENDPRODUKT = "$DE_ENDPRODUKT";
-        const string DE_AGGREGAT = "$DE_AGGREGAT";
+        // ReSharper disable InconsistentNaming
+        private const string DE_BUNDNR = "$DE_BUNDNR";
+        private const string DE_TKSIDENT = "$DE_TKSIDENT";
+        private const string DE_MATERIALART = "$DE_MATERIALART";
+        private const string DE_MESSZEITPUNKT = "$DE_MESSZEITPUNKT";
+        private const string STARTTIME = "starttime";
+        private const string DE_BANDLAUFRICHTUNG = "$DE_BANDLAUFRICHTUNG";
+        private const string DE_ENDPRODUKT = "$DE_ENDPRODUKT";
+        private const string DE_AGGREGAT = "$DE_AGGREGAT";
+        // ReSharper restore InconsistentNaming
 
         private static List<string> _missingFields;
         private static List<string> _wrongValueFields;
 
         public static Info Resolve(IbaFileReader reader, StandortType st)
         {
-
-
             _missingFields = new List<string>();
             _wrongValueFields = new List<string>();
 
@@ -40,10 +40,9 @@ namespace XmlExtract
             //Laenge = Single.Parse(reader.QueryInfoByName("$DE_LAENGE").Trim());
 
             var info = new Info();
-            string infoFieldValue;
 
             // return when tksident (is set && not empty && <> 0)
-            if (reader.InfoFields.TryGetValue(DE_TKSIDENT, out infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
+            if (reader.InfoFields.TryGetValue(DE_TKSIDENT, out var infoFieldValue) && !String.IsNullOrWhiteSpace(infoFieldValue) && infoFieldValue != "0")
                 info.TKSIdent = infoFieldValue;
             else if (reader.InfoFields.TryGetValue(DE_BUNDNR, out infoFieldValue))
                 info.LocalIdent = infoFieldValue;
@@ -55,8 +54,7 @@ namespace XmlExtract
             {
                 if (reader.InfoFields.TryGetValue(DE_MATERIALART, out infoFieldValue))
                 {
-                    MaterialArtType mat;
-                    if (Enum<MaterialArtType>.TryParse(infoFieldValue.Trim(), true, out mat))
+                    if (Enum<MaterialArtType>.TryParse(infoFieldValue.Trim(), true, out var mat))
                         info.MaterialArt = mat;
                     else
                         _wrongValueFields.Add(DE_MATERIALART);
@@ -68,8 +66,7 @@ namespace XmlExtract
 
             if (reader.InfoFields.TryGetValue(DE_BANDLAUFRICHTUNG, out infoFieldValue))
             {
-                var blr = BandlaufrichtungEnum.InWalzRichtung;
-                if (Enum<BandlaufrichtungEnum>.TryParse(infoFieldValue.Trim(), true, out blr))
+                if (Enum<BandlaufrichtungEnum>.TryParse(infoFieldValue.Trim(), true, out var blr))
                     info.Bandlaufrichtung = blr;
                 else
                     _wrongValueFields.Add(DE_BANDLAUFRICHTUNG);
@@ -86,8 +83,7 @@ namespace XmlExtract
 
             if (reader.InfoFields.TryGetValue(DE_ENDPRODUKT, out infoFieldValue))
             {
-                var ep = true;
-                if (TryConvertToBoolean(infoFieldValue.Trim(), out ep))
+                if (TryConvertToBoolean(infoFieldValue.Trim(), out var ep))
                     info.Endprodukt = ep;
                 else
                     _wrongValueFields.Add(DE_ENDPRODUKT);
@@ -104,7 +100,7 @@ namespace XmlExtract
         private static string FormatError()
         {
             if (_wrongValueFields.Count + _missingFields.Count == 0)
-                return string.Empty;
+                return String.Empty;
 
             _missingFields = _missingFields.ConvertAll(x => StripPrefix(x));
             _wrongValueFields = _wrongValueFields.ConvertAll(x => StripPrefix(x));
@@ -122,20 +118,19 @@ namespace XmlExtract
                 wrongValuesError = String.Format(Resources.WrongValuesForInfoFields, String.Join("', '", _wrongValueFields.ToArray()));
             }
 
-            return String.Format("{0} {1}", misingFieldError, wrongValuesError).Trim();
+            return $"{misingFieldError} {wrongValuesError}".Trim();
 
         }
 
         private static DateTime GetMesszeit(IbaFileReader reader)
         {
-            string dtValue;
-            DateTime dt;
-            if (reader.InfoFields.TryGetValue(DE_MESSZEITPUNKT, out dtValue))
+            if (reader.InfoFields.TryGetValue(DE_MESSZEITPUNKT, out var dtValue))
             {
-                if (GetDateTimeParseExact(dtValue, out dt))
+                if (GetDateTimeParseExact(dtValue, out var dt))
+                {
                     return dt;
-                else
-                    _wrongValueFields.Add(DE_MESSZEITPUNKT);
+                }
+                _wrongValueFields.Add(DE_MESSZEITPUNKT);
             }
             else 
             {
@@ -144,7 +139,7 @@ namespace XmlExtract
             return DateTime.Now;
         }
 
-        private static string[] _parseFormats = new string[] {
+        private static readonly string[] _parseFormats = {
             "dd.MM.yyyy HH:mm:ss.fff",
             "dd.MM.yyyy HH:mm:ss.ffffff"
         };
@@ -161,8 +156,8 @@ namespace XmlExtract
             return value.Replace(prefix, "");
         }
 
-        private static List<string> _trueStrings = new List<string>(new string[] { "ja", "wahr", "true", "t", "yes", "y" });
-        private static List<string> _falseStrings = new List<string>(new string[] { "nein", "falsch", "false", "f", "no", "n" });
+        private static readonly List<string> _trueStrings = new List<string>(new string[] { "ja", "wahr", "true", "t", "yes", "y" });
+        private static readonly List<string> _falseStrings = new List<string>(new string[] { "nein", "falsch", "false", "f", "no", "n" });
 
         internal static bool TryConvertToBoolean(string input, out bool result)
         {
@@ -181,8 +176,7 @@ namespace XmlExtract
                 return true;
             }
 
-            int intVal = 0;
-            if (int.TryParse(input, out intVal))
+            if (Int32.TryParse(input, out var intVal))
             {
                 result = Convert.ToBoolean(intVal);
                 return true;

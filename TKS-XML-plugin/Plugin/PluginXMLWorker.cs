@@ -23,7 +23,7 @@ namespace iba.TKS_XML_Plugin
 
         #region IPluginTaskWorkerUNC Members
 
-        public bool ExecuteTask(string datFile, string output)
+        public bool ExecuteTask(string datFile, string outputFile)
         {
             if (!m_started)
             {
@@ -34,7 +34,7 @@ namespace iba.TKS_XML_Plugin
                 m_data = m_dataToApply;
                 m_dataToApply = null;
             }
-            m_error = m_extractor.ExtractToXml(datFile, output, m_data);
+            m_error = m_extractor.ExtractToXml(datFile, outputFile, m_data);
             return String.IsNullOrEmpty(m_error);
         }
 

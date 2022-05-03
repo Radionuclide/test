@@ -68,8 +68,6 @@ namespace XmlExtract
         internal ErzeugungType FillMaterialEreignis(IbaFileReader reader, IExtractorData data)
         {
 
-            var infoParser = new ResolveInfo();
-
             Info info = ResolveInfo.Resolve(reader, data.StandOrt);
 
             if (!String.IsNullOrEmpty(info.Error))
@@ -125,8 +123,8 @@ namespace XmlExtract
             mes.Gruppe = ResolveGruppe.Resolve(signalId);
             mes.LetzteMsgAmDurchsatz = false;
 
-            mes.IDMessgeraet = String.Format("MI__{0}", signalId);
-
+            mes.IDMessgeraet = $"MI__{signalId}";
+            
             var spur = new SpurType();
             spur.Bezeichner = signalId;
             spur.DimensionX = channel.DefaultXBaseType == XBaseType.LENGTH ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
