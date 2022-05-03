@@ -112,7 +112,10 @@ namespace XmlExtract
 
 
             if (met.Einzelwerte.Einzelwert.Count > 0)
+            {
                 met.Einzelwerte.Aggregat = info.Aggregat;
+                met.Einzelwerte.Messzeitpunkt = info.Messzeitpunkt;
+            }
 
             var letzteMessung = met.Messung.LastOrDefault();
             if (letzteMessung != null)

@@ -331,9 +331,17 @@ namespace XmlExtract
         /// z.B. BEFB02
         /// </summary>
         public string Aggregat { get; set; }
-        public System.DateTime Messzeitpunkt { get; set; }
+
         [XmlIgnore]
-        public bool MesszeitpunktSpecified => Messzeitpunkt != null;
+        public System.DateTime Messzeitpunkt { get; set; }
+
+        [XmlElement("Messzeitpunkt")]
+        public string MesszeitpunktString
+        {
+            get { return this.Messzeitpunkt.ToString("yyyy-MM-dd'T'HH:mm:sszzz"); }
+            set { this.Messzeitpunkt = DateTime.ParseExact(value, "yyyy-MM-dd'T'HH:mm:sszzz", System.Globalization.CultureInfo.CurrentCulture); }
+        }
+
         [System.Xml.Serialization.XmlElementAttribute("Einzelwert")]
         public List<EinzelwertType> Einzelwert { get; set; }
         
@@ -669,6 +677,7 @@ namespace XmlExtract
             get { return this.Messzeitpunkt.ToString("yyyy-MM-dd'T'HH:mm:sszzz"); }
             set { this.Messzeitpunkt = DateTime.ParseExact(value, "yyyy-MM-dd'T'HH:mm:sszzz", System.Globalization.CultureInfo.CurrentCulture); }
         }
+        
         [System.Xml.Serialization.XmlElementAttribute("Spur")]
         public List<SpurType> Spur { get; set; }
         /// <summary>
