@@ -43,7 +43,7 @@ namespace XmlExtract
             if (!String.IsNullOrEmpty(_resolveEinheit.Error))
                 _error.AppendLine(_resolveEinheit.Error);
 
-            ErzeugungType met = FillMaterialEreignis(_reader, data);
+            var met = FillMaterialEreignis(_reader, data);
             if (!String.IsNullOrEmpty(data.XmlSchemaLocation))
                 met.xsiSchemaLocation = "http://www.thyssen.com/xml/schema/qbic " + data.XmlSchemaLocation;
 
@@ -51,6 +51,9 @@ namespace XmlExtract
 
             if (_error.Length > 0)
                 return _error.ToString();
+
+            if (SkipExport(met))
+                return String.Empty;
 
             using (var stream = File.CreateText(xmlfile))
             {
@@ -62,6 +65,13 @@ namespace XmlExtract
 
         }
 
+        private static bool SkipExport(ErzeugungType met)
+        {
+            if (met.Messung.Count == 0 && met.Einzelwerte.Einzelwert.Count == 0)
+                return true;
+
+            return false;
+        }
 
         internal ErzeugungType FillMaterialEreignis(IbaFileReader reader, IExtractorData data)
         {
@@ -104,7 +114,7 @@ namespace XmlExtract
 
             foreach (var vector in info.Vektoren)
             {
-                var mes = GetVectorMessung(vector, info, reader.Channels, "");
+                var mes = GetVectorMessung(vector, info, reader.Channels);
                 met.Messung.Add(mes);
             }
 
@@ -146,16 +156,14 @@ namespace XmlExtract
 
             ChannelData channelData = GetChannelData(channel);
 
-            if (channelData != null)
+            if (channelData != null && channelData.Data != null)
             {
                 var r1d = new Raster1DType
                 {
                     SegmentgroesseX = channelData.Interval,
                     SegmentOffsetX = channelData.XOffset,
+                    WerteList = channelData.Data,
                 };
-
-                if (channelData.Data != null)
-                    r1d.WerteList = channelData.Data;
 
                 spur.Raster1D.Add(r1d);
                 mes.Spur.Add(spur);
@@ -163,7 +171,7 @@ namespace XmlExtract
             return mes;
         }
 
-        private MessungType GetVectorMessung(Vector vector, Info info, IList<IbaChannelReader> channels, string signalId)
+        private MessungType GetVectorMessung(Vector vector, Info info, IList<IbaChannelReader> channels)
         {
             var mes = new MessungType();
             mes.Bandlaufrichtung = info.Bandlaufrichtung;
@@ -215,6 +223,8 @@ namespace XmlExtract
                 }
             }
 
+            rasterList.RemoveAll(r => r.WerteList.Count == 0);
+
             if (spur.DimensionX == BezugDimensionEnum.Breite)
             {
 
@@ -253,11 +263,9 @@ namespace XmlExtract
                 rasterList = rasterListNew;
             }
 
-
+            rasterList.RemoveAll(r => r.WerteList.Count == 0);
 
             spur.Raster1D = rasterList;
-
-
             mes.Spur.Add(spur);
             return mes;
 
