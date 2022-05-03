@@ -60,7 +60,7 @@ namespace XmlExtract
         public object Item { get; set; }
         
         /// <summary>
-        /// BO, DO, DU, SI
+        /// BO, DO, DU, SI, SA
         /// </summary>
         public StandortType Standort
         {
@@ -152,6 +152,8 @@ namespace XmlExtract
         DU,
         
         SI,
+        
+        SA,
     }
     
     /// <summary>
@@ -326,7 +328,6 @@ namespace XmlExtract
         [System.Xml.Serialization.XmlEnumAttribute("A/qm")]
         Aqm,
         
-        [System.Xml.Serialization.XmlEnumAttribute("cm-1")]
         cm1,
         
         s,
@@ -343,10 +344,13 @@ namespace XmlExtract
         [System.Xml.Serialization.XmlEnumAttribute("g/l")]
         gl,
         
-        [System.Xml.Serialization.XmlEnumAttribute("I-Unit")]
         IUnit,
         
         pH,
+        
+        ppm,
+        
+        kg,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -357,8 +361,13 @@ namespace XmlExtract
     public partial class EinzelwertComplexType
     {
         
-        [System.Xml.Serialization.XmlElementAttribute("Aggregat")]
-        public string Item { get; set; }
+        /// <summary>
+        /// z.B. BEFB02
+        /// </summary>
+        public string Aggregat { get; set; }
+        public System.DateTime Messzeitpunkt { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool MesszeitpunktSpecified { get; set; }
         [System.Xml.Serialization.XmlElementAttribute("Einzelwert")]
         public List<EinzelwertType> Einzelwert { get; set; }
         
@@ -395,6 +404,18 @@ namespace XmlExtract
         public double SegmentOffsetX { get; set; }
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool SegmentOffsetXSpecified { get; set; }
+        /// <summary>
+        /// Fehlt, wenn y-z-unabhaengig oder 0
+        /// </summary>
+        public double SegmentOffsetY { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool SegmentOffsetYSpecified { get; set; }
+        /// <summary>
+        /// Fehlt wenn z-unabhaengig oder 0
+        /// </summary>
+        public double SegmentOffsetZ { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool SegmentOffsetZSpecified { get; set; }
         public string WerteX { get; set; }
     }
     
@@ -411,6 +432,8 @@ namespace XmlExtract
         public double Avg { get; set; }
         public double StdDev { get; set; }
         public double Median { get; set; }
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool MedianSpecified { get; set; }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
@@ -426,6 +449,10 @@ namespace XmlExtract
         private System.Nullable<WerteTypeEnum> typField;
         
         private BezugDimensionEnum dimensionXField;
+        
+        private System.Nullable<BezugDimensionEnum> dimensionYField;
+        
+        private System.Nullable<BezugDimensionEnum> dimensionZField;
         
         [System.Xml.Serialization.XmlElementAttribute("Einheit", typeof(EinheitEnum))]
         [System.Xml.Serialization.XmlElementAttribute("EinheitLokal", typeof(string))]
@@ -500,6 +527,82 @@ namespace XmlExtract
                 if (value==false)
                 {
                     this.typField = null;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Fehlt, wenn Messung unabhaengig von 2. und 3. Dimension.
+        /// </summary>
+        public BezugDimensionEnum DimensionY
+        {
+            get
+            {
+                if (this.dimensionYField.HasValue)
+                {
+                    return this.dimensionYField.Value;
+                }
+                else
+                {
+                    return default(BezugDimensionEnum);
+                }
+            }
+            set
+            {
+                this.dimensionYField = value;
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool DimensionYSpecified
+        {
+            get
+            {
+                return this.dimensionYField.HasValue;
+            }
+            set
+            {
+                if (value==false)
+                {
+                    this.dimensionYField = null;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Fehlt, wenn Messung unabhaengig von  3. Dimension.
+        /// </summary>
+        public BezugDimensionEnum DimensionZ
+        {
+            get
+            {
+                if (this.dimensionZField.HasValue)
+                {
+                    return this.dimensionZField.Value;
+                }
+                else
+                {
+                    return default(BezugDimensionEnum);
+                }
+            }
+            set
+            {
+                this.dimensionZField = value;
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool DimensionZSpecified
+        {
+            get
+            {
+                return this.dimensionZField.HasValue;
+            }
+            set
+            {
+                if (value==false)
+                {
+                    this.dimensionZField = null;
                 }
             }
         }

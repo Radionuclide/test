@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Mit XMLSpy v2013 sp1 (x64) (http://www.altova.com) von Struk (ThyssenKrupp Steel Europe AG) bearbeitet -->
+<!-- Mit XMLSpy v2018 sp1 (x64) (http://www.altova.com) von  (ThyssenKrupp Steel Europe AG) bearbeitet -->
 <xsd:schema xmlns="http://www.thyssen.com/xml/schema/qbic" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.thyssen.com/xml/schema/qbic" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xsd:element name="Erzeugung" type="ErzeugungType"/>
+	<xsd:element name="MessungAnLi" type="ErzeugungType"/>
+	<xsd:element name="EinzelwerteAnLi" type="ErzeugungType"/>
 	<xsd:element name="DefectMap" type="DefectMapType"/>
 	<xsd:element name="VorabmeldungMaterialErzeugung" type="VorabmeldungMaterialErzeugungType"/>
-	<xsd:element name="MaterialereignisTrigger" type="MaterialereignisTriggerType"/>	
+	<xsd:element name="MaterialereignisTrigger" type="MaterialereignisTriggerType"/>
 	<xsd:complexType name="ErzeugungType">
 		<xsd:sequence>
 			<xsd:element name="MaterialHeader" type="MaterialHeaderType"/>
@@ -21,19 +23,33 @@
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="Ereignistyp" type="EreignistypEnum"/>
-		</xsd:sequence>				
+		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:simpleType name="EreignistypEnum">
 		<xsd:annotation>
 			<xsd:documentation>Gueltige Materialereignisse.</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Ofen"/>
 			<xsd:enumeration value="Vorstrasse"/>
 			<xsd:enumeration value="Fertigstrasse"/>
 			<xsd:enumeration value="Haspel"/>
 			<xsd:enumeration value="Waage"/>
+			<xsd:enumeration value="Kuehlstrecke"/>
+			<xsd:enumeration value="Streckrichter"/>
+			<xsd:enumeration value="Dressiergeruest"/>
+			<xsd:enumeration value="Beizbad"/>
+			<xsd:enumeration value="Einlauf"/>
+			<xsd:enumeration value="Auslauf"/>
+			<xsd:enumeration value="Zinkbad"/>
+			<xsd:enumeration value="Bandbeobachter"/>
+			<xsd:enumeration value="Besaeumschere"/>
+			<xsd:enumeration value="Walzstrasse"/>
+			<xsd:enumeration value="Oelmaschine"/>
+			<xsd:enumeration value="Coater"/>
+			<xsd:enumeration value="Versandbereitschaftsmeldung"/>
 		</xsd:restriction>
-	</xsd:simpleType>			
+	</xsd:simpleType>
 	<xsd:complexType name="VorabmeldungMaterialErzeugungType">
 		<xsd:sequence>
 			<xsd:element name="MaterialHeader" type="MaterialHeaderType"/>
@@ -41,12 +57,12 @@
 				<xsd:annotation>
 					<xsd:documentation>z.B. BEFB02</xsd:documentation>
 				</xsd:annotation>
-			</xsd:element>		
+			</xsd:element>
 			<xsd:element name="Einsatzzeitpunkt" type="xsd:dateTime"/>
 			<xsd:element name="Auftragsnummer" type="StringMax8"/>
 			<xsd:element name="Auftragsposition" type="StringMax3"/>
 		</xsd:sequence>
-	</xsd:complexType>		
+	</xsd:complexType>
 	<xsd:complexType name="MaterialHeaderType">
 		<xsd:sequence>
 			<xsd:choice>
@@ -55,7 +71,7 @@
 			</xsd:choice>
 			<xsd:element name="Standort" type="StandortType" minOccurs="0">
 				<xsd:annotation>
-					<xsd:documentation>BO, DO, DU, SI</xsd:documentation>
+					<xsd:documentation>BO, DO, DU, SI, SA</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="MaterialArt" type="MaterialArtType" minOccurs="0">
@@ -63,6 +79,13 @@
 					<xsd:documentation>Nur DU:  BR WB KB VZ BB PK</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
+			<xsd:sequence minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>TFAPO, die statt der Matart zur Identifikation verwendet werden kann</xsd:documentation>
+				</xsd:annotation>
+				<xsd:element name="Auftragsnummer" type="StringMax8"/>
+				<xsd:element name="Auftragsposition" type="StringMax3"/>
+			</xsd:sequence>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:simpleType name="StandortType">
@@ -74,6 +97,7 @@
 			<xsd:enumeration value="DO"/>
 			<xsd:enumeration value="DU"/>
 			<xsd:enumeration value="SI"/>
+			<xsd:enumeration value="SA"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="MaterialArtType">
@@ -316,18 +340,12 @@
 	</xsd:complexType>
 	<xsd:complexType name="EinzelwertComplexType">
 		<xsd:sequence>
-			<xsd:choice>
-				<xsd:element name="Aggregat" type="StringMax10" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>z.B. BEFB02</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="Arbeitsvorgang" type="ArbeitsvorgangTypeEnum" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>z.B. FVERZ</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-			</xsd:choice>
+			<xsd:element name="Aggregat" type="StringMax10">
+				<xsd:annotation>
+					<xsd:documentation>z.B. BEFB02</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Messzeitpunkt" type="xsd:dateTime" minOccurs="0"/>
 			<xsd:element name="Einzelwert" type="EinzelwertType" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -369,15 +387,17 @@
 			<xsd:enumeration value="N/m2"/>
 			<xsd:enumeration value="m/s"/>
 			<xsd:enumeration value="A/qm"/>
-			<xsd:enumeration value="cm-1"/>
+			<xsd:enumeration value="cm1"/>
 			<xsd:enumeration value="s"/>
 			<xsd:enumeration value="mikroS"/>
 			<xsd:enumeration value="m3"/>
 			<xsd:enumeration value="ml/min"/>
 			<xsd:enumeration value="lgbar"/>
 			<xsd:enumeration value="g/l"/>
-			<xsd:enumeration value="I-Unit"/>
+			<xsd:enumeration value="IUnit"/>
 			<xsd:enumeration value="pH"/>
+			<xsd:enumeration value="ppm"/>
+			<xsd:enumeration value="kg"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 	<xsd:simpleType name="BezugDimensionEnum">
@@ -389,6 +409,12 @@
 			<xsd:enumeration value="Windungen"/>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<xsd:simpleType name="Integer0Or1">
+		<xsd:restriction base="xsd:long">
+			<xsd:minInclusive value="0"/>
+			<xsd:maxInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 	<xsd:simpleType name="StringMax3">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="3"/>
@@ -398,12 +424,17 @@
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="8"/>
 		</xsd:restriction>
-	</xsd:simpleType>			
+	</xsd:simpleType>
 	<xsd:simpleType name="StringMax10">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="10"/>
 		</xsd:restriction>
-	</xsd:simpleType>	
+	</xsd:simpleType>
+	<xsd:simpleType name="StringMax50">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 	<xsd:simpleType name="StringMax100">
 		<xsd:restriction base="xsd:string">
 			<xsd:maxLength value="100"/>
@@ -514,15 +545,35 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="Aggregat" type="StringMax10"/>
-						<xsd:element name="Messzeitpunkt" type="xsd:dateTime"/>
 						<xsd:element name="OisGeraetID" type="StringMax100"/>
+						<xsd:element name="DefektanzahlGes" type="xsd:int" minOccurs="0"/>
+						<xsd:element name="urlBildStat" type="StringMax50" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>Pfad zu den Bildern</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Messzeitpunkt" type="xsd:dateTime"/>
+						<xsd:element name="SystemDiagnoseStatus" type="Integer0Or1">
+							<xsd:annotation>
+								<xsd:documentation>0 oder 1</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Messort" type="MessortDefMapEnum" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>Auslauf oder Einlauf</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="OISParamSet" type="StringMax100" minOccurs="0"/>
+						<xsd:element name="OISMaterialID" type="xsd:int" minOccurs="0"/>
+						<xsd:element name="Bandlaenge" type="xsd:int" minOccurs="0"/>
+						<xsd:element name="Bandbreite" type="xsd:int" minOccurs="0"/>
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="Defects">
 				<xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="Defect" type="DefectType" maxOccurs="unbounded">
+						<xsd:element name="Defect" type="DefectType" minOccurs="0" maxOccurs="unbounded">
 							<xsd:annotation>
 								<xsd:documentation>Beschreibt ein Rechteck auf dem Band und den dort auftretenden Fehler. Alle Positionen in mm.</xsd:documentation>
 							</xsd:annotation>
@@ -534,20 +585,37 @@
 	</xsd:complexType>
 	<xsd:complexType name="DefectType">
 		<xsd:sequence>
-			<xsd:element name="defectId" type="xsd:unsignedInt"/>
+			<xsd:element name="CoilID" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation>Einsatzstück, ganzzahlig, unbegrenzt</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="defectId" type="xsd:unsignedInt">
+				<xsd:annotation>
+					<xsd:documentation>{dId}</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 			<xsd:element name="refHauptDefId" type="xsd:unsignedInt" minOccurs="0">
 				<xsd:annotation>
-					<xsd:documentation>Referenz auf den Hauptdefekt, wenn es sich hier um einen Teildefekt handelt.</xsd:documentation>
+					<xsd:documentation>Referenz auf den Hauptdefekt, wenn es sich hier um einen Teildefekt handelt. {rHDID}</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="harmFehler" type="xsd:int">
 				<xsd:annotation>
-					<xsd:documentation>Fehlerschluessel FLSNeu (4st.)</xsd:documentation>
+					<xsd:documentation>Fehlerschluessel FLSNeu (4st.) {TKFeh}</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="lokalerFehler" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="lokalerFehler" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>{LokFeh}</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 			<xsd:element name="Seite" type="SeiteEnum"/>
-			<xsd:element name="urlBild" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="urlBildDyn" type="StringMax50" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>url</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
 			<xsd:element name="posMD" type="xsd:double">
 				<xsd:annotation>
 					<xsd:documentation>Abstand Bandanfang</xsd:documentation>
@@ -573,23 +641,43 @@
 					<xsd:documentation>Breite senkrecht zur Bandrichtung in Bandebene. Angabe nicht redundant, da die Bandbreite an der Position u. U. nicht genau bekannt ist.</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="grade" type="xsd:int" minOccurs="0">
-				<xsd:annotation>
-					<xsd:documentation>Schweregrad</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
 			<xsd:element name="periodID" type="xsd:int" minOccurs="0">
 				<xsd:annotation>
 					<xsd:documentation>Num. Bezeichnung einer periodischen Serie von Fehlern, keine Referenz</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
 			<xsd:element name="periodLength" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="grade" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Schweregrad</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="firstLabelSureness" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>{fiLS}</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="kameraNr" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>{camNr}</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RoiX0" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="RoiX1" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="RoiY0" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="RoiY1" type="xsd:int" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:simpleType name="SeiteEnum">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="OS"/>
 			<xsd:enumeration value="US"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="MessortDefMapEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Einlauf"/>
+			<xsd:enumeration value="Auslauf"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>
