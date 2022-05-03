@@ -472,8 +472,6 @@ namespace XmlExtract
         /// Richtung der x-Achse (oder Dimension Zeit, Windungen)
         /// </summary>
         public BezugDimensionEnum DimensionX { get; set; }
-        [System.Xml.Serialization.XmlElementAttribute("Raster1D")]
-        public List<Raster1DType> Raster1D { get; set; }
         
         /// <summary>
         /// SpurType class constructor
@@ -600,6 +598,10 @@ namespace XmlExtract
                 }
             }
         }
+        
+        [System.Xml.Serialization.XmlElementAttribute("Raster1D")]
+        public List<Raster1DType> Raster1D { get; set; }
+
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
