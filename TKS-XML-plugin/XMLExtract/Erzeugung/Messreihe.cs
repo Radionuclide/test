@@ -42,6 +42,7 @@ namespace XmlExtract
             this.MaterialHeader = new MaterialHeaderType();
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeEinzelwerte()
         {
             return (Einzelwerte.Einzelwert.Count > 0);

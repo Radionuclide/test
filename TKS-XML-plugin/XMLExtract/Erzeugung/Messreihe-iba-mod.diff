@@ -10,11 +10,12 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          
          public MaterialHeaderType MaterialHeader { get; set; }
          [System.Xml.Serialization.XmlElementAttribute("Messung")]
-@@ -39,6 +41,12 @@
+@@ -39,6 +41,13 @@
              this.Messung = new List<MessungType>();
              this.MaterialHeader = new MaterialHeaderType();
          }
 +
++        [EditorBrowsable(EditorBrowsableState.Never)]
 +        public bool ShouldSerializeEinzelwerte()
 +        {
 +            return (Einzelwerte.Einzelwert.Count > 0);
@@ -23,7 +24,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
      }
      
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-@@ -49,53 +57,16 @@
+@@ -49,53 +58,16 @@
      public partial class MaterialHeaderType
      {
          
@@ -82,7 +83,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          
          /// <summary>
          /// Nur DU:  BR WB KB VZ BB PK
-@@ -137,26 +108,6 @@
+@@ -137,26 +109,6 @@
      }
      
      /// <summary>
@@ -109,7 +110,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
      /// Zusaetzliche Kennzeichnung von Duisburger Material.
      /// </summary>
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-@@ -204,48 +155,15 @@
+@@ -204,48 +156,15 @@
      public partial class EinzelwertType
      {
          
@@ -160,7 +161,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
      }
      
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-@@ -260,6 +178,9 @@
+@@ -260,6 +179,9 @@
          
          gradC,
          
@@ -170,7 +171,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          [System.Xml.Serialization.XmlEnumAttribute("m/min")]
          mmin,
          
-@@ -269,6 +190,9 @@
+@@ -269,6 +191,9 @@
          
          V,
          
@@ -180,7 +181,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          [System.Xml.Serialization.XmlEnumAttribute("g/qm")]
          gqm,
          
-@@ -280,6 +204,9 @@
+@@ -280,6 +205,9 @@
          
          grad,
          
@@ -190,7 +191,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          [System.Xml.Serialization.XmlEnumAttribute("Keine/1")]
          Keine1,
          
-@@ -289,12 +216,21 @@
+@@ -289,12 +217,21 @@
          
          Test,
          
@@ -212,7 +213,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          [System.Xml.Serialization.XmlEnumAttribute("U/min")]
          Umin,
          
-@@ -304,27 +240,51 @@
+@@ -304,27 +241,51 @@
          
          Hz,
          
@@ -264,7 +265,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          [System.Xml.Serialization.XmlEnumAttribute("A/qm")]
          Aqm,
          
-@@ -336,11 +296,17 @@
+@@ -336,11 +297,17 @@
          
          m3,
          
@@ -282,7 +283,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          [System.Xml.Serialization.XmlEnumAttribute("g/l")]
          gl,
          
-@@ -365,9 +331,17 @@
+@@ -365,9 +332,17 @@
          /// z.B. BEFB02
          /// </summary>
          public string Aggregat { get; set; }
@@ -302,7 +303,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          [System.Xml.Serialization.XmlElementAttribute("Einzelwert")]
          public List<EinzelwertType> Einzelwert { get; set; }
          
-@@ -387,36 +361,59 @@
+@@ -387,36 +362,59 @@
      [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.thyssen.com/xml/schema/qbic")]
      public partial class Raster1DType
      {
@@ -376,7 +377,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
      }
      
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-@@ -432,8 +429,6 @@
+@@ -432,8 +430,6 @@
          public double Avg { get; set; }
          public double StdDev { get; set; }
          public double Median { get; set; }
@@ -385,7 +386,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
      }
      
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-@@ -444,19 +439,16 @@
+@@ -444,19 +440,16 @@
      public partial class SpurType
      {
          
@@ -408,7 +409,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          /// <summary>
          /// Name der Messreihe im statischen Modell
          /// </summary>
-@@ -465,6 +457,15 @@
+@@ -465,6 +458,15 @@
          /// Darf weggelassen werden; dann werden die Werte berechnet.
          /// </summary>
          public StatistikType Statistik { get; set; }
@@ -424,7 +425,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          /// <summary>
          /// Falls Werte relativ sind, kann hier der Bezugswert angegeben werden. Falls die Werte absolut sind, ist der Bezugswert 0.
          /// </summary>
-@@ -473,15 +474,12 @@
+@@ -473,15 +475,12 @@
          /// <summary>
          /// Darf weggelassen werden; dann wird true angenommen.
          /// </summary>
@@ -441,7 +442,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          
          /// <summary>
          /// SpurType class constructor
-@@ -490,7 +488,9 @@
+@@ -490,7 +489,9 @@
          {
              this.Raster1D = new List<Raster1DType>();
              this.Statistik = new StatistikType();
@@ -451,7 +452,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          }
          
          /// <summary>
-@@ -606,6 +606,10 @@
+@@ -606,6 +607,11 @@
                  }
              }
          }
@@ -459,10 +460,11 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
 +        [System.Xml.Serialization.XmlElementAttribute("Raster1D")]
 +        public List<Raster1DType> Raster1D { get; set; }
 +
++
      }
      
      [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.6.0.20097")]
-@@ -652,8 +656,6 @@
+@@ -652,8 +658,6 @@
      public partial class MessungType
      {
          
@@ -471,7 +473,7 @@ diff -u3b D:/Projects/Gent/ibaXmlExtract/xmlplugin.git/TKS-XML-plugin/XMLExtract
          public string IDMessgeraet { get; set; }
          /// <summary>
          /// z.B. BEFB02
-@@ -665,15 +667,23 @@
+@@ -665,15 +669,23 @@
          /// z.B. DICKE__AL
          /// </summary>
          public string Gruppe { get; set; }
