@@ -21,8 +21,7 @@ namespace XmlExtract
         private const string DE_BANDLAUFRICHTUNG = "$DE_BANDLAUFRICHTUNG";
         private const string DE_ENDPRODUKT = "$DE_ENDPRODUKT";
         private const string DE_AGGREGAT = "$DE_AGGREGAT";
-        private const string VECTOR_PREFIX = "Vector_";
-        private const string VECTOR_NAME_PREFIX = "Vector_name_";
+        private const string DE_VECTOR_DIMENSIONX = "$DE_VECTOR_DIMENSIONX";
         // ReSharper restore InconsistentNaming
 
         private static List<string> _missingFields;
@@ -93,6 +92,15 @@ namespace XmlExtract
             else
                 _missingFields.Add(DE_ENDPRODUKT);
 
+            if (reader.InfoFields.TryGetValue(DE_VECTOR_DIMENSIONX, out infoFieldValue))
+            {
+                if (Enum<BezugDimensionEnum>.TryParse(infoFieldValue.Trim(), true, out var dimx))
+                    info.VectorsDimensionX = dimx;
+                else
+                    _wrongValueFields.Add(DE_VECTOR_DIMENSIONX);
+            }
+
+
             info.Messzeitpunkt = GetMesszeit(reader);
 
             IEnumerable<Vector> vectors = GetVectors(reader);
@@ -125,10 +133,20 @@ namespace XmlExtract
                 if (kvp.Key == "Vector_Unit")
                     vec.Unit = kvp.Value;
 
+                if (kvp.Key == "Vector_ZoneUnit")
+                    vec.ZoneUnit = kvp.Value;
+
+                if (kvp.Key == "Vector_ZoneOffset")
+                {
+                    if (Double.TryParse(kvp.Value, out var result))
+                        vec.ZoneOffset = result;
+                }
             }
 
-            yield return vec;
+            if (vec == null)
+                yield break;
 
+            yield return vec;
         }
 
         private static string FormatError()

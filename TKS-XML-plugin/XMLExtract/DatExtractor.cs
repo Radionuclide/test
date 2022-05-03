@@ -176,19 +176,22 @@ namespace XmlExtract
 
             var spur = new SpurType();
             spur.Bezeichner = vector.Name;
+            spur.DimensionX = info.VectorsDimensionX;
+            if (spur.DimensionX == BezugDimensionEnum.Breite)
+                spur.DimensionY = BezugDimensionEnum.Laenge;
+
             spur.Einheit = _resolveEinheit.Parse(vector.Unit);
             if (spur.Einheit == null && !String.IsNullOrEmpty(vector.Unit))
                 spur.EinheitLokal = vector.Unit;
 
-
-            var namePlusSeparator = vector.Name + ".";
-            var vectorChannels = channels.Where(c => c.Name.StartsWith(namePlusSeparator)).OrderBy(c => new Version(c.InfoFields["vector"]))
+            var nameWithSeparator = vector.Name + ".";
+            var vectorChannels = channels.Where(c => c.Name.StartsWith(nameWithSeparator)).OrderBy(c => new Version(c.InfoFields["vector"]))
 #if DEBUG
                     .ToList()
 #endif
                 ;
 
-            var yOffset = 0;
+            var yOffset = (float)vector.ZoneOffset;
             foreach (var channel in vectorChannels)
             {
                 ChannelData channelData = GetChannelData(channel);
@@ -199,13 +202,14 @@ namespace XmlExtract
                     {
                         SegmentgroesseX = channelData.Interval,
                         SegmentOffsetX = channelData.XOffset,
-                        SegmentOffsetY = yOffset++,
+                        SegmentOffsetY = yOffset,
                     };
 
                     if (channelData.Data != null)
                         r1d.WerteList = channelData.Data;
 
                     spur.Raster1D.Add(r1d);
+                    yOffset += channel.InfoFields.GetValueAsFloat("Vector_ZoneWidth", 1);
                 }
 
             }
@@ -213,6 +217,7 @@ namespace XmlExtract
             mes.Spur.Add(spur);
             return mes;
         }
+
 
         private EinzelwertType GetEinzelWert(IbaChannelReader channel, string signalId)
         {
@@ -296,6 +301,19 @@ namespace XmlExtract
             Dispose(false);
         }
         #endregion
+    }
 
+    static class DatExtractorExtensons
+    {
+        public static float GetValueAsFloat(this IDictionary<string, string> infoFields, string keyName, float defaultvalue)
+        {
+            if (infoFields.TryGetValue(keyName, out var value))
+            {
+                if (Single.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var widthValue))
+                    return widthValue;
+            }
+
+            return defaultvalue;
+        }
     }
 }

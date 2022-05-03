@@ -17,6 +17,7 @@ namespace XmlExtract
         public string Aggregat { get; set; }
 
         public List<Vector> Vektoren { get; set; } = new List<Vector>();
+        public BezugDimensionEnum VectorsDimensionX = BezugDimensionEnum.Laenge;
 
         public string Error { get; set; }
     }
