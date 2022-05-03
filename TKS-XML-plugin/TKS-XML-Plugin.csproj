@@ -98,6 +98,7 @@
     <Compile Include="XMLExtract\ResolveEinheit.cs" />
     <Compile Include="XMLExtract\ResolveGruppe.cs" />
     <Compile Include="XMLExtract\ResolveInfo.cs" />
+    <Compile Include="XMLExtract\Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj">

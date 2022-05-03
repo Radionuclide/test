@@ -16,7 +16,7 @@ namespace XmlExtract
         public MaterialArtType MaterialArt { get; set; }
         public string Aggregat { get; set; }
 
-        public List<string> Vektoren { get; set; } = new List<string>();
+        public List<Vector> Vektoren { get; set; } = new List<Vector>();
 
         public string Error { get; set; }
     }

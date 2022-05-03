@@ -21,7 +21,8 @@ namespace XmlExtract
         private const string DE_BANDLAUFRICHTUNG = "$DE_BANDLAUFRICHTUNG";
         private const string DE_ENDPRODUKT = "$DE_ENDPRODUKT";
         private const string DE_AGGREGAT = "$DE_AGGREGAT";
-        private const string VECTOR_PREFIX = "Vector_name_";
+        private const string VECTOR_PREFIX = "Vector_";
+        private const string VECTOR_NAME_PREFIX = "Vector_name_";
         // ReSharper restore InconsistentNaming
 
         private static List<string> _missingFields;
@@ -94,11 +95,40 @@ namespace XmlExtract
 
             info.Messzeitpunkt = GetMesszeit(reader);
 
-            var vectornames = reader.InfoFields.Where(i => i.Key.StartsWith(VECTOR_PREFIX)).Select(i => i.Value);
-            info.Vektoren.AddRange(vectornames);
-            
+            IEnumerable<Vector> vectors = GetVectors(reader);
+            info.Vektoren.AddRange(vectors);
+
             info.Error = FormatError();
             return info;
+        }
+
+        private static IEnumerable<Vector> GetVectors(IbaFileReader reader)
+        {
+            Vector vec = null;
+            var vectorEntries = reader.InfoFields.Where(i => i.Key.StartsWith("Vector_")).ToList();
+            foreach (var kvp in vectorEntries)
+            {
+                if (kvp.Key.StartsWith("Vector_name_"))
+                {
+                    if (vec != null)
+                        yield return vec;
+
+                    vec = new Vector { Name = kvp.Value };
+                }
+
+                if (kvp.Key == "Vector_Comment1")
+                    vec.Comment1 = kvp.Value;
+
+                if (kvp.Key == "Vector_Comment2")
+                    vec.Comment2 = kvp.Value;
+
+                if (kvp.Key == "Vector_Unit")
+                    vec.Unit = kvp.Value;
+
+            }
+
+            yield return vec;
+
         }
 
         private static string FormatError()

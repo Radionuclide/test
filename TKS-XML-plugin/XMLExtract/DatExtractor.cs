@@ -88,7 +88,7 @@ namespace XmlExtract
 
             foreach (IbaChannelReader channel in reader.Channels)
             {
-                if (info.Vektoren.Any(n => channel.Name.StartsWith(n)))
+                if (info.Vektoren.Any(n => channel.Name.StartsWith(n.Name)))
                     continue;
 
                 var signalId = channel.ResolveSignalId(data.IdField);
@@ -104,9 +104,9 @@ namespace XmlExtract
                 }
             }
 
-            foreach (var vectorName in info.Vektoren)
+            foreach (var vector in info.Vektoren)
             {
-                var mes = GetVectorMessung(vectorName, info, reader.Channels, "");
+                var mes = GetVectorMessung(vector, info, reader.Channels, "");
                 met.Messung.Add(mes);
             }
 
@@ -162,33 +162,34 @@ namespace XmlExtract
             return mes;
         }
 
-        private MessungType GetVectorMessung(string vectorName, Info info, IList<IbaChannelReader> channels, string signalId)
+        private MessungType GetVectorMessung(Vector vector, Info info, IList<IbaChannelReader> channels, string signalId)
         {
             var mes = new MessungType();
             mes.Bandlaufrichtung = info.Bandlaufrichtung;
             mes.Endprodukt = info.Endprodukt;
             mes.Messzeitpunkt = info.Messzeitpunkt;
             mes.Aggregat = info.Aggregat;
-            mes.Gruppe = ResolveGruppe.Resolve(vectorName);
+            mes.Gruppe = ResolveGruppe.Resolve(vector.Name);
             mes.LetzteMsgAmDurchsatz = false;
 
-            // mes.IDMessgeraet = $"MI__{signalId}";
             mes.IDMessgeraet = $"0";
 
             var spur = new SpurType();
-            spur.Bezeichner = vectorName;
-
-            var firstChannel = channels.First(c => c.Name.StartsWith(vectorName));
-            spur.DimensionX = firstChannel.DefaultXBaseType == XBaseType.LENGTH ? BezugDimensionEnum.Laenge : BezugDimensionEnum.Zeit;
-            var channelUnit = firstChannel.Unit;
-            spur.Einheit = _resolveEinheit.Parse(channelUnit);
-            if (spur.Einheit == null && !String.IsNullOrEmpty(channelUnit))
-                spur.EinheitLokal = channelUnit;
+            spur.Bezeichner = vector.Name;
+            spur.Einheit = _resolveEinheit.Parse(vector.Unit);
+            if (spur.Einheit == null && !String.IsNullOrEmpty(vector.Unit))
+                spur.EinheitLokal = vector.Unit;
 
 
+            var namePlusSeparator = vector.Name + ".";
+            var vectorChannels = channels.Where(c => c.Name.StartsWith(namePlusSeparator)).OrderBy(c => new Version(c.InfoFields["vector"]))
+#if DEBUG
+                    .ToList()
+#endif
+                ;
 
-
-            foreach (var channel in channels.Where(c => c.Name.StartsWith(vectorName)))
+            var yOffset = 0;
+            foreach (var channel in vectorChannels)
             {
                 ChannelData channelData = GetChannelData(channel);
 
@@ -198,6 +199,7 @@ namespace XmlExtract
                     {
                         SegmentgroesseX = channelData.Interval,
                         SegmentOffsetX = channelData.XOffset,
+                        SegmentOffsetY = yOffset++,
                     };
 
                     if (channelData.Data != null)
