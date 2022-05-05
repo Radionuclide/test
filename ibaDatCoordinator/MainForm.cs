@@ -26,6 +26,8 @@ using iba.Dialogs;
 using iba.Remoting;
 using System.Globalization;
 using iba.HD.Client;
+using iba.Utilities.Forms;
+
 // ReSharper disable RedundantNameQualifier
 
 namespace iba
@@ -2444,10 +2446,63 @@ namespace iba
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (About dlg = new About())
+            using (var form = new AboutForm())
             {
-                dlg.StartPosition = FormStartPosition.CenterParent;
-                dlg.ShowDialog(this);
+                form.ProductNameAndVersion = $"ibaDatCoordinator v{DatCoVersion.GetVersion()}";
+                form.ProductIcon = iba.Properties.Resources.About_Image_80x80;
+
+                if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
+                {
+                    form.Caption1 = "ibaDatCoordinatorService";
+                    form.Value1 = Program.CommunicationObject.GetVersion();
+                }
+
+                form.Caption2 = "ibaAnalyzer";
+                form.Value2 = GetAnalyzerVersion();
+
+                form.Caption3 = "ibaFiles";
+                form.Value3 = GetibaFilesVersion();
+
+                form.IbaLicenseFile = "License_iba-software.rtf";
+                form.ThirdPartyLicensesFile = "LicenseInformation.txt";
+
+                form.StartPosition = FormStartPosition.CenterParent;
+                form.ShowDialog(this);
+            }
+
+            // local functions
+            string GetAnalyzerVersion()
+            {
+                string analyzerVersion  = "?";
+                try
+                {
+                    var ibaAnalyzer = new IbaAnalyzer.IbaAnalysis();
+                    analyzerVersion = ibaAnalyzer.GetVersion().Remove(0, 12);
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ibaAnalyzer);
+                }
+                catch (Exception)
+                {
+                    // ignore exception
+                }
+                return analyzerVersion;
+            }
+            string GetibaFilesVersion()
+            {
+                string ibaFilesVersion = "?";
+                try
+                {
+                    using (var ibaFile = new ibaFilesLiteDotNet.IbaFileReader())
+                    {
+                        ibaFilesVersion = ibaFile.GetVersion();
+                        ibaFile.Dispose();
+                    }
+                }
+                catch
+                {
+                    // ignore exception
+                }
+
+                return ibaFilesVersion;
             }
         }
 

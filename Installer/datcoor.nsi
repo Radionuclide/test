@@ -129,7 +129,7 @@ Page custom PreInstall
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 ;!define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBackButton"
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE License_ibaDatCoordinator.rtf
+!insertmacro MUI_PAGE_LICENSE License_iba-software.rtf
 Page custom InstalltypeSelect
 Page custom ServiceAccountPage
 ;!insertmacro MUI_PAGE_COMPONENTS
@@ -454,6 +454,7 @@ Section -Common
   File "..\Dependencies\Zyan.SafeDeserializationHelpers.dll"
   File "..\ibaDatCoordinator\bin\Release\DevExpress.*.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaSnmpLib.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaUtilities.Forms.dll"
   ;Upload Task
   File "..\ibaDatCoordinator\bin\Release\WinSCPnet.dll"
   File "..\ibaDatCoordinator\bin\Release\WinSCP.exe"
@@ -523,7 +524,7 @@ Section -Common
 
   File "versions_dat.htm"
   File "LicenseInformation.txt"
-  File "License_ibaDatCoordinator.pdf"
+  File "License_iba-software.rtf"
   File "Support.htm"
   
   ; dongle viewer
@@ -992,6 +993,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\ibaIcons.dll"
 
   Delete "$INSTDIR\ibaSnmpLib.dll"
+  Delete "$INSTDIR\ibaUtilities.Forms.dll"
   Delete "$INSTDIR\WinSCPnet.dll"
   Delete "$INSTDIR\WinSCP.exe"
   Delete "$INSTDIR\Opc.Ua.Configuration.dll"
@@ -1009,7 +1011,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcp100.dll"
   Delete "$INSTDIR\versions_dat.htm"
   Delete "$INSTDIR\LicenseInformation.txt"
-  Delete "$INSTDIR\License_ibaDatCoordinator.pdf"
+  Delete "$INSTDIR\License_iba-software.rtf"
   Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
   Delete "$INSTDIR\createundoregfile.bat"

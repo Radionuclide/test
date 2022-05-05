@@ -145,12 +145,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AboutBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutBox.Designer.cs">
-      <DependentUpon>AboutBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="CommunicationObject.cs" />
     <Compile Include="Controls\AnalyzerTreeEditor.cs" />
     <Compile Include="Controls\AppCertificatesControl.cs">
@@ -302,12 +296,6 @@
     <Compile Include="Data\ComputedValuesTaskData.cs" />
     <Compile Include="Data\PluginTaskDataWrapper.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
-    <Compile Include="Dialogs\About.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\About.designer.cs">
-      <DependentUpon>About.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\AskForPassphrase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -717,9 +705,6 @@
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\About.resx">
-      <DependentUpon>About.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\GenerateEventJobTestFileDlg.resx">
       <DependentUpon>GenerateEventJobTestFileDlg.cs</DependentUpon>
     </EmbeddedResource>
@@ -789,10 +774,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutBox.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AboutBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\BatchFileControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BatchFileControl.cs</DependentUpon>
@@ -1016,6 +997,9 @@
     </PackageReference>
     <PackageReference Include="ibaSnmpLib">
       <Version>1.9.8</Version>
+    </PackageReference>
+    <PackageReference Include="ibaUtilities.Forms">
+      <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
