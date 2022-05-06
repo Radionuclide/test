@@ -856,9 +856,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Installer\LicenseInformation.txt">
+      <Link>LicenseInformation.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ibaDatCoordinator.ico" />
     <Content Include="Properties\ibaLogo.ico" />
     <Content Include="Properties\ibaLogo_noshadow.ico" />
+    <None Include="..\Installer\License_iba-software.rtf">
+      <Link>License_iba-software.rtf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\kafka.ico" />
     <None Include="Resources\DataTransferIcon.ico" />
     <Protobuf Include="Processing\IbaGrpc\protos\DataTransfer.proto" />
