@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KafkaWriterTaskControl));
             this.m_monitorGroup = new iba.Utility.CollapsibleGroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -90,6 +89,10 @@
             this.typeLabel = new System.Windows.Forms.Label();
             this.clusterTypeComboBox = new System.Windows.Forms.ComboBox();
             this.tabConnection = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.timestampLabel = new System.Windows.Forms.Label();
+            this.timeGrid = new DevExpress.XtraGrid.GridControl();
+            this.m_viewTime = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.m_colTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.signalRefTextBox = new System.Windows.Forms.TextBox();
             this.exprGrid = new DevExpress.XtraGrid.GridControl();
@@ -136,6 +139,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timeoutNumericUpDown)).BeginInit();
             this.tabConnection.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timeGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_viewTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exprGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
@@ -898,6 +903,8 @@
             // 
             // tabConnection
             // 
+            this.tabConnection.Controls.Add(this.timestampLabel);
+            this.tabConnection.Controls.Add(this.timeGrid);
             this.tabConnection.Controls.Add(this.label1);
             this.tabConnection.Controls.Add(this.signalRefTextBox);
             this.tabConnection.Controls.Add(this.exprGrid);
@@ -940,6 +947,64 @@
             this.tabConnection.Text = "tabConnection";
             this.tabConnection.Title = "Target";
             this.tabConnection.ToolTip = "Page";
+            // 
+            // timestampLabel
+            // 
+            this.timestampLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.timestampLabel.AutoSize = true;
+            this.timestampLabel.Enabled = false;
+            this.timestampLabel.Location = new System.Drawing.Point(459, 175);
+            this.timestampLabel.Name = "timestampLabel";
+            this.timestampLabel.Size = new System.Drawing.Size(81, 17);
+            this.timestampLabel.TabIndex = 57;
+            this.timestampLabel.Text = "Timestamp:";
+            // 
+            // timeGrid
+            // 
+            this.timeGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.timeGrid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.timeGrid.Enabled = false;
+            this.timeGrid.Location = new System.Drawing.Point(547, 170);
+            this.timeGrid.MainView = this.m_viewTime;
+            this.timeGrid.Margin = new System.Windows.Forms.Padding(4);
+            this.timeGrid.Name = "timeGrid";
+            this.timeGrid.Size = new System.Drawing.Size(292, 26);
+            this.timeGrid.TabIndex = 8;
+            this.timeGrid.TabStop = false;
+            this.timeGrid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.m_viewTime});
+            // 
+            // m_viewTime
+            // 
+            this.m_viewTime.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.m_colTime});
+            this.m_viewTime.DetailHeight = 431;
+            this.m_viewTime.GridControl = this.timeGrid;
+            this.m_viewTime.Name = "m_viewTime";
+            this.m_viewTime.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
+            this.m_viewTime.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.False;
+            this.m_viewTime.OptionsBehavior.AutoPopulateColumns = false;
+            this.m_viewTime.OptionsCustomization.AllowColumnMoving = false;
+            this.m_viewTime.OptionsCustomization.AllowColumnResizing = false;
+            this.m_viewTime.OptionsCustomization.AllowFilter = false;
+            this.m_viewTime.OptionsCustomization.AllowGroup = false;
+            this.m_viewTime.OptionsCustomization.AllowQuickHideColumns = false;
+            this.m_viewTime.OptionsCustomization.AllowSort = false;
+            this.m_viewTime.OptionsFind.AllowFindPanel = false;
+            this.m_viewTime.OptionsSelection.EnableAppearanceFocusedRow = false;
+            this.m_viewTime.OptionsView.ShowColumnHeaders = false;
+            this.m_viewTime.OptionsView.ShowGroupPanel = false;
+            this.m_viewTime.OptionsView.ShowIndicator = false;
+            // 
+            // m_colTime
+            // 
+            this.m_colTime.Caption = "Pulse signal";
+            this.m_colTime.FieldName = "Expression";
+            this.m_colTime.MinWidth = 27;
+            this.m_colTime.Name = "m_colTime";
+            this.m_colTime.Visible = true;
+            this.m_colTime.VisibleIndex = 0;
+            this.m_colTime.Width = 100;
             // 
             // label1
             // 
@@ -1121,6 +1186,7 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.metadataComboBox.Size = new System.Drawing.Size(155, 22);
             this.metadataComboBox.TabIndex = 53;
+            this.metadataComboBox.EditValueChanged += new System.EventHandler(this.metadataComboBox_EditValueChanged);
             // 
             // label13
             // 
@@ -1287,6 +1353,7 @@
             this.m_datFileTextBox.Name = "m_datFileTextBox";
             this.m_datFileTextBox.Size = new System.Drawing.Size(640, 22);
             this.m_datFileTextBox.TabIndex = 4;
+            this.m_datFileTextBox.TextChanged += new System.EventHandler(this.m_datFileTextBox_TextChanged);
             // 
             // topicComboBox
             // 
@@ -1357,6 +1424,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.timeoutNumericUpDown)).EndInit();
             this.tabConnection.ResumeLayout(false);
             this.tabConnection.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timeGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.m_viewTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.exprGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
@@ -1461,5 +1530,9 @@
         private System.Windows.Forms.ToolTip placeholdersKeyToolTip;
         private System.Windows.Forms.TextBox signalRefTextBox;
         private System.Windows.Forms.Panel panelKafka;
+        private DevExpress.XtraGrid.Views.Grid.GridView m_viewTime;
+        private DevExpress.XtraGrid.Columns.GridColumn m_colTime;
+        protected DevExpress.XtraGrid.GridControl timeGrid;
+        private System.Windows.Forms.Label timestampLabel;
     }
 }

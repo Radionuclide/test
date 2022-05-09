@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using Confluent.SchemaRegistry;
 using iba.CertificateStore;
-using iba.CertificateStore.Forms;
-using iba.CertificateStore.Proxy;
-using iba.Controls;
-using IbaAnalyzer;
+using iba.Utility;
 
 namespace iba.Data
 {
     [Serializable]
     public class KafkaWriterTaskData : TaskData, ICertifiable
     {
+        public const string StartTime = "*STARTTIME*";
+        public const string EndTime = "*ENDTIME*";
         public string clusterAddress { get; set; }
         public string topicName { get; set; }
         public double timeout { get; set; } //in seconds
@@ -24,6 +22,8 @@ namespace iba.Data
         public string schemaRegistryAddress { get; set; }
         public string key { get; set; }
         public List<string> metadata { get; set; }
+        public string timeStampExpression { get; set; }
+        public string timeStamp { get; set; }
         public MonitorData MonitorData { get; set; }
         public string TestDatFile { get; set; }
         public RequiredAcks AckMode { get; set; }
@@ -35,13 +35,25 @@ namespace iba.Data
         public string SSLClientThumbprint { get; set; }
         public string SSLCAThumbprint { get; set; }
         public string SASLUsername { get; set; }
+        [XmlIgnore]
         public string SASLPass { get; set; }
+
+        public string SASLPassEncrypted {
+            get { return Crypt.Encrypt(SASLPass); }
+            set { SASLPass = Crypt.Decrypt(value); }
+        }
         public bool enableSSLVerification { get; set; }
         public bool enableSchema { get; set; }
         public string schemaSSLClientThumbprint { get; set; }
         public string schemaSSLCAThumbprint { get; set; }
         public string schemaUsername { get; set; }
+        [XmlIgnore]
         public string schemaPass { get; set; }
+        public string schemaPassEncrypted
+        {
+            get { return Crypt.Encrypt(schemaPass); }
+            set { schemaPass = Crypt.Decrypt(value); }
+        }
         public bool schemaEnableSSLVerification { get; set; }
         public string signalReference { get; set; }
 
@@ -124,8 +136,10 @@ namespace iba.Data
 
             [XmlIgnore]
             public string TestValue { get; set; }
+            [XmlIgnore]
             public object Value { get; set; }
             public ExpressionType DataType { get; set; }
+            [XmlIgnore]
             public string DataTypeAsString
             {
                 get => DataTypes[(int)DataType];
@@ -140,9 +154,13 @@ namespace iba.Data
                 }
             }
             public string Expression { get; set; }
+            [XmlIgnore]
             public string Name { get; set; }
+            [XmlIgnore]
             public string Comment1 { get; set; }
+            [XmlIgnore]
             public string Comment2 { get; set; }
+            [XmlIgnore]
             public string Unit { get; set; }
 
             public KafkaRecord()
@@ -236,6 +254,7 @@ namespace iba.Data
             schemaPass = "";
             signalReference = "$signalname";
             enableSchema = false;
+            timeStampExpression = StartTime;
         }
 
         public KafkaWriterTaskData() : this(null) { }
@@ -275,6 +294,7 @@ namespace iba.Data
             d.signalReference = signalReference;
             d.schemaEnableSSLVerification = schemaEnableSSLVerification;
             d.enableSchema = enableSchema;
+            d.timeStampExpression = timeStampExpression;
             return d;
         }
 
@@ -314,48 +334,8 @@ namespace iba.Data
                 schemaPass == other.schemaPass &&
                 signalReference == other.signalReference &&
                 schemaEnableSSLVerification == other.schemaEnableSSLVerification &&
-                enableSchema == other.enableSchema;
-        }
-
-        public void EvaluateValues(string filename, IbaAnalyzer.IbaAnalyzer ibaAnalyzer)
-        {
-            bool getMetadata = IsAnalyzerVersionNewer(ibaAnalyzer, 7, 3, 2);
-            foreach (var record in Records)
-            {
-                if (record.DataType == KafkaRecord.ExpressionType.Text)
-                {
-                    ibaAnalyzer.EvaluateToStringArray(record.Expression, 0, out _, out var oValues);
-
-                    if (oValues != null)
-                    {
-                        var values = (string[])oValues;
-                        foreach (string str in values)
-                        {
-                            if (!string.IsNullOrEmpty(str))
-                            {
-                                record.Value = str;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                        record.Value = "";
-                }
-                else
-                {
-                    record.Value = ibaAnalyzer.EvaluateDouble(record.Expression, 0);
-                }
-
-                if (getMetadata)
-                {
-                    IChannelMetaData channelMetaData = ibaAnalyzer.GetChannelMetaData(record.Expression);
-
-                    record.Name = channelMetaData.name;
-                    record.Unit = channelMetaData.Unit;
-                    record.Comment1 = channelMetaData.Comment1;
-                    record.Comment2 = channelMetaData.Comment2;
-                }
-            }
+                enableSchema == other.enableSchema &&
+                timeStampExpression == other.timeStampExpression;
         }
 
         public static bool IsAnalyzerVersionNewer(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, int majorMinVersion, int minorMinVersion = -1, int bugfixMinVersion = -1)

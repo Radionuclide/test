@@ -13,6 +13,8 @@ using iba.Utility;
 using iba.ibaFilesLiteDotNet;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
+using static iba.Data.KafkaWriterTaskData;
+using IbaAnalyzer;
 
 namespace iba.Processing
 {
@@ -169,11 +171,93 @@ namespace iba.Processing
                 using (IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, m_data.MonitorData))
                 {
                     if (bUseAnalysis)
-                        mon.Execute(delegate () {
-                            m_ibaAnalyzer.OpenAnalysis(m_data.AnalysisFile);
-                            m_data.EvaluateValues(filename, m_ibaAnalyzer);
-                        });
+                        mon.Execute(delegate () { { m_ibaAnalyzer.OpenAnalysis(m_data.AnalysisFile); } });
 
+                    bool getMetadata = IsAnalyzerVersionNewer(m_ibaAnalyzer, 7, 3, 2);
+                    foreach (var record in m_data.Records)
+                    {
+                        if (record.DataType == KafkaRecord.ExpressionType.Text)
+                        {
+                            object oValues = null;
+                            mon.Execute(delegate () {m_ibaAnalyzer.EvaluateToStringArray(record.Expression, 0, out _, out oValues);});
+
+                            if (oValues != null)
+                            {
+                                var values = (string[])oValues;
+                                foreach (string str in values)
+                                {
+                                    if (!string.IsNullOrEmpty(str))
+                                    {
+                                        record.Value = str;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                                record.Value = "";
+                        }
+                        else
+                        {
+                            mon.Execute(delegate () { record.Value = m_ibaAnalyzer.EvaluateDouble(record.Expression, 0); });
+                        }
+
+                        if (getMetadata)
+                        {
+                            IChannelMetaData channelMetaData = null;
+                            mon.Execute(delegate () { record.Value = m_ibaAnalyzer.GetChannelMetaData(record.Expression); });
+                            if (channelMetaData != null)
+                            {
+                                record.Name = channelMetaData.name;
+                                record.Unit = channelMetaData.Unit;
+                                record.Comment1 = channelMetaData.Comment1;
+                                record.Comment2 = channelMetaData.Comment2;
+                            }
+                            else
+                            {
+                                record.Name = "";
+                                record.Unit = "";
+                                record.Comment1 = "";
+                                record.Comment2 = "";
+                            }
+                        }
+                    }
+                    if (m_data.metadata.Contains("Timestamp"))
+                    {
+                        DateTime timeStampDt;
+
+                        if (m_data.timeStampExpression == StartTime)
+                        {
+                            timeStampDt = IbaFileReader.ReadShortFileInfo(filename).StartTime;
+                        }
+                        else if (m_data.timeStampExpression == EndTime)
+                        {
+                            timeStampDt = IbaFileReader.ReadShortFileInfo(filename).EndTime;
+                        }
+                        else
+                        {
+                            timeStampDt = IbaFileReader.ReadShortFileInfo(filename).StartTime;
+                            double timeOffset = double.NaN;
+                            mon.Execute(delegate () { timeOffset = m_ibaAnalyzer.Evaluate(m_data.timeStampExpression, 0); });
+                            if (double.IsNaN(timeOffset))
+                            {
+                                m_confWorker.Log(Logging.Level.Warning, $"Cannot evaluate expression {m_data.timeStampExpression}", filename, m_data);
+                            }
+                            else
+                            {
+                                timeStampDt = timeStampDt.AddTicks((int)(timeOffset * 10000000));
+                            }
+                        }
+
+                        var infofields = new IbaFileReader(filename, false).InfoFields;
+                        if (infofields.TryGetValue("$PDA_UtcOffset", out string utcField))
+                        {
+                            timeStampDt = new DateTime(timeStampDt.Ticks, DateTimeKind.Unspecified);
+                            m_data.timeStamp = timeStampDt.ToString("o", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
+                        }
+                        else // use local UTC
+                            m_data.timeStamp = timeStampDt.ToString("o", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
+                        m_data.timeStamp += "Z";
+                    }
                     var config = InitConfig(m_data);
 
                     // If serializers are not specified, default serializers from
@@ -182,7 +266,6 @@ namespace iba.Processing
 
                     try
                     {
-                        // todo implement timestamp metadata
                         if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONGrouped)
                         {
                             var producerBuilder = new ProducerBuilder<string, string>(config);
@@ -190,23 +273,25 @@ namespace iba.Processing
                             
                             string message = "{ \n";
 
-                            // todo maybe change format to   message += $", \"{rec.Name}.Comment1\": \"{rec.Comment1}\""; and change Name matadata to Expression metadata
                             for (int i = 0; i < m_data.Records.Count; i++)
                             {
                                 var rec = m_data.Records[i];
+                                var sigRef = ReplacePlaceholders(rec, m_data.signalReference);
                                 if (i > 0)  
                                     message += ",\n ";
                                 message += $"\"{ReplacePlaceholders(rec, m_data.signalReference)}\": {m_data.ToText(rec)}";
                                 if (m_data.metadata.Contains("Identifier"))
-                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Identifier\": \"{m_data.identifier}\"";
+                                    message += $",\n \"{sigRef}.Identifier\": \"{m_data.identifier}\"";
                                 if (m_data.metadata.Contains("Name"))
-                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Name\": \"{rec.Name}\"";
+                                    message += $",\n \"{sigRef}.Name\": \"{rec.Name}\"";
                                 if (m_data.metadata.Contains("Unit"))
-                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Unit\": \"{rec.Unit}\"";
+                                    message += $",\n \"{sigRef}.Unit\": \"{rec.Unit}\"";
                                 if (m_data.metadata.Contains("Comment 1"))
-                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Comment1\": \"{rec.Comment1}\"";
+                                    message += $",\n \"{sigRef}.Comment1\": \"{rec.Comment1}\"";
                                 if (m_data.metadata.Contains("Comment 2"))
-                                    message += $",\n \"{ReplacePlaceholders(rec, m_data.signalReference)}.Comment2\": \"{rec.Comment2}\"";
+                                    message += $",\n \"{sigRef}.Comment2\": \"{rec.Comment2}\"";
+                                if (m_data.metadata.Contains("Timestamp"))
+                                    message += $",\n \"{sigRef}.Timestamp\": \"{m_data.timeStamp}\"";
                             }
                             message += "\n}";
                             using (var p = producerBuilder.Build())
@@ -231,6 +316,8 @@ namespace iba.Processing
                                     message += $",\n \"Comment1\": \"{rec.Comment1}\"";
                                 if (m_data.metadata.Contains("Comment 2"))
                                     message += $",\n \"Comment2\": \"{rec.Comment2}\"";
+                                if (m_data.metadata.Contains("Timestamp"))
+                                    message += $",\n \"Timestamp\": \"{m_data.timeStamp}\"";
                                 message += "\n}";
                                 using (var p = producerBuilder.Build())
                                 {

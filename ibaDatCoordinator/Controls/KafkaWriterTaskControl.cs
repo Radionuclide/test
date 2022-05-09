@@ -37,6 +37,8 @@ namespace iba.Controls
         IPropertyPaneManager m_manager;
         HidebleControlBlock clusterSSL, clusterSASL, schemaSSL, schemaAuth;
         KafkaWriterTaskControlEventHub eventHubControl;
+        RepositoryItemChannelTreeEdit m_timeEditor, m_channelEditor;
+        TimeExpression _timeExpression;
         #region ICertificatesControlHost
         public bool IsLocalHost { get; }
         public string ServerAddress { get; }
@@ -109,6 +111,26 @@ namespace iba.Controls
             }
         }
 
+        private class TimeExpression
+        {
+            private string _exp;
+            private DevExpress.XtraGrid.GridControl _grid;
+            public TimeExpression(DevExpress.XtraGrid.GridControl grid)
+            {
+                _grid = grid;
+            }
+            public string Expression {
+                get
+                {
+                    return _exp;
+                }
+                set
+                {
+                    _exp = value;
+                    _grid.RefreshDataSource();
+                } 
+            }
+        }
 
         public KafkaWriterTaskControl()
         {
@@ -130,16 +152,17 @@ namespace iba.Controls
 
             expressionGridColumn.View.CellValueChanged += CellExpressionChanged;
 
-            var channelEditor = new RepositoryItemChannelTreeEdit(_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Text);
-            channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            exprGrid.RepositoryItems.Add(channelEditor);
-            expressionGridColumn.ColumnEdit = channelEditor;
+            m_channelEditor = new RepositoryItemChannelTreeEdit(_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Text);
+            m_channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            exprGrid.RepositoryItems.Add(m_channelEditor);
+            expressionGridColumn.ColumnEdit = m_channelEditor;
 
             metadataComboBox.Properties.Items.Add("Unit");
             metadataComboBox.Properties.Items.Add("Comment 1");
             metadataComboBox.Properties.Items.Add("Comment 2");
             metadataComboBox.Properties.Items.Add("Name");
             metadataComboBox.Properties.Items.Add("Identifier");
+            metadataComboBox.Properties.Items.Add("Timestamp");
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             foreach (var t in KafkaWriterTaskData.KafkaRecord.DataTypes)
@@ -176,6 +199,20 @@ namespace iba.Controls
             clusterSASL = new HidebleControlBlock(SASLMechLabel, SASLMechanismComboBox, SASLNameTextBox, SASLPassTextBox, SASLNameLabel, SASLPassLabel);
             schemaSSL = new HidebleControlBlock(schemaClientCertificateLabel, schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertificateLabel, schemaCACertCBox);
             schemaAuth = new HidebleControlBlock(schemaNameLabel, schemaNameTextBox, schemaPassLabel, schemaPassTextBox);
+
+            _timeExpression = new TimeExpression(timeGrid);
+            var l = new BindingList<TimeExpression>();
+            l.Add(_timeExpression);
+            timeGrid.DataSource = l;
+
+
+            m_timeEditor = new RepositoryItemChannelTreeEdit(_analyzerManager, ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Infofields);
+            m_timeEditor.AddSpecialNode(KafkaWriterTaskData.StartTime, Properties.Resources.StartTime, Icons.Gui.All.Images.PauseOutline());
+            m_timeEditor.AddSpecialNode(KafkaWriterTaskData.EndTime, Properties.Resources.EndTime, Icons.Gui.All.Images.PauseOutline());
+            m_timeEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+
+            timeGrid.RepositoryItems.Add(m_timeEditor);
+            m_colTime.ColumnEdit = m_timeEditor;
         }
 
         class CertificateInfo : ICertificateInfo
@@ -253,6 +290,7 @@ namespace iba.Controls
             foreach (CheckedListBoxItem i in metadataComboBox.Properties.Items)
                 i.CheckState = _data.metadata.Contains(i.ToString()) ? CheckState.Checked : CheckState.Unchecked;
 
+            _timeExpression.Expression = _data.timeStampExpression;
             addressTextBox.Text = _data.clusterAddress;
             schemaTextBox.Text = _data.schemaRegistryAddress;
             topicComboBox.Items.Clear();
@@ -399,6 +437,7 @@ namespace iba.Controls
                 if (i.CheckState == CheckState.Checked)
                     _data.metadata.Add(i.ToString());
 
+            _data.timeStampExpression = _timeExpression.Expression;
             _data.Format = (KafkaWriterTaskData.DataFormat)dataFormatComboBox.SelectedIndex;
             _data.AckMode = (KafkaWriterTaskData.RequiredAcks)acknowledgmentComboBox.SelectedIndex;
             _data.ClusterMode = (KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex;
@@ -629,6 +668,13 @@ namespace iba.Controls
         private void m_pdoFileTextBox_TextChanged(object sender, EventArgs e)
         {
             UpdateSource();
+            _timeExpression.Expression = KafkaWriterTaskData.StartTime;
+
+        }
+        private void m_datFileTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSource();
+            _timeExpression.Expression = KafkaWriterTaskData.StartTime;
         }
 
         private void buttonExpressionCopy_Click(object sender, EventArgs e)
@@ -768,6 +814,12 @@ namespace iba.Controls
             CACertCBox.UnsetEnvironment();
             CACertCBox.SetEnvironment(this, CACertParams);
             CACertCBox.Enabled = enableSSLVerificationCb.Checked;
+        }
+
+        private void metadataComboBox_EditValueChanged(object sender, EventArgs e)
+        {
+            timestampLabel.Enabled = metadataComboBox.Properties.Items.GetCheckedValues().Contains("Timestamp");
+            timeGrid.Enabled = metadataComboBox.Properties.Items.GetCheckedValues().Contains("Timestamp");
         }
 
         private void CopyToEventHub()
