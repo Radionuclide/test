@@ -119,7 +119,7 @@ namespace iba
             m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = Icons.Gui.All.Images.Opcua();
             // added by kolesnik - end
             m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Bitmap.FromHicon(Properties.Resources.DataTransferIcon.Handle);
-            m_statusPane.LargeImage = m_statusPane.SmallImage = Bitmap.FromHicon(Properties.Resources.status.Handle);
+            m_statusPane.LargeImage = m_statusPane.SmallImage = Icons.Gui.All.Images.Table();
             m_configPane.LargeImage = m_configPane.SmallImage = Icons.Gui.All.Images.Batch();
             m_loggingPane.LargeImage = m_loggingPane.SmallImage = Icons.Gui.All.Images.Table();
             m_settingsPane.LargeImage = m_settingsPane.SmallImage = Icons.Gui.All.Images.ToolboxService();
@@ -163,8 +163,8 @@ namespace iba
 
             ImageList statImageList = new();
             statImageList.Images.Add(Icons.Gui.All.Images.FileDat());
-            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(Icons.Gui.All.Images.ScheduleCalendarDate()));
-            statImageList.Images.Add(GraphicsUtilities.PaintOnWhite(Icons.Gui.All.Images.FlashFilledGreen()));
+            statImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
+            statImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
             statImageList.Images.Add(Properties.Resources.onetimeconfiguration);
             statImageList.Images.Add(Properties.Resources.brokenfile);
             m_statusTreeView.ImageList = statImageList;
@@ -178,8 +178,8 @@ namespace iba
             }
             m_navBar.SelectedPane = m_configPane;
 
-            statusImgConnectedInsecure = Icons.Gui.All.Images.LockClosedOrange();
-            statusImgConnectedSecure = Icons.Gui.All.Images.LockOpenOrange();
+            statusImgConnectedInsecure = Icons.Gui.All.Images.LockOpenOrange();
+            statusImgConnectedSecure = Icons.Gui.All.Images.LockClosedOrange();
             statusImgDisconnected = Properties.Resources.img_networkError.ToBitmap();
             statusImgStandalone = Properties.Resources.img_server;
 
@@ -199,7 +199,7 @@ namespace iba
 
             configurationToolStripMenuItem.Image = Icons.Gui.All.Images.Batch();
             dataTransferToolStripMenuItem.Image = Bitmap.FromHicon(Properties.Resources.DataTransferIcon.Handle);
-            statusToolStripMenuItem.Image = Bitmap.FromHicon(Properties.Resources.status.Handle);
+            statusToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
             loggingToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
             watchdogToolStripMenuItem.Image = Icons.Gui.All.Images.TcpIp();
             snmpToolStripMenuItem.Image = Icons.Gui.All.Images.Snmp();

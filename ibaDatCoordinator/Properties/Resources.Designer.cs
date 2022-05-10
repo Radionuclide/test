@@ -1865,29 +1865,9 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap img_cert {
-            get {
-                object obj = ResourceManager.GetObject("img_cert", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap img_computed_values {
             get {
                 object obj = ResourceManager.GetObject("img_computed_values", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap img_dude {
-            get {
-                object obj = ResourceManager.GetObject("img_dude", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -4992,16 +4972,6 @@ namespace iba.Properties {
         internal static string statText3 {
             get {
                 return ResourceManager.GetString("statText3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon status {
-            get {
-                object obj = ResourceManager.GetObject("status", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         
