@@ -248,15 +248,14 @@ namespace iba.Processing
                             }
                         }
 
+                        m_data.timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff");
+
                         var infofields = new IbaFileReader(filename, false).InfoFields;
+
                         if (infofields.TryGetValue("$PDA_UtcOffset", out string utcField))
-                        {
-                            timeStampDt = new DateTime(timeStampDt.Ticks, DateTimeKind.Unspecified);
-                            m_data.timeStamp = timeStampDt.ToString("o", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
-                        }
+                            m_data.timeStamp += utcField;
                         else // use local UTC
-                            m_data.timeStamp = timeStampDt.ToString("o", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
-                        m_data.timeStamp += "Z";
+                            m_data.timeStamp += TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
                     }
                     var config = InitConfig(m_data);
 
