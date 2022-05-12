@@ -33,7 +33,7 @@ namespace iba.Processing
             schemaDefault = (Avro.RecordSchema)Avro.RecordSchema.Parse(
                                                             @"{""namespace"": ""de.iba"",
                                                 ""type"": ""record"",
-                                                ""name"": ""PdaRecord"",
+                                                ""name"": ""DatCoordinatorRecord"",
                                                 ""fields"": [
                                                     {""name"": ""Signal"", ""type"": ""string""},
                                                     {""name"": ""ID"", ""type"": [""null"", ""string""]},
