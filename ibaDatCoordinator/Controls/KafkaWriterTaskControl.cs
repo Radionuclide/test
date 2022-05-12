@@ -753,10 +753,11 @@ namespace iba.Controls
                 MessageBox.Show((res as Exception).Message, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            var selectedTopic = topicComboBox.SelectedItem;
+
+            var selectedTopic = topicComboBox.Text;
             topicComboBox.Items.Clear();
             topicComboBox.Items.AddRange(res as string[]);
-            if (selectedTopic != null && selectedTopic as string != "")
+            if (!String.IsNullOrEmpty(selectedTopic))
             {
                 int ind = topicComboBox.Items.IndexOf(selectedTopic);
                 topicComboBox.SelectedIndex = ind != -1 ? ind : 0;
