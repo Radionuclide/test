@@ -204,7 +204,7 @@ namespace iba.Processing
                         if (getMetadata)
                         {
                             IChannelMetaData channelMetaData = null;
-                            mon.Execute(delegate () { record.Value = m_ibaAnalyzer.GetChannelMetaData(record.Expression); });
+                            mon.Execute(delegate () { channelMetaData = m_ibaAnalyzer.GetChannelMetaData(record.Expression); });
                             if (channelMetaData != null)
                             {
                                 record.Name = channelMetaData.name;
