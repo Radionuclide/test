@@ -123,7 +123,6 @@ namespace iba.Controls
             // m_browsePDOFileButton
             // 
             resources.ApplyResources(this.m_browsePDOFileButton, "m_browsePDOFileButton");
-            this.m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen();
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_browsePDOFileButton.UseVisualStyleBackColor = true;
             this.m_browsePDOFileButton.Click += new System.EventHandler(this.m_browsePDOFileButton_Click);
@@ -131,7 +130,7 @@ namespace iba.Controls
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
+            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
             this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -191,7 +190,6 @@ namespace iba.Controls
             // m_browseDatFileButton
             // 
             resources.ApplyResources(this.m_browseDatFileButton, "m_browseDatFileButton");
-            this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_browseDatFileButton.UseVisualStyleBackColor = true;
             this.m_browseDatFileButton.Click += new System.EventHandler(this.m_browseDatFileButton_Click);

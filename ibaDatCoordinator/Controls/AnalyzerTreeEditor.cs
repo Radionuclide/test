@@ -800,7 +800,7 @@ namespace iba.Controls
             ClearNodes();
 
             Node loadingNode = new Node(Properties.Resources.AnalyzerTree_Loading);
-            loadingNode.SelectedImage = loadingNode.Image = Properties.Resources.img_warning;
+            loadingNode.SelectedImage = loadingNode.Image = Icons.Gui.All.Images.WarningYellowFilled();
             tree.Nodes.Add(loadingNode);
 
             UpdateTree();

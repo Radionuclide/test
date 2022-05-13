@@ -388,7 +388,7 @@
             // exportParamButton
             // 
             this.exportParamButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.exportParamButton.Image = global::iba.Properties.Resources.img_export;
+            this.exportParamButton.Image = Icons.Gui.All.Images.Export(16);
             this.exportParamButton.Location = new System.Drawing.Point(926, 603);
             this.exportParamButton.Margin = new System.Windows.Forms.Padding(4);
             this.exportParamButton.Name = "exportParamButton";
@@ -412,7 +412,7 @@
             // importParamButton
             // 
             this.importParamButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.importParamButton.Image = global::iba.Properties.Resources.img_import;
+            this.importParamButton.Image = Icons.Gui.All.Images.Import(16);
             this.importParamButton.Location = new System.Drawing.Point(926, 565);
             this.importParamButton.Margin = new System.Windows.Forms.Padding(4);
             this.importParamButton.Name = "importParamButton";
@@ -1146,7 +1146,7 @@
             // m_executeIBAAButton
             // 
             this.m_executeIBAAButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_executeIBAAButton.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
+            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
             this.m_executeIBAAButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_executeIBAAButton.Location = new System.Drawing.Point(888, 7);
             this.m_executeIBAAButton.Margin = new System.Windows.Forms.Padding(4);
@@ -1168,7 +1168,7 @@
             // m_browsePDOFileButton
             // 
             this.m_browsePDOFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            this.m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
             this.m_browsePDOFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_browsePDOFileButton.Location = new System.Drawing.Point(848, 7);
             this.m_browsePDOFileButton.Margin = new System.Windows.Forms.Padding(4);
@@ -1300,7 +1300,7 @@
             // m_testButton
             // 
             this.m_testButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
+            this.m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
             this.m_testButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_testButton.Location = new System.Drawing.Point(888, 39);
             this.m_testButton.Margin = new System.Windows.Forms.Padding(4);
@@ -1335,7 +1335,7 @@
             // m_browseDatFileButton
             // 
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_browseDatFileButton.Location = new System.Drawing.Point(848, 39);
             this.m_browseDatFileButton.Margin = new System.Windows.Forms.Padding(4);

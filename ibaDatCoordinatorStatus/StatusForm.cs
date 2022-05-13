@@ -21,13 +21,13 @@ namespace iba.DatCoordinator.Status
 {
     public partial class StatusForm : Form, IExternalCommand
     {
-        private static Icon ServiceRunningIcon = Properties.Resources.ibaDatCoordinator_server_start;
-        private static Icon ServiceStoppedIcon = Properties.Resources.ibaDatCoordinator_server_stopp;
-        private static Icon ServiceDisconnectedIcon = Properties.Resources.ibaDatCoordinator_server_dc;
+        private static Icon ServiceRunningIcon = Icons.SystemTray.Ico.IbaDatcoordinatorServerStart();
+        private static Icon ServiceStoppedIcon = Icons.SystemTray.Ico.IbaDatcoordinatorServerStop();
+        private static Icon ServiceDisconnectedIcon = Icons.SystemTray.Ico.IbaDatcoordinatorServerDisconnected(); 
 
-        private static Icon ServiceRunningIconSmall = new Icon(Properties.Resources.ibaDatCoordinator_server_start,SystemInformation.SmallIconSize);
-        private static Icon ServiceStoppedIconSmall = new Icon(Properties.Resources.ibaDatCoordinator_server_stopp, SystemInformation.SmallIconSize);
-        private static Icon ServiceDisconnectedIconSmall = new Icon(Properties.Resources.ibaDatCoordinator_server_dc, SystemInformation.SmallIconSize);
+        private static Icon ServiceRunningIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorServerStart(), SystemInformation.SmallIconSize);
+        private static Icon ServiceStoppedIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorServerStop(), SystemInformation.SmallIconSize);
+        private static Icon ServiceDisconnectedIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorServerDisconnected(), SystemInformation.SmallIconSize);
 
         public StatusForm()
         {

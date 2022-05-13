@@ -118,7 +118,7 @@ namespace iba
             m_snmpPane.LargeImage = m_snmpPane.SmallImage = Icons.Gui.All.Images.Snmp();
             m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = Icons.Gui.All.Images.Opcua();
             // added by kolesnik - end
-            m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Bitmap.FromHicon(Properties.Resources.DataTransferIcon.Handle);
+            m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Icons.Gui.All.Images.SendReceive();
             m_statusPane.LargeImage = m_statusPane.SmallImage = Icons.Gui.All.Images.Table();
             m_configPane.LargeImage = m_configPane.SmallImage = Icons.Gui.All.Images.Batch();
             m_loggingPane.LargeImage = m_loggingPane.SmallImage = Icons.Gui.All.Images.Table();
@@ -130,7 +130,7 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.FileDat());
             confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
             confsImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
-            confsImageList.Images.Add(Properties.Resources.onetimeconfiguration);
+            confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneTime());
             confsImageList.Images.Add(Icons.Gui.All.Images.Report2());
             confsImageList.Images.Add(Icons.Gui.All.Images.DatabaseImport());
             confsImageList.Images.Add(Icons.Gui.All.Images.TerminalCode());
@@ -145,27 +145,27 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.Snmp());
             confsImageList.Images.Add(Icons.Gui.All.Images.Extract());
             confsImageList.Images.Add(Icons.Gui.All.Images.ApacheKafka());
-            confsImageList.Images.Add(Properties.Resources.DataTransferIcon.ToBitmap());
+            confsImageList.Images.Add(Icons.Gui.All.Images.SendReceive());
             confsImageList.Images.Add(Properties.Resources.img_question);
-            confsImageList.Images.Add(Properties.Resources.configuration_new);
-            confsImageList.Images.Add(Properties.Resources.onetime_configuration_new);
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(Properties.Resources.scheduled_configuration_new.ToBitmap()));
-            confsImageList.Images.Add(GraphicsUtilities.PaintOnWhite(Properties.Resources.event_configuration_new.ToBitmap()));
+            confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderNew());
+            confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneNew());
+            confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDateNew());
+            confsImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreenNew());
             m_configTreeView.ImageList = confsImageList;
             
             UpdateImageListConfTree();
                         
             ImageList confsImageList2 = new();
-            confsImageList2.Images.Add(Properties.Resources.greenarrow);
-            confsImageList2.Images.Add(Properties.Resources.redarrow); 
-            confsImageList2.Images.Add(Properties.Resources.redarrow1);
+            confsImageList2.Images.Add(Icons.Gui.All.Images.ConditionExecutionGreen());
+            confsImageList2.Images.Add(Icons.Gui.All.Images.ConditionExecutionRed()); 
+            confsImageList2.Images.Add(Icons.Gui.All.Images.ConditionExecutionRedFailure());
             m_configTreeView.StateImageList = confsImageList2;
 
             ImageList statImageList = new();
             statImageList.Images.Add(Icons.Gui.All.Images.FileDat());
             statImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
             statImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
-            statImageList.Images.Add(Properties.Resources.onetimeconfiguration);
+            statImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneTime());
             statImageList.Images.Add(Properties.Resources.brokenfile);
             m_statusTreeView.ImageList = statImageList;
 
@@ -174,7 +174,7 @@ namespace iba
             if (Program.RunsWithService == Program.ServiceEnum.NOSERVICE)
             {
                 m_menuStrip.Items.Remove(serviceToolStripMenuItem);
-                this.Icon = Properties.Resources.standalone;
+                this.Icon = iba.Icons.SystemTray.Ico.IbaDatcoordinator();
             }
             m_navBar.SelectedPane = m_configPane;
 
@@ -198,7 +198,7 @@ namespace iba
             deleteToolStripMenuItem.Image = Icons.Gui.Standard.Images.Delete();
 
             configurationToolStripMenuItem.Image = Icons.Gui.All.Images.Batch();
-            dataTransferToolStripMenuItem.Image = Bitmap.FromHicon(Properties.Resources.DataTransferIcon.Handle);
+            dataTransferToolStripMenuItem.Image = Icons.Gui.All.Images.SendReceive();
             statusToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
             loggingToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
             watchdogToolStripMenuItem.Image = Icons.Gui.All.Images.TcpIp();
@@ -1586,7 +1586,7 @@ namespace iba
             menuImages.Images.Add(Icons.Gui.All.Images.Snmp());
             menuImages.Images.Add(Icons.Gui.All.Images.ApacheKafka());
             menuImages.Images.Add(Icons.Gui.All.Images.Extract());
-            menuImages.Images.Add(Properties.Resources.DataTransferIcon);
+            menuImages.Images.Add(Icons.Gui.All.Images.SendReceive());
 
             int pluginsStartImageIndex = menuImages.Images.Count;
             List<PluginTaskInfo> filteredPlugins = PluginManager.Manager.PluginInfos.Where(a => !a.IsOutdated).ToList();
@@ -2703,7 +2703,7 @@ namespace iba
         {
             if (Program.RunsWithService == Program.ServiceEnum.DISCONNECTED)
             {
-                this.Icon = iba.Properties.Resources.disconnectedIcon;
+                this.Icon = Icons.SystemTray.Ico.IbaDatcoordinatorDisconnected();
                 m_startButton.Enabled = m_stopButton.Enabled = false;
                 return;
             }
@@ -2726,11 +2726,11 @@ namespace iba
             {
                 if (!allStopped)
                 {
-                    this.Icon = iba.Properties.Resources.runningIcon;
+                    this.Icon = Icons.SystemTray.Ico.IbaDatcoordinatorStart();
                 }
                 else
                 {
-                    this.Icon = iba.Properties.Resources.connectedIcon;
+                    this.Icon = Icons.SystemTray.Ico.IbaDatcoordinatorStop();
                 }
             }
         }

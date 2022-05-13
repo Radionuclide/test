@@ -57,8 +57,8 @@ namespace iba.Controls
             m_cbTimeDir.SelectedIndex = (int) m_data.DirTimeChoice;
 
             m_targetFolderTextBox.Text = m_data.DestinationMap;
-            m_checkPathButton.Image = null;
-            m_checkPathButton.Text = "?";
+            m_checkPathButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
+
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
 
@@ -206,22 +206,18 @@ namespace iba.Controls
             }
             if (ok)
             {
-                m_checkPathButton.Text = null;
-                m_checkPathButton.Image = iba.Properties.Resources.thumup;
+                m_checkPathButton.Image = Icons.Gui.All.Images.ThumbUp(16);
             }
             else
             {
                 MessageBox.Show(errormessage, iba.Properties.Resources.invalidPath, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                m_checkPathButton.Text = null;
-                m_checkPathButton.Image = iba.Properties.Resources.thumbdown;
+                m_checkPathButton.Image = Icons.Gui.All.Images.ThumbDown(16);
             }
-            ((Bitmap)m_checkPathButton.Image).MakeTransparent(Color.Magenta);
         }
 
         private void TargetDirInfoChanged(object sender, EventArgs e)
         {
-            m_checkPathButton.Image = null;
-            m_checkPathButton.Text = "?";
+            m_checkPathButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
 
             UpdateTooltips();
         }

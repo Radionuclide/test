@@ -39,8 +39,7 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as UploadTaskData;
 
-            m_btnCheckConnection.Image = null;
-            m_btnCheckConnection.Text = "?";
+            m_btnCheckConnection.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(32);
 
             m_tbServer.Text = m_data.Server;
             m_tbPort.Text = m_data.Port;
@@ -59,13 +58,10 @@ namespace iba.Controls
             m_cbProtocol.SelectedIndex = (int)m_data.Protocol;
             m_cbEncryption.SelectedIndex = (int)m_data.EncryptionChoice;
             m_cmbMode.SelectedIndex = (int)m_data.Mode;
-
-
+            
             m_rbDatFile.Checked = m_data.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.DATFILE;
             m_rbPrevOutput.Checked = m_data.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.PREVOUTPUT;
-
-
-        }
+            }
 
         public void SaveData()
         {
@@ -314,26 +310,18 @@ namespace iba.Controls
                 catch (Exception ex)
                 {
                     LogData.Data.Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message);
-
                 }
-
-                m_btnCheckConnection.Text = null;
-                m_btnCheckConnection.Image = iba.Properties.Resources.thumbdown;
-                ((Bitmap)m_btnCheckConnection.Image).MakeTransparent(Color.Magenta);
             }
 
             if (ok)
             {
-                m_btnCheckConnection.Text = null;
-                m_btnCheckConnection.Image = iba.Properties.Resources.thumup;
+                m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbUp(32);
             }
             else
             {
                 MessageBox.Show(errormessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                m_btnCheckConnection.Text = null;
-                m_btnCheckConnection.Image = iba.Properties.Resources.thumbdown;
+                m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbDown(32);
             }
-            ((Bitmap)m_btnCheckConnection.Image).MakeTransparent(Color.Magenta);
         }
 
         private void ConfigureSearchFileTextBox()

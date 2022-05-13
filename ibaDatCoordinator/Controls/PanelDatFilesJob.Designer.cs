@@ -321,7 +321,7 @@
 			// m_checkPathButton
 			// 
 			resources.ApplyResources(this.m_checkPathButton, "m_checkPathButton");
-			this.m_checkPathButton.Image = global::iba.Properties.Resources.thumup;
+            this.m_checkPathButton.Image = Icons.Gui.All.Images.ThumbUp(16);
 			this.m_checkPathButton.Name = "m_checkPathButton";
 			this.m_checkPathButton.UseVisualStyleBackColor = true;
 			this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);

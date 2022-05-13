@@ -190,7 +190,7 @@ namespace iba.Controls
             // 
             // m_btnCheckConnection
             // 
-            this.m_btnCheckConnection.Image = global::iba.Properties.Resources.thumup;
+            this.m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbUp(16);
             resources.ApplyResources(this.m_btnCheckConnection, "m_btnCheckConnection");
             this.m_btnCheckConnection.Name = "m_btnCheckConnection";
             this.m_btnCheckConnection.UseVisualStyleBackColor = true;

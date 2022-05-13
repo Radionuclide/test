@@ -77,21 +77,23 @@ namespace iba.Controls
             ((Bitmap)m_testNotification.Image).MakeTransparent(Color.Magenta);
             m_toolTip.SetToolTip(m_testNotification, Properties.Resources.testNotifications);
 
-            m_newBatchfileButton.Image = Icons.Gui.All.Images.TerminalCode();
-            m_newReportButton.Image = Icons.Gui.All.Images.Report2();
-            m_newExtractButton.Image = Icons.Gui.All.Images.DatabaseImport();
-            m_newCopyTaskButton.Image = Icons.Gui.All.Images.Copy();
-            m_newIfTaskButton.Image = Icons.Gui.All.Images.Condition();
-            m_newUpdateDataTaskButton.Image = Icons.Gui.All.Images.DatabaseRefresh();
-            m_newPauseTaskButton.Image = Icons.Gui.All.Images.PauseOutline();
-            m_newCleanupTaskButton.Image = Icons.Gui.All.Images.CleanErase();
-            m_newSplitterTaskButton.Image = Icons.Gui.All.Images.SplitDivide();
-            m_newHdCreateEventTaskButton.Image = Icons.Gui.All.Images.HdFlash();
-            m_newOPCUAWriterTaskButton.Image = Icons.Gui.All.Images.Opcua();
-            m_newSNMPWriterTaskButton.Image = Icons.Gui.All.Images.Snmp();
-            m_newUploadTaskButton.Image = Icons.Gui.All.Images.Extract();
-            m_newKafkaWriterTaskButton.Image = Icons.Gui.All.Images.ApacheKafka();
-            m_newDataTransferTaskButton.Image = Bitmap.FromHicon(Properties.Resources.DataTransferIcon.Handle);
+            const int imageSize = 24;
+
+            m_newBatchfileButton.Image = Icons.Gui.All.Images.TerminalCode(imageSize);
+            m_newReportButton.Image = Icons.Gui.All.Images.Report2(imageSize);
+            m_newExtractButton.Image = Icons.Gui.All.Images.DatabaseImport(imageSize);
+            m_newCopyTaskButton.Image = Icons.Gui.All.Images.Copy(imageSize);
+            m_newIfTaskButton.Image = Icons.Gui.All.Images.Condition(imageSize);
+            m_newUpdateDataTaskButton.Image = Icons.Gui.All.Images.DatabaseRefresh(imageSize);
+            m_newPauseTaskButton.Image = Icons.Gui.All.Images.PauseOutline(imageSize);
+            m_newCleanupTaskButton.Image = Icons.Gui.All.Images.CleanErase(imageSize);
+            m_newSplitterTaskButton.Image = Icons.Gui.All.Images.SplitDivide(imageSize);
+            m_newHdCreateEventTaskButton.Image = Icons.Gui.All.Images.HdFlash(imageSize);
+            m_newOPCUAWriterTaskButton.Image = Icons.Gui.All.Images.Opcua(imageSize);
+            m_newSNMPWriterTaskButton.Image = Icons.Gui.All.Images.Snmp(imageSize);
+            m_newUploadTaskButton.Image = Icons.Gui.All.Images.Extract(imageSize);
+            m_newKafkaWriterTaskButton.Image = Icons.Gui.All.Images.ApacheKafka(imageSize);
+            m_newDataTransferTaskButton.Image = Icons.Gui.All.Images.SendReceive(imageSize);
 
             m_newReportButton.ToolTipText = Properties.Resources.reportButton;
             m_newExtractButton.ToolTipText = Properties.Resources.extractButton;

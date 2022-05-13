@@ -696,7 +696,7 @@ namespace iba
                 return;
             }
             Program.MainForm.ReplaceManagerFromTree(TaskManager.Manager);
-            Program.MainForm.Icon = iba.Properties.Resources.disconnectedIcon;
+            Program.MainForm.Icon = Icons.SystemTray.Ico.IbaDatcoordinatorDisconnected();
             //Program.MainForm.NotifyIcon.Icon = iba.Properties.Resources.disconnectedIcon;
             //Program.MainForm.NotifyIcon.Text = iba.Properties.Resources.niDisconnected;
             Program.MainForm.StartButton.Enabled = false;

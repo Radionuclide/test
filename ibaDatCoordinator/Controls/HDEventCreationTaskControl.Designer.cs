@@ -105,7 +105,7 @@
             // m_btnOpenPDO
             // 
             resources.ApplyResources(this.m_btnOpenPDO, "m_btnOpenPDO");
-            this.m_btnOpenPDO.Image = global::iba.Properties.Resources.ibaAnalyzer_16x16;
+            this.m_btnOpenPDO.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
             this.m_btnOpenPDO.Name = "m_btnOpenPDO";
             this.m_btnOpenPDO.UseVisualStyleBackColor = true;
             this.m_btnOpenPDO.Click += new System.EventHandler(this.m_btnOpenPDO_Click);
@@ -113,7 +113,7 @@
             // m_btnBrowseDAT
             // 
             resources.ApplyResources(this.m_btnBrowseDAT, "m_btnBrowseDAT");
-            this.m_btnBrowseDAT.Image = Icons.Gui.All.Images.FolderOpen();
+            this.m_btnBrowseDAT.Image = Icons.Gui.All.Images.FolderOpen(16);
             this.m_btnBrowseDAT.Name = "m_btnBrowseDAT";
             this.m_btnBrowseDAT.UseVisualStyleBackColor = true;
             this.m_btnBrowseDAT.Click += new System.EventHandler(this.m_btnBrowseDAT_Click);
@@ -121,7 +121,7 @@
             // m_btnBrowsePDO
             // 
             resources.ApplyResources(this.m_btnBrowsePDO, "m_btnBrowsePDO");
-            this.m_btnBrowsePDO.Image = Icons.Gui.All.Images.FolderOpen();
+            this.m_btnBrowsePDO.Image = Icons.Gui.All.Images.FolderOpen(16);
             this.m_btnBrowsePDO.Name = "m_btnBrowsePDO";
             this.m_btnBrowsePDO.UseVisualStyleBackColor = true;
             this.m_btnBrowsePDO.Click += new System.EventHandler(this.m_btnBrowsePDO_Click);

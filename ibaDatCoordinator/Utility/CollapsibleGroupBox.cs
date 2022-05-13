@@ -189,9 +189,9 @@ namespace iba.Utility
             else
             {
                 if(IsCollapsed)
-                    g.DrawImage(Properties.Resources.plus, m_toggleRect);
+                    g.DrawImage(Icons.Gui.All.Images.PlusGreen(16), m_toggleRect);
                 else
-                    g.DrawImage((Bitmap)Icons.Gui.All.Images.MinusGreen(), m_toggleRect);
+                    g.DrawImage((Bitmap)Icons.Gui.All.Images.MinusGreen(16), m_toggleRect);
             }
         }
 

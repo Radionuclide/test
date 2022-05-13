@@ -327,6 +327,15 @@
   <data name="m_browsePDOFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_browsePDOFileButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAACzSURBVDhPpZFREYNADESRUgn0GxNIQAoSkICESqgEBFQE
+        DtJNhs1krneZa/vx4Nh5l1tgEJG/qIbfYJf7NO1ACh7gVm4osYtuiCGeR3BoXmGPbnVARul6CObr3os1
+        iQOeYOPkDHh2mK4Z6IATLJQy4K3g0DUD1hqj2AKetv14hTNKGeoCa8vAvkGUWsDTX+xtGWqwRrEFvAV4
+        W4Y6YGaYAW8D3pbh6xrSix/mk3+lGvYjwxspCofg8cJWtQAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="m_browsePDOFileButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -394,7 +403,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
     <value>$this</value>
@@ -467,9 +476,6 @@
   </data>
   <data name="m_testButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="m_testButton.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;m_testButton.Name" xml:space="preserve">
     <value>m_testButton</value>
@@ -570,6 +576,15 @@
   <data name="m_browseDatFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_browseDatFileButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAACzSURBVDhPpZFREYNADESRUgn0GxNIQAoSkICESqgEBFQE
+        DtJNhs1krneZa/vx4Nh5l1tgEJG/qIbfYJf7NO1ACh7gVm4osYtuiCGeR3BoXmGPbnVARul6CObr3os1
+        iQOeYOPkDHh2mK4Z6IATLJQy4K3g0DUD1hqj2AKetv14hTNKGeoCa8vAvkGUWsDTX+xtGWqwRrEFvAV4
+        W4Y6YGaYAW8D3pbh6xrSix/mk3+lGvYjwxspCofg8cJWtQAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="m_browseDatFileButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -610,7 +625,7 @@
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -805,7 +820,7 @@
     <value>m_monitorGroup</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_monitorGroup.Parent" xml:space="preserve">
     <value>$this</value>

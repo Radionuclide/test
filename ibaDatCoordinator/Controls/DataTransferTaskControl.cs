@@ -46,8 +46,9 @@ namespace iba.Controls
 
             m_cbDeleteAfterTransfer.Checked = m_data.ShouldDeleteAfterTransfer;
             m_CreateZipArchive.Checked = m_data.ShouldCreateZipArchive;
-            m_btnCheckConnection.Image = null;
-            m_btnCheckConnection.Text = "?";
+            
+            m_btnCheckConnection.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(32);
+
             m_tbServer.Text = m_data.Server;
             m_numericUpDownPort.Text = m_data.Port;
             m_tbRemotePath.Text = m_data.RemotePath;
@@ -144,23 +145,18 @@ namespace iba.Controls
 
             this.Cursor = Cursors.Default;
             this.m_btnCheckConnection.Enabled = true;
-            m_btnCheckConnection.Text = null;
-            m_btnCheckConnection.Image = iba.Properties.Resources.thumbdown;
-            ((Bitmap)m_btnCheckConnection.Image).MakeTransparent(Color.Magenta);
-
+            m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbDown(32);
 
             if (ok)
             {
                 m_btnCheckConnection.Text = null;
-                m_btnCheckConnection.Image = iba.Properties.Resources.thumup;
+                m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbUp(32);
             }
             else
             {
                 MessageBox.Show(errormessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                m_btnCheckConnection.Text = null;
-                m_btnCheckConnection.Image = iba.Properties.Resources.thumbdown;
+                m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbDown(32);
             }
-            ((Bitmap)m_btnCheckConnection.Image).MakeTransparent(Color.Magenta);
         }
 
         private void m_btnSelectServer_Click(object sender, EventArgs e)
