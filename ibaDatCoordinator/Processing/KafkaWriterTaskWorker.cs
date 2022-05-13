@@ -278,7 +278,7 @@ namespace iba.Processing
                                 var sigRef = ReplacePlaceholders(rec, m_data.signalReference);
                                 if (i > 0)  
                                     message += ",\n ";
-                                message += $"\"{ReplacePlaceholders(rec, m_data.signalReference)}\": {m_data.ToText(rec)}";
+                                message += $"\"{sigRef}\": {m_data.ToText(rec)}";
                                 if (m_data.metadata.Contains("Identifier"))
                                     message += $",\n \"{sigRef}.Identifier\": \"{m_data.identifier}\"";
                                 if (m_data.metadata.Contains("Name"))
@@ -347,16 +347,12 @@ namespace iba.Processing
                                 Avro.EnumSchema valTypeSchema = enumField.Schema as Avro.EnumSchema;
                                 r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
                                 r.Add("Signal", ReplacePlaceholders(rec, m_data.signalReference));
-                                if (m_data.metadata.Contains("Identifier"))
-                                    r.Add("Identifier", m_data.identifier);
-                                if (m_data.metadata.Contains("Name"))
-                                    r.Add("Name", rec.Name);
-                                if (m_data.metadata.Contains("Unit"))
-                                    r.Add("Unit", rec.Unit);
-                                if (m_data.metadata.Contains("Comment 1"))
-                                    r.Add("Comment1", rec.Comment1);
-                                if (m_data.metadata.Contains("Comment 2"))
-                                    r.Add("Comment2", rec.Comment2);
+                                r.Add("Identifier", m_data.identifier);
+                                r.Add("ID", "");
+                                r.Add("Name", rec.Name);
+                                r.Add("Unit", rec.Unit);
+                                r.Add("Comment1", rec.Comment1);
+                                r.Add("Comment2", rec.Comment2);
 
                                 r.Add("BooleanValue", rec.Value as bool?);
                                 r.Add("DoubleValue", rec.Value as double?);
