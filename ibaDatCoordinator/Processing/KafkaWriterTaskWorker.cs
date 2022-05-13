@@ -295,7 +295,7 @@ namespace iba.Processing
                             message += "\n}";
                             using (var p = producerBuilder.Build())
                             {
-                                var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholdersKey(m_data.key), Value = message }).Result;
+                                _ = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholdersKey(m_data.key), Value = message }).Result;
                             }
                         }
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONPerSignal)
@@ -320,7 +320,7 @@ namespace iba.Processing
                                 message += "\n}";
                                 using (var p = producerBuilder.Build())
                                 {
-                                    var dr = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholders(rec, m_data.key), Value = message }).Result;
+                                    _ = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholders(rec, m_data.key), Value = message }).Result;
                                 }
                             }
                         }
@@ -377,7 +377,8 @@ namespace iba.Processing
                                 msg.Key = Encoding.UTF8.GetBytes(ReplacePlaceholders(rec, m_data.key).ToCharArray());
                                 using (var p = producerBuilder.Build())
                                 {
-                                    var dr = p.ProduceAsync(m_data.topicName, msg);
+                                    _ = p.ProduceAsync(m_data.topicName, msg).Result;
+
                                 }
                             }
                         }
