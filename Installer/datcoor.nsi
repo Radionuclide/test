@@ -455,6 +455,7 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\DevExpress.*.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaSnmpLib.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaUtilities.Forms.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Drawing.Common.dll"
   ;Upload Task
   File "..\ibaDatCoordinator\bin\Release\WinSCPnet.dll"
   File "..\ibaDatCoordinator\bin\Release\WinSCP.exe"
@@ -963,6 +964,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\DatCoordinatorPlugins.dll"
   Delete "$INSTDIR\DotNetMagic2005.dll"
   Delete "$INSTDIR\ibaFilesV7LiteDotNet.dll"
+  Delete "$INSTDIR\System.Drawing.Common.dll"
   
   Delete "$INSTDIR\hdCore.dll"
   Delete "$INSTDIR\hdClient.dll"
