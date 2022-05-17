@@ -47,6 +47,9 @@ Var EmbeddedCodeMeterBuild
       SetRegView lastused
     ${EndIf}
   ${Else}
+    ;If silent install then skip updating CodeMeter runtime because we don't want it to stop any other iba services
+    IfSilent skipUpdateBecauseSilent_${UniqueID}
+
     ;Update of CodeMeter runtime
     !insertmacro WriteToInstallHistory "Updating CodeMeter Runtime v$CodeMeterMajor.$CodeMeterMinor.$CodeMeterBuild to v$EmbeddedCodeMeterMajor.$EmbeddedCodeMeterMinor.$EmbeddedCodeMeterBuild"
   ${EndIf}
@@ -59,6 +62,10 @@ Var EmbeddedCodeMeterBuild
   installCodeMeterSilent_${UniqueID}:
   nsExec::Exec '"${CODEMETER_INSTALLER_PATH}" /i /q /nosplash /ComponentArgs "*:/q"'
   Goto installCodeMeterFinished_${UniqueID}
+  
+  skipUpdateBecauseSilent_${UniqueID}:
+  !insertmacro WriteToInstallHistory "Skipping CodeMeter Runtime update from v$CodeMeterMajor.$CodeMeterMinor.$CodeMeterBuild to v$EmbeddedCodeMeterMajor.$EmbeddedCodeMeterMinor.$EmbeddedCodeMeterBuild because the installer is running in silent mode"
+  Goto skipCodeMeterInstall_${UniqueID}
 
   installCodeMeterFinished_${UniqueID}:
   !insertmacro WriteToInstallHistory "Finished installing CodeMeter Runtime"
