@@ -52,7 +52,8 @@ namespace iba.Controls
             m_uploadIcons,
 			m_kafkaIcons,
             m_dataTransferIcons,
-            m_SnmpWriterIcons;
+            m_SnmpWriterIcons,
+            m_convertExtFileIcons;
 
         Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
         
@@ -77,6 +78,7 @@ namespace iba.Controls
             m_kafkaIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_dataTransferIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_SnmpWriterIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_convertExtFileIcons = new Dictionary<DatFileStatus.State, Bitmap>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
 
 
@@ -232,6 +234,15 @@ namespace iba.Controls
             m_kafkaIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
             m_kafkaIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
             m_kafkaIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
+
+            m_convertExtFileIcons.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.external_files_configuration);
+            m_convertExtFileIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, iba.Properties.Resources.external_files_configuration));
+            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.external_files_configuration));
+            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.external_files_configuration));
+            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.external_files_configuration));
+            m_convertExtFileIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.external_files_configuration));
+            m_convertExtFileIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, iba.Properties.Resources.external_files_configuration));
+            m_convertExtFileIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.external_files_configuration));
 
             UpdatePlugins();
 
@@ -443,6 +454,8 @@ namespace iba.Controls
                             bitmap = m_kafkaIcons[value];
                         else if (task is DataTransferTaskData)
                             bitmap = m_dataTransferIcons[value];
+                        else if (task is ConvertExtFileTaskData)
+                            bitmap = m_convertExtFileIcons[value];
                         else if (task is ICustomTaskData cust)
                             bitmap = GetImageForCustomTaskData(cust, value);
                         else if (task is TaskWithTargetDirData) // have this last, as UNCTask derives from cleanupTask and many derive from unc

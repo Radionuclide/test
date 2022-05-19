@@ -1878,6 +1878,51 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="SharedKey" xml:space="preserve">
     <value>Shared key</value>
   </data>
+  <data name="ConvertExternalFileTitle" xml:space="preserve">
+    <value>Convert external file</value>
+  </data>
+  <data name="File_Format" xml:space="preserve">
+    <value>File Format</value>
+  </data>
+  <data name="external_files_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\refresh_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ExtractAnalysisFile" xml:space="preserve">
+    <value>Extract analysis file</value>
+  </data>
+  <data name="ActionOnSuccess" xml:space="preserve">
+    <value>Action on success</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DirectoryForSuccessfullyProcessedSourceFiles" xml:space="preserve">
+    <value>Directory for successfully processed source files</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="TargetDirectory" xml:space="preserve">
+    <value>Target directory</value>
+  </data>
+  <data name="AddExternalFileTriggeredJob" xml:space="preserve">
+    <value>Add External File Triggered Job</value>
+  </data>
+  <data name="ExternalFileDirectory" xml:space="preserve">
+    <value>External file directory</value>
+  </data>
+  <data name="ExternalFileJobsNodeParent" xml:space="preserve">
+    <value>External File Triggered Jobs</value>
+  </data>
+  <data name="ExternalFiles" xml:space="preserve">
+    <value>External files</value>
+  </data>
+  <data name="ProcessExternalFilesInstantly" xml:space="preserve">
+    <value>Process external files instantly</value>
+  </data>
+  <data name="RescanForUnprocessedFilesEvery" xml:space="preserve">
+    <value>Rescan for unprocessed files every</value>
+  </data>
   <data name="regOptInstaller" xml:space="preserve">
     <value>The ibaDatCoordinator installer has detected the Windows registry can be optimized to allow for more ibaAnalyzers to run simultaneously.</value>
   </data>

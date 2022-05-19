@@ -142,13 +142,13 @@
             0,
             0,
             0});
-			this.m_retryUpDown.Minimum = new decimal(new int[] {
+            this.m_retryUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-			this.m_retryUpDown.Name = "m_retryUpDown";
-			this.m_retryUpDown.Value = new decimal(new int[] {
+            this.m_retryUpDown.Name = "m_retryUpDown";
+            this.m_retryUpDown.Value = new decimal(new int[] {
             10,
             0,
             0,
@@ -217,44 +217,44 @@
             0,
             0,
             0});
-			this.m_failTimeUpDown.Minimum = new decimal(new int[] {
+            this.m_failTimeUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-			this.m_failTimeUpDown.Name = "m_failTimeUpDown";
-			this.m_failTimeUpDown.Value = new decimal(new int[] {
+            this.m_failTimeUpDown.Name = "m_failTimeUpDown";
+            this.m_failTimeUpDown.Value = new decimal(new int[] {
             10,
             0,
             0,
             0});
-			// 
-			// label10
-			// 
-			resources.ApplyResources(this.label10, "label10");
-			this.label10.Name = "label10";
-			// 
-			// label4
-			// 
-			resources.ApplyResources(this.label4, "label4");
-			this.label4.Name = "label4";
-			// 
-			// m_scanTimeUpDown
-			// 
-			this.m_scanTimeUpDown.DecimalPlaces = 1;
-			resources.ApplyResources(this.m_scanTimeUpDown, "m_scanTimeUpDown");
-			this.m_scanTimeUpDown.Maximum = new decimal(new int[] {
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // m_scanTimeUpDown
+            // 
+            this.m_scanTimeUpDown.DecimalPlaces = 1;
+            resources.ApplyResources(this.m_scanTimeUpDown, "m_scanTimeUpDown");
+            this.m_scanTimeUpDown.Maximum = new decimal(new int[] {
             600,
             0,
             0,
             0});
-			this.m_scanTimeUpDown.Minimum = new decimal(new int[] {
+            this.m_scanTimeUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-			this.m_scanTimeUpDown.Name = "m_scanTimeUpDown";
-			this.m_scanTimeUpDown.Value = new decimal(new int[] {
+            this.m_scanTimeUpDown.Name = "m_scanTimeUpDown";
+            this.m_scanTimeUpDown.Value = new decimal(new int[] {
             10,
             0,
             0,

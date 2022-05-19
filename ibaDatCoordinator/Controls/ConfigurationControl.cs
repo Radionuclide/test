@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -16,30 +17,38 @@ using iba.Plugins;
 using Microsoft.Win32;
 using iba.Dialogs;
 using iba.Logging;
+using iba.Properties;
+using Opc.Ua;
+using NotificationData = iba.Data.NotificationData;
 
 namespace iba.Controls
 {
     public partial class ConfigurationControl : UserControl, IPropertyPane, IPluginsUpdatable
     {
-        public ConfigurationControl(ConfigurationData.JobTypeEnum type)
+        public ConfigurationControl(ConfigurationData.JobTypeEnum jobType)
         {
-            m_jobType = type;
+            m_jobType = jobType;
             InitializeComponent();
 
             m_sourcePanel.Visible = false;
 
             if(m_jobType != ConfigurationData.JobTypeEnum.Scheduled && m_jobType != ConfigurationData.JobTypeEnum.Event)
             {
-                m_panelDatFilesJob = new PanelDatFilesJob(m_jobType == ConfigurationData.JobTypeEnum.OneTime);
+                m_panelDatFilesJob = new PanelDatFilesJob(jobType);
                 m_panel = m_panelDatFilesJob;
                 m_panelDatFilesJob.Size = m_sourcePanel.Size;
                 m_panelDatFilesJob.Location = m_sourcePanel.Location;
                 this.Controls.Add(m_panelDatFilesJob);
+
                 if(m_jobType == ConfigurationData.JobTypeEnum.OneTime)
                 {
                     m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
                     gbNewTask.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                     gbNotifications.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                }
+                else if (m_jobType == ConfigurationData.JobTypeEnum.ExtFile)
+                {
+                    SetupControlsForExtFilesJob();
                 }
                 else
                 {
@@ -61,7 +70,7 @@ namespace iba.Controls
                     m_panel = m_panelScheduledJob;
                     lPanel = m_panelScheduledJob;
                 }
-                
+
                 int diff = lPanel.Size.Height - m_sourcePanel.Size.Height;
                 lPanel.Location = m_sourcePanel.Location;
                 lPanel.Width = m_sourcePanel.Width;
@@ -150,7 +159,6 @@ namespace iba.Controls
             this.m_applyToRunningBtn.Click += new System.EventHandler(this.m_applyToRunningButton_Click);
             this.m_undoChangesBtn.Click += new System.EventHandler(this.m_undoChangesBtn_Click);
 
-
             //tooltips common controls
             m_toolTip.SetToolTip(m_startButton, iba.Properties.Resources.startButton);
             m_toolTip.SetToolTip(m_stopButton, iba.Properties.Resources.stopButton);
@@ -160,33 +168,65 @@ namespace iba.Controls
 
 
             //init groupBoxes
-            gbJobName.Init();
-            gbNewTask.Init();
-            gbNotifications.Init();
+
+            if (jobType == ConfigurationData.JobTypeEnum.ExtFile)
+            {
+                gbJobName.Init();
+                gbFileFormat.Init();
+                gbNotifications.Init();
+                gbActionOnSucces.Init();
+                gbDirectoryForProcessedFiles.Init();
+            }
+            else
+            {
+                gbJobName.Init();
+                gbNewTask.Init();
+                gbNotifications.Init();
+            }
 
             //groupBox managers
             m_ceManager = new CollapsibleElementManager(this);
             m_ceManager.AddElement(gbJobName);
+            
             if(m_panelDatFilesJob != null)
+            {
                 m_ceManager.AddSubManagerFromControl(m_panelDatFilesJob);
+            }
             else if (m_panelEventJob != null)
+            {
                 m_ceManager.AddSubManagerFromControl(m_panelEventJob);
+            }
             else
+            {
                 m_ceManager.AddSubManagerFromControl(m_panelScheduledJob);
-            m_ceManager.AddElement(gbNewTask);
-            m_ceManager.AddElement(gbNotifications);
+            }
 
+            
+            if (jobType == ConfigurationData.JobTypeEnum.ExtFile)
+            {
+                m_ceManager.AddElement(gbFileFormat);
+                m_ceManager.AddElement(gbNotifications);
+                m_ceManager.AddElement(gbActionOnSucces);
+                m_ceManager.AddElement(gbDirectoryForProcessedFiles);
+            }
+            else
+            {
+                m_ceManager.AddElement(gbNewTask);
+                m_ceManager.AddElement(gbNotifications);
+            }
+            
             CueProvider.SetCue(m_tbSender,@"ibaDatCoordinator <noreply@iba-ag.com>");
         }
 
-		public void UpdateLanguage()
-		{
-			if (m_panelScheduledJob != null)
-				m_panelScheduledJob.SetWeekDays();
-		}
-			
 
-		private int m_taskCount;
+        public void UpdateLanguage()
+        {
+            if (m_panelScheduledJob != null)
+                m_panelScheduledJob.SetWeekDays();
+        }
+
+
+        private int m_taskCount;
 
         private CollapsibleElementManager m_ceManager;
 
@@ -200,6 +240,18 @@ namespace iba.Controls
 
         private ConfigurationData.JobTypeEnum m_jobType;
 
+        public ComboBox cbFileFormat;
+        public CollapsibleGroupBox gbFileFormat;
+        public CollapsibleGroupBox gbActionOnSucces;
+        public CollapsibleGroupBox gbDirectoryForProcessedFiles;
+        public RadioButton m_rbDelete;
+        public RadioButton m_rbMove;
+        public TextBox m_tbPdoFilePath;
+        public TextBox m_tbTargetDirectory;
+        public TextBox m_tbUsername;
+        public TextBox m_tbPassword;
+
+
         private PanelDatFilesJob m_panelDatFilesJob;
         private PanelScheduledJob m_panelScheduledJob;
         private PanelEventJob m_panelEventJob;
@@ -208,7 +260,7 @@ namespace iba.Controls
         #region IPropertyPane Members
         IPropertyPaneManager m_manager;
         ConfigurationData m_data;
-       
+
         public void LoadData(object datasource, IPropertyPaneManager manager)
         {
             m_manager = manager;
@@ -227,6 +279,18 @@ namespace iba.Controls
             m_tbMailUsername.Text = m_data.NotificationData.Username;
             m_cbAuthentication.Checked = m_data.NotificationData.AuthenticationRequired;
             m_tbSender.Text = m_data.NotificationData.Sender;
+
+            if (m_jobType == ConfigurationData.JobTypeEnum.ExtFile)
+            {
+                cbFileFormat.SelectedItem = m_data.FileFormat.ToString();
+                m_rbDelete.Checked = m_data.DeleteExtFile;
+                m_rbMove.Checked = m_data.MoveExtFile;
+                m_tbPdoFilePath.Text = m_data.PdoFile;
+                m_tbPassword.Text = m_data.ProcessedFileDirectoryPassword;
+                m_tbUsername.Text = m_data.ProcessedFileUesername;
+                m_tbTargetDirectory.Text = m_data.ProcessedFileTargedDirectory;
+            }
+
 
             if (m_data.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.NETSEND)
             {
@@ -267,7 +331,7 @@ namespace iba.Controls
                 m_newTaskToolstrip.Enabled = true;
                 if (m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = false;
-                if (m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                if (m_panelDatFilesJob != null && (m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered || m_jobType == ConfigurationData.JobTypeEnum.ExtFile))
                     m_panelDatFilesJob.m_browseDatFilesButton.Enabled = false;
             }
             else if (TaskManager.Manager.IsJobStarted(m_data.Guid))
@@ -278,7 +342,7 @@ namespace iba.Controls
                 m_stopButton.Enabled = true;
                 if (m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = true;
-                if (m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                if (m_panelDatFilesJob != null && (m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered || m_jobType == ConfigurationData.JobTypeEnum.ExtFile))
                     m_panelDatFilesJob.m_browseDatFilesButton.Enabled = true;
             }
             else
@@ -289,7 +353,7 @@ namespace iba.Controls
                 m_stopButton.Enabled = false;
                 if (m_panelScheduledJob != null)
                     m_panelScheduledJob.m_btTriggerNow.Enabled = false;
-                if (m_panelDatFilesJob != null && m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                if (m_panelDatFilesJob != null && (m_data.JobType == ConfigurationData.JobTypeEnum.DatTriggered || m_jobType == ConfigurationData.JobTypeEnum.ExtFile))
                     m_panelDatFilesJob.m_browseDatFilesButton.Enabled = false;
             }
         }
@@ -311,9 +375,21 @@ namespace iba.Controls
             m_data.NotificationData.Username = m_tbMailUsername.Text;
             m_data.NotificationData.Password = m_tbMailPass.Text;
             m_data.NotificationData.Sender = m_tbSender.Text;
+            if (m_jobType == ConfigurationData.JobTypeEnum.ExtFile)
+            {
+                if (cbFileFormat.SelectedIndex != -1)
+                {
+                    m_data.FileFormat = (ConfigurationData.FileFormatEnum)cbFileFormat.SelectedIndex;
+                }
+                m_data.DeleteExtFile = m_rbDelete.Checked;
+                m_data.MoveExtFile = m_rbMove.Checked;
+                m_data.PdoFile = m_tbPdoFilePath.Text;
+                m_data.ProcessedFileDirectoryPassword = m_tbPassword.Text;
+                m_data.ProcessedFileUesername = m_tbUsername.Text;
+                m_data.ProcessedFileTargedDirectory = m_tbTargetDirectory.Text;
+            }
 
             //Debug.Assert(m_data.Clone_AlsoCopyGuids().IsSame(m_data));
-                
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data);
@@ -366,7 +442,7 @@ namespace iba.Controls
             m_applyToRunningBtn.Enabled = true;
             m_stopButton.Enabled = true;
 
-           LoadData(m_data, m_manager);
+            LoadData(m_data, m_manager);
 
             if (t != null)
             {
@@ -429,7 +505,7 @@ namespace iba.Controls
         {
             if (!TestTaskCount())
                 return;
-            
+
             var taskData = new ReportData(m_data);
             var treeItemData = new ReportTreeItemData(m_manager, taskData);
             AddNewTaskHelper(taskData, MainForm.REPORTTASK_INDEX, treeItemData);
@@ -563,8 +639,8 @@ namespace iba.Controls
             var taskData = new UploadTaskData(m_data);
             var treeItemData = new UploadTaskTreeItemData(m_manager, taskData);
             AddNewTaskHelper(taskData, MainForm.UPLOADTASK_INDEX, treeItemData);
-        }        
-        
+        }
+
         private void m_newDataTransferTaskButton_Click(object sender, EventArgs e)
         {
             if (!TestTaskCount())
@@ -594,7 +670,7 @@ namespace iba.Controls
             int imageIndex = PluginManager.Manager.GetCustomTaskImageIndex(iCust);
             AddNewTaskHelper(taskData, imageIndex, treeItemData);
         }
-       
+
         private void m_rbImmediate_CheckedChanged(object sender, EventArgs e)
         {
             m_nudNotifyTime.Enabled = m_rbTime.Checked;
@@ -705,5 +781,173 @@ namespace iba.Controls
                 m_newTaskToolstrip.Items.Add(bt);
             }
         }
+
+        private void SetupControlsForExtFilesJob()
+        {
+            gbNewTask.Visible = false;
+            cbFileFormat = new ComboBox();
+            cbFileFormat.DataSource = Enum.GetNames(typeof(ConfigurationData.FileFormatEnum));
+            gbFileFormat = new CollapsibleGroupBox();
+            gbActionOnSucces = new CollapsibleGroupBox();
+            gbDirectoryForProcessedFiles = new CollapsibleGroupBox();
+            m_rbDelete = new RadioButton();
+            m_rbMove = new RadioButton();
+
+            m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            m_panelDatFilesJob.Height -= 50;
+            m_sourcePanel.Height -= 50;
+
+            //FileFormat
+            gbFileFormat.Height = 80;
+            gbFileFormat.Text = Resources.File_Format;
+            gbFileFormat.Location = new Point(m_panelDatFilesJob.Location.X,
+                m_panelDatFilesJob.Location.Y + m_panelDatFilesJob.Height);
+
+            var lblAnalysisFile = new Label();
+            lblAnalysisFile.Text = $"{Resources.ExtractAnalysisFile}:";
+            lblAnalysisFile.Location = new Point(10, 52);
+            lblAnalysisFile.Anchor = AnchorStyles.Left;
+
+
+            m_tbPdoFilePath = new TextBox();
+            m_tbPdoFilePath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            m_tbPdoFilePath.Location = new Point(171, 50);
+            m_tbPdoFilePath.Width = 470;
+
+            var btnBrowseFile = new Button();
+            btnBrowseFile.Location = new Point(m_tbPdoFilePath.Location.X + m_tbPdoFilePath.Width + 5, 48);
+            btnBrowseFile.Size = new Size(24, 24);
+            btnBrowseFile.Anchor = AnchorStyles.Right;
+            btnBrowseFile.Image = Icons.Gui.All.Images.FolderOpen(16);
+            btnBrowseFile.Click += (sender, args) =>
+            {
+                var path = m_tbPdoFilePath.Text;
+                if (DatCoordinatorHostImpl.Host.BrowseForPdoFile(ref path, out _))
+                {
+                    m_tbPdoFilePath.Text = path;
+                }
+            };
+
+            var btnExecutIbaAnalyzer = new Button();
+            btnExecutIbaAnalyzer.Location = new Point(btnBrowseFile.Location.X + btnBrowseFile.Width + 5, 48);
+            btnExecutIbaAnalyzer.Size = new Size(24, 24);
+            btnExecutIbaAnalyzer.Anchor = AnchorStyles.Right;
+            btnExecutIbaAnalyzer.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
+            btnExecutIbaAnalyzer.Click += (sender, args) =>
+            {
+                DatCoordinatorHostImpl.Host.OpenPDO(m_tbPdoFilePath.Text);
+            };
+
+            var btnUploadPdo = new Button();
+            btnUploadPdo.Location = new Point(btnExecutIbaAnalyzer.Location.X + btnExecutIbaAnalyzer.Width + 5, 48);
+            btnUploadPdo.Size = new Size(24, 24);
+            btnUploadPdo.Anchor = AnchorStyles.Right;
+            btnUploadPdo.Image = Resources.img_pdo_upload;
+            btnUploadPdo.Click += (sender, args) =>
+            {
+                DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(true, this, m_tbPdoFilePath.Text, null, m_data);
+            };
+
+
+            this.Controls.Add(gbFileFormat);
+
+            gbFileFormat.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            gbFileFormat.Width = m_panelDatFilesJob.Width;
+
+            cbFileFormat.Location = new Point(10, 20);
+            cbFileFormat.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbFileFormat.Width = 160;
+
+            gbFileFormat.Controls.AddRange(new Control[] { cbFileFormat, lblAnalysisFile, m_tbPdoFilePath, btnBrowseFile, btnExecutIbaAnalyzer, btnUploadPdo });
+
+            gbFileFormat.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            //gbNotifications
+            gbNotifications.Location = new Point(gbFileFormat.Location.X, gbFileFormat.Location.Y + gbFileFormat.Height);
+
+            //gbActionOnSucces
+            gbActionOnSucces.Text = Resources.ActionOnSuccess;
+            gbActionOnSucces.Height = 45;
+            gbActionOnSucces.Location = new Point(gbNotifications.Location.X,
+                gbNotifications.Location.Y + gbNotifications.Height);
+
+            m_rbDelete = new RadioButton
+            {
+                Text = Resources.Delete,
+                Location = new Point(20, 15)
+            };
+            m_rbMove = new RadioButton
+            {
+                Text = Resources.Move,
+                Location = new Point(250, 15)
+            };
+
+            gbActionOnSucces.Controls.Add(m_rbMove);
+            gbActionOnSucces.Controls.Add(m_rbDelete);
+
+            this.Controls.Add(gbActionOnSucces);
+
+            gbActionOnSucces.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            gbActionOnSucces.Width = m_panelDatFilesJob.Width;
+
+            //gbDirectoryForProcessedFiles
+            gbDirectoryForProcessedFiles.Text = Resources.DirectoryForSuccessfullyProcessedSourceFiles;
+            gbDirectoryForProcessedFiles.Location = new Point(gbActionOnSucces.Location.X,
+                gbActionOnSucces.Location.Y + gbActionOnSucces.Height);
+
+            this.Controls.Add(gbDirectoryForProcessedFiles);
+
+            gbDirectoryForProcessedFiles.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            gbDirectoryForProcessedFiles.Width = m_panelDatFilesJob.Width;
+
+
+            var lbTargetDirectory = new Label();
+            lbTargetDirectory.Text = $"{Resources.TargetDirectory}:";
+            lbTargetDirectory.Location = new Point(20, 20);
+
+            var lbUsername = new Label();
+            lbUsername.Text = $"{Resources.Username}:";
+            lbUsername.Location = new Point(20, 45);
+
+            var lbPassword = new Label();
+            lbPassword.Text = $"{Resources.Password}:";
+            lbPassword.Location = new Point(20, 70);
+
+            m_tbTargetDirectory = new TextBox();
+            m_tbTargetDirectory.Location = new Point(130, 20);
+            m_tbTargetDirectory.Width = 450;
+
+            m_tbUsername = new TextBox();
+            m_tbUsername.Location = new Point(130, 45);
+            m_tbUsername.Width = 300;
+
+            m_tbPassword = new TextBox();
+            m_tbPassword.Location = new Point(130, 70);
+            m_tbPassword.Width = 300;
+            m_tbPassword.UseSystemPasswordChar = true;
+
+            var btnBrowse = new Button();
+            btnBrowse.Image = Icons.Gui.All.Images.FolderOpen(16);
+            btnBrowse.Location = new Point(600, 20);
+            btnBrowse.Height = 24;
+            btnBrowse.Width = 24;
+            btnBrowse.Click += (sender, args) =>
+                m_panelDatFilesJob?.FolderBrowserButton(m_tbTargetDirectory, new FolderBrowserDialog());
+
+            var btnTestPath = new Button();
+            btnTestPath.Image = null;
+            btnTestPath.Text = "?";
+            btnTestPath.Location = new Point(630, 20);
+            btnTestPath.Height = 24;
+            btnTestPath.Width = 24;
+            btnTestPath.Click += (sender, args) =>
+                m_panelDatFilesJob?.CheckPathButton(m_tbTargetDirectory, m_tbUsername, m_tbPassword, btnTestPath);
+
+            gbDirectoryForProcessedFiles.Controls.AddRange(new Control[]
+            {
+                        lbTargetDirectory, lbUsername, lbPassword, m_tbTargetDirectory, m_tbUsername, m_tbPassword, btnBrowse, btnTestPath
+            });
+            gbDirectoryForProcessedFiles.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+        }
+
     }
 }

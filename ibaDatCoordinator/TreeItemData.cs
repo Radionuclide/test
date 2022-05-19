@@ -59,6 +59,17 @@ namespace iba
     }
     #endregion
 
+    #region NewExtFileConfigurationTreeItemData
+    public class NewExtFileConfigurationTreeItemData : NewConfigurationTreeItemDataBase
+    {
+        public NewExtFileConfigurationTreeItemData(IPropertyPaneManager propManager) : base(propManager) { }
+        public override string What
+        {
+            get { return "NewExtFileConfigurationTreeItemData"; }
+        }
+    }
+    #endregion
+
     #region NewScheduledConfigurationTreeItemData
     public class NewScheduledConfigurationTreeItemData : NewConfigurationTreeItemDataBase
     {
@@ -134,6 +145,8 @@ namespace iba
                     what = "ScheduledConfigurationControl"; break;
                 case Data.ConfigurationData.JobTypeEnum.Event:
                     what = "EventConfigurationControl"; break;
+                case Data.ConfigurationData.JobTypeEnum.ExtFile:
+                    what = "ExtFileConfigurationControl"; break;
             }
             Control ctrl = manager.PropertyPanes[what] as Control;
             if (ctrl == null)
@@ -310,7 +323,42 @@ namespace iba
     }
     #endregion
 
-    #region ExtractTreeItemData
+    #region
+    public class ConvertExtFileTaskTreeItemData : TreeItemData
+    {
+        public ConvertExtFileTaskTreeItemData(IPropertyPaneManager propManager, ConvertExtFileTaskData cop)
+            : base(propManager)
+        {
+            m_convetExtFileTaskData = cop;
+        }
+
+        public override string What
+        {
+            get { return "ConvertExtFileTask"; }
+        }
+
+        protected ConvertExtFileTaskData m_convetExtFileTaskData;
+
+        public override object DataSource
+        {
+            get => m_convetExtFileTaskData;
+            set => m_convetExtFileTaskData = value as ConvertExtFileTaskData;
+        }
+
+        public override Control CreateControl()
+        {
+            Control ctrl = manager.PropertyPanes["ConvertExtFileTaskControl"] as Control;
+            if (ctrl == null)
+            {
+                ctrl = new CommonTaskControl(new ConvertExtFileControl());
+                manager.PropertyPanes["ConvertExtFileTaskControl"] = ctrl;
+            }
+            return ctrl;
+        }
+    }
+    #endregion
+
+#region ExtractTreeItemData
     public class ExtractTreeItemData : TreeItemData
     {
         public ExtractTreeItemData(IPropertyPaneManager propManager, ExtractData ext)

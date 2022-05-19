@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using iba.Logging;
 using iba.Processing;
 using iba.Processing.IbaOpcUa;
 using iba.Utility;
 using IbaSnmpLib;
+using Microsoft.Extensions.Azure;
 using Timer = System.Timers.Timer;
 
 namespace iba.Data
@@ -99,6 +101,10 @@ namespace iba.Data
         /// <summary> SNMP: PrSpecific.6 </summary>
         public readonly ExtMonFolder FolderComputedValuesSnmp;
 
+        
+        /// <summary> External Files: PrSpecific.7 </summary>
+        public readonly ExtMonFolder FolderExternalFilesJobs;
+
         /// <summary> SNMP: PrSpecific.100 </summary>
         public readonly ExtMonFolder FolderComputedValuesOpcua;
 
@@ -157,6 +163,11 @@ namespace iba.Data
                 FolderComputedValuesOpcua = new ExtMonFolder(FolderRoot,
                     @"Computed values", @"NONE", @"ComputedValues",
                     @"List of all computed values.opc", new IbaSnmpOid(100)));
+                
+            FolderExternalFilesJobs = new ExtMonFolder(FolderRoot,
+                @"External Files jobs", @"externalFilesJobs", @"ExternalFilesJobs",
+                @"List of all external files jobs.", new IbaSnmpOid(6));
+
         }
 
         public void Reset()
@@ -170,6 +181,7 @@ namespace iba.Data
             FolderEventBasedJobs.ClearChildren();
             FolderComputedValuesOpcua.ClearChildren();
             FolderComputedValuesSnmp.ClearChildren();
+            FolderExternalFilesJobs.ClearChildren();
         }
 
         #endregion
@@ -410,10 +422,15 @@ namespace iba.Data
                     indexWithinFolder = (uint)folder.Children.Count + 1;
                     jobInfo = new EventBasedJobInfo(folder, indexWithinFolder, jobName);
                     break;
-
+                case ConfigurationData.JobTypeEnum.ExtFile:
+                    folder = FolderExternalFilesJobs;
+                    indexWithinFolder = (uint)folder.Children.Count + 1;
+                    jobInfo = new ExternalFilesJobInfo(folder, indexWithinFolder, jobName);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
             jobInfo.Guid = guid;
             jobInfo.UaBrowseName = $@"Job{{{guid}}}";
             // jobInfo.UaBrowseName = $@"Job{indexWithinFolder}"; // uncomment this line to use index instead of Guid
@@ -1814,7 +1831,65 @@ namespace iba.Data
                 PrivateReset();
             }
         }
-        
+
+        public class ExternalFilesJobInfo : JobInfoBase
+        {
+            /// <summary> Oid 6 </summary>
+            public readonly ExtMonVariable<uint> PermFailedCount;
+            /// <summary> Oid 7 </summary>
+            public readonly ExtMonVariable<DateTime> TimestampJobStarted;
+            /// <summary> Oid 8 </summary>
+            public readonly ExtMonVariable<DateTime> TimestampLastExecution;
+
+            public ExternalFilesJobInfo(ExtMonFolder parent, uint snmpLeastId, string jobName)
+                : base(parent, snmpLeastId, jobName)
+            {
+                // set Description and MIB. (Caption is set in base class)
+                SnmpFullMibName = $@"extFileJob{snmpLeastId}";
+                Description = $@"Properties of extFile job '{jobName}'.";
+
+                // create variables and add them to collection
+
+                PermFailedCount = FolderGeneral.AddChildVariable<uint>(
+                        @"Perm. Failed #", @"PermFailedCount",
+                        @"Number of files with persistent errors.",
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(PermFailedCount.SnmpLeastId == 6); // ensure id has an expected value
+
+                TimestampJobStarted = FolderGeneral.AddChildVariable<DateTime>(
+                        @"Timestamp job started", @"TimestampJobStarted",
+                        @"Time when job was started (starting of the event job does NOT mean that it will be executed immediately).  " +
+                        @"For a stopped job, it relates to the last start of the job.  " +
+                        @"If job was never started, then value is '01.01.0001 0:00:00'.",
+                        SNMP_AUTO_LEAST_ID);
+
+                TimestampLastExecution = FolderGeneral.AddChildVariable<DateTime>(
+                        @"Timestamp last execution", @"TimestampLastExecution",
+                        @"Time when the job was last executed. " +
+                        @"(This does not mean the moment when job was started, but the last occurrence of a monitored event); " +
+                        @"If job was never executed, then value is '01.01.0001 0:00:00'.",
+                        SNMP_AUTO_LEAST_ID);
+                Debug.Assert(TimestampLastExecution.SnmpLeastId == 8); // ensure id has an expected value
+
+                AddBaseExtraVariablesToTheEnd();
+
+                PrivateReset();
+            }
+
+            private void PrivateReset()
+            {
+                PermFailedCount.Value = 0;
+                TimestampJobStarted.Value = DateTime.MinValue;
+                TimestampLastExecution.Value = DateTime.MinValue;
+            }
+
+            public override void Reset()
+            {
+                base.Reset();
+                PrivateReset();
+            }
+        }
+
         public class ComputedValuesInfo : ExtMonGroup
         {
             public Guid DataId {get; }

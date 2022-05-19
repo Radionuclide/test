@@ -89,6 +89,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action on success.
+        /// </summary>
+        internal static string ActionOnSuccess {
+            get {
+                return ResourceManager.GetString("ActionOnSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add .dat-File Triggered Job.
         /// </summary>
         internal static string addConfigurationText {
@@ -103,6 +112,15 @@ namespace iba.Properties {
         internal static string addEventConfigurationText {
             get {
                 return ResourceManager.GetString("addEventConfigurationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add External File Triggered Job.
+        /// </summary>
+        internal static string AddExternalFileTriggeredJob {
+            get {
+                return ResourceManager.GetString("AddExternalFileTriggeredJob", resourceCulture);
             }
         }
         
@@ -523,6 +541,35 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convert external file.
+        /// </summary>
+        internal static string ConvertExternalFileTitle {
+            get {
+                return ResourceManager.GetString("ConvertExternalFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap copy {
+            get {
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon copydat_running {
+            get {
+                object obj = ResourceManager.GetObject("copydat_running", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add a new copy task.
         /// </summary>
         internal static string copytaskButton {
@@ -681,6 +728,15 @@ namespace iba.Properties {
         internal static string DatTriggeredJobsNodeParent {
             get {
                 return ResourceManager.GetString("DatTriggeredJobsNodeParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -897,6 +953,15 @@ namespace iba.Properties {
         internal static string determiningQuota {
             get {
                 return ResourceManager.GetString("determiningQuota", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directory for successfully processed source files.
+        /// </summary>
+        internal static string DirectoryForSuccessfullyProcessedSourceFiles {
+            get {
+                return ResourceManager.GetString("DirectoryForSuccessfullyProcessedSourceFiles", resourceCulture);
             }
         }
         
@@ -1208,6 +1273,62 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap external_files_configuration {
+            get {
+                object obj = ResourceManager.GetObject("external_files_configuration", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External file directory.
+        /// </summary>
+        internal static string ExternalFileDirectory {
+            get {
+                return ResourceManager.GetString("ExternalFileDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External File Triggered Jobs.
+        /// </summary>
+        internal static string ExternalFileJobsNodeParent {
+            get {
+                return ResourceManager.GetString("ExternalFileJobsNodeParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External files.
+        /// </summary>
+        internal static string ExternalFiles {
+            get {
+                return ResourceManager.GetString("ExternalFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon extract_running {
+            get {
+                object obj = ResourceManager.GetObject("extract_running", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract analysis file.
+        /// </summary>
+        internal static string ExtractAnalysisFile {
+            get {
+                return ResourceManager.GetString("ExtractAnalysisFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add a new extract task.
         /// </summary>
         internal static string extractButton {
@@ -1231,6 +1352,25 @@ namespace iba.Properties {
         internal static string Failure {
             get {
                 return ResourceManager.GetString("Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Fax {
+            get {
+                object obj = ResourceManager.GetObject("Fax", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Format.
+        /// </summary>
+        internal static string File_Format {
+            get {
+                return ResourceManager.GetString("File_Format", resourceCulture);
             }
         }
         
@@ -3023,6 +3163,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move.
+        /// </summary>
+        internal static string Move {
+            get {
+                return ResourceManager.GetString("Move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string Name {
@@ -3997,6 +4146,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Process external files instantly.
+        /// </summary>
+        internal static string ProcessExternalFilesInstantly {
+            get {
+                return ResourceManager.GetString("ProcessExternalFilesInstantly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Query range: {0} - {1}.
         /// </summary>
         internal static string RangeTextFormatter {
@@ -4230,6 +4388,15 @@ namespace iba.Properties {
         internal static string reportTitle {
             get {
                 return ResourceManager.GetString("reportTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rescan for unprocessed files every.
+        /// </summary>
+        internal static string RescanForUnprocessedFilesEvery {
+            get {
+                return ResourceManager.GetString("RescanForUnprocessedFilesEvery", resourceCulture);
             }
         }
         
@@ -4782,6 +4949,25 @@ namespace iba.Properties {
         internal static string SwitchLanguageRestartRequiredStandAlone {
             get {
                 return ResourceManager.GetString("SwitchLanguageRestartRequiredStandAlone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sychronizeList {
+            get {
+                object obj = ResourceManager.GetObject("sychronizeList", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target directory.
+        /// </summary>
+        internal static string TargetDirectory {
+            get {
+                return ResourceManager.GetString("TargetDirectory", resourceCulture);
             }
         }
         

@@ -119,6 +119,8 @@ namespace iba.Data
                 m_name = iba.Properties.Resources.kafkaWriterTastTitle;
             else if (this is DataTransferTaskData)
                 m_name = iba.Properties.Resources.DataTransferTaskTitle;
+            else if (this is ConvertExtFileTaskData)
+                m_name = iba.Properties.Resources.ConvertExternalFileTitle;
         }
 
         public int CompareTo(TaskData other)

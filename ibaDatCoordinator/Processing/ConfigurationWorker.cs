@@ -14,6 +14,7 @@ using iba.Processing.IbaGrpc;
 using iba.Utility;
 using iba.Licensing;
 using System.Text;
+using iba.Annotations;
 
 namespace iba.Processing
 {
@@ -163,10 +164,14 @@ namespace iba.Processing
 
         void RenewFswt()
         {
+            var extension = m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile
+                ? $"*.{GetFileFormatExtension(m_cd.FileFormat)}"
+                : "*.dat";
+
             lock (m_fswtLock)
             {
                 DisposeFswt();
-                fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, "*.dat");
+                fswt = new FileSystemWatcher(m_cd.DatDirectoryUNC, extension);
                 fswt.NotifyFilter = NotifyFilters.FileName;
                 fswt.IncludeSubdirectories = m_cd.SubDirs;
                 fswt.Created += new FileSystemEventHandler(OnNewDatFileOrRenameFile);
@@ -175,10 +180,20 @@ namespace iba.Processing
                 fswt.EnableRaisingEvents = true;
             }
         }
+        internal static string GetFileFormatExtension(ConfigurationData.FileFormatEnum fileType)
+        {
+            return fileType switch
+            {
+                ConfigurationData.FileFormatEnum.CSV => "txt",
+                ConfigurationData.FileFormatEnum.COMTRADE => "dat",
+                ConfigurationData.FileFormatEnum.DAS => "das",
+                _ => "dat"
+            };
+        }
 
         private void AddNetworkReferences()
         {
-            if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+            if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered || m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile)
             {
                 object errorObject;
                 SharesHandler.Handler.AddReferencesFromConfiguration(m_cd, out errorObject);
@@ -251,7 +266,7 @@ namespace iba.Processing
                     m_notifyTimer.Change(m_toUpdate.NotificationData.TimeInterval, TimeSpan.Zero);
                 }
 
-                if (m_toUpdate.RescanEnabled && m_toUpdate.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
+                if (m_toUpdate.RescanEnabled && m_toUpdate.JobType == ConfigurationData.JobTypeEnum.DatTriggered || m_toUpdate.JobType == ConfigurationData.JobTypeEnum.ExtFile)
                 {
                     if (rescanTimer == null)
                     {
@@ -472,7 +487,7 @@ namespace iba.Processing
                         TaskDataUNC uncTask = t as TaskDataUNC;
 
                         //see if a report or extract or if task is present
-                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData || t is KafkaWriterTaskData || t is SnmpWriterTaskData ||
+                        if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData || t is KafkaWriterTaskData || t is SnmpWriterTaskData || t is ConvertExtFileTaskData ||
                             (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
                             || (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
                             || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
@@ -620,7 +635,8 @@ namespace iba.Processing
                 else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
                 {
                     //try to delete all previous hdq files
-                    String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered ? "*.dat" : "*.hdq";
+                    String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered || m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile ? "*.dat" : "*.hdq";
+
                     try
                     {
                         DirectoryInfo dirInfo = new DirectoryInfo(m_cd.HDQDirectory);
@@ -1492,7 +1508,13 @@ namespace iba.Processing
             FileInfo[] fileInfos = null;
             m_sd.UpdatingFileList = true;
 
-            String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered ? "*.dat" : "*.hdq";
+            String searchPattern = m_cd.JobType switch
+            {
+                ConfigurationData.JobTypeEnum.ExtFile => $"*.{GetFileFormatExtension(m_cd.FileFormat)}",
+                ConfigurationData.JobTypeEnum.DatTriggered => "*.dat",
+                _ => "*.hdq"
+            };
+
             try
             {
                 if (m_cd.SubDirs)
@@ -1553,7 +1575,10 @@ namespace iba.Processing
                     if (m_toProcessFiles.Contains(filename))
                         continue;
                 }
-                if(m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event || !IsInvalidOrProcessed(filename)) //hdq files will be deleted.
+                if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled ||
+                    m_cd.JobType == ConfigurationData.JobTypeEnum.Event ||
+                    m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile ||
+                    !IsInvalidOrProcessed(filename)) //hdq files will be deleted.
                 {
                     lock (m_candidateNewFiles)
                     {
@@ -1793,8 +1818,14 @@ namespace iba.Processing
                     DatFileStatus.State state;
                     if (m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered)
                         state = ProcessDatfileReadyness(filename, what == WhatToUpdate.ERRORS);
+                    else if (m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile)
+                    {
+                        state = DatFileStatus.State.NOT_STARTED;
+                    }
                     else
+                    {
                         state = ProcessHDQfileReadyness(filename);
+                    }
 
 
                     //if (what == WhatToUpdate.ERRORS && state != DatFileStatus.State.COMPLETED_SUCCESFULY && state != DatFileStatus.State.NOT_STARTED)
@@ -3114,10 +3145,16 @@ namespace iba.Processing
 
                 TransferFile(DatFile, dat, token);
                 continueProcessing = !dat.ShouldDeleteAfterTransfer;
-            }
-            else if (task is CustomTaskData ct)
-            {
-                DoCustomTask(DatFile, ct);
+                }
+                else if(task is ConvertExtFileTaskData)
+                {
+                    DoConvertExtFileTask(DatFile, task as ConvertExtFileTaskData);
+                    IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
+                    memoryUsed = ((ConvertExtFileTaskData)task).MonitorData.MemoryUsed;
+                }
+                else if (task is CustomTaskData ct)
+                {
+                    DoCustomTask(DatFile, ct);
 
                     // added by kolesnik - begin
                     memoryUsed = (ct.Plugin as IPluginTaskDataIbaAnalyzer)?.MonitorData.MemoryUsed ?? 0;
@@ -3405,7 +3442,11 @@ namespace iba.Processing
 
             string maindir = dir;
 
-            if (dir == m_cd.DatDirectoryUNC && task.Extension == "*.dat")
+            var extension = m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile
+                ? $"*.{GetFileFormatExtension(m_cd.FileFormat)}"
+                : "*.dat";
+
+            if (dir == m_cd.DatDirectoryUNC && task.Extension == extension)
             {
                 Log(Logging.Level.Exception, iba.Properties.Resources.logOutputIsInput, filename, task);
                 lock (m_sd.DatFileStates)
@@ -5343,6 +5384,11 @@ namespace iba.Processing
         private void DoKafkaWriterTask(string filename, KafkaWriterTaskData task)
         {
             (new KafkaWriterTaskWorker(this, task)).DoWork(filename);
+        }
+
+        private void DoConvertExtFileTask(string filename, ConvertExtFileTaskData taskData)
+        {
+            new ConvertExtFileTaskWorker(this, taskData).DoWork(filename);
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 

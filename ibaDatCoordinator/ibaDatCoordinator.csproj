@@ -180,6 +180,12 @@
     <Compile Include="Controls\ErrorPluginTaskControl.Designer.cs">
       <DependentUpon>ErrorPluginTaskControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ConvertExtFileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ConvertExtFileControl.Designer.cs">
+      <DependentUpon>ConvertExtFileControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GradientWaitingBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -287,6 +293,7 @@
     <Compile Include="Data\DataTransferTaskData.cs" />
     <Compile Include="Data\OpcUaWriterTaskData.cs" />
     <Compile Include="Data\SnmpWriterTaskData.cs" />
+    <Compile Include="Data\ConvertExtFileTaskData.cs" />
     <Compile Include="Data\UploadTaskData.cs" />
     <Compile Include="Data\EventJobData.cs" />
     <Compile Include="Data\GridViewLogger.cs" />
@@ -359,6 +366,7 @@
     <Compile Include="Dialogs\TestSplitterTaskDialog.Designer.cs">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Processing\ConvertExtFileTaskWorker.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -641,6 +649,10 @@
     <EmbeddedResource Include="Controls\KafkaWriterTaskControlEventHub.resx">
       <DependentUpon>KafkaWriterTaskControlEventHub.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ConvertExtFileControl.resx">
+      <DependentUpon>ConvertExtFileControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\UploadTaskControl.resx">
       <DependentUpon>UploadTaskControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -868,6 +880,7 @@
       <Link>License_iba-software.rtf</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\refresh_16.png" />
     <None Include="Resources\kafka.ico" />
     <None Include="Resources\DataTransferIcon.ico" />
     <Protobuf Include="Processing\IbaGrpc\protos\DataTransfer.proto" />

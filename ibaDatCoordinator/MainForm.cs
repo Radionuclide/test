@@ -39,29 +39,30 @@ namespace iba
         public static readonly int SCHEDULED_CONFIGURATION_INDEX = 1;
         public static readonly int EVENT_CONFIGURATION_INDEX = 2;
         public static readonly int ONETIME_CONFIGURATION_INDEX = 3;
-        public static readonly int REPORTTASK_INDEX = 4;
-        public static readonly int EXTRACTTASK_INDEX = 5;
-        public static readonly int BATCHFILETASK_INDEX = 6;
-        public static readonly int COPYTASK_INDEX = 7;
-        public static readonly int IFTASK_INDEX = 8;
-        public static readonly int UPDATEDATATASK_INDEX = 9;
-        public static readonly int PAUSETASK_INDEX = 10;
-        public static readonly int CLEANUPTASK_INDEX = 11;
-        public static readonly int SPLITTERTASK_INDEX = 12;
-        public static readonly int HDEVENTTASK_INDEX = 13;
-		public static readonly int OPCUA_WRITERTASK_INDEX = 14;
-        public static readonly int SNMP_WRITERTASK_INDEX = 15;
-        public static readonly int UPLOADTASK_INDEX = 16;
-        public static readonly int KAFKAWRITERTASK_INDEX = 17;
-        public static readonly int DATATRANSFER_TASK_INDEX = 18;
+        public static readonly int EXTERNALFILE_CONFIGURATION_INDEX = 4;
+        public static readonly int REPORTTASK_INDEX = 5;
+        public static readonly int EXTRACTTASK_INDEX = 6;
+        public static readonly int BATCHFILETASK_INDEX = 7;
+        public static readonly int COPYTASK_INDEX = 8;
+        public static readonly int IFTASK_INDEX = 9;
+        public static readonly int UPDATEDATATASK_INDEX = 10;
+        public static readonly int PAUSETASK_INDEX = 11;
+        public static readonly int CLEANUPTASK_INDEX = 12;
+        public static readonly int SPLITTERTASK_INDEX = 13;
+        public static readonly int HDEVENTTASK_INDEX = 14;
+		public static readonly int OPCUA_WRITERTASK_INDEX = 15;
+        public static readonly int SNMP_WRITERTASK_INDEX = 16;
+        public static readonly int UPLOADTASK_INDEX = 17;
+        public static readonly int KAFKAWRITERTASK_INDEX = 18;
+        public static readonly int DATATRANSFER_TASK_INDEX = 19;
         // add here any additional indices for new tasks, increase the next numbers
-        public static readonly int UNKNOWNTASK_INDEX = 19;
-        public static readonly int NEWCONF_INDEX = 20;
-        public static readonly int NEW_ONETIME_CONF_INDEX = 21;
-        public static readonly int NEW_SCHEDULED_CONF_INDEX = 22;
-        public static readonly int NEW_EVENT_CONF_INDEX = 23;
-        public static readonly int CUSTOMTASK_INDEX = 24;
-        public static readonly int NR_TASKS = 15;
+        public static readonly int UNKNOWNTASK_INDEX = 20;
+        public static readonly int NEWCONF_INDEX = 21;
+        public static readonly int NEW_ONETIME_CONF_INDEX = 22;
+        public static readonly int NEW_SCHEDULED_CONF_INDEX = 23;
+        public static readonly int NEW_EVENT_CONF_INDEX = 24;
+        public static readonly int CUSTOMTASK_INDEX = 25;
+        public static readonly int NR_TASKS = 16;
 
         private QuitForm m_quitForm;
 
@@ -131,6 +132,7 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
             confsImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
             confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneTime());
+            confsImageList.Images.Add(Icons.Gui.All.Images.FileDat());
             confsImageList.Images.Add(Icons.Gui.All.Images.Report2());
             confsImageList.Images.Add(Icons.Gui.All.Images.DatabaseImport());
             confsImageList.Images.Add(Icons.Gui.All.Images.TerminalCode());
@@ -146,7 +148,7 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.Extract());
             confsImageList.Images.Add(Icons.Gui.All.Images.ApacheKafka());
             confsImageList.Images.Add(Icons.Gui.All.Images.SendReceive());
-            confsImageList.Images.Add(Properties.Resources.img_question);
+            confsImageList.Images.Add(Icons.Gui.All.Images.CircleQuestionFilledBlue());
             confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderNew());
             confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneNew());
             confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDateNew());
@@ -672,6 +674,7 @@ namespace iba
                 case ConfigurationData.JobTypeEnum.OneTime: cindex = ONETIME_CONFIGURATION_INDEX; break;
                 case ConfigurationData.JobTypeEnum.Scheduled: cindex = SCHEDULED_CONFIGURATION_INDEX; break;
                 case ConfigurationData.JobTypeEnum.Event: cindex = EVENT_CONFIGURATION_INDEX; break;
+                case ConfigurationData.JobTypeEnum.ExtFile: cindex = EXTERNALFILE_CONFIGURATION_INDEX; break;
             }
             confNode = new TreeNode(confIt.Name, cindex, cindex);
             MainForm.strikeOutNodeText(confNode, ! confIt.Enabled);
@@ -756,6 +759,11 @@ namespace iba
                     taskNode = new TreeNode(task.Name, DATATRANSFER_TASK_INDEX, DATATRANSFER_TASK_INDEX);
                     taskNode.Tag = new DataTransferTaskTreeItemData(this, task as DataTransferTaskData);
                 }
+                else if (task.GetType() == typeof(ConvertExtFileTaskData))
+                {
+                    taskNode = new TreeNode(task.Name, EXTERNALFILE_CONFIGURATION_INDEX, EXTERNALFILE_CONFIGURATION_INDEX);
+                    taskNode.Tag = new ConvertExtFileTaskTreeItemData(this, task as ConvertExtFileTaskData);
+                }
                 else if(task is ICustomTaskData cust)
                 {
                     int index = GetCustomTaskImageIndex(cust);
@@ -821,6 +829,7 @@ namespace iba
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ScheduledJobsNodeParent, SCHEDULED_CONFIGURATION_INDEX, SCHEDULED_CONFIGURATION_INDEX));
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.EventJobsNodeParent, EVENT_CONFIGURATION_INDEX, EVENT_CONFIGURATION_INDEX));
             m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.OneTimeJobsNodeParent, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX));
+            m_configTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ExternalFileJobsNodeParent, EXTERNALFILE_CONFIGURATION_INDEX, EXTERNALFILE_CONFIGURATION_INDEX));
 
             //add the new Configuration node
             TreeNode newConfNode = new TreeNode(iba.Properties.Resources.addConfigurationText, NEWCONF_INDEX, NEWCONF_INDEX);
@@ -845,6 +854,12 @@ namespace iba
             new1ConfNode.ForeColor = Color.Blue;
             new1ConfNode.Tag = new NewOneTimeConfigurationTreeItemData(this);
             m_configTreeView.Nodes[3].Nodes.Add(new1ConfNode);
+
+            //add the new external file Configuration node
+            TreeNode newExtConfNode = new TreeNode(iba.Properties.Resources.AddExternalFileTriggeredJob, NEWCONF_INDEX, NEWCONF_INDEX);
+            newExtConfNode.ForeColor = Color.Blue;
+            newExtConfNode.Tag = new NewExtFileConfigurationTreeItemData(this);
+            m_configTreeView.Nodes[4].Nodes.Add(newExtConfNode);
 
             TreeNode firstNode = null;
 
@@ -876,6 +891,13 @@ namespace iba
                 TreeNode node = InsertNewConf(confIt);
                 if(firstNode == null) firstNode = node;
             }
+            confs = new List<ConfigurationData>(TaskManager.Manager.Configurations.Where(c => c.JobType == ConfigurationData.JobTypeEnum.ExtFile));
+            confs.Sort(delegate (ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
+            foreach (ConfigurationData confIt in confs)
+            {
+                TreeNode node = InsertNewConf(confIt);
+                if (firstNode == null) firstNode = node;
+            }
 
             if (firstNode == null)
             {
@@ -906,13 +928,15 @@ namespace iba
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ScheduledJobsNodeParent, SCHEDULED_CONFIGURATION_INDEX, SCHEDULED_CONFIGURATION_INDEX));
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.EventJobsNodeParent, EVENT_CONFIGURATION_INDEX, EVENT_CONFIGURATION_INDEX));
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.OneTimeJobsNodeParent, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX));
+            m_statusTreeView.Nodes.Add(new TreeNode("External Files Jobs", EXTERNALFILE_CONFIGURATION_INDEX, EXTERNALFILE_CONFIGURATION_INDEX));
             List<ConfigurationData> allconfs = TaskManager.Manager.Configurations;
             List<ConfigurationData>[] splitconfs = {new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.DatTriggered)),
                                                     new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.Scheduled)),
                                                     new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.Event)),
                                                     new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.OneTime)),
+                                                    new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.ExtFile)),
                                                         };
-            for(int jobtypeindex = 0; jobtypeindex < 4; jobtypeindex++)
+            for(int jobtypeindex = 0; jobtypeindex < 5; jobtypeindex++)
             {
                 splitconfs[jobtypeindex].Sort(delegate(ConfigurationData a, ConfigurationData b) { return a.TreePosition.CompareTo(b.TreePosition); });
                 foreach(ConfigurationData confIt in splitconfs[jobtypeindex])
@@ -1023,6 +1047,7 @@ namespace iba
 				case "OPCUAWriterTask":
                 case "SNMPWriterTask":
                 case "KafkaWriterTask":
+                case "ConvertExtFileTask":
                 case "task":
                     {
                         if (m_navBar.SelectedPane != m_configPane) return;
@@ -1057,7 +1082,8 @@ namespace iba
                 bool c2 = node.Tag is NewOneTimeConfigurationTreeItemData;
                 bool c3 = node.Tag is NewScheduledConfigurationTreeItemData;
                 bool c4 = node.Tag is NewEventConfigurationTreeItemData;
-                if (c1 || c2 || c3 || c4)
+                bool c5 = node.Tag is NewExtFileConfigurationTreeItemData;
+                if (c1 || c2 || c3 || c4 || c5)
                 {
                     if (!Utility.Crypt.CheckPassword(this)) return;
                     SaveRightPaneControl();
@@ -1069,12 +1095,23 @@ namespace iba
                         type = ConfigurationData.JobTypeEnum.Scheduled;
                     else if (c4)
                         type = ConfigurationData.JobTypeEnum.Event;
+                    else if (c5)
+                        type = ConfigurationData.JobTypeEnum.ExtFile;
+
                     ConfigurationData newData = new ConfigurationData(iba.Properties.Resources.newConfigurationName, type);
                     newData.SetNextName();
                     TaskManager.Manager.AddConfiguration(newData);
                     m_configTreeView.BeginUpdate();
                     node = InsertNewConf(newData);
                     //loadConfigurations();
+
+                    if (type == ConfigurationData.JobTypeEnum.ExtFile)
+                    {
+                        var convertExtFileData = new ConvertExtFileTaskData(newData);
+                        var treeItemData = new ConvertExtFileTaskTreeItemData(this, convertExtFileData);
+                        AddNewTaskPostHelper(newData, node, convertExtFileData,  EXTERNALFILE_CONFIGURATION_INDEX, treeItemData);
+                    }
+                        
                     m_configTreeView.EndUpdate();
                     loadStatuses();
                     m_configTreeView.SelectedNode = node;
@@ -1137,9 +1174,16 @@ namespace iba
         }
 
         private void m_configTreeView_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyCode != Keys.Delete) || (m_configTreeView.SelectedNode == null) || !(m_configTreeView.Focused) || (m_configTreeView.SelectedNode.Tag == null))
+        {            
+            if (m_configTreeView.SelectedNode.Tag is ConvertExtFileTaskTreeItemData)
+            {
+                DisableCopyPasteCutDeleteMenuItems();
                 return;
+            }
+
+            if ((e.KeyCode != Keys.Delete) || (m_configTreeView.SelectedNode == null) || !(m_configTreeView.Focused) || (m_configTreeView.SelectedNode.Tag == null))
+                return;            
+
             Delete(m_configTreeView.SelectedNode);
         }
 
@@ -1197,6 +1241,8 @@ namespace iba
                         msg = String.Format(iba.Properties.Resources.deleteKafkaTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is DataTransferTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteDataTransferTaskQuestion, node.Text, node.Parent.Text);
+                    else if (node.Tag is ConvertExtFileTaskTreeItemData)
+                        return;
                 }
                 DialogResult res = MessageBox.Show(this, msg,
                     iba.Properties.Resources.deleteTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
@@ -1727,8 +1773,20 @@ namespace iba
                 ToolStripMenuItem mc = m_menuItems[(int)item];
                 mc.Tag = node;
                 m_popupMenu.Items.Add(mc);
+                if (node?.Tag is ConvertExtFileTaskTreeItemData)
+                {
+                    foreach (ToolStripItem toolStripItem in m_popupMenu.Items)
+                    {
+                        toolStripItem.Enabled = false;
+                    }
+                }
                 if (item == MenuItemsEnum.NewTask)
-                {                   
+                {
+                    if (((node?.Tag as ConfigurationTreeItemData).DataSource as ConfigurationData).JobType == ConfigurationData.JobTypeEnum.ExtFile)
+                    {
+                        m_menuItems[(int)item].Enabled = false;
+                        continue;
+                    }
                     foreach(ToolStripMenuItem mc2 in mc.DropDown.Items)
                     {
                         if (mc2.Tag is Pair<TreeNode, PluginTaskInfo> pair)
@@ -1868,7 +1926,7 @@ namespace iba
             var treeItemData = new ExtractTreeItemData(this, taskData);
 
             // create tree node and do other things common for any task
-            AddNewTaskPostHelper(parentConfData, parentNode, taskData, REPORTTASK_INDEX, treeItemData);
+            AddNewTaskPostHelper(parentConfData, parentNode, taskData, EXTRACTTASK_INDEX, treeItemData);
         }
 
         private void OnNewBatchfileMenuItem(object sender, EventArgs e)
@@ -2072,6 +2130,7 @@ namespace iba
                 case ConfigurationData.JobTypeEnum.Scheduled: return 1;
                 case ConfigurationData.JobTypeEnum.Event: return 2;
                 case ConfigurationData.JobTypeEnum.OneTime: return 3;
+                case ConfigurationData.JobTypeEnum.ExtFile: return 4;
             }
             return 0;
         }
@@ -2839,6 +2898,18 @@ namespace iba
             // Retrieve the node at the drop location.
             TreeNode targetNode = m_configTreeView.GetNodeAt(targetPoint);
 
+            if (targetNode?.Tag is ConvertExtFileTaskTreeItemData)
+            {
+                return;
+            }
+
+            if (targetNode?.Tag is ConfigurationTreeItemData treeItemData && 
+                treeItemData.DataSource is ConfigurationData confData && 
+                confData.JobType == ConfigurationData.JobTypeEnum.ExtFile)
+            {
+                return;
+            }
+
             // Retrieve the node that was dragged.
             TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
             if (!Utility.Crypt.CheckPassword(this)) return;
@@ -2969,6 +3040,12 @@ namespace iba
             {
                 TreeNode draggedNode = (TreeNode) e.Item;
                 m_configTreeView.SelectedNode = draggedNode;
+
+                if (draggedNode.Tag is ConvertExtFileTaskTreeItemData)
+                {
+                    return;
+                }
+
                 if (!(draggedNode.Tag is NewConfigurationTreeItemDataBase) || draggedNode.Tag == null)
                     DoDragDrop(e.Item, DragDropEffects.Copy | DragDropEffects.Move);
             }
@@ -3483,7 +3560,7 @@ namespace iba
         private bool IsServerClientDifference()
         {
             int count = 0;
-            for (int index = 0; index < 4; index++)
+            for (int index = 0; index < m_configTreeView.Nodes.Count; index++)
             {
                 foreach (TreeNode t in m_configTreeView.Nodes[index].Nodes)
                 {
@@ -3724,6 +3801,15 @@ namespace iba
         }
 
         #endregion
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var editItem = sender as ToolStripMenuItem;
+            if (m_configTreeView.SelectedNode.Tag is ConvertExtFileTaskTreeItemData)
+            {
+                DisableCopyPasteCutDeleteMenuItems();
+            }
+        }
     }
     #endregion
 
