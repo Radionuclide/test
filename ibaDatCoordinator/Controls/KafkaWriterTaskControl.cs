@@ -382,6 +382,19 @@ namespace iba.Controls
                     break;
             }
 
+            switch(_data.timestampUTCOffset)
+            {
+                case KafkaWriterTaskData.TimestampUTCOffset.DoNotRespect:
+                    timestampUTCCombobox.SelectedIndex = 0;
+                    break;
+                case KafkaWriterTaskData.TimestampUTCOffset.ConvertToUniversalTime:
+                    timestampUTCCombobox.SelectedIndex = 1;
+                    break;
+                case KafkaWriterTaskData.TimestampUTCOffset.ConcatenateWithTimestamp:
+                    timestampUTCCombobox.SelectedIndex = 2;
+                    break;
+            }
+
             UpdateSource();
             UpdateExprTableButtons();
             UpdateParamTableButtons();
@@ -441,6 +454,7 @@ namespace iba.Controls
             _data.Format = (KafkaWriterTaskData.DataFormat)dataFormatComboBox.SelectedIndex;
             _data.AckMode = (KafkaWriterTaskData.RequiredAcks)acknowledgmentComboBox.SelectedIndex;
             _data.ClusterMode = (KafkaWriterTaskData.ClusterType)clusterTypeComboBox.SelectedIndex;
+            _data.timestampUTCOffset = (KafkaWriterTaskData.TimestampUTCOffset)timestampUTCCombobox.SelectedIndex;
             _data.ClusterSecurityMode = (KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex;
             _data.SchemaRegistrySecurityMode = (KafkaWriterTaskData.SchemaRegistrySecurityType)schemaRegistryConnectionSecurityComboBox.SelectedIndex;
             _data.SASLMechanismMode = (KafkaWriterTaskData.SASLMechanismType)SASLMechanismComboBox.SelectedIndex;

@@ -23,7 +23,7 @@ namespace iba.Data
         public string key { get; set; }
         public List<string> metadata { get; set; }
         public string timeStampExpression { get; set; }
-        public string timeStamp { get; set; }
+        public TimestampUTCOffset timestampUTCOffset { get; set; }
         public MonitorData MonitorData { get; set; }
         public string TestDatFile { get; set; }
         public RequiredAcks AckMode { get; set; }
@@ -56,6 +56,13 @@ namespace iba.Data
         }
         public bool schemaEnableSSLVerification { get; set; }
         public string signalReference { get; set; }
+
+        public enum TimestampUTCOffset
+        {
+            DoNotRespect = 0,
+            ConvertToUniversalTime = 1,
+            ConcatenateWithTimestamp = 2
+        }
 
         public enum DigitalFormat
         {
@@ -255,6 +262,7 @@ namespace iba.Data
             signalReference = "$signalname";
             enableSchema = false;
             timeStampExpression = StartTime;
+            timestampUTCOffset = TimestampUTCOffset.DoNotRespect;
         }
 
         public KafkaWriterTaskData() : this(null) { }
@@ -295,6 +303,7 @@ namespace iba.Data
             d.schemaEnableSSLVerification = schemaEnableSSLVerification;
             d.enableSchema = enableSchema;
             d.timeStampExpression = timeStampExpression;
+            d.timestampUTCOffset = timestampUTCOffset;
             return d;
         }
 
@@ -335,7 +344,8 @@ namespace iba.Data
                 signalReference == other.signalReference &&
                 schemaEnableSSLVerification == other.schemaEnableSSLVerification &&
                 enableSchema == other.enableSchema &&
-                timeStampExpression == other.timeStampExpression;
+                timeStampExpression == other.timeStampExpression &&
+                timestampUTCOffset == other.timestampUTCOffset;
         }
 
         public static bool IsAnalyzerVersionNewer(IbaAnalyzer.IbaAnalyzer ibaAnalyzer, int majorMinVersion, int minorMinVersion = -1, int bugfixMinVersion = -1)

@@ -90,6 +90,8 @@
             this.typeLabel = new System.Windows.Forms.Label();
             this.clusterTypeComboBox = new System.Windows.Forms.ComboBox();
             this.tabConnection = new Crownwood.DotNetMagic.Controls.TabPage();
+            this.timestampUTCCombobox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.timestampLabel = new System.Windows.Forms.Label();
             this.timeGrid = new DevExpress.XtraGrid.GridControl();
             this.m_viewTime = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -904,6 +906,8 @@
             // 
             // tabConnection
             // 
+            this.tabConnection.Controls.Add(this.timestampUTCCombobox);
+            this.tabConnection.Controls.Add(this.label2);
             this.tabConnection.Controls.Add(this.timestampLabel);
             this.tabConnection.Controls.Add(this.timeGrid);
             this.tabConnection.Controls.Add(this.label1);
@@ -949,6 +953,30 @@
             this.tabConnection.Title = "Target";
             this.tabConnection.ToolTip = "Page";
             // 
+            // timestampUTCCombobox
+            // 
+            this.timestampUTCCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.timestampUTCCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.timestampUTCCombobox.FormattingEnabled = true;
+            this.timestampUTCCombobox.Items.AddRange(new object[] {
+            "Ignore",
+            "Convert timestamp to Universal Time",
+            "Appent to timestamp string"});
+            this.timestampUTCCombobox.Location = new System.Drawing.Point(547, 204);
+            this.timestampUTCCombobox.Name = "timestampUTCCombobox";
+            this.timestampUTCCombobox.Size = new System.Drawing.Size(292, 24);
+            this.timestampUTCCombobox.TabIndex = 59;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(459, 207);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(79, 17);
+            this.label2.TabIndex = 58;
+            this.label2.Text = "UTC offset:";
+            // 
             // timestampLabel
             // 
             this.timestampLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -965,7 +993,7 @@
             this.timeGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.timeGrid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.timeGrid.Enabled = false;
-            this.timeGrid.Location = new System.Drawing.Point(547, 170);
+            this.timeGrid.Location = new System.Drawing.Point(547, 172);
             this.timeGrid.MainView = this.m_viewTime;
             this.timeGrid.Margin = new System.Windows.Forms.Padding(4);
             this.timeGrid.Name = "timeGrid";
@@ -1146,7 +1174,7 @@
             // m_executeIBAAButton
             // 
             this.m_executeIBAAButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
+            this.m_executeIBAAButton.Image = ((System.Drawing.Image)(resources.GetObject("m_executeIBAAButton.Image")));
             this.m_executeIBAAButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_executeIBAAButton.Location = new System.Drawing.Point(888, 7);
             this.m_executeIBAAButton.Margin = new System.Windows.Forms.Padding(4);
@@ -1335,7 +1363,7 @@
             // m_browseDatFileButton
             // 
             this.m_browseDatFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
+            this.m_browseDatFileButton.Image = ((System.Drawing.Image)(resources.GetObject("m_browseDatFileButton.Image")));
             this.m_browseDatFileButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_browseDatFileButton.Location = new System.Drawing.Point(848, 39);
             this.m_browseDatFileButton.Margin = new System.Windows.Forms.Padding(4);
@@ -1535,5 +1563,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn m_colTime;
         protected DevExpress.XtraGrid.GridControl timeGrid;
         private System.Windows.Forms.Label timestampLabel;
+        private System.Windows.Forms.ComboBox timestampUTCCombobox;
+        private System.Windows.Forms.Label label2;
     }
 }

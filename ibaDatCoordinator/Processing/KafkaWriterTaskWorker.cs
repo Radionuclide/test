@@ -70,58 +70,6 @@ namespace iba.Processing
             m_sd = worker.m_sd;
             m_ibaAnalyzer = worker.m_ibaAnalyzer;
         }
-        bool TryGetUTCTimes(string filename, out DateTime startTime, out DateTime endTime) // TODO move to utility
-        {
-            startTime = endTime = DateTime.MinValue;
-
-            try
-            {
-                if (Path.GetExtension(filename)?.ToLower() == ".hdq")
-                {
-                    IniParser parser = new IniParser(filename);
-                    if (parser.Read() && !parser.Sections.ContainsKey("HDQ file"))
-                        return false;
-
-                    string strStart = "";
-                    if (!parser.Sections["HDQ file"].TryGetValue("starttime", out strStart))
-                        return false;
-
-                    string strEnd = "";
-                    if (!parser.Sections["HDQ file"].TryGetValue("stoptime", out strEnd))
-                        return false;
-
-                    startTime = DateTime.ParseExact(strStart, "dd.MM.yyyy HH:mm:ss.ffffff", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
-                    endTime = DateTime.ParseExact(strEnd, "dd.MM.yyyy HH:mm:ss.ffffff", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
-                }
-                else
-                {
-                    IbaShortFileInfo sfi = IbaFileReader.ReadShortFileInfo(filename);
-                    DateTime dtEnd = sfi.EndTime;
-                    DateTime dtStart = new DateTime();
-                    int microSeconds = 0;
-                    m_ibaAnalyzer.GetStartTime(ref dtStart, ref microSeconds);
-                    dtStart = dtStart.AddTicks(microSeconds * 10);
-
-                    if (sfi.UtcOffsetValid)
-                    {
-                        var currOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
-                        var fileOffset = TimeSpan.FromMinutes(sfi.UtcOffset);
-                        dtEnd = dtEnd.AddTicks((currOffset - fileOffset).Ticks);
-                    }
-
-                    startTime = dtStart;
-                    endTime = dtEnd;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-
-            startTime = startTime.ToUniversalTime();
-            endTime = endTime.ToUniversalTime();
-            return true;
-        }
 
         string ReplacePlaceholders(KafkaWriterTaskData.KafkaRecord rec, string str)
         {
@@ -174,12 +122,15 @@ namespace iba.Processing
                         mon.Execute(delegate () { { m_ibaAnalyzer.OpenAnalysis(m_data.AnalysisFile); } });
 
                     bool getMetadata = IsAnalyzerVersionNewer(m_ibaAnalyzer, 7, 3, 2);
+                    string timeStamp = "";
+                    DateTime timeStampDt = DateTime.Now;
+
                     foreach (var record in m_data.Records)
                     {
                         if (record.DataType == KafkaRecord.ExpressionType.Text)
                         {
                             object oValues = null;
-                            mon.Execute(delegate () {m_ibaAnalyzer.EvaluateToStringArray(record.Expression, 0, out _, out oValues);});
+                            mon.Execute(delegate () { m_ibaAnalyzer.EvaluateToStringArray(record.Expression, 0, out _, out oValues); });
 
                             if (oValues != null)
                             {
@@ -222,21 +173,23 @@ namespace iba.Processing
                             (channelMetaData as IDisposable)?.Dispose();
                         }
                     }
-                    if (m_data.metadata.Contains("Timestamp"))
+
+
+                    if (m_data.metadata.Contains("Timestamp") || m_data.Format == KafkaWriterTaskData.DataFormat.AVRO)
                     {
-                        DateTime timeStampDt;
+                        var fileInfo = IbaFileReader.ReadShortFileInfo(filename);
 
                         if (m_data.timeStampExpression == StartTime)
                         {
-                            timeStampDt = IbaFileReader.ReadShortFileInfo(filename).StartTime;
+                            timeStampDt = fileInfo.StartTime;
                         }
                         else if (m_data.timeStampExpression == EndTime)
                         {
-                            timeStampDt = IbaFileReader.ReadShortFileInfo(filename).EndTime;
+                            timeStampDt = fileInfo.EndTime;
                         }
                         else
                         {
-                            timeStampDt = IbaFileReader.ReadShortFileInfo(filename).StartTime;
+                            timeStampDt = fileInfo.StartTime;
                             double timeOffset = double.NaN;
                             mon.Execute(delegate () { timeOffset = m_ibaAnalyzer.Evaluate(m_data.timeStampExpression, 0); });
                             if (double.IsNaN(timeOffset))
@@ -249,14 +202,45 @@ namespace iba.Processing
                             }
                         }
 
-                        m_data.timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff");
 
                         var infofields = new IbaFileReader(filename, false).InfoFields;
 
-                        if (infofields.TryGetValue("$PDA_UtcOffset", out string utcField))
-                            m_data.timeStamp += utcField;
-                        else // use local UTC
-                            m_data.timeStamp += TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
+                        TimeSpan UTCOffset;
+                        if (fileInfo.UtcOffsetValid)
+                            UTCOffset = new TimeSpan(0, fileInfo.UtcOffset, 0); // fileInfo.UtcOffset in minutes
+                        else 
+                            UTCOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow); // use local UTC
+                        UTCOffset = UTCOffset.Add(new TimeSpan(15, 30, 0));
+
+                        string sighn;
+
+                        if (UTCOffset.Hours > 14)
+                        {
+                            UTCOffset = new TimeSpan(1, 0, 0, 0).Subtract(UTCOffset);
+                            sighn = "-";
+                        }
+                        else
+                            sighn = "+";
+
+                        if (m_data.timestampUTCOffset == TimestampUTCOffset.ConvertToUniversalTime)
+                        {
+                            if (sighn == "+")
+                                timeStampDt = timeStampDt.Subtract(UTCOffset);
+                            else
+                                timeStampDt = timeStampDt.Add(UTCOffset);
+                            timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") + "Z";
+                        }
+                        else if(m_data.timestampUTCOffset == TimestampUTCOffset.ConcatenateWithTimestamp || m_data.Format != KafkaWriterTaskData.DataFormat.AVRO)
+                        {
+
+
+                            timeStamp = 
+                                timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") +
+                                sighn +
+                                UTCOffset.ToString(@"hh\:mm");
+                        }
+                        // else ignore
+
                     }
                     var config = InitConfig(m_data);
 
@@ -291,7 +275,7 @@ namespace iba.Processing
                                 if (m_data.metadata.Contains("Comment 2"))
                                     message += $",\n \"{sigRef}.Comment2\": \"{rec.Comment2}\"";
                                 if (m_data.metadata.Contains("Timestamp"))
-                                    message += $",\n \"{sigRef}.Timestamp\": \"{m_data.timeStamp}\"";
+                                    message += $",\n \"{sigRef}.Timestamp\": \"{timeStamp}\"";
                             }
                             message += "\n}";
                             using (var p = producerBuilder.Build())
@@ -317,7 +301,7 @@ namespace iba.Processing
                                 if (m_data.metadata.Contains("Comment 2"))
                                     message += $",\n \"Comment2\": \"{rec.Comment2}\"";
                                 if (m_data.metadata.Contains("Timestamp"))
-                                    message += $",\n \"Timestamp\": \"{m_data.timeStamp}\"";
+                                    message += $",\n \"Timestamp\": \"{timeStamp}\"";
                                 message += "\n}";
                                 using (var p = producerBuilder.Build())
                                 {
@@ -340,8 +324,7 @@ namespace iba.Processing
                                 var record = rec.Value.ToString();
 
                                 var msg = new Confluent.Kafka.Message<byte[], byte[]>();
-                                if (TryGetUTCTimes(filename, out DateTime startTime, out DateTime _))
-                                    msg.Timestamp = new Confluent.Kafka.Timestamp(startTime, Confluent.Kafka.TimestampType.CreateTime);
+                                msg.Timestamp = new Confluent.Kafka.Timestamp(timeStampDt, Confluent.Kafka.TimestampType.CreateTime); 
 
                                 var r = new Avro.Generic.GenericRecord(schema);
                                 schema.TryGetField("ValueType", out Avro.Field enumField);
@@ -379,7 +362,6 @@ namespace iba.Processing
                                 using (var p = producerBuilder.Build())
                                 {
                                     _ = p.ProduceAsync(m_data.topicName, msg).Result;
-
                                 }
                             }
                         }
