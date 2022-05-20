@@ -219,6 +219,7 @@ namespace iba.Processing
                                 record.Comment1 = "";
                                 record.Comment2 = "";
                             }
+                            (channelMetaData as IDisposable)?.Dispose();
                         }
                     }
                     if (m_data.metadata.Contains("Timestamp"))
