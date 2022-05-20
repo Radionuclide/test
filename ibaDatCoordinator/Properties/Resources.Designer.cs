@@ -61,16 +61,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap About_Image_80x80 {
-            get {
-                object obj = ResourceManager.GetObject("About_Image_80x80", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Access key ID.
         /// </summary>
         internal static string Access_key_ID {
@@ -306,16 +296,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon brokenfile {
-            get {
-                object obj = ResourceManager.GetObject("brokenfile", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Browse for .dat file. If necessary, remove the &quot;Already processed&quot; mark and process it..
         /// </summary>
         internal static string browseCleanProcessButton {
@@ -546,26 +526,6 @@ namespace iba.Properties {
         internal static string ConvertExternalFileTitle {
             get {
                 return ResourceManager.GetString("ConvertExternalFileTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap copy {
-            get {
-                object obj = ResourceManager.GetObject("copy", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon copydat_running {
-            get {
-                object obj = ResourceManager.GetObject("copydat_running", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -1101,16 +1061,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon error {
-            get {
-                object obj = ResourceManager.GetObject("error", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Failed to connect to the ibaHD-Server.
         /// </summary>
         internal static string ErrorConnectIbaHD {
@@ -1310,17 +1260,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon extract_running {
-            get {
-                object obj = ResourceManager.GetObject("extract_running", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Extract analysis file.
+        ///   Looks up a localized string similar to Analysis to read datafile (CSV only).
         /// </summary>
         internal static string ExtractAnalysisFile {
             get {
@@ -1352,16 +1292,6 @@ namespace iba.Properties {
         internal static string Failure {
             get {
                 return ResourceManager.GetString("Failure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Fax {
-            get {
-                object obj = ResourceManager.GetObject("Fax", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -1771,16 +1701,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon ibaDatCoordinator_server {
-            get {
-                object obj = ResourceManager.GetObject("ibaDatCoordinator_server", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Problem opening .dat file with ibaFile:.
         /// </summary>
         internal static string ibaFileProblem {
@@ -1795,16 +1715,6 @@ namespace iba.Properties {
         internal static string ibaFilesNoLicense {
             get {
                 return ResourceManager.GetString("ibaFilesNoLicense", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ibalogo_transparent {
-            get {
-                object obj = ResourceManager.GetObject("ibalogo_transparent", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -1865,16 +1775,6 @@ namespace iba.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap img_error {
-            get {
-                object obj = ResourceManager.GetObject("img_error", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap img_eventjob_range_both {
             get {
                 object obj = ResourceManager.GetObject("img_eventjob_range_both", resourceCulture);
@@ -1888,46 +1788,6 @@ namespace iba.Properties {
         internal static System.Drawing.Bitmap img_eventjob_range_single {
             get {
                 object obj = ResourceManager.GetObject("img_eventjob_range_single", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon img_networkError {
-            get {
-                object obj = ResourceManager.GetObject("img_networkError", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap img_pdo_upload {
-            get {
-                object obj = ResourceManager.GetObject("img_pdo_upload", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap img_question {
-            get {
-                object obj = ResourceManager.GetObject("img_question", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap img_server {
-            get {
-                object obj = ResourceManager.GetObject("img_server", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -3235,16 +3095,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap NewDocument {
-            get {
-                object obj = ResourceManager.GetObject("NewDocument", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add Extract Task.
         /// </summary>
         internal static string NewExtractTitle {
@@ -3394,16 +3244,6 @@ namespace iba.Properties {
         internal static string Noaccess {
             get {
                 return ResourceManager.GetString("Noaccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon noaccess1 {
-            get {
-                object obj = ResourceManager.GetObject("noaccess1", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -3921,6 +3761,46 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap overlay_blue_checkmark_16 {
+            get {
+                object obj = ResourceManager.GetObject("overlay_blue_checkmark_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap overlay_clock_16 {
+            get {
+                object obj = ResourceManager.GetObject("overlay_clock_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap overlay_red_cross_16 {
+            get {
+                object obj = ResourceManager.GetObject("overlay_red_cross_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap overlay_white_bar_red_16 {
+            get {
+                object obj = ResourceManager.GetObject("overlay_white_bar_red_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password is disabled..
         /// </summary>
         internal static string PassNotSet {
@@ -4173,16 +4053,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap refreshconfs {
-            get {
-                object obj = ResourceManager.GetObject("refreshconfs", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove the &quot;already processed&quot; mark from items.
         /// </summary>
         internal static string refreshDatButton {
@@ -4225,16 +4095,6 @@ namespace iba.Properties {
         internal static string refreshPermanentErrorFilesWarning {
             get {
                 return ResourceManager.GetString("refreshPermanentErrorFilesWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Register {
-            get {
-                object obj = ResourceManager.GetObject("Register", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -4897,16 +4757,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon success1 {
-            get {
-                object obj = ResourceManager.GetObject("success1", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to An error occurred while generating support zip file at {0}:
         ///{1}.
         /// </summary>
@@ -4949,16 +4799,6 @@ namespace iba.Properties {
         internal static string SwitchLanguageRestartRequiredStandAlone {
             get {
                 return ResourceManager.GetString("SwitchLanguageRestartRequiredStandAlone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap sychronizeList {
-            get {
-                object obj = ResourceManager.GetObject("sychronizeList", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -5040,16 +4880,6 @@ namespace iba.Properties {
         internal static string Timeout {
             get {
                 return ResourceManager.GetString("Timeout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon timeout1 {
-            get {
-                object obj = ResourceManager.GetObject("timeout1", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         

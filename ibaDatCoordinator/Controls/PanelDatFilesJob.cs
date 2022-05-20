@@ -24,7 +24,7 @@ namespace iba.Controls
 
             m_jobType = mJobType;
 
-            var b = Icons.Gui.All.Images.FileDatFolder();
+            var b = Icons.Gui.All.Images.FileDat();
             m_browseDatFilesButton.Image = new Bitmap(b, new Size(16, 16));
 
             if(m_jobType == ConfigurationData.JobTypeEnum.OneTime) //make this a onetime job dialog

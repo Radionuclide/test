@@ -128,7 +128,7 @@ namespace iba
             m_toolTip.SetToolTip(m_stopButton, Properties.Resources.toolTipStopAll);
 
             ImageList confsImageList = new ImageList();
-            confsImageList.Images.Add(Icons.Gui.All.Images.FileDat());
+            confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolder());
             confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
             confsImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
             confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneTime());
@@ -142,7 +142,7 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.PauseOutline());
             confsImageList.Images.Add(Icons.Gui.All.Images.CleanErase());
             confsImageList.Images.Add(Icons.Gui.All.Images.SplitDivide());
-            confsImageList.Images.Add(Icons.Gui.All.Images.HdFlash());
+            confsImageList.Images.Add(Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow());
 			confsImageList.Images.Add(Icons.Gui.All.Images.Opcua());
             confsImageList.Images.Add(Icons.Gui.All.Images.Snmp());
             confsImageList.Images.Add(Icons.Gui.All.Images.Extract());
@@ -168,7 +168,7 @@ namespace iba
             statImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
             statImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
             statImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneTime());
-            statImageList.Images.Add(Properties.Resources.brokenfile);
+            statImageList.Images.Add(Icons.Gui.All.Images.CircleWarningFilledRed(16));
             m_statusTreeView.ImageList = statImageList;
 
             CreateLanguageMenuItems();
@@ -182,8 +182,8 @@ namespace iba
 
             statusImgConnectedInsecure = Icons.Gui.All.Images.LockOpenOrange();
             statusImgConnectedSecure = Icons.Gui.All.Images.LockClosedOrange();
-            statusImgDisconnected = Properties.Resources.img_networkError.ToBitmap();
-            statusImgStandalone = Properties.Resources.img_server;
+            statusImgDisconnected = Icons.Gui.All.Images.ConnectorCenterDelete();
+            statusImgStandalone = Icons.Gui.All.Images.MonitorNumberOneFilledBlue();
 
             iba.Controls.AppCertificatesControl.Init();
         }
@@ -1627,7 +1627,7 @@ namespace iba
             menuImages.Images.Add(Icons.Gui.All.Images.PauseOutline());
             menuImages.Images.Add(Icons.Gui.All.Images.CleanErase());
             menuImages.Images.Add(Icons.Gui.All.Images.SplitDivide());
-            menuImages.Images.Add(Icons.Gui.All.Images.HdFlash());
+            menuImages.Images.Add(Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow());
             menuImages.Images.Add(Icons.Gui.All.Images.Opcua());
             menuImages.Images.Add(Icons.Gui.All.Images.Snmp());
             menuImages.Images.Add(Icons.Gui.All.Images.ApacheKafka());
@@ -2508,7 +2508,7 @@ namespace iba
             using (var form = new AboutForm())
             {
                 form.ProductNameAndVersion = $"ibaDatCoordinator v{DatCoVersion.GetVersion()}";
-                form.ProductIcon = iba.Properties.Resources.About_Image_80x80;
+                form.ProductIcon = Icons.SystemTray.Images.IbaDatcoordinator(64);
 
                 if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && Program.CommunicationObject != null && Program.CommunicationObject.TestConnection())
                 {

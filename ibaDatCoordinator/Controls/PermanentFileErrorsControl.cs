@@ -176,14 +176,14 @@ namespace iba.Controls
             m_splitIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.SplitDivide()));
 
             m_hdCreateEventIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_hdCreateEventIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.HdFlash());
-            m_hdCreateEventIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.HdFlash()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.HdFlash()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.HdFlash()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.HdFlash()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.HdFlash()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.HdFlash()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.HdFlash()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow());
+            m_hdCreateEventIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
 
             m_OpcUaWriterIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
             m_OpcUaWriterIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.Opcua());
@@ -265,16 +265,16 @@ namespace iba.Controls
             switch (stat)
             {
                 case DatFileStatus.State.COMPLETED_FAILURE:
-                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.error.Handle);
+                    overlayBitmap = Properties.Resources.overlay_red_cross_16;
                     break;
                 case DatFileStatus.State.COMPLETED_SUCCESFULY:
-                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.success1.Handle);
+                    overlayBitmap = Properties.Resources.overlay_blue_checkmark_16;
                     break;
                 case DatFileStatus.State.NO_ACCESS:
-                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.noaccess1.Handle);
+                    overlayBitmap = Properties.Resources.overlay_white_bar_red_16;
                     break;
                 case DatFileStatus.State.TIMED_OUT:
-                    overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.timeout1.Handle);
+                    overlayBitmap = Properties.Resources.overlay_clock_16;
                     break;
                 case DatFileStatus.State.MEMORY_EXCEEDED:
                     overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.memoryexceeded.Handle);
@@ -297,7 +297,7 @@ namespace iba.Controls
             if (index >= 0)
                 return m_customtaskIcons[index][state];
             else
-                return Properties.Resources.img_question;
+                return (Bitmap)Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
         }
 
         private ConfigurationData m_cd;

@@ -135,7 +135,7 @@ namespace iba.Controls
             // m_btnUploadPDO
             // 
             resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
-            this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
+            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload(16);
             this.m_btnUploadPDO.Name = "m_btnUploadPDO";
             this.m_btnUploadPDO.UseVisualStyleBackColor = true;
             this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);

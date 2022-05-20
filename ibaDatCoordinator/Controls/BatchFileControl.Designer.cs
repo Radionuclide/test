@@ -77,7 +77,7 @@ namespace iba.Controls
 			// m_newButton
 			// 
 			resources.ApplyResources(this.m_newButton, "m_newButton");
-			this.m_newButton.Image = global::iba.Properties.Resources.NewDocument;
+			this.m_newButton.Image = Icons.Gui.All.Images.DocumentNew(16);
 			this.m_newButton.Name = "m_newButton";
 			this.m_newButton.UseVisualStyleBackColor = true;
 			this.m_newButton.Click += new System.EventHandler(this.m_newButton_Click);

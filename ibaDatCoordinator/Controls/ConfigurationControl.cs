@@ -97,7 +97,7 @@ namespace iba.Controls
             m_newPauseTaskButton.Image = Icons.Gui.All.Images.PauseOutline(imageSize);
             m_newCleanupTaskButton.Image = Icons.Gui.All.Images.CleanErase(imageSize);
             m_newSplitterTaskButton.Image = Icons.Gui.All.Images.SplitDivide(imageSize);
-            m_newHdCreateEventTaskButton.Image = Icons.Gui.All.Images.HdFlash(imageSize);
+            m_newHdCreateEventTaskButton.Image = Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow(imageSize);
             m_newOPCUAWriterTaskButton.Image = Icons.Gui.All.Images.Opcua(imageSize);
             m_newSNMPWriterTaskButton.Image = Icons.Gui.All.Images.Snmp(imageSize);
             m_newUploadTaskButton.Image = Icons.Gui.All.Images.Extract(imageSize);
@@ -807,12 +807,12 @@ namespace iba.Controls
             lblAnalysisFile.Text = $"{Resources.ExtractAnalysisFile}:";
             lblAnalysisFile.Location = new Point(10, 52);
             lblAnalysisFile.Anchor = AnchorStyles.Left;
-
+            lblAnalysisFile.Size = new Size(180,15);
 
             m_tbPdoFilePath = new TextBox();
             m_tbPdoFilePath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            m_tbPdoFilePath.Location = new Point(171, 50);
-            m_tbPdoFilePath.Width = 470;
+            m_tbPdoFilePath.Location = new Point(191, 50);
+            m_tbPdoFilePath.Width = 450;
 
             var btnBrowseFile = new Button();
             btnBrowseFile.Location = new Point(m_tbPdoFilePath.Location.X + m_tbPdoFilePath.Width + 5, 48);
@@ -842,7 +842,7 @@ namespace iba.Controls
             btnUploadPdo.Location = new Point(btnExecutIbaAnalyzer.Location.X + btnExecutIbaAnalyzer.Width + 5, 48);
             btnUploadPdo.Size = new Size(24, 24);
             btnUploadPdo.Anchor = AnchorStyles.Right;
-            btnUploadPdo.Image = Resources.img_pdo_upload;
+            btnUploadPdo.Image = Icons.Gui.All.Images.FilePdoUpload(16);
             btnUploadPdo.Click += (sender, args) =>
             {
                 DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(true, this, m_tbPdoFilePath.Text, null, m_data);

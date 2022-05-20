@@ -740,7 +740,7 @@ namespace iba.Controls
             if (!String.IsNullOrEmpty(error))
             {
                 Node errorNode = new Node(error);
-                errorNode.SelectedImage = errorNode.Image = Properties.Resources.img_error;
+                errorNode.SelectedImage = errorNode.Image = Icons.Gui.All.Images.CircleCrossFilledRed(16);
                 tree.Nodes.Add(errorNode);
             }
             else

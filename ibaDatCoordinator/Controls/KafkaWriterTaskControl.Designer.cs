@@ -1278,7 +1278,7 @@
             // m_btnUploadPDO
             // 
             this.m_btnUploadPDO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_btnUploadPDO.Image = global::iba.Properties.Resources.img_pdo_upload;
+            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload(16);
             this.m_btnUploadPDO.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.m_btnUploadPDO.Location = new System.Drawing.Point(927, 7);
             this.m_btnUploadPDO.Margin = new System.Windows.Forms.Padding(4);

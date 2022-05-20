@@ -292,7 +292,7 @@
 			// m_browseDatFilesButton
 			// 
 			resources.ApplyResources(this.m_browseDatFilesButton, "m_browseDatFilesButton");
-			this.m_browseDatFilesButton.Image = Icons.Gui.All.Images.FileDatFolder(16);
+			this.m_browseDatFilesButton.Image = Icons.Gui.All.Images.FileDat(16);
 			this.m_browseDatFilesButton.Name = "m_browseDatFilesButton";
 			this.m_browseDatFilesButton.UseVisualStyleBackColor = true;
 			this.m_browseDatFilesButton.Click += new System.EventHandler(this.m_browseDatFilesButton_Click);

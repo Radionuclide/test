@@ -135,10 +135,6 @@
   <data name="logBatchfileTimeout" xml:space="preserve">
     <value>script timed out</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="logServiceStarted" xml:space="preserve">
     <value>ibaDatCoordinator service started</value>
   </data>
@@ -412,9 +408,6 @@
   <data name="connectionLostCaption" xml:space="preserve">
     <value>Connection Lost</value>
   </data>
-  <data name="ibalogo_transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ibalogo_transparent.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="watchdogTitle" xml:space="preserve">
     <value>TCP/IP Watchdog</value>
   </data>
@@ -474,18 +467,6 @@
   </data>
   <data name="logPluginLoadError" xml:space="preserve">
     <value>Error loading assembly {0} : '{1}'</value>
-  </data>
-  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\error.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="noaccess1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\noaccess.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="success1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\success.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="timeout1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\timeout.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="deleteCustomTaskQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the '{0}' options "{1}" of Job "{2}" ?</value>
@@ -580,6 +561,7 @@
   <data name="AttemptsExceeded" xml:space="preserve">
     <value>nr of attempts exceeded!</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="memoryexceeded" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\memoryexceeded.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -624,9 +606,6 @@
   </data>
   <data name="CleanupDirectoriesFailed" xml:space="preserve">
     <value>Error cleaning up directories: </value>
-  </data>
-  <data name="NewDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NewDocument.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NoPreviousOutPutFileToCopy" xml:space="preserve">
     <value>Previous task did not generate a file to copy</value>
@@ -819,9 +798,6 @@
   </data>
   <data name="DirectoryFound" xml:space="preserve">
     <value>Creation of directory '{0}' detected, monitoring will be restarted...</value>
-  </data>
-  <data name="Register" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\application--pencil.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="addOneTimeConfigurationText" xml:space="preserve">
     <value>Add One Time Job</value>
@@ -1136,9 +1112,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="StopStr" xml:space="preserve">
     <value>Stop</value>
   </data>
-  <data name="Toolbars16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Toolbars16.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="AskToUploadToCurrentServer" xml:space="preserve">
     <value>Local unsaved changes were detected. Do you wish to upload them to the current server before connecting to a new server?</value>
   </data>
@@ -1350,9 +1323,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="Noaccess7" xml:space="preserve">
     <value>The file is password protected and an incorrect password was provided.</value>
   </data>
-  <data name="ibaDatCoordinator_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ibaDatCoordinator_server.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="NoHDServerConnected" xml:space="preserve">
     <value>No server connected</value>
   </data>
@@ -1451,9 +1421,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="HDEventTask_TestSuccess" xml:space="preserve">
     <value>Test successful</value>
-  </data>
-  <data name="img_pdo_upload" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_pdo_upload.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logHDEventTaskDATError" xml:space="preserve">
     <value>Test DAT file could not be found</value>
@@ -1631,9 +1598,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="PluginIsOutdated" xml:space="preserve">
     <value>Plugin "{0}" is outdated, please install latest version.</value>
-  </data>
-  <data name="img_networkError" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_networkError.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IncompatibleClientVersion" xml:space="preserve">
     <value>Incompatible client version. It should have version {0} or higher. Please upgrade the client.</value>
@@ -1888,7 +1852,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>..\Resources\refresh_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ExtractAnalysisFile" xml:space="preserve">
-    <value>Extract analysis file</value>
+    <value>Analysis to read datafile (CSV only)</value>
   </data>
   <data name="ActionOnSuccess" xml:space="preserve">
     <value>Action on success</value>
@@ -1958,25 +1922,25 @@ $comment2: Signal comment 2</value>
   <data name="DataTransferTaskErrorCertNotTrusted" xml:space="preserve">
     <value>The configured Data Transfer Task certificate is not trusted</value>
   </data>
-  <data name="img_question" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="img_server" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_server.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="refreshconfs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refreshconfs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="SaveHDEvents" xml:space="preserve">
     <value>Save ibaHD-Server events</value>
   </data>
-  <data name="img_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\blank.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="About_Image_80x80" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\about80x80.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Toolbars16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Toolbars16.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="brokenfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\brokenfile.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="overlay_blue_checkmark_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\overlay_blue_checkmark_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="overlay_clock_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\overlay_clock_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="overlay_red_cross_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\overlay_red_cross_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="overlay_white_bar_red_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\overlay_white_bar_red_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

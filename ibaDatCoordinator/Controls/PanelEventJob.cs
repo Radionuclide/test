@@ -55,7 +55,7 @@ namespace iba.Controls
             //defaultLookAndFeel.LookAndFeel.UseWindowsXPTheme = true;
 
             imageListError = new ImageList();
-            imageListError.Images.Add(Properties.Resources.img_error);
+            imageListError.Images.Add(Icons.Gui.All.Images.CircleCrossFilledRed(16));
         }
 
         public PanelEventJob()
