@@ -61,7 +61,8 @@ namespace iba
         public static readonly int NEW_ONETIME_CONF_INDEX = 22;
         public static readonly int NEW_SCHEDULED_CONF_INDEX = 23;
         public static readonly int NEW_EVENT_CONF_INDEX = 24;
-        public static readonly int CUSTOMTASK_INDEX = 25;
+        public static readonly int NEW_EXTERNALFILE_CONFIGURATION_INDEX = 25;
+        public static readonly int CUSTOMTASK_INDEX = 26;
         public static readonly int NR_TASKS = 16;
 
         private QuitForm m_quitForm;
@@ -120,7 +121,7 @@ namespace iba
             m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = Icons.Gui.All.Images.Opcua();
             // added by kolesnik - end
             m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Icons.Gui.All.Images.SendReceive();
-            m_statusPane.LargeImage = m_statusPane.SmallImage = Icons.Gui.All.Images.Table();
+            m_statusPane.LargeImage = m_statusPane.SmallImage = Icons.Gui.All.Images.Report();
             m_configPane.LargeImage = m_configPane.SmallImage = Icons.Gui.All.Images.Batch();
             m_loggingPane.LargeImage = m_loggingPane.SmallImage = Icons.Gui.All.Images.Table();
             m_settingsPane.LargeImage = m_settingsPane.SmallImage = Icons.Gui.All.Images.ToolboxService();
@@ -132,7 +133,7 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
             confsImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
             confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneTime());
-            confsImageList.Images.Add(Icons.Gui.All.Images.FileDat());
+            confsImageList.Images.Add(Icons.Gui.All.Images.FileExtFolder());
             confsImageList.Images.Add(Icons.Gui.All.Images.Report2());
             confsImageList.Images.Add(Icons.Gui.All.Images.DatabaseImport());
             confsImageList.Images.Add(Icons.Gui.All.Images.TerminalCode());
@@ -153,6 +154,7 @@ namespace iba
             confsImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneNew());
             confsImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDateNew());
             confsImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreenNew());
+            confsImageList.Images.Add(Icons.Gui.All.Images.FileExtFolderNew());
             m_configTreeView.ImageList = confsImageList;
             
             UpdateImageListConfTree();
@@ -168,7 +170,7 @@ namespace iba
             statImageList.Images.Add(Icons.Gui.All.Images.ScheduleCalendarDate());
             statImageList.Images.Add(Icons.Gui.All.Images.FlashFilledGreen());
             statImageList.Images.Add(Icons.Gui.All.Images.FileDatFolderOneTime());
-            statImageList.Images.Add(Icons.Gui.All.Images.CircleWarningFilledRed(16));
+            statImageList.Images.Add(Icons.Gui.All.Images.FileExtFolder());
             m_statusTreeView.ImageList = statImageList;
 
             CreateLanguageMenuItems();
@@ -201,7 +203,7 @@ namespace iba
 
             configurationToolStripMenuItem.Image = Icons.Gui.All.Images.Batch();
             dataTransferToolStripMenuItem.Image = Icons.Gui.All.Images.SendReceive();
-            statusToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
+            statusToolStripMenuItem.Image = Icons.Gui.All.Images.Report();
             loggingToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
             watchdogToolStripMenuItem.Image = Icons.Gui.All.Images.TcpIp();
             snmpToolStripMenuItem.Image = Icons.Gui.All.Images.Snmp();
@@ -856,7 +858,7 @@ namespace iba
             m_configTreeView.Nodes[3].Nodes.Add(new1ConfNode);
 
             //add the new external file Configuration node
-            TreeNode newExtConfNode = new TreeNode(iba.Properties.Resources.AddExternalFileTriggeredJob, NEWCONF_INDEX, NEWCONF_INDEX);
+            TreeNode newExtConfNode = new TreeNode(iba.Properties.Resources.AddExternalFileTriggeredJob, NEW_EXTERNALFILE_CONFIGURATION_INDEX, NEW_EXTERNALFILE_CONFIGURATION_INDEX);
             newExtConfNode.ForeColor = Color.Blue;
             newExtConfNode.Tag = new NewExtFileConfigurationTreeItemData(this);
             m_configTreeView.Nodes[4].Nodes.Add(newExtConfNode);
@@ -928,7 +930,7 @@ namespace iba
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ScheduledJobsNodeParent, SCHEDULED_CONFIGURATION_INDEX, SCHEDULED_CONFIGURATION_INDEX));
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.EventJobsNodeParent, EVENT_CONFIGURATION_INDEX, EVENT_CONFIGURATION_INDEX));
             m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.OneTimeJobsNodeParent, ONETIME_CONFIGURATION_INDEX, ONETIME_CONFIGURATION_INDEX));
-            m_statusTreeView.Nodes.Add(new TreeNode("External Files Jobs", EXTERNALFILE_CONFIGURATION_INDEX, EXTERNALFILE_CONFIGURATION_INDEX));
+            m_statusTreeView.Nodes.Add(new TreeNode(iba.Properties.Resources.ExternalFileJobsNodeParent, EXTERNALFILE_CONFIGURATION_INDEX, EXTERNALFILE_CONFIGURATION_INDEX));
             List<ConfigurationData> allconfs = TaskManager.Manager.Configurations;
             List<ConfigurationData>[] splitconfs = {new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.DatTriggered)),
                                                     new List<ConfigurationData>(allconfs.Where(c=>c.JobType == ConfigurationData.JobTypeEnum.Scheduled)),
@@ -946,6 +948,7 @@ namespace iba
                     statNode.Tag = new StatusTreeItemData(this as IPropertyPaneManager, confIt);
                     MainForm.strikeOutNodeText(statNode, !confIt.Enabled);
                     m_statusTreeView.Nodes[jobtypeindex].Nodes.Add(statNode);
+
                     if(confIt.LimitTimesTried)
                     {
                         string text = jobtypeindex==1?iba.Properties.Resources.PermanentlyFailedTriggers:iba.Properties.Resources.PermanentlyFailedDatFiles;
