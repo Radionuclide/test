@@ -187,6 +187,7 @@ namespace iba.Processing
                 ConfigurationData.FileFormatEnum.CSV => "txt",
                 ConfigurationData.FileFormatEnum.COMTRADE => "dat",
                 ConfigurationData.FileFormatEnum.DAS => "das",
+                ConfigurationData.FileFormatEnum.PARQUET => "parquet",
                 _ => "dat"
             };
         }
@@ -1145,7 +1146,17 @@ namespace iba.Processing
                 if (task.WhenToExecute == TaskData.WhenToDo.DISABLED)
                     continue;
 
-                int licId = task.RequiredLicense;
+                int licId = LicenseId.None;
+
+                if (m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile)
+                {
+                    licId = MapFileFormatToLicenceId();
+                }
+                else
+                {
+                    licId = task.RequiredLicense;
+                }
+
                 if (licId == LicenseId.None)
                     continue;
 
@@ -1200,6 +1211,18 @@ namespace iba.Processing
                 //Ignore exceptions because they could happen when the list of tasks or licenses is changed during this support request.
                 //It doesn't make sense to introduce locks to allow support requests during configuration changes
             }
+        }
+
+        private int MapFileFormatToLicenceId()
+        {
+            return m_cd.FileFormat switch
+            {
+                ConfigurationData.FileFormatEnum.CSV => LicenseId.ConvertCSV,
+                ConfigurationData.FileFormatEnum.COMTRADE => LicenseId.ConvertCOMTRADE,
+                ConfigurationData.FileFormatEnum.DAS => LicenseId.ConvertDAS,
+                ConfigurationData.FileFormatEnum.PARQUET => LicenseId.ConvertPARQUET,
+                _ => LicenseId.None
+            };
         }
 
         internal void StartIbaAnalyzer()
@@ -5388,7 +5411,7 @@ namespace iba.Processing
 
         private void DoConvertExtFileTask(string filename, ConvertExtFileTaskData taskData)
         {
-            new ConvertExtFileTaskWorker(this, taskData).DoWork(filename);
+            new ConvertExtFileTaskWorker(this, taskData).DoWork(filename, m_cd.FileFormat, m_cd.PdoFile);
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 

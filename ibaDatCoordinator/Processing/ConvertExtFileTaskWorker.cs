@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using iba.Data;
+using iba.Utility;
 
 namespace iba.Processing
 {
@@ -19,128 +20,89 @@ namespace iba.Processing
             m_ibaAnalyzer = worker.m_ibaAnalyzer;
         }
 
-        public void DoWork(string filename)
+        public void DoWork(string filename, ConfigurationData.FileFormatEnum fileFormat, string pdoFile)
         {
             if (!File.Exists(m_task.AnalysisFile))
             {
-                string message = iba.Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile;
-                m_confWorker.Log(Logging.Level.Exception, message, filename, m_task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
-                }
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile);
                 return;
+            }
+
+            if (m_confWorker.RunningConfiguration.SubDirs)
+            {
+                if (CheckIfTargetIsSubdirectory(m_confWorker.RunningConfiguration.DatDirectory, m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory))
+                {
+                    SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.SubdirectoryNotAllowed);
+                    return;
+                }
             }
 
             try
             {
-                using IbaAnalyzerMonitor mon = new IbaAnalyzerMonitor(m_ibaAnalyzer, m_task.MonitorData);
+                using IbaAnalyzerMonitor mon = new(m_ibaAnalyzer, m_task.MonitorData);
 
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.RUNNING;
-                }
+                SetSate(filename, DatFileStatus.State.RUNNING);
 
-                mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
-                m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, m_task);
+                m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, m_task); //todo rename massage
 
-                string outFile =filename;
-                
-                if (outFile == null) return;
+                string extension = ".dat";
+                string outFile = GetOutputFile(filename, extension);
 
-
-                if (m_task.OverwriteFiles && m_task.UsesQuota && File.Exists(outFile))
-                    m_confWorker.m_quotaCleanups[m_task.Guid].RemoveFile(outFile);
-
-                string outFile2 = Path.Combine(m_task.DestinationMap, Path.GetFileName(Path.ChangeExtension(filename, "dat")));
-
-                mon.Execute(() => { m_ibaAnalyzer.Extract(1, outFile2); });
-
-                m_confWorker.m_outPutFilesPrevTask = new string[] { outFile };
+                if (!m_task.OverwriteFiles)
+                    outFile = DatCoordinatorHostImpl.Host.FindSuitableFileName(outFile);
 
                 if (m_task.UsesQuota)
                 {
-                    m_confWorker.m_quotaCleanups[m_task.Guid].AddFile(m_confWorker.m_outPutFilesPrevTask[0]);
+                    m_confWorker.CleanupWithQuota(outFile, m_task, extension);
                 }
+
+                if (m_task.DoDirCleanupNow)
+                {
+                    m_confWorker.CleanupDirs(outFile, m_task, extension);
+                }
+
+                var analysisFile = fileFormat == ConfigurationData.FileFormatEnum.CSV ? m_task.AnalysisFile : pdoFile;
+
+                if (fileFormat == ConfigurationData.FileFormatEnum.CSV)
+                {
+                    mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(pdoFile); });
+
+                    mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
+                }
+
+
+                mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(analysisFile); });
+                
+                mon.Execute(() => { m_ibaAnalyzer.Extract(1, outFile); });
 
                 mon.Execute(() => m_ibaAnalyzer.CloseDataFile(0));
-                
-                if (m_confWorker.RunningConfiguration.DeleteExtFile)
-                {                    
-                    if (m_confWorker.RunningConfiguration.FileFormat == ConfigurationData.FileFormatEnum.COMTRADE)
-                    {
-                        File.Delete(filename);
-                        File.Delete(Path.ChangeExtension(filename, "cfg"));
-                    }
-                    else
-                    {
-                        File.Delete(filename);
-                    }
-                }
-                else
+
+                if (m_task.UsesQuota)
                 {
-                    if (!string.IsNullOrEmpty(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory))
-                    {
-                        if (m_confWorker.RunningConfiguration.FileFormat == ConfigurationData.FileFormatEnum.COMTRADE)
-                        {
-                            var cfgFilename = Path.ChangeExtension(filename, "cfg");
-
-                            var pathToCopy = Path.Combine(Path.Combine(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory, Path.GetFileName(filename)));
-
-                            var cfgPathToCopy = Path.ChangeExtension(pathToCopy, "cfg");
-
-                            File.Copy(filename, pathToCopy, true);
-                            File.Delete(filename);
-
-                            File.Copy(cfgFilename, cfgPathToCopy, true);
-                            File.Delete(cfgFilename);
-
-                        }
-                        else
-                        {
-                            var pathToCopy = Path.Combine(Path.Combine(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory, Path.GetFileName(filename)));
-                            File.Copy(filename, pathToCopy, true);
-                            File.Delete(filename);
-                        }
-                    }
-                    
+                    m_confWorker.m_quotaCleanups[m_task.Guid].AddFile(outFile);
                 }
+
+                DeleteOrMoveSourceFile(filename);
 
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
-                    m_sd.DatFileStates[filename].OutputFiles[m_task] =
-                        m_confWorker != null && (m_confWorker.m_outPutFilesPrevTask == null)
-                            ? null
-                            : (m_confWorker.m_outPutFilesPrevTask[0]);
                 }
                 m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logExtractSuccess, filename, m_task);
             }
             catch (IbaAnalyzerExceedingTimeLimitException te)
             {
-                m_confWorker.Log(Logging.Level.Exception, te.Message, filename, m_task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.TIMED_OUT;
-                }
+                SetSate(filename,DatFileStatus.State.TIMED_OUT, te.Message);
                 m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (IbaAnalyzerExceedingMemoryLimitException me)
             {
-                m_confWorker.Log(Logging.Level.Exception, me.Message, filename, m_task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.MEMORY_EXCEEDED;
-                }
+                SetSate(filename,DatFileStatus.State.MEMORY_EXCEEDED, me.Message);
                 m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (Exception ex)
             {
-                m_confWorker.Log(Logging.Level.Exception, ex.Message + "   " + m_confWorker.IbaAnalyzerErrorMessage(), filename, m_task);
-                lock (m_sd.DatFileStates)
-                {
-                    m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_FAILURE;
-                }
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, ex.Message + "   " + m_confWorker.IbaAnalyzerErrorMessage());
             }
             finally
             {
@@ -158,6 +120,79 @@ namespace iba.Processing
                 }
             }
         }
+
+        private string GetOutputFile(string filename, string extension)
+        {
+            string outfile = m_confWorker.GetOutputFileName(m_task, filename);
+            string dir = m_confWorker.GetOutputDirectoryName(filename, m_task);
+
+            return Path.Combine(dir, outfile + extension);
+        }
+
+        private void DeleteOrMoveSourceFile(string filename)
+        {
+            if (m_confWorker.RunningConfiguration.DeleteExtFile)
+            {
+                if (m_confWorker.RunningConfiguration.FileFormat == ConfigurationData.FileFormatEnum.COMTRADE)
+                {
+                    File.Delete(filename);
+                    File.Delete(Path.ChangeExtension(filename, "cfg"));
+                }
+                else
+                {
+                    File.Delete(filename);
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory))
+                {
+                    if (m_confWorker.RunningConfiguration.FileFormat == ConfigurationData.FileFormatEnum.COMTRADE)
+                    {
+                        var cfgFilename = Path.ChangeExtension(filename, "cfg");
+
+                        var pathToCopy = Path.Combine(Path.Combine(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory, Path.GetFileName(filename)));
+
+                        var cfgPathToCopy = Path.ChangeExtension(pathToCopy, "cfg");
+
+                        File.Copy(filename, pathToCopy, true);
+                        File.Delete(filename);
+
+                        File.Copy(cfgFilename, cfgPathToCopy, true);
+                        File.Delete(cfgFilename);
+
+                    }
+                    else
+                    {
+                        var pathToCopy = Path.Combine(Path.Combine(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory, Path.GetFileName(filename)));
+                        File.Copy(filename, pathToCopy, true);
+                        File.Delete(filename);
+                    }
+                }
+
+            }
+        }
+
+        private void SetSate(string filename, DatFileStatus.State state, string message = null, Logging.Level loggingLevel = null)
+        {
+            lock (m_sd.DatFileStates)
+            {
+                m_sd.DatFileStates[filename].States[m_task] = state;
+            }
+
+            if (message != null)
+            {
+                loggingLevel ??= Logging.Level.Exception;
+                m_confWorker.Log(loggingLevel, message, filename, m_task);
+            }
+        }
+
+        private bool CheckIfTargetIsSubdirectory(string source, string target)
+        {
+            var sourceDirectory = new Uri(source + "\\");
+            var processedFileSubdirectory = new Uri(target + "\\");
+
+            return sourceDirectory.IsBaseOf(processedFileSubdirectory);
+        }
     }
 }
-

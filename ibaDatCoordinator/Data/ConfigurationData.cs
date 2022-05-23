@@ -29,7 +29,7 @@ namespace iba.Data
             get { return m_jobType; }
             set { m_jobType = value; }
         }
-        public enum FileFormatEnum { CSV, DAS, COMTRADE }
+        public enum FileFormatEnum { CSV, DAS, COMTRADE, PARQUET }
 
         public FileFormatEnum FileFormat { get; set; }
 

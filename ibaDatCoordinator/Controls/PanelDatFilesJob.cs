@@ -89,12 +89,10 @@ namespace iba.Controls
                 m_browseDatFilesButton.Visible = false;
                 m_refreshDats.Visible = false;
                 m_autoStartCheckBox.Visible = false;
-                m_cbInitialScanEnabled.Visible = false;
                 m_cbRepErr.Visible = false;
                 m_cbRetry.Visible = false;
                 m_failTimeUpDown.Visible = false;
                 m_retryUpDown.Visible = false;
-                m_cbInitialScanEnabled.Visible = false;
                 label14.Visible = false;
                 label10.Visible = false;
 

@@ -1318,6 +1318,11 @@ namespace iba
 
         private void pasteNode(TreeNode node)
         {
+            if (node.Tag is ConfigurationTreeItemData { DataSource: ConfigurationData { JobType: ConfigurationData.JobTypeEnum.ExtFile } })
+            {
+                return;
+            }
+
             if ((node == null || node.Tag==null) && m_cd_copy != null) //add configurationData
             {
                 SaveRightPaneControl();

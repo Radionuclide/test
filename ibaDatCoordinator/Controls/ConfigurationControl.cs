@@ -786,7 +786,6 @@ namespace iba.Controls
         {
             gbNewTask.Visible = false;
             cbFileFormat = new ComboBox();
-            cbFileFormat.DataSource = Enum.GetNames(typeof(ConfigurationData.FileFormatEnum));
             gbFileFormat = new CollapsibleGroupBox();
             gbActionOnSucces = new CollapsibleGroupBox();
             gbDirectoryForProcessedFiles = new CollapsibleGroupBox();
@@ -859,6 +858,8 @@ namespace iba.Controls
             cbFileFormat.Width = 160;
 
             gbFileFormat.Controls.AddRange(new Control[] { cbFileFormat, lblAnalysisFile, m_tbPdoFilePath, btnBrowseFile, btnExecutIbaAnalyzer, btnUploadPdo });
+
+            cbFileFormat.DataSource = Enum.GetNames(typeof(ConfigurationData.FileFormatEnum));
 
             gbFileFormat.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             //gbNotifications

@@ -17,6 +17,7 @@ namespace iba.Licensing
         public const int ConvertCSV = 14017;
         public const int ConvertDAS = 14018;
         public const int ConvertCOMTRADE = 14019;
+        public const int ConvertPARQUET = 14020;
 
         public const int Publish = 14025;
 

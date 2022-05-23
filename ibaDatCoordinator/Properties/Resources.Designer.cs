@@ -4748,6 +4748,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Targed folder for processed file cant be subdirectory of source file folder!.
+        /// </summary>
+        internal static string SubdirectoryNotAllowed {
+            get {
+                return ResourceManager.GetString("SubdirectoryNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to successfully completed.
         /// </summary>
         internal static string Success {

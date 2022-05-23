@@ -56,6 +56,7 @@ namespace iba.Licensing
             new LicenseOptionInfo(LicenseId.ConvertCSV, "Convert CSV to dat", LicenseOptionType.Counter),
             new LicenseOptionInfo(LicenseId.ConvertDAS, "Convert DAS to dat", LicenseOptionType.Counter),
             new LicenseOptionInfo(LicenseId.ConvertCOMTRADE, "Convert COMTRADE to dat", LicenseOptionType.Counter),
+            new LicenseOptionInfo(LicenseId.ConvertPARQUET, "Convert PARQUET to dat", LicenseOptionType.Counter),
             new LicenseOptionInfo(LicenseId.Publish, "Publish task", LicenseOptionType.Counter),
 
             new LicenseOptionInfo(LicenseId.SinecH1, "Sinec H1 task", LicenseOptionType.YesNo, new int[] {61001 }),
