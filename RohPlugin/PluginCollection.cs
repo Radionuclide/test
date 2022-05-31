@@ -15,7 +15,7 @@ namespace Alunorf_roh_plugin
         {
             if (m_info == null)
             {
-                m_info = new PluginTaskInfo("ROH", "Alunorf .roh extraktor", Alunorf_roh_plugin.Properties.Resources.RohTask);
+                m_info = new PluginTaskInfo("ROH", "Alunorf .roh extraktor", Alunorf_roh_plugin.Properties.Resources.RohTask.ToBitmap());
                 return new PluginTaskInfo[] { m_info };
             }
 
