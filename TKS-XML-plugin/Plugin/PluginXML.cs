@@ -14,7 +14,7 @@ namespace iba.TKS_XML_Plugin
         {
             if (m_info == null)
             {
-                m_info = new PluginTaskInfoUNC("TKS-XML", "Thyssenkrupp Steel .xml extraktor", iba.TKS_XML_Plugin.Properties.Resources.TKSXMLTask.ToBitmap());
+                m_info = new PluginTaskInfoUNC("TKS-XML", "Thyssenkrupp Steel .xml extraktor", iba.Icons.Gui.All.Images.FileXml(24));
                 return new PluginTaskInfo[] { m_info };
             }
 
