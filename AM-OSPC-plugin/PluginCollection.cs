@@ -3,6 +3,7 @@ using System.Text;
 using DevExpress.XtraEditors.Repository;
 using iba.Plugins;
 
+
 namespace AM_OSPC_plugin
 {
     class PluginCollection : IDatCoPlugin2, IGridAnalyzer
@@ -14,7 +15,7 @@ namespace AM_OSPC_plugin
         {
             if(m_info == null)
             {
-                m_info = new PluginTaskInfo("OSPC", "A.M. OSPC", AM_OSPC_plugin.Properties.Resources.OSPC);
+                m_info = new PluginTaskInfo("OSPC", "A.M. OSPC", Properties.Resources.OSPC.ToBitmap());
                 return new PluginTaskInfo[] { m_info };
             }
 

@@ -38,7 +38,7 @@ namespace iba.Controls
         MinimalStatusData m_data;
 
 
-        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons,
+        Dictionary<DatFileStatus.State, Image> m_reportIcons,
             m_extractIcons,
             m_batchfileIcons,
             m_copydatIcons,
@@ -55,7 +55,7 @@ namespace iba.Controls
             m_SnmpWriterIcons,
             m_convertExtFileIcons;
 
-        Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
+        Dictionary<DatFileStatus.State, Image>[] m_customtaskIcons;
         
         Dictionary<DatFileStatus.State, String> m_taskTexts;
         
@@ -63,28 +63,28 @@ namespace iba.Controls
 
         private void InitializeIcons()
         {
-            m_reportIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_extractIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_batchfileIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_copydatIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_conditionIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_updateIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_pauseIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_cleanupIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_splitIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_uploadIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_hdCreateEventIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_OpcUaWriterIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_kafkaIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_dataTransferIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_SnmpWriterIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_convertExtFileIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_reportIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_extractIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_batchfileIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_copydatIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_conditionIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_updateIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_pauseIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_cleanupIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_splitIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_uploadIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_hdCreateEventIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_OpcUaWriterIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_kafkaIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_dataTransferIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_SnmpWriterIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_convertExtFileIcons = new Dictionary<DatFileStatus.State, Image>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
 
 
-            m_customtaskIcons = new Dictionary<DatFileStatus.State, Bitmap>[PluginManager.Manager.PluginInfos.Count];
+            m_customtaskIcons = new Dictionary<DatFileStatus.State, Image>[PluginManager.Manager.PluginInfos.Count];
             for (int i = 0; i < m_customtaskIcons.Length; i++)
-                m_customtaskIcons[i] = new Dictionary<DatFileStatus.State, Bitmap>();
+                m_customtaskIcons[i] = new Dictionary<DatFileStatus.State, Image>();
 
 
             m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
@@ -259,7 +259,7 @@ namespace iba.Controls
 
         }
 
-        private Bitmap MergeIcons(DatFileStatus.State stat, Bitmap original)
+        private Image MergeIcons(DatFileStatus.State stat, Image original)
         {
             Bitmap overlayBitmap = null;
             switch (stat)
@@ -283,21 +283,21 @@ namespace iba.Controls
                     overlayBitmap = Bitmap.FromHicon(iba.Properties.Resources.tomanytimestried.Handle);
                     break;
             }
-            Bitmap combinedBitmap = (Bitmap) original.Clone();
+            Image combinedBitmap = (Image) original.Clone();
             Graphics g = Graphics.FromImage(combinedBitmap);
             g.DrawImageUnscaled(overlayBitmap, 0, 0);
             g.Dispose();
             return combinedBitmap;
         }
 
-        private Bitmap GetImageForCustomTaskData(ICustomTaskData cust, DatFileStatus.State state)
+        private Image GetImageForCustomTaskData(ICustomTaskData cust, DatFileStatus.State state)
         {
             string name = cust.Plugin.NameInfo;
             int index = PluginManager.Manager.PluginInfos.FindIndex(delegate (PluginTaskInfo ii) { return ii.Name == name; });
             if (index >= 0)
                 return m_customtaskIcons[index][state];
             else
-                return (Bitmap)Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
+                return Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
         }
 
         private ConfigurationData m_cd;
@@ -421,7 +421,7 @@ namespace iba.Controls
                 if (dfs.TaskStates != null)
                 {
                     m_gridView.Rows[count].Cells[2].Value = dfs.TimesTried;
-                    Bitmap bitmap = null;
+                    Image bitmap = null;
                     for (int i = 0; i < dfs.TaskStates.Length; i++)
                     {
                         TaskData task = m_cd.Tasks[i];
@@ -464,7 +464,7 @@ namespace iba.Controls
                         string text = m_taskTexts[value];
                         DataGridViewImageCell cell = m_gridView.Rows[count].Cells[i + 3] as DataGridViewImageCell;
                         blank[i + 3] = false;
-                        if ((cell.Value as Bitmap) != bitmap)
+                        if ((cell.Value as Image) != bitmap)
                             cell.Value = bitmap;
                         if (cell.ToolTipText != text)
                             cell.ToolTipText = text;
@@ -568,19 +568,19 @@ namespace iba.Controls
 
         public void UpdatePlugins()
         {
-            m_customtaskIcons = new Dictionary<DatFileStatus.State, Bitmap>[PluginManager.Manager.PluginInfos.Count];
+            m_customtaskIcons = new Dictionary<DatFileStatus.State, Image>[PluginManager.Manager.PluginInfos.Count];
             for (int i = 0; i < m_customtaskIcons.Length; i++)
             {
-                m_customtaskIcons[i] = new Dictionary<DatFileStatus.State, Bitmap>();
-                IntPtr handle = PluginManager.Manager.PluginInfos[i].Icon.Handle;
+                m_customtaskIcons[i] = new Dictionary<DatFileStatus.State, Image>();
+                Image icon = PluginManager.Manager.PluginInfos[i].Icon;
                 m_customtaskIcons[i].Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-                m_customtaskIcons[i].Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(handle));
-                m_customtaskIcons[i].Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.RUNNING, icon);
+                m_customtaskIcons[i].Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, icon));
             }
         }
     }

@@ -14,7 +14,7 @@ namespace Alunorf_sinec_h1_plugin
         {
             if (m_info == null)
             {
-                m_info = new PluginTaskInfo("SINEC-H1", "Alunorf SINEC-H1", Alunorf_sinec_h1_plugin.Properties.Resources.H1Task);
+                m_info = new PluginTaskInfo("SINEC-H1", "Alunorf SINEC-H1", null/*Alunorf_sinec_h1_plugin.Properties.Resources.H1Task*/);
                 return new PluginTaskInfo[] { m_info };
             }
 

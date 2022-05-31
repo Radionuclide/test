@@ -769,11 +769,11 @@ namespace iba.Controls
                 bt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
                 bt.AutoSize = false;
                 bt.Height = bt.Width = 40;
-                Icon icon = info.Icon;
-                if(icon.Size.Width == 16)
+                bt.Image = info.Icon;
+                /*if(icon.Size.Width == 16)
                     bt.Image = icon.ToBitmap();
                 else
-                    bt.Image = new Bitmap(icon.ToBitmap(), new Size(16, 16));               
+                    bt.Image = new Bitmap(icon.ToBitmap(), new Size(16, 16));               */
                 bt.ImageScaling = ToolStripItemImageScaling.None;
                 bt.ToolTipText = info.Description;
                 bt.Tag = info;

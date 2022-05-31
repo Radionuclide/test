@@ -30,7 +30,7 @@ namespace iba.Controls
         MinimalStatusData m_data;
 
 
-        Dictionary<DatFileStatus.State, Bitmap> m_reportIcons,
+        Dictionary<DatFileStatus.State, Image> m_reportIcons,
             m_extractIcons,
             m_batchfileIcons,
             m_copydatIcons,
@@ -46,7 +46,7 @@ namespace iba.Controls
             m_kafkaIcons,
             m_dataTransferIcons,
             m_convertExtFileIcons;
-        Dictionary<DatFileStatus.State, Bitmap>[] m_customtaskIcons;
+        Dictionary<DatFileStatus.State, Image>[] m_customtaskIcons;
         
         Dictionary<DatFileStatus.State, String> m_taskTexts;
         
@@ -54,171 +54,171 @@ namespace iba.Controls
 
         private void InitializeIcons()
         {
-            m_reportIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_extractIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_batchfileIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_copydatIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_conditionIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_updateIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_pauseIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_cleanupIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_splitIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_hdCreateEventIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_OPCUAWriterIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_SNMPWriterIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_uploadIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_kafkaIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_dataTransferIcons = new Dictionary<DatFileStatus.State, Bitmap>();
-            m_convertExtFileIcons = new Dictionary<DatFileStatus.State, Bitmap>();
+            m_reportIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_extractIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_batchfileIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_copydatIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_conditionIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_updateIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_pauseIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_cleanupIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_splitIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_hdCreateEventIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_OPCUAWriterIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_SNMPWriterIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_uploadIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_kafkaIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_dataTransferIcons = new Dictionary<DatFileStatus.State, Image>();
+            m_convertExtFileIcons = new Dictionary<DatFileStatus.State, Image>();
             m_taskTexts = new Dictionary<DatFileStatus.State, String>();
 
             m_blankIcon = Bitmap.FromHicon(iba.Properties.Resources.blank.Handle);
 
             m_reportIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_reportIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.Report2());
-            m_reportIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.Report2()));
-            m_reportIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.Report2()));
-            m_reportIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Report2()));
-            m_reportIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.Report2()));
-            m_reportIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.Report2()));
-            m_reportIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.Report2()));
+            m_reportIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.Report2());
+            m_reportIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.Report2()));
+            m_reportIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.Report2()));
+            m_reportIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Report2()));
+            m_reportIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.Report2()));
+            m_reportIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.Report2()));
+            m_reportIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.Report2()));
 
             m_extractIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_extractIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.DatabaseImport());
-            m_extractIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.DatabaseImport()));
-            m_extractIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.DatabaseImport()));
-            m_extractIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.DatabaseImport()));
-            m_extractIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.DatabaseImport()));
-            m_extractIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.DatabaseImport()));
-            m_extractIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.DatabaseImport()));
+            m_extractIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.DatabaseImport());
+            m_extractIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.DatabaseImport()));
+            m_extractIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.DatabaseImport()));
+            m_extractIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.DatabaseImport()));
+            m_extractIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.DatabaseImport()));
+            m_extractIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.DatabaseImport()));
+            m_extractIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.DatabaseImport()));
 
             m_batchfileIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_batchfileIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.TerminalCode());
-            m_batchfileIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.TerminalCode()));
-            m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.TerminalCode()));
-            m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.TerminalCode()));
-            m_batchfileIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.TerminalCode()));
-            m_batchfileIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.TerminalCode()));
-            m_batchfileIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.TerminalCode()));
+            m_batchfileIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.TerminalCode());
+            m_batchfileIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.TerminalCode()));
+            m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.TerminalCode()));
+            m_batchfileIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.TerminalCode()));
+            m_batchfileIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.TerminalCode()));
+            m_batchfileIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.TerminalCode()));
+            m_batchfileIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.TerminalCode()));
 
             m_copydatIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_copydatIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.Copy());
-            m_copydatIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.Copy()));
-            m_copydatIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.Copy()));
-            m_copydatIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Copy()));
-            m_copydatIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.Copy()));
-            m_copydatIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.Copy()));
-            m_copydatIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.Copy()));
+            m_copydatIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.Copy());
+            m_copydatIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.Copy()));
+            m_copydatIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.Copy()));
+            m_copydatIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Copy()));
+            m_copydatIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.Copy()));
+            m_copydatIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.Copy()));
+            m_copydatIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.Copy()));
 
             m_conditionIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_conditionIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.Condition());
-            m_conditionIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.Condition()));
-            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Condition()));
-            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_TRUE, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.Condition())); 
-            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Condition()));
-            m_conditionIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.Condition()));
-            m_conditionIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.Condition()));
-            m_conditionIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.Condition()));
+            m_conditionIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.Condition());
+            m_conditionIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.Condition()));
+            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Condition()));
+            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_TRUE, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.Condition())); 
+            m_conditionIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Condition()));
+            m_conditionIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.Condition()));
+            m_conditionIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.Condition()));
+            m_conditionIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.Condition()));
 
             m_updateIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_updateIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.DatabaseRefresh());
-            m_updateIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.DatabaseRefresh()));
-            m_updateIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.DatabaseRefresh()));
-            m_updateIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.DatabaseRefresh()));
-            m_updateIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.DatabaseRefresh()));
-            m_updateIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.DatabaseRefresh()));
-            m_updateIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.DatabaseRefresh()));
-            m_updateIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.DatabaseRefresh()));
+            m_updateIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.DatabaseRefresh());
+            m_updateIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.DatabaseRefresh()));
+            m_updateIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.DatabaseRefresh()));
+            m_updateIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.DatabaseRefresh()));
+            m_updateIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.DatabaseRefresh()));
+            m_updateIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.DatabaseRefresh()));
+            m_updateIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.DatabaseRefresh()));
+            m_updateIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.DatabaseRefresh()));
             
             m_pauseIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_pauseIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.PauseOutline());
-            m_pauseIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.PauseOutline()));
-            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.PauseOutline()));
-            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.PauseOutline()));
-            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.PauseOutline()));
-            m_pauseIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.PauseOutline()));
-            m_pauseIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.PauseOutline()));
-            m_pauseIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.PauseOutline()));
+            m_pauseIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.PauseOutline());
+            m_pauseIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.PauseOutline()));
+            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.PauseOutline()));
+            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.PauseOutline()));
+            m_pauseIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.PauseOutline()));
+            m_pauseIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.PauseOutline()));
+            m_pauseIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.PauseOutline()));
+            m_pauseIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.PauseOutline()));
 
             m_cleanupIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_cleanupIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.CleanErase());
-            m_cleanupIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.CleanErase()));
-            m_cleanupIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.CleanErase()));
-            m_cleanupIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.CleanErase()));
-            m_cleanupIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.CleanErase()));
-            m_cleanupIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.CleanErase()));
-            m_cleanupIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.CleanErase()));
-            m_cleanupIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.CleanErase()));
+            m_cleanupIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.CleanErase());
+            m_cleanupIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.CleanErase()));
+            m_cleanupIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.CleanErase()));
+            m_cleanupIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.CleanErase()));
+            m_cleanupIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.CleanErase()));
+            m_cleanupIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.CleanErase()));
+            m_cleanupIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.CleanErase()));
+            m_cleanupIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.CleanErase()));
 
             m_splitIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_splitIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.SplitDivide());
-            m_splitIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.SplitDivide()));
-            m_splitIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.SplitDivide()));
-            m_splitIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.SplitDivide()));
-            m_splitIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.SplitDivide()));
-            m_splitIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.SplitDivide()));
-            m_splitIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.SplitDivide()));
-            m_splitIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.SplitDivide()));
+            m_splitIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.SplitDivide());
+            m_splitIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.SplitDivide()));
+            m_splitIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.SplitDivide()));
+            m_splitIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.SplitDivide()));
+            m_splitIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.SplitDivide()));
+            m_splitIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.SplitDivide()));
+            m_splitIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.SplitDivide()));
+            m_splitIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.SplitDivide()));
 
             m_hdCreateEventIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_hdCreateEventIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow());
-            m_hdCreateEventIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
-            m_hdCreateEventIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow());
+            m_hdCreateEventIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
+            m_hdCreateEventIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.DatastoreFilledGrayFlashOutlineArrow()));
             
             m_uploadIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_uploadIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.Extract());
-            m_uploadIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.Extract()));
-            m_uploadIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Extract()));
-            m_uploadIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.Extract()));
-            m_uploadIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Extract()));
-            m_uploadIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.Extract()));
-            m_uploadIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.Extract()));
-            m_uploadIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.Extract()));
+            m_uploadIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.Extract());
+            m_uploadIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.Extract()));
+            m_uploadIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Extract()));
+            m_uploadIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.Extract()));
+            m_uploadIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Extract()));
+            m_uploadIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.Extract()));
+            m_uploadIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.Extract()));
+            m_uploadIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.Extract()));
             
             m_dataTransferIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_dataTransferIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.SendReceive());
-            m_dataTransferIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.SendReceive()));
-            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.SendReceive()));
-            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.SendReceive()));
-            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.SendReceive()));
-            m_dataTransferIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.SendReceive()));
-            m_dataTransferIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.SendReceive()));
-            m_dataTransferIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.SendReceive()));
+            m_dataTransferIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.SendReceive());
+            m_dataTransferIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.SendReceive()));
+            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.SendReceive()));
+            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.SendReceive()));
+            m_dataTransferIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.SendReceive()));
+            m_dataTransferIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.SendReceive()));
+            m_dataTransferIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.SendReceive()));
+            m_dataTransferIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.SendReceive()));
 
             m_OPCUAWriterIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_OPCUAWriterIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.Opcua());
-            m_OPCUAWriterIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.Opcua()));
-            m_OPCUAWriterIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Opcua()));
-            m_OPCUAWriterIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.Opcua()));
-            m_OPCUAWriterIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Opcua()));
-            m_OPCUAWriterIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.Opcua()));
-            m_OPCUAWriterIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.Opcua()));
-            m_OPCUAWriterIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.Opcua()));
+            m_OPCUAWriterIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.Opcua());
+            m_OPCUAWriterIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.Opcua()));
+            m_OPCUAWriterIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Opcua()));
+            m_OPCUAWriterIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.Opcua()));
+            m_OPCUAWriterIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Opcua()));
+            m_OPCUAWriterIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.Opcua()));
+            m_OPCUAWriterIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.Opcua()));
+            m_OPCUAWriterIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.Opcua()));
             
             m_SNMPWriterIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_SNMPWriterIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.Snmp());
-            m_SNMPWriterIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.Snmp()));
-            m_SNMPWriterIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Snmp()));
-            m_SNMPWriterIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.Snmp()));
-            m_SNMPWriterIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.Snmp()));
-            m_SNMPWriterIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.Snmp()));
-            m_SNMPWriterIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.Snmp()));
-            m_SNMPWriterIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.Snmp()));
+            m_SNMPWriterIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.Snmp());
+            m_SNMPWriterIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.Snmp()));
+            m_SNMPWriterIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Snmp()));
+            m_SNMPWriterIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.Snmp()));
+            m_SNMPWriterIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.Snmp()));
+            m_SNMPWriterIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.Snmp()));
+            m_SNMPWriterIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.Snmp()));
+            m_SNMPWriterIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.Snmp()));
 
             m_kafkaIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-            m_kafkaIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.ApacheKafka());
-            m_kafkaIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
-            m_kafkaIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
-            m_kafkaIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
-            m_kafkaIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
-            m_kafkaIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
-            m_kafkaIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
-            m_kafkaIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
+            m_kafkaIcons.Add(DatFileStatus.State.RUNNING, Icons.Gui.All.Images.ApacheKafka());
+            m_kafkaIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Icons.Gui.All.Images.ApacheKafka()));
+            m_kafkaIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.ApacheKafka()));
+            m_kafkaIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Icons.Gui.All.Images.ApacheKafka()));
+            m_kafkaIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Icons.Gui.All.Images.ApacheKafka()));
+            m_kafkaIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Icons.Gui.All.Images.ApacheKafka()));
+            m_kafkaIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Icons.Gui.All.Images.ApacheKafka()));
+            m_kafkaIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Icons.Gui.All.Images.ApacheKafka()));
 
             m_convertExtFileIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
             m_convertExtFileIcons.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.external_files_configuration);
@@ -244,9 +244,9 @@ namespace iba.Controls
             m_taskTexts.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.AttemptsExceeded);
         }
 
-        private Bitmap MergeIcons(DatFileStatus.State stat, Bitmap original)
+        private Image MergeIcons(DatFileStatus.State stat, Image original)
         {
-            Bitmap overlayBitmap = null;
+            Image overlayBitmap = null;
             switch (stat)
             {
                 case DatFileStatus.State.COMPLETED_FAILURE:
@@ -269,7 +269,7 @@ namespace iba.Controls
                     break;
             }
 
-            Bitmap combinedBitmap = (Bitmap) original.Clone();
+            Image combinedBitmap = (Image) original.Clone();
             Graphics g = Graphics.FromImage(combinedBitmap);
 
             g.DrawImageUnscaled(overlayBitmap, 0, 0);
@@ -277,14 +277,14 @@ namespace iba.Controls
             return combinedBitmap;
         }
 
-        private Bitmap GetImageForCustomTaskData(ICustomTaskData cust, DatFileStatus.State state)
+        private Image GetImageForCustomTaskData(ICustomTaskData cust, DatFileStatus.State state)
         {
             string name = cust.Plugin.NameInfo;
             int index = PluginManager.Manager.PluginInfos.FindIndex(delegate (PluginTaskInfo ii) { return ii.Name == name; });
             if (index >= 0)
                 return m_customtaskIcons[index][state];
             else
-                return (Bitmap)Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
+                return Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
         }
 
         private ConfigurationData m_cd;
@@ -374,7 +374,7 @@ namespace iba.Controls
                 if (dfs.TaskStates != null)
                 {
                     m_gridView.Rows[count].Cells[1].Value = dfs.TimesTried;
-                    Bitmap bitmap = null;
+                    Image bitmap = null;
                     text = String.Empty;
                     for (int i = 0; i < dfs.TaskStates.Length; i++)
                     {
@@ -419,7 +419,7 @@ namespace iba.Controls
                         text = m_taskTexts[value];
                         DataGridViewImageCell cell = m_gridView.Rows[count].Cells[i + 2] as DataGridViewImageCell;
                         blank[i + 2] = false;
-                        if ((cell.Value as Bitmap) != bitmap)
+                        if ((cell.Value as Image) != bitmap)
                         {
                             cell.Value = bitmap;
                             if (value == DatFileStatus.State.RUNNING)
@@ -445,19 +445,19 @@ namespace iba.Controls
 
         public void UpdatePlugins()
         {
-            m_customtaskIcons = new Dictionary<DatFileStatus.State, Bitmap>[PluginManager.Manager.PluginInfos.Count];
+            m_customtaskIcons = new Dictionary<DatFileStatus.State, Image>[PluginManager.Manager.PluginInfos.Count];
             for (int i = 0; i < m_customtaskIcons.Length; i++)
             {
-                m_customtaskIcons[i] = new Dictionary<DatFileStatus.State, Bitmap>();
-                IntPtr handle = PluginManager.Manager.PluginInfos[i].Icon.Handle;
+                m_customtaskIcons[i] = new Dictionary<DatFileStatus.State, Image>();
+                Image icon = PluginManager.Manager.PluginInfos[i].Icon;
                 m_customtaskIcons[i].Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
-                m_customtaskIcons[i].Add(DatFileStatus.State.RUNNING, Bitmap.FromHicon(handle));
-                m_customtaskIcons[i].Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, Bitmap.FromHicon(handle)));
-                m_customtaskIcons[i].Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, Bitmap.FromHicon(handle)));
+                m_customtaskIcons[i].Add(DatFileStatus.State.RUNNING, icon);
+                m_customtaskIcons[i].Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, icon));
+                m_customtaskIcons[i].Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, icon));
             }
         }
     }

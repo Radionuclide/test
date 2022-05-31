@@ -16,11 +16,11 @@ namespace iba.Plugins
         /// <param name="name">The name of the plugin</param>
         /// <param name="description">A short description of the plugin</param>
         /// <param name="icon">An appropriate icon for the plugin</param>
-        public PluginTaskInfo(string name, string description, Icon icon)
+        public PluginTaskInfo(string name, string description, Image icon)
         {
             m_name = name;
             m_description = description;
-            m_icon = icon;
+            m_image = icon;
 			m_isOutdated = false;
         }
 
@@ -48,11 +48,11 @@ namespace iba.Plugins
         /// <summary>
         /// Icon for this plugin
         /// </summary>
-        private Icon m_icon;
-        public Icon Icon
+        private Image m_image;
+        public Image Icon
         {
-            get { return m_icon; }
-            set { m_icon = value; }
+            get { return m_image; }
+            set { m_image = value; }
         }
 
 		/// <summary>
@@ -79,7 +79,7 @@ namespace iba.Plugins
         /// <param name="name">The name of the plugin</param>
         /// <param name="description">A short description of the plugin</param>
         /// <param name="icon">An appropriate icon for the plugin</param>
-        public PluginTaskInfoUNC(string name, string description, Icon icon)
+        public PluginTaskInfoUNC(string name, string description, Image icon)
         : base(name,description,icon)
         {
 
