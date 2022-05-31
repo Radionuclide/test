@@ -3,6 +3,7 @@ using System.Text;
 using DevExpress.XtraEditors.Repository;
 using iba.Plugins;
 
+
 namespace S7_writer_plugin
 {
     class PluginCollection : IDatCoPlugin2, IGridAnalyzer
@@ -14,7 +15,8 @@ namespace S7_writer_plugin
         {
             if(m_info == null)
             {
-                m_info = new PluginTaskInfo("S7 Writer", "Writes data to S7 DBs.", S7_writer_plugin.Properties.Resources.s7Icon);
+                System.Drawing.Icon icon = 
+                m_info = new PluginTaskInfo("S7 Writer", "Writes data to S7 DBs.");
                 return new PluginTaskInfo[] { m_info };
             }
 

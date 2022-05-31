@@ -489,7 +489,7 @@ namespace iba.Processing
 
                         //see if a report or extract or if task is present
                         if (t is ExtractData || t is ReportData || t is IfTaskData || t is SplitterTaskData || t is HDCreateEventTaskData || t is OpcUaWriterTaskData || t is KafkaWriterTaskData || t is SnmpWriterTaskData || t is ConvertExtFileTaskData ||
-                            (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile)
+                            (uncTask != null && uncTask.DirTimeChoice == TaskDataUNC.DirTimeChoiceEnum.InFile) 
                             || (uncTask != null && (uncTask.UseInfoFieldForOutputFile || uncTask.Subfolder == TaskDataUNC.SubfolderChoice.INFOFIELD))
                             || (c_new != null && c_new.Plugin is IPluginTaskDataIbaAnalyzer)
                             )
@@ -2560,9 +2560,9 @@ namespace iba.Processing
                     if(m_needIbaAnalyzer)
                     {
                         bAnalyzerError = true;
-                        m_ibaAnalyzer.OpenDataFile(0, inputFile); //works both with hdq and .dat
                         try
                         {
+                            m_ibaAnalyzer.OpenDataFile(0, inputFile); //works both with hdq and .dat
                             DateTime dt = new DateTime();
                             int microsec = 0;
                             m_ibaAnalyzer.GetStartTime(ref dt, ref microsec);
@@ -3608,12 +3608,22 @@ namespace iba.Processing
                     if(m_startTimeFromDatFile.HasValue)
                         dt = m_startTimeFromDatFile.Value;
                     else
-                        goto case TaskDataUNC.DirTimeChoiceEnum.Modified;
+                        goto case TaskDataUNC.DirTimeChoiceEnum.Created;
                     break;
                 case TaskDataUNC.DirTimeChoiceEnum.Modified:
                     try
                     {
                         dt = File.GetLastWriteTime(filename);
+                    }
+                    catch
+                    {
+                        dt = DateTime.Now;
+                    }
+                    break;
+                case TaskDataUNC.DirTimeChoiceEnum.Created:
+                    try
+                    {
+                        dt = File.GetCreationTime(filename);
                     }
                     catch
                     {

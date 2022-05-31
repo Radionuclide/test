@@ -247,7 +247,7 @@ namespace iba.Data
             m_doDirCleanup = false;
             m_overwriteFiles = false;
             m_subfolderChoice = SubfolderChoice.DAY;
-            m_dirTimeChoice = DirTimeChoiceEnum.Current;
+            m_dirTimeChoice = DirTimeChoiceEnum.Created;
             m_copyDatModTime = false;
             m_useInfoFieldForOutputFile = false;
             m_infoFieldForOutputFile = "";
@@ -288,7 +288,7 @@ namespace iba.Data
         public TaskDataUNC() : this(null) { }
 
         //protected bool m_useDatModTimeForDirs;
-        public enum DirTimeChoiceEnum { Current, Modified, InFile };
+        public enum DirTimeChoiceEnum { Created, Modified, Current, InFile};
 
         protected DirTimeChoiceEnum m_dirTimeChoice;
         public iba.Data.TaskDataUNC.DirTimeChoiceEnum DirTimeChoice

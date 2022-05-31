@@ -373,12 +373,15 @@
     <value>0</value>
   </data>
   <data name="m_cbTimeDir.Items" xml:space="preserve">
-    <value>Current system time</value>
+    <value>'Date created' from .dat file</value>
   </data>
   <data name="m_cbTimeDir.Items1" xml:space="preserve">
     <value>'Date modified' from .dat file</value>
   </data>
   <data name="m_cbTimeDir.Items2" xml:space="preserve">
+    <value>Current system time</value>
+  </data>
+  <data name="m_cbTimeDir.Items3" xml:space="preserve">
     <value>StartTime in .dat file</value>
   </data>
   <data name="m_cbTimeDir.Location" type="System.Drawing.Point, System.Drawing">
@@ -769,7 +772,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel2" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,38,65516,Percent,33,26141,Percent,28,08342" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel2" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,38.65516,Percent,33.26141,Percent,28.08342" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_subfolderGroupBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 98</value>
@@ -1344,6 +1347,15 @@
   <data name="m_browseFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_browseFolderButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAACzSURBVDhPpZFREYNADESRUgn0GxNIQAoSkICESqgEBFQE
+        DtJNhs1krneZa/vx4Nh5l1tgEJG/qIbfYJf7NO1ACh7gVm4osYtuiCGeR3BoXmGPbnVARul6CObr3os1
+        iQOeYOPkDHh2mK4Z6IATLJQy4K3g0DUD1hqj2AKetv14hTNKGeoCa8vAvkGUWsDTX+xtGWqwRrEFvAV4
+        W4Y6YGaYAW8D3pbh6xrSix/mk3+lGvYjwxspCofg8cJWtQAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="m_browseFolderButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1424,6 +1436,16 @@
   </data>
   <data name="m_checkPathButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="m_checkPathButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAADsSURBVDhPpZGxDcIwFEQzAiMwAWIBJMooEzBISgbIAJSw
+        A2XK0KWDigokhChoqNIgKMydsb8+0ZeSiOJJ9v27sxMnzrm/MMUhmGIkydM1eIMTGJkeSyQIZCG8A09Q
+        mD5LJAhcSVg3nQUwjME8sAUvwFssgAMzHZScLL7XpDGyCfoq7C+BI8isApp4ujcpfQoqxQ00MldGXVBF
+        vQ1mS3plrwZ9C/hzz7JXg84C6CXwP1c0NdQFddTVnC/CcPmjKwMLDoBvzhfhU7KQFOAB7jrsc7LI0z3g
+        6f4TAItYSnhyDSY67HNtYSim2B+XfACNeXRkMOSmYwAAAABJRU5ErkJggg==
+</value>
   </data>
   <data name="m_checkPathButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
