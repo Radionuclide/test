@@ -15,8 +15,7 @@ namespace S7_writer_plugin
         {
             if(m_info == null)
             {
-                System.Drawing.Icon icon = 
-                m_info = new PluginTaskInfo("S7 Writer", "Writes data to S7 DBs.");
+                m_info = new PluginTaskInfo("S7 Writer", "Writes data to S7 DBs.", S7_writer_plugin.Properties.Resources.s7Icon);
                 return new PluginTaskInfo[] { m_info };
             }
 
