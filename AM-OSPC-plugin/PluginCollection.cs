@@ -6,9 +6,9 @@ using iba.Plugins;
 
 namespace AM_OSPC_plugin
 {
-    class PluginCollection : IDatCoPlugin2, IGridAnalyzer
+    class PluginCollection : IDatCoPlugin3, IGridAnalyzer
 	{
-        #region IDatCoPlugin2 Members
+        #region IDatCoPlugin3 Members
 
         PluginTaskInfo m_info;
         public PluginTaskInfo[] GetTasks()

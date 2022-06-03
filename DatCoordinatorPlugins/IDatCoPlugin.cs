@@ -30,7 +30,7 @@ namespace iba.Plugins
 	/// <summary>
 	/// Interface used to indicate new plugin version
 	/// </summary>
-	public interface IDatCoPlugin2 : IDatCoPlugin
+	public interface IDatCoPlugin3 : IDatCoPlugin
     {
 	}
 }

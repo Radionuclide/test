@@ -5,16 +5,16 @@ using iba.Plugins;
 
 namespace Alunorf_sinec_h1_plugin
 {
-    class PluginCollection : IDatCoPlugin2
+    class PluginCollection : IDatCoPlugin3
     {
-        #region IDatCoPlugin2 Members
+        #region IDatCoPlugin3 Members
 
         PluginTaskInfo m_info;
         public PluginTaskInfo[] GetTasks()
         {
             if (m_info == null)
             {
-                m_info = new PluginTaskInfo("SINEC-H1", "Alunorf SINEC-H1", null/*Alunorf_sinec_h1_plugin.Properties.Resources.H1Task*/);
+                m_info = new PluginTaskInfo("SINEC-H1", "Alunorf SINEC-H1", Alunorf_sinec_h1_plugin.Properties.Resources.H1Task.ToBitmap());
                 return new PluginTaskInfo[] { m_info };
             }
 

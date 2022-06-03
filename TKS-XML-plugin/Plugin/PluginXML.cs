@@ -5,7 +5,7 @@ using iba.Plugins;
 
 namespace iba.TKS_XML_Plugin
 {
-    class PluginXML : IDatCoPlugin2
+    class PluginXML : IDatCoPlugin3
     {
         #region IDatCoPlugin2 Members
 

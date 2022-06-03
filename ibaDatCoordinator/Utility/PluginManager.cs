@@ -93,7 +93,7 @@ namespace iba.Utility
                                     m_pluginInfos.Add(pti);
                                     m_plugins.Add(pti.Name, plugin);
 
-									if (!(plugin is IDatCoPlugin2))
+									if (!(plugin is IDatCoPlugin3))
 									{
 										pti.IsOutdated = true;
 										ibaLogger.DebugFormat("Plugin {0} v{1} from assembly {2} is outdated", pti.Name,

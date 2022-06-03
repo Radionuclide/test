@@ -6,7 +6,7 @@ using iba.Plugins;
 
 namespace Alunorf_roh_plugin
 {
-    class PluginCollection : IDatCoPlugin2
+    class PluginCollection : IDatCoPlugin3
     {
         #region IDatCoPlugin2 Members
 
