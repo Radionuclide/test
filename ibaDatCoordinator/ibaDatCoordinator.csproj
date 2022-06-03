@@ -21,8 +21,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>
     </StartupObject>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>ibaDatCoordinator.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -889,6 +888,7 @@
     <None Include="Resources\up.ico" />
     <None Include="Resources\down.ico" />
     <None Include="Resources\UploadTaskIcon.ico" />
+    <None Include="ibaDatCoordinator.ico" />
     <Content Include="Resources\img_file.png" />
     <None Include="Resources\img_lock.png" />
     <None Include="Resources\img_networkError.ico" />
