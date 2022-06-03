@@ -3,11 +3,11 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ibaDatCoordinator TKS Xml Plugin"
 
-!define PRODUCT_VERSION "2.4.3"
-!define PRODUCT_FILE_VERSION "2.4.3"
+!define PRODUCT_VERSION "3.0.0"
+!define PRODUCT_FILE_VERSION "3.0.0.0"
 
-!define DATCO_MIN 2040000
-!define DATCO_MIN_STR "2.4.0"
+!define DATCO_MIN 3000000
+!define DATCO_MIN_STR "3.0.0"
 
 !include "PluginInstaller.nsh"
 
