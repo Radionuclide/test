@@ -7,7 +7,7 @@ namespace iba.TKS_XML_Plugin
 {
     class PluginXML : IDatCoPlugin3
     {
-        #region IDatCoPlugin2 Members
+        #region IDatCoPlugin3 Members
 
         PluginTaskInfo m_info;
         public PluginTaskInfo[] GetTasks()

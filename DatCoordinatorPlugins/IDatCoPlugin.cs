@@ -27,10 +27,17 @@ namespace iba.Plugins
         IPluginTaskData CreateTask(string taskname, IJobData parentjob);
     }
 
-	/// <summary>
-	/// Interface used to indicate new plugin version
-	/// </summary>
-	public interface IDatCoPlugin3 : IDatCoPlugin
+    /// <summary>
+    /// Interface used to indicate new plugin version 
+    /// </summary>
+    public interface IDatCoPlugin2 : IDatCoPlugin
+    {
+    }
+
+    /// <summary>
+    /// Interface used to indicate new plugin version
+    /// </summary>
+    public interface IDatCoPlugin3 : IDatCoPlugin2
     {
 	}
 }
