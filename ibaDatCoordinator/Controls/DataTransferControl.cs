@@ -36,7 +36,7 @@ namespace iba.Controls
         }
 
 
-        public async void LoadData(object dataSource, IPropertyPaneManager manager)
+        public void LoadData(object dataSource, IPropertyPaneManager manager)
         {
             try
             {

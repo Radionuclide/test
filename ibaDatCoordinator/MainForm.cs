@@ -628,7 +628,7 @@ namespace iba
             }
         }
 
-        protected override async void OnLoad(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 

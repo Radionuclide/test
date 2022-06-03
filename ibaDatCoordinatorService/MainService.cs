@@ -31,7 +31,7 @@ namespace iba.Services
 
         private ServicePublisher m_servicePublisher;
 
-        protected override async void OnStart(string[] args)
+        protected override void OnStart(string[] args)
         {
             try
             {
