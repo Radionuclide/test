@@ -325,6 +325,11 @@
             version is not supported
             </exception>
         </member>
+        <member name="M:iba.HD.Common.IHdSessionContract.GetHdVersion">
+            <summary>
+            Requests the version of the connected ibaHD-Server
+            </summary>
+        </member>
         <member name="M:iba.HD.Common.IHdSessionContract.GetSupportedFeatures(System.Collections.Generic.List{System.String})">
             <summary>
             Sets version information for each service feature
@@ -507,7 +512,7 @@
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderDynEvents">
             <summary>
-              Looks up a localized string similar to Read dynamic event based store data.
+              Looks up a localized string similar to Read alarms and events store data.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureReaderEvent">
@@ -607,7 +612,7 @@
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterDynEvents">
             <summary>
-              Looks up a localized string similar to Write dynamic event based store data.
+              Looks up a localized string similar to Write alarms and events store data.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureWriterEvent">
@@ -759,6 +764,15 @@
             <param name="eventId">The ID of the searched event</param>
             <returns>The parent folder of the found event, null if not found</returns>
         </member>
+        <member name="M:iba.HD.Common.DynEventReaderStore.GetSignalRangeCount(System.Int32,System.Int32@)">
+            <summary>
+            In a dynamic event store, it is very hard to update and test if the start and count fall within the correct range
+            This would require to loop over all the signals so just return true and let the GetSignalRange loop over the original values
+            </summary>
+            <param name="start"></param>
+            <param name="count"></param>
+            <returns>true</returns>
+        </member>
         <member name="M:iba.HD.Common.HdReaderSignal.AddInfo(System.String,System.String)">
             <summary>
             Adds a value to list of values for given key
@@ -848,6 +862,12 @@
         <member name="F:iba.HD.Common.TimeRequest.GetLastValue">
             <summary>
             When true the server will return the last valid value in case no data is found for the requested time range
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.TimeRequest.ApproximateNumberOfEdges">
+            <summary>
+            Response will consist of minimal number of slices required for displaying that number of edges
+            <b>This will increase respond time and decrease disk usage</b>
             </summary>
         </member>
         <member name="M:iba.HD.Common.EventStoreSubset.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{iba.HD.Common.InfoFieldFilter})">

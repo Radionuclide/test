@@ -875,6 +875,11 @@
             Connected server port
             </summary>
         </member>
+        <member name="P:iba.HD.Client.Interfaces.IHdReader.Version">
+            <summary>
+            Version of the connected ibaHD-Server
+            </summary>
+        </member>
         <member name="P:iba.HD.Client.Interfaces.IHdReader.ConnectionError">
             <summary>
             Connection failure information
