@@ -140,6 +140,7 @@ namespace iba.Data
             cd.NumBandwidth = NumBandwidth;
             cd.ShouldCreateZipArchive = ShouldCreateZipArchive;
             cd.ServerCertificateThumbprint = ServerCertificateThumbprint;
+            cd.ClientId = ClientId;
             return cd;
         }
 
@@ -163,7 +164,8 @@ namespace iba.Data
                 other.CbBandwidth == CbBandwidth &&
                 other.NumBandwidth == NumBandwidth &&
                 other.ShouldCreateZipArchive == ShouldCreateZipArchive &&
-                other.ServerCertificateThumbprint == ServerCertificateThumbprint;
+                other.ServerCertificateThumbprint == ServerCertificateThumbprint &&
+                other.ClientId == ClientId;
         }
         public static string certificateUserName = "Transfer Data";
 
