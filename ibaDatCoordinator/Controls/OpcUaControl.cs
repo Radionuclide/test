@@ -108,6 +108,7 @@ namespace iba.Controls
         public string UsagePart { get; } = "EX"; // IO and DS are used in PDA
         public IWin32Window Instance => this;
         public ContextMenuStrip PopupMenu { get; } = new ContextMenuStrip(); // or reuse the context menu of an other control
+        public List<int> ServerUsageIds => new List<int>();
 
         public void OnSaveDataSource()
         {

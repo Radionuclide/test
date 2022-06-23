@@ -305,12 +305,12 @@ namespace iba.Processing
             UaAppConfiguration.Validate(ApplicationType.Server).Wait();
 
             // check own server certificate
-            var serverCert = TaskManager.Manager.CertificateManager.GetCertificate(_opcUaData.serverSertificateThumbprint);
+            var serverCert = TaskManager.Manager.CertificateManager.GetCertificate(_opcUaData.serverSertificateThumbprint, CertificateRequirement.None, out var _);
             if (serverCert == null)  
                 throw new InvalidOperationException(Resources.opcUaErrorNoCert); 
             if (!serverCert.Trusted)
                 throw new InvalidOperationException(Resources.opcUaErrorCertNotTrusted);
-            UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = serverCert.Certificate;
+            UaAppConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate = serverCert.GetX509Certificate2();
         }
 
         private void ApplyEndpoints()

@@ -147,7 +147,7 @@ namespace iba.Processing.IbaOpcUa
             try
             {
                 ICertificateManager certManager = TaskManager.Manager.CertificateManager;
-                var cert = certManager.GetCertificate(e.Certificate.Thumbprint);
+                var cert = certManager.GetCertificate(e.Certificate.Thumbprint, CertificateRequirement.None, out var _);
 
                 bool bTrusted = false;
                 if (cert == null)
@@ -159,7 +159,7 @@ namespace iba.Processing.IbaOpcUa
                 {
                     bTrusted = cert.Trusted;
                     if (bTrusted)
-                        bTrusted = VerifyCertificate(cert.Certificate);
+                        bTrusted = VerifyCertificate(cert.GetX509Certificate2());
                 }
 
                 e.Accept = bTrusted;
@@ -239,7 +239,7 @@ namespace iba.Processing.IbaOpcUa
                         // certToken.Certificate is always null, so let's compare certificates by raw data
                         foreach (var cert in TaskManager.Manager.CertificateManager.GetCertificates())
                         {
-                            if (cert.Certificate.RawData.SequenceEqual(certToken.CertificateData))
+                            if (cert.GetX509Certificate2().RawData.SequenceEqual(certToken.CertificateData))
                             {
                                 if (cert.Permissions.HasFlag(CertificatePermissions.Authentication) && cert.Trusted)
                                     return; // accept

@@ -1850,9 +1850,7 @@ namespace iba.Processing
                 case "AddCertificate":
                     return m_certManagerJsonAdapter.AddCertificate(args as string);
                 case "ExportCertificate":
-                    return m_certManagerJsonAdapter.ExportCertificate2(args as string);
-                case "ExportCertificateWithPrivateKey":
-                    return m_certManagerJsonAdapter.ExportCertificateWithPrivateKey(args as string);
+                    return m_certManagerJsonAdapter.ExportCertificate(args as string);
                 case "RemoveCertificate":
                     return m_certManagerJsonAdapter.RemoveCertificate(args as string);
                 case "DownloadToClientTempFile":
@@ -1868,16 +1866,19 @@ namespace iba.Processing
                 case "GetCertificates":
                     return m_certManagerJsonAdapter.GetCertificates();
                 case "GetCertificateWithoutPK":
-                    var cCertificate = CertificateManager.GetCertificate(args as string);
+                    var cCertificate = CertificateManager.GetCertificate(args as string, CertificateRequirement.None, out _);
 
                     if (cCertificate != null)
                     {
-                        byte[] certBytes = cCertificate.Certificate.Export(X509ContentType.Cert);
+                        byte[] certBytes = cCertificate.GetX509Certificate2().Export(X509ContentType.Cert);
                         Tuple<byte[], bool> tuple = new(certBytes, cCertificate.Trusted);
                         return tuple;
                     }
 
                     return null;
+                case "LastChangeTime":
+                    return CertificateManager.LastChangeTime;
+
             }
             return "Invalid command parameter";
         }

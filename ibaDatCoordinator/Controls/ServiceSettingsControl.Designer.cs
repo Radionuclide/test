@@ -97,7 +97,7 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.certificatesControl, "certificatesControl");
             this.certificatesControl.Name = "certificatesControl";
-            this.certificatesControl.SelectedCertificate = null;
+            this.certificatesControl.Selected = null;
             // 
             // gb_GlobalCleanup
             // 

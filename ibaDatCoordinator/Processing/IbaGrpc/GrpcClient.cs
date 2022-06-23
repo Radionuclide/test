@@ -42,14 +42,14 @@ namespace iba.Processing.IbaGrpc
 
             var result = (Tuple<byte[], bool>)certBytes;
 
-            CCertificate serverCert = new(cert: new X509Certificate2(result.Item1), bTrusted: result.Item2);
+            Certificate serverCert = new Certificate(cert: new X509Certificate2(result.Item1), bHasPrivateKey: false,  bTrusted: result.Item2, permissions: CertificatePermissions.SecureConnection);
 
             if (serverCert == null)
                 return ChannelCredentials.Insecure;
             if (!serverCert.Trusted)
                 throw new InvalidOperationException(Resources.DataTransferTaskErrorCertNotTrusted);
 
-            var credentials = new SslCredentials(CertificateExtractor.GetCertificate(serverCert.Certificate));
+            var credentials = new SslCredentials(CertificateExtractor.GetCertificate(serverCert.GetX509Certificate2()));
 
             return credentials;
         }

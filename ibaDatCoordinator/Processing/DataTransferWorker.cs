@@ -4,6 +4,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Grpc.Core;
+using iba.CertificateStore;
 using iba.Data;
 using iba.Logging;
 using iba.Processing.IbaGrpc;
@@ -106,16 +107,16 @@ namespace iba.Processing
 
         private ServerCredentials CreateChannelCredentials()
         {
-            var serverCert = TaskManager.Manager.CertificateManager.GetCertificate(DataTransferData.ServerCertificateThumbprint);
+            var serverCert = TaskManager.Manager.CertificateManager.GetCertificate(DataTransferData.ServerCertificateThumbprint, CertificateRequirement.None, out var _);
 
             if (serverCert == null)
                 return ServerCredentials.Insecure;
             if (!serverCert.Trusted)
                 throw new InvalidOperationException(Resources.DataTransferServerErrorCertNotTrusted);
 
-            var certificate = CertificateExtractor.GetCertificate(serverCert.Certificate);
+            var certificate = CertificateExtractor.GetCertificate(serverCert.GetX509Certificate2());
 
-            var exportableCert = new X509Certificate2(serverCert.Certificate.Export(X509ContentType.Pkcs12, ""), "",
+            var exportableCert = new X509Certificate2(serverCert.GetX509Certificate2().Export(X509ContentType.Pkcs12, ""), "",
                 X509KeyStorageFlags.Exportable | X509KeyStorageFlags.EphemeralKeySet);
 
             var privateKey = CertificateExtractor.GetPrivateKey(exportableCert);

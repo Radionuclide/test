@@ -624,6 +624,7 @@ namespace iba.Controls
         public string UsagePart { get; } = "EX"; // IO and DS are used in PDA
         public IWin32Window Instance => this;
         public ContextMenuStrip PopupMenu { get; } = new ContextMenuStrip(); // or reuse the context menu of an other control
+        public List<int> ServerUsageIds => new List<int>();
 
         #endregion ICertificatesControlHost implementation
 
@@ -714,11 +715,6 @@ namespace iba.Controls
             return TaskManager.Manager.HandleCertificate("ExportCertificate", exportCertificateArgs) as CertificateExportState?;
         }
 
-        public CertificateExportState? ExportCertificateWithPrivateKey(string exportCertificateArgs)
-        {
-            return TaskManager.Manager.HandleCertificate("ExportCertificateWithPrivateKey", exportCertificateArgs) as CertificateExportState?;
-        }
-
         public void SetPeriodicUpdate()
         {
             // if available, set a regularly returning diagnostic signal
@@ -762,6 +758,8 @@ namespace iba.Controls
         {
             return (TaskManager.Manager.HandleCertificate("EditCertificate", cEditCertificateArgs) as bool?) ?? false;
         }
+
+        public DateTime LastChangeTime => (DateTime)TaskManager.Manager.HandleCertificate("LastChangeTime");
 
         /// <summary>
         /// Get all the certificates from the certificate manager on the certificate manager json endpoint

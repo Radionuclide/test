@@ -15,6 +15,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
 using static iba.Data.KafkaWriterTaskData;
 using IbaAnalyzer;
+using iba.CertificateStore;
 
 namespace iba.Processing
 {
@@ -462,15 +463,15 @@ namespace iba.Processing
                     X509Certificate2 clientCert = null;
                     if (!String.IsNullOrEmpty(data.schemaSSLCAThumbprint) && data.schemaEnableSSLVerification)
                     {
-                        var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLCAThumbprint);
+                        var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLCAThumbprint, CertificateRequirement.None, out var _);
                         if (c != null)
-                            CACert = c.Certificate;
+                            CACert = c.GetX509Certificate2();
                     }
                     if (!String.IsNullOrEmpty(data.schemaSSLClientThumbprint))
                     {
-                        var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLClientThumbprint);
+                        var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLClientThumbprint, CertificateRequirement.None, out var _);
                         if (c != null)
-                            clientCert = c.Certificate;
+                            clientCert = c.GetX509Certificate2();
                     }
                     schemRegClient = new CachedSchemaRegistryClient(schemaRegConfig, CACert, clientCert);
                 }
@@ -604,17 +605,17 @@ namespace iba.Processing
         {
             if (data.SSLClientThumbprint != null && data.SSLClientThumbprint != "")
             {
-                var cert = TaskManager.Manager.CertificateManager.GetCertificate(data.SSLClientThumbprint);
+                var cert = TaskManager.Manager.CertificateManager.GetCertificate(data.SSLClientThumbprint, CertificateStore.CertificateRequirement.None, out var _);
                 if (cert is null)
                     throw new Exception("No client certificate found with thumbprint " + data.SSLClientThumbprint);
-                builder.SetSSLClientCert(cert.Certificate);
+                builder.SetSSLClientCert(cert.GetX509Certificate2());
             }
             if (data.enableSSLVerification && data.SSLCAThumbprint != null && data.SSLCAThumbprint != "")
             {
-                var cert = TaskManager.Manager.CertificateManager.GetCertificate(data.SSLCAThumbprint);
+                var cert = TaskManager.Manager.CertificateManager.GetCertificate(data.SSLCAThumbprint, CertificateStore.CertificateRequirement.None, out var _);
                 if (cert is null)
                     throw new Exception("No client certificate found with thumbprint " + data.SSLCAThumbprint);
-                builder.SetSSLCaCert(cert.Certificate);
+                builder.SetSSLCaCert(cert.GetX509Certificate2());
             }
         }
 

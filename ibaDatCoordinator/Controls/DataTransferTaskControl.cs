@@ -231,6 +231,9 @@ namespace iba.Controls
         public string UsagePart => "EX";
         public IWin32Window Instance => this;
         public ContextMenuStrip PopupMenu => new ContextMenuStrip();
+
+        public List<int> ServerUsageIds => new List<int>();
+
         #endregion
     }
 }

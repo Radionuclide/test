@@ -1005,16 +1005,16 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ibaCertificateStore.Core">
-      <Version>8.0.15</Version>
+      <Version>8.1.4</Version>
     </PackageReference>
     <PackageReference Include="ibaCertificateStore.Forms">
-      <Version>8.0.16</Version>
+      <Version>8.1.4</Version>
     </PackageReference>
     <PackageReference Include="ibaCertificateStore.Manager">
-      <Version>8.0.15</Version>
+      <Version>8.1.4</Version>
     </PackageReference>
     <PackageReference Include="ibaCertificateStore.Proxy">
-      <Version>8.0.15</Version>
+      <Version>8.1.4</Version>
     </PackageReference>
     <PackageReference Include="ibaIcons">
       <Version>5.2.0</Version>
