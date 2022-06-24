@@ -511,6 +511,8 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\ibaCertificateStore.Proxy.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaPdaUtilities.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaIcons.dll"
+  File "..\ibaDatCoordinator\bin\Release\BouncyCastle.Crypto.dll"
+  File "..\ibaDatCoordinator\bin\Release\System.Security.Cryptography.Cng.dll"
 
   File "..\DatCoordinatorPlugins\bin\Release\DatCoordinatorPlugins.dll"
   File "..\InstallFiles\${PROTECT_DIR}ibaDatCoordinator.exe"
@@ -993,6 +995,8 @@ Function un.UninstallTasks
   Delete "$INSTDIR\ibaCertificateStore.Proxy.dll"
   Delete "$INSTDIR\ibaPdaUtilities.dll"
   Delete "$INSTDIR\ibaIcons.dll"
+  Delete "$INSTDIR\BouncyCastle.Crypto.dll"
+  Delete "$INSTDIR\System.Security.Cryptography.Cng.dll"
 
   Delete "$INSTDIR\ibaSnmpLib.dll"
   Delete "$INSTDIR\ibaUtilities.Forms.dll"
