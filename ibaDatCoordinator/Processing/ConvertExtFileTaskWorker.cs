@@ -20,7 +20,7 @@ namespace iba.Processing
             m_ibaAnalyzer = worker.m_ibaAnalyzer;
         }
 
-        public void DoWork(string filename, ConfigurationData.FileFormatEnum fileFormat, string pdoFile)
+        public void DoWork(string filename, ConfigurationData.FileFormatEnum fileFormat, string pdoForTextFile)
         {
             if (!File.Exists(m_task.AnalysisFile))
             {
@@ -45,8 +45,8 @@ namespace iba.Processing
 
                 m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, m_task); //todo rename massage
 
-                string extension = ".dat";
-                string outFile = GetOutputFile(filename, extension);
+                const string extension = ".dat";
+                var outFile = GetOutputFile(filename, extension);
 
                 if (!m_task.OverwriteFiles)
                     outFile = DatCoordinatorHostImpl.Host.FindSuitableFileName(outFile);
@@ -61,17 +61,14 @@ namespace iba.Processing
                     m_confWorker.CleanupDirs(outFile, m_task, extension);
                 }
 
-                var analysisFile = fileFormat == ConfigurationData.FileFormatEnum.CSV ? m_task.AnalysisFile : pdoFile;
-
-                if (fileFormat == ConfigurationData.FileFormatEnum.CSV)
+                if (fileFormat == ConfigurationData.FileFormatEnum.TEXTFILE)
                 {
-                    mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(pdoFile); });
+                    mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(pdoForTextFile); });
 
                     mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
                 }
 
-
-                mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(analysisFile); });
+                mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
                 
                 mon.Execute(() => { m_ibaAnalyzer.Extract(1, outFile); });
 

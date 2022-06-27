@@ -1260,7 +1260,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Analysis to read datafile (CSV only).
+        ///   Looks up a localized string similar to Analysis to read datafile.
         /// </summary>
         internal static string ExtractAnalysisFile {
             get {
@@ -1355,6 +1355,15 @@ namespace iba.Properties {
         internal static string FileChanged_UploadStandalone {
             get {
                 return ResourceManager.GetString("FileChanged_UploadStandalone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File extension.
+        /// </summary>
+        internal static string FileExtension {
+            get {
+                return ResourceManager.GetString("FileExtension", resourceCulture);
             }
         }
         

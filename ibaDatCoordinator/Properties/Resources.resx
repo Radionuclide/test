@@ -1852,7 +1852,7 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>..\Resources\refresh_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ExtractAnalysisFile" xml:space="preserve">
-    <value>Analysis to read datafile (CSV only)</value>
+    <value>Analysis to read datafile</value>
   </data>
   <data name="ActionOnSuccess" xml:space="preserve">
     <value>Action on success</value>
@@ -1945,5 +1945,8 @@ $comment2: Signal comment 2</value>
   </data>
   <data name="SubdirectoryNotAllowed" xml:space="preserve">
     <value>Targed folder for processed file cant be subdirectory of source file folder!</value>
+  </data>
+  <data name="FileExtension" xml:space="preserve">
+    <value>File extension</value>
   </data>
 </root>

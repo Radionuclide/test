@@ -165,7 +165,7 @@ namespace iba.Processing
         void RenewFswt()
         {
             var extension = m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile
-                ? $"*.{GetFileFormatExtension(m_cd.FileFormat)}"
+                ? $"*.{m_cd.GetFileFormatExtension(m_cd.FileFormat)}"
                 : "*.dat";
 
             lock (m_fswtLock)
@@ -179,17 +179,6 @@ namespace iba.Processing
                 fswt.Error += new ErrorEventHandler(OnFileSystemError);
                 fswt.EnableRaisingEvents = true;
             }
-        }
-        internal static string GetFileFormatExtension(ConfigurationData.FileFormatEnum fileType)
-        {
-            return fileType switch
-            {
-                ConfigurationData.FileFormatEnum.CSV => "txt",
-                ConfigurationData.FileFormatEnum.COMTRADE => "dat",
-                ConfigurationData.FileFormatEnum.DAS => "das",
-                ConfigurationData.FileFormatEnum.PARQUET => "parquet",
-                _ => "dat"
-            };
         }
 
         private void AddNetworkReferences()
@@ -633,10 +622,15 @@ namespace iba.Processing
                     initialScanThread.Priority = ThreadPriority.BelowNormal;
                     initialScanThread.Start();
                 }
-                else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled || m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
+                else if (m_cd.JobType == ConfigurationData.JobTypeEnum.Scheduled ||
+                         m_cd.JobType == ConfigurationData.JobTypeEnum.Event)
                 {
                     //try to delete all previous hdq files
-                    String searchPattern = m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered || m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile ? "*.dat" : "*.hdq";
+                    String searchPattern =
+                        m_cd.JobType == ConfigurationData.JobTypeEnum.DatTriggered ||
+                        m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile
+                            ? "*.dat"
+                            : "*.hdq";
 
                     try
                     {
@@ -698,7 +692,8 @@ namespace iba.Processing
                         m_hdEventMonitor.UpdateConfiguration(m_cd.EventData, m_cd.Name);
                         TaskManager.Manager.OneTimeJobsSetHistoricalTimespanChanged(m_cd);
                         m_hdEventMonitor.Start();
-                        m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null, intervalProcessNewEvents, Timeout.Infinite);
+                        m_processNewEventsTimer = new System.Threading.Timer(OnProcessNewEventsTick, null,
+                            intervalProcessNewEvents, Timeout.Infinite);
                     }
                     else
                     {
@@ -739,6 +734,7 @@ namespace iba.Processing
                                     break;
                                 }
                             }
+
                             if (m_needIbaAnalyzer) StartIbaAnalyzer();
                             //might have waited, see if we can stop
                             if (m_stop)
@@ -746,6 +742,7 @@ namespace iba.Processing
                                 if (m_ibaAnalyzer != null) YieldIbaAnalyzer();
                                 break;
                             }
+
                             try
                             {
                                 ProcessDatfile(file);
@@ -753,8 +750,10 @@ namespace iba.Processing
                             catch (Exception ex)
                             {
                                 Stop();
-                                Log(iba.Logging.Level.Exception, iba.Properties.Resources.UnexpectedErrorDatFile + ex.ToString(), file);
+                                Log(iba.Logging.Level.Exception,
+                                    iba.Properties.Resources.UnexpectedErrorDatFile + ex.ToString(), file);
                             }
+
                             if (m_ibaAnalyzer != null) YieldIbaAnalyzer();
                             if (m_delayedHDQStop)
                             {
@@ -769,6 +768,7 @@ namespace iba.Processing
                                 bool res = m_toProcessFiles.Remove(file);
                                 fileCurrentlyBeingProcessed = null;
                             }
+
                             bool neededIbaAnalyzerBeforeUpdate = m_needIbaAnalyzer;
                             UpdateConfiguration();
                             if (neededIbaAnalyzerBeforeUpdate && !m_needIbaAnalyzer)
@@ -776,15 +776,18 @@ namespace iba.Processing
                                 IbaAnalyzerCollection.Collection.TryClearIbaAnalyzer(m_cd);
                             }
                         }
+
                         //clean up any update task workers //closes database connections and ibaFiles instances
                         foreach (UpdateDataTaskWorker udt in m_udtWorkers.Values)
                         {
                             udt.Dispose();
                         }
+
                         m_udtWorkers.Clear();
                         m_waitEvent.WaitOne();
                         UpdateConfiguration();
                     }
+
                     if (m_needIbaAnalyzer)
                         IbaAnalyzerCollection.Collection.TryClearIbaAnalyzer(m_cd);
                 }
@@ -797,23 +800,27 @@ namespace iba.Processing
                         m_notifyTimer.Dispose();
                         m_notifier.Send(); //send one last time
                     }
+
                     if (rescanTimer != null)
                     {
                         rescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         rescanTimer.Dispose();
                         rescanTimer = null;
                     }
+
                     if (reprocessErrorsTimer != null)
                     {
                         reprocessErrorsTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         reprocessErrorsTimer.Dispose();
                         reprocessErrorsTimer = null;
                     }
+
                     if (retryAccessTimer != null)
                     {
                         retryAccessTimer.Dispose();
                         retryAccessTimer = null;
                     }
+
                     System.Threading.Timer lTimer = m_processNewEventsTimer;
                     m_processNewEventsTimer = null;
                     if (lTimer != null)
@@ -821,6 +828,7 @@ namespace iba.Processing
                         lTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         lTimer.Dispose();
                     }
+
                     if (m_hdEventMonitor != null)
                     {
                         var stopTimes = m_hdEventMonitor.GetLastReceivedHistoricalTimeStamps();
@@ -829,6 +837,7 @@ namespace iba.Processing
                         m_hdEventMonitor.Dispose();
                         m_hdEventMonitor = null;
                     }
+
                     if (NextEventTimer != null)
                     {
                         NextEventTimer.Dispose();
@@ -1217,7 +1226,7 @@ namespace iba.Processing
         {
             return m_cd.FileFormat switch
             {
-                ConfigurationData.FileFormatEnum.CSV => LicenseId.ConvertCSV,
+                ConfigurationData.FileFormatEnum.TEXTFILE => LicenseId.ConvertCSV,
                 ConfigurationData.FileFormatEnum.COMTRADE => LicenseId.ConvertCOMTRADE,
                 ConfigurationData.FileFormatEnum.DAS => LicenseId.ConvertDAS,
                 ConfigurationData.FileFormatEnum.PARQUET => LicenseId.ConvertPARQUET,
@@ -1533,7 +1542,7 @@ namespace iba.Processing
 
             String searchPattern = m_cd.JobType switch
             {
-                ConfigurationData.JobTypeEnum.ExtFile => $"*.{GetFileFormatExtension(m_cd.FileFormat)}",
+                ConfigurationData.JobTypeEnum.ExtFile => $"*.{m_cd.GetFileFormatExtension(m_cd.FileFormat)}",
                 ConfigurationData.JobTypeEnum.DatTriggered => "*.dat",
                 _ => "*.hdq"
             };
@@ -3466,7 +3475,7 @@ namespace iba.Processing
             string maindir = dir;
 
             var extension = m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile
-                ? $"*.{GetFileFormatExtension(m_cd.FileFormat)}"
+                ? $"*.{m_cd.GetFileFormatExtension(m_cd.FileFormat)}"
                 : "*.dat";
 
             if (dir == m_cd.DatDirectoryUNC && task.Extension == extension)

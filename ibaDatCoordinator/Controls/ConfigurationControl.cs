@@ -238,20 +238,6 @@ namespace iba.Controls
         public System.Windows.Forms.CheckBox m_autoStartCheckBox;
         public System.Windows.Forms.CheckBox m_enableCheckBox;
 
-        private ConfigurationData.JobTypeEnum m_jobType;
-
-        public ComboBox cbFileFormat;
-        public CollapsibleGroupBox gbFileFormat;
-        public CollapsibleGroupBox gbActionOnSucces;
-        public CollapsibleGroupBox gbDirectoryForProcessedFiles;
-        public RadioButton m_rbDelete;
-        public RadioButton m_rbMove;
-        public TextBox m_tbPdoFilePath;
-        public TextBox m_tbTargetDirectory;
-        public TextBox m_tbUsername;
-        public TextBox m_tbPassword;
-
-
         private PanelDatFilesJob m_panelDatFilesJob;
         private PanelScheduledJob m_panelScheduledJob;
         private PanelEventJob m_panelEventJob;
@@ -282,15 +268,16 @@ namespace iba.Controls
 
             if (m_jobType == ConfigurationData.JobTypeEnum.ExtFile)
             {
+                cbFileFormat.DataSource = Enum.GetNames(typeof(ConfigurationData.FileFormatEnum));
                 cbFileFormat.SelectedItem = m_data.FileFormat.ToString();
-                m_rbDelete.Checked = m_data.DeleteExtFile;
-                m_rbMove.Checked = m_data.MoveExtFile;
+                rbDelete.Checked = m_data.DeleteExtFile;
+                rbMove.Checked = m_data.MoveExtFile;
                 m_tbPdoFilePath.Text = m_data.PdoFile;
                 m_tbPassword.Text = m_data.ProcessedFileDirectoryPassword;
                 m_tbUsername.Text = m_data.ProcessedFileUesername;
                 m_tbTargetDirectory.Text = m_data.ProcessedFileTargedDirectory;
+                tbExtension.Text = m_data.GetFileFormatExtension(m_data.FileFormat);
             }
-
 
             if (m_data.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.NETSEND)
             {
@@ -381,12 +368,16 @@ namespace iba.Controls
                 {
                     m_data.FileFormat = (ConfigurationData.FileFormatEnum)cbFileFormat.SelectedIndex;
                 }
-                m_data.DeleteExtFile = m_rbDelete.Checked;
-                m_data.MoveExtFile = m_rbMove.Checked;
+                m_data.DeleteExtFile = rbDelete.Checked;
+                m_data.MoveExtFile = rbMove.Checked;
                 m_data.PdoFile = m_tbPdoFilePath.Text;
                 m_data.ProcessedFileDirectoryPassword = m_tbPassword.Text;
                 m_data.ProcessedFileUesername = m_tbUsername.Text;
                 m_data.ProcessedFileTargedDirectory = m_tbTargetDirectory.Text;
+                if (m_data.FileFormat == ConfigurationData.FileFormatEnum.TEXTFILE)
+                {
+                    m_data.TextFileExtension = tbExtension.Text;
+                }
             }
 
             //Debug.Assert(m_data.Clone_AlsoCopyGuids().IsSame(m_data));
@@ -781,7 +772,20 @@ namespace iba.Controls
                 m_newTaskToolstrip.Items.Add(bt);
             }
         }
+        private ConfigurationData.JobTypeEnum m_jobType;
 
+        public ComboBox cbFileFormat;
+        public CollapsibleGroupBox gbFileFormat;
+        public CollapsibleGroupBox gbActionOnSucces;
+        public CollapsibleGroupBox gbDirectoryForProcessedFiles;
+        public RadioButton rbDelete;
+        public RadioButton rbMove;
+        public TextBox m_tbPdoFilePath;
+        public TextBox m_tbTargetDirectory;
+        public TextBox m_tbUsername;
+        public TextBox m_tbPassword;
+        public TextBox tbExtension;
+        
         private void SetupControlsForExtFilesJob()
         {
             gbNewTask.Visible = false;
@@ -789,8 +793,8 @@ namespace iba.Controls
             gbFileFormat = new CollapsibleGroupBox();
             gbActionOnSucces = new CollapsibleGroupBox();
             gbDirectoryForProcessedFiles = new CollapsibleGroupBox();
-            m_rbDelete = new RadioButton();
-            m_rbMove = new RadioButton();
+            rbDelete = new RadioButton();
+            rbMove = new RadioButton();
 
             m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             m_panelDatFilesJob.Height -= 50;
@@ -802,16 +806,38 @@ namespace iba.Controls
             gbFileFormat.Location = new Point(m_panelDatFilesJob.Location.X,
                 m_panelDatFilesJob.Location.Y + m_panelDatFilesJob.Height);
 
+
+            cbFileFormat.Location = new Point(10, 20);
+            cbFileFormat.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbFileFormat.Width = 160;
+            cbFileFormat.DataSource = Enum.GetNames(typeof(ConfigurationData.FileFormatEnum));
+
+            var lblFileExtension = new Label();
+            lblFileExtension.Text = $"{Resources.FileExtension}:";
+            lblFileExtension.Location = new Point(cbFileFormat.Width + 20, 22);
+            lblFileExtension.Anchor = AnchorStyles.Left;
+
+            tbExtension = new TextBox();
+            tbExtension.Location = new Point(lblFileExtension.Location.X + lblFileExtension.Width, 20);
+            tbExtension.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            tbExtension.Width = 50;
+            
+            tbExtension.KeyUp += (sender, _) =>
+            {
+                var textBox = (TextBox)sender;
+                m_data.TextFileExtension = textBox.Text;
+            };
+
             var lblAnalysisFile = new Label();
             lblAnalysisFile.Text = $"{Resources.ExtractAnalysisFile}:";
             lblAnalysisFile.Location = new Point(10, 52);
             lblAnalysisFile.Anchor = AnchorStyles.Left;
-            lblAnalysisFile.Size = new Size(180,15);
+            lblAnalysisFile.Size = new Size(130,15);
 
             m_tbPdoFilePath = new TextBox();
             m_tbPdoFilePath.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            m_tbPdoFilePath.Location = new Point(191, 50);
-            m_tbPdoFilePath.Width = 450;
+            m_tbPdoFilePath.Location = new Point(cbFileFormat.Width + 10, 50);
+            m_tbPdoFilePath.Width = 420;
 
             var btnBrowseFile = new Button();
             btnBrowseFile.Location = new Point(m_tbPdoFilePath.Location.X + m_tbPdoFilePath.Width + 5, 48);
@@ -827,18 +853,18 @@ namespace iba.Controls
                 }
             };
 
-            var btnExecutIbaAnalyzer = new Button();
-            btnExecutIbaAnalyzer.Location = new Point(btnBrowseFile.Location.X + btnBrowseFile.Width + 5, 48);
-            btnExecutIbaAnalyzer.Size = new Size(24, 24);
-            btnExecutIbaAnalyzer.Anchor = AnchorStyles.Right;
-            btnExecutIbaAnalyzer.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
-            btnExecutIbaAnalyzer.Click += (sender, args) =>
+            var btnExecuteIbaAnalyzer = new Button();
+            btnExecuteIbaAnalyzer.Location = new Point(btnBrowseFile.Location.X + btnBrowseFile.Width + 5, 48);
+            btnExecuteIbaAnalyzer.Size = new Size(24, 24);
+            btnExecuteIbaAnalyzer.Anchor = AnchorStyles.Right;
+            btnExecuteIbaAnalyzer.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
+            btnExecuteIbaAnalyzer.Click += (sender, args) =>
             {
                 DatCoordinatorHostImpl.Host.OpenPDO(m_tbPdoFilePath.Text);
             };
 
             var btnUploadPdo = new Button();
-            btnUploadPdo.Location = new Point(btnExecutIbaAnalyzer.Location.X + btnExecutIbaAnalyzer.Width + 5, 48);
+            btnUploadPdo.Location = new Point(btnExecuteIbaAnalyzer.Location.X + btnExecuteIbaAnalyzer.Width + 5, 48);
             btnUploadPdo.Size = new Size(24, 24);
             btnUploadPdo.Anchor = AnchorStyles.Right;
             btnUploadPdo.Image = Icons.Gui.All.Images.FilePdoUpload(16);
@@ -847,19 +873,34 @@ namespace iba.Controls
                 DatCoordinatorHostImpl.Host.UploadPdoFileWithReturnValue(true, this, m_tbPdoFilePath.Text, null, m_data);
             };
 
+            cbFileFormat.SelectedIndexChanged += (sender, _) =>
+            {
+                var combobox = (ComboBox)sender;
+
+                if (combobox.SelectedItem.Equals("TEXTFILE"))
+                    lblAnalysisFile.Enabled = tbExtension.Enabled = m_tbPdoFilePath.Enabled =
+                        btnBrowseFile.Enabled = btnExecuteIbaAnalyzer.Enabled = btnUploadPdo.Enabled = true;
+                else
+                    lblAnalysisFile.Enabled = tbExtension.Enabled = m_tbPdoFilePath.Enabled =
+                        btnBrowseFile.Enabled = btnExecuteIbaAnalyzer.Enabled = btnUploadPdo.Enabled = false;
+
+                tbExtension.Text = m_data.GetFileFormatExtension((ConfigurationData.FileFormatEnum)combobox.SelectedIndex);
+            };
 
             this.Controls.Add(gbFileFormat);
 
             gbFileFormat.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             gbFileFormat.Width = m_panelDatFilesJob.Width;
 
-            cbFileFormat.Location = new Point(10, 20);
-            cbFileFormat.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbFileFormat.Width = 160;
-
-            gbFileFormat.Controls.AddRange(new Control[] { cbFileFormat, lblAnalysisFile, m_tbPdoFilePath, btnBrowseFile, btnExecutIbaAnalyzer, btnUploadPdo });
-
-            cbFileFormat.DataSource = Enum.GetNames(typeof(ConfigurationData.FileFormatEnum));
+            gbFileFormat.Controls.AddRange(new Control[] { 
+                cbFileFormat,
+                lblFileExtension,
+                tbExtension,
+                lblAnalysisFile,
+                m_tbPdoFilePath,
+                btnBrowseFile, 
+                btnExecuteIbaAnalyzer,
+                btnUploadPdo });
 
             gbFileFormat.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             //gbNotifications
@@ -871,19 +912,19 @@ namespace iba.Controls
             gbActionOnSucces.Location = new Point(gbNotifications.Location.X,
                 gbNotifications.Location.Y + gbNotifications.Height);
 
-            m_rbDelete = new RadioButton
+            rbDelete = new RadioButton
             {
                 Text = Resources.Delete,
                 Location = new Point(20, 15)
             };
-            m_rbMove = new RadioButton
+            rbMove = new RadioButton
             {
                 Text = Resources.Move,
                 Location = new Point(250, 15)
             };
 
-            gbActionOnSucces.Controls.Add(m_rbMove);
-            gbActionOnSucces.Controls.Add(m_rbDelete);
+            gbActionOnSucces.Controls.Add(rbMove);
+            gbActionOnSucces.Controls.Add(rbDelete);
 
             this.Controls.Add(gbActionOnSucces);
 
@@ -949,6 +990,5 @@ namespace iba.Controls
             });
             gbDirectoryForProcessedFiles.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
         }
-
     }
 }

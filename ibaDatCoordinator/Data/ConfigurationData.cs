@@ -29,9 +29,23 @@ namespace iba.Data
             get { return m_jobType; }
             set { m_jobType = value; }
         }
-        public enum FileFormatEnum { CSV, DAS, COMTRADE, PARQUET }
+        public enum FileFormatEnum { TEXTFILE, DAS, COMTRADE, PARQUET }
 
         public FileFormatEnum FileFormat { get; set; }
+        public string TextFileExtension = "txt";
+
+        public string GetFileFormatExtension(ConfigurationData.FileFormatEnum fileFormat)
+        {
+
+            return fileFormat switch
+            {
+                ConfigurationData.FileFormatEnum.TEXTFILE => TextFileExtension,
+                ConfigurationData.FileFormatEnum.COMTRADE => "dat",
+                ConfigurationData.FileFormatEnum.DAS => "das",
+                ConfigurationData.FileFormatEnum.PARQUET => "parquet",
+                _ => "dat"
+            };
+        }
 
         private string m_name;
         public string Name
@@ -429,6 +443,7 @@ namespace iba.Data
             cd.ProcessedFileDirectoryPassword = m_ProcessedFileDirectoryPassword;
             cd.ProcessedFileTargedDirectory = ProcessedFileTargedDirectory;
             cd.ProcessedFileUesername = ProcessedFileUesername;
+            cd.TextFileExtension = TextFileExtension;
             return cd;
         }
 
@@ -474,7 +489,8 @@ namespace iba.Data
                 other.PdoFile == PdoFile &&
                 other.ProcessedFileDirectoryPassword == ProcessedFileDirectoryPassword &&
                 other.ProcessedFileTargedDirectory == ProcessedFileTargedDirectory &&
-                other.ProcessedFileUesername == ProcessedFileUesername;
+                other.ProcessedFileUesername == ProcessedFileUesername &&
+                other.TextFileExtension == TextFileExtension;
         }
 
         public ConfigurationData Clone_AlsoCopyGuids()
