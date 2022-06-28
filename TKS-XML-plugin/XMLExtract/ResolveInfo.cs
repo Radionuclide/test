@@ -22,6 +22,7 @@ namespace XmlExtract
         private const string DE_ENDPRODUKT = "$DE_ENDPRODUKT";
         private const string DE_AGGREGAT = "$DE_AGGREGAT";
         private const string DE_VECTOR_DIMENSIONX = "$DE_VECTOR_DIMENSIONX";
+        private const string DE_MARKLETZTEMSGAMDURCHSATZ  = "$DE_MARKLETZTEMSGAMDURCHSATZ";
         // ReSharper restore InconsistentNaming
 
         private static List<string> _missingFields;
@@ -92,12 +93,21 @@ namespace XmlExtract
             else
                 _missingFields.Add(DE_ENDPRODUKT);
 
+            // optional info fields
             if (reader.InfoFields.TryGetValue(DE_VECTOR_DIMENSIONX, out infoFieldValue))
             {
                 if (Enum<BezugDimensionEnum>.TryParse(infoFieldValue.Trim(), true, out var dimx))
                     info.VectorsDimensionX = dimx;
                 else
                     _wrongValueFields.Add(DE_VECTOR_DIMENSIONX);
+            }
+
+            if (reader.InfoFields.TryGetValue(DE_MARKLETZTEMSGAMDURCHSATZ, out infoFieldValue))
+            {
+                if (TryConvertToBoolean(infoFieldValue.Trim(), out var lmad))
+                    info.MarkLetzteMsgAmDurchsatz = lmad;
+                else
+                    _wrongValueFields.Add(DE_MARKLETZTEMSGAMDURCHSATZ);
             }
 
 
@@ -110,6 +120,7 @@ namespace XmlExtract
             return info;
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private static IEnumerable<Vector> GetVectors(IbaFileReader reader)
         {
             Vector vec = null;

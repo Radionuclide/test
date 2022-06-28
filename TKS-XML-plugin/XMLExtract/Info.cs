@@ -15,6 +15,7 @@ namespace XmlExtract
         public StandortType Standort { get; set; }
         public MaterialArtType MaterialArt { get; set; }
         public string Aggregat { get; set; }
+        public bool MarkLetzteMsgAmDurchsatz { get; set; } = true;
 
         public List<Vector> Vektoren { get; set; } = new List<Vector>();
         public BezugDimensionEnum VectorsDimensionX = BezugDimensionEnum.Laenge;

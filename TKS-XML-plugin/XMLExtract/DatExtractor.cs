@@ -125,9 +125,12 @@ namespace XmlExtract
                 met.Einzelwerte.Messzeitpunkt = info.Messzeitpunkt;
             }
 
-            var letzteMessung = met.Messung.LastOrDefault();
-            if (letzteMessung != null)
-                letzteMessung.LetzteMsgAmDurchsatz = true;
+            if (info.MarkLetzteMsgAmDurchsatz)
+            {
+                var letzteMessung = met.Messung.LastOrDefault();
+                if (letzteMessung != null)
+                    letzteMessung.LetzteMsgAmDurchsatz = true;
+            }
 
 
             return met;
