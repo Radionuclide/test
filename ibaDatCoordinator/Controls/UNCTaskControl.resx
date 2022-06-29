@@ -772,7 +772,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel2" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,38.65516,Percent,33.26141,Percent,28.08342" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel2" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,38,65516,Percent,33,26141,Percent,28,08342" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_subfolderGroupBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 98</value>
@@ -1349,11 +1349,11 @@
   </data>
   <data name="m_browseFolderButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAACzSURBVDhPpZFREYNADESRUgn0GxNIQAoSkICESqgEBFQE
-        DtJNhs1krneZa/vx4Nh5l1tgEJG/qIbfYJf7NO1ACh7gVm4osYtuiCGeR3BoXmGPbnVARul6CObr3os1
-        iQOeYOPkDHh2mK4Z6IATLJQy4K3g0DUD1hqj2AKetv14hTNKGeoCa8vAvkGUWsDTX+xtGWqwRrEFvAV4
-        W4Y6YGaYAW8D3pbh6xrSix/mk3+lGvYjwxspCofg8cJWtQAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EAAACxABrSO9dQAAALNJREFUOE+lkVERg0AMRJFSCfQbE0hAChKQgIRKqAQEVAQO0k2GzWSud5lr+/Hg
+        2HmXW2AQkb+oht9gl/s07UAKHuBWbiixi26IIZ5HcGheYY9udUBG6XoI5uveizWJA55g4+QMeHaYrhno
+        gBMslDLgreDQNQPWGqPYAp62/XiFM0oZ6gJry8C+QZRawNNf7G0ZarBGsQW8BXhbhjpgZpgBbwPeluHr
+        GtKLH+aTf6Ua9iPDGykKh+Dxwla1AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_browseFolderButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -1410,9 +1410,6 @@
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_targetFolderTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <data name="m_targetFolderTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>96, 14</value>
   </data>
@@ -1439,12 +1436,12 @@
   </data>
   <data name="m_checkPathButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAADsSURBVDhPpZGxDcIwFEQzAiMwAWIBJMooEzBISgbIAJSw
-        A2XK0KWDigokhChoqNIgKMydsb8+0ZeSiOJJ9v27sxMnzrm/MMUhmGIkydM1eIMTGJkeSyQIZCG8A09Q
-        mD5LJAhcSVg3nQUwjME8sAUvwFssgAMzHZScLL7XpDGyCfoq7C+BI8isApp4ujcpfQoqxQ00MldGXVBF
-        vQ1mS3plrwZ9C/hzz7JXg84C6CXwP1c0NdQFddTVnC/CcPmjKwMLDoBvzhfhU7KQFOAB7jrsc7LI0z3g
-        6f4TAItYSnhyDSY67HNtYSim2B+XfACNeXRkMOSmYwAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EAAACxABrSO9dQAAAOxJREFUOE+lkbENwjAURDMCIzABYgEkyigTMEhKBsgAlLADZcrQpYOKCiSEKGio
+        0iAozJ2xvz7Rl5KI4kn2/buzEyfOub8wxSGYYiTJ0zV4gxMYmR5LJAhkIbwDT1CYPkskCFxJWDedBTCM
+        wTywBS/AWyyAAzMdlJwsvtekMbIJ+irsL4EjyKwCmni6Nyl9CirFDTQyV0ZdUEW9DWZLemWvBn0L+HPP
+        sleDzgLoJfA/VzQ11AV11NWcL8Jw+aMrAwsOgG/OF+FTspAU4AHuOuxzssjTPeDp/hMAi1hKeHINJjrs
+        c21hKKbYH5d8AI15dGQw5KZjAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_checkPathButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">

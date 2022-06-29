@@ -15,6 +15,7 @@ using iba.Utility;
 using iba.Licensing;
 using System.Text;
 using iba.Annotations;
+using iba.Controls;
 
 namespace iba.Processing
 {
@@ -4588,21 +4589,21 @@ namespace iba.Processing
             }
         }
 
-        private void UploadDatFile(string filename, UploadTaskData task)
+        private void UploadDatFile(string filename, UploadTaskData taskData)
         {
             string[] filesToCopy = new string[] { filename };
 
             lock (m_sd.DatFileStates)
             {
-                m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.RUNNING;
+                m_sd.DatFileStates[filename].States[taskData] = DatFileStatus.State.RUNNING;
             }
 
-            if (task.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.PREVOUTPUT)
+            if (taskData.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.PREVOUTPUT)
             {
                 if (m_outPutFilesPrevTask == null || m_outPutFilesPrevTask.Length == 0 || string.IsNullOrEmpty(m_outPutFilesPrevTask[0]))
                 {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
-                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, task);
+                    m_sd.DatFileStates[filename].States[taskData] = DatFileStatus.State.COMPLETED_FAILURE;
+                    Log(Logging.Level.Exception, iba.Properties.Resources.NoPreviousOutPutFileToCopy, filename, taskData);
                     return;
                 }
                 if (m_outPutFilesPrevTask != null)
@@ -4616,27 +4617,28 @@ namespace iba.Processing
             {
                 foreach (var fileToCopy in filesToCopy)
                 {
-                    var uploadTaskWorker = new UploadTaskWorker(fileToCopy, task);
+                    var uploadTaskWorker = UploadTaskWorker.CreateWorker(taskData);
 
-                    uploadTaskWorker.UploadFile();
-                    Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, filename, task);
+                    uploadTaskWorker.UploadFile(fileToCopy, this);
+                    
+                    Log(Logging.Level.Info, iba.Properties.Resources.logUploadTaskSuccess, fileToCopy, taskData);
                 }
 
                 lock (m_sd.DatFileStates)
                 {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
+                    m_sd.DatFileStates[filename].States[taskData] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                     if (m_outPutFilesPrevTask != null && m_outPutFilesPrevTask.Length > 0)
-                        m_sd.DatFileStates[filename].OutputFiles[task] = m_outPutFilesPrevTask[0];
+                        m_sd.DatFileStates[filename].OutputFiles[taskData] = m_outPutFilesPrevTask[0];
                 }
             }
             catch (Exception ex)
             {
 
-                Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message, filename, task);
+                Log(Logging.Level.Exception, iba.Properties.Resources.logUploadTaskFailed + ": " + ex.Message, filename, taskData);
 
                 lock (m_sd.DatFileStates)
                 {
-                    m_sd.DatFileStates[filename].States[task] = DatFileStatus.State.COMPLETED_FAILURE;
+                    m_sd.DatFileStates[filename].States[taskData] = DatFileStatus.State.COMPLETED_FAILURE;
                 }
             }
         }

@@ -10,17 +10,24 @@ namespace iba.Utility
 {
     internal static class ZipCreator
     {
-        public static string CreateZipArchive(string sourceFile, string compressedFile = "")
+        public static string CreateZipArchive(string sourceFile, string compressedFile = "", string entryName = "")
         {
             if (string.IsNullOrEmpty(compressedFile))
             {
                 compressedFile = sourceFile + ".zip";
             }
 
+            if (string.IsNullOrEmpty(entryName))
+            {
+                entryName = Path.GetFileName(sourceFile);
+            }
+
             using (var archive = ZipFile.Create(compressedFile))
             {
+                IStaticDataSource dataSource = new StaticDiskDataSource(sourceFile);
+
                 archive.BeginUpdate();
-                archive.Add(sourceFile, Path.GetFileName(sourceFile));
+                archive.Add(dataSource, entryName);
                 archive.CommitUpdate();
             }
 

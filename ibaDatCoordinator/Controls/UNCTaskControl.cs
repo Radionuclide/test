@@ -33,6 +33,21 @@ namespace iba.Controls
                 SHAutoCompleteFlags.SHACF_AUTOSUGGEST_FORCE_OFF | SHAutoCompleteFlags.SHACF_AUTOAPPEND_FORCE_OFF);
             }
 
+            if (data.GetType() == typeof(UploadTaskData))
+            {
+                m_targetFolderTextBox.Visible = false;
+                m_cleanupGroupBox.Visible = false;
+                label3.Visible = false;
+                m_browseFolderButton.Visible = false;
+                m_checkPathButton.Visible = false;
+                label4.Visible = false;
+                m_tbUserName.Visible = false;
+                label12.Visible = false;
+                m_tbPass.Visible = false;
+                m_subfolderGroupBox.Dock = DockStyle.Top;
+                flowLayoutPanel1.Dock = DockStyle.Top;
+            }
+
             m_rbNONE.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.NONE;
             m_rbOriginal.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.SAME;
             m_rbHour.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.HOUR;

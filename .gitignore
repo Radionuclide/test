@@ -106,3 +106,4 @@ InstallFiles/
 .vs/
 
 /Installer/.project
+/.sonarqube

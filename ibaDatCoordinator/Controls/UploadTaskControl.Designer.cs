@@ -48,9 +48,8 @@ namespace iba.Controls
             this.m_lblRemotePath = new System.Windows.Forms.Label();
             this.m_tbRemotePath = new System.Windows.Forms.TextBox();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.m_chkOverwrite = new System.Windows.Forms.CheckBox();
             this.m_createZipArchive = new System.Windows.Forms.CheckBox();
-            this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
+            this.m_gbProtocol = new iba.Utility.CollapsibleGroupBox();
             this.m_tplAuthorization = new System.Windows.Forms.TableLayoutPanel();
             this.m_panelFtp = new System.Windows.Forms.Panel();
             this.m_lbUsername = new System.Windows.Forms.Label();
@@ -76,6 +75,8 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
+            this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
+            this.panelOut = new System.Windows.Forms.Panel();
             this.m_gbOption.SuspendLayout();
             this.m_tplOptions.SuspendLayout();
             this.m_panelChkBoxControls.SuspendLayout();
@@ -85,7 +86,7 @@ namespace iba.Controls
             this.panel5.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel6.SuspendLayout();
-            this.m_gbTarget.SuspendLayout();
+            this.m_gbProtocol.SuspendLayout();
             this.m_tplAuthorization.SuspendLayout();
             this.m_panelFtp.SuspendLayout();
             this.m_tplProtocol.SuspendLayout();
@@ -93,6 +94,7 @@ namespace iba.Controls
             this.panel1.SuspendLayout();
             this.m_gbSource.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.m_gbTarget.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_gbOption
@@ -199,16 +201,9 @@ namespace iba.Controls
             // panel6
             // 
             this.m_tplOptions.SetColumnSpan(this.panel6, 2);
-            this.panel6.Controls.Add(this.m_chkOverwrite);
             this.panel6.Controls.Add(this.m_createZipArchive);
             resources.ApplyResources(this.panel6, "panel6");
             this.panel6.Name = "panel6";
-            // 
-            // m_chkOverwrite
-            // 
-            resources.ApplyResources(this.m_chkOverwrite, "m_chkOverwrite");
-            this.m_chkOverwrite.Name = "m_chkOverwrite";
-            this.m_chkOverwrite.UseVisualStyleBackColor = true;
             // 
             // m_createZipArchive
             // 
@@ -216,14 +211,14 @@ namespace iba.Controls
             this.m_createZipArchive.Name = "m_createZipArchive";
             this.m_createZipArchive.UseVisualStyleBackColor = true;
             // 
-            // m_gbTarget
+            // m_gbProtocol
             // 
-            resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
-            this.m_gbTarget.BackColor = System.Drawing.SystemColors.Control;
-            this.m_gbTarget.Controls.Add(this.m_tplAuthorization);
-            this.m_gbTarget.Controls.Add(this.m_tplProtocol);
-            this.m_gbTarget.Name = "m_gbTarget";
-            this.m_gbTarget.TabStop = false;
+            resources.ApplyResources(this.m_gbProtocol, "m_gbProtocol");
+            this.m_gbProtocol.BackColor = System.Drawing.SystemColors.Control;
+            this.m_gbProtocol.Controls.Add(this.m_tplAuthorization);
+            this.m_gbProtocol.Controls.Add(this.m_tplProtocol);
+            this.m_gbProtocol.Name = "m_gbProtocol";
+            this.m_gbProtocol.TabStop = false;
             // 
             // m_tplAuthorization
             // 
@@ -277,7 +272,6 @@ namespace iba.Controls
             // m_btnCheckConnection
             // 
             resources.ApplyResources(this.m_btnCheckConnection, "m_btnCheckConnection");
-            this.m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbUp(16);
             this.m_btnCheckConnection.Name = "m_btnCheckConnection";
             this.m_tplAuthorization.SetRowSpan(this.m_btnCheckConnection, 2);
             this.m_btnCheckConnection.UseVisualStyleBackColor = true;
@@ -413,12 +407,25 @@ namespace iba.Controls
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
+            // m_gbTarget
+            // 
+            this.m_gbTarget.Controls.Add(this.panelOut);
+            resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
+            this.m_gbTarget.Name = "m_gbTarget";
+            this.m_gbTarget.TabStop = false;
+            // 
+            // panelOut
+            // 
+            resources.ApplyResources(this.panelOut, "panelOut");
+            this.panelOut.Name = "panelOut";
+            // 
             // UploadTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.m_gbOption);
             this.Controls.Add(this.m_gbTarget);
+            this.Controls.Add(this.m_gbOption);
+            this.Controls.Add(this.m_gbProtocol);
             this.Controls.Add(this.m_gbSource);
             this.Name = "UploadTaskControl";
             this.m_gbOption.ResumeLayout(false);
@@ -439,8 +446,8 @@ namespace iba.Controls
             this.tableLayoutPanel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            this.m_gbTarget.ResumeLayout(false);
-            this.m_gbTarget.PerformLayout();
+            this.m_gbProtocol.ResumeLayout(false);
+            this.m_gbProtocol.PerformLayout();
             this.m_tplAuthorization.ResumeLayout(false);
             this.m_tplAuthorization.PerformLayout();
             this.m_panelFtp.ResumeLayout(false);
@@ -455,6 +462,8 @@ namespace iba.Controls
             this.m_gbSource.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            this.m_gbTarget.ResumeLayout(false);
+            this.m_gbTarget.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -462,7 +471,7 @@ namespace iba.Controls
 
         #endregion
 
-        private Utility.CollapsibleGroupBox m_gbTarget;
+        private Utility.CollapsibleGroupBox m_gbProtocol;
         private Utility.CollapsibleGroupBox m_gbSource;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.RadioButton m_rbPrevOutput;
@@ -507,6 +516,7 @@ namespace iba.Controls
         private System.Windows.Forms.Button m_btnCheckConnection;
         private System.Windows.Forms.TextBox m_tbPort;
         private System.Windows.Forms.Label m_lbPort;
-        private System.Windows.Forms.CheckBox m_chkOverwrite;
+        private Utility.CollapsibleGroupBox m_gbTarget;
+        private System.Windows.Forms.Panel panelOut;
     }
 }

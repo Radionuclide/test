@@ -29,14 +29,12 @@ namespace iba.Controls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CopyControl));
-            this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
-            this.panelOut = new System.Windows.Forms.Panel();
+            this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
-            this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbMove = new System.Windows.Forms.RadioButton();
@@ -45,26 +43,22 @@ namespace iba.Controls
             this.collapsibleGroupBox1 = new iba.Utility.CollapsibleGroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.m_cbCreateZipArchive = new System.Windows.Forms.CheckBox();
-            this.m_gbTarget.SuspendLayout();
+            this.m_gbTarget = new iba.Utility.CollapsibleGroupBox();
+            this.panelOut = new System.Windows.Forms.Panel();
             this.groupBox6.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.collapsibleGroupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.m_gbTarget.SuspendLayout();
             this.SuspendLayout();
             // 
-            // m_gbTarget
+            // groupBox1
             // 
-            resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
-            this.m_gbTarget.Controls.Add(this.panelOut);
-            this.m_gbTarget.Name = "m_gbTarget";
-            this.m_gbTarget.TabStop = false;
-            // 
-            // panelOut
-            // 
-            resources.ApplyResources(this.panelOut, "panelOut");
-            this.panelOut.Name = "panelOut";
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.TabStop = false;
             // 
             // groupBox6
             // 
@@ -93,12 +87,6 @@ namespace iba.Controls
             this.m_rbDatFile.Name = "m_rbDatFile";
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
             // 
             // groupBox3
             // 
@@ -156,6 +144,18 @@ namespace iba.Controls
             this.m_cbCreateZipArchive.Name = "m_cbCreateZipArchive";
             this.m_cbCreateZipArchive.UseVisualStyleBackColor = true;
             // 
+            // m_gbTarget
+            // 
+            resources.ApplyResources(this.m_gbTarget, "m_gbTarget");
+            this.m_gbTarget.Controls.Add(this.panelOut);
+            this.m_gbTarget.Name = "m_gbTarget";
+            this.m_gbTarget.TabStop = false;
+            // 
+            // panelOut
+            // 
+            resources.ApplyResources(this.panelOut, "panelOut");
+            this.panelOut.Name = "panelOut";
+            // 
             // CopyControl
             // 
             resources.ApplyResources(this, "$this");
@@ -165,7 +165,6 @@ namespace iba.Controls
             this.Controls.Add(this.collapsibleGroupBox1);
             this.Controls.Add(this.m_gbTarget);
             this.Name = "CopyControl";
-            this.m_gbTarget.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -175,6 +174,7 @@ namespace iba.Controls
             this.collapsibleGroupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.m_gbTarget.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

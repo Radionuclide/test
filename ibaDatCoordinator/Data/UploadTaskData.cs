@@ -6,7 +6,7 @@ using iba.Utility;
 namespace iba.Data
 {
     [Serializable]
-    public class UploadTaskData : TaskData
+    public class UploadTaskData : TaskDataUNC
     {
         private string m_server;
 
@@ -166,7 +166,6 @@ namespace iba.Data
         }
 
         public bool CreateZipArchive { get; set; }
-        public bool Overwrite { get; set; }
 
         public UploadTaskData()
             : this(null)
@@ -195,7 +194,8 @@ namespace iba.Data
             cd.m_pathToCertificate = m_pathToCertificate;
             cd.m_pathToPrivateKey = m_pathToPrivateKey;
             cd.CreateZipArchive = CreateZipArchive;
-            cd.Overwrite = Overwrite;
+
+            CopyUNCData(cd);
 
             return cd;
         }
@@ -205,6 +205,7 @@ namespace iba.Data
             UploadTaskData other = taskData as UploadTaskData;
             if (other == null) return false;
             if (other == this) return true;
+            if (!UNCDataIsSame(other)) return false;
             return
                 other.m_whatFileUpload == m_whatFileUpload &&
                 other.m_server == m_server &&
@@ -224,8 +225,7 @@ namespace iba.Data
                 other.m_tlsCertificateFingerprint == m_tlsCertificateFingerprint &&
                 other.m_pathToCertificate == m_pathToCertificate &&
                 other.m_pathToPrivateKey == m_pathToPrivateKey &&
-                other.CreateZipArchive == CreateZipArchive &&
-                other.Overwrite == Overwrite;
+                other.CreateZipArchive == CreateZipArchive;
         }
     }
 }

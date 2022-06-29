@@ -13,86 +13,186 @@ using iba.Data;
 using iba.Dialogs;
 using iba.Logging;
 using iba.Utility;
+using Opc.Ua;
 using WinSCP;
 
 namespace iba.Processing
 {
-    internal class UploadTaskWorker
+    internal interface IUploadTaskWorker
     {
-        private readonly UploadTaskData m_data;
-        private string m_datFile;
+        void UploadFile(string datFile, ConfigurationWorker configurationWorker);
+        bool TestConnection(out string errorMessage, UploadTaskData data);
+    }
 
-        public UploadTaskWorker(string datFile, UploadTaskData data)
+    internal class AmazonAwsUploadTaskWorker : UploadTaskWorker
+    {
+        public AmazonAwsUploadTaskWorker(UploadTaskData data) : base(data)
         {
-            m_datFile = datFile;
-            m_data = data;
+        }
+    }
+
+    internal class FtpUploadTaskWorker : UploadTaskWorker
+    {
+        public FtpUploadTaskWorker(UploadTaskData data) : base(data)
+        {
+        }
+    }
+    internal class SftpUploadTaskWorker : UploadTaskWorker
+    {
+        public SftpUploadTaskWorker(UploadTaskData data) : base(data)
+        {
+        }
+    }
+
+    internal class ScpUploadTaskWorker : UploadTaskWorker
+    {
+        public ScpUploadTaskWorker(UploadTaskData data) : base(data)
+        {
+        }
+    }
+
+    internal abstract class UploadTaskWorker : IUploadTaskWorker
+    {
+        private readonly UploadTaskData _data;
+
+        protected UploadTaskWorker(UploadTaskData data)
+        {
+            _data = data;
+        }
+
+        internal static IUploadTaskWorker CreateWorker(UploadTaskData data)
+        {
+            return data.Protocol switch
+            {
+                UploadTaskData.TransferProtocol.Ftp => new FtpUploadTaskWorker(data),
+                UploadTaskData.TransferProtocol.Sftp => new SftpUploadTaskWorker(data),
+                UploadTaskData.TransferProtocol.Scp => new ScpUploadTaskWorker(data),
+                UploadTaskData.TransferProtocol.AmazonS3 => new AmazonAwsUploadTaskWorker(data),
+                UploadTaskData.TransferProtocol.AzureDataLake => new AzureDataLakeUploadTaskWorker(data),
+                _ => throw new ArgumentOutOfRangeException(nameof(data), $"Not Available: {data.Protocol}")
+            };
         }
 
         /// <summary>
         /// Configure session and upload file
         /// </summary>
-        public void UploadFile()
+        public virtual void UploadFile(string datFile, ConfigurationWorker configurationWorker)
         {
-            if (m_data.CreateZipArchive)
-            {
-                m_datFile = ZipCreator.CreateZipArchive(m_datFile);
-            }
+            using var session = CreateSession(_data);
 
-            if (m_data.Protocol == UploadTaskData.TransferProtocol.AzureDataLake)
+            var (outputDir, outputFilename) = CreateOutput(datFile, _data, configurationWorker);
+            
+            if (!_data.OverwriteFiles && session.FileExists(string.Concat(outputDir, outputFilename))) 
+                return;
+
+            (outputFilename, datFile) = CreateZipArchiveIfRequired(_data, outputFilename, datFile);
+
+            Upload(session, _data, datFile, outputFilename, outputDir);
+
+            DeleteZipArchive(datFile);
+        }
+
+        private static void Upload(Session session, UploadTaskData data, string datFile, string outputFilename, string outputDir)
+        {
+            if (data.UseInfoFieldForOutputFile && !data.CreateZipArchive)
             {
-                var service = new AzureDataLakeClient(m_datFile, m_data);
-                service.UploadFile();
+                var tempDatFile = string.Concat(datFile, ".tmp");
+
+                File.Copy(datFile, tempDatFile);
+                session.PutFileToDirectory(tempDatFile, outputDir);
+                RenameUploadedFile(session, tempDatFile, outputDir, outputFilename);
+
+                File.Delete(tempDatFile);
             }
             else
             {
-                using (var session = new Session())
-                {
-                    var sessionOptions = SetSessionOptions();
-                    ConfigureTlsOrSshOptions(sessionOptions);
-
-                    session.Open(sessionOptions);
-
-                    var transferOptions = new TransferOptions
-                    {
-                        OverwriteMode = OverwriteMode.Overwrite
-                    };
-
-                    session.PutFileToDirectory(m_datFile, m_data.RemotePath, false, transferOptions);
-                }
-            }
-
-            if (m_data.CreateZipArchive)
-            {
-                File.Delete(m_datFile);
+                session.PutFileToDirectory(datFile, outputDir);
             }
         }
 
-        private SessionOptions SetSessionOptions()
+        private static Session CreateSession(UploadTaskData data)
+        {
+            var session = new Session();
+            var sessionOptions = SetSessionOptions(data);
+            ConfigureTlsOrSshOptions(sessionOptions, data);
+            session.Open(sessionOptions);
+
+            return session;
+        }
+
+        private void DeleteZipArchive(string datFile)
+        {
+            if (_data.CreateZipArchive) 
+                File.Delete(datFile);
+        }
+
+        public static Tuple<string, string> CreateZipArchiveIfRequired(UploadTaskData data, string outputFilename, string datFile)
+        {
+            if (data.CreateZipArchive)
+            {
+                datFile = ZipCreator.CreateZipArchive(datFile,
+                    Path.Combine(Path.GetDirectoryName(datFile), outputFilename), outputFilename + ".dat");
+            }
+
+            return new Tuple<string, string>(outputFilename, datFile);
+        }
+
+        public static Tuple<string, string> CreateOutput(string datFile, UploadTaskData data,
+            ConfigurationWorker configurationWorker)
+        {
+            data.DestinationMap = data.DestinationMapUNC = data.RemotePath;
+
+            var outputDir = configurationWorker?.GetOutputDirectoryName(datFile, data)
+                .Replace(configurationWorker.RunningConfiguration.DatDirectory, string.Empty);
+
+            outputDir = string.Concat(outputDir.Replace("\\", "/"), "/");
+
+            var outputFilename = configurationWorker?.GetOutputFileName(data, datFile);
+
+            outputFilename = string.Concat(outputFilename, data.CreateZipArchive ? ".zip" : ".dat");
+
+            return new Tuple<string, string>(outputDir, outputFilename);
+        }
+
+        private static void RenameUploadedFile(Session session, string tempDatFile, string outputDir, string outputFilename)
+        {
+            var sourcePath = string.Concat(outputDir, Path.GetFileName(tempDatFile));
+            var targetPath = string.Concat(outputDir, outputFilename);
+
+            if (session.FileExists(targetPath))
+            {
+                session.RemoveFile(targetPath);
+            }
+
+            session.MoveFile(sourcePath, targetPath);
+        }
+
+        private static SessionOptions SetSessionOptions(UploadTaskData data)
         {
             var sessionOptions = new SessionOptions
             {
-                Protocol = SetProtocol(),
-                HostName = m_data.Server,
-                UserName = m_data.Username,
-                Password = m_data.Password,
-                PortNumber = SetPort(),
-                FtpSecure = SetEncryptionMode(),
-                FtpMode = m_data.Mode == UploadTaskData.FtpMode.Passive ? FtpMode.Passive : FtpMode.Active
+                Protocol = SetProtocol(data.Protocol),
+                HostName = data.Server,
+                UserName = data.Username,
+                Password = data.Password,
+                PortNumber = SetPort(data),
+                FtpSecure = SetEncryptionMode(data),
+                FtpMode = data.Mode == UploadTaskData.FtpMode.Passive ? FtpMode.Passive : FtpMode.Active
             };
 
             return sessionOptions;
         }
 
-        private void ConfigureTlsOrSshOptions(SessionOptions sessionOptions)
+        private static void ConfigureTlsOrSshOptions(SessionOptions sessionOptions, UploadTaskData data)
         {
-            switch (m_data.Protocol)
+            switch (data.Protocol)
             {
                 case UploadTaskData.TransferProtocol.Ftp:
-                    ConfigureTlsOptions(sessionOptions);
+                    ConfigureTlsOptions(sessionOptions, data);
                     break;
                 case UploadTaskData.TransferProtocol.Sftp:
                 case UploadTaskData.TransferProtocol.Scp:
-                    ConfigureSshOptions(sessionOptions);
+                    ConfigureSshOptions(sessionOptions, data);
                     break;
                 case UploadTaskData.TransferProtocol.AmazonS3:
                     break;
@@ -101,45 +201,45 @@ namespace iba.Processing
             }
         }
 
-        private void ConfigureTlsOptions(SessionOptions sessionOptions)
+        private static void ConfigureTlsOptions(SessionOptions sessionOptions, UploadTaskData data)
         {
-            if (m_data.AcceptAnyTlsCertificate)
+            if (data.AcceptAnyTlsCertificate)
             {
                 sessionOptions.GiveUpSecurityAndAcceptAnyTlsHostCertificate = true;
                 return;
             }
 
-            if (m_data.EncryptionChoice == UploadTaskData.EncryptionChoiceEnum.None) return;
+            if (data.EncryptionChoice == UploadTaskData.EncryptionChoiceEnum.None) return;
 
-            sessionOptions.TlsHostCertificateFingerprint = m_data.TlsCertificateFingerprint;
-            sessionOptions.TlsClientCertificatePath = m_data.PathToCertificate;
+            sessionOptions.TlsHostCertificateFingerprint = data.TlsCertificateFingerprint;
+            sessionOptions.TlsClientCertificatePath = data.PathToCertificate;
         }
 
-        private void ConfigureSshOptions(SessionOptions sessionOptions)
+        private static void ConfigureSshOptions(SessionOptions sessionOptions, UploadTaskData data)
         {
-            if (m_data.AcceptAnySshHostKey)
+            if (data.AcceptAnySshHostKey)
             {
                 sessionOptions.GiveUpSecurityAndAcceptAnySshHostKey = true;
                 return;
             }
 
-            if (!string.IsNullOrEmpty(m_data.PathToPrivateKey))
+            if (!string.IsNullOrEmpty(data.PathToPrivateKey))
             {
-                sessionOptions.SshPrivateKeyPath = m_data.PathToPrivateKey;
-                sessionOptions.PrivateKeyPassphrase = m_data.PrivateKeyPassphrase;
+                sessionOptions.SshPrivateKeyPath = data.PathToPrivateKey;
+                sessionOptions.PrivateKeyPassphrase = data.PrivateKeyPassphrase;
             }
 
-            if (string.IsNullOrEmpty(m_data.SshHostKeyFingerprint))
+            if (string.IsNullOrEmpty(data.SshHostKeyFingerprint))
             {
                 throw new InvalidOperationException("Fingerprint not set");
             }
 
-            sessionOptions.SshHostKeyFingerprint = m_data.SshHostKeyFingerprint;
+            sessionOptions.SshHostKeyFingerprint = data.SshHostKeyFingerprint;
         }
 
-        private Protocol SetProtocol()
+        private static Protocol SetProtocol(UploadTaskData.TransferProtocol protocol)
         {
-            switch (m_data.Protocol)
+            switch (protocol)
             {
                 case UploadTaskData.TransferProtocol.Ftp:
                     return Protocol.Ftp;
@@ -154,19 +254,19 @@ namespace iba.Processing
             }
         }
 
-        private int SetPort()
+        private static int SetPort(UploadTaskData data)
         {
             const int defaultFtpPort = 21;
-            var portResult = int.TryParse(m_data.Port, out var port);
+            var portResult = int.TryParse(data.Port, out var port);
             return portResult ? port : defaultFtpPort;
         }
 
-        private FtpSecure SetEncryptionMode()
+        private static FtpSecure SetEncryptionMode(UploadTaskData data)
         {
-            if (m_data.Protocol != UploadTaskData.TransferProtocol.Ftp)
+            if (data.Protocol != UploadTaskData.TransferProtocol.Ftp)
                 return FtpSecure.None;
 
-            switch (m_data.EncryptionChoice)
+            switch (data.EncryptionChoice)
             {
                 case UploadTaskData.EncryptionChoiceEnum.None:
                     return FtpSecure.None;
@@ -181,53 +281,33 @@ namespace iba.Processing
         /// <summary>
         /// Create session and test whether file upload is possible
         /// </summary>
-        /// <param name="errormessage"></param>
+        /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public bool TestConnection(out string errormessage)
+        public bool TestConnection(out string errorMessage, UploadTaskData data)
         {
-            errormessage = string.Empty;
+            errorMessage = string.Empty;
 
-            if (m_data.Protocol != UploadTaskData.TransferProtocol.AzureDataLake)
+            using var session = new Session();
+            SessionOptions sessionOptions = null;
+            try
             {
-                using (var session = new Session())
-                {
-                    SessionOptions sessionOptions = null;
-                    try
-                    {
-                        sessionOptions = SetSessionOptions();
-                        ConfigureTlsOrSshOptions(sessionOptions);
+                sessionOptions = SetSessionOptions(data);
+                ConfigureTlsOrSshOptions(sessionOptions, data);
 
-                        session.QueryReceived += OnSessionQueryReceived;
+                session.QueryReceived += OnSessionQueryReceived;
 
-                        session.Open(sessionOptions);
-
-                        CheckRemotePath(session);
-                    }
-                    catch (Exception ex)
-                    {
-                        errormessage = ex.Message;
-                        return HandleException(ref errormessage, sessionOptions, session);
-                    }
-                }
+                session.Open(sessionOptions);
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    var service = new AzureDataLakeClient(m_datFile, m_data);
-                    return service.TestConnection(out errormessage);
-                }
-                catch (Exception ex)
-                {
-                    errormessage = ex.Message;
-                    return false;
-                }
+                errorMessage = ex.Message;
+                return HandleException(ref errorMessage, sessionOptions, session, _data);
             }
 
             return true;
         }
 
-        private bool HandleException(ref string errormessage, SessionOptions sessionOptions, Session session)
+        private static bool HandleException(ref string errormessage, SessionOptions sessionOptions, Session session, UploadTaskData data)
         {
             if (errormessage.Contains("Peer certificate rejected") && m_tlsCertificateAccepted)
             {
@@ -236,19 +316,19 @@ namespace iba.Processing
 
             if (errormessage.Contains("Authenticating with public key"))
             {
-                return OnPassphraseForPrivateKeyRequired(ref errormessage, sessionOptions, session);
+                return OnPassphraseForPrivateKeyRequired(ref errormessage, sessionOptions, session, data);
             }
 
             if (errormessage.Contains("Fingerprint not set"))
             {
-                return ScanAndAskForFingerprint(ref errormessage, session, sessionOptions) && 
-                       TestFingerprint(ref errormessage, session, sessionOptions);
+                return ScanAndAskForFingerprint(ref errormessage, session, sessionOptions, data) && 
+                       TestFingerprint(ref errormessage, session, sessionOptions, data);
             }
 
             return false;
         }
 
-        private bool TestFingerprint(ref string errormessage, Session session, SessionOptions sessionOptions)
+        private static bool TestFingerprint(ref string errormessage, Session session, SessionOptions sessionOptions, UploadTaskData data)
         {
             try
             {
@@ -258,19 +338,11 @@ namespace iba.Processing
             catch (Exception ex)
             {
                 errormessage = ex.Message;
-                return HandleException(ref errormessage, sessionOptions, session);
+                return HandleException(ref errormessage, sessionOptions, session, data);
             }
         }
 
-        private void CheckRemotePath(Session session)
-        {
-            var remoteFileExists = session.FileExists(m_data.RemotePath);
-
-            if (!remoteFileExists)
-                throw new InvalidOperationException("Remote path does not exist!");
-        }
-
-        private bool ScanAndAskForFingerprint(ref string errormessage, Session session, SessionOptions sessionOptions)
+        private static bool ScanAndAskForFingerprint(ref string errormessage, Session session, SessionOptions sessionOptions, UploadTaskData data)
         {
             try
             {
@@ -286,7 +358,7 @@ namespace iba.Processing
 
                 if (dialogResult == DialogResult.OK)
                 {
-                    m_data.SshHostKeyFingerprint = sha256;
+                    data.SshHostKeyFingerprint = sha256;
                     sessionOptions.SshHostKeyFingerprint = sha256;
                     return true;
                 }
@@ -301,8 +373,8 @@ namespace iba.Processing
             return false;
         }
 
-        private bool OnPassphraseForPrivateKeyRequired(ref string errormessage, SessionOptions sessionOptions,
-            Session session)
+        private static bool OnPassphraseForPrivateKeyRequired(ref string errormessage, SessionOptions sessionOptions,
+            Session session, UploadTaskData data)
         {
             string privateKeyPassphrase;
 
@@ -316,7 +388,7 @@ namespace iba.Processing
             try
             {
                 session.Open(sessionOptions);
-                m_data.PrivateKeyPassphrase = privateKeyPassphrase;
+                data.PrivateKeyPassphrase = privateKeyPassphrase;
             }
             catch (Exception ex)
             {
@@ -327,7 +399,7 @@ namespace iba.Processing
             return true;
         }
 
-        private bool m_tlsCertificateAccepted = false;
+        private static bool m_tlsCertificateAccepted = false;
 
         private void OnSessionQueryReceived(object sender, QueryReceivedEventArgs args)
         {
@@ -337,7 +409,7 @@ namespace iba.Processing
 
             var fingerprint = ParseFingerprint(args);
 
-            m_data.TlsCertificateFingerprint = fingerprint;
+            _data.TlsCertificateFingerprint = fingerprint;
             m_tlsCertificateAccepted = true;
         }
 
@@ -356,61 +428,66 @@ namespace iba.Processing
         }
     }
 
-    internal class AzureDataLakeClient
+    internal class AzureDataLakeUploadTaskWorker : IUploadTaskWorker
     {
-        private readonly UploadTaskData m_data;
-        private readonly string m_datFile;
+        private readonly UploadTaskData _data;
 
-        public AzureDataLakeClient(string datFile, UploadTaskData data)
+        public AzureDataLakeUploadTaskWorker(UploadTaskData data)
         {
-            m_datFile = datFile;
-            m_data = data;
+            _data = data;
+
         }
 
-        public void UploadFile()
+        public void UploadFile(string datFile, ConfigurationWorker configurationWorker)
         {
-            var sharedKeyCredential = new StorageSharedKeyCredential(m_data.Username, m_data.Password);
+            var sharedKeyCredential = new StorageSharedKeyCredential(_data.Username, _data.Password);
+            var serviceUri = new Uri("https://" + _data.Username + ".dfs.core.windows.net");
+            var dataLakeServiceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
 
-            var serviceUri = new Uri("https://" + m_data.Username + ".dfs.core.windows.net");
+            var (outputDir, outputFilename) = UploadTaskWorker.CreateOutput(datFile, _data, configurationWorker);
 
-            DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
+            (outputFilename, datFile) = UploadTaskWorker.CreateZipArchiveIfRequired(_data, outputFilename, datFile);
 
-            DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.GetFileSystemClient(GetFilesystemPath(m_data.RemotePath));
+            var dataLakeFileSystemClient = dataLakeServiceClient.GetFileSystemClient(GetFilesystemPath(outputDir));
             
             dataLakeFileSystemClient.CreateIfNotExists();
 
-            var fileClient = dataLakeFileSystemClient.GetFileClient(
-                $"{GetFilePath(m_data.RemotePath)}/{Path.GetFileName(m_datFile)}");
+            var fileClient = dataLakeFileSystemClient.GetFileClient(outputDir + outputFilename);
 
             try
             {
-                fileClient.Upload(m_datFile, m_data.Overwrite);
+                fileClient.Upload(datFile, _data.OverwriteFiles);
             }
             catch (RequestFailedException ex)
                 when (ex.ErrorCode == "PathAlreadyExists")
             {
                 //Do not overwrite file
             }
+
+            if (_data.CreateZipArchive)
+            {
+                File.Delete(datFile);
+            }
         }
 
-        public bool TestConnection(out string errormessage)
+        public bool TestConnection(out string errorMessage, UploadTaskData data)
         {
-            errormessage = string.Empty;
+            errorMessage = string.Empty;
 
-            if (string.IsNullOrEmpty(m_data.Username) || string.IsNullOrEmpty(m_data.Password))
+            if (string.IsNullOrEmpty(data.Username) || string.IsNullOrEmpty(data.Password))
             {
-                errormessage = "Please enter your Account name and Shared key";
+                errorMessage = "Please enter your Account name and Shared key";
                 return false;
             }
 
-            if (GetFilesystemPath(m_data.RemotePath).Length < 3)
+            if (GetFilesystemPath(data.RemotePath).Length < 3)
             {
-                errormessage = "The specified Remote path length is not within the permissible limits";
+                errorMessage = "The specified Remote path length is not within the permissible limits";
                 return false;
             }
 
-            var sharedKeyCredential = new StorageSharedKeyCredential(m_data.Username, m_data.Password);
-            var serviceUri = new Uri("https://" + m_data.Username + ".dfs.core.windows.net");
+            var sharedKeyCredential = new StorageSharedKeyCredential(data.Username, data.Password);
+            var serviceUri = new Uri("https://" + data.Username + ".dfs.core.windows.net");
             var serviceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
 
             try
@@ -423,7 +500,7 @@ namespace iba.Processing
             }
             catch (RequestFailedException ex)
             {
-                errormessage = $"Unexpected error: {ex.Message}";
+                errorMessage = $"Unexpected error: {ex.Message}";
                 throw;
             }
 
@@ -440,18 +517,6 @@ namespace iba.Processing
             }
 
             return remotePath.Substring(0, remotePath.IndexOf("/"));
-        }
-
-        private static string GetFilePath(string remotePath)
-        {
-            remotePath = FormatPath(remotePath);
-            
-            if (!remotePath.Contains("/"))
-            {
-                return string.Empty;
-            }
-
-            return remotePath.Substring(remotePath.IndexOf("/"));
         }
 
         private static string FormatPath(string remotePath)

@@ -23,8 +23,16 @@ namespace iba.Controls
         public UploadTaskControl()
         {
             InitializeComponent();
+
+            m_uncControl = new UNCTaskControl();
+            panelOut.Controls.Add(m_uncControl);
+            m_uncControl.Dock = DockStyle.Fill;
+            m_uncControl.HideModifyDateOption();
+            
             ConfigureSearchFileTextBox();
         }
+
+        private UNCTaskControl m_uncControl;
 
         public void LeaveCleanup()
         {
@@ -39,6 +47,8 @@ namespace iba.Controls
             m_manager = manager;
             m_data = datasource as UploadTaskData;
 
+            m_uncControl.SetData(m_data);
+
             m_btnCheckConnection.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(32);
 
             m_tbServer.Text = m_data.Server;
@@ -49,7 +59,6 @@ namespace iba.Controls
             m_tbPathToPrivateKey.Text = m_data.PathToPrivateKey;
             m_tbPathToCertificate.Text = m_data.PathToCertificate;
             m_createZipArchive.Checked = m_data.CreateZipArchive;
-            m_chkOverwrite.Checked = m_data.Overwrite;
 
             m_chkAnonymous.Checked = m_data.Anonymous;
             m_chkAcceptAnySshHostKey.Checked = m_data.AcceptAnySshHostKey;
@@ -61,7 +70,7 @@ namespace iba.Controls
             
             m_rbDatFile.Checked = m_data.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.DATFILE;
             m_rbPrevOutput.Checked = m_data.WhatFileUpload == UploadTaskData.WhatFileUploadEnum.PREVOUTPUT;
-            }
+        }
 
         public void SaveData()
         {
@@ -73,7 +82,6 @@ namespace iba.Controls
             m_data.PathToPrivateKey = m_tbPathToPrivateKey.Text;
             m_data.PathToCertificate = m_tbPathToCertificate.Text;
             m_data.CreateZipArchive = m_createZipArchive.Checked;
-            m_data.Overwrite = m_chkOverwrite.Checked;
 
             m_data.Protocol = (UploadTaskData.TransferProtocol)m_cbProtocol.SelectedIndex;
             m_data.EncryptionChoice = (UploadTaskData.EncryptionChoiceEnum)m_cbEncryption.SelectedIndex;
@@ -90,6 +98,9 @@ namespace iba.Controls
 
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED)
                 TaskManager.Manager.ReplaceConfiguration(m_data.ParentConfigurationData);
+
+            m_uncControl.SaveData();
+            m_data.UpdateUNC();
         }
 
         private enum Protocol
@@ -110,11 +121,12 @@ namespace iba.Controls
 
         private void m_cbProtocol_SelectedIndexChanged(object sender, EventArgs e)
         {
+            SuspendLayout();
             var selectedProtocol = (Protocol)((ComboBox)sender).SelectedIndex;
             var selectedEncryption = (Encryption)m_cbEncryption.SelectedIndex;
 
             ForAllControls(m_gbOption, (control) => control.Visible = true);
-            ForAllControls(m_gbTarget, (control) => control.Visible = true);
+            ForAllControls(m_gbProtocol, (control) => control.Visible = true);
 
             switch (selectedProtocol)
             {
@@ -133,10 +145,29 @@ namespace iba.Controls
                     break; 
             }
 
+
+            SetStandardPorts(selectedProtocol);
+            ResumeLayout();
+        }
+        private void m_cbEncryption_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedEncryption = (Encryption)((ComboBox)sender).SelectedIndex;
+            var selectedProtocol = (Protocol)m_cbProtocol.SelectedIndex;
+
+            var ftpEncryptionControls = new List<Control>
+            {
+                m_chkAcceptAnyTlsCertificate, m_tlpPathtoCertificate
+            };
+            ftpEncryptionControls.ForEach(control => control.Visible = selectedProtocol == Protocol.FTP &&
+                                                                       selectedEncryption != Encryption.Unencrypted);
+
+            var sshEncryptionControls = new List<Control> { m_chkAcceptAnySshHostKey, m_tlpPathToKey };
+            sshEncryptionControls.ForEach(control => control.Visible = selectedProtocol == Protocol.SFTP ||
+                                                                       selectedProtocol == Protocol.SCP);
+
             SetStandardPorts(selectedProtocol);
         }
-
-        public static void ForAllControls(Control parent, Action<Control> action)
+        private static void ForAllControls(Control parent, Action<Control> action)
         {
             foreach (Control c in parent.Controls)
             {
@@ -158,7 +189,6 @@ namespace iba.Controls
 
             m_chkAcceptAnySshHostKey.Visible = false;
             m_tlpPathToKey.Visible = false;
-            m_chkOverwrite.Visible = false;
         }
 
         private void SetupSftpAndScpControls()
@@ -170,7 +200,6 @@ namespace iba.Controls
             m_chkAnonymous.Visible = false;
             m_tlpPathtoCertificate.Visible = false;
             m_chkAcceptAnyTlsCertificate.Visible = false;
-            m_chkOverwrite.Visible = false;
         }
 
         private void SetupAmazonS3Controls()
@@ -187,7 +216,6 @@ namespace iba.Controls
             m_chkAnonymous.Visible = false;
             m_panelChkBoxControls.Visible = false;
             m_panelFilePath.Visible = false;
-            m_chkOverwrite.Visible = false;
         }
 
         private void SetupAzureControls()
@@ -203,25 +231,6 @@ namespace iba.Controls
             m_panelFtpEncryption.Visible = false;
             m_panelChkBoxControls.Visible = false;
             m_panelFilePath.Visible = false;
-        }
-
-        private void m_cbEncryption_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var selectedEncryption = (Encryption)((ComboBox)sender).SelectedIndex;
-            var selectedProtocol = (Protocol)m_cbProtocol.SelectedIndex;
-
-            var ftpEncryptionControls = new List<Control>
-            {
-                m_chkAcceptAnyTlsCertificate, m_tlpPathtoCertificate
-            };
-            ftpEncryptionControls.ForEach(control => control.Visible = selectedProtocol == Protocol.FTP &&
-                                                                       selectedEncryption != Encryption.Unencrypted);
-
-            var sshEncryptionControls = new List<Control> { m_chkAcceptAnySshHostKey, m_tlpPathToKey };
-            sshEncryptionControls.ForEach(control => control.Visible = selectedProtocol == Protocol.SFTP || 
-                                                                       selectedProtocol == Protocol.SCP);
-
-            SetStandardPorts(selectedProtocol);
         }
 
         private void SetStandardPorts(Protocol selectedProtocol)
@@ -295,17 +304,16 @@ namespace iba.Controls
         private void m_btnCheckConnection_Click(object sender, EventArgs e)
         {
             SaveData();
-            var errormessage = string.Empty;
+            var errorMessage = string.Empty;
             var ok = false;
 
-            using (var wait = new WaitCursor())
+            using (new WaitCursor())
             {
-
-                var uploadTaskWorker = new UploadTaskWorker(string.Empty, m_data);
+                var uploadTaskWorker = UploadTaskWorker.CreateWorker(m_data);
 
                 try
                 {
-                    ok = uploadTaskWorker.TestConnection(out errormessage);
+                    ok = uploadTaskWorker.TestConnection(out errorMessage, m_data);
                 }
                 catch (Exception ex)
                 {
@@ -319,7 +327,7 @@ namespace iba.Controls
             }
             else
             {
-                MessageBox.Show(errormessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbDown(32);
             }
         }
