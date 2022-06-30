@@ -24,59 +24,34 @@ namespace iba.Processing
         bool TestConnection(out string errorMessage, UploadTaskData data);
     }
 
-    internal class AmazonAwsUploadTaskWorker : UploadTaskWorker
+    internal static class UploadTaskWorkerCreator
     {
-        public AmazonAwsUploadTaskWorker(UploadTaskData data) : base(data)
-        {
-        }
-    }
-
-    internal class FtpUploadTaskWorker : UploadTaskWorker
-    {
-        public FtpUploadTaskWorker(UploadTaskData data) : base(data)
-        {
-        }
-    }
-    internal class SftpUploadTaskWorker : UploadTaskWorker
-    {
-        public SftpUploadTaskWorker(UploadTaskData data) : base(data)
-        {
-        }
-    }
-
-    internal class ScpUploadTaskWorker : UploadTaskWorker
-    {
-        public ScpUploadTaskWorker(UploadTaskData data) : base(data)
-        {
-        }
-    }
-
-    internal abstract class UploadTaskWorker : IUploadTaskWorker
-    {
-        private readonly UploadTaskData _data;
-
-        protected UploadTaskWorker(UploadTaskData data)
-        {
-            _data = data;
-        }
-
-        internal static IUploadTaskWorker CreateWorker(UploadTaskData data)
+        public static IUploadTaskWorker CreateUploadTaskWorker(UploadTaskData data)
         {
             return data.Protocol switch
             {
-                UploadTaskData.TransferProtocol.Ftp => new FtpUploadTaskWorker(data),
-                UploadTaskData.TransferProtocol.Sftp => new SftpUploadTaskWorker(data),
-                UploadTaskData.TransferProtocol.Scp => new ScpUploadTaskWorker(data),
-                UploadTaskData.TransferProtocol.AmazonS3 => new AmazonAwsUploadTaskWorker(data),
+                UploadTaskData.TransferProtocol.Ftp => new WinScpUploadTaskWorker(data),
+                UploadTaskData.TransferProtocol.Sftp => new WinScpUploadTaskWorker(data),
+                UploadTaskData.TransferProtocol.Scp => new WinScpUploadTaskWorker(data),
+                UploadTaskData.TransferProtocol.AmazonS3 => new WinScpUploadTaskWorker(data),
                 UploadTaskData.TransferProtocol.AzureDataLake => new AzureDataLakeUploadTaskWorker(data),
                 _ => throw new ArgumentOutOfRangeException(nameof(data), $"Not Available: {data.Protocol}")
             };
         }
+    }
 
+    internal class WinScpUploadTaskWorker : IUploadTaskWorker
+    {
+        private readonly UploadTaskData _data;
+
+        internal WinScpUploadTaskWorker(UploadTaskData data)
+        {
+            _data = data;
+        }
         /// <summary>
         /// Configure session and upload file
         /// </summary>
-        public virtual void UploadFile(string datFile, ConfigurationWorker configurationWorker)
+        public void UploadFile(string datFile, ConfigurationWorker configurationWorker)
         {
             using var session = CreateSession(_data);
 
@@ -88,7 +63,7 @@ namespace iba.Processing
             (outputFilename, datFile) = CreateZipArchiveIfRequired(_data, outputFilename, datFile);
 
             Upload(session, _data, datFile, outputFilename, outputDir);
-
+            
             DeleteZipArchive(datFile);
         }
 
@@ -150,7 +125,7 @@ namespace iba.Processing
             var outputFilename = configurationWorker?.GetOutputFileName(data, datFile);
 
             outputFilename = string.Concat(outputFilename, data.CreateZipArchive ? ".zip" : ".dat");
-
+            
             return new Tuple<string, string>(outputDir, outputFilename);
         }
 
@@ -395,7 +370,7 @@ namespace iba.Processing
                 errormessage = ex.Message;
                 return false;
             }
-
+            
             return true;
         }
 
@@ -444,9 +419,9 @@ namespace iba.Processing
             var serviceUri = new Uri("https://" + _data.Username + ".dfs.core.windows.net");
             var dataLakeServiceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
 
-            var (outputDir, outputFilename) = UploadTaskWorker.CreateOutput(datFile, _data, configurationWorker);
+            var (outputDir, outputFilename) = WinScpUploadTaskWorker.CreateOutput(datFile, _data, configurationWorker);
 
-            (outputFilename, datFile) = UploadTaskWorker.CreateZipArchiveIfRequired(_data, outputFilename, datFile);
+            (outputFilename, datFile) = WinScpUploadTaskWorker.CreateZipArchiveIfRequired(_data, outputFilename, datFile);
 
             var dataLakeFileSystemClient = dataLakeServiceClient.GetFileSystemClient(GetFilesystemPath(outputDir));
             

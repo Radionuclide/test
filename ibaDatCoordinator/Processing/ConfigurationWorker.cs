@@ -4617,7 +4617,7 @@ namespace iba.Processing
             {
                 foreach (var fileToCopy in filesToCopy)
                 {
-                    var uploadTaskWorker = UploadTaskWorker.CreateWorker(taskData);
+                    var uploadTaskWorker = UploadTaskWorkerCreator.CreateUploadTaskWorker(taskData);
 
                     uploadTaskWorker.UploadFile(fileToCopy, this);
                     

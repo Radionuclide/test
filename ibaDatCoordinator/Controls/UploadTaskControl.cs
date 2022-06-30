@@ -309,7 +309,7 @@ namespace iba.Controls
 
             using (new WaitCursor())
             {
-                var uploadTaskWorker = UploadTaskWorker.CreateWorker(m_data);
+                var uploadTaskWorker = UploadTaskWorkerCreator.CreateUploadTaskWorker(m_data);
 
                 try
                 {
