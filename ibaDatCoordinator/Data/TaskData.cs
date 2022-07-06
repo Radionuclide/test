@@ -172,6 +172,6 @@ namespace iba.Data
         abstract public bool IsSameInternal(TaskData taskData);
 
         public virtual int RequiredLicense => Licensing.LicenseId.None;
-
+        public virtual int FallBackLicense => Licensing.LicenseId.None;
     }
 }

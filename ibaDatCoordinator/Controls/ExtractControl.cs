@@ -72,6 +72,8 @@ namespace iba.Controls
             m_rbFile.Checked = m_data.ExtractToFile;
             m_rbDbase.Checked = !m_data.ExtractToFile;
             m_panelFile.Enabled = m_rbFile.Checked;
+            m_cbKPIOnly.Checked = m_data.KpiOnly;
+            m_cbKPIOnly.Enabled = !m_rbFile.Checked;
 
             m_rbBinaryFile.Checked = m_data.FileType == ExtractData.ExtractFileType.BINARY;
             m_rbTextFile.Checked = m_data.FileType == ExtractData.ExtractFileType.TEXT;
@@ -99,6 +101,8 @@ namespace iba.Controls
         {
             m_data.AnalysisFile = m_pdoFileTextBox.Text;
             m_data.ExtractToFile = m_rbFile.Checked;
+
+            m_data.KpiOnly = m_cbKPIOnly.Checked;
 
             if (m_rbBinaryFile.Checked)
                 m_data.FileType = ExtractData.ExtractFileType.BINARY;
@@ -155,6 +159,7 @@ namespace iba.Controls
         private void m_rbDbase_CheckedChanged(object sender, EventArgs e)
         {
             m_panelFile.Enabled = m_rbFile.Checked;
+            m_cbKPIOnly.Enabled = !m_rbFile.Checked;
         }
 
 		private void m_btnUploadPDO_Click(object sender, EventArgs e)

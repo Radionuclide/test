@@ -1171,6 +1171,12 @@ namespace iba.Processing
                     continue;
 
                 License lic = TaskManager.Manager.LicenseManager.AcquireLicense(licId);
+                if (!lic.LicenseOk && task.FallBackLicense != Licensing.LicenseId.None)
+                {
+                    licId = task.FallBackLicense;
+                    lic = TaskManager.Manager.LicenseManager.AcquireLicense(licId);
+                }
+
                 if (!lic.LicenseOk)
                 {
                     Log(Logging.Level.Exception, Properties.Resources.logTaskNotLicensed, "", task);

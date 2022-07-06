@@ -119,7 +119,10 @@ namespace iba.Processing
                     }
                     else
                     {
-                        mon.Execute(delegate() { m_ibaAnalyzer.Extract(0, String.Empty); });
+                        if (m_task.KpiOnly)
+                            mon.Execute(delegate () { m_ibaAnalyzer.ExtractKPI(0, String.Empty); });
+                        else
+                            mon.Execute(delegate() { m_ibaAnalyzer.Extract(0, String.Empty); });
                     }
                     //code on succes
                     lock (m_sd.DatFileStates)

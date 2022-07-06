@@ -574,6 +574,21 @@ namespace iba.Remoting
             //Something went wrong --> Disconnect
             return new TimeSpan(0);
         }
+
+        public void ExtractAll(int fileExtract, string output)
+        {
+            analyzer.ExtractAll(fileExtract, output);
+        }
+
+        public void SetDatabaseName(string output)
+        {
+            analyzer.SetDatabaseName(output);
+        }
+
+        public void ExtractKPI(int fileExtract, string output)
+        {
+            analyzer.ExtractKPI(fileExtract, output);
+        }
         #endregion
     }
 
@@ -1538,6 +1553,41 @@ namespace iba.Remoting
             return false;
         }
 
+        public void ExtractAll(int fileExtract, string output)
+        {
+            try
+            {
+                remoteIbaAnalyzer.ExtractAll(fileExtract, output);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void SetDatabaseName(string output)
+        {
+            try
+            {
+                remoteIbaAnalyzer.SetDatabaseName(output);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
+
+        public void ExtractKPI(int fileExtract, string output)
+        {
+            try
+            {
+                remoteIbaAnalyzer.ExtractKPI(fileExtract, output);
+            }
+            catch (Exception ex)
+            {
+                HandleBrokenConnection(ex);
+            }
+        }
     }
 
     public class ibaAnalyzerSignalTreeClientWrapper : IDisposable, IbaAnalyzer.ISignalTree

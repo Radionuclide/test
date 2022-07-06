@@ -16,6 +16,7 @@ namespace iba.Data
             m_toFile = false;
             m_fileType = ExtractFileType.BINARY;
             m_monitorData = new MonitorData();
+            m_kpiOnly = false;
         }
 
         public ExtractData() : this(null)
@@ -28,6 +29,9 @@ namespace iba.Data
             get { return m_toFile; }
             set { m_toFile = value; }
         }
+
+        private bool m_kpiOnly;
+        public bool KpiOnly { get => m_kpiOnly; set => m_kpiOnly = value; }
 
         public enum ExtractFileType { TEXT, BINARY, COMTRADE, TDMS, PARQUET,MATLAB};
         private ExtractFileType m_fileType;
@@ -55,6 +59,7 @@ namespace iba.Data
             ed.m_fileType = m_fileType;
             CopyUNCData(ed);
             ed.m_monitorData = (MonitorData) m_monitorData.Clone();
+            ed.m_kpiOnly = m_kpiOnly;
             return ed;
         }
 
@@ -68,9 +73,11 @@ namespace iba.Data
             other.m_pdoFile == m_pdoFile &&
             other.m_toFile == m_toFile &&
             other.m_fileType == m_fileType &&
-            other.m_monitorData.IsSame(m_monitorData);
+            other.m_monitorData.IsSame(m_monitorData) &&
+            other.m_kpiOnly == m_kpiOnly;
         }
 
-        public override int RequiredLicense => ExtractToFile ? Licensing.LicenseId.FileExtract : Licensing.LicenseId.DBExtract;
+        public override int RequiredLicense => ExtractToFile ? Licensing.LicenseId.FileExtract : (KpiOnly?Licensing.LicenseId.Publish:Licensing.LicenseId.DBExtract);
+        public override int FallBackLicense => ExtractToFile ? Licensing.LicenseId.None : (KpiOnly ? Licensing.LicenseId.DBExtract : Licensing.LicenseId.None);
     }
 }

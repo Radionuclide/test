@@ -22,7 +22,7 @@ namespace iba.Processing
 
         public void DoWork(string filename, ConfigurationData.FileFormatEnum fileFormat, string pdoForTextFile)
         {
-            if (!File.Exists(m_task.AnalysisFile))
+            if (!String.IsNullOrEmpty(m_task.AnalysisFile) && !File.Exists(m_task.AnalysisFile))
             {
                 SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile);
                 return;
@@ -68,10 +68,16 @@ namespace iba.Processing
                     mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
                 }
 
-                mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
-                
-                mon.Execute(() => { m_ibaAnalyzer.Extract(1, outFile); });
+                if (string.IsNullOrEmpty(m_task.AnalysisFile))
+                {
+                    mon.Execute(() => { m_ibaAnalyzer.ExtractAll(1, outFile); });
+                }
+                else
+                {
+                    mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
 
+                    mon.Execute(() => { m_ibaAnalyzer.Extract(1, outFile); });
+                }
                 mon.Execute(() => m_ibaAnalyzer.CloseDataFile(0));
 
                 if (m_task.UsesQuota)

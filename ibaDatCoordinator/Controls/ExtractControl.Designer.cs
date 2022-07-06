@@ -56,6 +56,7 @@ namespace iba.Controls
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_cbKPIOnly = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.m_panelFile.SuspendLayout();
@@ -93,7 +94,6 @@ namespace iba.Controls
             // m_btnUploadPDO
             // 
             resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
-            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload(16);
             this.m_btnUploadPDO.Name = "m_btnUploadPDO";
             this.m_btnUploadPDO.UseVisualStyleBackColor = true;
             this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
@@ -101,7 +101,6 @@ namespace iba.Controls
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
             this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -109,7 +108,6 @@ namespace iba.Controls
             // m_browseFileButton
             // 
             resources.ApplyResources(this.m_browseFileButton, "m_browseFileButton");
-            this.m_browseFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
             this.m_browseFileButton.Name = "m_browseFileButton";
             this.m_browseFileButton.UseVisualStyleBackColor = true;
             this.m_browseFileButton.Click += new System.EventHandler(this.m_browseFileButton_Click);
@@ -122,6 +120,7 @@ namespace iba.Controls
             // groupBox3
             // 
             resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this.m_cbKPIOnly);
             this.groupBox3.Controls.Add(this.m_rbDbase);
             this.groupBox3.Controls.Add(this.m_rbFile);
             this.groupBox3.Controls.Add(this.m_panelFile);
@@ -270,6 +269,12 @@ namespace iba.Controls
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
             // 
+            // m_cbKPIOnly
+            // 
+            resources.ApplyResources(this.m_cbKPIOnly, "m_cbKPIOnly");
+            this.m_cbKPIOnly.Name = "m_cbKPIOnly";
+            this.m_cbKPIOnly.UseVisualStyleBackColor = true;
+            // 
             // ExtractControl
             // 
             resources.ApplyResources(this, "$this");
@@ -322,5 +327,6 @@ namespace iba.Controls
 		private System.Windows.Forms.RadioButton m_rbMatLab;
 		private System.Windows.Forms.Button m_btnUploadPDO;
         private System.Windows.Forms.ToolTip m_toolTip;
+        private System.Windows.Forms.CheckBox m_cbKPIOnly;
     }
 }
