@@ -129,12 +129,12 @@ namespace ibaDatCoordinatorTests
             else if (t.IsClass)
             {
                 throw new NotImplementedException();
-                var props = t.GetProperties();
-                var c = Activator.CreateInstance(t);
-                foreach (var p in props)
-                {
-                    p.SetValue(c, RandObj(p.PropertyType));
-                }
+                //var props = t.GetProperties();
+                //var c = Activator.CreateInstance(t);
+                //foreach (var p in props)
+                //{
+                //    p.SetValue(c, RandObj(p.PropertyType));
+                //}
             }
 
             throw new NotImplementedException();
