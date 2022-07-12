@@ -376,7 +376,7 @@ namespace iba.Data
             m_bRescanEnabled = m_jobType == JobTypeEnum.DatTriggered || m_jobType == JobTypeEnum.ExtFile;
             m_bReprocessErrors = m_jobType == JobTypeEnum.DatTriggered;
 
-            m_datDirectory = System.Environment.CurrentDirectory;
+            m_datDirectory = "";
             try
             {
                 RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ibaAnalyzer.exe", false);

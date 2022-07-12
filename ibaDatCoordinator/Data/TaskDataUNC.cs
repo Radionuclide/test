@@ -18,7 +18,7 @@ namespace iba.Data
             m_numbFolders = 10;
             m_quota = 1024;
             m_quotaFree = 1024;
-            m_outputLimitChoice = OutputLimitChoiceEnum.LimitDirectories;
+            m_outputLimitChoice = OutputLimitChoiceEnum.None;
             m_extension = "*.dat";
         }
 
