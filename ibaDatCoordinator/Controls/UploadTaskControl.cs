@@ -53,8 +53,8 @@ namespace iba.Controls
 
             m_tbServer.Text = m_data.Server;
             m_tbPort.Text = m_data.Port;
-            m_tbUsername.Text = m_data.Username;
-            m_tbPassword.Text = m_data.Password;
+            m_tbUsername.Text = m_data.UsernameFtp;
+            m_tbPassword.Text = m_data.PasswordFtp;
             m_tbRemotePath.Text = m_data.RemotePath;
             m_tbPathToPrivateKey.Text = m_data.PathToPrivateKey;
             m_tbPathToCertificate.Text = m_data.PathToCertificate;
@@ -76,8 +76,8 @@ namespace iba.Controls
         {
             m_data.Server = m_tbServer.Text;
             m_data.Port = m_tbPort.Text;
-            m_data.Username = m_tbUsername.Text;
-            m_data.Password = m_tbPassword.Text;
+            m_data.UsernameFtp = m_tbUsername.Text;
+            m_data.PasswordFtp = m_tbPassword.Text;
             m_data.RemotePath = m_tbRemotePath.Text;
             m_data.PathToPrivateKey = m_tbPathToPrivateKey.Text;
             m_data.PathToCertificate = m_tbPathToCertificate.Text;

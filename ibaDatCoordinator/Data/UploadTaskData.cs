@@ -23,26 +23,15 @@ namespace iba.Data
             set => m_port = value;
         }
 
-        private string m_username;
-
-        public string Username
-        {
-            get => m_username; 
-            set => m_username = value;
-        }
-        private string m_password;
+        public string UsernameFtp { get; set; }
 
         [XmlIgnore]
-        public string Password
-        {
-            get => m_password; 
-            set => m_password = value;
-        }
+        public string PasswordFtp { get; set; }
 
-        public string PasswordCrypted
+        public string PasswordCryptedFtp
         {
-            get => Crypt.Encrypt(m_password);
-            set => m_password = Crypt.Decrypt(value);
+            get => Crypt.Encrypt(PasswordFtp);
+            set => PasswordFtp = Crypt.Decrypt(value);
         }
         
         private string m_privateKeyPassphrase = string.Empty;
@@ -176,8 +165,8 @@ namespace iba.Data
         {
             UploadTaskData cd = new UploadTaskData(null);
             cd.m_server = m_server;
-            cd.m_username = m_username;
-            cd.m_password = m_password;
+            cd.UsernameFtp = UsernameFtp;
+            cd.PasswordFtp = PasswordFtp;
             cd.m_privateKeyPassphrase = m_privateKeyPassphrase;
             cd.m_port = m_port;
             cd.m_remotePath = m_remotePath;
@@ -209,8 +198,8 @@ namespace iba.Data
             return
                 other.m_whatFileUpload == m_whatFileUpload &&
                 other.m_server == m_server &&
-                other.m_username == m_username &&
-                other.m_password == m_password &&
+                other.UsernameFtp == UsernameFtp &&
+                other.PasswordFtp == PasswordFtp &&
                 other.m_privateKeyPassphrase == m_privateKeyPassphrase &&
                 other.m_port == m_port &&
                 other.m_remotePath == m_remotePath &&
