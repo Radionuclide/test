@@ -40,6 +40,10 @@
       <HintPath>..\Dependencies\ibaAnalyzer\Interop.ibaAnalyzer.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Interop.ibaAnalyzer">
+      <HintPath>..\Dependencies\ibaAnalyzer\Interop.ibaAnalyzer.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -122,6 +126,10 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
 copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"
+
+mkdir "$(SolutionDir)ibaDatCoordinatorService\bin\$(ConfigurationName)\plugins"
+copy "$(TargetPath)" "$(SolutionDir)ibaDatCoordinatorService\bin\$(ConfigurationName)\plugins"
+
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace AM_OSPC_plugin
 {
     [Serializable]
-    public class OSPCTaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer
+    public class OSPCTaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer, IGridAnalyzer
 	{
 
         #region IPluginTaskData Members
@@ -280,11 +280,11 @@ namespace AM_OSPC_plugin
         }
 
 		#endregion
-		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		public void SetGridAnalyzer(object e, IAnalyzerManagerUpdateSource analyzer)
 		{
 			if (m_control == null)
 				m_control = new OSPCTaskControl();
-			m_control.SetGridAnalyzer(e, analyzer);
+			m_control.SetGridAnalyzer(e as DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit, analyzer);
 		}
 
 		#region IPluginTaskDataIbaAnalyzer Members

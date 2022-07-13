@@ -10,7 +10,7 @@ using S7_writer;
 namespace S7_writer_plugin
 {
     [Serializable]
-    public class S7TaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer
+    public class S7TaskData : IPluginTaskData, IPluginTaskDataIsSame, IPluginTaskDataIbaAnalyzer, IGridAnalyzer
 	{
 
         #region IPluginTaskData Members
@@ -406,18 +406,18 @@ namespace S7_writer_plugin
             m_worker.SetIbaAnalyzer(Analyzer, Monitor);
         }
 
-		public void SetGridAnalyzer(DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit e, IAnalyzerManagerUpdateSource analyzer)
+		public void SetGridAnalyzer(object editor, IAnalyzerManagerUpdateSource analyzer)
 		{
 			if (m_control == null)
 				m_control = new S7TaskControl();
-			m_control.SetGridAnalyzer(e, analyzer);
+			m_control.SetGridAnalyzer(editor as DevExpress.XtraEditors.Repository.RepositoryItemPopupContainerEdit, analyzer);
 		}
 
-		#endregion
+        #endregion
 
-		#region IPluginTaskDataIbaAnalyzer Members
+        #region IPluginTaskDataIbaAnalyzer Members
 
-		public bool UsesAnalysis
+        public bool UsesAnalysis
         {
             get { return !string.IsNullOrEmpty(m_pdoFile); }
         }
