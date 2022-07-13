@@ -526,7 +526,7 @@ Section -Common
   File "..\Dependencies\Wibu\WibuCmNET.dll"
 
   File "versions_dat.htm"
-  File "LicenseInformation.txt"
+  File "ThirdPartyLicenses.txt"
   File "License_iba-software.rtf"
   File "Support.htm"
   
@@ -1016,7 +1016,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcr100.dll"
   Delete "$INSTDIR\msvcp100.dll"
   Delete "$INSTDIR\versions_dat.htm"
-  Delete "$INSTDIR\LicenseInformation.txt"
+  Delete "$INSTDIR\ThirdPartyLicenses.txt"
   Delete "$INSTDIR\License_iba-software.rtf"
   Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"

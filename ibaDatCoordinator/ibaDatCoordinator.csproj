@@ -869,10 +869,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Installer\LicenseInformation.txt">
-      <Link>LicenseInformation.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\overlay_white_bar_red_16.png" />
     <None Include="Resources\overlay_red_cross_16.png" />
     <None Include="Resources\overlay_clock_16.png" />
@@ -889,6 +885,10 @@
     <None Include="Resources\down.ico" />
     <None Include="Resources\UploadTaskIcon.ico" />
     <None Include="ibaDatCoordinator.ico" />
+    <Content Include="..\Installer\ThirdPartyLicenses.txt">
+      <Link>ThirdPartyLicenses.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\img_file.png" />
     <None Include="Resources\img_lock.png" />
     <None Include="Resources\img_networkError.ico" />

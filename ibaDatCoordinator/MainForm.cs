@@ -2531,7 +2531,7 @@ namespace iba
                 form.Value3 = GetibaFilesVersion();
 
                 form.IbaLicenseFile = "License_iba-software.rtf";
-                form.ThirdPartyLicensesFile = "LicenseInformation.txt";
+                form.ThirdPartyLicensesFile = "ThirdPartyLicenses.txt";
 
                 form.StartPosition = FormStartPosition.CenterParent;
                 form.ShowDialog(this);
