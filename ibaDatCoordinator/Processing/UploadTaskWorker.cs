@@ -148,8 +148,8 @@ namespace iba.Processing
             {
                 Protocol = SetProtocol(data.Protocol),
                 HostName = data.Server,
-                UserName = data.Username,
-                Password = data.Password,
+                UserName = data.UsernameFtp,
+                Password = data.PasswordFtp,
                 PortNumber = SetPort(data),
                 FtpSecure = SetEncryptionMode(data),
                 FtpMode = data.Mode == UploadTaskData.FtpMode.Passive ? FtpMode.Passive : FtpMode.Active
@@ -415,8 +415,8 @@ namespace iba.Processing
 
         public void UploadFile(string datFile, ConfigurationWorker configurationWorker)
         {
-            var sharedKeyCredential = new StorageSharedKeyCredential(_data.Username, _data.Password);
-            var serviceUri = new Uri("https://" + _data.Username + ".dfs.core.windows.net");
+            var sharedKeyCredential = new StorageSharedKeyCredential(_data.UsernameFtp, _data.PasswordFtp);
+            var serviceUri = new Uri("https://" + _data.UsernameFtp + ".dfs.core.windows.net");
             var dataLakeServiceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
 
             var (outputDir, outputFilename) = WinScpUploadTaskWorker.CreateOutput(datFile, _data, configurationWorker);
@@ -449,7 +449,7 @@ namespace iba.Processing
         {
             errorMessage = string.Empty;
 
-            if (string.IsNullOrEmpty(data.Username) || string.IsNullOrEmpty(data.Password))
+            if (string.IsNullOrEmpty(data.UsernameFtp) || string.IsNullOrEmpty(data.PasswordFtp))
             {
                 errorMessage = "Please enter your Account name and Shared key";
                 return false;
@@ -461,8 +461,8 @@ namespace iba.Processing
                 return false;
             }
 
-            var sharedKeyCredential = new StorageSharedKeyCredential(data.Username, data.Password);
-            var serviceUri = new Uri("https://" + data.Username + ".dfs.core.windows.net");
+            var sharedKeyCredential = new StorageSharedKeyCredential(data.UsernameFtp, data.PasswordFtp);
+            var serviceUri = new Uri("https://" + data.UsernameFtp + ".dfs.core.windows.net");
             var serviceClient = new DataLakeServiceClient(serviceUri, sharedKeyCredential);
 
             try
