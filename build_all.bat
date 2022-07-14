@@ -30,7 +30,7 @@ rem dotnet nuget locals all --clear
 @echo **********************************
 @echo *
 ::msbuild.exe ".\ibaDatCoordinator.sln" /p:Configuration=Release /p:Platform="x86" /target:build /restore /v:q
-msbuild.exe ".\ibaDatCoordinator.sln" /p:Configuration=Release /p:Platform="x86 with plugins" /target:build /restore /v:q
+msbuild.exe ".\ibaDatCoordinator.sln" /p:Configuration=Release /p:Platform="x86 with plugins" /target:build /restore /m /v:q
 if errorlevel 1 goto ERR
 
 goto :EOF
