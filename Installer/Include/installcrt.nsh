@@ -328,3 +328,5 @@ LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_GERMAN}  "Die folgenden Anwendun
 LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_GERMAN}  "Wenn Sie auf Ignorieren klicken, werden die Anwendungen zum Beenden gezwungen"
 LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_FRENCH}  "Les applications suivantes doivent être fermées avant que l'installation puisse se poursuivre:"
 LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_FRENCH}  "Cliquer sur Ignorer forcera les applications à quitter"
+LangString TEXT_IBASYSTEMFILES_LOCKED_0  ${LANG_SPANISH} "Es necesario cerrar las siguientes aplicaciones antes de proceder a la instalación:"
+LangString TEXT_IBASYSTEMFILES_LOCKED_1  ${LANG_SPANISH} "Al hacer clic en Ignorar, las aplicaciones saldrán"

@@ -82,3 +82,4 @@ Var EmbeddedCodeMeterBuild
 LangString TEXT_INSTALL_CODEMETER         ${LANG_ENGLISH} "Installing CodeMeter Runtime"
 LangString TEXT_INSTALL_CODEMETER         ${LANG_GERMAN}  "CodeMeter Runtime wird installiert"
 LangString TEXT_INSTALL_CODEMETER         ${LANG_FRENCH}  "Installation du CodeMeter Runtime"
+LangString TEXT_INSTALL_CODEMETER         ${LANG_SPANISH} "Instalación de CodeMeter Runtime"
