@@ -23,20 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Alunorf-sinec-h1-plugin\Alunorf-sinec-h1-plugin.csproj" />
-    <ProjectReference Include="..\AM-OSPC-plugin\AM-OSPC-plugin.csproj" />
-    <ProjectReference Include="..\AM-OSPC-protocol\AM-OSPC-protocol.vcxproj" />
-    <ProjectReference Include="..\DatCoordinatorPlugins\DatCoordinatorPlugins.csproj" />
-    <ProjectReference Include="..\DatCoUtil\DatCoUtil.vcxproj" />
-    <ProjectReference Include="..\H1Protocol\H1Protocol.vcxproj" />
     <ProjectReference Include="..\ibaDatCoordinatorService\ibaDatCoordinatorService.csproj" />
     <ProjectReference Include="..\ibaDatCoordinatorStatus\ibaDatCoordinatorStatus.csproj" />
     <ProjectReference Include="..\ibaDatCoordinator\ibaDatCoordinator.csproj" />
-    <ProjectReference Include="..\RohPlugin\RohPlugin.csproj" />
-    <ProjectReference Include="..\RohWriter\RohWriter.vcxproj" />
-    <ProjectReference Include="..\S7-writer-plugin\S7-writer-plugin.csproj" />
-    <ProjectReference Include="..\S7-writer\S7-writer.vcxproj" />
-    <ProjectReference Include="..\TKS-XML-plugin\TKS-XML-Plugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>

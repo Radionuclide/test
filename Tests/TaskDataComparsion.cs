@@ -4,17 +4,9 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Xunit;
-using iba.Plugins;
-using iba.Utility;
 using System.Reflection;
-using System.IO;
-using iba.TKS_XML_Plugin;
-using AM_OSPC_plugin;
-using S7_writer_plugin;
 using iba;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Diagnostics;
 using FluentAssertions.Execution;
 
 namespace ibaDatCoordinatorTests
