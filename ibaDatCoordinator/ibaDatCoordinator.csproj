@@ -873,7 +873,7 @@
     <None Include="Resources\overlay_red_cross_16.png" />
     <None Include="Resources\overlay_clock_16.png" />
     <None Include="Resources\overlay_blue_checkmark_16.png" />
-    <None Include="..\Installer\License_iba-software.rtf">
+    <None Include="..\Installer\Licenses\License_iba-software.rtf">
       <Link>License_iba-software.rtf</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -885,7 +885,7 @@
     <None Include="Resources\down.ico" />
     <None Include="Resources\UploadTaskIcon.ico" />
     <None Include="ibaDatCoordinator.ico" />
-    <Content Include="..\Installer\ThirdPartyLicenses.txt">
+    <Content Include="..\Installer\Licenses\ThirdPartyLicenses.txt">
       <Link>ThirdPartyLicenses.txt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
