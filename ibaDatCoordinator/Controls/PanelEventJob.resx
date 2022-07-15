@@ -117,9 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 17</value>
-  </metadata>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="gbGeneral.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -131,7 +132,6 @@
   <data name="m_cbRepErr.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_cbRepErr.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 68</value>
   </data>
@@ -191,38 +191,6 @@
   </data>
   <data name="m_undoChangesBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_undoChangesBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk12BgAAAAAAADYEAAAoAAAAGAAAABgAAAABAAgAAAAAAAAAAAASCwAAEgsAAAABAAAAAQAAAAAA/2BI
-        MP9gUED/QFhw/0BgcP9wcHD/gGhQ/wCAAP9geJD//wD//1CIoP9QmLD/cJCg/2Cw0P9wuND/cMjg/3DQ
-        4P9w2PD/sKCQ/4CQoP+AmKD/kJig/5CgsP+QqLD/sLCw/8CgkP/AqKD/wLCg/9CwoP/QuKD/0Liw/9DA
-        sP/gwLD/sLjA/5DA0P+QyND/sMDA/7DQ0P+A0OD/gNjw/4Dg8P/AwMD/0MDA/9D////g////8P////7+
-        /v//////AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wkJ
-        CQkJCQkJCQkAAAAAAAAAAAAAAAAACQkJCQkJCQkJCQkALi4uLi4uLi4uLi4ACQkJCQkJCQkJCQkALi4u
-        Ly4uLi4uLi4ACQkJCQkJCQkJCQkALi4vLy4HLi4uLi4ACQkJCQkJCQkJCQkALi8vLwcHBy8vLy4ACQkJ
-        CQkJCQkJCQkALi4vBwcHBwcuLy4ACQkJCQkJCQkJCQkALi4vLy4HLi4uLy4ACQkJCQkJCQkJCQkALi8v
-        Li4HLi8uLi4ACQkJCQkJCQkJCQkALi8uLi4HLi8vLi4ACQkJCQkJCQkJCQMALi8vLy8HLy8vLy4ACQkJ
-        CQkJCQkJAwMALi4uLi8HLy8vLi4ACQkJCQkJCQkDAw8ALi4uLi8HLi8uLi4ACQkJCQkJCQkDDg4ALi4u
-        Li4uLi4AAAAACQkJCQkJCQkEBAoALi4uLi4uLi4AAAAJCQkJCQkJAwQLDSgALi4uLi4uLi4AAAkJCQkJ
-        CQkDAw0QESYAAAAAAAAAAAAACQkJCRIBAQIDDigiFBQoCCgDJxMJCQkJCQkJCRIvIAwmJhYWJigUKAgo
-        ExQJCQkJCQkJCRkvKhcjFyElFRQjFCgTBQkJCQkJCQkJCRovBikXKQYpBiEUExMYAQkJCQkJCQkJCRsv
-        Ki8qLyotKSwkKyQgAQkJCQkJCQkJCR4vBioGKgYqBikGJAYgAQkJCQkJCQkJCR8vLy8vLy8vLy0tLCwr
-        AQkJCQkJCQkJCSAgHx8fHx8fHh4eHR0dHAkJCQkJCQkJCQ==
-</value>
   </data>
   <data name="m_undoChangesBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -336,20 +304,6 @@
   <data name="m_stopButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_stopButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsMAAALDAE/QCLIAAABoUlE
-        QVRIS5WUV3bDMAwEdf8D5HTpvffmFCk7eloHpEiZ/hgRoMRdPJhwNwxDlZ2uG1rIz0WKmzAebGTJpLi5
-        Sbyf+A3UTGYbLZVb/GfiW3yJkkmStIiDxS28Ep/iQ+Qm66BVHGwQxd/Fm3gR0WR8bCMOGFA94lSN+Kt4
-        Fo/iXthka3Fw9a48F78V1wLtxKDv+5E8j9jA+Y1ixOM3l8ohMeBFFHZcy2kP1RNjwmph4hOtVYOc/B05
-        7eFHJS4ZHGhNDHwQopj38xwDek9sA2OjmUEU2JSXDM61Ikz1uyIx4ANPKHGcVHKupSFH/GmKbXCmtW4A
-        +ggQ9ZQCe1Rs3HvgOgLxqVYM9sXMYGn8PaVU7cofhO87olTPzTkUiwa18eeuIwxxmBCn91R/LGYG/qto
-        Gf+7CXp+JS5EFD8S9H9PjIWPpethk5bxd9WI0xbEaQ3irt7iiQHwguppi8VdsVsBUdiVI+7hiprrwPAB
-        PXevLe4fMRe1cF65SRLDh9ySKI4oQhYz9Dv2PGe2YThAv2kJVSPMzShRE4fipuFgC/m5f4buD+6bJGLK
-        4wbsAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="m_stopButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -376,38 +330,6 @@
   </data>
   <data name="m_applyToRunningBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_applyToRunningBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk12BgAAAAAAADYEAAAoAAAAGAAAABgAAAABAAgAAAAAAAAAAAASCwAAEgsAAAABAAAAAQAAAAAA/2BI
-        MP9gUED/QFhw/0BgcP9wcHD/gGhQ/wCAAP9geJD//wD//1CIoP9QmLD/cJCg/2Cw0P9wuND/cMjg/3DQ
-        4P9w2PD/sKCQ/4CQoP+AmKD/kJig/5CgsP+QqLD/sLCw/8CgkP/AqKD/wLCg/9CwoP/QuKD/0Liw/9DA
-        sP/gwLD/sLjA/5DA0P+QyND/sMDA/7DQ0P+A0OD/gNjw/4Dg8P/AwMD/0MDA/9D////g////8P////7+
-        /v//////AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
-        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wkJ
-        CQkJCQkJCQkAAAAAAAAAAAAAAAAACQkJCQkJCQkJCQkALi4uLi4uLi4uLi4ACQkJCQkJCQkJCQkALi4u
-        Ly4uLi4uLi4ACQkJCQkJCQkJCQkALi4vLy4HLi4uLi4ACQkJCQkJCQkJCQkALi8vLy8HLy8vLy4ACQkJ
-        CQkJCQkJCQkALi4vLy4HLi4uLy4ACQkJCQkJCQkJCQkALi4vLy4HLi4uLy4ACQkJCQkJCQkJCQkALi8v
-        Li4HLi8uLi4ACQkJCQkJCQkJCQkALi8uLi4HLi8vLi4ACQkJCQkJCQkJCQMALi8vBwcHBwcvLy4ACQkJ
-        CQkJCQkJAwMALi4uLgcHBy8vLi4ACQkJCQkJCQkDAw8ALi4uLi4HLi8uLi4ACQkJCQkJCQkDDg4ALi4u
-        Li4uLi4AAAAACQkJCQkJCQkEBAoALi4uLi4uLi4AAAAJCQkJCQkJAwQLDSgALi4uLi4uLi4AAAkJCQkJ
-        CQkDAw0QESYAAAAAAAAAAAAACQkJCRIBAQIDDigiFBQoCCgDJxMJCQkJCQkJCRIvIAwmJhYWJigUKAgo
-        ExQJCQkJCQkJCRkvKhcjFyElFRQjFCgTBQkJCQkJCQkJCRovBikXKQYpBiEUExMYAQkJCQkJCQkJCRsv
-        Ki8qLyotKSwkKyQgAQkJCQkJCQkJCR4vBioGKgYqBikGJAYgAQkJCQkJCQkJCR8vLy8vLy8vLy0tLCwr
-        AQkJCQkJCQkJCSAgHx8fHx8fHh4eHR0dHAkJCQkJCQkJCQ==
-</value>
   </data>
   <data name="m_applyToRunningBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -439,23 +361,6 @@
   </data>
   <data name="m_startButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_startButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsMAAALDAE/QCLIAAACUUlE
-        QVRIS7WVSUtcURCFCwJKIi0hg8aYQSP+H/+Lm6gRUZEEYgYkoIsk4kJdiJsgrqS3rt3nt3R5vnrvvn6T
-        HYLdi4P3VtU5Nd3Xmrv/EzNL5m2ox7Wh1QjKQra82IpyTJ2f0GoM0fcLbivv3FaFtXm3D8J6Ds7Y8BGj
-        2LuSNAwhDhmhjTm3zbdu22/cdl67fcrBGRs+YogVpy1J5RLiVAdpS+QQfeX2edbt60u3vZkMnLHhI4ZY
-        OOLWk1TF19QugdsiUOmuBL5L7IdED6bdfk1l4IwNHzHEwoErjXKSvjgzp1Wq+SjCF1VItfsS+/nc7eip
-        2+mTDJyx4SOGWDhw0SjtpJ+AZVHBjma7m4tT6eEzt2OJnj12+zOZgTM2fMQQCwcuGtJqJuBFsDTapfX9
-        F97r9Sqwq4kMF52qXbHBgYuGtIoEIc67Zv7MkZlqvkE81ijOVe1lx637yO16PBA+bPgUE3d2AhcNtPLv
-        pJ+A10OL31SJ2g4So1C11n0o4TG3mweB8GHDp5i4Myq4aKDVSMByaJF56qUEiXlrJJzj/lexQpzphnEp
-        Ju68LrhooPU/CYqx3CvBgBFxjvu9RlRbcuoiyFpo/M2XzMKTL+xUf9eSBz1T+62P6UTvnddCtYwEcMaG
-        j5hBz7RIMPIPbZQ/FUUSZkcFzJF2mSmtM18qZdaAMzZ8xBALB640knglAYgkvAACqWaYP9cJWSdKQquQ
-        WNqw/uEkRBJ2wuJ5XSSkM4QAZ2z4iCnNvI6GIQFCQnwnLSjH1PkJrcY6ykJl1OOacLsFJ3mi4zTIHhMA
-        AAAASUVORK5CYII=
-</value>
   </data>
   <data name="m_startButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -2443,9 +2348,9 @@
   <data name="&gt;&gt;gbOutput.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>

@@ -17,6 +17,13 @@ namespace iba.Controls
         public UNCTaskControl()
         {
             InitializeComponent();
+            InitializeIcons();
+        }
+
+        private void InitializeIcons()
+        {
+            m_browseFolderButton.Image = iba.Icons.Gui.All.Images.FolderOpen();
+            m_checkPathButton.Image = iba.Icons.Gui.All.Images.ThumbUp();
         }
 
         public void SetData(TaskDataUNC data)

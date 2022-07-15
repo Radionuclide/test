@@ -22,6 +22,7 @@ namespace iba.Controls
         public SplitterTaskControl()
         {
             InitializeComponent();
+            InitializeIcons();
 
             channelTreeEdit = ChannelTreeEdit.CreateInstance(null, ChannelTreeFilter.Expressions | ChannelTreeFilter.Analog | ChannelTreeFilter.Digital);
             channelTreeEdit.Size = channelTreeEditPlaceholder.Size;
@@ -41,6 +42,14 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_executeIBAAButton, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
             m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
             m_toolTip.SetToolTip(m_browsePDOFileButton, Properties.Resources.ToolTip_BrowsePDO);
+        }
+
+        private void InitializeIcons()
+        {
+            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            this.m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
+            this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
         }
 
         private UNCTaskControl m_uncControl;

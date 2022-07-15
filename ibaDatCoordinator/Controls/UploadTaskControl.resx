@@ -117,9 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>14, 21</value>
-  </metadata>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_gbOption.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -143,7 +144,6 @@
   <data name="m_chkAcceptAnySshHostKey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_chkAcceptAnySshHostKey.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 27</value>
   </data>
@@ -873,16 +873,6 @@
   <data name="m_btnCheckConnection.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_btnCheckConnection.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DAAACwwBP0AiyAAAAOxJREFUOE+lkbENwjAURDMCIzABYgEkyigTMEhKBsgAlLADZcrQpYOKCiSEKGio
-        0iAozJ2xvz7Rl5KI4kn2/buzEyfOub8wxSGYYiTJ0zV4gxMYmR5LJAhkIbwDT1CYPkskCFxJWDedBTCM
-        wTywBS/AWyyAAzMdlJwsvtekMbIJ+irsL4EjyKwCmni6Nyl9CirFDTQyV0ZdUEW9DWZLemWvBn0L+HPP
-        sleDzgLoJfA/VzQ11AV11NWcL8Jw+aMrAwsOgG/OF+FTspAU4AHuOuxzssjTPeDp/hMAi1hKeHINJjrs
-        c21hKKbYH5d8AI15dGQw5KZjAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="m_btnCheckConnection.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1543,12 +1533,12 @@
   <data name="&gt;&gt;m_gbTarget.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
     <value>60</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>

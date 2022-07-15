@@ -186,6 +186,8 @@ namespace iba
             statusImgConnectedSecure = Icons.Gui.All.Images.LockClosedOrange();
             statusImgDisconnected = Icons.Gui.All.Images.ConnectorCenterDelete();
             statusImgStandalone = Icons.Gui.All.Images.MonitorNumberOneFilledBlue();
+            m_startButton.Image = Icons.Gui.All.Images.GoFilledGreen(32);
+            m_stopButton.Image = Icons.Gui.All.Images.StopFilledRed(32);
 
             iba.Controls.AppCertificatesControl.Init();
         }

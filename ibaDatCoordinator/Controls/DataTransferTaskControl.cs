@@ -27,8 +27,14 @@ namespace iba.Controls
         public DataTransferTaskControl()
         {
             InitializeComponent();
+            InitializeIcons();
             m_numBandwidth.Maximum = decimal.MaxValue;
             serverCertCb = CertificatesComboBox.ReplaceCombobox(ServerCertPlaceholder, useRegistry: false);
+        }
+
+        private void InitializeIcons()
+        {
+            this.m_btnCheckConnection.Image = Icons.Gui.All.Images.ThumbUp(32);
         }
 
         public void LeaveCleanup()

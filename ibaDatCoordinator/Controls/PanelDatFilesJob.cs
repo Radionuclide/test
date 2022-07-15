@@ -21,6 +21,7 @@ namespace iba.Controls
         public PanelDatFilesJob(ConfigurationData.JobTypeEnum mJobType)
         {
             InitializeComponent();
+            InitializeIcons();
 
             m_jobType = mJobType;
 
@@ -112,6 +113,18 @@ namespace iba.Controls
 
             m_toolTip.SetToolTip(m_refreshDats, iba.Properties.Resources.refreshDatButton);
             m_toolTip.SetToolTip(m_checkPathButton, iba.Properties.Resources.checkPathButton);
+        }
+
+        private void InitializeIcons()
+        {
+            this.m_undoChangesBtn.Image = Icons.Gui.All.Images.Download(32);
+			this.m_stopButton.Image = Icons.Gui.All.Images.StopFilledRed(32);
+            this.m_refreshDats.Image = Icons.Gui.All.Images.FlagRemove(32);
+            this.m_applyToRunningBtn.Image = Icons.Gui.All.Images.Upload(32);
+            this.m_startButton.Image = Icons.Gui.All.Images.GoFilledGreen(32);
+            this.m_browseDatFilesButton.Image = Icons.Gui.All.Images.FileDat(16);
+            this.m_checkPathButton.Image = Icons.Gui.All.Images.ThumbUp(16);
+            this.m_browseFolderButton.Image = Icons.Gui.All.Images.FolderOpen(16);
         }
 
         private bool busy = false;

@@ -43,6 +43,7 @@ namespace iba.Controls
         public HDEventCreationTaskControl()
         {
             InitializeComponent();
+            InitializeIcons();
 
             ImageList list = new ImageList();
             list.ImageSize = new System.Drawing.Size(16, 16);
@@ -123,7 +124,15 @@ namespace iba.Controls
             bResetChannelTree = false;
             bDisposeChannelTree = false;
 
-            m_btnTest.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
+        }
+
+        private void InitializeIcons()
+        {
+            m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            m_btnOpenPDO.Image = Icons.SystemTray.Images.IbaAnalyzer();
+            m_btnBrowseDAT.Image = Icons.Gui.All.Images.FolderOpen();
+            m_btnBrowsePDO.Image = Icons.Gui.All.Images.FolderOpen();
+            m_btnTest.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
         }
 
         private void OnServerSelectionChanged(object sender, EventArgs e)

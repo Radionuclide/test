@@ -105,7 +105,6 @@ namespace iba.Controls
             // m_refreshDats
             // 
             resources.ApplyResources(this.m_refreshDats, "m_refreshDats");
-            this.m_refreshDats.Image = Icons.Gui.All.Images.FileDatReprocessing(32);
             this.m_refreshDats.Name = "m_refreshDats";
             this.m_refreshDats.UseVisualStyleBackColor = true;
             this.m_refreshDats.Click += new System.EventHandler(this.m_refreshDats_Click);
@@ -113,7 +112,6 @@ namespace iba.Controls
             // m_deleteDats
             // 
             resources.ApplyResources(this.m_deleteDats, "m_deleteDats");
-            this.m_deleteDats.Image = Icons.Gui.All.Images.FileDatDelete(32);
             this.m_deleteDats.Name = "m_deleteDats";
             this.m_deleteDats.UseVisualStyleBackColor = true;
             this.m_deleteDats.Click += new System.EventHandler(this.m_deleteDats_Click);

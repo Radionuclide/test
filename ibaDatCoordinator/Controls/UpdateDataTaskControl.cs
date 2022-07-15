@@ -19,10 +19,16 @@ namespace iba.Controls
         public UpdateDataTaskControl()
         {
             InitializeComponent();
+            InitializeIcons();
             m_uncControl = new UNCTaskControl();
             panelOut.Controls.Add(m_uncControl);
             m_uncControl.Dock = DockStyle.Fill;
             m_uncControl.HideInfofieldFileNameOptions();
+        }
+
+        private void InitializeIcons()
+        {
+            this.m_btBrowseServer.Image = Icons.Gui.All.Images.FolderOpen();
         }
 
         private UNCTaskControl m_uncControl;

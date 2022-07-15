@@ -21,6 +21,7 @@ namespace iba.Controls
         public ExtractControl()
         {
             InitializeComponent();
+            InitializeIcons();
             m_uncControl = new UNCTaskControl();
             m_panelFile.Controls.Add(m_uncControl);
             Controls.Remove(m_groupBoxFileType);
@@ -45,6 +46,13 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_executeIBAAButton, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
             m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
             m_toolTip.SetToolTip(m_browseFileButton, Properties.Resources.ToolTip_BrowsePDO);
+        }
+
+        private void InitializeIcons()
+        {
+            m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            m_browseFileButton.Image = Icons.Gui.All.Images.FileDatFolder();
+            m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
         }
 
         private UNCTaskControl m_uncControl;

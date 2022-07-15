@@ -285,9 +285,9 @@
   <data name="m_nudInfoLengthDir.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>202, 17</value>
-  </metadata>
+  </data>
   <data name="m_nudInfoLengthDir.ToolTip" xml:space="preserve">
     <value>length of the infofield part, specify 0 for all characters</value>
   </data>
@@ -1347,15 +1347,6 @@
   <data name="m_browseFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_browseFolderButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EAAACxABrSO9dQAAALNJREFUOE+lkVERg0AMRJFSCfQbE0hAChKQgIRKqAQEVAQO0k2GzWSud5lr+/Hg
-        2HmXW2AQkb+oht9gl/s07UAKHuBWbiixi26IIZ5HcGheYY9udUBG6XoI5uveizWJA55g4+QMeHaYrhno
-        gBMslDLgreDQNQPWGqPYAp62/XiFM0oZ6gJry8C+QZRawNNf7G0ZarBGsQW8BXhbhjpgZpgBbwPeluHr
-        GtKLH+aTf6Ua9iPDGykKh+Dxwla1AAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="m_browseFolderButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1434,16 +1425,6 @@
   <data name="m_checkPathButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_checkPathButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EAAACxABrSO9dQAAAOxJREFUOE+lkbENwjAURDMCIzABYgEkyigTMEhKBsgAlLADZcrQpYOKCiSEKGio
-        0iAozJ2xvz7Rl5KI4kn2/buzEyfOub8wxSGYYiTJ0zV4gxMYmR5LJAhkIbwDT1CYPkskCFxJWDedBTCM
-        wTywBS/AWyyAAzMdlJwsvtekMbIJ+irsL4EjyKwCmni6Nyl9CirFDTQyV0ZdUEW9DWZLemWvBn0L+HPP
-        sleDzgLoJfA/VzQ11AV11NWcL8Jw+aMrAwsOgG/OF+FTspAU4AHuOuxzssjTPeDp/hMAi1hKeHINJjrs
-        c21hKKbYH5d8AI15dGQw5KZjAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="m_checkPathButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1468,9 +1449,9 @@
   <data name="&gt;&gt;m_checkPathButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 17</value>
-  </metadata>
+  </data>
   <data name="m_cbModifyDate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1768,9 +1749,9 @@
   <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>

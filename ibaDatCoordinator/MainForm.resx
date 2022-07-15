@@ -117,14 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="m_statusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_statusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>1335, 17</value>
-  </metadata>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_statusStrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_statusBarStripLabel.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -180,12 +180,12 @@
   <data name="splitContainer2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <metadata name="m_navBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_navBar.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>179, 17</value>
-  </metadata>
-  <metadata name="m_settingsPane.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="m_settingsPane.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>283, 17</value>
-  </metadata>
+  </data>
   <data name="m_settingsPane.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 26</value>
   </data>
@@ -213,9 +213,9 @@
   <data name="&gt;&gt;m_settingsPane.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="m_dataTransferPane.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_dataTransferPane.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 17</value>
-  </metadata>
+  </data>
   <data name="m_dataTransferPane.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 26</value>
   </data>
@@ -243,9 +243,9 @@
   <data name="&gt;&gt;m_dataTransferPane.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="m_opcUaPane.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_opcUaPane.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>420, 17</value>
-  </metadata>
+  </data>
   <data name="m_opcUaPane.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 26</value>
   </data>
@@ -273,9 +273,9 @@
   <data name="&gt;&gt;m_opcUaPane.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <metadata name="m_snmpPane.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_snmpPane.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>549, 17</value>
-  </metadata>
+  </data>
   <data name="m_snmpPane.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 26</value>
   </data>
@@ -303,9 +303,9 @@
   <data name="&gt;&gt;m_snmpPane.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <metadata name="m_watchdogPane.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_watchdogPane.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>673, 17</value>
-  </metadata>
+  </data>
   <data name="m_watchdogPane.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 26</value>
   </data>
@@ -333,9 +333,9 @@
   <data name="&gt;&gt;m_watchdogPane.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <metadata name="m_loggingPane.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_loggingPane.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>821, 17</value>
-  </metadata>
+  </data>
   <data name="m_btnClearLogging.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 62</value>
   </data>
@@ -546,9 +546,9 @@
   <data name="&gt;&gt;m_loggingPane.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <metadata name="m_statusPane.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_statusPane.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>957, 17</value>
-  </metadata>
+  </data>
   <data name="m_statusTreeView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -600,9 +600,9 @@
   <data name="&gt;&gt;m_statusPane.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <metadata name="m_configPane.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_configPane.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>1083, 17</value>
-  </metadata>
+  </data>
   <data name="m_configTreeView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -630,20 +630,6 @@
   <data name="m_stopButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>
   </data>
-  <data name="m_stopButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAHeSURBVFhHxZe7scIwEEVdArRAC7RAASS0QExG+kJCUjJi
-        InJaoAVaYOhgn46Wa/zZGcBgvDNH1l5Lq9XHxhRmNiih+EtCMaQoRolV4pi45a510LhHm1EYIyAUa/jA
-        +9z0PejzNJFQLCmKeSKa7avQdx7GvhOKmaLY3oN8g204RiIUc4d2kE8Jk2gJSWLZ/db3aW1HzUkuB+6T
-        PX8GsWsHs6xkup32d9lXxywrqcrsXeqfchVycU+AF4hL/bOKEuAtZrbZmF2vSUp2OplNp16PbDYzW6/N
-        Lhf3ueITR5qMmMT2BI5JyeP64MABoTN2PpsdDt4JbbdzlJj85dJ9dLXH0JWA2sr3BG+p1krAZ4x5lmbj
-        8aMOCiJf7VklfK0WerMtsTAmh59KyEWGKrPAuDKLycSbiGbQpg8YeqcEGFDLKCMRBemSQHMLdA5SCbnI
-        KACZLha+Vxgdda85YNMHDF33ZEzscQhRKHLN4WAweHXfWS5MfnPAd85AnfAQHnNHnWgF56qOzaCvPAVq
-        Wyd8DFd56TVrBa2uSBSUrZLO1R+zZwmEL6KBX8Uw6I8R+CoM+HMMg36QiH4+yf6isVpCyaAfpcK345Mz
-        Qd+On+XCD+ZAf0yqeCID/DXrmVD8HVb8A28GNhcMSpixAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="m_stopButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>40, 0</value>
   </data>
@@ -667,20 +653,6 @@
   </data>
   <data name="m_startButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>
-  </data>
-  <data name="m_startButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAHbSURBVFhHxZe/SsRAEMbzCOcbiK/gK9jYXXMPYGMnXCEI
-        gq1aBrtr5LA8LK7xGsHCxkYEW8XKwkbkQLBd59vkC/tnNImJtwM/SGZnv52d3WySzBiTFNW5SlSnRra/
-        PRDGwlxYCiYAPrQhZqBpaKhOF4gJUyEcsA70qU1EdRIRGArabJuCvkNNm6hOIB1zR6gruTYG0J39Dk7U
-        JGJHUXZNoA+i5fBvig3XZc3rgLa3McME/rLb2zL1xnQGx+yjDluTQ3P99GA+vj4tuN7M96K4taOROb2Z
-        mZf3N5EzNg59w7iSqgpuAjhAvMDdyzNp0m10cVzFYfD71+eyxTdouJolY2mKEsApVgVBFDOGcTasBgxt
-        iEEsZk7DgKiQFucwl6YoAW/zYTDaxslO5cc1E2OJOfvJ3cKLoylLsRR3lIAXxPJjsLAthHZwda76tWUQ
-        +z0BiNHoQyld6Kf9lEDoL1mXpuYJYF1DozCtTQJi7SrQJYGmS+BtQjxmtHAXcxNSuK9N6D2GrsDs8dZW
-        AEK4pjGxvh7DVgeRW1YM0MdB1PgoVkpqk+h0FNublC8je1NUId3r2DpSfpBUzpSfZAQdAoEutPsoJdIx
-        3Wc5EYF0PyYuEBNW/2v236jO1WGyb6vyooVSh10zAAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="m_startButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -904,9 +876,9 @@
   <data name="toolStripContainer1.Text" xml:space="preserve">
     <value>toolStripContainer1</value>
   </data>
-  <metadata name="m_menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>1211, 17</value>
-  </metadata>
+  </data>
   <data name="m_menuStrip.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
@@ -914,7 +886,7 @@
     <value>Magenta</value>
   </data>
   <data name="newToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Control+N</value>
+    <value>Ctrl+N</value>
   </data>
   <data name="newToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -926,7 +898,7 @@
     <value>Magenta</value>
   </data>
   <data name="openToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Control+O</value>
+    <value>Ctrl+O</value>
   </data>
   <data name="openToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -941,7 +913,7 @@
     <value>Magenta</value>
   </data>
   <data name="saveToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Control+S</value>
+    <value>Ctrl+S</value>
   </data>
   <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -974,7 +946,7 @@
     <value>Magenta</value>
   </data>
   <data name="cutToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Control+X</value>
+    <value>Ctrl+X</value>
   </data>
   <data name="cutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -986,7 +958,7 @@
     <value>Magenta</value>
   </data>
   <data name="copyToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Control+C</value>
+    <value>Ctrl+C</value>
   </data>
   <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -998,7 +970,7 @@
     <value>Magenta</value>
   </data>
   <data name="pasteToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Control+V</value>
+    <value>Ctrl+V</value>
   </data>
   <data name="pasteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -1007,7 +979,7 @@
     <value>&amp;Paste</value>
   </data>
   <data name="deleteToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Delete</value>
+    <value>Del</value>
   </data>
   <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -1183,21 +1155,21 @@
   <data name="&gt;&gt;toolStripContainer1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="m_saveFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_saveFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 56</value>
-  </metadata>
-  <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>162, 56</value>
-  </metadata>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>311, 56</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
     <value>74</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>

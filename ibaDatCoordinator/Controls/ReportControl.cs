@@ -21,6 +21,7 @@ namespace iba.Controls
         public ReportControl()
         {
             InitializeComponent();
+            InitializeIcons();
             m_extensionComboBox.Items.AddRange(new object[]{
                 "pdf",
                 "htm",
@@ -44,6 +45,14 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_executeIBAAButton, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
             m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
             m_toolTip.SetToolTip(m_browseFileButton, Properties.Resources.ToolTip_BrowsePDO);
+        }
+
+        private void InitializeIcons()
+        {
+            this.m_browseFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
+            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
+            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload(16);
+
         }
 
         //protected override void OnLoad(EventArgs e)

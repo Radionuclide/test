@@ -23,13 +23,18 @@ namespace iba.Controls
         public UploadTaskControl()
         {
             InitializeComponent();
-
+            InitializeIcons();
             m_uncControl = new UNCTaskControl();
             panelOut.Controls.Add(m_uncControl);
             m_uncControl.Dock = DockStyle.Fill;
             m_uncControl.HideModifyDateOption();
             
             ConfigureSearchFileTextBox();
+        }
+
+        private void InitializeIcons()
+        {
+            m_btnCheckConnection.Image = iba.Icons.Gui.All.Images.ThumbUp();
         }
 
         private UNCTaskControl m_uncControl;

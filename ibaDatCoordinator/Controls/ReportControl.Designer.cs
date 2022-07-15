@@ -109,7 +109,6 @@ namespace iba.Controls
             // m_browseFileButton
             // 
             resources.ApplyResources(this.m_browseFileButton, "m_browseFileButton");
-            this.m_browseFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
             this.m_browseFileButton.Name = "m_browseFileButton";
             this.m_browseFileButton.UseVisualStyleBackColor = true;
             this.m_browseFileButton.Click += new System.EventHandler(this.m_browseFileButton_Click);
@@ -117,7 +116,6 @@ namespace iba.Controls
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
             this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -135,7 +133,6 @@ namespace iba.Controls
             // m_btnUploadPDO
             // 
             resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
-            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload(16);
             this.m_btnUploadPDO.Name = "m_btnUploadPDO";
             this.m_btnUploadPDO.UseVisualStyleBackColor = true;
             this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);

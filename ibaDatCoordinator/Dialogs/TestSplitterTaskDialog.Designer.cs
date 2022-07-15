@@ -62,7 +62,6 @@
 			// m_browseFolderButton
 			// 
 			resources.ApplyResources(this.m_browseFolderButton, "m_browseFolderButton");
-			this.m_browseFolderButton.Image = Icons.Gui.All.Images.FolderOpen(16);
 			this.m_browseFolderButton.Name = "m_browseFolderButton";
 			this.m_toolTip.SetToolTip(this.m_browseFolderButton, resources.GetString("m_browseFolderButton.ToolTip"));
 			this.m_browseFolderButton.UseVisualStyleBackColor = true;
@@ -84,7 +83,6 @@
 			// m_btPerform
 			// 
 			resources.ApplyResources(this.m_btPerform, "m_btPerform");
-			this.m_btPerform.Image = Icons.Gui.All.Images.FolderOpen(16);
 			this.m_btPerform.Name = "m_btPerform";
 			this.m_btPerform.UseVisualStyleBackColor = true;
 			this.m_btPerform.Click += new System.EventHandler(this.m_btPerform_Click);

@@ -31,6 +31,7 @@ namespace iba.Controls
         public OpcUaControl()
         {
             InitializeComponent();
+            InitializeIcons();
 
             // set up endpoints grid
             gridCtrlEndpoints.DataSource = _endpoints;
@@ -55,6 +56,13 @@ namespace iba.Controls
             gbDebug.Visible = true;
             gbDebug.Dock = DockStyle.Top;
 #endif
+        }
+
+        private void InitializeIcons()
+        {
+            this.buttonEndpointRemove.Image = Icons.Gui.Standard.Images.Delete();
+            this.buttonEndpointCopy.Image = Icons.Gui.All.Images.Copy();
+            this.buttonEndpointAdd.Image = Icons.Gui.All.Images.PlusGreen();
         }
 
         private const int ImageIndexFolder = 0;

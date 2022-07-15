@@ -29,7 +29,7 @@ namespace iba.Controls
         {
             m_jobType = jobType;
             InitializeComponent();
-
+            InitializeIcons();
             m_sourcePanel.Visible = false;
 
             if(m_jobType != ConfigurationData.JobTypeEnum.Scheduled && m_jobType != ConfigurationData.JobTypeEnum.Event)
@@ -218,6 +218,10 @@ namespace iba.Controls
             CueProvider.SetCue(m_tbSender,@"ibaDatCoordinator <noreply@iba-ag.com>");
         }
 
+        private void InitializeIcons()
+        {
+            this.m_testNotification.Image = iba.Icons.Gui.Standard.Images.Print(32);
+        }
 
         public void UpdateLanguage()
         {

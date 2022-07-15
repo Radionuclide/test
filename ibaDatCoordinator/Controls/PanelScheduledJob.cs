@@ -42,10 +42,11 @@ namespace iba.Controls
             imageListError = new ImageList();
             imageListError.Images.Add(Icons.Gui.All.Images.CircleCrossFilledRed(16));
         }
-
+        
         public PanelScheduledJob()
         {
             InitializeComponent();
+            InitializeIcons();
             //((Bitmap)m_refreshDats.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_applyToRunningBtn.Image).MakeTransparent(Color.Magenta);
             ((Bitmap)m_undoChangesBtn.Image).MakeTransparent(Color.Magenta);
@@ -95,6 +96,14 @@ namespace iba.Controls
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
         }
 
+        private void InitializeIcons()
+        {
+            this.m_stopButton.Image = Icons.Gui.All.Images.StopFilledRed(32);
+            this.m_applyToRunningBtn.Image = Icons.Gui.All.Images.Upload(32);
+            this.m_startButton.Image = Icons.Gui.All.Images.GoFilledGreen(32);
+            this.m_undoChangesBtn.Image = Icons.Gui.All.Images.Download(32);
+        }
+        
         private RadioButton[] m_rbs;
         private long[] m_timeBases;
 

@@ -26,6 +26,7 @@ namespace iba.Controls
         public ComputedValuesTaskControl()
 		{
             InitializeComponent();
+            InitializeIcons();
             _analyzerManager = new AnalyzerManager();
             var channelEditor = new RepositoryItemChannelTreeEdit(_analyzerManager, ChannelTreeFilter.Digital | ChannelTreeFilter.Analog | ChannelTreeFilter.Logicals | ChannelTreeFilter.Expressions | ChannelTreeFilter.Text);
             channelEditor.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -49,6 +50,20 @@ namespace iba.Controls
             dataGrid.DataSource = _expressionTableData;
             _view = (GridView)dataGrid.MainView;
             _view.FocusedRowChanged += (sender, e) => UpdateTableButtons();
+        }
+
+        private void InitializeIcons()
+        {
+            this.buttonExpressionCopy.Image = iba.Icons.Gui.All.Images.Copy();
+            this.buttonExpressionRemove.Image = iba.Icons.Gui.All.Images.CrossRed();
+            this.buttonExpressionAdd.Image = iba.Icons.Gui.All.Images.PlusGreen();
+            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload(16);
+            this.m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
+            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
+            this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
+            this.downButton.Image = Icons.Gui.All.Images.ArrowDownBoxed(16);
+            this.m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
+            this.upButton.Image = Icons.Gui.All.Images.ArrowUpBoxed(16);
         }
 
         private void CellExpressionChanged(object sender, CellValueChangedEventArgs e)

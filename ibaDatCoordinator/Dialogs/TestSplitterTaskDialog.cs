@@ -22,6 +22,7 @@ namespace iba.Dialogs
         public TestSplitterTaskDialog(SplitterTaskData data)
         {
             InitializeComponent();
+            InitializeIcons();
             this.Icon = Icon.FromHandle(((Bitmap)Icons.Gui.All.Images.SplitDivide()).GetHicon());
             m_data = data;
             m_stw = new SplitterTaskWorker(data);
@@ -37,6 +38,13 @@ namespace iba.Dialogs
             m_bRunning = true;
             m_bgwCalc.RunWorkerAsync();
         }
+
+        private void InitializeIcons()
+        {
+            this.m_browseFolderButton.Image = Icons.Gui.All.Images.FolderOpen();
+            this.m_btPerform.Image = Icons.Gui.All.Images.FolderOpen();
+        }
+
         private Image m_btPerformImage;
         private bool readyToSplit;
 

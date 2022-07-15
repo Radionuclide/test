@@ -23,7 +23,8 @@ namespace iba.Controls
         public IfTaskControl()
         {
             InitializeComponent();
-
+            InitializeIcons();
+            
             channelTreeEdit = ChannelTreeEdit.CreateInstance(null, ChannelTreeFilter.Expressions | ChannelTreeFilter.Analog | ChannelTreeFilter.Digital);
             channelTreeEdit.Size = channelTreeEditPlaceholder.Size;
             channelTreeEdit.Location = channelTreeEditPlaceholder.Location;
@@ -45,9 +46,17 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
             m_toolTip.SetToolTip(m_browsePDOFileButton, Properties.Resources.ToolTip_BrowsePDO);
 
-            m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
         }
-
+        private void InitializeIcons()
+        {
+            m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
+            m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
+            m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
+        }
         private void UpdateTestButton()
         {
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)

@@ -26,6 +26,8 @@ namespace iba.Controls
         public ServiceSettingsControl()
         {
             InitializeComponent();
+            InitializeIcons();
+
             certificatesControl.SetControlHost(this);
             bool certListUpdated = LoadCertificatesIfDifferent();
             if (certListUpdated)
@@ -67,6 +69,11 @@ namespace iba.Controls
                 }
             }
 
+        }
+
+        private void InitializeIcons()
+        {
+            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
         }
 
         private CollapsibleElementManager m_ceManager;

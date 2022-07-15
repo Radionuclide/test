@@ -17,8 +17,15 @@ namespace iba.Controls
         public CleanupTaskControl()
         {
             InitializeComponent();
+            InitializeIcons();
         }
-        
+
+        private void InitializeIcons()
+        {
+            this.m_checkPathButton.Image = Icons.Gui.All.Images.ThumbUp();
+            this.m_browseFolderButton.Image = Icons.Gui.All.Images.FolderOpen();
+        }
+
         private void m_browseFolderButton_Click(object sender, EventArgs e)
         {
             if (Program.RunsWithService == Program.ServiceEnum.CONNECTED && !Program.ServiceIsLocal)

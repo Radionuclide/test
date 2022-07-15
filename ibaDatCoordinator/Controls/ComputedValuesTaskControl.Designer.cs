@@ -172,7 +172,6 @@
             // m_btnUploadPDO
             // 
             resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
-            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload(16);
             this.m_btnUploadPDO.Name = "m_btnUploadPDO";
             this.m_btnUploadPDO.UseVisualStyleBackColor = true;
             this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
@@ -191,7 +190,6 @@
             // m_browsePDOFileButton
             // 
             resources.ApplyResources(this.m_browsePDOFileButton, "m_browsePDOFileButton");
-            this.m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_browsePDOFileButton.UseVisualStyleBackColor = true;
             this.m_browsePDOFileButton.Click += new System.EventHandler(this.m_browsePDOFileButton_Click);
@@ -199,7 +197,6 @@
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer(16);
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
             this.m_executeIBAAButton.Click += new System.EventHandler(this.m_executeIBAAButton_Click);
@@ -207,7 +204,6 @@
             // m_browseDatFileButton
             // 
             resources.ApplyResources(this.m_browseDatFileButton, "m_browseDatFileButton");
-            this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_browseDatFileButton.UseVisualStyleBackColor = true;
             this.m_browseDatFileButton.Click += new System.EventHandler(this.m_browseDatFileButton_Click);
@@ -226,7 +222,6 @@
             // m_testButton
             // 
             resources.ApplyResources(this.m_testButton, "m_testButton");
-            this.m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue(16);
             this.m_testButton.Name = "m_testButton";
             this.m_testButton.UseVisualStyleBackColor = true;
             this.m_testButton.Click += new System.EventHandler(this.TestButton_Click);
@@ -308,7 +303,6 @@
             // upButton
             // 
             resources.ApplyResources(this.upButton, "upButton");
-            this.upButton.Image = Icons.Gui.All.Images.ArrowUpBoxed(16);
             this.upButton.Name = "upButton";
             this.upButton.UseVisualStyleBackColor = true;
             this.upButton.Click += new System.EventHandler(this.UpButton_Click);
@@ -316,7 +310,6 @@
             // downButton
             // 
             resources.ApplyResources(this.downButton, "downButton");
-            this.downButton.Image = Icons.Gui.All.Images.ArrowDownBoxed(16);
             this.downButton.Name = "downButton";
             this.downButton.UseVisualStyleBackColor = true;
             this.downButton.Click += new System.EventHandler(this.DownButton_Click);

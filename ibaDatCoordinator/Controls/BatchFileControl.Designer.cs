@@ -77,7 +77,6 @@ namespace iba.Controls
 			// m_newButton
 			// 
 			resources.ApplyResources(this.m_newButton, "m_newButton");
-			this.m_newButton.Image = Icons.Gui.All.Images.DocumentNew(16);
 			this.m_newButton.Name = "m_newButton";
 			this.m_newButton.UseVisualStyleBackColor = true;
 			this.m_newButton.Click += new System.EventHandler(this.m_newButton_Click);
@@ -100,7 +99,6 @@ namespace iba.Controls
 			// m_browseBATCHFileButton
 			// 
 			resources.ApplyResources(this.m_browseBATCHFileButton, "m_browseBATCHFileButton");
-			this.m_browseBATCHFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
 			this.m_browseBATCHFileButton.Name = "m_browseBATCHFileButton";
 			this.m_browseBATCHFileButton.UseVisualStyleBackColor = true;
 			this.m_browseBATCHFileButton.Click += new System.EventHandler(this.m_browseBATCHFileButton_Click);
@@ -108,7 +106,6 @@ namespace iba.Controls
 			// m_saveButton
 			// 
 			resources.ApplyResources(this.m_saveButton, "m_saveButton");
-			this.m_saveButton.Image = Icons.Gui.Standard.Images.Save(16);
 			this.m_saveButton.Name = "m_saveButton";
 			this.m_saveButton.UseVisualStyleBackColor = true;
 			this.m_saveButton.Click += new System.EventHandler(this.m_saveButton_Click);
@@ -213,7 +210,6 @@ namespace iba.Controls
 			// m_browseDatFileButton
 			// 
 			resources.ApplyResources(this.m_browseDatFileButton, "m_browseDatFileButton");
-			this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen(16);
 			this.m_browseDatFileButton.Name = "m_browseDatFileButton";
 			this.m_browseDatFileButton.UseVisualStyleBackColor = true;
 			this.m_browseDatFileButton.Click += new System.EventHandler(this.m_browseDatFileButton_Click);
@@ -251,7 +247,6 @@ namespace iba.Controls
 			// m_executeBatchFile
 			// 
 			resources.ApplyResources(this.m_executeBatchFile, "m_executeBatchFile");
-			this.m_executeBatchFile.Image = Icons.Gui.All.Images.TerminalCode(16);
 			this.m_executeBatchFile.Name = "m_executeBatchFile";
 			this.m_executeBatchFile.UseVisualStyleBackColor = true;
 			this.m_executeBatchFile.Click += new System.EventHandler(this.m_executeBatchFile_Click);

@@ -264,16 +264,6 @@
   <data name="m_btnUploadPDO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnUploadPDO.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAADOSURBVDhPpZDBFYJADEQpgRJ8VIDPIxeOHrl4twgLsQRL
-        shQ6CMmaCeOSPfg8/GUyyYSFTkT+IsR5mkZlVaTBk4MghA5YeOQm9XrlrbzqHg/po2o+rnfDdGtJiHqB
-        h8Wpl8TnpAsoXG4A7XMnZY1ZCCzQwZkD7mHJwrOlB1HdYIYmb1F604cF2hhANBKP/ajdsOuBS+Z52Hrf
-        ngoM3xzT8CyAUO6V41MAa8KzJ+ujR0UJ0nfC29+WeeXwIn7M7oH2P0AAYWAeyPyoufk70m3FhQ7XNgoH
-        gQAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="m_btnUploadPDO.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -289,29 +279,8 @@
   <data name="m_btnUploadPDO.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;m_btnUploadPDO.Name" xml:space="preserve">
-    <value>m_btnUploadPDO</value>
-  </data>
-  <data name="&gt;&gt;m_btnUploadPDO.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnUploadPDO.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_btnUploadPDO.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_executeIBAAButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAACfSURBVDhPpZMxDoAgDEU5o5sDk4OTiywsujg7eDc8T80n
-        qSmIxeBLfkoL/YQmGCIyXddTi9Db3MxKDMCybMmBmm4DbuYoD2mKBnlTnmt6nUEIZ7HO8AXVIUryOkxU
-        A6DlUGLAOOdjlHvQvh+P+j1EkA8S0fs1roGsA/UJwNohrufZJ/VxnL4NEWg5pBpAEs7lU6sGJUmTJgOI
-        TX5+ZzIXXxBOYAb0bJwAAAAASUVORK5CYII=
-</value>
   </data>
   <data name="m_executeIBAAButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>602, 29</value>
@@ -322,29 +291,8 @@
   <data name="m_executeIBAAButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Name" xml:space="preserve">
-    <value>m_executeIBAAButton</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_executeIBAAButton.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_browseFileButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_browseFileButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAACzSURBVDhPpZFREYNADESRUgn0GxNIQAoSkICESqgEBFQE
-        DtJNhs1krneZa/vx4Nh5l1tgEJG/qIbfYJf7NO1ACh7gVm4osYtuiCGeR3BoXmGPbnVARul6CObr3os1
-        iQOeYOPkDHh2mK4Z6IATLJQy4K3g0DUD1hqj2AKetv14hTNKGeoCa8vAvkGUWsDTX+xtGWqwRrEFvAV4
-        W4Y6YGaYAW8D3pbh6xrSix/mk3+lGvYjwxspCofg8cJWtQAAAABJRU5ErkJggg==
-</value>
   </data>
   <data name="m_browseFileButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>572, 29</value>
@@ -354,18 +302,6 @@
   </data>
   <data name="m_browseFileButton.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_browseFileButton.Name" xml:space="preserve">
-    <value>m_browseFileButton</value>
-  </data>
-  <data name="&gt;&gt;m_browseFileButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_browseFileButton.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_browseFileButton.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_pdoFileTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -379,21 +315,9 @@
   <data name="m_pdoFileTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_pdoFileTextBox.Name" xml:space="preserve">
-    <value>m_pdoFileTextBox</value>
-  </data>
-  <data name="&gt;&gt;m_pdoFileTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pdoFileTextBox.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;m_pdoFileTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <metadata name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 17</value>
-  </metadata>
+  </data>
   <data name="groupBox3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -637,21 +561,6 @@
   <data name="tableLayoutPanel4.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel4.Name" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel4.Parent" xml:space="preserve">
-    <value>m_groupBoxFileType</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel4.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tableLayoutPanel4.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbParquet" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_rbTDMS" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_rbTextFile" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbComtrade" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_rbBinaryFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbMatLab" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
   <data name="m_rbParquet.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -672,18 +581,6 @@
   </data>
   <data name="m_rbParquet.Text" xml:space="preserve">
     <value>PARQUET (.parquet)</value>
-  </data>
-  <data name="&gt;&gt;m_rbParquet.Name" xml:space="preserve">
-    <value>m_rbParquet</value>
-  </data>
-  <data name="&gt;&gt;m_rbParquet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbParquet.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
-  </data>
-  <data name="&gt;&gt;m_rbParquet.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_rbTDMS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -706,18 +603,6 @@
   <data name="m_rbTDMS.Text" xml:space="preserve">
     <value>TDMS (.tdms;.tdms_index)</value>
   </data>
-  <data name="&gt;&gt;m_rbTDMS.Name" xml:space="preserve">
-    <value>m_rbTDMS</value>
-  </data>
-  <data name="&gt;&gt;m_rbTDMS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTDMS.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
-  </data>
-  <data name="&gt;&gt;m_rbTDMS.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_rbComtrade.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -739,18 +624,6 @@
   <data name="m_rbComtrade.Text" xml:space="preserve">
     <value>COMTRADE (.dat;.cfg)</value>
   </data>
-  <data name="&gt;&gt;m_rbComtrade.Name" xml:space="preserve">
-    <value>m_rbComtrade</value>
-  </data>
-  <data name="&gt;&gt;m_rbComtrade.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbComtrade.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
-  </data>
-  <data name="&gt;&gt;m_rbComtrade.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_rbMatLab.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -768,18 +641,6 @@
   </data>
   <data name="m_rbMatLab.Text" xml:space="preserve">
     <value>Matlab (.mat)</value>
-  </data>
-  <data name="&gt;&gt;m_rbMatLab.Name" xml:space="preserve">
-    <value>m_rbMatLab</value>
-  </data>
-  <data name="&gt;&gt;m_rbMatLab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbMatLab.Parent" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
-  </data>
-  <data name="&gt;&gt;m_rbMatLab.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_monitorGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -970,12 +831,12 @@
   <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>173, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>

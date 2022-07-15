@@ -61,7 +61,7 @@ namespace iba.Controls
         public PanelEventJob()
         {
             InitializeComponent();
-
+            InitializeIcons();
             //hardcode these, otherwise our translators adapt them
             dtStartTimeHdQuery.CustomFormat = @"dd/MM/yyyy HH:mm:ss";
             dtStopTimeHdQuery.CustomFormat = @"dd/MM/yyyy HH:mm:ss";
@@ -119,6 +119,15 @@ namespace iba.Controls
 
             m_hdReader.ConnectionChanged += OnHdConnectionChanged;
         }
+
+        private void InitializeIcons()
+        {
+            this.m_undoChangesBtn.Image = Icons.Gui.All.Images.Download(32);
+            this.m_applyToRunningBtn.Image = Icons.Gui.All.Images.Upload(32);
+            this.m_startButton.Image = Icons.Gui.All.Images.GoFilledGreen(32);
+            this.m_stopButton.Image = Icons.Gui.All.Images.StopFilledRed(32);
+        }
+
         #endregion
 
         #region Dispose

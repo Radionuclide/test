@@ -59,7 +59,6 @@
 			// m_checkPathButton
 			// 
 			resources.ApplyResources(this.m_checkPathButton, "m_checkPathButton");
-			this.m_checkPathButton.Image = Icons.Gui.All.Images.ThumbUp(16);
 			this.m_checkPathButton.Name = "m_checkPathButton";
 			this.m_checkPathButton.UseVisualStyleBackColor = true;
 			this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
@@ -88,7 +87,6 @@
 			// m_browseFolderButton
 			// 
 			resources.ApplyResources(this.m_browseFolderButton, "m_browseFolderButton");
-			this.m_browseFolderButton.Image = Icons.Gui.All.Images.FolderOpen(16);
 			this.m_browseFolderButton.Name = "m_browseFolderButton";
 			this.m_browseFolderButton.UseVisualStyleBackColor = true;
 			this.m_browseFolderButton.Click += new System.EventHandler(this.m_browseFolderButton_Click);

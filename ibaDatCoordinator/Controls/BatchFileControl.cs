@@ -20,6 +20,7 @@ namespace iba.Controls
         public BatchFileControl()
         {
             InitializeComponent();
+            InitializeIcons();
             ((Bitmap)m_newButton.Image).MakeTransparent(Color.Magenta);
             m_textEditor.Document.TextContentChanged += new EventHandler(Document_TextContentChanged);
             m_textEditor.Document.DocumentChanged += new ICSharpCode.TextEditor.Document.DocumentEventHandler(Document_DocumentChanged);
@@ -38,6 +39,15 @@ namespace iba.Controls
                 this.MinimumSize = new Size(this.Size.Width, height);
                 m_executeGroupBox.Size = new Size(m_executeGroupBox.Size.Width, height2);
             }
+        }
+
+        private void InitializeIcons()
+        {
+			this.m_browseBATCHFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+			this.m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+			this.m_executeBatchFile.Image = Icons.Gui.All.Images.TerminalCode();
+			this.m_saveButton.Image = Icons.Gui.Standard.Images.Save();
+            this.m_newButton.Image = Icons.Gui.All.Images.DocumentNew();
         }
 
         void Document_DocumentChanged(object sender, ICSharpCode.TextEditor.Document.DocumentEventArgs e)

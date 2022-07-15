@@ -528,7 +528,6 @@
             // buttonEndpointRemove
             // 
             resources.ApplyResources(this.buttonEndpointRemove, "buttonEndpointRemove");
-            this.buttonEndpointRemove.Image = Icons.Gui.Standard.Images.Delete(16);
             this.buttonEndpointRemove.Name = "buttonEndpointRemove";
             this.buttonEndpointRemove.TabStop = false;
             this.buttonEndpointRemove.UseVisualStyleBackColor = true;
@@ -537,7 +536,6 @@
             // buttonEndpointCopy
             // 
             resources.ApplyResources(this.buttonEndpointCopy, "buttonEndpointCopy");
-            this.buttonEndpointCopy.Image = Icons.Gui.All.Images.Copy(16);
             this.buttonEndpointCopy.Name = "buttonEndpointCopy";
             this.buttonEndpointCopy.TabStop = false;
             this.buttonEndpointCopy.UseVisualStyleBackColor = true;
@@ -546,7 +544,6 @@
             // buttonEndpointAdd
             // 
             resources.ApplyResources(this.buttonEndpointAdd, "buttonEndpointAdd");
-            this.buttonEndpointAdd.Image = Icons.Gui.All.Images.PlusGreen(16);
             this.buttonEndpointAdd.Name = "buttonEndpointAdd";
             this.buttonEndpointAdd.TabStop = false;
             this.buttonEndpointAdd.UseVisualStyleBackColor = true;

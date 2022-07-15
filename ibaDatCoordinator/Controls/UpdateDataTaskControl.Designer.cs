@@ -170,7 +170,6 @@
 			// m_btBrowseServer
 			// 
 			resources.ApplyResources(this.m_btBrowseServer, "m_btBrowseServer");
-			this.m_btBrowseServer.Image = Icons.Gui.All.Images.FolderOpen(16);
 			this.m_btBrowseServer.Name = "m_btBrowseServer";
 			this.m_btBrowseServer.UseVisualStyleBackColor = true;
 			this.m_btBrowseServer.Click += new System.EventHandler(this.m_btBrowseServer_Click);

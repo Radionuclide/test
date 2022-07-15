@@ -137,7 +137,7 @@ namespace iba.Controls
         public KafkaWriterTaskControl()
         {
             InitializeComponent();
-
+            InitializeIcons();
             eventHubControl = new KafkaWriterTaskControlEventHub();
             tabTarget.Controls.Add(eventHubControl);
             eventHubControl.Width = tabTarget.Width;
@@ -215,6 +215,26 @@ namespace iba.Controls
 
             timeGrid.RepositoryItems.Add(m_timeEditor);
             m_colTime.ColumnEdit = m_timeEditor;
+        }
+
+        private void InitializeIcons()
+        {
+            expressionRemoveButton.Image = Icons.Gui.All.Images.CrossRed();
+            paramRemoveButton.Image = Icons.Gui.All.Images.CrossRed();  
+            
+            paramAddButton.Image = Icons.Gui.All.Images.PlusGreen();
+            expressionAddButton.Image = Icons.Gui.All.Images.PlusGreen();
+            
+            importParamButton.Image = Icons.Gui.All.Images.Import();
+            exportParamButton.Image = Icons.Gui.All.Images.Export();
+            m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
+            m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
+            expressionCopyButton.Image = Icons.Gui.All.Images.Copy();
+            downButton.Image = Icons.Gui.All.Images.ArrowDownBoxed();
+            upButton.Image = Icons.Gui.All.Images.ArrowUpBoxed();
         }
 
         class CertificateInfo : ICertificateInfo

@@ -110,7 +110,6 @@
 			// m_undoChangesBtn
 			// 
 			resources.ApplyResources(this.m_undoChangesBtn, "m_undoChangesBtn");
-			this.m_undoChangesBtn.Image = Icons.Gui.All.Images.Download(32);
 			this.m_undoChangesBtn.Name = "m_undoChangesBtn";
 			this.m_undoChangesBtn.UseVisualStyleBackColor = true;
 			// 
@@ -168,7 +167,6 @@
 			// m_refreshDats
 			// 
 			resources.ApplyResources(this.m_refreshDats, "m_refreshDats");
-			this.m_refreshDats.Image = Icons.Gui.All.Images.FlagRemove(32);
 			this.m_refreshDats.Name = "m_refreshDats";
 			this.m_refreshDats.UseVisualStyleBackColor = true;
 			this.m_refreshDats.Click += new System.EventHandler(this.m_refreshDats_Click);
@@ -176,7 +174,6 @@
 			// m_stopButton
 			// 
 			resources.ApplyResources(this.m_stopButton, "m_stopButton");
-			this.m_stopButton.Image = Icons.Gui.All.Images.StopFilledRed(32);
 			this.m_stopButton.Name = "m_stopButton";
 			this.m_stopButton.UseVisualStyleBackColor = true;
 			this.m_stopButton.Click += new System.EventHandler(this.m_stopButton_Click);
@@ -184,14 +181,12 @@
 			// m_applyToRunningBtn
 			// 
 			resources.ApplyResources(this.m_applyToRunningBtn, "m_applyToRunningBtn");
-			this.m_applyToRunningBtn.Image = Icons.Gui.All.Images.Upload(32);
 			this.m_applyToRunningBtn.Name = "m_applyToRunningBtn";
 			this.m_applyToRunningBtn.UseVisualStyleBackColor = true;
 			// 
 			// m_startButton
 			// 
 			resources.ApplyResources(this.m_startButton, "m_startButton");
-			this.m_startButton.Image = Icons.Gui.All.Images.GoFilledGreen(32);
 			this.m_startButton.Name = "m_startButton";
 			this.m_startButton.UseVisualStyleBackColor = true;
 			this.m_startButton.Click += new System.EventHandler(this.m_startButton_Click);
@@ -292,7 +287,6 @@
 			// m_browseDatFilesButton
 			// 
 			resources.ApplyResources(this.m_browseDatFilesButton, "m_browseDatFilesButton");
-			this.m_browseDatFilesButton.Image = Icons.Gui.All.Images.FileDat(16);
 			this.m_browseDatFilesButton.Name = "m_browseDatFilesButton";
 			this.m_browseDatFilesButton.UseVisualStyleBackColor = true;
 			this.m_browseDatFilesButton.Click += new System.EventHandler(this.m_browseDatFilesButton_Click);
@@ -321,7 +315,6 @@
 			// m_checkPathButton
 			// 
 			resources.ApplyResources(this.m_checkPathButton, "m_checkPathButton");
-            this.m_checkPathButton.Image = Icons.Gui.All.Images.ThumbUp(16);
 			this.m_checkPathButton.Name = "m_checkPathButton";
 			this.m_checkPathButton.UseVisualStyleBackColor = true;
 			this.m_checkPathButton.Click += new System.EventHandler(this.m_checkPathButton_Click);
@@ -329,7 +322,6 @@
 			// m_browseFolderButton
 			// 
 			resources.ApplyResources(this.m_browseFolderButton, "m_browseFolderButton");
-			this.m_browseFolderButton.Image = Icons.Gui.All.Images.FolderOpen(16);
 			this.m_browseFolderButton.Name = "m_browseFolderButton";
 			this.m_browseFolderButton.UseVisualStyleBackColor = true;
 			this.m_browseFolderButton.Click += new System.EventHandler(this.OnClickFolderBrowserButton);

@@ -63,6 +63,9 @@ namespace iba.Controls
 
         private void InitializeIcons()
         {
+            this.m_refreshDats.Image = Icons.Gui.All.Images.FileDatReprocessing(32);
+            this.m_deleteDats.Image = Icons.Gui.All.Images.FileDatDelete(32);
+
             m_reportIcons = new Dictionary<DatFileStatus.State, Image>();
             m_extractIcons = new Dictionary<DatFileStatus.State, Image>();
             m_batchfileIcons = new Dictionary<DatFileStatus.State, Image>();

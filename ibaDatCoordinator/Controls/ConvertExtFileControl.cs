@@ -21,6 +21,7 @@ namespace iba.Controls
         public ConvertExtFileControl()
         {
             InitializeComponent();
+            InitializeIcons();
             m_uncControl = new UNCTaskControl();
             groupBox3.Controls.Add(m_uncControl);
             
@@ -29,6 +30,13 @@ namespace iba.Controls
             m_toolTip.SetToolTip(m_executeIBAAButton, Properties.Resources.HDEventTask_ToolTip_OpenPDO);
             m_toolTip.SetToolTip(m_btnUploadPDO, Program.RunsWithService == Program.ServiceEnum.NOSERVICE ? Properties.Resources.HDEventTask_ToolTip_UploadPDOStandAlone : Properties.Resources.HDEventTask_ToolTip_UploadPDO);
             m_toolTip.SetToolTip(m_browseFileButton, Properties.Resources.ToolTip_BrowsePDO);
+        }
+
+        private void InitializeIcons()
+        {
+            this.m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            this.m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
+            this.m_browseFileButton.Image = Icons.Gui.All.Images.FolderOpen();
         }
 
         private UNCTaskControl m_uncControl;
