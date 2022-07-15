@@ -21,12 +21,12 @@ namespace iba.DatCoordinator.Status
 {
     public partial class StatusForm : Form, IExternalCommand
     {
-        private static Icon ServiceRunningIcon = Icons.SystemTray.Ico.IbaDatcoordinatorServerStart();
-        private static Icon ServiceStoppedIcon = Icons.SystemTray.Ico.IbaDatcoordinatorServerStop();
+        private static Icon ServiceRunningIcon = Icons.SystemTray.Ico.IbaDatcoordinatorStart();
+        private static Icon ServiceStoppedIcon = Icons.SystemTray.Ico.IbaDatcoordinatorStop();
         private static Icon ServiceDisconnectedIcon = Icons.SystemTray.Ico.IbaDatcoordinatorServerDisconnected(); 
 
-        private static Icon ServiceRunningIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorServerStart(), SystemInformation.SmallIconSize);
-        private static Icon ServiceStoppedIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorServerStop(), SystemInformation.SmallIconSize);
+        private static Icon ServiceRunningIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorStart(), SystemInformation.SmallIconSize);
+        private static Icon ServiceStoppedIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorStart(), SystemInformation.SmallIconSize);
         private static Icon ServiceDisconnectedIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorServerDisconnected(), SystemInformation.SmallIconSize);
 
         public StatusForm()
