@@ -168,26 +168,37 @@
 		<P class="header1">Version 3.0.0 - 2022-??-??</P>
 			<p class="header2">New features (N)</p>
 			<OL>
-			<li>WIBU CodeMeter licenses are supported: #19719
-				<ol>
-					<li>License can be stored on a USB dongle (CmStick) or in a secure license file (CmActLicense).</li>
-					<li>WIBU CodeMeter services and control center are automatically installed.</li>
-					<li>MARX dongles are still supported.</li>
-				</ol>
-			</li>
-			<li> Added 3 publish tasks. Each one provides the possibility to calculate multiple expressions through ibaAnalyzer. Expressions can be taken from .pdo file or written manually similar to S7 writer.
-				<ol>
-					<li>Kafka task. #21845</li>
+				<li>
+					WIBU CodeMeter licenses are supported: #19719
+					<ol>
+						<li>License can be stored on a USB dongle (CmStick) or in a secure license file (CmActLicense).</li>
+						<li>WIBU CodeMeter services and control center are automatically installed.</li>
+						<li>MARX dongles are still supported.</li>
+					</ol>
+				</li>
+				<li>
+					Added new Job type for processing external files.
+				</li>
+				<li>
+					Added Task for Uploading .dat files (FTP, SFTP, SCP, Azure Data Lake, Amazon S3)
+				</li>
+				<li>
+					Added Data Transfer Server and Data Transfer Task.
+				</li>
+				<li>
+					Added 3 publish tasks. Each one provides the possibility to calculate multiple expressions through ibaAnalyzer. Expressions can be taken from .pdo file or written manually similar to S7 writer.
+					<ol>
+						<li>Kafka task. #21845</li>
 						<ol>
 							<li>It supports SASL/SSL encryption. Data formats JSON grouped, JSON per signal and AVRO. It is possible to use the signal name, ID and other placeholders as the message key.</li>
 						</ol>
-					<li>OPC UA writer task. #13409</li>
-					<li>SNMP writer task. #19175</li>
-				</ol>
-			</li>
-			<li>
-				Added a central certificate storage to simplify certificate management for all tasks, which use certificates. #19349
-			</li>
+						<li>OPC UA writer task. #13409</li>
+						<li>SNMP writer task. #19175</li>
+					</ol>
+				</li>
+				<li>
+					Added a central certificate storage to simplify certificate management for all tasks, which use certificates. #19349
+				</li>
 			</OL>
 			<p class="header2">Improvements (I)</p>
 			<OL>
