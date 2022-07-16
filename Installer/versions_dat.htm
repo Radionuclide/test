@@ -208,6 +208,12 @@
 			</OL>
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
+			<li>Offline event task: 
+				<ol>
+				<li>The event config was not saved to the ibaHD-Server in case only events were added or removed without modifications to the event properties. #20769</li>
+				<li>The ibaHD-Server could crash and event store configurations could be corrupted when saving an event configuration without active events. #20833</li>
+				</ol>
+			</li>
 			</OL>
 		<p>&nbsp; </p>
 		<P class="header1">Version 2.4.3 - 2022-02-03</P>

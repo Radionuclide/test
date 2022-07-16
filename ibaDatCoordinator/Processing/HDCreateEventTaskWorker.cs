@@ -250,7 +250,7 @@ namespace iba.Processing
 
         EventWriterConfig CreateEventWriterConfig(HDCreateEventTaskData task, string store)
         {
-            HdStoreId storeId = null;
+            HdStoreId storeId = task.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.Server, task.ServerPort, store); ;
             List<EventWriterSignal> writerSignalConfigs = new List<EventWriterSignal>();
             foreach (var eventData in task.EventSettings)
             {
@@ -273,7 +273,6 @@ namespace iba.Processing
                         blobFields[i] = eventData.BlobFields[i];
                     signal.BlobFields = blobFields;
 
-                    storeId = task.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.Server, task.ServerPort, eventData.StoreName);
                     writerSignalConfigs.Add(signal);
                 }
             }
@@ -288,8 +287,9 @@ namespace iba.Processing
 
         SlimEventWriterConfig CreateSlimHDWriterConfig(HDCreateEventTaskData task, string store)
         {
-            HdStoreId storeId = null;
+            HdStoreId storeId = task.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.Server, task.ServerPort, store); ;
             List<SlimEventWriterSignal> writerSignalConfigs = new List<SlimEventWriterSignal>();
+
             foreach (var eventData in task.EventSettings)
             {
                 if (eventData.StoreName == store && eventData.Active)
@@ -311,10 +311,10 @@ namespace iba.Processing
                         blobFields[i] = eventData.BlobFields[i];
                     signal.BlobFields = blobFields;
 
-                    storeId = task.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.Server, task.ServerPort, eventData.StoreName);
                     writerSignalConfigs.Add(signal);
                 }
             }
+
             SlimEventWriterConfig config = new SlimEventWriterConfig(hdWriterOrigin, storeId, writerSignalConfigs.ToArray(), true);
             config.Password = task.HDPassword;
             config.Username = task.Username;
@@ -326,9 +326,6 @@ namespace iba.Processing
             List<HdWriterConfig> writerConfigs = new List<HdWriterConfig>();
             foreach (string store in storeNames)
             {
-                HdStoreId storeId = task.ServerPort < 0 ? HdStoreId.Empty : new HdStoreId(task.Server, task.ServerPort, store);
-                List<EventWriterSignal> writerSignalConfigs = new List<EventWriterSignal>();
-
                 // Create the Writerconfig
                 if (task?.FullEventConfig?.Count > 0)
                     writerConfigs.Add(CreateEventWriterConfig(task, store));
