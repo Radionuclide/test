@@ -29,9 +29,7 @@ namespace iba.Controls
             InitializeIcons();
 
             certificatesControl.SetControlHost(this);
-            bool certListUpdated = LoadCertificatesIfDifferent();
-            if (certListUpdated)
-                certificatesControl.LoadDataSource();
+            certificatesControl.LoadDataSource();
             if (Program.RunsWithService != Program.ServiceEnum.NOSERVICE) //hide non relevant 
             {
                 Control[] ToHide = new Control[] {label5, m_tbAnalyzerExe, m_executeIBAAButton,
