@@ -225,7 +225,10 @@ namespace iba.Controls
         class CertificateInfo : ICertificateInfo
         {
             public string Thumbprint { get; set; }
-            public CertificateRequirement CertificateRequirements { get; }
+            public CertificateRequirement CertificateRequirements =>
+                CertificateRequirement.Trusted |
+                CertificateRequirement.PrivateKey;
+
             public string DisplayName => "Certificate for Data Transfer Task";
         }
 

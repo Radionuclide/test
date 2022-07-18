@@ -49,6 +49,8 @@ namespace iba.Controls
             this.m_numBandwidth = new System.Windows.Forms.NumericUpDown();
             this.m_btnCheckConnection = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblCertificate = new System.Windows.Forms.Label();
+            this.ServerCertPlaceholder = new System.Windows.Forms.ComboBox();
             this.m_btnSelectServer = new System.Windows.Forms.Button();
             this.m_numericUpDownPort = new System.Windows.Forms.NumericUpDown();
             this.m_lbServer = new System.Windows.Forms.Label();
@@ -58,7 +60,6 @@ namespace iba.Controls
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.m_rbPrevOutput = new System.Windows.Forms.RadioButton();
             this.m_rbDatFile = new System.Windows.Forms.RadioButton();
-            this.ServerCertPlaceholder = new System.Windows.Forms.ComboBox();
             this.m_gbOption.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -198,12 +199,25 @@ namespace iba.Controls
             // panel1
             // 
             resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.lblCertificate);
+            this.panel1.Controls.Add(this.ServerCertPlaceholder);
             this.panel1.Controls.Add(this.m_btnSelectServer);
             this.panel1.Controls.Add(this.m_numericUpDownPort);
             this.panel1.Controls.Add(this.m_lbServer);
             this.panel1.Controls.Add(this.m_lbPort);
             this.panel1.Controls.Add(this.m_tbServer);
             this.panel1.Name = "panel1";
+            // 
+            // lblCertificate
+            // 
+            resources.ApplyResources(this.lblCertificate, "lblCertificate");
+            this.lblCertificate.Name = "lblCertificate";
+            // 
+            // ServerCertPlaceholder
+            // 
+            resources.ApplyResources(this.ServerCertPlaceholder, "ServerCertPlaceholder");
+            this.ServerCertPlaceholder.FormattingEnabled = true;
+            this.ServerCertPlaceholder.Name = "ServerCertPlaceholder";
             // 
             // m_btnSelectServer
             // 
@@ -265,17 +279,10 @@ namespace iba.Controls
             this.m_rbDatFile.TabStop = true;
             this.m_rbDatFile.UseVisualStyleBackColor = true;
             // 
-            // ServerCertPlaceholder
-            // 
-            this.ServerCertPlaceholder.FormattingEnabled = true;
-            resources.ApplyResources(this.ServerCertPlaceholder, "ServerCertPlaceholder");
-            this.ServerCertPlaceholder.Name = "ServerCertPlaceholder";
-            // 
             // DataTransferTaskControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.ServerCertPlaceholder);
             this.Controls.Add(this.m_gbOption);
             this.Controls.Add(this.m_gbTarget);
             this.Controls.Add(this.m_gbSource);
@@ -340,5 +347,6 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_numBandwidth;
         private System.Windows.Forms.CheckBox m_CreateZipArchive;
         private System.Windows.Forms.ComboBox ServerCertPlaceholder;
+        private System.Windows.Forms.Label lblCertificate;
     }
 }

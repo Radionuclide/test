@@ -23,7 +23,7 @@ namespace iba.Controls
     {
         private DataTransferData _data;
         private BindingList<DiagnosticsData> _diagnosticsDataList;
-        private readonly string _defaultPath = AppDomain.CurrentDomain.BaseDirectory;
+        private readonly string _defaultPath = string.Empty;
         private readonly string _defaultCertPath = AppDomain.CurrentDomain.BaseDirectory;
         private readonly int _defaultPort = 30051;
         private IPropertyPaneManager _manager;
@@ -252,7 +252,10 @@ namespace iba.Controls
         class CertificateInfo : ICertificateInfo
         {
             public string Thumbprint { get; set; }
-            public CertificateRequirement CertificateRequirements { get; }
+            public CertificateRequirement CertificateRequirements =>
+                CertificateRequirement.Trusted |
+                CertificateRequirement.PrivateKey;
+
             public string DisplayName => "Certificate for Data Transfer Server";
         }
 

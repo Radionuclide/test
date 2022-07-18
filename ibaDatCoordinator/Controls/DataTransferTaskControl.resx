@@ -340,7 +340,7 @@
     <value>Top</value>
   </data>
   <data name="m_gbOption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 132</value>
+    <value>0, 151</value>
   </data>
   <data name="m_gbOption.Size" type="System.Drawing.Size, System.Drawing">
     <value>779, 74</value>
@@ -361,7 +361,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gbOption.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_gbTarget.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -430,7 +430,7 @@
     <value>Top</value>
   </data>
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 81</value>
+    <value>3, 100</value>
   </data>
   <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -571,7 +571,7 @@
     <value>389, 3</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>381, 59</value>
+    <value>381, 78</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -590,6 +590,57 @@
   </data>
   <data name="panel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lblCertificate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblCertificate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 59</value>
+  </data>
+  <data name="lblCertificate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 13</value>
+  </data>
+  <data name="lblCertificate.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="lblCertificate.Text" xml:space="preserve">
+    <value>Certificate:</value>
+  </data>
+  <data name="&gt;&gt;lblCertificate.Name" xml:space="preserve">
+    <value>lblCertificate</value>
+  </data>
+  <data name="&gt;&gt;lblCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCertificate.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;lblCertificate.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ServerCertPlaceholder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="ServerCertPlaceholder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 56</value>
+  </data>
+  <data name="ServerCertPlaceholder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>302, 21</value>
+  </data>
+  <data name="ServerCertPlaceholder.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Name" xml:space="preserve">
+    <value>ServerCertPlaceholder</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;ServerCertPlaceholder.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_btnSelectServer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -616,7 +667,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_btnSelectServer.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_numericUpDownPort.Location" type="System.Drawing.Point, System.Drawing">
     <value>75, 31</value>
@@ -637,7 +688,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_numericUpDownPort.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_lbServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -670,7 +721,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lbServer.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_lbPort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -703,7 +754,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_lbPort.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_tbServer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -727,7 +778,7 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;m_tbServer.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -736,7 +787,7 @@
     <value>3, 3</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>380, 59</value>
+    <value>380, 78</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -763,7 +814,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>773, 65</value>
+    <value>773, 84</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -781,7 +832,7 @@
     <value>1</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,16" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,Absolute,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_gbTarget.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -790,7 +841,7 @@
     <value>0, 42</value>
   </data>
   <data name="m_gbTarget.Size" type="System.Drawing.Size, System.Drawing">
-    <value>779, 90</value>
+    <value>779, 109</value>
   </data>
   <data name="m_gbTarget.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -808,7 +859,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gbTarget.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_gbSource.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -934,28 +985,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_gbSource.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="ServerCertPlaceholder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 213</value>
-  </data>
-  <data name="ServerCertPlaceholder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 21</value>
-  </data>
-  <data name="ServerCertPlaceholder.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;ServerCertPlaceholder.Name" xml:space="preserve">
-    <value>ServerCertPlaceholder</value>
-  </data>
-  <data name="&gt;&gt;ServerCertPlaceholder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ServerCertPlaceholder.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ServerCertPlaceholder.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
