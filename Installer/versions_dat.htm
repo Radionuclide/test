@@ -109,13 +109,12 @@
 				<tr><td>ibaHD v2.6.0</td><td>Required for Active Directory users.</td></tr>
 
 				<tr><th width="35%">Plugins</th><th width="50%">Notes</th></tr>
-				<tr><td>ibaSinecH1 v2.4.0</td><td></td></tr>
-				<tr><td>ibaRoh v2.4.0</td><td></td></tr>
-				<tr><td>ibaAM-OSPC v2.4.0</td><td></td></tr>
-				<tr><td>ibaS7-Writer v2.4.0</td><td></td></tr>
-				<tr><td>ibaTksXml v2.4.0</td><td></td></tr>
-				<tr><td>ibaDBSync v2.4.0</td><td></td></tr>
-				<tr><td>ibaDatawyzer-ICC v2.4.0</td><td></td></tr>
+				<tr><td>ibaSinecH1 v3.0.0</td><td></td></tr>
+				<tr><td>ibaRoh v3.0.0</td><td></td></tr>
+				<tr><td>ibaAM-OSPC v3.0.0</td><td></td></tr>
+				<tr><td>ibaTksXml v3.0.0</td><td></td></tr>
+				<tr><td>ibaDBSync v3.0.0</td><td></td></tr>
+				<tr><td>ibaDatawyzer-ICC v3.0.0</td><td></td></tr>
 
 
 				<tr><td class="sep" /></tr>
@@ -205,6 +204,7 @@
 				<li>Added the option to file generating tasks to create subfolders based on the file creation time and have set this as default for new configurations. #21518</li>
 				<li>Default value for the folder to monitor for .dat-file triggered jobs is now empty rather than the current folder. #20980</li>
 				<li>The default cleanup strategy for file output producing tasks is now "None" rather than "Limit subdirectories to 10". #20981</li>
+				<li>S7-writer plugin is now installed by default, appearing as a regular task. 12105 </li>
 			</OL>
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
@@ -214,6 +214,7 @@
 				<li>The ibaHD-Server could crash and event store configurations could be corrupted when saving an event configuration without active events. #20833</li>
 				</ol>
 			</li>
+			<li>Exception when typing illegal characters in file paths for plugin tasks.</li>
 			</OL>
 		<p>&nbsp; </p>
 		<P class="header1">Version 2.4.3 - 2022-02-03</P>

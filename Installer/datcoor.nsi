@@ -129,7 +129,7 @@ Page custom PreInstall
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 ;!define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBackButton"
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE Licenses\License_iba-software.rtf
+!insertmacro MUI_PAGE_LICENSE License_iba-software.rtf
 Page custom InstalltypeSelect
 Page custom ServiceAccountPage
 ;!insertmacro MUI_PAGE_COMPONENTS
@@ -526,8 +526,8 @@ Section -Common
   File "..\Dependencies\Wibu\WibuCmNET.dll"
 
   File "versions_dat.htm"
-  File "Licenses\ThirdPartyLicenses.txt"
-  File "Licenses\License_iba-software.rtf"
+  File "LicenseInformation.txt"
+  File "License_iba-software.rtf"
   File "Support.htm"
   
   ; dongle viewer
@@ -560,9 +560,13 @@ Section -Common
   ;!insertmacro InstallLanguageCommon "pt" "Portuguese"
   
   ;plugins
+  File "..\S7-writer\AGLink\AGLink40.dll"
   SetOutPath "$INSTDIR\plugins"
   File "..\Dependencies\hd_plugin.dll"
-
+  File "..\S7-writer-plugin\bin\Release\S7-writer.dll"
+  File "..\S7-writer-plugin\bin\Release\S7-writer-plugin.dll"
+  
+  
 SectionEnd
 
 !include "Include\installCodeMeter.nsh"
@@ -1016,7 +1020,7 @@ Function un.UninstallTasks
   Delete "$INSTDIR\msvcr100.dll"
   Delete "$INSTDIR\msvcp100.dll"
   Delete "$INSTDIR\versions_dat.htm"
-  Delete "$INSTDIR\ThirdPartyLicenses.txt"
+  Delete "$INSTDIR\LicenseInformation.txt"
   Delete "$INSTDIR\License_iba-software.rtf"
   Delete "$INSTDIR\Support.htm"
   Delete "$INSTDIR\Copy_Printer_Settings_To_System_Account.bat"
