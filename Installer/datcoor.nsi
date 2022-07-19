@@ -129,7 +129,7 @@ Page custom PreInstall
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 ;!define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBackButton"
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE License_iba-software.rtf
+!insertmacro MUI_PAGE_LICENSE Licenses\License_iba-software.rtf
 Page custom InstalltypeSelect
 Page custom ServiceAccountPage
 ;!insertmacro MUI_PAGE_COMPONENTS
@@ -526,8 +526,8 @@ Section -Common
   File "..\Dependencies\Wibu\WibuCmNET.dll"
 
   File "versions_dat.htm"
-  File "LicenseInformation.txt"
-  File "License_iba-software.rtf"
+  File "Licenses\ThirdPartyLicenses.txt"
+  File "Licenses\License_iba-software.rtf"
   File "Support.htm"
   
   ; dongle viewer
