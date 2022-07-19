@@ -59,7 +59,9 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="OSPCTaskData.cs" />
-    <Compile Include="OSPCTaskControl.cs" />
+    <Compile Include="OSPCTaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="OSPCTaskControl.Designer.cs">
       <DependentUpon>OSPCTaskControl.cs</DependentUpon>
     </Compile>
@@ -96,18 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ospc.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\open.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SychronizeList.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ibaAnalyzer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\img_pdo_upload.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DevExpress.Win.Grid">

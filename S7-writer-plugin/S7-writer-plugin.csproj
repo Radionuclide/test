@@ -57,7 +57,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="S7TaskControl.cs" />
+    <Compile Include="S7TaskControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="S7TaskControl.Designer.cs">
       <DependentUpon>S7TaskControl.cs</DependentUpon>
     </Compile>
@@ -70,8 +72,8 @@
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="S7TaskControl.resx">
       <DependentUpon>S7TaskControl.cs</DependentUpon>
@@ -89,25 +91,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\s7.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\open.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SychronizeList.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ibaAnalyzer.png" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ibaAnalyzer_16x16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\img_pdo_upload.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DevExpress.Win.Grid">
@@ -119,6 +103,9 @@
     <PackageReference Include="ibaLogger">
       <Version>2.13.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

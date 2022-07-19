@@ -133,41 +133,11 @@ namespace S7_writer_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ibaAnalyzer {
-            get {
-                object obj = ResourceManager.GetObject("ibaAnalyzer", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ibaAnalyzer_16x16 {
-            get {
-                object obj = ResourceManager.GetObject("ibaAnalyzer_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You have version {0} of ibaAnalyzer installed. The minimum required version is 6.5.0. Version 6.7.0 or later is recommended..
         /// </summary>
         internal static string ibaAnalyzerVersionError {
             get {
                 return ResourceManager.GetString("ibaAnalyzerVersionError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap img_pdo_upload {
-            get {
-                object obj = ResourceManager.GetObject("img_pdo_upload", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -199,41 +169,11 @@ namespace S7_writer_plugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap open {
-            get {
-                object obj = ResourceManager.GetObject("open", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ibaAnalyzer PDO files (*.pdo)|*.pdo.
         /// </summary>
         internal static string PdoFileFilter {
             get {
                 return ResourceManager.GetString("PdoFileFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon s7Icon {
-            get {
-                object obj = ResourceManager.GetObject("s7Icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap select {
-            get {
-                object obj = ResourceManager.GetObject("select", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

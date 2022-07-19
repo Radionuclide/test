@@ -190,7 +190,7 @@
     <value>8</value>
   </data>
   <metadata name="m_toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>116, 17</value>
   </metadata>
   <data name="m_browsePDOFileButton.ToolTip" xml:space="preserve">
     <value>Browse for analysis file</value>
@@ -209,15 +209,6 @@
   </data>
   <data name="m_executeIBAAButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_executeIBAAButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS41ZEdYUgAAAHJJREFUOE+tk0EK
-        wCAMBPOlnv3/uywpjKzBqGgXhnQTs4dAzfWUUk+4WoYuwKV+hxbAMnWXLyAuRT8jvUEWgvDLI6pi3+s0
-        gEeZd7oAxLfOIPbbEV06UI+0Tz06ovp/bzBChdf5MmCEhhwFOIRc/ZFmZi9BU/E6tDqw8AAAAABJRU5E
-        rkJggg==
-</value>
   </data>
   <data name="m_executeIBAAButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -360,8 +351,41 @@
   <data name="&gt;&gt;m_testButton.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
+  <data name="m_btnUploadPDO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnUploadPDO.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnUploadPDO.Location" type="System.Drawing.Point, System.Drawing">
+    <value>535, 92</value>
+  </data>
+  <data name="m_btnUploadPDO.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 1, 1, 1</value>
+  </data>
+  <data name="m_btnUploadPDO.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 24</value>
+  </data>
+  <data name="m_btnUploadPDO.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="m_btnUploadPDO.ToolTip" xml:space="preserve">
+    <value>Update or upload the analysis file</value>
+  </data>
+  <data name="&gt;&gt;m_btnUploadPDO.Name" xml:space="preserve">
+    <value>m_btnUploadPDO</value>
+  </data>
+  <data name="&gt;&gt;m_btnUploadPDO.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnUploadPDO.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnUploadPDO.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <metadata name="m_openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>123, 17</value>
+    <value>222, 17</value>
   </metadata>
   <data name="m_ospcPassword.Location" type="System.Drawing.Point, System.Drawing">
     <value>110, 59</value>
@@ -705,6 +729,9 @@
   <data name="&gt;&gt;m_monitorGroup.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <metadata name="dataGrid.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="dataGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -785,39 +812,6 @@
   </data>
   <data name="&gt;&gt;dataGrid.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="m_btnUploadPDO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnUploadPDO.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnUploadPDO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>535, 92</value>
-  </data>
-  <data name="m_btnUploadPDO.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 1, 1, 1</value>
-  </data>
-  <data name="m_btnUploadPDO.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 24</value>
-  </data>
-  <data name="m_btnUploadPDO.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
-  </data>
-  <data name="m_btnUploadPDO.ToolTip" xml:space="preserve">
-    <value>Update or upload the analysis file</value>
-  </data>
-  <data name="&gt;&gt;m_btnUploadPDO.Name" xml:space="preserve">
-    <value>m_btnUploadPDO</value>
-  </data>
-  <data name="&gt;&gt;m_btnUploadPDO.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnUploadPDO.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnUploadPDO.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_btTakeParentPass.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>

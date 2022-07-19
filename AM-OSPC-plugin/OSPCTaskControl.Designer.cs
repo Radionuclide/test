@@ -39,6 +39,7 @@
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_testButton = new System.Windows.Forms.Button();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_btnUploadPDO = new System.Windows.Forms.Button();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_ospcPassword = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -59,7 +60,6 @@
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.m_btnUploadPDO = new System.Windows.Forms.Button();
             this.m_btTakeParentPass = new System.Windows.Forms.Button();
             this.m_tbPwdDAT = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -85,7 +85,6 @@
             // m_browsePDOFileButton
             // 
             resources.ApplyResources(this.m_browsePDOFileButton, "m_browsePDOFileButton");
-            this.m_browsePDOFileButton.Image = global::AM_OSPC_plugin.Properties.Resources.open;
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_toolTip.SetToolTip(this.m_browsePDOFileButton, resources.GetString("m_browsePDOFileButton.ToolTip"));
             this.m_browsePDOFileButton.UseVisualStyleBackColor = true;
@@ -102,7 +101,6 @@
             // m_browseDatFileButton
             // 
             resources.ApplyResources(this.m_browseDatFileButton, "m_browseDatFileButton");
-            this.m_browseDatFileButton.Image = global::AM_OSPC_plugin.Properties.Resources.open;
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_toolTip.SetToolTip(this.m_browseDatFileButton, resources.GetString("m_browseDatFileButton.ToolTip"));
             this.m_browseDatFileButton.UseVisualStyleBackColor = true;
@@ -123,11 +121,18 @@
             // m_testButton
             // 
             resources.ApplyResources(this.m_testButton, "m_testButton");
-            this.m_testButton.Image = global::AM_OSPC_plugin.Properties.Resources.select;
             this.m_testButton.Name = "m_testButton";
             this.m_toolTip.SetToolTip(this.m_testButton, resources.GetString("m_testButton.ToolTip"));
             this.m_testButton.UseVisualStyleBackColor = true;
             this.m_testButton.Click += new System.EventHandler(this.m_testButton_Click);
+            // 
+            // m_btnUploadPDO
+            // 
+            resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+            this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+            this.m_toolTip.SetToolTip(this.m_btnUploadPDO, resources.GetString("m_btnUploadPDO.ToolTip"));
+            this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+            this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
             // 
             // m_ospcPassword
             // 
@@ -293,15 +298,6 @@
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.OptionsColumn.ReadOnly = true;
-            // 
-            // m_btnUploadPDO
-            // 
-            resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
-            this.m_btnUploadPDO.Image = global::AM_OSPC_plugin.Properties.Resources.img_pdo_upload;
-            this.m_btnUploadPDO.Name = "m_btnUploadPDO";
-            this.m_toolTip.SetToolTip(this.m_btnUploadPDO, resources.GetString("m_btnUploadPDO.ToolTip"));
-            this.m_btnUploadPDO.UseVisualStyleBackColor = true;
-            this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
             // 
             // m_btTakeParentPass
             // 
