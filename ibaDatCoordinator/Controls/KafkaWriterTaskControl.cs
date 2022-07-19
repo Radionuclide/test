@@ -31,7 +31,7 @@ namespace iba.Controls
         readonly AnalyzerManager _analyzerManager;
         KafkaWriterTaskData _data;
         readonly GridView _viewExpr;
-        CertificatesComboBox clientCertCBox, CACertCBox, schemaClientCertCBox, schemaCACertCBox;
+        CertificatesComboBox clientCertCBox, schemaClientCertCBox;
         CertificateInfo CACertParams, schemaCACertParams;
         CertificateInfoWithPrivateKey clientCertParams, schemaClientCertParams;
         IPropertyPaneManager m_manager;
@@ -193,13 +193,11 @@ namespace iba.Controls
             _toolTip.SetToolTip(exportParamButton, iba.Properties.Resources.ExportParametersToCSV);
 
             clientCertCBox = CertificatesComboBox.ReplaceCombobox(clientCertPlaceholder, "", false);
-            CACertCBox = CertificatesComboBox.ReplaceCombobox(CACertPlaceholder, "", false);
             schemaClientCertCBox = CertificatesComboBox.ReplaceCombobox(schemaClientCertPlaceholder, "", false);
-            schemaCACertCBox = CertificatesComboBox.ReplaceCombobox(schemaCACertPlaceholder, "", false);
 
-            clusterSSL = new HidebleControlBlock(clientCertificateLabel, enableSSLVerificationCb, CACertificateLabel, clientCertCBox, CACertCBox);
+            clusterSSL = new HidebleControlBlock(clientCertificateLabel, enableSSLVerificationCb, clientCertCBox);
             clusterSASL = new HidebleControlBlock(SASLMechLabel, SASLMechanismComboBox, SASLNameTextBox, SASLPassTextBox, SASLNameLabel, SASLPassLabel);
-            schemaSSL = new HidebleControlBlock(schemaClientCertificateLabel, schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertificateLabel, schemaCACertCBox);
+            schemaSSL = new HidebleControlBlock(schemaClientCertificateLabel, schemaClientCertCBox, schemaEnableSSLVerificationCb);
             schemaAuth = new HidebleControlBlock(schemaNameLabel, schemaNameTextBox, schemaPassLabel, schemaPassTextBox);
 
             _timeExpression = new TimeExpression(timeGrid);
@@ -271,9 +269,6 @@ namespace iba.Controls
             clientCertCBox.SetEnvironment(this, clientCertParams);
 
             CACertParams = new CertificateInfo();
-            CACertParams.Thumbprint = _data.SSLCAThumbprint;
-            CACertCBox.UnsetEnvironment();
-            CACertCBox.SetEnvironment(this, CACertParams);
 
             schemaClientCertParams = new CertificateInfoWithPrivateKey();
             schemaClientCertParams.Thumbprint = _data.schemaSSLClientThumbprint;
@@ -281,14 +276,10 @@ namespace iba.Controls
             schemaClientCertCBox.SetEnvironment(this, schemaClientCertParams);
 
             schemaCACertParams = new CertificateInfo();
-            schemaCACertParams.Thumbprint = _data.schemaSSLCAThumbprint;
-            schemaCACertCBox.UnsetEnvironment();
-            schemaCACertCBox.SetEnvironment(this, schemaCACertParams);
 
             SASLNameTextBox.Text = _data.SASLUsername;
             SASLPassTextBox.Text = _data.SASLPass;
             enableSSLVerificationCb.Checked = _data.enableSSLVerification;
-            enableSSLVerificationCb_CheckedChanged(null, null);
 
             schemaRegistryCb.Checked = _data.enableSchema;
             schemaRegistryCb_CheckedChanged(null, null);
@@ -296,7 +287,6 @@ namespace iba.Controls
             schemaNameTextBox.Text = _data.schemaUsername;
             schemaPassTextBox.Text = _data.schemaPass;
             schemaEnableSSLVerificationCb.Checked = _data.schemaEnableSSLVerification;
-            schemaEnableSSLVerificationCb_CheckedChanged(null, null);
 
             m_pdoFileTextBox.Text = _data.AnalysisFile;
             m_datFileTextBox.Text = _data.TestDatFile;
@@ -493,7 +483,6 @@ namespace iba.Controls
             _data.enableSchema = schemaRegistryCb.Checked;
 
             _data.SSLClientThumbprint = clientCertParams.Thumbprint;
-            _data.SSLCAThumbprint = CACertParams.Thumbprint;
 
             _data.enableSSLVerification = enableSSLVerificationCb.Checked;
 
@@ -501,7 +490,6 @@ namespace iba.Controls
             _data.SASLPass = SASLPassTextBox.Text;
 
             _data.schemaSSLClientThumbprint = schemaClientCertParams.Thumbprint;
-            _data.schemaSSLCAThumbprint = schemaCACertParams.Thumbprint;
 
             _data.schemaEnableSSLVerification = schemaEnableSSLVerificationCb.Checked;
 
@@ -806,21 +794,9 @@ namespace iba.Controls
         private void schemaRegistryCb_CheckedChanged(object sender, EventArgs e)
         {
             Control[] controls = { schemaTextBox, schemaRegistryConnectionSecurityComboBox, schemaNameTextBox, schemaPassTextBox,
-                schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaCACertCBox, schemaNameLabel, schemaPassLabel, schemaClientCertificateLabel, schemaCACertificateLabel, schemaRegSecurityLabel };
+                schemaClientCertCBox, schemaEnableSSLVerificationCb, schemaNameLabel, schemaPassLabel, schemaClientCertificateLabel, schemaRegSecurityLabel };
             foreach (var c in controls)
                 c.Enabled = schemaRegistryCb.Checked;
-        }
-
-        private void enableSSLVerificationCb_CheckedChanged(object sender, EventArgs e)
-        {
-            CACertificateLabel.Enabled = enableSSLVerificationCb.Checked;
-            CACertCBox.Enabled = enableSSLVerificationCb.Checked;
-        }
-
-        private void schemaEnableSSLVerificationCb_CheckedChanged(object sender, EventArgs e)
-        {
-            schemaCACertificateLabel.Enabled = schemaEnableSSLVerificationCb.Checked;
-            schemaCACertCBox.Enabled = schemaEnableSSLVerificationCb.Checked;
         }
 
         private void typeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -847,10 +823,6 @@ namespace iba.Controls
             enableSSLVerificationCb.Checked = eventHubControl.enableSSLVerification;
             messageTimeout = eventHubControl.messageTimeout;
             CACertParams.Thumbprint = eventHubControl.ceThumbprint;
-            // refresh CACertCBox to apply certificate change
-            CACertCBox.UnsetEnvironment();
-            CACertCBox.SetEnvironment(this, CACertParams);
-            CACertCBox.Enabled = enableSSLVerificationCb.Checked;
         }
 
         private void metadataComboBox_EditValueChanged(object sender, EventArgs e)

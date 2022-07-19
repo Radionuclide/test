@@ -459,21 +459,15 @@ namespace iba.Processing
                 if (data.SchemaRegistrySecurityMode == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS ||
                     data.SchemaRegistrySecurityMode == KafkaWriterTaskData.SchemaRegistrySecurityType.HTTPS_AUTHENTICATION)
                 {
-                    X509Certificate2 CACert = null;
                     X509Certificate2 clientCert = null;
-                    if (!String.IsNullOrEmpty(data.schemaSSLCAThumbprint) && data.schemaEnableSSLVerification)
-                    {
-                        var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLCAThumbprint, CertificateRequirement.None, out var _);
-                        if (c != null)
-                            CACert = c.GetX509Certificate2();
-                    }
                     if (!String.IsNullOrEmpty(data.schemaSSLClientThumbprint))
                     {
                         var c = TaskManager.Manager.CertificateManager.GetCertificate(data.schemaSSLClientThumbprint, CertificateRequirement.None, out var _);
                         if (c != null)
                             clientCert = c.GetX509Certificate2();
                     }
-                    schemRegClient = new CachedSchemaRegistryClient(schemaRegConfig, CACert, clientCert);
+                    KafkaSchemaRegistrySSLVerifier sslVerCtxt = new KafkaSchemaRegistrySSLVerifier(data.schemaRegistryAddress);
+                    schemRegClient = new CachedSchemaRegistryClient(schemaRegConfig, null, null, clientCert, sslVerCtxt.SchemaRegistrySSLVerifyCallback);
                 }
                 else
                 {
@@ -610,12 +604,10 @@ namespace iba.Processing
                     throw new Exception("No client certificate found with thumbprint " + data.SSLClientThumbprint);
                 builder.SetSSLClientCert(cert.GetX509Certificate2());
             }
-            if (data.enableSSLVerification && data.SSLCAThumbprint != null && data.SSLCAThumbprint != "")
+            if (data.enableSSLVerification)
             {
-                var cert = TaskManager.Manager.CertificateManager.GetCertificate(data.SSLCAThumbprint, CertificateStore.CertificateRequirement.None, out var _);
-                if (cert is null)
-                    throw new Exception("No client certificate found with thumbprint " + data.SSLCAThumbprint);
-                builder.SetSSLCaCert(cert.GetX509Certificate2());
+                var sslVerCtxt = new KafkaSSLVerifier(data.clusterAddress);
+                builder.SetSSLVerificationCallback(sslVerCtxt.OnSSLVerification);
             }
         }
 
@@ -634,7 +626,7 @@ namespace iba.Processing
 
                 Metadata m = adminClient.GetMetadata(TimeSpan.FromSeconds(data.timeout));
                 topics = m.Topics.Select(t => t.Topic).ToArray();
-                if (data.schemaRegistryAddress == "")
+                if (!data.enableSchema || data.schemaRegistryAddress == "")
                     return topics;
 
                 Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
@@ -703,6 +695,95 @@ namespace iba.Processing
                     adminClient.Dispose();
             }
             return null;
-        }    
+        }
+
+
+        public class KafkaSSLVerifier
+        {
+            public KafkaSSLVerifier(string clusterAddress)
+            {
+                this.clusterAddress = clusterAddress;
+                errorMsg = "";
+                chainList = new System.Collections.Generic.List<Org.BouncyCastle.X509.X509Certificate>();
+            }
+
+            string clusterAddress;
+
+            string errorMsg;
+            public string ErrorMessage => errorMsg;
+
+            System.Collections.Generic.List<Org.BouncyCastle.X509.X509Certificate> chainList;
+
+            public bool OnSSLVerification(string broker_name, int broker_id, ref int x509_error, int depth, byte[] derCert, ref string errorStr)
+            {
+                Org.BouncyCastle.X509.X509Certificate cert = new Org.BouncyCastle.X509.X509Certificate(derCert);
+                if (!cert.Equals((chainList.Count == 0) ? null : chainList[0]))
+                    chainList.Insert(0, cert);
+                if (depth > 0)
+                {
+                    // Build a chain until depth becomes 0; then we'll decide
+                    // Clear X509 error
+                    x509_error = 0;
+                    return true;
+                }
+                else
+                {
+                    if (TaskManager.Manager.CertificateManager.VerifyChain(cert, chainList.ToArray(), out errorMsg))
+                    {
+                        // Clear X509 error
+                        x509_error = 0;
+                        return true;
+                    }
+                }
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.AppendLine($"Kafka data store - {clusterAddress} - Cluster SSL verification failed. Provided certificates:");
+                sb.AppendLine($"  Certificate: {GetCertificateString(cert)}");
+                for (int i = 0; i < chainList.Count; i++)
+                    sb.AppendLine($"  Chain_{i}: {GetCertificateString(chainList[i])}");
+
+                return false;
+            }
+
+            public static string GetCertificateString(Org.BouncyCastle.X509.X509Certificate cert)
+            {
+                return $"Thumbprint: {Certificate.GetThumbprintString(cert)} | Subject: {cert.SubjectDN} | Issuer: {cert.IssuerDN} | Validity: {cert.NotBefore.ToLocalTime()} until {cert.NotAfter.ToLocalTime()}";
+            }
+        }
+
+
+        public class KafkaSchemaRegistrySSLVerifier
+        {
+            public KafkaSchemaRegistrySSLVerifier(string clusterAddress)
+            {
+                this.clusterAddress = clusterAddress;
+                errorMsg = "";
+            }
+
+            string clusterAddress;
+            string errorMsg;
+            public string ErrorMessage => errorMsg;
+            public bool SchemaRegistrySSLVerifyCallback(System.Net.Http.HttpRequestMessage httpRequestMessage, System.Security.Cryptography.X509Certificates.X509Certificate2 cert, System.Security.Cryptography.X509Certificates.X509Chain certChain, System.Net.Security.SslPolicyErrors policyErrors)
+            {
+                System.Collections.Generic.List<Org.BouncyCastle.X509.X509Certificate> chainList = new System.Collections.Generic.List<Org.BouncyCastle.X509.X509Certificate>();
+                foreach (var chainEl in certChain.ChainElements)
+                {
+                    chainList.Add(Org.BouncyCastle.Security.DotNetUtilities.FromX509Certificate(chainEl.Certificate));
+                }
+
+                Org.BouncyCastle.X509.X509Certificate bcCert = Org.BouncyCastle.Security.DotNetUtilities.FromX509Certificate(cert);
+
+                if (!TaskManager.Manager.CertificateManager.VerifyChain(bcCert, chainList.ToArray(), out errorMsg))
+                {
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    sb.AppendLine($"Kafka data store - {clusterAddress} - Schema registry SSL verification failed. Provided certificates:");
+                    sb.AppendLine($"  Certificate: {KafkaSSLVerifier.GetCertificateString(bcCert)}");
+                    for (int i = 0; i < chainList.Count; i++)
+                        sb.AppendLine($"  Chain_{i}: {KafkaSSLVerifier.GetCertificateString(chainList[i])}");
+
+                    return false;
+                }
+                return true;
+            }
+        }
     }
 }

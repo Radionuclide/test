@@ -33,7 +33,6 @@ namespace iba.Data
         public SchemaRegistrySecurityType SchemaRegistrySecurityMode { get; set; }
         public SASLMechanismType SASLMechanismMode { get; set; }
         public string SSLClientThumbprint { get; set; }
-        public string SSLCAThumbprint { get; set; }
         public string SASLUsername { get; set; }
         [XmlIgnore]
         public string SASLPass { get; set; }
@@ -45,7 +44,6 @@ namespace iba.Data
         public bool enableSSLVerification { get; set; }
         public bool enableSchema { get; set; }
         public string schemaSSLClientThumbprint { get; set; }
-        public string schemaSSLCAThumbprint { get; set; }
         public string schemaUsername { get; set; }
         [XmlIgnore]
         public string schemaPass { get; set; }
@@ -252,11 +250,9 @@ namespace iba.Data
             SchemaRegistrySecurityMode = SchemaRegistrySecurityType.HTTP;
             SASLMechanismMode = SASLMechanismType.PLAIN;
             SSLClientThumbprint = "";
-            SSLCAThumbprint = "";
             SASLUsername = "";
             SASLPass = "";
             schemaSSLClientThumbprint = "";
-            schemaSSLCAThumbprint = "";
             schemaUsername = "";
             schemaPass = "";
             signalReference = "$signalname";
@@ -291,12 +287,10 @@ namespace iba.Data
             d.Name = Name;
             d.SASLMechanismMode = SASLMechanismMode;
             d.SSLClientThumbprint = SSLClientThumbprint;
-            d.SSLCAThumbprint = SSLCAThumbprint;
             d.SASLUsername = SASLUsername;
             d.SASLPass = SASLPass;
             d.enableSSLVerification = enableSSLVerification;
             d.schemaSSLClientThumbprint = schemaSSLClientThumbprint;
-            d.schemaSSLCAThumbprint = schemaSSLCAThumbprint;
             d.schemaUsername = schemaUsername;
             d.schemaPass = schemaPass;
             d.signalReference = signalReference;
@@ -333,12 +327,10 @@ namespace iba.Data
                 metadata.SequenceEqual(other.metadata) &&
                 SASLMechanismMode == other.SASLMechanismMode &&
                 SSLClientThumbprint == other.SSLClientThumbprint &&
-                SSLCAThumbprint == other.SSLCAThumbprint &&
                 SASLUsername == other.SASLUsername &&
                 SASLPass == other.SASLPass &&
                 enableSSLVerification == other.enableSSLVerification &&
                 schemaSSLClientThumbprint == other.schemaSSLClientThumbprint &&
-                schemaSSLCAThumbprint == other.schemaSSLCAThumbprint &&
                 schemaUsername == other.schemaUsername &&
                 schemaPass == other.schemaPass &&
                 signalReference == other.signalReference &&
@@ -402,13 +394,6 @@ namespace iba.Data
                        value => SSLClientThumbprint = value,
                        CertificateRequirement.Valid | CertificateRequirement.Trusted | CertificateRequirement.PrivateKey,
                        m_name);
-
-            if (SSLCAThumbprint != null && SSLCAThumbprint != "")
-                yield return new CertificateInfoForwarder(
-                   () => SSLCAThumbprint,
-                   value => SSLCAThumbprint = value,
-                   CertificateRequirement.Valid | CertificateRequirement.Trusted | CertificateRequirement.PrivateKey,
-                   m_name);
         }
 
         public override int RequiredLicense => Licensing.LicenseId.Publish;
