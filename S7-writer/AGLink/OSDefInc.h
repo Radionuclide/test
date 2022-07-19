@@ -29,26 +29,7 @@
 
  *******************************************************************************/
 
-#if defined( TIXI ) || defined( __TIXI__ )
-
-  #if !defined( __TIXI__ )
-
-    #define __TIXI__
-  // #define __TIXI_API__
-
-  #endif
-
-  #if defined( MQX )
-
-    //#undef MQX
-    #include "TXTypes.h"
-    #if !defined( __MQX__ )
-      #define __MQX__
-    #endif
-
-  #endif
-
-#elif defined( VXWORKS ) || defined( __VXWORKS__ )
+#if defined( VXWORKS ) || defined( __VXWORKS__ )
 
   #if !defined( __VXWORKS__ )
 
@@ -233,11 +214,7 @@ struct agl_wsabuf_t
 
  *******************************************************************************/
 
-#if defined( __TIXI__ )
-
-  #error platform not supported with current version.
-
-#elif defined( __VXWORKS__ )
+#if defined( __VXWORKS__ )
 
   #define AGL_API 
 

@@ -42,6 +42,7 @@
 0xFFF0001F;Function is not reentrant
 0xFFF00020;Function removed for code size reduction
 0xFFF00021;Because of parameter changes (in the moment) not applicable
+0xFFF00022;Invalid handle
 
 0xFFF50000;No free job buffer available
 0xFFF50001;Invalid packet

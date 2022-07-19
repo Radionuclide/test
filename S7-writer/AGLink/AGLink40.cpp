@@ -2,7 +2,7 @@
 Projekt        : AGLink-Bibliothek
 Dateiname      : AGLink40.cpp
 Beschreibung   : Dynamisches Laden der öffentlichen Funktionen
-Copyright      : (c) 1998-2019
+Copyright      : (c) 1998-2021
                  DELTALOGIC Automatisierungstechnik GmbH
                  Stuttgarter Str. 3
                  73525 Schwäbisch Gmünd
@@ -72,415 +72,415 @@ agl_int32_t LoadFunctions( void );
 Definition der Funktionszeigertypen
 *******************************************************************************/
 
-typedef void (AGL_API * LPFN_AGL_Activate)(agl_cstr8_t Key);
-typedef void (AGL_API * LPFN_AGL_GetVersion)(agl_int32_t* Major, agl_int32_t* Minor);
-typedef void (AGL_API * LPFN_AGL_GetVersionEx)(agl_int32_t* Major, agl_int32_t* Minor, agl_int32_t* Build, agl_int32_t* Revision, agl_cstr8_t Date);
+typedef void (AGL_API * LPFN_AGL_Activate)(const agl_cstr8_t const Key);
+typedef void (AGL_API * LPFN_AGL_GetVersion)(agl_int32_t* const Major, agl_int32_t* const Minor);
+typedef void (AGL_API * LPFN_AGL_GetVersionEx)(agl_int32_t* const Major, agl_int32_t* const Minor, agl_int32_t* const Build, agl_int32_t* const Revision, agl_cstr8_t const Date);
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetOptions)(void);
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetSerialNumber)(void);
-typedef agl_cstr8_t (AGL_API * LPFN_AGL_GetClientName)(agl_cstr8_t Name);
+typedef agl_cstr8_t (AGL_API * LPFN_AGL_GetClientName)(agl_cstr8_t const Name);
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetMaxDevices)(void);
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetMaxQueues)(void);
 typedef agl_int32_t (AGL_API * LPFN_AGL_GetMaxPLCPerDevice)(void);
-typedef void (AGL_API * LPFN_AGL_UseSystemTime)(agl_bool_t Flag);
-typedef void (AGL_API * LPFN_AGL_ReturnJobNr)(agl_bool_t Flag);
-typedef void (AGL_API * LPFN_AGL_SetBSendAutoResponse)(agl_bool_t Flag);
+typedef void (AGL_API * LPFN_AGL_UseSystemTime)(const agl_bool_t Flag);
+typedef void (AGL_API * LPFN_AGL_ReturnJobNr)(const agl_bool_t Flag);
+typedef void (AGL_API * LPFN_AGL_SetBSendAutoResponse)(const agl_bool_t Flag);
 typedef agl_bool_t (AGL_API * LPFN_AGL_GetBSendAutoResponse)(void);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetPCCPConnNames)(agl_cstr8_t Names, agl_int32_t Len);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetPCCPProtocol)(agl_cstr8_t Name);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetTapiModemNames)(agl_cstr8_t Names, agl_int32_t Len);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetLocalIPAddresses)(agl_ulong32_t* Addresses, agl_ulong32_t NumAddresses);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetAdaptersInfo)(LPADAPTER_INFO p_pAdapterInfo, agl_uint32_t MaxAdapters);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetPCCPConnNames)(agl_cstr8_t const Names, const agl_int32_t Len);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetPCCPProtocol)(agl_cstr8_t const Name);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetTapiModemNames)(agl_cstr8_t const Names, const agl_int32_t Len);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetLocalIPAddresses)(agl_ulong32_t* const Addresses, const agl_ulong32_t NumAddresses);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetAdaptersInfo)(LPADAPTER_INFO p_pAdapterInfo, const agl_uint32_t MaxAdapters);
 typedef agl_ulong32_t (AGL_API * LPFN_AGL_GetTickCount)(void);
 typedef agl_ulong32_t (AGL_API * LPFN_AGL_GetMicroSecs)(void);
 typedef void (AGL_API * LPFN_AGL_UnloadDyn)(void);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Config)(agl_int32_t DevNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ConfigEx)(agl_int32_t DevNr, agl_cstr8_t CmdLine);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetParas)(agl_int32_t DevNr, agl_int32_t ParaType, void* Para, agl_int32_t Len);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetParas)(agl_int32_t DevNr, agl_int32_t ParaType, void* Para, agl_int32_t Len);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetDevType)(agl_int32_t DevNr, agl_int32_t DevType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetDevType)(agl_int32_t DevNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadParas)(agl_int32_t DevNr, agl_int32_t ParaType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteParas)(agl_int32_t DevNr, agl_int32_t ParaType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDevice)(agl_int32_t DevNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteDevice)(agl_int32_t DevNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadParasFromFile)(agl_int32_t DevNr, agl_cstr8_t FileName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteParasToFile)(agl_int32_t DevNr, agl_cstr8_t FileName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetParaPath)(agl_cstr8_t DirName, agl_int32_t MaxLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetParaPath)(const agl_cstr8_t DirName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetAndGetParaPath)(agl_cstr8_t CompanyName, agl_cstr8_t ProductName, agl_cstr8_t AktPath, agl_int32_t MaxLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetPLCType)(agl_int32_t DevNr, agl_int32_t PlcNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_HasFunc)(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_t Func);
-typedef agl_int32_t (AGL_API * LPFN_AGL_LoadErrorFile)(agl_cstr8_t FileName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetErrorMsg)(agl_int32_t ErrNr, agl_cstr8_t Msg, agl_int32_t MaxLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetErrorCodeName)(agl_int32_t ErrNr, const agl_cstr8_t* const ErrorCodeName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_OpenDevice)(agl_int32_t DevNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_CloseDevice)(agl_int32_t DevNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetDevNotification)(agl_int32_t DevNr, LPNOTIFICATION pN);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetConnNotification)(agl_int32_t ConnNr, LPNOTIFICATION pN);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetJobNotification)(agl_int32_t DevNr, agl_int32_t JobNr, LPNOTIFICATION pN);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetJobNotificationEx)(agl_int32_t DevNr, agl_int32_t JobNr, LPNOTIFICATION pN);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetJobResult)(agl_int32_t DevNr, agl_int32_t JobNr, LPRESULT40 pR);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetLastJobResult)(agl_int32_t ConnNr, LPRESULT40 pR);
-typedef agl_int32_t (AGL_API * LPFN_AGL_DeleteJob)(agl_int32_t DevNr, agl_int32_t JobNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WaitForJob)(agl_int32_t DevNr, agl_int32_t JobNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WaitForJobEx)(agl_int32_t DevNr, agl_int32_t JobNr, LPRESULT40 pR);
-typedef agl_int32_t (AGL_API * LPFN_AGL_DialUp)(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_HangUp)(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitAdapter)(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ExitAdapter)(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetLifelist)(agl_int32_t DevNr, agl_uint8_t* List, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetDirectPLC)(agl_int32_t DevNr, agl_uint8_t* pPlc, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLCConnect)(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_t* ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLCConnectEx)(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_t RackNr, agl_int32_t SlotNr, agl_int32_t* ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLCDisconnect)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMaxPacketSize)(agl_int32_t ConnNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetRedConnState)(agl_int32_t ConnNr, LPRED_CONN_STATE pState);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetRedConnStateMsg)(agl_int32_t ConnNr, LPRED_CONN_STATE pState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOpState)(agl_int32_t ConnNr, agl_int32_t* State, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOpStateEx)(agl_int32_t ConnNr, agl_int32_t* State, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetPLCStartOptions)(agl_int32_t ConnNr, agl_int32_t* StartOptions, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLCStop)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLCStart)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLCResume)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLCColdStart)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_IsHPLC)(agl_int32_t ConnNr, agl_int32_t* IsHPLC, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_HPLCStop)(agl_int32_t ConnNr, agl_int32_t CPUNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_HPLCStart)(agl_int32_t ConnNr, agl_int32_t CPUNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_HPLCColdStart)(agl_int32_t ConnNr, agl_int32_t CPUNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetPLCClock)(agl_int32_t ConnNr, LPTOD pTOD, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetPLCClock)(agl_int32_t ConnNr, LPTOD pTOD, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SyncPLCClock)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMLFBNr)(agl_int32_t ConnNr, LPMLFB pMLFBNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMLFBNrEx)(agl_int32_t ConnNr, LPMLFBEX pMLFBNrEx, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadPLCInfo)(agl_int32_t ConnNr, LPPLCINFO pPLCInfo, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadCycleTime)(agl_int32_t ConnNr, LPCYCLETIME pCycleTime, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadProtLevel)(agl_int32_t ConnNr, LPPROTLEVEL pProtLevel, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS7Ident)(agl_int32_t ConnNr, LPS7_IDENT pIdent, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS7LED)(agl_int32_t ConnNr, LPS7_LED pLed, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetExtModuleInfo)(agl_int32_t ConnNr, LPEXT_MODULE_INFO pInfo, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadSzl)(agl_int32_t ConnNr, agl_int32_t SzlId, agl_int32_t Index, agl_uint8_t* Buff, agl_int32_t* BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_IsPasswordReq)(agl_int32_t ConnNr, agl_int32_t* IsPWReq, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetPassword)(agl_int32_t ConnNr, agl_cstr8_t PW, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetPasswordEx)(agl_int32_t ConnNr, const agl_cstr8_t const PW, agl_uint32_t* NewProtectionLevel, const agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_UnSetPassword)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDiagBufferEntrys)(agl_int32_t ConnNr, agl_int32_t* Entrys, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDiagBuffer)(agl_int32_t ConnNr, agl_int32_t* Entrys, agl_uint8_t* pDiagBuff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetDiagBufferEntry)(agl_int32_t Index, agl_uint8_t* pDiagBuff, agl_cstr8_t Text, agl_int32_t TextLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDBCount)(agl_int32_t ConnNr, agl_int32_t* DBCount, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDBList)(agl_int32_t ConnNr, agl_int32_t* DBCount, agl_uint16_t* DBList, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDBLen)(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t* DBLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadAllBlockCount)(agl_int32_t ConnNr, LPALL_BLOCK_COUNT pBC, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadBlockCount)(agl_int32_t ConnNr, agl_int32_t BlockType, agl_int32_t* BlockCount, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadBlockList)(agl_int32_t ConnNr, agl_int32_t BlockType, agl_int32_t* BlockCount, agl_uint16_t* BlockList, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadBlockLen)(agl_int32_t ConnNr, agl_int32_t BlockType, agl_int32_t BlockNr, agl_int32_t* BlockLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadInBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadPInBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOutBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadFlagBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadSFlagBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadVarBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDataBytes)(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDataWords)(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadTimerWords)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadCounterWords)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMix)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMixEx)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteInBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteOutBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WritePOutBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteFlagBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteSFlagBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteVarBytes)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteDataBytes)(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteDataWords)(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteTimerWords)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteCounterWords)(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteMix)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteMixEx)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitOptReadMix)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_ptrdiff_t* Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOptReadMix)(agl_int32_t ConnNr, agl_ptrdiff_t Opt, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_EndOptReadMix)(agl_ptrdiff_t Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitOptReadMixEx)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_ptrdiff_t* Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOptReadMixEx)(agl_int32_t ConnNr, agl_ptrdiff_t Opt, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_EndOptReadMixEx)(agl_ptrdiff_t Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitOptWriteMix)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_ptrdiff_t* Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteOptWriteMix)(agl_int32_t ConnNr, agl_ptrdiff_t Opt, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_EndOptWriteMix)(agl_ptrdiff_t Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitOptWriteMixEx)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_ptrdiff_t* Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteOptWriteMixEx)(agl_int32_t ConnNr, agl_ptrdiff_t Opt, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_EndOptWriteMixEx)(agl_ptrdiff_t Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SetOptNotification)(agl_ptrdiff_t Opt, LPNOTIFICATION pN);
-typedef agl_int32_t (AGL_API * LPFN_AGL_DeleteOptJob)(agl_int32_t ConnNr, agl_ptrdiff_t Opt);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetOptJobResult)(agl_int32_t ConnNr, agl_ptrdiff_t Opt, LPRESULT40 pR);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WaitForOptJob)(agl_int32_t ConnNr, agl_ptrdiff_t Opt);
-typedef agl_ptrdiff_t (AGL_API * LPFN_AGL_AllocRWBuffs)(LPDATA_RW40 Buff, agl_int32_t Num);
-typedef agl_int32_t (AGL_API * LPFN_AGL_FreeRWBuffs)(agl_ptrdiff_t Handle);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadRWBuff)(LPDATA_RW40 Buff, agl_int32_t Index, void* pData);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WriteRWBuff)(LPDATA_RW40 Buff, agl_int32_t Index, void* pData);
-typedef agl_int32_t (AGL_API * LPFN_AGL_RKSend)(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_RKSendEx)(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_RKFetch)(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_RKFetchEx)(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Send_RKFetch)(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Recv_RKSend)(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Recv_RKFetch)(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Send_3964)(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int32_t BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Recv_3964)(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int32_t* BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_BSend)(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_BReceive)(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_BSendEx)(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t R_ID, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_BReceiveEx)(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t* R_ID, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_USend)(agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_UReceive)(agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitOpStateMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ExitOpStateMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetOpStateMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitDiagMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t DiagMask, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ExitDiagMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetDiagMsg)(agl_int32_t ConnNr, LPS7_DIAG_MSG pDiag, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitCyclicRead)(agl_int32_t ConnNr, agl_int32_t CycleTime, agl_int32_t Flags, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t* Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitCyclicReadEx)(agl_int32_t ConnNr, agl_int32_t CycleTime, agl_int32_t Flags, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t* Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_StartCyclicRead)(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_StopCyclicRead)(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ExitCyclicRead)(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetCyclicRead)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetCyclicReadEx)(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitScanMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ExitScanMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetScanMsg)(agl_int32_t ConnNr, LPS7_SCAN pScan, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_HasAckTriggeredMsg)(agl_int32_t ConnNr, agl_int32_t* Mode, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitAlarmMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ExitAlarmMsg)(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetAlarmMsg)(agl_int32_t ConnNr, LPS7_ALARM pAlarm, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOpenMsg)(agl_int32_t ConnNr, LPS7_OPEN_MSG_STATE pState, agl_int32_t* MsgAnz, agl_int32_t MsgType, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetMsgStateChange)(agl_int32_t ConnNr, LPS7_RCV_MSG_STATE pState, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_AckMsg)(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t MsgAnz, agl_int32_t MsgType, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_LockMsg)(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t MsgAnz, agl_int32_t MsgType, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_UnlockMsg)(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t MsgAnz, agl_int32_t MsgType, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_InitARSend)(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t ArAnz, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ExitARSend)(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t ArAnz, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetARSend)(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t* AR_ID, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_RFC1006_Connect)(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_t* ConnNr, LPRFC_1006_SERVER ConnInfo, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_RFC1006_Disconnect)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_RFC1006_Receive)(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int32_t BuffLen, agl_int32_t* ReceivedLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_RFC1006_Send)(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int32_t BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadMixEx)(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_WriteMixEx)(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CheckVarSize)(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_InitCyclicReadEx)(agl_int32_t ConnNr, agl_int32_t CycleTime, agl_int32_t OnlyChanged, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t* Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_StartCyclicRead)(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_StopCyclicRead)(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ExitCyclicRead)(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_GetCyclicReadEx)(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_EXTERN)(agl_int32_t ConnNr, agl_int32_t Channel, agl_cstr8_t ProgName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_EXTMOD)(agl_int32_t ConnNr, agl_int32_t Channel, agl_cstr8_t ProgName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_SELECT)(agl_int32_t ConnNr, agl_int32_t Channel, agl_cstr8_t ProgName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_DELE)(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_PROT)(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_cstr8_t Protection, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_RENA)(agl_int32_t ConnNr, agl_cstr8_t OldFileName, agl_cstr8_t NewFileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_XFER)(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_LOGIN)(agl_int32_t ConnNr, agl_cstr8_t Password, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_LOGOUT)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_OPEN)(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_cstr8_t WindowName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_OPER)(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_cstr8_t WindowName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_SEEK)(agl_int32_t ConnNr, agl_cstr8_t WindowName, agl_int32_t SeekMode, agl_int32_t SeekPointer, agl_int32_t WindowSize, agl_cstr8_t CompareString, agl_int32_t SkipCount, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_CLOS)(agl_int32_t ConnNr, agl_cstr8_t WindowName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_StartAll)(agl_int32_t ConnNr, agl_uint8_t* Para, agl_int32_t ParaLen, agl_cstr8_t Cmd, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_COPY)(agl_int32_t ConnNr, agl_int32_t Direction, agl_cstr8_t SourceFileName, agl_cstr8_t DestinationFileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_PROR)(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_cstr8_t Protection, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_CANCEL)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_CRCEDN)(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t TNumber, agl_int32_t DNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_DELECE)(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t TNumber, agl_int32_t DNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_DELETO)(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t TNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_IBN_SS)(agl_int32_t ConnNr, agl_int32_t Switch, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_MMCSEM)(agl_int32_t ConnNr, agl_int32_t ChannelNumber, agl_int32_t FunctionNumber, agl_int32_t SemaValue, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_TMCRTO)(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_cstr8_t ToolID, agl_int32_t ToolNumber, agl_int32_t DuploNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_TMMVTL)(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t ToolNumber, agl_int32_t SourcePlaceNumber, agl_int32_t SourceMagazineNumber, agl_int32_t DestinationPlaceNumber, agl_int32_t DestinationMagazineNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_TMCRTC)(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_cstr8_t ToolID, agl_int32_t ToolNumber, agl_int32_t DuploNumber, agl_int32_t EdgeNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_CREATO)(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t TNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyFileToNC)(agl_int32_t ConnNr, agl_cstr8_t NCFileName, agl_cstr8_t PCFileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyFileFromNC)(agl_int32_t ConnNr, agl_cstr8_t NCFileName, agl_cstr8_t PCFileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyToNC)(agl_int32_t ConnNr, agl_cstr8_t FileName, void* Buff, agl_int32_t BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyFromNC)(agl_int32_t ConnNr, agl_cstr8_t FileName, void* Buff, agl_int32_t BuffLen, agl_int32_t* NeededLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyFromNCAlloc)(agl_int32_t ConnNr, agl_cstr8_t FileName, void** Buff, agl_int32_t* BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_FreeBuff)(void* Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_SetConnProgressNotification)(agl_int32_t ConnNr, LPNOTIFICATION pN);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CheckNSKVarLine)(agl_cstr8_t Line, LPNCKDataRW pRW, agl_cstr8_t Name, agl_int32_t NameLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadNSKVarFile)(agl_cstr8_t FileName, LPNCKDataRW* ppRW, agl_cstr8_t** pName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CheckCSVVarLine)(agl_cstr8_t Line, LPNCKDataRW pRW, agl_cstr8_t Name, agl_int32_t NameLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadCSVVarFile)(agl_cstr8_t FileName, LPNCKDataRW* ppRW, agl_cstr8_t** pName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadGUDVarFile)(agl_cstr8_t FileName, LPNCKDataRW* ppRW, agl_cstr8_t** pName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadGUDVarFileEx)(agl_cstr8_t FileName, agl_int32_t GUDNr, agl_int32_t Area, LPNCKDataRW* ppRW, agl_cstr8_t** pName);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_FreeVarBuff)(LPNCKDataRW* ppRW, agl_cstr8_t** pName, agl_int32_t Anz);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_GetSingleVarDef)(LPNCKDataRW* ppRW, agl_cstr8_t** pName, agl_int32_t Index, LPNCKDataRW pRW, agl_cstr8_t Name, agl_int32_t NameLen, agl_int32_t AllocBuff);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ExtractNckAlarm)(void* Buffer, agl_int32_t BufferSize, LPNCKAlarm NCKAlarm);
-typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_GetNCKDataRWByNCDDEItem)(const agl_cstr8_t const Item, LPNCKDataRW DataRW, agl_int32_t* ErrorPosition);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Drive_ReadMix)(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Drive_ReadMixEx)(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Drive_WriteMix)(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Drive_WriteMixEx)(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef void* (AGL_API * LPFN_AGL_malloc)(agl_int32_t Size);
-typedef void* (AGL_API * LPFN_AGL_calloc)(agl_int32_t Anz, agl_int32_t Size);
-typedef void* (AGL_API * LPFN_AGL_realloc)(void* Ptr, agl_int32_t Size);
-typedef void* (AGL_API * LPFN_AGL_memcpy)(void* DestPtr, void* SrcPtr, agl_int32_t Len);
-typedef void* (AGL_API * LPFN_AGL_memmove)(void* DestPtr, void* SrcPtr, agl_int32_t Len);
-typedef agl_int32_t (AGL_API * LPFN_AGL_memcmp)(void* Ptr1, void* Ptr2, agl_int32_t Len);
-typedef void (AGL_API * LPFN_AGL_free)(void* Ptr);
-typedef agl_int16_t (AGL_API * LPFN_AGL_ReadInt16)(agl_uint8_t* Buff);
-typedef agl_long32_t (AGL_API * LPFN_AGL_ReadInt32)(agl_uint8_t* Buff);
-typedef agl_uint16_t (AGL_API * LPFN_AGL_ReadWord)(agl_uint8_t* Buff);
-typedef agl_ulong32_t (AGL_API * LPFN_AGL_ReadDWord)(agl_uint8_t* Buff);
-typedef agl_float32_t (AGL_API * LPFN_AGL_ReadReal)(agl_uint8_t* Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS5Time)(agl_uint8_t* Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS5TimeW)(agl_uint16_t* Buff);
-typedef void (AGL_API * LPFN_AGL_WriteInt16)(agl_uint8_t* Buff, agl_int16_t Val);
-typedef void (AGL_API * LPFN_AGL_WriteInt32)(agl_uint8_t* Buff, agl_long32_t Val);
-typedef void (AGL_API * LPFN_AGL_WriteWord)(agl_uint8_t* Buff, agl_uint16_t Val);
-typedef void (AGL_API * LPFN_AGL_WriteDWord)(agl_uint8_t* Buff, agl_ulong32_t Val);
-typedef void (AGL_API * LPFN_AGL_WriteReal)(agl_uint8_t* Buff, agl_float32_t Val);
-typedef void (AGL_API * LPFN_AGL_WriteS5Time)(agl_uint8_t* Buff, agl_int32_t Val);
-typedef void (AGL_API * LPFN_AGL_WriteS5TimeW)(agl_uint16_t* Buff, agl_int32_t Val);
-typedef void (AGL_API * LPFN_AGL_Byte2Word)(agl_uint16_t* OutBuff, agl_uint8_t* InBuff, agl_int32_t AnzWords);
-typedef void (AGL_API * LPFN_AGL_Byte2DWord)(agl_ulong32_t* OutBuff, agl_uint8_t* InBuff, agl_int32_t AnzDWords);
-typedef void (AGL_API * LPFN_AGL_Byte2Real)(agl_float32_t* OutBuff, agl_uint8_t* InBuff, agl_int32_t AnzReals);
-typedef void (AGL_API * LPFN_AGL_Word2Byte)(agl_uint8_t* OutBuff, agl_uint16_t* InBuff, agl_int32_t AnzWords);
-typedef void (AGL_API * LPFN_AGL_DWord2Byte)(agl_uint8_t* OutBuff, agl_ulong32_t* InBuff, agl_int32_t AnzDWords);
-typedef void (AGL_API * LPFN_AGL_Real2Byte)(agl_uint8_t* OutBuff, agl_float32_t* InBuff, agl_int32_t AnzReals);
-typedef agl_int32_t (AGL_API * LPFN_AGL_GetBit)(agl_uint8_t Wert, agl_int32_t BitNr);
-typedef agl_uint8_t (AGL_API * LPFN_AGL_SetBit)(agl_uint8_t* Buff, agl_int32_t BitNr);
-typedef agl_uint8_t (AGL_API * LPFN_AGL_ResetBit)(agl_uint8_t* Buff, agl_int32_t BitNr);
-typedef agl_uint8_t (AGL_API * LPFN_AGL_SetBitVal)(agl_uint8_t* Buff, agl_int32_t BitNr, agl_int32_t Val);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Buff2String)(agl_uint8_t* Buff, agl_cstr8_t Text, agl_int32_t AnzChars);
-typedef agl_int32_t (AGL_API * LPFN_AGL_String2Buff)(agl_uint8_t* Buff, agl_cstr8_t Text, agl_int32_t AnzChars);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Buff2WString)(agl_uint8_t* Buff, agl_wchar_t* Text, agl_int32_t AnzChars);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WString2Buff)(agl_uint8_t* Buff, agl_wchar_t* Text, agl_int32_t AnzChars);
-typedef agl_int32_t (AGL_API * LPFN_AGL_S7String2String)(agl_uint8_t* S7String, agl_cstr8_t Text, agl_int32_t MaxChars);
-typedef agl_int32_t (AGL_API * LPFN_AGL_String2S7String)(agl_uint8_t* S7String, agl_cstr8_t Text, agl_int32_t MaxChars);
-typedef agl_int32_t (AGL_API * LPFN_AGL_BCD2Int16)(agl_int16_t BCD, agl_int16_t* Dual);
-typedef agl_int32_t (AGL_API * LPFN_AGL_BCD2Int32)(agl_long32_t BCD, agl_long32_t* Dual);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Int162BCD)(agl_int16_t Dual, agl_int16_t* BCD);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Int322BCD)(agl_long32_t Dual, agl_long32_t* BCD);
-typedef agl_float32_t (AGL_API * LPFN_AGL_LongAsFloat)(agl_long32_t Var);
-typedef agl_long32_t (AGL_API * LPFN_AGL_FloatAsLong)(agl_float32_t Var);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Text2DataRW)(agl_cstr8_t Text, LPDATA_RW40 RW);
-typedef agl_int32_t (AGL_API * LPFN_AGL_DataRW2Text)(LPDATA_RW40 RW, agl_cstr8_t Text);
-typedef agl_int32_t (AGL_API * LPFN_AGL_S7DT2SysTime)(agl_uint8_t* Buff, agl_systemtime_t* SysTime);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SysTime2S7DT)(agl_systemtime_t* SysTime, agl_uint8_t* Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGL_TOD2SysTime)(LPTOD pTOD, agl_systemtime_t* SysTime);
-typedef agl_int32_t (AGL_API * LPFN_AGL_SysTime2TOD)(agl_systemtime_t* SysTime, LPTOD pTOD);
-typedef agl_int32_t (AGL_API * LPFN_AGL_S7Date2YMD)(agl_uint16_t Date, agl_uint16_t* Year, agl_uint16_t* Month, agl_uint16_t* Day);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Float2KG)(agl_uint16_t* pKG, agl_float32_t* pFloat, agl_int32_t AnzFloats);
-typedef agl_int32_t (AGL_API * LPFN_AGL_KG2Float)(agl_float32_t* pFloat, agl_uint16_t* pKG, agl_int32_t AnzFloats);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Float2DWKG)(agl_ulong32_t* pKG, agl_float32_t* pFloat, agl_int32_t AnzFloats);
-typedef agl_int32_t (AGL_API * LPFN_AGL_DWKG2Float)(agl_float32_t* pFloat, agl_ulong32_t* pKG, agl_int32_t AnzFloats);
-typedef agl_int32_t (AGL_API * LPFN_AGL_S7Ident2String)(LPS7_IDENT pIdent, agl_int32_t Index, agl_cstr8_t Text, agl_int32_t MaxChars);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_OpenProject)(agl_cstr8_t  Project, agl_ptrdiff_t* PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_CloseProject)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_WriteCpuListToFile)(agl_cstr8_t  FileName);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetProgramCount)(agl_ptrdiff_t PrjHandle, agl_int32_t* ProgCount);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstProgram)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Program);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextProgram)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Program);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseProgram)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_SelectProgram)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Program);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolCount)(agl_ptrdiff_t PrjHandle, agl_int32_t* SymCount);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolCountFilter)(agl_ptrdiff_t PrjHandle, agl_int32_t* SymCount, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstSymbol)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstSymbolFilter)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextSymbol)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseSymbol)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjDBCount)(agl_ptrdiff_t PrjHandle, agl_int32_t* DBCount);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjDBCountFilter)(agl_ptrdiff_t PrjHandle, agl_int32_t* DBCount, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjDBList)(agl_ptrdiff_t PrjHandle, agl_uint16_t* DBList, agl_int32_t DBCount);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjDBListFilter)(agl_ptrdiff_t PrjHandle, agl_uint16_t* DBList, agl_int32_t DBCount, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjBlkCountFilter)(agl_ptrdiff_t PrjHandle, agl_int32_t BlkType, agl_int32_t* BlkCount, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjBlkListFilter)(agl_ptrdiff_t PrjHandle, agl_int32_t BlkType, agl_uint16_t* BlkList, agl_int32_t BlkCount, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDbSymbolCount)(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_int32_t* DBSymCount);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDbSymbolCountFilter)(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_int32_t* DBSymCount, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstDbSymbol)(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstDbSymbolFilter)(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextDbSymbol)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstDbSymbolEx)(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, LPDATA_DBSYM40 Buff, const agl_cstr8_t Filter);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextDbSymbolEx)(agl_ptrdiff_t PrjHandle, LPDATA_DBSYM40 Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDbSymbolExComment)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  ExComment);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseDbSymbol)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDbDependency)(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_int32_t* BlkType, agl_int32_t* BlkNr);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDeclarationCountFilter)(agl_ptrdiff_t PrjHandle, agl_int32_t BlkType, agl_int32_t BlkNr, const agl_cstr8_t Filter, agl_int32_t* DeclarationCount);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstDeclarationFilter)(agl_ptrdiff_t PrjHandle, agl_int32_t BlkType, agl_int32_t BlkNr, const agl_cstr8_t Filter, agl_ptrdiff_t* FindHandle, LPDATA_DECLARATION Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextDeclaration)(agl_ptrdiff_t PrjHandle, agl_ptrdiff_t FindHandle, LPDATA_DECLARATION Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDeclarationInitialValue)(agl_ptrdiff_t PrjHandle, agl_ptrdiff_t FindHandle, agl_int32_t* BufferLength, agl_cstr8_t  InitialValue);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseDeclaration)(agl_ptrdiff_t PrjHandle, agl_ptrdiff_t FindHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolFromText)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Text, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolFromTextEx)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Text, LPDATA_DBSYM40 Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetReadMixFromText)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Text, LPDATA_RW40 Buff, agl_int32_t* Format);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetReadMixFromTextEx)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Text, agl_cstr8_t  AbsOpd, LPDATA_RW40 Buff, agl_int32_t* Format);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbol)(agl_ptrdiff_t PrjHandle, LPDATA_RW40 Buff, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolEx)(agl_ptrdiff_t PrjHandle, LPDATA_RW40 Buff, LPDATA_DBSYM40 Symbol);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_OpenAlarms)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_CloseAlarms)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstAlarmData)(agl_ptrdiff_t PrjHandle, agl_int32_t* AlmNr);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextAlarmData)(agl_ptrdiff_t PrjHandle, agl_int32_t* AlmNr);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseAlarmData)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmData)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, LPDATA_ALARM40 Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmName)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmType)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmBaseName)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmTypeName)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSignalCount)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* SignalCount);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmMsgClass)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t* MsgClass);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmPriority)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t* Priority);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmAckGroup)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t* AckGroup);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmAcknowledge)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t* Acknowledge);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmProtocol)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* Protocol);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmDispGroup)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* DispGroup);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstAlarmTextLanguage)(agl_ptrdiff_t PrjHandle, agl_int32_t* Language, agl_int32_t* IsDefault);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextAlarmTextLanguage)(agl_ptrdiff_t PrjHandle, agl_int32_t* Language, agl_int32_t* IsDefault);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseAlarmTextLanguage)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_SetAlarmTextDefaultLanguage)(agl_ptrdiff_t PrjHandle, agl_int32_t Language);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmText)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t Language, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmInfo)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t Language, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmAddText)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t Index, agl_int32_t Language, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANOperand)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* OpArea, agl_int32_t* OpType, agl_int32_t* Offset, agl_int32_t* BitNr);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANInterval)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* Interval);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANAddValue)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Index, agl_int32_t* OpArea, agl_int32_t* OpType, agl_int32_t* Offset, agl_int32_t* BitNr);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANOperandEx)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, LPDATA_RW40 Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANAddValueEx)(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Index, LPDATA_RW40 Buff);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FormatMessage)(agl_ptrdiff_t PrjHandle, const agl_cstr8_t AlarmText, LPS7_ALARM AlarmData, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstTextlib)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Textlib, agl_int32_t* System);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextTextlib)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Textlib, agl_int32_t* System);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseTextlib)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_SelectTextlib)(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Textlib);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstTextlibText)(agl_ptrdiff_t PrjHandle, agl_int32_t* TextId, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextTextlibText)(agl_ptrdiff_t PrjHandle, agl_int32_t* TextId, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseTextlibText)(agl_ptrdiff_t PrjHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetTextlibText)(agl_ptrdiff_t PrjHandle, agl_int32_t  TextId, agl_cstr8_t Buff, agl_int32_t BuffLen);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetTextFromValue)(void* Value, agl_int32_t Format, agl_int32_t ValueFmt, agl_cstr8_t Text);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetValueFromText)(agl_cstr8_t Text, void* Value, agl_int32_t* Format, agl_int32_t* ValueFmt);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetRealFromText)(agl_cstr8_t Text, agl_float32_t* Value);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetTextFromReal)(agl_float32_t* Value, agl_cstr8_t Text);
-typedef agl_int32_t (AGL_API * LPFN_AGLSym_SetLanguage)(agl_int32_t Language);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_OpenFile)(const agl_cstr8_t FileName, agl_int32_t Access, agl_ptrdiff_t* Handle);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_OpenFileEncrypted)(const agl_cstr8_t FileName, agl_int32_t Access, agl_uint8_t* Key, agl_uint32_t Len, agl_ptrdiff_t* Handle);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_EncryptFile)(const agl_cstr8_t InFileName, const agl_cstr8_t OutFileName, agl_int32_t Access, agl_uint8_t* Key, agl_uint32_t Len);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_DecryptFile)(const agl_cstr8_t InFileName, const agl_cstr8_t OutFileName, agl_uint8_t* Key, agl_uint32_t Len);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_CloseFile)(agl_ptrdiff_t Handle);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_ReadAllBlockCount)(agl_ptrdiff_t Handle, LPALL_BLOCK_COUNT pBC);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_ReadBlockCount)(agl_ptrdiff_t Handle, agl_int32_t BlockType, agl_int32_t* BlockCount);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_ReadBlockList)(agl_ptrdiff_t Handle, agl_int32_t BlockType, agl_int32_t* BlockCount, agl_uint16_t* BlockList);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_ReadBlockLen)(agl_ptrdiff_t Handle, agl_int32_t BlockType, agl_int32_t BlockNr, agl_int32_t* BlockLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_DeleteBlocks)(agl_ptrdiff_t Handle, const agl_cstr8_t Blocks);
-typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_GetReport)(agl_ptrdiff_t Handle, agl_int32_t* Length, agl_cstr8_t Buffer);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLC_Backup)(agl_int32_t ConnNr, agl_ptrdiff_t Handle, const agl_cstr8_t Blocks, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLC_Restore)(agl_int32_t ConnNr, agl_ptrdiff_t Handle, const agl_cstr8_t Blocks, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_PLC_DeleteBlocks)(agl_int32_t ConnNr, const agl_cstr8_t Blocks, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Compress)(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_ReadMixEx)(agl_int32_t ConnNr, SymbolicRW_t* SymbolicRW, agl_int32_t Num, agl_int32_t* SError, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_WriteMixEx)(agl_int32_t ConnNr, SymbolicRW_t* SymbolicRW, agl_int32_t Num, agl_int32_t* SError, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadTIAProjectSymbols)(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, agl_int32_t AutoExpand);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Config)(const agl_int32_t DevNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ConfigEx)(const agl_int32_t DevNr, const agl_cstr8_t const CmdLine);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetParas)(const agl_int32_t DevNr, const agl_int32_t ParaType, const void* const Para, const agl_int32_t Len);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetParas)(const agl_int32_t DevNr, const agl_int32_t ParaType, void* const Para, const agl_int32_t Len);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetDevType)(const agl_int32_t DevNr, const agl_int32_t DevType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetDevType)(const agl_int32_t DevNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadParas)(const agl_int32_t DevNr, const agl_int32_t ParaType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteParas)(const agl_int32_t DevNr, const agl_int32_t ParaType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDevice)(const agl_int32_t DevNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteDevice)(const agl_int32_t DevNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadParasFromFile)(const agl_int32_t DevNr, const agl_cstr8_t const FileName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteParasToFile)(const agl_int32_t DevNr, const agl_cstr8_t const FileName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetParaPath)(agl_cstr8_t const DirName, const agl_int32_t MaxLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetParaPath)(const agl_cstr8_t const DirName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetAndGetParaPath)(const agl_cstr8_t const CompanyName, const agl_cstr8_t const ProductName, agl_cstr8_t const AktPath, const agl_int32_t MaxLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetPLCType)(const agl_int32_t DevNr, const agl_int32_t PlcNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_HasFunc)(const agl_int32_t DevNr, const agl_int32_t PlcNr, const agl_int32_t Func);
+typedef agl_int32_t (AGL_API * LPFN_AGL_LoadErrorFile)(const agl_cstr8_t const FileName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetErrorMsg)(const agl_int32_t ErrNr, agl_cstr8_t const Msg, const agl_int32_t MaxLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetErrorCodeName)(const agl_int32_t ErrNr, const agl_cstr8_t* const ErrorCodeName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_OpenDevice)(const agl_int32_t DevNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_CloseDevice)(const agl_int32_t DevNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetDevNotification)(const agl_int32_t DevNr, const LPNOTIFICATION pN);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetConnNotification)(const agl_int32_t ConnNr, const LPNOTIFICATION pN);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetJobNotification)(const agl_int32_t DevNr, const agl_int32_t JobNr, const LPNOTIFICATION pN);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetJobNotificationEx)(const agl_int32_t DevNr, const agl_int32_t JobNr, const LPNOTIFICATION pN);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetJobResult)(const agl_int32_t DevNr, const agl_int32_t JobNr, LPRESULT40 pR);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetLastJobResult)(const agl_int32_t ConnNr, LPRESULT40 pR);
+typedef agl_int32_t (AGL_API * LPFN_AGL_DeleteJob)(const agl_int32_t DevNr, const agl_int32_t JobNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WaitForJob)(const agl_int32_t DevNr, const agl_int32_t JobNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WaitForJobEx)(const agl_int32_t DevNr, const agl_int32_t JobNr, LPRESULT40 pR);
+typedef agl_int32_t (AGL_API * LPFN_AGL_DialUp)(const agl_int32_t DevNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_HangUp)(const agl_int32_t DevNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitAdapter)(const agl_int32_t DevNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ExitAdapter)(const agl_int32_t DevNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetLifelist)(const agl_int32_t DevNr, agl_uint8_t* const List, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetDirectPLC)(const agl_int32_t DevNr, agl_uint8_t* const pPlc, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLCConnect)(const agl_int32_t DevNr, const agl_int32_t PlcNr, agl_int32_t* const ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLCConnectEx)(const agl_int32_t DevNr, const agl_int32_t PlcNr, const agl_int32_t RackNr, const agl_int32_t SlotNr, agl_int32_t* const ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLCDisconnect)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMaxPacketSize)(const agl_int32_t ConnNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetRedConnState)(const agl_int32_t ConnNr, LPRED_CONN_STATE pState);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetRedConnStateMsg)(const agl_int32_t ConnNr, LPRED_CONN_STATE pState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOpState)(const agl_int32_t ConnNr, agl_int32_t* const State, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOpStateEx)(const agl_int32_t ConnNr, agl_int32_t* const State, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetPLCStartOptions)(const agl_int32_t ConnNr, agl_int32_t* const StartOptions, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLCStop)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLCStart)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLCResume)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLCColdStart)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_IsHPLC)(const agl_int32_t ConnNr, agl_int32_t* const IsHPLC, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_HPLCStop)(const agl_int32_t ConnNr, const agl_int32_t CPUNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_HPLCStart)(const agl_int32_t ConnNr, const agl_int32_t CPUNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_HPLCColdStart)(const agl_int32_t ConnNr, const agl_int32_t CPUNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetPLCClock)(const agl_int32_t ConnNr, LPTOD pTOD, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetPLCClock)(const agl_int32_t ConnNr, const LPTOD pTOD, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SyncPLCClock)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMLFBNr)(const agl_int32_t ConnNr, LPMLFB pMLFBNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMLFBNrEx)(const agl_int32_t ConnNr, LPMLFBEX pMLFBNrEx, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadPLCInfo)(const agl_int32_t ConnNr, LPPLCINFO pPLCInfo, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadCycleTime)(const agl_int32_t ConnNr, LPCYCLETIME pCycleTime, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadProtLevel)(const agl_int32_t ConnNr, LPPROTLEVEL pProtLevel, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS7Ident)(const agl_int32_t ConnNr, LPS7_IDENT pIdent, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS7LED)(const agl_int32_t ConnNr, LPS7_LED pLed, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetExtModuleInfo)(const agl_int32_t ConnNr, LPEXT_MODULE_INFO pInfo, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadSzl)(const agl_int32_t ConnNr, const agl_int32_t SzlId, const agl_int32_t Index, agl_uint8_t* const Buff, agl_int32_t* const BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_IsPasswordReq)(const agl_int32_t ConnNr, agl_int32_t* const IsPWReq, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetPassword)(const agl_int32_t ConnNr, const agl_cstr8_t const PW, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetPasswordEx)(const agl_int32_t ConnNr, const agl_cstr8_t const PW, agl_uint32_t* const NewProtectionLevel, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_UnSetPassword)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDiagBufferEntrys)(const agl_int32_t ConnNr, agl_int32_t* const Entrys, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDiagBuffer)(const agl_int32_t ConnNr, agl_int32_t* const Entrys, agl_uint8_t* const pDiagBuff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetDiagBufferEntry)(const agl_int32_t Index, agl_uint8_t* const pDiagBuff, agl_cstr8_t const Text, const agl_int32_t TextLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDBCount)(const agl_int32_t ConnNr, agl_int32_t* const DBCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDBList)(const agl_int32_t ConnNr, agl_int32_t* const DBCount, agl_uint16_t* const DBList, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDBLen)(const agl_int32_t ConnNr, const agl_int32_t DBNr, agl_int32_t* const DBLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadAllBlockCount)(const agl_int32_t ConnNr, LPALL_BLOCK_COUNT pBC, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadBlockCount)(const agl_int32_t ConnNr, const agl_int32_t BlockType, agl_int32_t* const BlockCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadBlockList)(const agl_int32_t ConnNr, const agl_int32_t BlockType, agl_int32_t* const BlockCount, agl_uint16_t* const BlockList, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadBlockLen)(const agl_int32_t ConnNr, const agl_int32_t BlockType, const agl_int32_t BlockNr, agl_int32_t* const BlockLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadInBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadPInBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOutBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadFlagBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadSFlagBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadVarBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDataBytes)(const agl_int32_t ConnNr, const agl_int32_t DBNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadDataWords)(const agl_int32_t ConnNr, const agl_int32_t DBNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadTimerWords)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadCounterWords)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMix)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadMixEx)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteInBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteOutBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WritePOutBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteFlagBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteSFlagBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteVarBytes)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteDataBytes)(const agl_int32_t ConnNr, const agl_int32_t DBNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteDataWords)(const agl_int32_t ConnNr, const agl_int32_t DBNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteTimerWords)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteCounterWords)(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteMix)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteMixEx)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitOptReadMix)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, agl_ptrdiff_t* const Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOptReadMix)(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_EndOptReadMix)(const agl_ptrdiff_t Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitOptReadMixEx)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, agl_ptrdiff_t* const Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOptReadMixEx)(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_EndOptReadMixEx)(const agl_ptrdiff_t Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitOptWriteMix)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, agl_ptrdiff_t* const Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteOptWriteMix)(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_EndOptWriteMix)(const agl_ptrdiff_t Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitOptWriteMixEx)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, agl_ptrdiff_t* const Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteOptWriteMixEx)(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_EndOptWriteMixEx)(const agl_ptrdiff_t Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SetOptNotification)(const agl_ptrdiff_t Opt, LPNOTIFICATION pN);
+typedef agl_int32_t (AGL_API * LPFN_AGL_DeleteOptJob)(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetOptJobResult)(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, LPRESULT40 pR);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WaitForOptJob)(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt);
+typedef agl_ptrdiff_t (AGL_API * LPFN_AGL_AllocRWBuffs)(LPDATA_RW40 Buff, const agl_int32_t Num);
+typedef agl_int32_t (AGL_API * LPFN_AGL_FreeRWBuffs)(const agl_ptrdiff_t Handle);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadRWBuff)(LPDATA_RW40 Buff, const agl_int32_t Index, void* const pData);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WriteRWBuff)(LPDATA_RW40 Buff, const agl_int32_t Index, void* const pData);
+typedef agl_int32_t (AGL_API * LPFN_AGL_RKSend)(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_RKSendEx)(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_RKFetch)(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_RKFetchEx)(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Send_RKFetch)(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Recv_RKSend)(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Recv_RKFetch)(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Send_3964)(const agl_int32_t ConnNr, const agl_uint8_t* const Buff, const agl_int32_t BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Recv_3964)(const agl_int32_t ConnNr, agl_uint8_t* const Buff, agl_int32_t* const BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_BSend)(const agl_int32_t ConnNr, const agl_wsabuf_t* const pwsa, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_BReceive)(const agl_int32_t ConnNr, agl_wsabuf_t* const pwsa, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_BSendEx)(const agl_int32_t ConnNr, const agl_wsabuf_t* const pwsa, const agl_int32_t R_ID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_BReceiveEx)(const agl_int32_t ConnNr, agl_wsabuf_t* const pwsa, agl_int32_t* const R_ID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_USend)(const agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_UReceive)(const agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitOpStateMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ExitOpStateMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetOpStateMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitDiagMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t DiagMask, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ExitDiagMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetDiagMsg)(const agl_int32_t ConnNr, LPS7_DIAG_MSG pDiag, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitCyclicRead)(const agl_int32_t ConnNr, const agl_int32_t CycleTime, const agl_int32_t Flags, LPDATA_RW40 Buff, const agl_int32_t Num, agl_int32_t* const Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitCyclicReadEx)(const agl_int32_t ConnNr, const agl_int32_t CycleTime, const agl_int32_t Flags, LPDATA_RW40 Buff, const agl_int32_t Num, agl_int32_t* const Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_StartCyclicRead)(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_StopCyclicRead)(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ExitCyclicRead)(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetCyclicRead)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetCyclicReadEx)(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitScanMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ExitScanMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetScanMsg)(const agl_int32_t ConnNr, LPS7_SCAN pScan, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_HasAckTriggeredMsg)(const agl_int32_t ConnNr, agl_int32_t* const Mode, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitAlarmMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ExitAlarmMsg)(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetAlarmMsg)(const agl_int32_t ConnNr, LPS7_ALARM pAlarm, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadOpenMsg)(const agl_int32_t ConnNr, LPS7_OPEN_MSG_STATE pState, agl_int32_t* const MsgAnz, const agl_int32_t MsgType, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetMsgStateChange)(const agl_int32_t ConnNr, LPS7_RCV_MSG_STATE pState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_AckMsg)(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t MsgAnz, const agl_int32_t MsgType, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_LockMsg)(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t MsgAnz, const agl_int32_t MsgType, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_UnlockMsg)(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t MsgAnz, const agl_int32_t MsgType, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_InitARSend)(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t ArAnz, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ExitARSend)(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t ArAnz, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetARSend)(const agl_int32_t ConnNr, agl_wsabuf_t* const pwsa, agl_int32_t* const AR_ID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_RFC1006_Connect)(const agl_int32_t DevNr, const agl_int32_t PlcNr, agl_int32_t* const ConnNr, LPRFC_1006_SERVER ConnInfo, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_RFC1006_Disconnect)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_RFC1006_Receive)(const agl_int32_t ConnNr, agl_uint8_t* const Buff, const agl_int32_t BuffLen, agl_int32_t* const ReceivedLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_RFC1006_Send)(const agl_int32_t ConnNr, const agl_uint8_t* const Buff, const agl_int32_t BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadMixEx)(const agl_int32_t ConnNr, LPNCKDataRW Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_WriteMixEx)(const agl_int32_t ConnNr, LPNCKDataRW Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CheckVarSize)(const agl_int32_t ConnNr, LPNCKDataRW Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_InitCyclicReadEx)(const agl_int32_t ConnNr, const agl_int32_t CycleTime, const agl_int32_t OnlyChanged, LPNCKDataRW Buff, const agl_int32_t Num, agl_int32_t* const Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_StartCyclicRead)(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_StopCyclicRead)(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ExitCyclicRead)(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_GetCyclicReadEx)(const agl_int32_t ConnNr, LPNCKDataRW Buff, const agl_int32_t Num, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_EXTERN)(const agl_int32_t ConnNr, const agl_int32_t Channel, const agl_cstr8_t const ProgName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_EXTMOD)(const agl_int32_t ConnNr, const agl_int32_t Channel, const agl_cstr8_t const ProgName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_SELECT)(const agl_int32_t ConnNr, const agl_int32_t Channel, const agl_cstr8_t const ProgName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_DELE)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_PROT)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_cstr8_t const Protection, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_RENA)(const agl_int32_t ConnNr, const agl_cstr8_t const OldFileName, const agl_cstr8_t const NewFileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_XFER)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_LOGIN)(const agl_int32_t ConnNr, const agl_cstr8_t const Password, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_LOGOUT)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_OPEN)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_cstr8_t const WindowName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_OPER)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_cstr8_t const WindowName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_SEEK)(const agl_int32_t ConnNr, const agl_cstr8_t const WindowName, const agl_int32_t SeekMode, const agl_int32_t SeekPointer, const agl_int32_t WindowSize, const agl_cstr8_t const CompareString, const agl_int32_t SkipCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_CLOS)(const agl_int32_t ConnNr, const agl_cstr8_t const WindowName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_StartAll)(const agl_int32_t ConnNr, const agl_uint8_t* const Para, const agl_int32_t ParaLen, const agl_cstr8_t Cmd, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_COPY)(const agl_int32_t ConnNr, const agl_int32_t Direction, const agl_cstr8_t const SourceFileName, const agl_cstr8_t const DestinationFileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_F_PROR)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_cstr8_t const Protection, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_CANCEL)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_CRCEDN)(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t TNumber, const agl_int32_t DNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_DELECE)(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t TNumber, const agl_int32_t DNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_DELETO)(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t TNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_IBN_SS)(const agl_int32_t ConnNr, const agl_int32_t Switch, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_MMCSEM)(const agl_int32_t ConnNr, const agl_int32_t ChannelNumber, const agl_int32_t FunctionNumber, const agl_int32_t SemaValue, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_TMCRTO)(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_cstr8_t const ToolID, const agl_int32_t ToolNumber, const agl_int32_t DuploNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_TMMVTL)(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t ToolNumber, const agl_int32_t SourcePlaceNumber, const agl_int32_t SourceMagazineNumber, const agl_int32_t DestinationPlaceNumber, const agl_int32_t DestinationMagazineNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_TMCRTC)(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_cstr8_t const ToolID, const agl_int32_t ToolNumber, const agl_int32_t DuploNumber, const agl_int32_t EdgeNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_PI_CREATO)(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t TNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyFileToNC)(const agl_int32_t ConnNr, const agl_cstr8_t const NCFileName, const agl_cstr8_t const PCFileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyFileFromNC)(const agl_int32_t ConnNr, const agl_cstr8_t const NCFileName, const agl_cstr8_t const PCFileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyToNC)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const void* const Buff, const agl_int32_t BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyFromNC)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, void* const Buff, const agl_int32_t BuffLen, agl_int32_t* const NeededLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CopyFromNCAlloc)(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, void** const Buff, agl_int32_t* const BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_FreeBuff)(void* const Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_SetConnProgressNotification)(const agl_int32_t ConnNr, LPNOTIFICATION pN);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CheckNSKVarLine)(const agl_cstr8_t const Line, LPNCKDataRW pRW, agl_cstr8_t const Name, const agl_int32_t NameLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadNSKVarFile)(const agl_cstr8_t const FileName, LPNCKDataRW* const ppRW, agl_cstr8_t** const pName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_CheckCSVVarLine)(const agl_cstr8_t const Line, LPNCKDataRW pRW, agl_cstr8_t const Name, const agl_int32_t NameLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadCSVVarFile)(const agl_cstr8_t const FileName, LPNCKDataRW* const ppRW, agl_cstr8_t** const pName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadGUDVarFile)(const agl_cstr8_t const FileName, LPNCKDataRW* const ppRW, agl_cstr8_t** const pName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ReadGUDVarFileEx)(const agl_cstr8_t const FileName, const agl_int32_t GUDNr, const agl_int32_t Area, LPNCKDataRW* const ppRW, agl_cstr8_t** const pName);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_FreeVarBuff)(LPNCKDataRW* const ppRW, agl_cstr8_t** const pName, const agl_int32_t Anz);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_GetSingleVarDef)(const LPNCKDataRW* const ppRW, const agl_cstr8_t** const pName, const agl_int32_t Index, LPNCKDataRW pRW, agl_cstr8_t const Name, const agl_int32_t NameLen, const agl_int32_t AllocBuff);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_ExtractNckAlarm)(const void* const Buffer, const agl_int32_t BufferSize, LPNCKAlarm NCKAlarm);
+typedef agl_int32_t (AGL_API * LPFN_AGL_NCK_GetNCKDataRWByNCDDEItem)(const agl_cstr8_t const Item, LPNCKDataRW DataRW, agl_int32_t* const ErrorPosition);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Drive_ReadMix)(const agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Drive_ReadMixEx)(const agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Drive_WriteMix)(const agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Drive_WriteMixEx)(const agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef void* (AGL_API * LPFN_AGL_malloc)(const agl_int32_t Size);
+typedef void* (AGL_API * LPFN_AGL_calloc)(const agl_int32_t Anz, const agl_int32_t Size);
+typedef void* (AGL_API * LPFN_AGL_realloc)(void* const Ptr, const agl_int32_t Size);
+typedef void* (AGL_API * LPFN_AGL_memcpy)(void* const DestPtr, const void* const SrcPtr, const agl_int32_t Len);
+typedef void* (AGL_API * LPFN_AGL_memmove)(void* const DestPtr, const void* const SrcPtr, const agl_int32_t Len);
+typedef agl_int32_t (AGL_API * LPFN_AGL_memcmp)(const void* const Ptr1, const void* const Ptr2, const agl_int32_t Len);
+typedef void (AGL_API * LPFN_AGL_free)(void* const Ptr);
+typedef agl_int16_t (AGL_API * LPFN_AGL_ReadInt16)(const agl_uint8_t* const Buff);
+typedef agl_long32_t (AGL_API * LPFN_AGL_ReadInt32)(const agl_uint8_t* const Buff);
+typedef agl_uint16_t (AGL_API * LPFN_AGL_ReadWord)(const agl_uint8_t* const Buff);
+typedef agl_ulong32_t (AGL_API * LPFN_AGL_ReadDWord)(const agl_uint8_t* const Buff);
+typedef agl_float32_t (AGL_API * LPFN_AGL_ReadReal)(const agl_uint8_t* const Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS5Time)(const agl_uint8_t* const Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGL_ReadS5TimeW)(const agl_uint16_t* const Buff);
+typedef void (AGL_API * LPFN_AGL_WriteInt16)(agl_uint8_t* const Buff, const agl_int16_t Val);
+typedef void (AGL_API * LPFN_AGL_WriteInt32)(agl_uint8_t* const Buff, const agl_int32_t Val);
+typedef void (AGL_API * LPFN_AGL_WriteWord)(agl_uint8_t* const Buff, const agl_uint16_t Val);
+typedef void (AGL_API * LPFN_AGL_WriteDWord)(agl_uint8_t* const Buff, const agl_uint32_t Val);
+typedef void (AGL_API * LPFN_AGL_WriteReal)(agl_uint8_t* const Buff, const agl_float32_t Val);
+typedef void (AGL_API * LPFN_AGL_WriteS5Time)(agl_uint8_t* const Buff, const agl_int32_t Val);
+typedef void (AGL_API * LPFN_AGL_WriteS5TimeW)(agl_uint16_t* const Buff, const agl_int32_t Val);
+typedef void (AGL_API * LPFN_AGL_Byte2Word)(agl_uint16_t* const OutBuff, const agl_uint8_t* const InBuff, const agl_int32_t AnzWords);
+typedef void (AGL_API * LPFN_AGL_Byte2DWord)(agl_ulong32_t* const OutBuff, const agl_uint8_t* const InBuff, const agl_int32_t AnzDWords);
+typedef void (AGL_API * LPFN_AGL_Byte2Real)(agl_float32_t* const OutBuff, const agl_uint8_t* const InBuff, const agl_int32_t AnzReals);
+typedef void (AGL_API * LPFN_AGL_Word2Byte)(agl_uint8_t* const OutBuff, const agl_uint16_t* const InBuff, const agl_int32_t AnzWords);
+typedef void (AGL_API * LPFN_AGL_DWord2Byte)(agl_uint8_t* const OutBuff, const agl_ulong32_t* const InBuff, const agl_int32_t AnzDWords);
+typedef void (AGL_API * LPFN_AGL_Real2Byte)(agl_uint8_t* const OutBuff, const agl_float32_t* const InBuff, const agl_int32_t AnzReals);
+typedef agl_int32_t (AGL_API * LPFN_AGL_GetBit)(const agl_uint8_t Wert, const agl_int32_t BitNr);
+typedef agl_uint8_t (AGL_API * LPFN_AGL_SetBit)(agl_uint8_t* const Buff, const agl_int32_t BitNr);
+typedef agl_uint8_t (AGL_API * LPFN_AGL_ResetBit)(agl_uint8_t* const Buff, const agl_int32_t BitNr);
+typedef agl_uint8_t (AGL_API * LPFN_AGL_SetBitVal)(agl_uint8_t* const Buff, const agl_int32_t BitNr, const agl_int32_t Val);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Buff2String)(const agl_uint8_t* const Buff, agl_cstr8_t const Text, const agl_int32_t AnzChars);
+typedef agl_int32_t (AGL_API * LPFN_AGL_String2Buff)(agl_uint8_t* const Buff, const agl_cstr8_t const Text, const agl_int32_t AnzChars);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Buff2WString)(const agl_uint8_t* const Buff, agl_wchar_t* const Text, const agl_int32_t AnzChars);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WString2Buff)(agl_uint8_t* const Buff, const agl_wchar_t* const Text, const agl_int32_t AnzChars);
+typedef agl_int32_t (AGL_API * LPFN_AGL_S7String2String)(const agl_uint8_t* const S7String, agl_cstr8_t const Text, const agl_int32_t MaxChars);
+typedef agl_int32_t (AGL_API * LPFN_AGL_String2S7String)(agl_uint8_t* const S7String, const agl_cstr8_t const Text, const agl_int32_t MaxChars);
+typedef agl_int32_t (AGL_API * LPFN_AGL_BCD2Int16)(const agl_int16_t BCD, agl_int16_t* const Dual);
+typedef agl_int32_t (AGL_API * LPFN_AGL_BCD2Int32)(const agl_long32_t BCD, agl_long32_t* const Dual);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Int162BCD)(const agl_int16_t Dual, agl_int16_t* const BCD);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Int322BCD)(const agl_long32_t Dual, agl_long32_t* const BCD);
+typedef agl_float32_t (AGL_API * LPFN_AGL_LongAsFloat)(const agl_long32_t Var);
+typedef agl_long32_t (AGL_API * LPFN_AGL_FloatAsLong)(const agl_float32_t Var);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Text2DataRW)(const agl_cstr8_t const Text, LPDATA_RW40 RW);
+typedef agl_int32_t (AGL_API * LPFN_AGL_DataRW2Text)(LPDATA_RW40 RW, agl_cstr8_t const Text);
+typedef agl_int32_t (AGL_API * LPFN_AGL_S7DT2SysTime)(const agl_uint8_t* const Buff, agl_systemtime_t* const SysTime);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SysTime2S7DT)(const agl_systemtime_t* const SysTime, agl_uint8_t* const Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGL_TOD2SysTime)(const LPTOD pTOD, agl_systemtime_t* const SysTime);
+typedef agl_int32_t (AGL_API * LPFN_AGL_SysTime2TOD)(const agl_systemtime_t* const SysTime, LPTOD pTOD);
+typedef agl_int32_t (AGL_API * LPFN_AGL_S7Date2YMD)(const agl_uint16_t Date, agl_uint16_t* const Year, agl_uint16_t* const Month, agl_uint16_t* const Day);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Float2KG)(agl_uint16_t* const pKG, const agl_float32_t* const pFloat, const agl_int32_t AnzFloats);
+typedef agl_int32_t (AGL_API * LPFN_AGL_KG2Float)(agl_float32_t* const pFloat, const agl_uint16_t* const pKG, const agl_int32_t AnzFloats);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Float2DWKG)(agl_ulong32_t* const pKG, const agl_float32_t* const pFloat, const agl_int32_t AnzFloats);
+typedef agl_int32_t (AGL_API * LPFN_AGL_DWKG2Float)(agl_float32_t* const pFloat, const agl_ulong32_t* const pKG, const agl_int32_t AnzFloats);
+typedef agl_int32_t (AGL_API * LPFN_AGL_S7Ident2String)(const LPS7_IDENT pIdent, const agl_int32_t Index, agl_cstr8_t const Text, const agl_int32_t MaxChars);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_OpenProject)(const agl_cstr8_t const  Project, agl_ptrdiff_t* const PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_CloseProject)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_WriteCpuListToFile)(const agl_cstr8_t const FileName);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetProgramCount)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const ProgCount);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstProgram)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const Program);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextProgram)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const Program);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseProgram)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_SelectProgram)(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Program);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolCount)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const SymCount);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolCountFilter)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const SymCount, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstSymbol)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstSymbolFilter)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextSymbol)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseSymbol)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjDBCount)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const DBCount);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjDBCountFilter)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const DBCount, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjDBList)(const agl_ptrdiff_t PrjHandle, agl_uint16_t* const DBList, const agl_int32_t DBCount);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjDBListFilter)(const agl_ptrdiff_t PrjHandle, agl_uint16_t* const DBList, const agl_int32_t DBCount, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjBlkCountFilter)(const agl_ptrdiff_t PrjHandle, const agl_int32_t BlkType, agl_int32_t* const BlkCount, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_ReadPrjBlkListFilter)(const agl_ptrdiff_t PrjHandle, const agl_int32_t BlkType, agl_uint16_t* const BlkList, const agl_int32_t BlkCount, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDbSymbolCount)(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_int32_t* const DBSymCount);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDbSymbolCountFilter)(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_int32_t* const DBSymCount, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstDbSymbol)(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstDbSymbolFilter)(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextDbSymbol)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstDbSymbolEx)(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, LPDATA_DBSYM40 Buff, const agl_cstr8_t const Filter);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextDbSymbolEx)(const agl_ptrdiff_t PrjHandle, LPDATA_DBSYM40 Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDbSymbolExComment)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const ExComment);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseDbSymbol)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDbDependency)(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_int32_t* const BlkType, agl_int32_t* const BlkNr);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDeclarationCountFilter)(const agl_ptrdiff_t PrjHandle, const agl_int32_t BlkType, const agl_int32_t BlkNr, const agl_cstr8_t const Filter, agl_int32_t* const DeclarationCount);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstDeclarationFilter)(const agl_ptrdiff_t PrjHandle, const agl_int32_t BlkType, const agl_int32_t BlkNr, const agl_cstr8_t const Filter, agl_ptrdiff_t* const FindHandle, LPDATA_DECLARATION Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextDeclaration)(const agl_ptrdiff_t PrjHandle, const agl_ptrdiff_t FindHandle, LPDATA_DECLARATION Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetDeclarationInitialValue)(const agl_ptrdiff_t PrjHandle, const agl_ptrdiff_t FindHandle, agl_int32_t* const BufferLength, agl_cstr8_t const InitialValue);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseDeclaration)(const agl_ptrdiff_t PrjHandle, const agl_ptrdiff_t FindHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolFromText)(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Text, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolFromTextEx)(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Text, LPDATA_DBSYM40 Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetReadMixFromText)(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Text, LPDATA_RW40 Buff, agl_int32_t* const Format);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetReadMixFromTextEx)(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Text, agl_cstr8_t const AbsOpd, LPDATA_RW40 Buff, agl_int32_t* const Format);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbol)(const agl_ptrdiff_t PrjHandle, const LPDATA_RW40 Buff, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetSymbolEx)(const agl_ptrdiff_t PrjHandle, const LPDATA_RW40 Buff, LPDATA_DBSYM40 Symbol);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_OpenAlarms)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_CloseAlarms)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstAlarmData)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const AlmNr);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextAlarmData)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const AlmNr);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseAlarmData)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmData)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, LPDATA_ALARM40 Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmName)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmType)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmBaseName)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmTypeName)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSignalCount)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const SignalCount);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmMsgClass)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, agl_int32_t* const MsgClass);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmPriority)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, agl_int32_t* const Priority);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmAckGroup)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, agl_int32_t* const AckGroup);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmAcknowledge)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, agl_int32_t* const Acknowledge);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmProtocol)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const Protocol);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmDispGroup)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const DispGroup);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstAlarmTextLanguage)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const Language, agl_int32_t* const IsDefault);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextAlarmTextLanguage)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const Language, agl_int32_t* const IsDefault);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseAlarmTextLanguage)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_SetAlarmTextDefaultLanguage)(const agl_ptrdiff_t PrjHandle, const agl_int32_t Language);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmText)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, const agl_int32_t Language, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmInfo)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, const agl_int32_t Language, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmAddText)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, const agl_int32_t Index, const agl_int32_t Language, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANOperand)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const OpArea, agl_int32_t* const OpType, agl_int32_t* const Offset, agl_int32_t* const BitNr);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANInterval)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const Interval);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANAddValue)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Index, agl_int32_t* const OpArea, agl_int32_t* const OpType, agl_int32_t* const Offset, agl_int32_t* const BitNr);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANOperandEx)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, LPDATA_RW40 Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetAlarmSCANAddValueEx)(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Index, LPDATA_RW40 Buff);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FormatMessage)(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const AlarmText, const LPS7_ALARM AlarmData, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstTextlib)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const Textlib, agl_int32_t* const System);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextTextlib)(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const Textlib, agl_int32_t* const System);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseTextlib)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_SelectTextlib)(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Textlib);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindFirstTextlibText)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const TextId, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindNextTextlibText)(const agl_ptrdiff_t PrjHandle, agl_int32_t* const TextId, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_FindCloseTextlibText)(const agl_ptrdiff_t PrjHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetTextlibText)(const agl_ptrdiff_t PrjHandle, const agl_int32_t TextId, agl_cstr8_t const Buff, const agl_int32_t BuffLen);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetTextFromValue)(const void* const Value, const agl_int32_t Format, const agl_int32_t ValueFmt, agl_cstr8_t const Text);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetValueFromText)(const agl_cstr8_t const Text, void* const Value, agl_int32_t* const Format, agl_int32_t* const ValueFmt);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetRealFromText)(const agl_cstr8_t const Text, agl_float32_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_GetTextFromReal)(const agl_float32_t* const Value, agl_cstr8_t const Text);
+typedef agl_int32_t (AGL_API * LPFN_AGLSym_SetLanguage)(const agl_int32_t Language);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_OpenFile)(const agl_cstr8_t const FileName, const agl_int32_t Access, agl_ptrdiff_t* const Handle);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_OpenFileEncrypted)(const agl_cstr8_t const FileName, const agl_int32_t Access, agl_uint8_t* const Key, const agl_uint32_t Len, agl_ptrdiff_t* const Handle);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_EncryptFile)(const agl_cstr8_t const InFileName, const agl_cstr8_t const OutFileName, const agl_int32_t Access, agl_uint8_t* const Key, const agl_uint32_t Len);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_DecryptFile)(const agl_cstr8_t const InFileName, const agl_cstr8_t const OutFileName, agl_uint8_t* const Key, const agl_uint32_t Len);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_CloseFile)(const agl_ptrdiff_t Handle);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_ReadAllBlockCount)(const agl_ptrdiff_t Handle, LPALL_BLOCK_COUNT pBC);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_ReadBlockCount)(const agl_ptrdiff_t Handle, const agl_int32_t BlockType, agl_int32_t* const BlockCount);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_ReadBlockList)(const agl_ptrdiff_t Handle, const agl_int32_t BlockType, agl_int32_t* const BlockCount, agl_uint16_t* const BlockList);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_ReadBlockLen)(const agl_ptrdiff_t Handle, const agl_int32_t BlockType, const agl_int32_t BlockNr, agl_int32_t* const BlockLen);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_DeleteBlocks)(const agl_ptrdiff_t Handle, const agl_cstr8_t const Blocks);
+typedef agl_int32_t (AGL_API * LPFN_AGL_WLD_GetReport)(const agl_ptrdiff_t Handle, agl_int32_t* const Length, agl_cstr8_t const Buffer);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLC_Backup)(const agl_int32_t ConnNr, const agl_ptrdiff_t Handle, const agl_cstr8_t Blocks, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLC_Restore)(const agl_int32_t ConnNr, const agl_ptrdiff_t Handle, const agl_cstr8_t Blocks, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_PLC_DeleteBlocks)(const agl_int32_t ConnNr, const agl_cstr8_t Blocks, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Compress)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_ReadMixEx)(const agl_int32_t ConnNr, SymbolicRW_t* const SymbolicRW, const agl_int32_t Num, agl_int32_t* const SError, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_WriteMixEx)(const agl_int32_t ConnNr, SymbolicRW_t* const SymbolicRW, const agl_int32_t Num, agl_int32_t* const SError, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadTIAProjectSymbols)(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, const agl_int32_t AutoExpand);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadTIAProjectSymbolsWithFilter)(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLC)(agl_int32_t ConnNr, HandleType* const RootNodeHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx)(agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFile)(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter)(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLC)(const agl_int32_t ConnNr, HandleType* const RootNodeHandle);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx)(const agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFile)(const HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter)(const HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadAGLinkSymbolsFromFile)(const agl_cstr8_t const AGLinkSymbolsFile, HandleType* const RootNodeHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FreeHandle)(const HandleType Handle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetChildCount)(const HandleType NodeHandle, agl_int32_t* const ChildCount);
@@ -488,25 +488,25 @@ typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetChild)(const HandleType Node
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetChildByName)(const HandleType NodeHandle, const agl_cstr8_t const ChildName, HandleType* const ChildNodeHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetName)(const HandleType NodeHandle, agl_cstr8_t const NameBuffer, const agl_int32_t NameBufferLen, agl_int32_t* const NameLen);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetLocalOffset)(const HandleType NodeHandle, agl_uint32_t* const LocalByteOffset, agl_uint32_t* const LocalBitOffset);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSystemType)(const HandleType NodeHandle, SystemType_t::enum_t* SystemType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetHierarchyType)(const HandleType NodeHandle, HierarchyType_t::enum_t* HierarchyType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetArrayDimensionCount)(const HandleType ArrayNodeHandle, agl_int32_t* DimensionCount);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetArrayDimension)(const HandleType ArrayNodeHandle, const agl_int32_t Dimension, agl_int32_t* Lower, agl_int32_t* Upper);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSystemType)(const HandleType NodeHandle, SystemType_t::enum_t* const SystemType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetHierarchyType)(const HandleType NodeHandle, HierarchyType_t::enum_t* const HierarchyType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetArrayDimensionCount)(const HandleType ArrayNodeHandle, agl_int32_t* const DimensionCount);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetArrayDimension)(const HandleType ArrayNodeHandle, const agl_int32_t Dimension, agl_int32_t* const Lower, agl_int32_t* const Upper);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetMaxStringSize)(const HandleType StringNodeHandle, agl_int32_t* const StringSize);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetValueType)(const HandleType NodeHandle, ValueType_t::enum_t* ValueType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetTypeState)(const HandleType NodeHandle, TypeState_t::enum_t* TypeState);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSegmentType)(const HandleType NodeHandle, SegmentType_t::enum_t* SegementType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetPermissionType)(const HandleType NodeHandle, PermissionType_t::enum_t* PermissionType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_EscapeString)(const agl_cstr8_t const RawString, agl_cstr8_t const EscapedString, const agl_int32_t EscapedStringMaxSize, agl_int32_t* ErrorPosition);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetValueType)(const HandleType NodeHandle, ValueType_t::enum_t* const ValueType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetTypeState)(const HandleType NodeHandle, TypeState_t::enum_t* const TypeState);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSegmentType)(const HandleType NodeHandle, SegmentType_t::enum_t* const SegementType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetPermissionType)(const HandleType NodeHandle, PermissionType_t::enum_t* const PermissionType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_EscapeString)(const agl_cstr8_t const RawString, agl_cstr8_t const EscapedString, const agl_int32_t EscapedStringMaxSize, agl_int32_t* const ErrorPosition);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetNodeByPath)(const HandleType NodeHandle, const agl_cstr8_t const ItemPath, HandleType* const FoundNodeHandle, agl_int32_t* const ErrorPosition);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetIndexSize)(const HandleType IndexNodeHandle, agl_size_t* IndexSize);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetIndexSize)(const HandleType IndexNodeHandle, agl_size_t* const IndexSize);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetIndex)(const HandleType IndexNodeHandle, const agl_int32_t Element, agl_int32_t* const Value);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetLinearIndex)(const HandleType IndexNodeHandle, agl_size_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetArrayElementCount)(const HandleType ArrayNodeHandle, agl_int32_t* ElementCount);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetArrayElementCount)(const HandleType ArrayNodeHandle, agl_int32_t* const ElementCount);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_Expand)(const HandleType NodeHandle, const agl_int32_t Depth);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_Collapse)(const HandleType NodeHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSystemScope)(const HandleType NodeHandle, SystemType_t::enum_t* const SystemType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSystemTypeState)(const HandleType NodeHandle, SystemTypeState_t::enum_t* SystemTypeState);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSystemTypeState)(const HandleType NodeHandle, SystemTypeState_t::enum_t* const SystemTypeState);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_CreateAccess)(const HandleType NodeHandle, HandleType* const AccessHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_CreateAccessByPath)(const HandleType ParentNodeHandle, const agl_cstr8_t const ItemPath, HandleType* const AccessHandle, agl_int32_t* const ErrorPosition);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_Get_DATA_RW40)(const HandleType NodeHandle, DATA_RW40* const DataRW, agl_int32_t* const Size);
@@ -524,44 +524,44 @@ typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_CreateArrayAccessByLinearIndex)
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_CreateArrayRangeAccessByLinearIndex)(const HandleType ArrayNodeHandle, const agl_int32_t LinearIndex, const agl_int32_t Count, HandleType* const AccessHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_CreateArrayAccessByIndex)(const HandleType ArrayNodeHandle, const agl_int32_t* Index, const agl_int32_t IndexCount, HandleType* const AccessHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_CreateArrayRangeAccessByIndex)(const HandleType ArrayNodeHandle, const agl_int32_t* Index, const agl_int32_t IndexCount, const agl_int32_t Count, HandleType* const AccessHandle);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferUInt8)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint8_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferUInt16)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferUInt32)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferUInt64)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint64_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferInt8)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int8_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferInt16)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int16_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferInt32)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int32_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferInt64)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int64_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferFloat32)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float32_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferFloat64)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float64_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferChar8)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_cstr8_t const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferChar16)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferString8)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_cstr8_t const StringBuffer, agl_int32_t MaxCharCount, agl_int32_t* const CharCount);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferString16)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t* const StringBuffer, agl_int32_t MaxCharCount, agl_int32_t* const CharCount);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_DTLParts)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint32_t* const Nanoseconds);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_S5TimeParts)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const TimeBase, agl_uint16_t* const TimeValue);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_S5TimeMs)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t* const Milliseconds);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_Counter)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts)(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint16_t* const Millisecond);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferUInt8)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint8_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferUInt16)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferUInt32)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferUInt64)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint64_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferInt8)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int8_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferInt16)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int16_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferInt32)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int32_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferInt64)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int64_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferFloat32)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float32_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferFloat64)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float64_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferChar8)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char8_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferChar16)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferString8)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_cstr8_t const StringBuffer, const agl_int32_t CharCount);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferString16)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_char16_t* const StringBuffer, const agl_int32_t CharCount);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_DTLParts)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint32_t Nanoseconds);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_S5TimeParts)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t TimeBase, const agl_uint16_t TimeValue);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_S5TimeMs)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint32_t Milliseconds, const agl_int32_t Round);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_Counter)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Value);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_Date_and_TimeParts)(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint16_t Milliseconds);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferUInt8)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint8_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferUInt16)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferUInt32)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint32_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferUInt64)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint64_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferInt8)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int8_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferInt16)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int16_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferInt32)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int32_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferInt64)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int64_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferFloat32)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_float32_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferFloat64)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_float64_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferChar8)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_cstr8_t const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferChar16)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_char16_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferString8)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_cstr8_t const StringBuffer, const agl_int32_t MaxCharCount, agl_int32_t* const CharCount);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferString16)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_char16_t* const StringBuffer, const agl_int32_t MaxCharCount, agl_int32_t* const CharCount);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_DTLParts)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint32_t* const Nanoseconds);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_S5TimeParts)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const TimeBase, agl_uint16_t* const TimeValue);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_S5TimeMs)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint32_t* const Milliseconds);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_Counter)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts)(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint16_t* const Millisecond);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferUInt8)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint8_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferUInt16)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferUInt32)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint32_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferUInt64)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint64_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferInt8)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int8_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferInt16)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int16_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferInt32)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int32_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferInt64)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int64_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferFloat32)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_float32_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferFloat64)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_float64_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferChar8)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char8_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferChar16)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char16_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferString8)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_cstr8_t const StringBuffer, const agl_int32_t CharCount);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferString16)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char16_t* const StringBuffer, const agl_int32_t CharCount);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_DTLParts)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint32_t Nanoseconds);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_S5TimeParts)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t TimeBase, const agl_uint16_t TimeValue);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_S5TimeMs)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint32_t Milliseconds, const agl_int32_t Round);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_Counter)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Value);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_SetAccessBufferS7_Date_and_TimeParts)(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint16_t Milliseconds);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetProjectEditingCulture)(const HandleType RootNodeHandle, agl_int32_t* const LCID);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetProjectReferenceCulture)(const HandleType RootNodeHandle, agl_int32_t* const LCID);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetProjectCultureCount)(const HandleType RootNodeHandle, agl_int32_t* const Count);
@@ -586,8 +586,8 @@ typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_LoadSingleValueAccessSymbolsFro
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_CreateAccessFromSingleValueAccessSymbols)(const HandleType SingleValueAccessSymbolsHandle, const agl_cstr8_t const Symbol, HandleType* const AccessHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSingleValueAccessSymbolCount)(const HandleType SingleValueAccessSymbolsHandle, agl_int32_t* const SymbolCount);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetSingleValueAccessSymbolPath)(const HandleType SingleValueAccessSymbolsHandle, const agl_int32_t Index, agl_cstr8_t const PathBuffer, const agl_int32_t PathBufferLen, agl_int32_t* const PathLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FindFirstAlarmData)(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FindNextAlarmData)(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FindFirstAlarmData)(const HandleType PlcNodeHandle, agl_uint32_t* const AlarmNr);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FindNextAlarmData)(const HandleType PlcNodeHandle, agl_uint32_t* const AlarmNr);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FindCloseAlarmData)(const HandleType PlcNodeHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmData)(const HandleType PlcNodeHandle, agl_uint32_t AlarmNr, const agl_int32_t Language, LPDATA_ALARM40_TIA Buff);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmText)(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
@@ -595,25 +595,25 @@ typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmInfo)(const HandleType 
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmAddText)(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, agl_int32_t Index, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_FormatAlarmMessage)(const LPS7_ALARM_TIA AlarmData, const HandleType PlcNodeHandle, const agl_int32_t Language, const agl_cstr8_t const AlarmText, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_ReadOpenMsg)(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t AlarmCount, agl_int32_t* const NeededAlarmCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_InitAlarmMsg)(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_ExitAlarmMsg)(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_InitAlarmMsg)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_ExitAlarmMsg)(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetAlarmMsg)(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_AckMsg)(const agl_int32_t ConnNr, const agl_uint64_t CPUAlarmID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Symbolic_GetCurrentProtectionLevel)(const agl_int32_t ConnNr, agl_uint32_t* const CurrentProtectionLevel, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_LoadSTISymbols)(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, agl_bool_t FlatArrays);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_LoadSTISymbols)(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, const agl_bool_t FlatArrays);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_FreeHandle)(const HandleType RootNodeHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetName)(const HandleType NodeHandle, agl_cstr8_t const NameBuffer, const agl_int32_t NameBufferLen);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetHierarchyType)(const HandleType NodeHandle, HierarchyType_t::enum_t* HierarchyType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetValueType)(const HandleType NodeHandle, ValueType_t::enum_t* ValueType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetSystemType)(const HandleType NodeHandle, SystemType_t::enum_t* SystemType);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetPermissionType)(const HandleType NodeHandle, PermissionType_t::enum_t* PermissionType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetHierarchyType)(const HandleType NodeHandle, HierarchyType_t::enum_t* const HierarchyType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetValueType)(const HandleType NodeHandle, ValueType_t::enum_t* const ValueType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetSystemType)(const HandleType NodeHandle, SystemType_t::enum_t* const SystemType);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetPermissionType)(const HandleType NodeHandle, PermissionType_t::enum_t* const PermissionType);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetChildCount)(const HandleType NodeHandle, agl_int32_t* const ChildCount);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetChild)(const HandleType NodeHandle, const agl_int32_t ChildIndex, HandleType* const ChildNodeHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_GetNodeByPath)(const HandleType NodeHandle, const agl_cstr8_t const ItemPath, HandleType* const FoundNodeHandle, agl_int32_t* const ErrorPosition);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_CreateAccess)(const HandleType NodeHandle, HandleType* const AccessHandle);
 typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_CreateAccessByPath)(const HandleType ParentNodeHandle, const agl_cstr8_t const ItemPath, HandleType* const AccessHandle, agl_int32_t* const ErrorPosition);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_ReadMixEx)(agl_int32_t ConnNr, SymbolicRW_t* Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_WriteMixEx)(agl_int32_t ConnNr, SymbolicRW_t* Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_ReadMixEx)(const agl_int32_t ConnNr, SymbolicRW_t* const Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+typedef agl_int32_t (AGL_API * LPFN_AGL_Simotion_WriteMixEx)(const agl_int32_t ConnNr, SymbolicRW_t* const Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
 
 /*******************************************************************************
 Deklaration der lokalen Funktionszeiger
@@ -1167,7 +1167,7 @@ Definition der Funktionen
 Die definierten Funktionen werden auf die Funktionen der Bibliothek AGLink40.DLL weitergeleitet.
 *******************************************************************************/
 
-void AGL_API AGL_Activate(agl_cstr8_t Key)
+void AGL_API AGL_Activate(const agl_cstr8_t const Key)
 {
   if( Loaded(pAGL_Activate))
   {
@@ -1175,7 +1175,7 @@ void AGL_API AGL_Activate(agl_cstr8_t Key)
   }
 }
 
-void AGL_API AGL_GetVersion(agl_int32_t* Major, agl_int32_t* Minor)
+void AGL_API AGL_GetVersion(agl_int32_t* const Major, agl_int32_t* const Minor)
 {
   if( Loaded(pAGL_GetVersion))
   {
@@ -1183,7 +1183,7 @@ void AGL_API AGL_GetVersion(agl_int32_t* Major, agl_int32_t* Minor)
   }
 }
 
-void AGL_API AGL_GetVersionEx(agl_int32_t* Major, agl_int32_t* Minor, agl_int32_t* Build, agl_int32_t* Revision, agl_cstr8_t Date)
+void AGL_API AGL_GetVersionEx(agl_int32_t* const Major, agl_int32_t* const Minor, agl_int32_t* const Build, agl_int32_t* const Revision, agl_cstr8_t const Date)
 {
   if( Loaded(pAGL_GetVersionEx))
   {
@@ -1209,7 +1209,7 @@ agl_int32_t AGL_API AGL_GetSerialNumber(void)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_cstr8_t AGL_API AGL_GetClientName(agl_cstr8_t Name)
+agl_cstr8_t AGL_API AGL_GetClientName(agl_cstr8_t const Name)
 {
   if( Loaded(pAGL_GetClientName))
   {
@@ -1245,7 +1245,7 @@ agl_int32_t AGL_API AGL_GetMaxPLCPerDevice(void)
   return AGL40_DYN_DLL_ERROR;
 }
 
-void AGL_API AGL_UseSystemTime(agl_bool_t Flag)
+void AGL_API AGL_UseSystemTime(const agl_bool_t Flag)
 {
   if( Loaded(pAGL_UseSystemTime))
   {
@@ -1253,7 +1253,7 @@ void AGL_API AGL_UseSystemTime(agl_bool_t Flag)
   }
 }
 
-void AGL_API AGL_ReturnJobNr(agl_bool_t Flag)
+void AGL_API AGL_ReturnJobNr(const agl_bool_t Flag)
 {
   if( Loaded(pAGL_ReturnJobNr))
   {
@@ -1261,7 +1261,7 @@ void AGL_API AGL_ReturnJobNr(agl_bool_t Flag)
   }
 }
 
-void AGL_API AGL_SetBSendAutoResponse(agl_bool_t Flag)
+void AGL_API AGL_SetBSendAutoResponse(const agl_bool_t Flag)
 {
   if( Loaded(pAGL_SetBSendAutoResponse))
   {
@@ -1278,7 +1278,7 @@ agl_bool_t AGL_API AGL_GetBSendAutoResponse(void)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetPCCPConnNames(agl_cstr8_t Names, agl_int32_t Len)
+agl_int32_t AGL_API AGL_GetPCCPConnNames(agl_cstr8_t const Names, const agl_int32_t Len)
 {
   if( Loaded(pAGL_GetPCCPConnNames))
   {
@@ -1287,7 +1287,7 @@ agl_int32_t AGL_API AGL_GetPCCPConnNames(agl_cstr8_t Names, agl_int32_t Len)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetPCCPProtocol(agl_cstr8_t Name)
+agl_int32_t AGL_API AGL_GetPCCPProtocol(agl_cstr8_t const Name)
 {
   if( Loaded(pAGL_GetPCCPProtocol))
   {
@@ -1296,7 +1296,7 @@ agl_int32_t AGL_API AGL_GetPCCPProtocol(agl_cstr8_t Name)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetTapiModemNames(agl_cstr8_t Names, agl_int32_t Len)
+agl_int32_t AGL_API AGL_GetTapiModemNames(agl_cstr8_t const Names, const agl_int32_t Len)
 {
   if( Loaded(pAGL_GetTapiModemNames))
   {
@@ -1305,7 +1305,7 @@ agl_int32_t AGL_API AGL_GetTapiModemNames(agl_cstr8_t Names, agl_int32_t Len)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetLocalIPAddresses(agl_ulong32_t* Addresses, agl_ulong32_t NumAddresses)
+agl_int32_t AGL_API AGL_GetLocalIPAddresses(agl_ulong32_t* const Addresses, const agl_ulong32_t NumAddresses)
 {
   if( Loaded(pAGL_GetLocalIPAddresses))
   {
@@ -1314,7 +1314,7 @@ agl_int32_t AGL_API AGL_GetLocalIPAddresses(agl_ulong32_t* Addresses, agl_ulong3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetAdaptersInfo(LPADAPTER_INFO p_pAdapterInfo, agl_uint32_t MaxAdapters)
+agl_int32_t AGL_API AGL_GetAdaptersInfo(LPADAPTER_INFO p_pAdapterInfo, const agl_uint32_t MaxAdapters)
 {
   if( Loaded(pAGL_GetAdaptersInfo))
   {
@@ -1341,7 +1341,7 @@ agl_ulong32_t AGL_API AGL_GetMicroSecs(void)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Config(agl_int32_t DevNr)
+agl_int32_t AGL_API AGL_Config(const agl_int32_t DevNr)
 {
   if( Loaded(pAGL_Config))
   {
@@ -1350,7 +1350,7 @@ agl_int32_t AGL_API AGL_Config(agl_int32_t DevNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ConfigEx(agl_int32_t DevNr, agl_cstr8_t CmdLine)
+agl_int32_t AGL_API AGL_ConfigEx(const agl_int32_t DevNr, const agl_cstr8_t const CmdLine)
 {
   if( Loaded(pAGL_ConfigEx))
   {
@@ -1359,7 +1359,7 @@ agl_int32_t AGL_API AGL_ConfigEx(agl_int32_t DevNr, agl_cstr8_t CmdLine)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetParas(agl_int32_t DevNr, agl_int32_t ParaType, void* Para, agl_int32_t Len)
+agl_int32_t AGL_API AGL_SetParas(const agl_int32_t DevNr, const agl_int32_t ParaType, const void* const Para, const agl_int32_t Len)
 {
   if( Loaded(pAGL_SetParas))
   {
@@ -1368,7 +1368,7 @@ agl_int32_t AGL_API AGL_SetParas(agl_int32_t DevNr, agl_int32_t ParaType, void* 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetParas(agl_int32_t DevNr, agl_int32_t ParaType, void* Para, agl_int32_t Len)
+agl_int32_t AGL_API AGL_GetParas(const agl_int32_t DevNr, const agl_int32_t ParaType, void* const Para, const agl_int32_t Len)
 {
   if( Loaded(pAGL_GetParas))
   {
@@ -1377,7 +1377,7 @@ agl_int32_t AGL_API AGL_GetParas(agl_int32_t DevNr, agl_int32_t ParaType, void* 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetDevType(agl_int32_t DevNr, agl_int32_t DevType)
+agl_int32_t AGL_API AGL_SetDevType(const agl_int32_t DevNr, const agl_int32_t DevType)
 {
   if( Loaded(pAGL_SetDevType))
   {
@@ -1386,7 +1386,7 @@ agl_int32_t AGL_API AGL_SetDevType(agl_int32_t DevNr, agl_int32_t DevType)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetDevType(agl_int32_t DevNr)
+agl_int32_t AGL_API AGL_GetDevType(const agl_int32_t DevNr)
 {
   if( Loaded(pAGL_GetDevType))
   {
@@ -1395,7 +1395,7 @@ agl_int32_t AGL_API AGL_GetDevType(agl_int32_t DevNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadParas(agl_int32_t DevNr, agl_int32_t ParaType)
+agl_int32_t AGL_API AGL_ReadParas(const agl_int32_t DevNr, const agl_int32_t ParaType)
 {
   if( Loaded(pAGL_ReadParas))
   {
@@ -1404,7 +1404,7 @@ agl_int32_t AGL_API AGL_ReadParas(agl_int32_t DevNr, agl_int32_t ParaType)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteParas(agl_int32_t DevNr, agl_int32_t ParaType)
+agl_int32_t AGL_API AGL_WriteParas(const agl_int32_t DevNr, const agl_int32_t ParaType)
 {
   if( Loaded(pAGL_WriteParas))
   {
@@ -1413,7 +1413,7 @@ agl_int32_t AGL_API AGL_WriteParas(agl_int32_t DevNr, agl_int32_t ParaType)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadDevice(agl_int32_t DevNr)
+agl_int32_t AGL_API AGL_ReadDevice(const agl_int32_t DevNr)
 {
   if( Loaded(pAGL_ReadDevice))
   {
@@ -1422,7 +1422,7 @@ agl_int32_t AGL_API AGL_ReadDevice(agl_int32_t DevNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteDevice(agl_int32_t DevNr)
+agl_int32_t AGL_API AGL_WriteDevice(const agl_int32_t DevNr)
 {
   if( Loaded(pAGL_WriteDevice))
   {
@@ -1431,7 +1431,7 @@ agl_int32_t AGL_API AGL_WriteDevice(agl_int32_t DevNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadParasFromFile(agl_int32_t DevNr, agl_cstr8_t FileName)
+agl_int32_t AGL_API AGL_ReadParasFromFile(const agl_int32_t DevNr, const agl_cstr8_t const FileName)
 {
   if( Loaded(pAGL_ReadParasFromFile))
   {
@@ -1440,7 +1440,7 @@ agl_int32_t AGL_API AGL_ReadParasFromFile(agl_int32_t DevNr, agl_cstr8_t FileNam
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteParasToFile(agl_int32_t DevNr, agl_cstr8_t FileName)
+agl_int32_t AGL_API AGL_WriteParasToFile(const agl_int32_t DevNr, const agl_cstr8_t const FileName)
 {
   if( Loaded(pAGL_WriteParasToFile))
   {
@@ -1449,7 +1449,7 @@ agl_int32_t AGL_API AGL_WriteParasToFile(agl_int32_t DevNr, agl_cstr8_t FileName
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetParaPath(agl_cstr8_t DirName, agl_int32_t MaxLen)
+agl_int32_t AGL_API AGL_GetParaPath(agl_cstr8_t const DirName, const agl_int32_t MaxLen)
 {
   if( Loaded(pAGL_GetParaPath))
   {
@@ -1458,7 +1458,7 @@ agl_int32_t AGL_API AGL_GetParaPath(agl_cstr8_t DirName, agl_int32_t MaxLen)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetParaPath(const agl_cstr8_t DirName)
+agl_int32_t AGL_API AGL_SetParaPath(const agl_cstr8_t const DirName)
 {
   if( Loaded(pAGL_SetParaPath))
   {
@@ -1467,7 +1467,7 @@ agl_int32_t AGL_API AGL_SetParaPath(const agl_cstr8_t DirName)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetAndGetParaPath(agl_cstr8_t CompanyName, agl_cstr8_t ProductName, agl_cstr8_t AktPath, agl_int32_t MaxLen)
+agl_int32_t AGL_API AGL_SetAndGetParaPath(const agl_cstr8_t const CompanyName, const agl_cstr8_t const ProductName, agl_cstr8_t const AktPath, const agl_int32_t MaxLen)
 {
   if( Loaded(pAGL_SetAndGetParaPath))
   {
@@ -1476,7 +1476,7 @@ agl_int32_t AGL_API AGL_SetAndGetParaPath(agl_cstr8_t CompanyName, agl_cstr8_t P
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetPLCType(agl_int32_t DevNr, agl_int32_t PlcNr)
+agl_int32_t AGL_API AGL_GetPLCType(const agl_int32_t DevNr, const agl_int32_t PlcNr)
 {
   if( Loaded(pAGL_GetPLCType))
   {
@@ -1485,7 +1485,7 @@ agl_int32_t AGL_API AGL_GetPLCType(agl_int32_t DevNr, agl_int32_t PlcNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_HasFunc(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_t Func)
+agl_int32_t AGL_API AGL_HasFunc(const agl_int32_t DevNr, const agl_int32_t PlcNr, const agl_int32_t Func)
 {
   if( Loaded(pAGL_HasFunc))
   {
@@ -1494,7 +1494,7 @@ agl_int32_t AGL_API AGL_HasFunc(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_LoadErrorFile(agl_cstr8_t FileName)
+agl_int32_t AGL_API AGL_LoadErrorFile(const agl_cstr8_t const FileName)
 {
   if( Loaded(pAGL_LoadErrorFile))
   {
@@ -1503,7 +1503,7 @@ agl_int32_t AGL_API AGL_LoadErrorFile(agl_cstr8_t FileName)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetErrorMsg(agl_int32_t ErrNr, agl_cstr8_t Msg, agl_int32_t MaxLen)
+agl_int32_t AGL_API AGL_GetErrorMsg(const agl_int32_t ErrNr, agl_cstr8_t const Msg, const agl_int32_t MaxLen)
 {
   if( Loaded(pAGL_GetErrorMsg))
   {
@@ -1512,7 +1512,7 @@ agl_int32_t AGL_API AGL_GetErrorMsg(agl_int32_t ErrNr, agl_cstr8_t Msg, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetErrorCodeName(agl_int32_t ErrNr, const agl_cstr8_t* const ErrorCodeName)
+agl_int32_t AGL_API AGL_GetErrorCodeName(const agl_int32_t ErrNr, const agl_cstr8_t* const ErrorCodeName)
 {
   if( Loaded(pAGL_GetErrorCodeName))
   {
@@ -1521,7 +1521,7 @@ agl_int32_t AGL_API AGL_GetErrorCodeName(agl_int32_t ErrNr, const agl_cstr8_t* c
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_OpenDevice(agl_int32_t DevNr)
+agl_int32_t AGL_API AGL_OpenDevice(const agl_int32_t DevNr)
 {
   if( Loaded(pAGL_OpenDevice))
   {
@@ -1530,7 +1530,7 @@ agl_int32_t AGL_API AGL_OpenDevice(agl_int32_t DevNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_CloseDevice(agl_int32_t DevNr)
+agl_int32_t AGL_API AGL_CloseDevice(const agl_int32_t DevNr)
 {
   if( Loaded(pAGL_CloseDevice))
   {
@@ -1539,7 +1539,7 @@ agl_int32_t AGL_API AGL_CloseDevice(agl_int32_t DevNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetDevNotification(agl_int32_t DevNr, LPNOTIFICATION pN)
+agl_int32_t AGL_API AGL_SetDevNotification(const agl_int32_t DevNr, const LPNOTIFICATION pN)
 {
   if( Loaded(pAGL_SetDevNotification))
   {
@@ -1548,7 +1548,7 @@ agl_int32_t AGL_API AGL_SetDevNotification(agl_int32_t DevNr, LPNOTIFICATION pN)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetConnNotification(agl_int32_t ConnNr, LPNOTIFICATION pN)
+agl_int32_t AGL_API AGL_SetConnNotification(const agl_int32_t ConnNr, const LPNOTIFICATION pN)
 {
   if( Loaded(pAGL_SetConnNotification))
   {
@@ -1557,7 +1557,7 @@ agl_int32_t AGL_API AGL_SetConnNotification(agl_int32_t ConnNr, LPNOTIFICATION p
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetJobNotification(agl_int32_t DevNr, agl_int32_t JobNr, LPNOTIFICATION pN)
+agl_int32_t AGL_API AGL_SetJobNotification(const agl_int32_t DevNr, const agl_int32_t JobNr, const LPNOTIFICATION pN)
 {
   if( Loaded(pAGL_SetJobNotification))
   {
@@ -1566,7 +1566,7 @@ agl_int32_t AGL_API AGL_SetJobNotification(agl_int32_t DevNr, agl_int32_t JobNr,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetJobNotificationEx(agl_int32_t DevNr, agl_int32_t JobNr, LPNOTIFICATION pN)
+agl_int32_t AGL_API AGL_SetJobNotificationEx(const agl_int32_t DevNr, const agl_int32_t JobNr, const LPNOTIFICATION pN)
 {
   if( Loaded(pAGL_SetJobNotificationEx))
   {
@@ -1575,7 +1575,7 @@ agl_int32_t AGL_API AGL_SetJobNotificationEx(agl_int32_t DevNr, agl_int32_t JobN
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetJobResult(agl_int32_t DevNr, agl_int32_t JobNr, LPRESULT40 pR)
+agl_int32_t AGL_API AGL_GetJobResult(const agl_int32_t DevNr, const agl_int32_t JobNr, LPRESULT40 pR)
 {
   if( Loaded(pAGL_GetJobResult))
   {
@@ -1584,7 +1584,7 @@ agl_int32_t AGL_API AGL_GetJobResult(agl_int32_t DevNr, agl_int32_t JobNr, LPRES
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetLastJobResult(agl_int32_t ConnNr, LPRESULT40 pR)
+agl_int32_t AGL_API AGL_GetLastJobResult(const agl_int32_t ConnNr, LPRESULT40 pR)
 {
   if( Loaded(pAGL_GetLastJobResult))
   {
@@ -1593,7 +1593,7 @@ agl_int32_t AGL_API AGL_GetLastJobResult(agl_int32_t ConnNr, LPRESULT40 pR)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_DeleteJob(agl_int32_t DevNr, agl_int32_t JobNr)
+agl_int32_t AGL_API AGL_DeleteJob(const agl_int32_t DevNr, const agl_int32_t JobNr)
 {
   if( Loaded(pAGL_DeleteJob))
   {
@@ -1602,7 +1602,7 @@ agl_int32_t AGL_API AGL_DeleteJob(agl_int32_t DevNr, agl_int32_t JobNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WaitForJob(agl_int32_t DevNr, agl_int32_t JobNr)
+agl_int32_t AGL_API AGL_WaitForJob(const agl_int32_t DevNr, const agl_int32_t JobNr)
 {
   if( Loaded(pAGL_WaitForJob))
   {
@@ -1611,7 +1611,7 @@ agl_int32_t AGL_API AGL_WaitForJob(agl_int32_t DevNr, agl_int32_t JobNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WaitForJobEx(agl_int32_t DevNr, agl_int32_t JobNr, LPRESULT40 pR)
+agl_int32_t AGL_API AGL_WaitForJobEx(const agl_int32_t DevNr, const agl_int32_t JobNr, LPRESULT40 pR)
 {
   if( Loaded(pAGL_WaitForJobEx))
   {
@@ -1620,7 +1620,7 @@ agl_int32_t AGL_API AGL_WaitForJobEx(agl_int32_t DevNr, agl_int32_t JobNr, LPRES
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_DialUp(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_DialUp(const agl_int32_t DevNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_DialUp))
   {
@@ -1629,7 +1629,7 @@ agl_int32_t AGL_API AGL_DialUp(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdi
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_HangUp(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_HangUp(const agl_int32_t DevNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_HangUp))
   {
@@ -1638,7 +1638,7 @@ agl_int32_t AGL_API AGL_HangUp(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdi
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitAdapter(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_InitAdapter(const agl_int32_t DevNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_InitAdapter))
   {
@@ -1647,7 +1647,7 @@ agl_int32_t AGL_API AGL_InitAdapter(agl_int32_t DevNr, agl_int32_t Timeout, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ExitAdapter(agl_int32_t DevNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ExitAdapter(const agl_int32_t DevNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ExitAdapter))
   {
@@ -1656,7 +1656,7 @@ agl_int32_t AGL_API AGL_ExitAdapter(agl_int32_t DevNr, agl_int32_t Timeout, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetLifelist(agl_int32_t DevNr, agl_uint8_t* List, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetLifelist(const agl_int32_t DevNr, agl_uint8_t* const List, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetLifelist))
   {
@@ -1665,7 +1665,7 @@ agl_int32_t AGL_API AGL_GetLifelist(agl_int32_t DevNr, agl_uint8_t* List, agl_in
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetDirectPLC(agl_int32_t DevNr, agl_uint8_t* pPlc, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetDirectPLC(const agl_int32_t DevNr, agl_uint8_t* const pPlc, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetDirectPLC))
   {
@@ -1674,7 +1674,7 @@ agl_int32_t AGL_API AGL_GetDirectPLC(agl_int32_t DevNr, agl_uint8_t* pPlc, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLCConnect(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_t* ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLCConnect(const agl_int32_t DevNr, const agl_int32_t PlcNr, agl_int32_t* const ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLCConnect))
   {
@@ -1683,7 +1683,7 @@ agl_int32_t AGL_API AGL_PLCConnect(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLCConnectEx(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_t RackNr, agl_int32_t SlotNr, agl_int32_t* ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLCConnectEx(const agl_int32_t DevNr, const agl_int32_t PlcNr, const agl_int32_t RackNr, const agl_int32_t SlotNr, agl_int32_t* const ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLCConnectEx))
   {
@@ -1692,7 +1692,7 @@ agl_int32_t AGL_API AGL_PLCConnectEx(agl_int32_t DevNr, agl_int32_t PlcNr, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLCDisconnect(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLCDisconnect(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLCDisconnect))
   {
@@ -1701,7 +1701,7 @@ agl_int32_t AGL_API AGL_PLCDisconnect(agl_int32_t ConnNr, agl_int32_t Timeout, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadMaxPacketSize(agl_int32_t ConnNr)
+agl_int32_t AGL_API AGL_ReadMaxPacketSize(const agl_int32_t ConnNr)
 {
   if( Loaded(pAGL_ReadMaxPacketSize))
   {
@@ -1710,7 +1710,7 @@ agl_int32_t AGL_API AGL_ReadMaxPacketSize(agl_int32_t ConnNr)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetRedConnState(agl_int32_t ConnNr, LPRED_CONN_STATE pState)
+agl_int32_t AGL_API AGL_GetRedConnState(const agl_int32_t ConnNr, LPRED_CONN_STATE pState)
 {
   if( Loaded(pAGL_GetRedConnState))
   {
@@ -1719,7 +1719,7 @@ agl_int32_t AGL_API AGL_GetRedConnState(agl_int32_t ConnNr, LPRED_CONN_STATE pSt
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetRedConnStateMsg(agl_int32_t ConnNr, LPRED_CONN_STATE pState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetRedConnStateMsg(const agl_int32_t ConnNr, LPRED_CONN_STATE pState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetRedConnStateMsg))
   {
@@ -1728,7 +1728,7 @@ agl_int32_t AGL_API AGL_GetRedConnStateMsg(agl_int32_t ConnNr, LPRED_CONN_STATE 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadOpState(agl_int32_t ConnNr, agl_int32_t* State, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadOpState(const agl_int32_t ConnNr, agl_int32_t* const State, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadOpState))
   {
@@ -1737,7 +1737,7 @@ agl_int32_t AGL_API AGL_ReadOpState(agl_int32_t ConnNr, agl_int32_t* State, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadOpStateEx(agl_int32_t ConnNr, agl_int32_t* State, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadOpStateEx(const agl_int32_t ConnNr, agl_int32_t* const State, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadOpStateEx))
   {
@@ -1746,7 +1746,7 @@ agl_int32_t AGL_API AGL_ReadOpStateEx(agl_int32_t ConnNr, agl_int32_t* State, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetPLCStartOptions(agl_int32_t ConnNr, agl_int32_t* StartOptions, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetPLCStartOptions(const agl_int32_t ConnNr, agl_int32_t* const StartOptions, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetPLCStartOptions))
   {
@@ -1755,7 +1755,7 @@ agl_int32_t AGL_API AGL_GetPLCStartOptions(agl_int32_t ConnNr, agl_int32_t* Star
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLCStop(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLCStop(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLCStop))
   {
@@ -1764,7 +1764,7 @@ agl_int32_t AGL_API AGL_PLCStop(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptr
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLCStart(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLCStart(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLCStart))
   {
@@ -1773,7 +1773,7 @@ agl_int32_t AGL_API AGL_PLCStart(agl_int32_t ConnNr, agl_int32_t Timeout, agl_pt
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLCResume(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLCResume(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLCResume))
   {
@@ -1782,7 +1782,7 @@ agl_int32_t AGL_API AGL_PLCResume(agl_int32_t ConnNr, agl_int32_t Timeout, agl_p
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLCColdStart(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLCColdStart(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLCColdStart))
   {
@@ -1791,7 +1791,7 @@ agl_int32_t AGL_API AGL_PLCColdStart(agl_int32_t ConnNr, agl_int32_t Timeout, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_IsHPLC(agl_int32_t ConnNr, agl_int32_t* IsHPLC, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_IsHPLC(const agl_int32_t ConnNr, agl_int32_t* const IsHPLC, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_IsHPLC))
   {
@@ -1800,7 +1800,7 @@ agl_int32_t AGL_API AGL_IsHPLC(agl_int32_t ConnNr, agl_int32_t* IsHPLC, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_HPLCStop(agl_int32_t ConnNr, agl_int32_t CPUNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_HPLCStop(const agl_int32_t ConnNr, const agl_int32_t CPUNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_HPLCStop))
   {
@@ -1809,7 +1809,7 @@ agl_int32_t AGL_API AGL_HPLCStop(agl_int32_t ConnNr, agl_int32_t CPUNr, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_HPLCStart(agl_int32_t ConnNr, agl_int32_t CPUNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_HPLCStart(const agl_int32_t ConnNr, const agl_int32_t CPUNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_HPLCStart))
   {
@@ -1818,7 +1818,7 @@ agl_int32_t AGL_API AGL_HPLCStart(agl_int32_t ConnNr, agl_int32_t CPUNr, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_HPLCColdStart(agl_int32_t ConnNr, agl_int32_t CPUNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_HPLCColdStart(const agl_int32_t ConnNr, const agl_int32_t CPUNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_HPLCColdStart))
   {
@@ -1827,7 +1827,7 @@ agl_int32_t AGL_API AGL_HPLCColdStart(agl_int32_t ConnNr, agl_int32_t CPUNr, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetPLCClock(agl_int32_t ConnNr, LPTOD pTOD, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetPLCClock(const agl_int32_t ConnNr, LPTOD pTOD, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetPLCClock))
   {
@@ -1836,7 +1836,7 @@ agl_int32_t AGL_API AGL_GetPLCClock(agl_int32_t ConnNr, LPTOD pTOD, agl_int32_t 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetPLCClock(agl_int32_t ConnNr, LPTOD pTOD, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_SetPLCClock(const agl_int32_t ConnNr, const LPTOD pTOD, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_SetPLCClock))
   {
@@ -1845,7 +1845,7 @@ agl_int32_t AGL_API AGL_SetPLCClock(agl_int32_t ConnNr, LPTOD pTOD, agl_int32_t 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SyncPLCClock(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_SyncPLCClock(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_SyncPLCClock))
   {
@@ -1854,7 +1854,7 @@ agl_int32_t AGL_API AGL_SyncPLCClock(agl_int32_t ConnNr, agl_int32_t Timeout, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadMLFBNr(agl_int32_t ConnNr, LPMLFB pMLFBNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadMLFBNr(const agl_int32_t ConnNr, LPMLFB pMLFBNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadMLFBNr))
   {
@@ -1863,7 +1863,7 @@ agl_int32_t AGL_API AGL_ReadMLFBNr(agl_int32_t ConnNr, LPMLFB pMLFBNr, agl_int32
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadMLFBNrEx(agl_int32_t ConnNr, LPMLFBEX pMLFBNrEx, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadMLFBNrEx(const agl_int32_t ConnNr, LPMLFBEX pMLFBNrEx, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadMLFBNrEx))
   {
@@ -1872,7 +1872,7 @@ agl_int32_t AGL_API AGL_ReadMLFBNrEx(agl_int32_t ConnNr, LPMLFBEX pMLFBNrEx, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadPLCInfo(agl_int32_t ConnNr, LPPLCINFO pPLCInfo, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadPLCInfo(const agl_int32_t ConnNr, LPPLCINFO pPLCInfo, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadPLCInfo))
   {
@@ -1881,7 +1881,7 @@ agl_int32_t AGL_API AGL_ReadPLCInfo(agl_int32_t ConnNr, LPPLCINFO pPLCInfo, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadCycleTime(agl_int32_t ConnNr, LPCYCLETIME pCycleTime, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadCycleTime(const agl_int32_t ConnNr, LPCYCLETIME pCycleTime, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadCycleTime))
   {
@@ -1890,7 +1890,7 @@ agl_int32_t AGL_API AGL_ReadCycleTime(agl_int32_t ConnNr, LPCYCLETIME pCycleTime
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadProtLevel(agl_int32_t ConnNr, LPPROTLEVEL pProtLevel, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadProtLevel(const agl_int32_t ConnNr, LPPROTLEVEL pProtLevel, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadProtLevel))
   {
@@ -1899,7 +1899,7 @@ agl_int32_t AGL_API AGL_ReadProtLevel(agl_int32_t ConnNr, LPPROTLEVEL pProtLevel
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadS7Ident(agl_int32_t ConnNr, LPS7_IDENT pIdent, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadS7Ident(const agl_int32_t ConnNr, LPS7_IDENT pIdent, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadS7Ident))
   {
@@ -1908,7 +1908,7 @@ agl_int32_t AGL_API AGL_ReadS7Ident(agl_int32_t ConnNr, LPS7_IDENT pIdent, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadS7LED(agl_int32_t ConnNr, LPS7_LED pLed, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadS7LED(const agl_int32_t ConnNr, LPS7_LED pLed, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadS7LED))
   {
@@ -1917,7 +1917,7 @@ agl_int32_t AGL_API AGL_ReadS7LED(agl_int32_t ConnNr, LPS7_LED pLed, agl_int32_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetExtModuleInfo(agl_int32_t ConnNr, LPEXT_MODULE_INFO pInfo, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetExtModuleInfo(const agl_int32_t ConnNr, LPEXT_MODULE_INFO pInfo, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetExtModuleInfo))
   {
@@ -1926,7 +1926,7 @@ agl_int32_t AGL_API AGL_GetExtModuleInfo(agl_int32_t ConnNr, LPEXT_MODULE_INFO p
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadSzl(agl_int32_t ConnNr, agl_int32_t SzlId, agl_int32_t Index, agl_uint8_t* Buff, agl_int32_t* BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadSzl(const agl_int32_t ConnNr, const agl_int32_t SzlId, const agl_int32_t Index, agl_uint8_t* const Buff, agl_int32_t* const BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadSzl))
   {
@@ -1935,7 +1935,7 @@ agl_int32_t AGL_API AGL_ReadSzl(agl_int32_t ConnNr, agl_int32_t SzlId, agl_int32
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_IsPasswordReq(agl_int32_t ConnNr, agl_int32_t* IsPWReq, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_IsPasswordReq(const agl_int32_t ConnNr, agl_int32_t* const IsPWReq, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_IsPasswordReq))
   {
@@ -1944,7 +1944,7 @@ agl_int32_t AGL_API AGL_IsPasswordReq(agl_int32_t ConnNr, agl_int32_t* IsPWReq, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetPassword(agl_int32_t ConnNr, agl_cstr8_t PW, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_SetPassword(const agl_int32_t ConnNr, const agl_cstr8_t const PW, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_SetPassword))
   {
@@ -1953,7 +1953,7 @@ agl_int32_t AGL_API AGL_SetPassword(agl_int32_t ConnNr, agl_cstr8_t PW, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetPasswordEx(agl_int32_t ConnNr, const agl_cstr8_t const PW, agl_uint32_t* NewProtectionLevel, const agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_SetPasswordEx(const agl_int32_t ConnNr, const agl_cstr8_t const PW, agl_uint32_t* const NewProtectionLevel, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_SetPasswordEx))
   {
@@ -1962,7 +1962,7 @@ agl_int32_t AGL_API AGL_SetPasswordEx(agl_int32_t ConnNr, const agl_cstr8_t cons
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_UnSetPassword(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_UnSetPassword(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_UnSetPassword))
   {
@@ -1971,7 +1971,7 @@ agl_int32_t AGL_API AGL_UnSetPassword(agl_int32_t ConnNr, agl_int32_t Timeout, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadDiagBufferEntrys(agl_int32_t ConnNr, agl_int32_t* Entrys, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadDiagBufferEntrys(const agl_int32_t ConnNr, agl_int32_t* const Entrys, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadDiagBufferEntrys))
   {
@@ -1980,7 +1980,7 @@ agl_int32_t AGL_API AGL_ReadDiagBufferEntrys(agl_int32_t ConnNr, agl_int32_t* En
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadDiagBuffer(agl_int32_t ConnNr, agl_int32_t* Entrys, agl_uint8_t* pDiagBuff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadDiagBuffer(const agl_int32_t ConnNr, agl_int32_t* const Entrys, agl_uint8_t* const pDiagBuff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadDiagBuffer))
   {
@@ -1989,7 +1989,7 @@ agl_int32_t AGL_API AGL_ReadDiagBuffer(agl_int32_t ConnNr, agl_int32_t* Entrys, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetDiagBufferEntry(agl_int32_t Index, agl_uint8_t* pDiagBuff, agl_cstr8_t Text, agl_int32_t TextLen)
+agl_int32_t AGL_API AGL_GetDiagBufferEntry(const agl_int32_t Index, agl_uint8_t* const pDiagBuff, agl_cstr8_t const Text, const agl_int32_t TextLen)
 {
   if( Loaded(pAGL_GetDiagBufferEntry))
   {
@@ -1998,7 +1998,7 @@ agl_int32_t AGL_API AGL_GetDiagBufferEntry(agl_int32_t Index, agl_uint8_t* pDiag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadDBCount(agl_int32_t ConnNr, agl_int32_t* DBCount, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadDBCount(const agl_int32_t ConnNr, agl_int32_t* const DBCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadDBCount))
   {
@@ -2007,7 +2007,7 @@ agl_int32_t AGL_API AGL_ReadDBCount(agl_int32_t ConnNr, agl_int32_t* DBCount, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadDBList(agl_int32_t ConnNr, agl_int32_t* DBCount, agl_uint16_t* DBList, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadDBList(const agl_int32_t ConnNr, agl_int32_t* const DBCount, agl_uint16_t* const DBList, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadDBList))
   {
@@ -2016,7 +2016,7 @@ agl_int32_t AGL_API AGL_ReadDBList(agl_int32_t ConnNr, agl_int32_t* DBCount, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadDBLen(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t* DBLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadDBLen(const agl_int32_t ConnNr, const agl_int32_t DBNr, agl_int32_t* const DBLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadDBLen))
   {
@@ -2025,7 +2025,7 @@ agl_int32_t AGL_API AGL_ReadDBLen(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadAllBlockCount(agl_int32_t ConnNr, LPALL_BLOCK_COUNT pBC, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadAllBlockCount(const agl_int32_t ConnNr, LPALL_BLOCK_COUNT pBC, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadAllBlockCount))
   {
@@ -2034,7 +2034,7 @@ agl_int32_t AGL_API AGL_ReadAllBlockCount(agl_int32_t ConnNr, LPALL_BLOCK_COUNT 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadBlockCount(agl_int32_t ConnNr, agl_int32_t BlockType, agl_int32_t* BlockCount, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadBlockCount(const agl_int32_t ConnNr, const agl_int32_t BlockType, agl_int32_t* const BlockCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadBlockCount))
   {
@@ -2043,7 +2043,7 @@ agl_int32_t AGL_API AGL_ReadBlockCount(agl_int32_t ConnNr, agl_int32_t BlockType
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadBlockList(agl_int32_t ConnNr, agl_int32_t BlockType, agl_int32_t* BlockCount, agl_uint16_t* BlockList, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadBlockList(const agl_int32_t ConnNr, const agl_int32_t BlockType, agl_int32_t* const BlockCount, agl_uint16_t* const BlockList, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadBlockList))
   {
@@ -2052,7 +2052,7 @@ agl_int32_t AGL_API AGL_ReadBlockList(agl_int32_t ConnNr, agl_int32_t BlockType,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadBlockLen(agl_int32_t ConnNr, agl_int32_t BlockType, agl_int32_t BlockNr, agl_int32_t* BlockLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadBlockLen(const agl_int32_t ConnNr, const agl_int32_t BlockType, const agl_int32_t BlockNr, agl_int32_t* const BlockLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadBlockLen))
   {
@@ -2061,7 +2061,7 @@ agl_int32_t AGL_API AGL_ReadBlockLen(agl_int32_t ConnNr, agl_int32_t BlockType, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadInBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadInBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadInBytes))
   {
@@ -2070,7 +2070,7 @@ agl_int32_t AGL_API AGL_ReadInBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadPInBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadPInBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadPInBytes))
   {
@@ -2079,7 +2079,7 @@ agl_int32_t AGL_API AGL_ReadPInBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadOutBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadOutBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadOutBytes))
   {
@@ -2088,7 +2088,7 @@ agl_int32_t AGL_API AGL_ReadOutBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadFlagBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadFlagBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadFlagBytes))
   {
@@ -2097,7 +2097,7 @@ agl_int32_t AGL_API AGL_ReadFlagBytes(agl_int32_t ConnNr, agl_int32_t Start, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadSFlagBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadSFlagBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadSFlagBytes))
   {
@@ -2106,7 +2106,7 @@ agl_int32_t AGL_API AGL_ReadSFlagBytes(agl_int32_t ConnNr, agl_int32_t Start, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadVarBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadVarBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadVarBytes))
   {
@@ -2115,7 +2115,7 @@ agl_int32_t AGL_API AGL_ReadVarBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadDataBytes(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadDataBytes(const agl_int32_t ConnNr, const agl_int32_t DBNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadDataBytes))
   {
@@ -2124,7 +2124,7 @@ agl_int32_t AGL_API AGL_ReadDataBytes(agl_int32_t ConnNr, agl_int32_t DBNr, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadDataWords(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadDataWords(const agl_int32_t ConnNr, const agl_int32_t DBNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadDataWords))
   {
@@ -2133,7 +2133,7 @@ agl_int32_t AGL_API AGL_ReadDataWords(agl_int32_t ConnNr, agl_int32_t DBNr, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadTimerWords(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadTimerWords(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadTimerWords))
   {
@@ -2142,7 +2142,7 @@ agl_int32_t AGL_API AGL_ReadTimerWords(agl_int32_t ConnNr, agl_int32_t Start, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadCounterWords(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadCounterWords(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadCounterWords))
   {
@@ -2151,7 +2151,7 @@ agl_int32_t AGL_API AGL_ReadCounterWords(agl_int32_t ConnNr, agl_int32_t Start, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadMix(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadMix(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadMix))
   {
@@ -2160,7 +2160,7 @@ agl_int32_t AGL_API AGL_ReadMix(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadMixEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadMixEx(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadMixEx))
   {
@@ -2169,7 +2169,7 @@ agl_int32_t AGL_API AGL_ReadMixEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteInBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteInBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteInBytes))
   {
@@ -2178,7 +2178,7 @@ agl_int32_t AGL_API AGL_WriteInBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteOutBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteOutBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteOutBytes))
   {
@@ -2187,7 +2187,7 @@ agl_int32_t AGL_API AGL_WriteOutBytes(agl_int32_t ConnNr, agl_int32_t Start, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WritePOutBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WritePOutBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WritePOutBytes))
   {
@@ -2196,7 +2196,7 @@ agl_int32_t AGL_API AGL_WritePOutBytes(agl_int32_t ConnNr, agl_int32_t Start, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteFlagBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteFlagBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteFlagBytes))
   {
@@ -2205,7 +2205,7 @@ agl_int32_t AGL_API AGL_WriteFlagBytes(agl_int32_t ConnNr, agl_int32_t Start, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteSFlagBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteSFlagBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteSFlagBytes))
   {
@@ -2214,7 +2214,7 @@ agl_int32_t AGL_API AGL_WriteSFlagBytes(agl_int32_t ConnNr, agl_int32_t Start, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteVarBytes(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteVarBytes(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteVarBytes))
   {
@@ -2223,7 +2223,7 @@ agl_int32_t AGL_API AGL_WriteVarBytes(agl_int32_t ConnNr, agl_int32_t Start, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteDataBytes(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t Start, agl_int32_t Num, agl_uint8_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteDataBytes(const agl_int32_t ConnNr, const agl_int32_t DBNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint8_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteDataBytes))
   {
@@ -2232,7 +2232,7 @@ agl_int32_t AGL_API AGL_WriteDataBytes(agl_int32_t ConnNr, agl_int32_t DBNr, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteDataWords(agl_int32_t ConnNr, agl_int32_t DBNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteDataWords(const agl_int32_t ConnNr, const agl_int32_t DBNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteDataWords))
   {
@@ -2241,7 +2241,7 @@ agl_int32_t AGL_API AGL_WriteDataWords(agl_int32_t ConnNr, agl_int32_t DBNr, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteTimerWords(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteTimerWords(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteTimerWords))
   {
@@ -2250,7 +2250,7 @@ agl_int32_t AGL_API AGL_WriteTimerWords(agl_int32_t ConnNr, agl_int32_t Start, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteCounterWords(agl_int32_t ConnNr, agl_int32_t Start, agl_int32_t Num, agl_uint16_t* Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteCounterWords(const agl_int32_t ConnNr, const agl_int32_t Start, const agl_int32_t Num, agl_uint16_t* const Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteCounterWords))
   {
@@ -2259,7 +2259,7 @@ agl_int32_t AGL_API AGL_WriteCounterWords(agl_int32_t ConnNr, agl_int32_t Start,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteMix(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteMix(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteMix))
   {
@@ -2268,7 +2268,7 @@ agl_int32_t AGL_API AGL_WriteMix(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteMixEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteMixEx(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteMixEx))
   {
@@ -2277,7 +2277,7 @@ agl_int32_t AGL_API AGL_WriteMixEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitOptReadMix(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_ptrdiff_t* Opt)
+agl_int32_t AGL_API AGL_InitOptReadMix(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, agl_ptrdiff_t* const Opt)
 {
   if( Loaded(pAGL_InitOptReadMix))
   {
@@ -2286,7 +2286,7 @@ agl_int32_t AGL_API AGL_InitOptReadMix(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadOptReadMix(agl_int32_t ConnNr, agl_ptrdiff_t Opt, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadOptReadMix(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadOptReadMix))
   {
@@ -2295,7 +2295,7 @@ agl_int32_t AGL_API AGL_ReadOptReadMix(agl_int32_t ConnNr, agl_ptrdiff_t Opt, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_EndOptReadMix(agl_ptrdiff_t Opt)
+agl_int32_t AGL_API AGL_EndOptReadMix(const agl_ptrdiff_t Opt)
 {
   if( Loaded(pAGL_EndOptReadMix))
   {
@@ -2304,7 +2304,7 @@ agl_int32_t AGL_API AGL_EndOptReadMix(agl_ptrdiff_t Opt)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitOptReadMixEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_ptrdiff_t* Opt)
+agl_int32_t AGL_API AGL_InitOptReadMixEx(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, agl_ptrdiff_t* const Opt)
 {
   if( Loaded(pAGL_InitOptReadMixEx))
   {
@@ -2313,7 +2313,7 @@ agl_int32_t AGL_API AGL_InitOptReadMixEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadOptReadMixEx(agl_int32_t ConnNr, agl_ptrdiff_t Opt, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadOptReadMixEx(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadOptReadMixEx))
   {
@@ -2322,7 +2322,7 @@ agl_int32_t AGL_API AGL_ReadOptReadMixEx(agl_int32_t ConnNr, agl_ptrdiff_t Opt, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_EndOptReadMixEx(agl_ptrdiff_t Opt)
+agl_int32_t AGL_API AGL_EndOptReadMixEx(const agl_ptrdiff_t Opt)
 {
   if( Loaded(pAGL_EndOptReadMixEx))
   {
@@ -2331,7 +2331,7 @@ agl_int32_t AGL_API AGL_EndOptReadMixEx(agl_ptrdiff_t Opt)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitOptWriteMix(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_ptrdiff_t* Opt)
+agl_int32_t AGL_API AGL_InitOptWriteMix(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, agl_ptrdiff_t* const Opt)
 {
   if( Loaded(pAGL_InitOptWriteMix))
   {
@@ -2340,7 +2340,7 @@ agl_int32_t AGL_API AGL_InitOptWriteMix(agl_int32_t ConnNr, LPDATA_RW40 Buff, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteOptWriteMix(agl_int32_t ConnNr, agl_ptrdiff_t Opt, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteOptWriteMix(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteOptWriteMix))
   {
@@ -2349,7 +2349,7 @@ agl_int32_t AGL_API AGL_WriteOptWriteMix(agl_int32_t ConnNr, agl_ptrdiff_t Opt, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_EndOptWriteMix(agl_ptrdiff_t Opt)
+agl_int32_t AGL_API AGL_EndOptWriteMix(const agl_ptrdiff_t Opt)
 {
   if( Loaded(pAGL_EndOptWriteMix))
   {
@@ -2358,7 +2358,7 @@ agl_int32_t AGL_API AGL_EndOptWriteMix(agl_ptrdiff_t Opt)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitOptWriteMixEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_ptrdiff_t* Opt)
+agl_int32_t AGL_API AGL_InitOptWriteMixEx(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, agl_ptrdiff_t* const Opt)
 {
   if( Loaded(pAGL_InitOptWriteMixEx))
   {
@@ -2367,7 +2367,7 @@ agl_int32_t AGL_API AGL_InitOptWriteMixEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteOptWriteMixEx(agl_int32_t ConnNr, agl_ptrdiff_t Opt, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_WriteOptWriteMixEx(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_WriteOptWriteMixEx))
   {
@@ -2376,7 +2376,7 @@ agl_int32_t AGL_API AGL_WriteOptWriteMixEx(agl_int32_t ConnNr, agl_ptrdiff_t Opt
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_EndOptWriteMixEx(agl_ptrdiff_t Opt)
+agl_int32_t AGL_API AGL_EndOptWriteMixEx(const agl_ptrdiff_t Opt)
 {
   if( Loaded(pAGL_EndOptWriteMixEx))
   {
@@ -2385,7 +2385,7 @@ agl_int32_t AGL_API AGL_EndOptWriteMixEx(agl_ptrdiff_t Opt)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SetOptNotification(agl_ptrdiff_t Opt, LPNOTIFICATION pN)
+agl_int32_t AGL_API AGL_SetOptNotification(const agl_ptrdiff_t Opt, LPNOTIFICATION pN)
 {
   if( Loaded(pAGL_SetOptNotification))
   {
@@ -2394,7 +2394,7 @@ agl_int32_t AGL_API AGL_SetOptNotification(agl_ptrdiff_t Opt, LPNOTIFICATION pN)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_DeleteOptJob(agl_int32_t ConnNr, agl_ptrdiff_t Opt)
+agl_int32_t AGL_API AGL_DeleteOptJob(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt)
 {
   if( Loaded(pAGL_DeleteOptJob))
   {
@@ -2403,7 +2403,7 @@ agl_int32_t AGL_API AGL_DeleteOptJob(agl_int32_t ConnNr, agl_ptrdiff_t Opt)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetOptJobResult(agl_int32_t ConnNr, agl_ptrdiff_t Opt, LPRESULT40 pR)
+agl_int32_t AGL_API AGL_GetOptJobResult(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt, LPRESULT40 pR)
 {
   if( Loaded(pAGL_GetOptJobResult))
   {
@@ -2412,7 +2412,7 @@ agl_int32_t AGL_API AGL_GetOptJobResult(agl_int32_t ConnNr, agl_ptrdiff_t Opt, L
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WaitForOptJob(agl_int32_t ConnNr, agl_ptrdiff_t Opt)
+agl_int32_t AGL_API AGL_WaitForOptJob(const agl_int32_t ConnNr, const agl_ptrdiff_t Opt)
 {
   if( Loaded(pAGL_WaitForOptJob))
   {
@@ -2421,7 +2421,7 @@ agl_int32_t AGL_API AGL_WaitForOptJob(agl_int32_t ConnNr, agl_ptrdiff_t Opt)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_ptrdiff_t AGL_API AGL_AllocRWBuffs(LPDATA_RW40 Buff, agl_int32_t Num)
+agl_ptrdiff_t AGL_API AGL_AllocRWBuffs(LPDATA_RW40 Buff, const agl_int32_t Num)
 {
   if( Loaded(pAGL_AllocRWBuffs))
   {
@@ -2430,7 +2430,7 @@ agl_ptrdiff_t AGL_API AGL_AllocRWBuffs(LPDATA_RW40 Buff, agl_int32_t Num)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_FreeRWBuffs(agl_ptrdiff_t Handle)
+agl_int32_t AGL_API AGL_FreeRWBuffs(const agl_ptrdiff_t Handle)
 {
   if( Loaded(pAGL_FreeRWBuffs))
   {
@@ -2439,7 +2439,7 @@ agl_int32_t AGL_API AGL_FreeRWBuffs(agl_ptrdiff_t Handle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadRWBuff(LPDATA_RW40 Buff, agl_int32_t Index, void* pData)
+agl_int32_t AGL_API AGL_ReadRWBuff(LPDATA_RW40 Buff, const agl_int32_t Index, void* const pData)
 {
   if( Loaded(pAGL_ReadRWBuff))
   {
@@ -2448,7 +2448,7 @@ agl_int32_t AGL_API AGL_ReadRWBuff(LPDATA_RW40 Buff, agl_int32_t Index, void* pD
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WriteRWBuff(LPDATA_RW40 Buff, agl_int32_t Index, void* pData)
+agl_int32_t AGL_API AGL_WriteRWBuff(LPDATA_RW40 Buff, const agl_int32_t Index, void* const pData)
 {
   if( Loaded(pAGL_WriteRWBuff))
   {
@@ -2457,7 +2457,7 @@ agl_int32_t AGL_API AGL_WriteRWBuff(LPDATA_RW40 Buff, agl_int32_t Index, void* p
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_RKSend(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_RKSend(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_RKSend))
   {
@@ -2466,7 +2466,7 @@ agl_int32_t AGL_API AGL_RKSend(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_RKSendEx(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_RKSendEx(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_RKSendEx))
   {
@@ -2475,7 +2475,7 @@ agl_int32_t AGL_API AGL_RKSendEx(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_in
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_RKFetch(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_RKFetch(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_RKFetch))
   {
@@ -2484,7 +2484,7 @@ agl_int32_t AGL_API AGL_RKFetch(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_RKFetchEx(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_RKFetchEx(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_RKFetchEx))
   {
@@ -2493,7 +2493,7 @@ agl_int32_t AGL_API AGL_RKFetchEx(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Send_RKFetch(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Send_RKFetch(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Send_RKFetch))
   {
@@ -2502,7 +2502,7 @@ agl_int32_t AGL_API AGL_Send_RKFetch(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Recv_RKSend(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Recv_RKSend(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Recv_RKSend))
   {
@@ -2511,7 +2511,7 @@ agl_int32_t AGL_API AGL_Recv_RKSend(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Recv_RKFetch(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Recv_RKFetch(const agl_int32_t ConnNr, LPDATA_RW40_RK Buff, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Recv_RKFetch))
   {
@@ -2520,7 +2520,7 @@ agl_int32_t AGL_API AGL_Recv_RKFetch(agl_int32_t ConnNr, LPDATA_RW40_RK Buff, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Send_3964(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int32_t BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Send_3964(const agl_int32_t ConnNr, const agl_uint8_t* const Buff, const agl_int32_t BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Send_3964))
   {
@@ -2529,7 +2529,7 @@ agl_int32_t AGL_API AGL_Send_3964(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Recv_3964(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int32_t* BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Recv_3964(const agl_int32_t ConnNr, agl_uint8_t* const Buff, agl_int32_t* const BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Recv_3964))
   {
@@ -2538,7 +2538,7 @@ agl_int32_t AGL_API AGL_Recv_3964(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_BSend(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_BSend(const agl_int32_t ConnNr, const agl_wsabuf_t* const pwsa, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_BSend))
   {
@@ -2547,7 +2547,7 @@ agl_int32_t AGL_API AGL_BSend(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_BReceive(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_BReceive(const agl_int32_t ConnNr, agl_wsabuf_t* const pwsa, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_BReceive))
   {
@@ -2556,7 +2556,7 @@ agl_int32_t AGL_API AGL_BReceive(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_BSendEx(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t R_ID, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_BSendEx(const agl_int32_t ConnNr, const agl_wsabuf_t* const pwsa, const agl_int32_t R_ID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_BSendEx))
   {
@@ -2565,7 +2565,7 @@ agl_int32_t AGL_API AGL_BSendEx(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_BReceiveEx(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t* R_ID, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_BReceiveEx(const agl_int32_t ConnNr, agl_wsabuf_t* const pwsa, agl_int32_t* const R_ID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_BReceiveEx))
   {
@@ -2574,7 +2574,7 @@ agl_int32_t AGL_API AGL_BReceiveEx(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_USend(agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_USend(const agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_USend))
   {
@@ -2583,7 +2583,7 @@ agl_int32_t AGL_API AGL_USend(agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_UReceive(agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_UReceive(const agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_UReceive))
   {
@@ -2592,7 +2592,7 @@ agl_int32_t AGL_API AGL_UReceive(agl_int32_t ConnNr, LPS7_USEND_URCV pUSR, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitOpStateMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_InitOpStateMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_InitOpStateMsg))
   {
@@ -2601,7 +2601,7 @@ agl_int32_t AGL_API AGL_InitOpStateMsg(agl_int32_t ConnNr, agl_int32_t* OpState,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ExitOpStateMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ExitOpStateMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ExitOpStateMsg))
   {
@@ -2610,7 +2610,7 @@ agl_int32_t AGL_API AGL_ExitOpStateMsg(agl_int32_t ConnNr, agl_int32_t* OpState,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetOpStateMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetOpStateMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetOpStateMsg))
   {
@@ -2619,7 +2619,7 @@ agl_int32_t AGL_API AGL_GetOpStateMsg(agl_int32_t ConnNr, agl_int32_t* OpState, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitDiagMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t DiagMask, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_InitDiagMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t DiagMask, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_InitDiagMsg))
   {
@@ -2628,7 +2628,7 @@ agl_int32_t AGL_API AGL_InitDiagMsg(agl_int32_t ConnNr, agl_int32_t* OpState, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ExitDiagMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ExitDiagMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ExitDiagMsg))
   {
@@ -2637,7 +2637,7 @@ agl_int32_t AGL_API AGL_ExitDiagMsg(agl_int32_t ConnNr, agl_int32_t* OpState, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetDiagMsg(agl_int32_t ConnNr, LPS7_DIAG_MSG pDiag, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetDiagMsg(const agl_int32_t ConnNr, LPS7_DIAG_MSG pDiag, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetDiagMsg))
   {
@@ -2646,7 +2646,7 @@ agl_int32_t AGL_API AGL_GetDiagMsg(agl_int32_t ConnNr, LPS7_DIAG_MSG pDiag, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitCyclicRead(agl_int32_t ConnNr, agl_int32_t CycleTime, agl_int32_t Flags, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t* Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_InitCyclicRead(const agl_int32_t ConnNr, const agl_int32_t CycleTime, const agl_int32_t Flags, LPDATA_RW40 Buff, const agl_int32_t Num, agl_int32_t* const Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_InitCyclicRead))
   {
@@ -2655,7 +2655,7 @@ agl_int32_t AGL_API AGL_InitCyclicRead(agl_int32_t ConnNr, agl_int32_t CycleTime
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitCyclicReadEx(agl_int32_t ConnNr, agl_int32_t CycleTime, agl_int32_t Flags, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t* Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_InitCyclicReadEx(const agl_int32_t ConnNr, const agl_int32_t CycleTime, const agl_int32_t Flags, LPDATA_RW40 Buff, const agl_int32_t Num, agl_int32_t* const Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_InitCyclicReadEx))
   {
@@ -2664,7 +2664,7 @@ agl_int32_t AGL_API AGL_InitCyclicReadEx(agl_int32_t ConnNr, agl_int32_t CycleTi
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_StartCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_StartCyclicRead(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_StartCyclicRead))
   {
@@ -2673,7 +2673,7 @@ agl_int32_t AGL_API AGL_StartCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_StopCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_StopCyclicRead(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_StopCyclicRead))
   {
@@ -2682,7 +2682,7 @@ agl_int32_t AGL_API AGL_StopCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ExitCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ExitCyclicRead(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ExitCyclicRead))
   {
@@ -2691,7 +2691,7 @@ agl_int32_t AGL_API AGL_ExitCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetCyclicRead(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetCyclicRead(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetCyclicRead))
   {
@@ -2700,7 +2700,7 @@ agl_int32_t AGL_API AGL_GetCyclicRead(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetCyclicReadEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, agl_int32_t Num, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetCyclicReadEx(const agl_int32_t ConnNr, LPDATA_RW40 Buff, const agl_int32_t Num, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetCyclicReadEx))
   {
@@ -2709,7 +2709,7 @@ agl_int32_t AGL_API AGL_GetCyclicReadEx(agl_int32_t ConnNr, LPDATA_RW40 Buff, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitScanMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_InitScanMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_InitScanMsg))
   {
@@ -2718,7 +2718,7 @@ agl_int32_t AGL_API AGL_InitScanMsg(agl_int32_t ConnNr, agl_int32_t* OpState, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ExitScanMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ExitScanMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ExitScanMsg))
   {
@@ -2727,7 +2727,7 @@ agl_int32_t AGL_API AGL_ExitScanMsg(agl_int32_t ConnNr, agl_int32_t* OpState, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetScanMsg(agl_int32_t ConnNr, LPS7_SCAN pScan, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetScanMsg(const agl_int32_t ConnNr, LPS7_SCAN pScan, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetScanMsg))
   {
@@ -2736,7 +2736,7 @@ agl_int32_t AGL_API AGL_GetScanMsg(agl_int32_t ConnNr, LPS7_SCAN pScan, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_HasAckTriggeredMsg(agl_int32_t ConnNr, agl_int32_t* Mode, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_HasAckTriggeredMsg(const agl_int32_t ConnNr, agl_int32_t* const Mode, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_HasAckTriggeredMsg))
   {
@@ -2745,7 +2745,7 @@ agl_int32_t AGL_API AGL_HasAckTriggeredMsg(agl_int32_t ConnNr, agl_int32_t* Mode
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitAlarmMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_InitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_InitAlarmMsg))
   {
@@ -2754,7 +2754,7 @@ agl_int32_t AGL_API AGL_InitAlarmMsg(agl_int32_t ConnNr, agl_int32_t* OpState, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ExitAlarmMsg(agl_int32_t ConnNr, agl_int32_t* OpState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ExitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t* const OpState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ExitAlarmMsg))
   {
@@ -2763,7 +2763,7 @@ agl_int32_t AGL_API AGL_ExitAlarmMsg(agl_int32_t ConnNr, agl_int32_t* OpState, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetAlarmMsg(agl_int32_t ConnNr, LPS7_ALARM pAlarm, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetAlarmMsg(const agl_int32_t ConnNr, LPS7_ALARM pAlarm, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetAlarmMsg))
   {
@@ -2772,7 +2772,7 @@ agl_int32_t AGL_API AGL_GetAlarmMsg(agl_int32_t ConnNr, LPS7_ALARM pAlarm, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ReadOpenMsg(agl_int32_t ConnNr, LPS7_OPEN_MSG_STATE pState, agl_int32_t* MsgAnz, agl_int32_t MsgType, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ReadOpenMsg(const agl_int32_t ConnNr, LPS7_OPEN_MSG_STATE pState, agl_int32_t* const MsgAnz, const agl_int32_t MsgType, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ReadOpenMsg))
   {
@@ -2781,7 +2781,7 @@ agl_int32_t AGL_API AGL_ReadOpenMsg(agl_int32_t ConnNr, LPS7_OPEN_MSG_STATE pSta
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetMsgStateChange(agl_int32_t ConnNr, LPS7_RCV_MSG_STATE pState, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetMsgStateChange(const agl_int32_t ConnNr, LPS7_RCV_MSG_STATE pState, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetMsgStateChange))
   {
@@ -2790,7 +2790,7 @@ agl_int32_t AGL_API AGL_GetMsgStateChange(agl_int32_t ConnNr, LPS7_RCV_MSG_STATE
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_AckMsg(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t MsgAnz, agl_int32_t MsgType, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_AckMsg(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t MsgAnz, const agl_int32_t MsgType, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_AckMsg))
   {
@@ -2799,7 +2799,7 @@ agl_int32_t AGL_API AGL_AckMsg(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_LockMsg(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t MsgAnz, agl_int32_t MsgType, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_LockMsg(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t MsgAnz, const agl_int32_t MsgType, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_LockMsg))
   {
@@ -2808,7 +2808,7 @@ agl_int32_t AGL_API AGL_LockMsg(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_UnlockMsg(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t MsgAnz, agl_int32_t MsgType, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_UnlockMsg(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t MsgAnz, const agl_int32_t MsgType, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_UnlockMsg))
   {
@@ -2817,7 +2817,7 @@ agl_int32_t AGL_API AGL_UnlockMsg(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_InitARSend(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t ArAnz, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_InitARSend(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t ArAnz, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_InitARSend))
   {
@@ -2826,7 +2826,7 @@ agl_int32_t AGL_API AGL_InitARSend(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMs
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_ExitARSend(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, agl_int32_t ArAnz, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_ExitARSend(const agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMsg, const agl_int32_t ArAnz, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_ExitARSend))
   {
@@ -2835,7 +2835,7 @@ agl_int32_t AGL_API AGL_ExitARSend(agl_int32_t ConnNr, LPS7_CHANGE_MSG_STATE pMs
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_GetARSend(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_int32_t* AR_ID, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_GetARSend(const agl_int32_t ConnNr, agl_wsabuf_t* const pwsa, agl_int32_t* const AR_ID, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_GetARSend))
   {
@@ -2844,7 +2844,7 @@ agl_int32_t AGL_API AGL_GetARSend(agl_int32_t ConnNr, agl_wsabuf_t* pwsa, agl_in
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_RFC1006_Connect(agl_int32_t DevNr, agl_int32_t PlcNr, agl_int32_t* ConnNr, LPRFC_1006_SERVER ConnInfo, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_RFC1006_Connect(const agl_int32_t DevNr, const agl_int32_t PlcNr, agl_int32_t* const ConnNr, LPRFC_1006_SERVER ConnInfo, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_RFC1006_Connect))
   {
@@ -2853,7 +2853,7 @@ agl_int32_t AGL_API AGL_RFC1006_Connect(agl_int32_t DevNr, agl_int32_t PlcNr, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_RFC1006_Disconnect(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_RFC1006_Disconnect(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_RFC1006_Disconnect))
   {
@@ -2862,7 +2862,7 @@ agl_int32_t AGL_API AGL_RFC1006_Disconnect(agl_int32_t ConnNr, agl_int32_t Timeo
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_RFC1006_Receive(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int32_t BuffLen, agl_int32_t* ReceivedLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_RFC1006_Receive(const agl_int32_t ConnNr, agl_uint8_t* const Buff, const agl_int32_t BuffLen, agl_int32_t* const ReceivedLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_RFC1006_Receive))
   {
@@ -2871,7 +2871,7 @@ agl_int32_t AGL_API AGL_RFC1006_Receive(agl_int32_t ConnNr, agl_uint8_t* Buff, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_RFC1006_Send(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_int32_t BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_RFC1006_Send(const agl_int32_t ConnNr, const agl_uint8_t* const Buff, const agl_int32_t BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_RFC1006_Send))
   {
@@ -2880,7 +2880,7 @@ agl_int32_t AGL_API AGL_RFC1006_Send(agl_int32_t ConnNr, agl_uint8_t* Buff, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_ReadMixEx(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_ReadMixEx(const agl_int32_t ConnNr, LPNCKDataRW Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_ReadMixEx))
   {
@@ -2889,7 +2889,7 @@ agl_int32_t AGL_API AGL_NCK_ReadMixEx(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_WriteMixEx(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_WriteMixEx(const agl_int32_t ConnNr, LPNCKDataRW Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_WriteMixEx))
   {
@@ -2898,7 +2898,7 @@ agl_int32_t AGL_API AGL_NCK_WriteMixEx(agl_int32_t ConnNr, LPNCKDataRW Buff, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_CheckVarSize(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_CheckVarSize(const agl_int32_t ConnNr, LPNCKDataRW Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_CheckVarSize))
   {
@@ -2907,7 +2907,7 @@ agl_int32_t AGL_API AGL_NCK_CheckVarSize(agl_int32_t ConnNr, LPNCKDataRW Buff, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_InitCyclicReadEx(agl_int32_t ConnNr, agl_int32_t CycleTime, agl_int32_t OnlyChanged, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t* Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_InitCyclicReadEx(const agl_int32_t ConnNr, const agl_int32_t CycleTime, const agl_int32_t OnlyChanged, LPNCKDataRW Buff, const agl_int32_t Num, agl_int32_t* const Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_InitCyclicReadEx))
   {
@@ -2916,7 +2916,7 @@ agl_int32_t AGL_API AGL_NCK_InitCyclicReadEx(agl_int32_t ConnNr, agl_int32_t Cyc
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_StartCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_StartCyclicRead(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_StartCyclicRead))
   {
@@ -2925,7 +2925,7 @@ agl_int32_t AGL_API AGL_NCK_StartCyclicRead(agl_int32_t ConnNr, agl_int32_t Hand
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_StopCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_StopCyclicRead(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_StopCyclicRead))
   {
@@ -2934,7 +2934,7 @@ agl_int32_t AGL_API AGL_NCK_StopCyclicRead(agl_int32_t ConnNr, agl_int32_t Handl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_ExitCyclicRead(agl_int32_t ConnNr, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_ExitCyclicRead(const agl_int32_t ConnNr, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_ExitCyclicRead))
   {
@@ -2943,7 +2943,7 @@ agl_int32_t AGL_API AGL_NCK_ExitCyclicRead(agl_int32_t ConnNr, agl_int32_t Handl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_GetCyclicReadEx(agl_int32_t ConnNr, LPNCKDataRW Buff, agl_int32_t Num, agl_int32_t Handle, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_GetCyclicReadEx(const agl_int32_t ConnNr, LPNCKDataRW Buff, const agl_int32_t Num, const agl_int32_t Handle, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_GetCyclicReadEx))
   {
@@ -2952,7 +2952,7 @@ agl_int32_t AGL_API AGL_NCK_GetCyclicReadEx(agl_int32_t ConnNr, LPNCKDataRW Buff
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_EXTERN(agl_int32_t ConnNr, agl_int32_t Channel, agl_cstr8_t ProgName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_EXTERN(const agl_int32_t ConnNr, const agl_int32_t Channel, const agl_cstr8_t const ProgName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_EXTERN))
   {
@@ -2961,7 +2961,7 @@ agl_int32_t AGL_API AGL_NCK_PI_EXTERN(agl_int32_t ConnNr, agl_int32_t Channel, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_EXTMOD(agl_int32_t ConnNr, agl_int32_t Channel, agl_cstr8_t ProgName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_EXTMOD(const agl_int32_t ConnNr, const agl_int32_t Channel, const agl_cstr8_t const ProgName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_EXTMOD))
   {
@@ -2970,7 +2970,7 @@ agl_int32_t AGL_API AGL_NCK_PI_EXTMOD(agl_int32_t ConnNr, agl_int32_t Channel, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_SELECT(agl_int32_t ConnNr, agl_int32_t Channel, agl_cstr8_t ProgName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_SELECT(const agl_int32_t ConnNr, const agl_int32_t Channel, const agl_cstr8_t const ProgName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_SELECT))
   {
@@ -2979,7 +2979,7 @@ agl_int32_t AGL_API AGL_NCK_PI_SELECT(agl_int32_t ConnNr, agl_int32_t Channel, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_DELE(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_DELE(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_DELE))
   {
@@ -2988,7 +2988,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_DELE(agl_int32_t ConnNr, agl_cstr8_t FileName, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_PROT(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_cstr8_t Protection, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_PROT(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_cstr8_t const Protection, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_PROT))
   {
@@ -2997,7 +2997,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_PROT(agl_int32_t ConnNr, agl_cstr8_t FileName, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_RENA(agl_int32_t ConnNr, agl_cstr8_t OldFileName, agl_cstr8_t NewFileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_RENA(const agl_int32_t ConnNr, const agl_cstr8_t const OldFileName, const agl_cstr8_t const NewFileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_RENA))
   {
@@ -3006,7 +3006,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_RENA(agl_int32_t ConnNr, agl_cstr8_t OldFileNam
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_XFER(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_XFER(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_XFER))
   {
@@ -3015,7 +3015,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_XFER(agl_int32_t ConnNr, agl_cstr8_t FileName, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_LOGIN(agl_int32_t ConnNr, agl_cstr8_t Password, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_LOGIN(const agl_int32_t ConnNr, const agl_cstr8_t const Password, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_LOGIN))
   {
@@ -3024,7 +3024,7 @@ agl_int32_t AGL_API AGL_NCK_PI_LOGIN(agl_int32_t ConnNr, agl_cstr8_t Password, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_LOGOUT(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_LOGOUT(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_LOGOUT))
   {
@@ -3033,7 +3033,7 @@ agl_int32_t AGL_API AGL_NCK_PI_LOGOUT(agl_int32_t ConnNr, agl_int32_t Timeout, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_OPEN(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_cstr8_t WindowName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_OPEN(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_cstr8_t const WindowName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_OPEN))
   {
@@ -3042,7 +3042,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_OPEN(agl_int32_t ConnNr, agl_cstr8_t FileName, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_OPER(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_cstr8_t WindowName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_OPER(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_cstr8_t const WindowName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_OPER))
   {
@@ -3051,7 +3051,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_OPER(agl_int32_t ConnNr, agl_cstr8_t FileName, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_SEEK(agl_int32_t ConnNr, agl_cstr8_t WindowName, agl_int32_t SeekMode, agl_int32_t SeekPointer, agl_int32_t WindowSize, agl_cstr8_t CompareString, agl_int32_t SkipCount, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_SEEK(const agl_int32_t ConnNr, const agl_cstr8_t const WindowName, const agl_int32_t SeekMode, const agl_int32_t SeekPointer, const agl_int32_t WindowSize, const agl_cstr8_t const CompareString, const agl_int32_t SkipCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_SEEK))
   {
@@ -3060,7 +3060,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_SEEK(agl_int32_t ConnNr, agl_cstr8_t WindowName
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_CLOS(agl_int32_t ConnNr, agl_cstr8_t WindowName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_CLOS(const agl_int32_t ConnNr, const agl_cstr8_t const WindowName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_CLOS))
   {
@@ -3069,7 +3069,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_CLOS(agl_int32_t ConnNr, agl_cstr8_t WindowName
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_StartAll(agl_int32_t ConnNr, agl_uint8_t* Para, agl_int32_t ParaLen, agl_cstr8_t Cmd, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_StartAll(const agl_int32_t ConnNr, const agl_uint8_t* const Para, const agl_int32_t ParaLen, const agl_cstr8_t Cmd, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_StartAll))
   {
@@ -3078,7 +3078,7 @@ agl_int32_t AGL_API AGL_NCK_PI_StartAll(agl_int32_t ConnNr, agl_uint8_t* Para, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_COPY(agl_int32_t ConnNr, agl_int32_t Direction, agl_cstr8_t SourceFileName, agl_cstr8_t DestinationFileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_COPY(const agl_int32_t ConnNr, const agl_int32_t Direction, const agl_cstr8_t const SourceFileName, const agl_cstr8_t const DestinationFileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_COPY))
   {
@@ -3087,7 +3087,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_COPY(agl_int32_t ConnNr, agl_int32_t Direction,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_F_PROR(agl_int32_t ConnNr, agl_cstr8_t FileName, agl_cstr8_t Protection, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_F_PROR(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const agl_cstr8_t const Protection, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_F_PROR))
   {
@@ -3096,7 +3096,7 @@ agl_int32_t AGL_API AGL_NCK_PI_F_PROR(agl_int32_t ConnNr, agl_cstr8_t FileName, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_CANCEL(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_CANCEL(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_CANCEL))
   {
@@ -3105,7 +3105,7 @@ agl_int32_t AGL_API AGL_NCK_PI_CANCEL(agl_int32_t ConnNr, agl_int32_t Timeout, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_CRCEDN(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t TNumber, agl_int32_t DNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_CRCEDN(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t TNumber, const agl_int32_t DNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_CRCEDN))
   {
@@ -3114,7 +3114,7 @@ agl_int32_t AGL_API AGL_NCK_PI_CRCEDN(agl_int32_t ConnNr, agl_int32_t ToolArea, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_DELECE(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t TNumber, agl_int32_t DNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_DELECE(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t TNumber, const agl_int32_t DNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_DELECE))
   {
@@ -3123,7 +3123,7 @@ agl_int32_t AGL_API AGL_NCK_PI_DELECE(agl_int32_t ConnNr, agl_int32_t ToolArea, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_DELETO(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t TNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_DELETO(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t TNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_DELETO))
   {
@@ -3132,7 +3132,7 @@ agl_int32_t AGL_API AGL_NCK_PI_DELETO(agl_int32_t ConnNr, agl_int32_t ToolArea, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_IBN_SS(agl_int32_t ConnNr, agl_int32_t Switch, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_IBN_SS(const agl_int32_t ConnNr, const agl_int32_t Switch, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_IBN_SS))
   {
@@ -3141,7 +3141,7 @@ agl_int32_t AGL_API AGL_NCK_PI_IBN_SS(agl_int32_t ConnNr, agl_int32_t Switch, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_MMCSEM(agl_int32_t ConnNr, agl_int32_t ChannelNumber, agl_int32_t FunctionNumber, agl_int32_t SemaValue, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_MMCSEM(const agl_int32_t ConnNr, const agl_int32_t ChannelNumber, const agl_int32_t FunctionNumber, const agl_int32_t SemaValue, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_MMCSEM))
   {
@@ -3150,7 +3150,7 @@ agl_int32_t AGL_API AGL_NCK_PI_MMCSEM(agl_int32_t ConnNr, agl_int32_t ChannelNum
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_TMCRTO(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_cstr8_t ToolID, agl_int32_t ToolNumber, agl_int32_t DuploNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_TMCRTO(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_cstr8_t const ToolID, const agl_int32_t ToolNumber, const agl_int32_t DuploNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_TMCRTO))
   {
@@ -3159,7 +3159,7 @@ agl_int32_t AGL_API AGL_NCK_PI_TMCRTO(agl_int32_t ConnNr, agl_int32_t ToolArea, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_TMMVTL(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t ToolNumber, agl_int32_t SourcePlaceNumber, agl_int32_t SourceMagazineNumber, agl_int32_t DestinationPlaceNumber, agl_int32_t DestinationMagazineNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_TMMVTL(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t ToolNumber, const agl_int32_t SourcePlaceNumber, const agl_int32_t SourceMagazineNumber, const agl_int32_t DestinationPlaceNumber, const agl_int32_t DestinationMagazineNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_TMMVTL))
   {
@@ -3168,7 +3168,7 @@ agl_int32_t AGL_API AGL_NCK_PI_TMMVTL(agl_int32_t ConnNr, agl_int32_t ToolArea, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_TMCRTC(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_cstr8_t ToolID, agl_int32_t ToolNumber, agl_int32_t DuploNumber, agl_int32_t EdgeNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_TMCRTC(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_cstr8_t const ToolID, const agl_int32_t ToolNumber, const agl_int32_t DuploNumber, const agl_int32_t EdgeNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_TMCRTC))
   {
@@ -3177,7 +3177,7 @@ agl_int32_t AGL_API AGL_NCK_PI_TMCRTC(agl_int32_t ConnNr, agl_int32_t ToolArea, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_PI_CREATO(agl_int32_t ConnNr, agl_int32_t ToolArea, agl_int32_t TNumber, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_PI_CREATO(const agl_int32_t ConnNr, const agl_int32_t ToolArea, const agl_int32_t TNumber, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_PI_CREATO))
   {
@@ -3186,7 +3186,7 @@ agl_int32_t AGL_API AGL_NCK_PI_CREATO(agl_int32_t ConnNr, agl_int32_t ToolArea, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_CopyFileToNC(agl_int32_t ConnNr, agl_cstr8_t NCFileName, agl_cstr8_t PCFileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_CopyFileToNC(const agl_int32_t ConnNr, const agl_cstr8_t const NCFileName, const agl_cstr8_t const PCFileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_CopyFileToNC))
   {
@@ -3195,7 +3195,7 @@ agl_int32_t AGL_API AGL_NCK_CopyFileToNC(agl_int32_t ConnNr, agl_cstr8_t NCFileN
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_CopyFileFromNC(agl_int32_t ConnNr, agl_cstr8_t NCFileName, agl_cstr8_t PCFileName, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_CopyFileFromNC(const agl_int32_t ConnNr, const agl_cstr8_t const NCFileName, const agl_cstr8_t const PCFileName, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_CopyFileFromNC))
   {
@@ -3204,7 +3204,7 @@ agl_int32_t AGL_API AGL_NCK_CopyFileFromNC(agl_int32_t ConnNr, agl_cstr8_t NCFil
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_CopyToNC(agl_int32_t ConnNr, agl_cstr8_t FileName, void* Buff, agl_int32_t BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_CopyToNC(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, const void* const Buff, const agl_int32_t BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_CopyToNC))
   {
@@ -3213,7 +3213,7 @@ agl_int32_t AGL_API AGL_NCK_CopyToNC(agl_int32_t ConnNr, agl_cstr8_t FileName, v
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_CopyFromNC(agl_int32_t ConnNr, agl_cstr8_t FileName, void* Buff, agl_int32_t BuffLen, agl_int32_t* NeededLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_CopyFromNC(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, void* const Buff, const agl_int32_t BuffLen, agl_int32_t* const NeededLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_CopyFromNC))
   {
@@ -3222,7 +3222,7 @@ agl_int32_t AGL_API AGL_NCK_CopyFromNC(agl_int32_t ConnNr, agl_cstr8_t FileName,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_CopyFromNCAlloc(agl_int32_t ConnNr, agl_cstr8_t FileName, void** Buff, agl_int32_t* BuffLen, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_NCK_CopyFromNCAlloc(const agl_int32_t ConnNr, const agl_cstr8_t const FileName, void** const Buff, agl_int32_t* const BuffLen, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_NCK_CopyFromNCAlloc))
   {
@@ -3231,7 +3231,7 @@ agl_int32_t AGL_API AGL_NCK_CopyFromNCAlloc(agl_int32_t ConnNr, agl_cstr8_t File
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_FreeBuff(void* Buff)
+agl_int32_t AGL_API AGL_NCK_FreeBuff(void* const Buff)
 {
   if( Loaded(pAGL_NCK_FreeBuff))
   {
@@ -3240,7 +3240,7 @@ agl_int32_t AGL_API AGL_NCK_FreeBuff(void* Buff)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_SetConnProgressNotification(agl_int32_t ConnNr, LPNOTIFICATION pN)
+agl_int32_t AGL_API AGL_NCK_SetConnProgressNotification(const agl_int32_t ConnNr, LPNOTIFICATION pN)
 {
   if( Loaded(pAGL_NCK_SetConnProgressNotification))
   {
@@ -3249,7 +3249,7 @@ agl_int32_t AGL_API AGL_NCK_SetConnProgressNotification(agl_int32_t ConnNr, LPNO
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_CheckNSKVarLine(agl_cstr8_t Line, LPNCKDataRW pRW, agl_cstr8_t Name, agl_int32_t NameLen)
+agl_int32_t AGL_API AGL_NCK_CheckNSKVarLine(const agl_cstr8_t const Line, LPNCKDataRW pRW, agl_cstr8_t const Name, const agl_int32_t NameLen)
 {
   if( Loaded(pAGL_NCK_CheckNSKVarLine))
   {
@@ -3258,7 +3258,7 @@ agl_int32_t AGL_API AGL_NCK_CheckNSKVarLine(agl_cstr8_t Line, LPNCKDataRW pRW, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_ReadNSKVarFile(agl_cstr8_t FileName, LPNCKDataRW* ppRW, agl_cstr8_t** pName)
+agl_int32_t AGL_API AGL_NCK_ReadNSKVarFile(const agl_cstr8_t const FileName, LPNCKDataRW* const ppRW, agl_cstr8_t** const pName)
 {
   if( Loaded(pAGL_NCK_ReadNSKVarFile))
   {
@@ -3267,7 +3267,7 @@ agl_int32_t AGL_API AGL_NCK_ReadNSKVarFile(agl_cstr8_t FileName, LPNCKDataRW* pp
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_CheckCSVVarLine(agl_cstr8_t Line, LPNCKDataRW pRW, agl_cstr8_t Name, agl_int32_t NameLen)
+agl_int32_t AGL_API AGL_NCK_CheckCSVVarLine(const agl_cstr8_t const Line, LPNCKDataRW pRW, agl_cstr8_t const Name, const agl_int32_t NameLen)
 {
   if( Loaded(pAGL_NCK_CheckCSVVarLine))
   {
@@ -3276,7 +3276,7 @@ agl_int32_t AGL_API AGL_NCK_CheckCSVVarLine(agl_cstr8_t Line, LPNCKDataRW pRW, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_ReadCSVVarFile(agl_cstr8_t FileName, LPNCKDataRW* ppRW, agl_cstr8_t** pName)
+agl_int32_t AGL_API AGL_NCK_ReadCSVVarFile(const agl_cstr8_t const FileName, LPNCKDataRW* const ppRW, agl_cstr8_t** const pName)
 {
   if( Loaded(pAGL_NCK_ReadCSVVarFile))
   {
@@ -3285,7 +3285,7 @@ agl_int32_t AGL_API AGL_NCK_ReadCSVVarFile(agl_cstr8_t FileName, LPNCKDataRW* pp
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_ReadGUDVarFile(agl_cstr8_t FileName, LPNCKDataRW* ppRW, agl_cstr8_t** pName)
+agl_int32_t AGL_API AGL_NCK_ReadGUDVarFile(const agl_cstr8_t const FileName, LPNCKDataRW* const ppRW, agl_cstr8_t** const pName)
 {
   if( Loaded(pAGL_NCK_ReadGUDVarFile))
   {
@@ -3294,7 +3294,7 @@ agl_int32_t AGL_API AGL_NCK_ReadGUDVarFile(agl_cstr8_t FileName, LPNCKDataRW* pp
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_ReadGUDVarFileEx(agl_cstr8_t FileName, agl_int32_t GUDNr, agl_int32_t Area, LPNCKDataRW* ppRW, agl_cstr8_t** pName)
+agl_int32_t AGL_API AGL_NCK_ReadGUDVarFileEx(const agl_cstr8_t const FileName, const agl_int32_t GUDNr, const agl_int32_t Area, LPNCKDataRW* const ppRW, agl_cstr8_t** const pName)
 {
   if( Loaded(pAGL_NCK_ReadGUDVarFileEx))
   {
@@ -3303,7 +3303,7 @@ agl_int32_t AGL_API AGL_NCK_ReadGUDVarFileEx(agl_cstr8_t FileName, agl_int32_t G
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_FreeVarBuff(LPNCKDataRW* ppRW, agl_cstr8_t** pName, agl_int32_t Anz)
+agl_int32_t AGL_API AGL_NCK_FreeVarBuff(LPNCKDataRW* const ppRW, agl_cstr8_t** const pName, const agl_int32_t Anz)
 {
   if( Loaded(pAGL_NCK_FreeVarBuff))
   {
@@ -3312,7 +3312,7 @@ agl_int32_t AGL_API AGL_NCK_FreeVarBuff(LPNCKDataRW* ppRW, agl_cstr8_t** pName, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_GetSingleVarDef(LPNCKDataRW* ppRW, agl_cstr8_t** pName, agl_int32_t Index, LPNCKDataRW pRW, agl_cstr8_t Name, agl_int32_t NameLen, agl_int32_t AllocBuff)
+agl_int32_t AGL_API AGL_NCK_GetSingleVarDef(const LPNCKDataRW* const ppRW, const agl_cstr8_t** const pName, const agl_int32_t Index, LPNCKDataRW pRW, agl_cstr8_t const Name, const agl_int32_t NameLen, const agl_int32_t AllocBuff)
 {
   if( Loaded(pAGL_NCK_GetSingleVarDef))
   {
@@ -3321,7 +3321,7 @@ agl_int32_t AGL_API AGL_NCK_GetSingleVarDef(LPNCKDataRW* ppRW, agl_cstr8_t** pNa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_ExtractNckAlarm(void* Buffer, agl_int32_t BufferSize, LPNCKAlarm NCKAlarm)
+agl_int32_t AGL_API AGL_NCK_ExtractNckAlarm(const void* const Buffer, const agl_int32_t BufferSize, LPNCKAlarm NCKAlarm)
 {
   if( Loaded(pAGL_NCK_ExtractNckAlarm))
   {
@@ -3330,7 +3330,7 @@ agl_int32_t AGL_API AGL_NCK_ExtractNckAlarm(void* Buffer, agl_int32_t BufferSize
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_NCK_GetNCKDataRWByNCDDEItem(const agl_cstr8_t const Item, LPNCKDataRW DataRW, agl_int32_t* ErrorPosition)
+agl_int32_t AGL_API AGL_NCK_GetNCKDataRWByNCDDEItem(const agl_cstr8_t const Item, LPNCKDataRW DataRW, agl_int32_t* const ErrorPosition)
 {
   if( Loaded(pAGL_NCK_GetNCKDataRWByNCDDEItem))
   {
@@ -3339,7 +3339,7 @@ agl_int32_t AGL_API AGL_NCK_GetNCKDataRWByNCDDEItem(const agl_cstr8_t const Item
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Drive_ReadMix(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Drive_ReadMix(const agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Drive_ReadMix))
   {
@@ -3348,7 +3348,7 @@ agl_int32_t AGL_API AGL_Drive_ReadMix(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Drive_ReadMixEx(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Drive_ReadMixEx(const agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Drive_ReadMixEx))
   {
@@ -3357,7 +3357,7 @@ agl_int32_t AGL_API AGL_Drive_ReadMixEx(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Bu
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Drive_WriteMix(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Drive_WriteMix(const agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Drive_WriteMix))
   {
@@ -3366,7 +3366,7 @@ agl_int32_t AGL_API AGL_Drive_WriteMix(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buf
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Drive_WriteMixEx(agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Drive_WriteMixEx(const agl_int32_t ConnNr, LPDATA_RW40_DRIVE Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Drive_WriteMixEx))
   {
@@ -3375,7 +3375,7 @@ agl_int32_t AGL_API AGL_Drive_WriteMixEx(agl_int32_t ConnNr, LPDATA_RW40_DRIVE B
   return AGL40_DYN_DLL_ERROR;
 }
 
-void* AGL_API AGL_malloc(agl_int32_t Size)
+void* AGL_API AGL_malloc(const agl_int32_t Size)
 {
   if( Loaded(pAGL_malloc))
   {
@@ -3384,7 +3384,7 @@ void* AGL_API AGL_malloc(agl_int32_t Size)
   return 0;
 }
 
-void* AGL_API AGL_calloc(agl_int32_t Anz, agl_int32_t Size)
+void* AGL_API AGL_calloc(const agl_int32_t Anz, const agl_int32_t Size)
 {
   if( Loaded(pAGL_calloc))
   {
@@ -3393,7 +3393,7 @@ void* AGL_API AGL_calloc(agl_int32_t Anz, agl_int32_t Size)
   return 0;
 }
 
-void* AGL_API AGL_realloc(void* Ptr, agl_int32_t Size)
+void* AGL_API AGL_realloc(void* const Ptr, const agl_int32_t Size)
 {
   if( Loaded(pAGL_realloc))
   {
@@ -3402,7 +3402,7 @@ void* AGL_API AGL_realloc(void* Ptr, agl_int32_t Size)
   return 0;
 }
 
-void* AGL_API AGL_memcpy(void* DestPtr, void* SrcPtr, agl_int32_t Len)
+void* AGL_API AGL_memcpy(void* const DestPtr, const void* const SrcPtr, const agl_int32_t Len)
 {
   if( Loaded(pAGL_memcpy))
   {
@@ -3411,7 +3411,7 @@ void* AGL_API AGL_memcpy(void* DestPtr, void* SrcPtr, agl_int32_t Len)
   return DestPtr;
 }
 
-void* AGL_API AGL_memmove(void* DestPtr, void* SrcPtr, agl_int32_t Len)
+void* AGL_API AGL_memmove(void* const DestPtr, const void* const SrcPtr, const agl_int32_t Len)
 {
   if( Loaded(pAGL_memmove))
   {
@@ -3420,7 +3420,7 @@ void* AGL_API AGL_memmove(void* DestPtr, void* SrcPtr, agl_int32_t Len)
   return DestPtr;
 }
 
-agl_int32_t AGL_API AGL_memcmp(void* Ptr1, void* Ptr2, agl_int32_t Len)
+agl_int32_t AGL_API AGL_memcmp(const void* const Ptr1, const void* const Ptr2, const agl_int32_t Len)
 {
   if( Loaded(pAGL_memcmp))
   {
@@ -3429,7 +3429,7 @@ agl_int32_t AGL_API AGL_memcmp(void* Ptr1, void* Ptr2, agl_int32_t Len)
   return AGL40_DYN_DLL_ERROR;
 }
 
-void AGL_API AGL_free(void* Ptr)
+void AGL_API AGL_free(void* const Ptr)
 {
   if( Loaded(pAGL_free))
   {
@@ -3437,7 +3437,7 @@ void AGL_API AGL_free(void* Ptr)
   }
 }
 
-agl_int16_t AGL_API AGL_ReadInt16(agl_uint8_t* Buff)
+agl_int16_t AGL_API AGL_ReadInt16(const agl_uint8_t* const Buff)
 {
   if( Loaded(pAGL_ReadInt16))
   {
@@ -3446,7 +3446,7 @@ agl_int16_t AGL_API AGL_ReadInt16(agl_uint8_t* Buff)
   return 0;
 }
 
-agl_long32_t AGL_API AGL_ReadInt32(agl_uint8_t* Buff)
+agl_long32_t AGL_API AGL_ReadInt32(const agl_uint8_t* const Buff)
 {
   if( Loaded(pAGL_ReadInt32))
   {
@@ -3455,7 +3455,7 @@ agl_long32_t AGL_API AGL_ReadInt32(agl_uint8_t* Buff)
   return 0;
 }
 
-agl_uint16_t AGL_API AGL_ReadWord(agl_uint8_t* Buff)
+agl_uint16_t AGL_API AGL_ReadWord(const agl_uint8_t* const Buff)
 {
   if( Loaded(pAGL_ReadWord))
   {
@@ -3464,7 +3464,7 @@ agl_uint16_t AGL_API AGL_ReadWord(agl_uint8_t* Buff)
   return 0;
 }
 
-agl_ulong32_t AGL_API AGL_ReadDWord(agl_uint8_t* Buff)
+agl_ulong32_t AGL_API AGL_ReadDWord(const agl_uint8_t* const Buff)
 {
   if( Loaded(pAGL_ReadDWord))
   {
@@ -3473,7 +3473,7 @@ agl_ulong32_t AGL_API AGL_ReadDWord(agl_uint8_t* Buff)
   return 0;
 }
 
-agl_float32_t AGL_API AGL_ReadReal(agl_uint8_t* Buff)
+agl_float32_t AGL_API AGL_ReadReal(const agl_uint8_t* const Buff)
 {
   if( Loaded(pAGL_ReadReal))
   {
@@ -3482,7 +3482,7 @@ agl_float32_t AGL_API AGL_ReadReal(agl_uint8_t* Buff)
   return 0;
 }
 
-agl_int32_t AGL_API AGL_ReadS5Time(agl_uint8_t* Buff)
+agl_int32_t AGL_API AGL_ReadS5Time(const agl_uint8_t* const Buff)
 {
   if( Loaded(pAGL_ReadS5Time))
   {
@@ -3491,7 +3491,7 @@ agl_int32_t AGL_API AGL_ReadS5Time(agl_uint8_t* Buff)
   return 0;
 }
 
-agl_int32_t AGL_API AGL_ReadS5TimeW(agl_uint16_t* Buff)
+agl_int32_t AGL_API AGL_ReadS5TimeW(const agl_uint16_t* const Buff)
 {
   if( Loaded(pAGL_ReadS5TimeW))
   {
@@ -3500,7 +3500,7 @@ agl_int32_t AGL_API AGL_ReadS5TimeW(agl_uint16_t* Buff)
   return 0;
 }
 
-void AGL_API AGL_WriteInt16(agl_uint8_t* Buff, agl_int16_t Val)
+void AGL_API AGL_WriteInt16(agl_uint8_t* const Buff, const agl_int16_t Val)
 {
   if( Loaded(pAGL_WriteInt16))
   {
@@ -3508,7 +3508,7 @@ void AGL_API AGL_WriteInt16(agl_uint8_t* Buff, agl_int16_t Val)
   }
 }
 
-void AGL_API AGL_WriteInt32(agl_uint8_t* Buff, agl_long32_t Val)
+void AGL_API AGL_WriteInt32(agl_uint8_t* const Buff, const agl_int32_t Val)
 {
   if( Loaded(pAGL_WriteInt32))
   {
@@ -3516,7 +3516,7 @@ void AGL_API AGL_WriteInt32(agl_uint8_t* Buff, agl_long32_t Val)
   }
 }
 
-void AGL_API AGL_WriteWord(agl_uint8_t* Buff, agl_uint16_t Val)
+void AGL_API AGL_WriteWord(agl_uint8_t* const Buff, const agl_uint16_t Val)
 {
   if( Loaded(pAGL_WriteWord))
   {
@@ -3524,7 +3524,7 @@ void AGL_API AGL_WriteWord(agl_uint8_t* Buff, agl_uint16_t Val)
   }
 }
 
-void AGL_API AGL_WriteDWord(agl_uint8_t* Buff, agl_ulong32_t Val)
+void AGL_API AGL_WriteDWord(agl_uint8_t* const Buff, const agl_uint32_t Val)
 {
   if( Loaded(pAGL_WriteDWord))
   {
@@ -3532,7 +3532,7 @@ void AGL_API AGL_WriteDWord(agl_uint8_t* Buff, agl_ulong32_t Val)
   }
 }
 
-void AGL_API AGL_WriteReal(agl_uint8_t* Buff, agl_float32_t Val)
+void AGL_API AGL_WriteReal(agl_uint8_t* const Buff, const agl_float32_t Val)
 {
   if( Loaded(pAGL_WriteReal))
   {
@@ -3540,7 +3540,7 @@ void AGL_API AGL_WriteReal(agl_uint8_t* Buff, agl_float32_t Val)
   }
 }
 
-void AGL_API AGL_WriteS5Time(agl_uint8_t* Buff, agl_int32_t Val)
+void AGL_API AGL_WriteS5Time(agl_uint8_t* const Buff, const agl_int32_t Val)
 {
   if( Loaded(pAGL_WriteS5Time))
   {
@@ -3548,7 +3548,7 @@ void AGL_API AGL_WriteS5Time(agl_uint8_t* Buff, agl_int32_t Val)
   }
 }
 
-void AGL_API AGL_WriteS5TimeW(agl_uint16_t* Buff, agl_int32_t Val)
+void AGL_API AGL_WriteS5TimeW(agl_uint16_t* const Buff, const agl_int32_t Val)
 {
   if( Loaded(pAGL_WriteS5TimeW))
   {
@@ -3556,7 +3556,7 @@ void AGL_API AGL_WriteS5TimeW(agl_uint16_t* Buff, agl_int32_t Val)
   }
 }
 
-void AGL_API AGL_Byte2Word(agl_uint16_t* OutBuff, agl_uint8_t* InBuff, agl_int32_t AnzWords)
+void AGL_API AGL_Byte2Word(agl_uint16_t* const OutBuff, const agl_uint8_t* const InBuff, const agl_int32_t AnzWords)
 {
   if( Loaded(pAGL_Byte2Word))
   {
@@ -3564,7 +3564,7 @@ void AGL_API AGL_Byte2Word(agl_uint16_t* OutBuff, agl_uint8_t* InBuff, agl_int32
   }
 }
 
-void AGL_API AGL_Byte2DWord(agl_ulong32_t* OutBuff, agl_uint8_t* InBuff, agl_int32_t AnzDWords)
+void AGL_API AGL_Byte2DWord(agl_ulong32_t* const OutBuff, const agl_uint8_t* const InBuff, const agl_int32_t AnzDWords)
 {
   if( Loaded(pAGL_Byte2DWord))
   {
@@ -3572,7 +3572,7 @@ void AGL_API AGL_Byte2DWord(agl_ulong32_t* OutBuff, agl_uint8_t* InBuff, agl_int
   }
 }
 
-void AGL_API AGL_Byte2Real(agl_float32_t* OutBuff, agl_uint8_t* InBuff, agl_int32_t AnzReals)
+void AGL_API AGL_Byte2Real(agl_float32_t* const OutBuff, const agl_uint8_t* const InBuff, const agl_int32_t AnzReals)
 {
   if( Loaded(pAGL_Byte2Real))
   {
@@ -3580,7 +3580,7 @@ void AGL_API AGL_Byte2Real(agl_float32_t* OutBuff, agl_uint8_t* InBuff, agl_int3
   }
 }
 
-void AGL_API AGL_Word2Byte(agl_uint8_t* OutBuff, agl_uint16_t* InBuff, agl_int32_t AnzWords)
+void AGL_API AGL_Word2Byte(agl_uint8_t* const OutBuff, const agl_uint16_t* const InBuff, const agl_int32_t AnzWords)
 {
   if( Loaded(pAGL_Word2Byte))
   {
@@ -3588,7 +3588,7 @@ void AGL_API AGL_Word2Byte(agl_uint8_t* OutBuff, agl_uint16_t* InBuff, agl_int32
   }
 }
 
-void AGL_API AGL_DWord2Byte(agl_uint8_t* OutBuff, agl_ulong32_t* InBuff, agl_int32_t AnzDWords)
+void AGL_API AGL_DWord2Byte(agl_uint8_t* const OutBuff, const agl_ulong32_t* const InBuff, const agl_int32_t AnzDWords)
 {
   if( Loaded(pAGL_DWord2Byte))
   {
@@ -3596,7 +3596,7 @@ void AGL_API AGL_DWord2Byte(agl_uint8_t* OutBuff, agl_ulong32_t* InBuff, agl_int
   }
 }
 
-void AGL_API AGL_Real2Byte(agl_uint8_t* OutBuff, agl_float32_t* InBuff, agl_int32_t AnzReals)
+void AGL_API AGL_Real2Byte(agl_uint8_t* const OutBuff, const agl_float32_t* const InBuff, const agl_int32_t AnzReals)
 {
   if( Loaded(pAGL_Real2Byte))
   {
@@ -3628,7 +3628,7 @@ agl_uint8_t AGL_API AGL_SetBitVal(agl_uint8_t* Buff, agl_int32_t BitNr, agl_int3
   return( *Buff &= ~AGL_CPP_BitMask[BitNr&7] );
 }
 
-agl_int32_t AGL_API AGL_Buff2String(agl_uint8_t* Buff, agl_cstr8_t Text, agl_int32_t AnzChars)
+agl_int32_t AGL_API AGL_Buff2String(const agl_uint8_t* const Buff, agl_cstr8_t const Text, const agl_int32_t AnzChars)
 {
   if( Loaded(pAGL_Buff2String))
   {
@@ -3637,7 +3637,7 @@ agl_int32_t AGL_API AGL_Buff2String(agl_uint8_t* Buff, agl_cstr8_t Text, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_String2Buff(agl_uint8_t* Buff, agl_cstr8_t Text, agl_int32_t AnzChars)
+agl_int32_t AGL_API AGL_String2Buff(agl_uint8_t* const Buff, const agl_cstr8_t const Text, const agl_int32_t AnzChars)
 {
   if( Loaded(pAGL_String2Buff))
   {
@@ -3646,7 +3646,7 @@ agl_int32_t AGL_API AGL_String2Buff(agl_uint8_t* Buff, agl_cstr8_t Text, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Buff2WString(agl_uint8_t* Buff, agl_wchar_t* Text, agl_int32_t AnzChars)
+agl_int32_t AGL_API AGL_Buff2WString(const agl_uint8_t* const Buff, agl_wchar_t* const Text, const agl_int32_t AnzChars)
 {
   if( Loaded(pAGL_Buff2WString))
   {
@@ -3655,7 +3655,7 @@ agl_int32_t AGL_API AGL_Buff2WString(agl_uint8_t* Buff, agl_wchar_t* Text, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WString2Buff(agl_uint8_t* Buff, agl_wchar_t* Text, agl_int32_t AnzChars)
+agl_int32_t AGL_API AGL_WString2Buff(agl_uint8_t* const Buff, const agl_wchar_t* const Text, const agl_int32_t AnzChars)
 {
   if( Loaded(pAGL_WString2Buff))
   {
@@ -3664,7 +3664,7 @@ agl_int32_t AGL_API AGL_WString2Buff(agl_uint8_t* Buff, agl_wchar_t* Text, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_S7String2String(agl_uint8_t* S7String, agl_cstr8_t Text, agl_int32_t MaxChars)
+agl_int32_t AGL_API AGL_S7String2String(const agl_uint8_t* const S7String, agl_cstr8_t const Text, const agl_int32_t MaxChars)
 {
   if( Loaded(pAGL_S7String2String))
   {
@@ -3673,7 +3673,7 @@ agl_int32_t AGL_API AGL_S7String2String(agl_uint8_t* S7String, agl_cstr8_t Text,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_String2S7String(agl_uint8_t* S7String, agl_cstr8_t Text, agl_int32_t MaxChars)
+agl_int32_t AGL_API AGL_String2S7String(agl_uint8_t* const S7String, const agl_cstr8_t const Text, const agl_int32_t MaxChars)
 {
   if( Loaded(pAGL_String2S7String))
   {
@@ -3682,7 +3682,7 @@ agl_int32_t AGL_API AGL_String2S7String(agl_uint8_t* S7String, agl_cstr8_t Text,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_BCD2Int16(agl_int16_t BCD, agl_int16_t* Dual)
+agl_int32_t AGL_API AGL_BCD2Int16(const agl_int16_t BCD, agl_int16_t* const Dual)
 {
   if( Loaded(pAGL_BCD2Int16))
   {
@@ -3691,7 +3691,7 @@ agl_int32_t AGL_API AGL_BCD2Int16(agl_int16_t BCD, agl_int16_t* Dual)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_BCD2Int32(agl_long32_t BCD, agl_long32_t* Dual)
+agl_int32_t AGL_API AGL_BCD2Int32(const agl_long32_t BCD, agl_long32_t* const Dual)
 {
   if( Loaded(pAGL_BCD2Int32))
   {
@@ -3700,7 +3700,7 @@ agl_int32_t AGL_API AGL_BCD2Int32(agl_long32_t BCD, agl_long32_t* Dual)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Int162BCD(agl_int16_t Dual, agl_int16_t* BCD)
+agl_int32_t AGL_API AGL_Int162BCD(const agl_int16_t Dual, agl_int16_t* const BCD)
 {
   if( Loaded(pAGL_Int162BCD))
   {
@@ -3709,7 +3709,7 @@ agl_int32_t AGL_API AGL_Int162BCD(agl_int16_t Dual, agl_int16_t* BCD)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Int322BCD(agl_long32_t Dual, agl_long32_t* BCD)
+agl_int32_t AGL_API AGL_Int322BCD(const agl_long32_t Dual, agl_long32_t* const BCD)
 {
   if( Loaded(pAGL_Int322BCD))
   {
@@ -3718,7 +3718,7 @@ agl_int32_t AGL_API AGL_Int322BCD(agl_long32_t Dual, agl_long32_t* BCD)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_float32_t AGL_API AGL_LongAsFloat(agl_long32_t Var)
+agl_float32_t AGL_API AGL_LongAsFloat(const agl_long32_t Var)
 {
   if( Loaded(pAGL_LongAsFloat))
   {
@@ -3727,7 +3727,7 @@ agl_float32_t AGL_API AGL_LongAsFloat(agl_long32_t Var)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_long32_t AGL_API AGL_FloatAsLong(agl_float32_t Var)
+agl_long32_t AGL_API AGL_FloatAsLong(const agl_float32_t Var)
 {
   if( Loaded(pAGL_FloatAsLong))
   {
@@ -3736,7 +3736,7 @@ agl_long32_t AGL_API AGL_FloatAsLong(agl_float32_t Var)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Text2DataRW(agl_cstr8_t Text, LPDATA_RW40 RW)
+agl_int32_t AGL_API AGL_Text2DataRW(const agl_cstr8_t const Text, LPDATA_RW40 RW)
 {
   if( Loaded(pAGL_Text2DataRW))
   {
@@ -3745,7 +3745,7 @@ agl_int32_t AGL_API AGL_Text2DataRW(agl_cstr8_t Text, LPDATA_RW40 RW)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_DataRW2Text(LPDATA_RW40 RW, agl_cstr8_t Text)
+agl_int32_t AGL_API AGL_DataRW2Text(LPDATA_RW40 RW, agl_cstr8_t const Text)
 {
   if( Loaded(pAGL_DataRW2Text))
   {
@@ -3754,7 +3754,7 @@ agl_int32_t AGL_API AGL_DataRW2Text(LPDATA_RW40 RW, agl_cstr8_t Text)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_S7DT2SysTime(agl_uint8_t* Buff, agl_systemtime_t* SysTime)
+agl_int32_t AGL_API AGL_S7DT2SysTime(const agl_uint8_t* const Buff, agl_systemtime_t* const SysTime)
 {
   if( Loaded(pAGL_S7DT2SysTime))
   {
@@ -3763,7 +3763,7 @@ agl_int32_t AGL_API AGL_S7DT2SysTime(agl_uint8_t* Buff, agl_systemtime_t* SysTim
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SysTime2S7DT(agl_systemtime_t* SysTime, agl_uint8_t* Buff)
+agl_int32_t AGL_API AGL_SysTime2S7DT(const agl_systemtime_t* const SysTime, agl_uint8_t* const Buff)
 {
   if( Loaded(pAGL_SysTime2S7DT))
   {
@@ -3772,7 +3772,7 @@ agl_int32_t AGL_API AGL_SysTime2S7DT(agl_systemtime_t* SysTime, agl_uint8_t* Buf
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_TOD2SysTime(LPTOD pTOD, agl_systemtime_t* SysTime)
+agl_int32_t AGL_API AGL_TOD2SysTime(const LPTOD pTOD, agl_systemtime_t* const SysTime)
 {
   if( Loaded(pAGL_TOD2SysTime))
   {
@@ -3781,7 +3781,7 @@ agl_int32_t AGL_API AGL_TOD2SysTime(LPTOD pTOD, agl_systemtime_t* SysTime)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_SysTime2TOD(agl_systemtime_t* SysTime, LPTOD pTOD)
+agl_int32_t AGL_API AGL_SysTime2TOD(const agl_systemtime_t* const SysTime, LPTOD pTOD)
 {
   if( Loaded(pAGL_SysTime2TOD))
   {
@@ -3790,7 +3790,7 @@ agl_int32_t AGL_API AGL_SysTime2TOD(agl_systemtime_t* SysTime, LPTOD pTOD)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_S7Date2YMD(agl_uint16_t Date, agl_uint16_t* Year, agl_uint16_t* Month, agl_uint16_t* Day)
+agl_int32_t AGL_API AGL_S7Date2YMD(const agl_uint16_t Date, agl_uint16_t* const Year, agl_uint16_t* const Month, agl_uint16_t* const Day)
 {
   if( Loaded(pAGL_S7Date2YMD))
   {
@@ -3799,7 +3799,7 @@ agl_int32_t AGL_API AGL_S7Date2YMD(agl_uint16_t Date, agl_uint16_t* Year, agl_ui
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Float2KG(agl_uint16_t* pKG, agl_float32_t* pFloat, agl_int32_t AnzFloats)
+agl_int32_t AGL_API AGL_Float2KG(agl_uint16_t* const pKG, const agl_float32_t* const pFloat, const agl_int32_t AnzFloats)
 {
   if( Loaded(pAGL_Float2KG))
   {
@@ -3808,7 +3808,7 @@ agl_int32_t AGL_API AGL_Float2KG(agl_uint16_t* pKG, agl_float32_t* pFloat, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_KG2Float(agl_float32_t* pFloat, agl_uint16_t* pKG, agl_int32_t AnzFloats)
+agl_int32_t AGL_API AGL_KG2Float(agl_float32_t* const pFloat, const agl_uint16_t* const pKG, const agl_int32_t AnzFloats)
 {
   if( Loaded(pAGL_KG2Float))
   {
@@ -3817,7 +3817,7 @@ agl_int32_t AGL_API AGL_KG2Float(agl_float32_t* pFloat, agl_uint16_t* pKG, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Float2DWKG(agl_ulong32_t* pKG, agl_float32_t* pFloat, agl_int32_t AnzFloats)
+agl_int32_t AGL_API AGL_Float2DWKG(agl_ulong32_t* const pKG, const agl_float32_t* const pFloat, const agl_int32_t AnzFloats)
 {
   if( Loaded(pAGL_Float2DWKG))
   {
@@ -3826,7 +3826,7 @@ agl_int32_t AGL_API AGL_Float2DWKG(agl_ulong32_t* pKG, agl_float32_t* pFloat, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_DWKG2Float(agl_float32_t* pFloat, agl_ulong32_t* pKG, agl_int32_t AnzFloats)
+agl_int32_t AGL_API AGL_DWKG2Float(agl_float32_t* const pFloat, const agl_ulong32_t* const pKG, const agl_int32_t AnzFloats)
 {
   if( Loaded(pAGL_DWKG2Float))
   {
@@ -3835,7 +3835,7 @@ agl_int32_t AGL_API AGL_DWKG2Float(agl_float32_t* pFloat, agl_ulong32_t* pKG, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_S7Ident2String(LPS7_IDENT pIdent, agl_int32_t Index, agl_cstr8_t Text, agl_int32_t MaxChars)
+agl_int32_t AGL_API AGL_S7Ident2String(const LPS7_IDENT pIdent, const agl_int32_t Index, agl_cstr8_t const Text, const agl_int32_t MaxChars)
 {
   if( Loaded(pAGL_S7Ident2String))
   {
@@ -3844,7 +3844,7 @@ agl_int32_t AGL_API AGL_S7Ident2String(LPS7_IDENT pIdent, agl_int32_t Index, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_OpenProject(agl_cstr8_t  Project, agl_ptrdiff_t* PrjHandle)
+agl_int32_t AGL_API AGLSym_OpenProject(const agl_cstr8_t const  Project, agl_ptrdiff_t* const PrjHandle)
 {
   if( Loaded(pAGLSym_OpenProject))
   {
@@ -3853,7 +3853,7 @@ agl_int32_t AGL_API AGLSym_OpenProject(agl_cstr8_t  Project, agl_ptrdiff_t* PrjH
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_CloseProject(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_CloseProject(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_CloseProject))
   {
@@ -3862,7 +3862,7 @@ agl_int32_t AGL_API AGLSym_CloseProject(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_WriteCpuListToFile(agl_cstr8_t  FileName)
+agl_int32_t AGL_API AGLSym_WriteCpuListToFile(const agl_cstr8_t const FileName)
 {
   if( Loaded(pAGLSym_WriteCpuListToFile))
   {
@@ -3871,7 +3871,7 @@ agl_int32_t AGL_API AGLSym_WriteCpuListToFile(agl_cstr8_t  FileName)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetProgramCount(agl_ptrdiff_t PrjHandle, agl_int32_t* ProgCount)
+agl_int32_t AGL_API AGLSym_GetProgramCount(const agl_ptrdiff_t PrjHandle, agl_int32_t* const ProgCount)
 {
   if( Loaded(pAGLSym_GetProgramCount))
   {
@@ -3880,7 +3880,7 @@ agl_int32_t AGL_API AGLSym_GetProgramCount(agl_ptrdiff_t PrjHandle, agl_int32_t*
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstProgram(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Program)
+agl_int32_t AGL_API AGLSym_FindFirstProgram(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const Program)
 {
   if( Loaded(pAGLSym_FindFirstProgram))
   {
@@ -3889,7 +3889,7 @@ agl_int32_t AGL_API AGLSym_FindFirstProgram(agl_ptrdiff_t PrjHandle, agl_cstr8_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextProgram(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Program)
+agl_int32_t AGL_API AGLSym_FindNextProgram(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const Program)
 {
   if( Loaded(pAGLSym_FindNextProgram))
   {
@@ -3898,7 +3898,7 @@ agl_int32_t AGL_API AGLSym_FindNextProgram(agl_ptrdiff_t PrjHandle, agl_cstr8_t 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindCloseProgram(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_FindCloseProgram(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_FindCloseProgram))
   {
@@ -3907,7 +3907,7 @@ agl_int32_t AGL_API AGLSym_FindCloseProgram(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_SelectProgram(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Program)
+agl_int32_t AGL_API AGLSym_SelectProgram(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Program)
 {
   if( Loaded(pAGLSym_SelectProgram))
   {
@@ -3916,7 +3916,7 @@ agl_int32_t AGL_API AGLSym_SelectProgram(agl_ptrdiff_t PrjHandle, agl_cstr8_t  P
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetSymbolCount(agl_ptrdiff_t PrjHandle, agl_int32_t* SymCount)
+agl_int32_t AGL_API AGLSym_GetSymbolCount(const agl_ptrdiff_t PrjHandle, agl_int32_t* const SymCount)
 {
   if( Loaded(pAGLSym_GetSymbolCount))
   {
@@ -3925,7 +3925,7 @@ agl_int32_t AGL_API AGLSym_GetSymbolCount(agl_ptrdiff_t PrjHandle, agl_int32_t* 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetSymbolCountFilter(agl_ptrdiff_t PrjHandle, agl_int32_t* SymCount, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_GetSymbolCountFilter(const agl_ptrdiff_t PrjHandle, agl_int32_t* const SymCount, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_GetSymbolCountFilter))
   {
@@ -3934,7 +3934,7 @@ agl_int32_t AGL_API AGLSym_GetSymbolCountFilter(agl_ptrdiff_t PrjHandle, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstSymbol(agl_ptrdiff_t PrjHandle, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format)
+agl_int32_t AGL_API AGLSym_FindFirstSymbol(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format)
 {
   if( Loaded(pAGLSym_FindFirstSymbol))
   {
@@ -3943,7 +3943,7 @@ agl_int32_t AGL_API AGLSym_FindFirstSymbol(agl_ptrdiff_t PrjHandle, agl_cstr8_t 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstSymbolFilter(agl_ptrdiff_t PrjHandle, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_FindFirstSymbolFilter(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_FindFirstSymbolFilter))
   {
@@ -3952,7 +3952,7 @@ agl_int32_t AGL_API AGLSym_FindFirstSymbolFilter(agl_ptrdiff_t PrjHandle, agl_cs
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextSymbol(agl_ptrdiff_t PrjHandle, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format)
+agl_int32_t AGL_API AGLSym_FindNextSymbol(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format)
 {
   if( Loaded(pAGLSym_FindNextSymbol))
   {
@@ -3961,7 +3961,7 @@ agl_int32_t AGL_API AGLSym_FindNextSymbol(agl_ptrdiff_t PrjHandle, agl_cstr8_t  
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindCloseSymbol(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_FindCloseSymbol(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_FindCloseSymbol))
   {
@@ -3970,7 +3970,7 @@ agl_int32_t AGL_API AGLSym_FindCloseSymbol(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_ReadPrjDBCount(agl_ptrdiff_t PrjHandle, agl_int32_t* DBCount)
+agl_int32_t AGL_API AGLSym_ReadPrjDBCount(const agl_ptrdiff_t PrjHandle, agl_int32_t* const DBCount)
 {
   if( Loaded(pAGLSym_ReadPrjDBCount))
   {
@@ -3979,7 +3979,7 @@ agl_int32_t AGL_API AGLSym_ReadPrjDBCount(agl_ptrdiff_t PrjHandle, agl_int32_t* 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_ReadPrjDBCountFilter(agl_ptrdiff_t PrjHandle, agl_int32_t* DBCount, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_ReadPrjDBCountFilter(const agl_ptrdiff_t PrjHandle, agl_int32_t* const DBCount, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_ReadPrjDBCountFilter))
   {
@@ -3988,7 +3988,7 @@ agl_int32_t AGL_API AGLSym_ReadPrjDBCountFilter(agl_ptrdiff_t PrjHandle, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_ReadPrjDBList(agl_ptrdiff_t PrjHandle, agl_uint16_t* DBList, agl_int32_t DBCount)
+agl_int32_t AGL_API AGLSym_ReadPrjDBList(const agl_ptrdiff_t PrjHandle, agl_uint16_t* const DBList, const agl_int32_t DBCount)
 {
   if( Loaded(pAGLSym_ReadPrjDBList))
   {
@@ -3997,7 +3997,7 @@ agl_int32_t AGL_API AGLSym_ReadPrjDBList(agl_ptrdiff_t PrjHandle, agl_uint16_t* 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_ReadPrjDBListFilter(agl_ptrdiff_t PrjHandle, agl_uint16_t* DBList, agl_int32_t DBCount, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_ReadPrjDBListFilter(const agl_ptrdiff_t PrjHandle, agl_uint16_t* const DBList, const agl_int32_t DBCount, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_ReadPrjDBListFilter))
   {
@@ -4006,7 +4006,7 @@ agl_int32_t AGL_API AGLSym_ReadPrjDBListFilter(agl_ptrdiff_t PrjHandle, agl_uint
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_ReadPrjBlkCountFilter(agl_ptrdiff_t PrjHandle, agl_int32_t BlkType, agl_int32_t* BlkCount, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_ReadPrjBlkCountFilter(const agl_ptrdiff_t PrjHandle, const agl_int32_t BlkType, agl_int32_t* const BlkCount, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_ReadPrjBlkCountFilter))
   {
@@ -4015,7 +4015,7 @@ agl_int32_t AGL_API AGLSym_ReadPrjBlkCountFilter(agl_ptrdiff_t PrjHandle, agl_in
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_ReadPrjBlkListFilter(agl_ptrdiff_t PrjHandle, agl_int32_t BlkType, agl_uint16_t* BlkList, agl_int32_t BlkCount, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_ReadPrjBlkListFilter(const agl_ptrdiff_t PrjHandle, const agl_int32_t BlkType, agl_uint16_t* const BlkList, const agl_int32_t BlkCount, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_ReadPrjBlkListFilter))
   {
@@ -4024,7 +4024,7 @@ agl_int32_t AGL_API AGLSym_ReadPrjBlkListFilter(agl_ptrdiff_t PrjHandle, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetDbSymbolCount(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_int32_t* DBSymCount)
+agl_int32_t AGL_API AGLSym_GetDbSymbolCount(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_int32_t* const DBSymCount)
 {
   if( Loaded(pAGLSym_GetDbSymbolCount))
   {
@@ -4033,7 +4033,7 @@ agl_int32_t AGL_API AGLSym_GetDbSymbolCount(agl_ptrdiff_t PrjHandle, agl_int32_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetDbSymbolCountFilter(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_int32_t* DBSymCount, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_GetDbSymbolCountFilter(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_int32_t* const DBSymCount, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_GetDbSymbolCountFilter))
   {
@@ -4042,7 +4042,7 @@ agl_int32_t AGL_API AGLSym_GetDbSymbolCountFilter(agl_ptrdiff_t PrjHandle, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstDbSymbol(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format)
+agl_int32_t AGL_API AGLSym_FindFirstDbSymbol(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format)
 {
   if( Loaded(pAGLSym_FindFirstDbSymbol))
   {
@@ -4051,7 +4051,7 @@ agl_int32_t AGL_API AGLSym_FindFirstDbSymbol(agl_ptrdiff_t PrjHandle, agl_int32_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstDbSymbolFilter(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_FindFirstDbSymbolFilter(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_FindFirstDbSymbolFilter))
   {
@@ -4060,7 +4060,7 @@ agl_int32_t AGL_API AGLSym_FindFirstDbSymbolFilter(agl_ptrdiff_t PrjHandle, agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextDbSymbol(agl_ptrdiff_t PrjHandle, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format)
+agl_int32_t AGL_API AGLSym_FindNextDbSymbol(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format)
 {
   if( Loaded(pAGLSym_FindNextDbSymbol))
   {
@@ -4069,7 +4069,7 @@ agl_int32_t AGL_API AGLSym_FindNextDbSymbol(agl_ptrdiff_t PrjHandle, agl_cstr8_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstDbSymbolEx(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, LPDATA_DBSYM40 Buff, const agl_cstr8_t Filter)
+agl_int32_t AGL_API AGLSym_FindFirstDbSymbolEx(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, LPDATA_DBSYM40 Buff, const agl_cstr8_t const Filter)
 {
   if( Loaded(pAGLSym_FindFirstDbSymbolEx))
   {
@@ -4078,7 +4078,7 @@ agl_int32_t AGL_API AGLSym_FindFirstDbSymbolEx(agl_ptrdiff_t PrjHandle, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextDbSymbolEx(agl_ptrdiff_t PrjHandle, LPDATA_DBSYM40 Buff)
+agl_int32_t AGL_API AGLSym_FindNextDbSymbolEx(const agl_ptrdiff_t PrjHandle, LPDATA_DBSYM40 Buff)
 {
   if( Loaded(pAGLSym_FindNextDbSymbolEx))
   {
@@ -4087,7 +4087,7 @@ agl_int32_t AGL_API AGLSym_FindNextDbSymbolEx(agl_ptrdiff_t PrjHandle, LPDATA_DB
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetDbSymbolExComment(agl_ptrdiff_t PrjHandle, agl_cstr8_t  ExComment)
+agl_int32_t AGL_API AGLSym_GetDbSymbolExComment(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const ExComment)
 {
   if( Loaded(pAGLSym_GetDbSymbolExComment))
   {
@@ -4096,7 +4096,7 @@ agl_int32_t AGL_API AGLSym_GetDbSymbolExComment(agl_ptrdiff_t PrjHandle, agl_cst
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindCloseDbSymbol(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_FindCloseDbSymbol(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_FindCloseDbSymbol))
   {
@@ -4105,7 +4105,7 @@ agl_int32_t AGL_API AGLSym_FindCloseDbSymbol(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetDbDependency(agl_ptrdiff_t PrjHandle, agl_int32_t DBNr, agl_int32_t* BlkType, agl_int32_t* BlkNr)
+agl_int32_t AGL_API AGLSym_GetDbDependency(const agl_ptrdiff_t PrjHandle, const agl_int32_t DBNr, agl_int32_t* const BlkType, agl_int32_t* const BlkNr)
 {
   if( Loaded(pAGLSym_GetDbDependency))
   {
@@ -4114,7 +4114,7 @@ agl_int32_t AGL_API AGLSym_GetDbDependency(agl_ptrdiff_t PrjHandle, agl_int32_t 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetDeclarationCountFilter(agl_ptrdiff_t PrjHandle, agl_int32_t BlkType, agl_int32_t BlkNr, const agl_cstr8_t Filter, agl_int32_t* DeclarationCount)
+agl_int32_t AGL_API AGLSym_GetDeclarationCountFilter(const agl_ptrdiff_t PrjHandle, const agl_int32_t BlkType, const agl_int32_t BlkNr, const agl_cstr8_t const Filter, agl_int32_t* const DeclarationCount)
 {
   if( Loaded(pAGLSym_GetDeclarationCountFilter))
   {
@@ -4123,7 +4123,7 @@ agl_int32_t AGL_API AGLSym_GetDeclarationCountFilter(agl_ptrdiff_t PrjHandle, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstDeclarationFilter(agl_ptrdiff_t PrjHandle, agl_int32_t BlkType, agl_int32_t BlkNr, const agl_cstr8_t Filter, agl_ptrdiff_t* FindHandle, LPDATA_DECLARATION Buff)
+agl_int32_t AGL_API AGLSym_FindFirstDeclarationFilter(const agl_ptrdiff_t PrjHandle, const agl_int32_t BlkType, const agl_int32_t BlkNr, const agl_cstr8_t const Filter, agl_ptrdiff_t* const FindHandle, LPDATA_DECLARATION Buff)
 {
   if( Loaded(pAGLSym_FindFirstDeclarationFilter))
   {
@@ -4132,7 +4132,7 @@ agl_int32_t AGL_API AGLSym_FindFirstDeclarationFilter(agl_ptrdiff_t PrjHandle, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextDeclaration(agl_ptrdiff_t PrjHandle, agl_ptrdiff_t FindHandle, LPDATA_DECLARATION Buff)
+agl_int32_t AGL_API AGLSym_FindNextDeclaration(const agl_ptrdiff_t PrjHandle, const agl_ptrdiff_t FindHandle, LPDATA_DECLARATION Buff)
 {
   if( Loaded(pAGLSym_FindNextDeclaration))
   {
@@ -4141,7 +4141,7 @@ agl_int32_t AGL_API AGLSym_FindNextDeclaration(agl_ptrdiff_t PrjHandle, agl_ptrd
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetDeclarationInitialValue(agl_ptrdiff_t PrjHandle, agl_ptrdiff_t FindHandle, agl_int32_t* BufferLength, agl_cstr8_t  InitialValue)
+agl_int32_t AGL_API AGLSym_GetDeclarationInitialValue(const agl_ptrdiff_t PrjHandle, const agl_ptrdiff_t FindHandle, agl_int32_t* const BufferLength, agl_cstr8_t const InitialValue)
 {
   if( Loaded(pAGLSym_GetDeclarationInitialValue))
   {
@@ -4150,7 +4150,7 @@ agl_int32_t AGL_API AGLSym_GetDeclarationInitialValue(agl_ptrdiff_t PrjHandle, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindCloseDeclaration(agl_ptrdiff_t PrjHandle, agl_ptrdiff_t FindHandle)
+agl_int32_t AGL_API AGLSym_FindCloseDeclaration(const agl_ptrdiff_t PrjHandle, const agl_ptrdiff_t FindHandle)
 {
   if( Loaded(pAGLSym_FindCloseDeclaration))
   {
@@ -4159,7 +4159,7 @@ agl_int32_t AGL_API AGLSym_FindCloseDeclaration(agl_ptrdiff_t PrjHandle, agl_ptr
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetSymbolFromText(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Text, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format)
+agl_int32_t AGL_API AGLSym_GetSymbolFromText(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Text, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format)
 {
   if( Loaded(pAGLSym_GetSymbolFromText))
   {
@@ -4168,7 +4168,7 @@ agl_int32_t AGL_API AGLSym_GetSymbolFromText(agl_ptrdiff_t PrjHandle, agl_cstr8_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetSymbolFromTextEx(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Text, LPDATA_DBSYM40 Buff)
+agl_int32_t AGL_API AGLSym_GetSymbolFromTextEx(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Text, LPDATA_DBSYM40 Buff)
 {
   if( Loaded(pAGLSym_GetSymbolFromTextEx))
   {
@@ -4177,7 +4177,7 @@ agl_int32_t AGL_API AGLSym_GetSymbolFromTextEx(agl_ptrdiff_t PrjHandle, agl_cstr
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetReadMixFromText(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Text, LPDATA_RW40 Buff, agl_int32_t* Format)
+agl_int32_t AGL_API AGLSym_GetReadMixFromText(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Text, LPDATA_RW40 Buff, agl_int32_t* const Format)
 {
   if( Loaded(pAGLSym_GetReadMixFromText))
   {
@@ -4186,7 +4186,7 @@ agl_int32_t AGL_API AGLSym_GetReadMixFromText(agl_ptrdiff_t PrjHandle, agl_cstr8
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetReadMixFromTextEx(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Text, agl_cstr8_t  AbsOpd, LPDATA_RW40 Buff, agl_int32_t* Format)
+agl_int32_t AGL_API AGLSym_GetReadMixFromTextEx(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Text, agl_cstr8_t const AbsOpd, LPDATA_RW40 Buff, agl_int32_t* const Format)
 {
   if( Loaded(pAGLSym_GetReadMixFromTextEx))
   {
@@ -4195,7 +4195,7 @@ agl_int32_t AGL_API AGLSym_GetReadMixFromTextEx(agl_ptrdiff_t PrjHandle, agl_cst
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetSymbol(agl_ptrdiff_t PrjHandle, LPDATA_RW40 Buff, agl_cstr8_t  AbsOpd, agl_cstr8_t  Symbol, agl_cstr8_t  Comment, agl_int32_t* Format)
+agl_int32_t AGL_API AGLSym_GetSymbol(const agl_ptrdiff_t PrjHandle, const LPDATA_RW40 Buff, agl_cstr8_t const AbsOpd, agl_cstr8_t const Symbol, agl_cstr8_t const Comment, agl_int32_t* const Format)
 {
   if( Loaded(pAGLSym_GetSymbol))
   {
@@ -4204,7 +4204,7 @@ agl_int32_t AGL_API AGLSym_GetSymbol(agl_ptrdiff_t PrjHandle, LPDATA_RW40 Buff, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetSymbolEx(agl_ptrdiff_t PrjHandle, LPDATA_RW40 Buff, LPDATA_DBSYM40 Symbol)
+agl_int32_t AGL_API AGLSym_GetSymbolEx(const agl_ptrdiff_t PrjHandle, const LPDATA_RW40 Buff, LPDATA_DBSYM40 Symbol)
 {
   if( Loaded(pAGLSym_GetSymbolEx))
   {
@@ -4213,7 +4213,7 @@ agl_int32_t AGL_API AGLSym_GetSymbolEx(agl_ptrdiff_t PrjHandle, LPDATA_RW40 Buff
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_OpenAlarms(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_OpenAlarms(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_OpenAlarms))
   {
@@ -4222,7 +4222,7 @@ agl_int32_t AGL_API AGLSym_OpenAlarms(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_CloseAlarms(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_CloseAlarms(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_CloseAlarms))
   {
@@ -4231,7 +4231,7 @@ agl_int32_t AGL_API AGLSym_CloseAlarms(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstAlarmData(agl_ptrdiff_t PrjHandle, agl_int32_t* AlmNr)
+agl_int32_t AGL_API AGLSym_FindFirstAlarmData(const agl_ptrdiff_t PrjHandle, agl_int32_t* const AlmNr)
 {
   if( Loaded(pAGLSym_FindFirstAlarmData))
   {
@@ -4240,7 +4240,7 @@ agl_int32_t AGL_API AGLSym_FindFirstAlarmData(agl_ptrdiff_t PrjHandle, agl_int32
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextAlarmData(agl_ptrdiff_t PrjHandle, agl_int32_t* AlmNr)
+agl_int32_t AGL_API AGLSym_FindNextAlarmData(const agl_ptrdiff_t PrjHandle, agl_int32_t* const AlmNr)
 {
   if( Loaded(pAGLSym_FindNextAlarmData))
   {
@@ -4249,7 +4249,7 @@ agl_int32_t AGL_API AGLSym_FindNextAlarmData(agl_ptrdiff_t PrjHandle, agl_int32_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindCloseAlarmData(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_FindCloseAlarmData(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_FindCloseAlarmData))
   {
@@ -4258,7 +4258,7 @@ agl_int32_t AGL_API AGLSym_FindCloseAlarmData(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmData(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, LPDATA_ALARM40 Buff)
+agl_int32_t AGL_API AGLSym_GetAlarmData(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, LPDATA_ALARM40 Buff)
 {
   if( Loaded(pAGLSym_GetAlarmData))
   {
@@ -4267,7 +4267,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmData(agl_ptrdiff_t PrjHandle, agl_int32_t Alm
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmName(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_GetAlarmName(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_GetAlarmName))
   {
@@ -4276,7 +4276,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmName(agl_ptrdiff_t PrjHandle, agl_int32_t Alm
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmType(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_GetAlarmType(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_GetAlarmType))
   {
@@ -4285,7 +4285,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmType(agl_ptrdiff_t PrjHandle, agl_int32_t Alm
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmBaseName(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_GetAlarmBaseName(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_GetAlarmBaseName))
   {
@@ -4294,7 +4294,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmBaseName(agl_ptrdiff_t PrjHandle, agl_int32_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmTypeName(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_GetAlarmTypeName(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_GetAlarmTypeName))
   {
@@ -4303,7 +4303,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmTypeName(agl_ptrdiff_t PrjHandle, agl_int32_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmSignalCount(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* SignalCount)
+agl_int32_t AGL_API AGLSym_GetAlarmSignalCount(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const SignalCount)
 {
   if( Loaded(pAGLSym_GetAlarmSignalCount))
   {
@@ -4312,7 +4312,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmSignalCount(agl_ptrdiff_t PrjHandle, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmMsgClass(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t* MsgClass)
+agl_int32_t AGL_API AGLSym_GetAlarmMsgClass(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, agl_int32_t* const MsgClass)
 {
   if( Loaded(pAGLSym_GetAlarmMsgClass))
   {
@@ -4321,7 +4321,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmMsgClass(agl_ptrdiff_t PrjHandle, agl_int32_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmPriority(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t* Priority)
+agl_int32_t AGL_API AGLSym_GetAlarmPriority(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, agl_int32_t* const Priority)
 {
   if( Loaded(pAGLSym_GetAlarmPriority))
   {
@@ -4330,7 +4330,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmPriority(agl_ptrdiff_t PrjHandle, agl_int32_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmAckGroup(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t* AckGroup)
+agl_int32_t AGL_API AGLSym_GetAlarmAckGroup(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, agl_int32_t* const AckGroup)
 {
   if( Loaded(pAGLSym_GetAlarmAckGroup))
   {
@@ -4339,7 +4339,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmAckGroup(agl_ptrdiff_t PrjHandle, agl_int32_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmAcknowledge(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t* Acknowledge)
+agl_int32_t AGL_API AGLSym_GetAlarmAcknowledge(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, agl_int32_t* const Acknowledge)
 {
   if( Loaded(pAGLSym_GetAlarmAcknowledge))
   {
@@ -4348,7 +4348,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmAcknowledge(agl_ptrdiff_t PrjHandle, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmProtocol(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* Protocol)
+agl_int32_t AGL_API AGLSym_GetAlarmProtocol(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const Protocol)
 {
   if( Loaded(pAGLSym_GetAlarmProtocol))
   {
@@ -4357,7 +4357,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmProtocol(agl_ptrdiff_t PrjHandle, agl_int32_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmDispGroup(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* DispGroup)
+agl_int32_t AGL_API AGLSym_GetAlarmDispGroup(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const DispGroup)
 {
   if( Loaded(pAGLSym_GetAlarmDispGroup))
   {
@@ -4366,7 +4366,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmDispGroup(agl_ptrdiff_t PrjHandle, agl_int32_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstAlarmTextLanguage(agl_ptrdiff_t PrjHandle, agl_int32_t* Language, agl_int32_t* IsDefault)
+agl_int32_t AGL_API AGLSym_FindFirstAlarmTextLanguage(const agl_ptrdiff_t PrjHandle, agl_int32_t* const Language, agl_int32_t* const IsDefault)
 {
   if( Loaded(pAGLSym_FindFirstAlarmTextLanguage))
   {
@@ -4375,7 +4375,7 @@ agl_int32_t AGL_API AGLSym_FindFirstAlarmTextLanguage(agl_ptrdiff_t PrjHandle, a
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextAlarmTextLanguage(agl_ptrdiff_t PrjHandle, agl_int32_t* Language, agl_int32_t* IsDefault)
+agl_int32_t AGL_API AGLSym_FindNextAlarmTextLanguage(const agl_ptrdiff_t PrjHandle, agl_int32_t* const Language, agl_int32_t* const IsDefault)
 {
   if( Loaded(pAGLSym_FindNextAlarmTextLanguage))
   {
@@ -4384,7 +4384,7 @@ agl_int32_t AGL_API AGLSym_FindNextAlarmTextLanguage(agl_ptrdiff_t PrjHandle, ag
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindCloseAlarmTextLanguage(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_FindCloseAlarmTextLanguage(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_FindCloseAlarmTextLanguage))
   {
@@ -4393,7 +4393,7 @@ agl_int32_t AGL_API AGLSym_FindCloseAlarmTextLanguage(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_SetAlarmTextDefaultLanguage(agl_ptrdiff_t PrjHandle, agl_int32_t Language)
+agl_int32_t AGL_API AGLSym_SetAlarmTextDefaultLanguage(const agl_ptrdiff_t PrjHandle, const agl_int32_t Language)
 {
   if( Loaded(pAGLSym_SetAlarmTextDefaultLanguage))
   {
@@ -4402,7 +4402,7 @@ agl_int32_t AGL_API AGLSym_SetAlarmTextDefaultLanguage(agl_ptrdiff_t PrjHandle, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmText(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t Language, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_GetAlarmText(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, const agl_int32_t Language, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_GetAlarmText))
   {
@@ -4411,7 +4411,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmText(agl_ptrdiff_t PrjHandle, agl_int32_t Alm
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmInfo(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t Language, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_GetAlarmInfo(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, const agl_int32_t Language, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_GetAlarmInfo))
   {
@@ -4420,7 +4420,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmInfo(agl_ptrdiff_t PrjHandle, agl_int32_t Alm
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmAddText(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Signal, agl_int32_t Index, agl_int32_t Language, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_GetAlarmAddText(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Signal, const agl_int32_t Index, const agl_int32_t Language, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_GetAlarmAddText))
   {
@@ -4429,7 +4429,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmAddText(agl_ptrdiff_t PrjHandle, agl_int32_t 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmSCANOperand(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* OpArea, agl_int32_t* OpType, agl_int32_t* Offset, agl_int32_t* BitNr)
+agl_int32_t AGL_API AGLSym_GetAlarmSCANOperand(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const OpArea, agl_int32_t* const OpType, agl_int32_t* const Offset, agl_int32_t* const BitNr)
 {
   if( Loaded(pAGLSym_GetAlarmSCANOperand))
   {
@@ -4438,7 +4438,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmSCANOperand(agl_ptrdiff_t PrjHandle, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmSCANInterval(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t* Interval)
+agl_int32_t AGL_API AGLSym_GetAlarmSCANInterval(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, agl_int32_t* const Interval)
 {
   if( Loaded(pAGLSym_GetAlarmSCANInterval))
   {
@@ -4447,7 +4447,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmSCANInterval(agl_ptrdiff_t PrjHandle, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmSCANAddValue(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Index, agl_int32_t* OpArea, agl_int32_t* OpType, agl_int32_t* Offset, agl_int32_t* BitNr)
+agl_int32_t AGL_API AGLSym_GetAlarmSCANAddValue(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Index, agl_int32_t* const OpArea, agl_int32_t* const OpType, agl_int32_t* const Offset, agl_int32_t* const BitNr)
 {
   if( Loaded(pAGLSym_GetAlarmSCANAddValue))
   {
@@ -4456,7 +4456,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmSCANAddValue(agl_ptrdiff_t PrjHandle, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmSCANOperandEx(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, LPDATA_RW40 Buff)
+agl_int32_t AGL_API AGLSym_GetAlarmSCANOperandEx(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, LPDATA_RW40 Buff)
 {
   if( Loaded(pAGLSym_GetAlarmSCANOperandEx))
   {
@@ -4465,7 +4465,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmSCANOperandEx(agl_ptrdiff_t PrjHandle, agl_in
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetAlarmSCANAddValueEx(agl_ptrdiff_t PrjHandle, agl_int32_t AlmNr, agl_int32_t Index, LPDATA_RW40 Buff)
+agl_int32_t AGL_API AGLSym_GetAlarmSCANAddValueEx(const agl_ptrdiff_t PrjHandle, const agl_int32_t AlmNr, const agl_int32_t Index, LPDATA_RW40 Buff)
 {
   if( Loaded(pAGLSym_GetAlarmSCANAddValueEx))
   {
@@ -4474,7 +4474,7 @@ agl_int32_t AGL_API AGLSym_GetAlarmSCANAddValueEx(agl_ptrdiff_t PrjHandle, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FormatMessage(agl_ptrdiff_t PrjHandle, const agl_cstr8_t AlarmText, LPS7_ALARM AlarmData, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_FormatMessage(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const AlarmText, const LPS7_ALARM AlarmData, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_FormatMessage))
   {
@@ -4483,7 +4483,7 @@ agl_int32_t AGL_API AGLSym_FormatMessage(agl_ptrdiff_t PrjHandle, const agl_cstr
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstTextlib(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Textlib, agl_int32_t* System)
+agl_int32_t AGL_API AGLSym_FindFirstTextlib(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const Textlib, agl_int32_t* const System)
 {
   if( Loaded(pAGLSym_FindFirstTextlib))
   {
@@ -4492,7 +4492,7 @@ agl_int32_t AGL_API AGLSym_FindFirstTextlib(agl_ptrdiff_t PrjHandle, agl_cstr8_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextTextlib(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Textlib, agl_int32_t* System)
+agl_int32_t AGL_API AGLSym_FindNextTextlib(const agl_ptrdiff_t PrjHandle, agl_cstr8_t const Textlib, agl_int32_t* const System)
 {
   if( Loaded(pAGLSym_FindNextTextlib))
   {
@@ -4501,7 +4501,7 @@ agl_int32_t AGL_API AGLSym_FindNextTextlib(agl_ptrdiff_t PrjHandle, agl_cstr8_t 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindCloseTextlib(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_FindCloseTextlib(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_FindCloseTextlib))
   {
@@ -4510,7 +4510,7 @@ agl_int32_t AGL_API AGLSym_FindCloseTextlib(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_SelectTextlib(agl_ptrdiff_t PrjHandle, agl_cstr8_t  Textlib)
+agl_int32_t AGL_API AGLSym_SelectTextlib(const agl_ptrdiff_t PrjHandle, const agl_cstr8_t const Textlib)
 {
   if( Loaded(pAGLSym_SelectTextlib))
   {
@@ -4519,7 +4519,7 @@ agl_int32_t AGL_API AGLSym_SelectTextlib(agl_ptrdiff_t PrjHandle, agl_cstr8_t  T
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindFirstTextlibText(agl_ptrdiff_t PrjHandle, agl_int32_t* TextId, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_FindFirstTextlibText(const agl_ptrdiff_t PrjHandle, agl_int32_t* const TextId, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_FindFirstTextlibText))
   {
@@ -4528,7 +4528,7 @@ agl_int32_t AGL_API AGLSym_FindFirstTextlibText(agl_ptrdiff_t PrjHandle, agl_int
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindNextTextlibText(agl_ptrdiff_t PrjHandle, agl_int32_t* TextId, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_FindNextTextlibText(const agl_ptrdiff_t PrjHandle, agl_int32_t* const TextId, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_FindNextTextlibText))
   {
@@ -4537,7 +4537,7 @@ agl_int32_t AGL_API AGLSym_FindNextTextlibText(agl_ptrdiff_t PrjHandle, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_FindCloseTextlibText(agl_ptrdiff_t PrjHandle)
+agl_int32_t AGL_API AGLSym_FindCloseTextlibText(const agl_ptrdiff_t PrjHandle)
 {
   if( Loaded(pAGLSym_FindCloseTextlibText))
   {
@@ -4546,7 +4546,7 @@ agl_int32_t AGL_API AGLSym_FindCloseTextlibText(agl_ptrdiff_t PrjHandle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetTextlibText(agl_ptrdiff_t PrjHandle, agl_int32_t  TextId, agl_cstr8_t Buff, agl_int32_t BuffLen)
+agl_int32_t AGL_API AGLSym_GetTextlibText(const agl_ptrdiff_t PrjHandle, const agl_int32_t TextId, agl_cstr8_t const Buff, const agl_int32_t BuffLen)
 {
   if( Loaded(pAGLSym_GetTextlibText))
   {
@@ -4555,7 +4555,7 @@ agl_int32_t AGL_API AGLSym_GetTextlibText(agl_ptrdiff_t PrjHandle, agl_int32_t  
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetTextFromValue(void* Value, agl_int32_t Format, agl_int32_t ValueFmt, agl_cstr8_t Text)
+agl_int32_t AGL_API AGLSym_GetTextFromValue(const void* const Value, const agl_int32_t Format, const agl_int32_t ValueFmt, agl_cstr8_t const Text)
 {
   if( Loaded(pAGLSym_GetTextFromValue))
   {
@@ -4564,7 +4564,7 @@ agl_int32_t AGL_API AGLSym_GetTextFromValue(void* Value, agl_int32_t Format, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetValueFromText(agl_cstr8_t Text, void* Value, agl_int32_t* Format, agl_int32_t* ValueFmt)
+agl_int32_t AGL_API AGLSym_GetValueFromText(const agl_cstr8_t const Text, void* const Value, agl_int32_t* const Format, agl_int32_t* const ValueFmt)
 {
   if( Loaded(pAGLSym_GetValueFromText))
   {
@@ -4573,7 +4573,7 @@ agl_int32_t AGL_API AGLSym_GetValueFromText(agl_cstr8_t Text, void* Value, agl_i
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetRealFromText(agl_cstr8_t Text, agl_float32_t* Value)
+agl_int32_t AGL_API AGLSym_GetRealFromText(const agl_cstr8_t const Text, agl_float32_t* const Value)
 {
   if( Loaded(pAGLSym_GetRealFromText))
   {
@@ -4582,7 +4582,7 @@ agl_int32_t AGL_API AGLSym_GetRealFromText(agl_cstr8_t Text, agl_float32_t* Valu
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_GetTextFromReal(agl_float32_t* Value, agl_cstr8_t Text)
+agl_int32_t AGL_API AGLSym_GetTextFromReal(const agl_float32_t* const Value, agl_cstr8_t const Text)
 {
   if( Loaded(pAGLSym_GetTextFromReal))
   {
@@ -4591,7 +4591,7 @@ agl_int32_t AGL_API AGLSym_GetTextFromReal(agl_float32_t* Value, agl_cstr8_t Tex
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGLSym_SetLanguage(agl_int32_t Language)
+agl_int32_t AGL_API AGLSym_SetLanguage(const agl_int32_t Language)
 {
   if( Loaded(pAGLSym_SetLanguage))
   {
@@ -4600,7 +4600,7 @@ agl_int32_t AGL_API AGLSym_SetLanguage(agl_int32_t Language)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_OpenFile(const agl_cstr8_t FileName, agl_int32_t Access, agl_ptrdiff_t* Handle)
+agl_int32_t AGL_API AGL_WLD_OpenFile(const agl_cstr8_t const FileName, const agl_int32_t Access, agl_ptrdiff_t* const Handle)
 {
   if( Loaded(pAGL_WLD_OpenFile))
   {
@@ -4609,7 +4609,7 @@ agl_int32_t AGL_API AGL_WLD_OpenFile(const agl_cstr8_t FileName, agl_int32_t Acc
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_OpenFileEncrypted(const agl_cstr8_t FileName, agl_int32_t Access, agl_uint8_t* Key, agl_uint32_t Len, agl_ptrdiff_t* Handle)
+agl_int32_t AGL_API AGL_WLD_OpenFileEncrypted(const agl_cstr8_t const FileName, const agl_int32_t Access, agl_uint8_t* const Key, const agl_uint32_t Len, agl_ptrdiff_t* const Handle)
 {
   if( Loaded(pAGL_WLD_OpenFileEncrypted))
   {
@@ -4618,7 +4618,7 @@ agl_int32_t AGL_API AGL_WLD_OpenFileEncrypted(const agl_cstr8_t FileName, agl_in
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_EncryptFile(const agl_cstr8_t InFileName, const agl_cstr8_t OutFileName, agl_int32_t Access, agl_uint8_t* Key, agl_uint32_t Len)
+agl_int32_t AGL_API AGL_WLD_EncryptFile(const agl_cstr8_t const InFileName, const agl_cstr8_t const OutFileName, const agl_int32_t Access, agl_uint8_t* const Key, const agl_uint32_t Len)
 {
   if( Loaded(pAGL_WLD_EncryptFile))
   {
@@ -4627,7 +4627,7 @@ agl_int32_t AGL_API AGL_WLD_EncryptFile(const agl_cstr8_t InFileName, const agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_DecryptFile(const agl_cstr8_t InFileName, const agl_cstr8_t OutFileName, agl_uint8_t* Key, agl_uint32_t Len)
+agl_int32_t AGL_API AGL_WLD_DecryptFile(const agl_cstr8_t const InFileName, const agl_cstr8_t const OutFileName, agl_uint8_t* const Key, const agl_uint32_t Len)
 {
   if( Loaded(pAGL_WLD_DecryptFile))
   {
@@ -4636,7 +4636,7 @@ agl_int32_t AGL_API AGL_WLD_DecryptFile(const agl_cstr8_t InFileName, const agl_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_CloseFile(agl_ptrdiff_t Handle)
+agl_int32_t AGL_API AGL_WLD_CloseFile(const agl_ptrdiff_t Handle)
 {
   if( Loaded(pAGL_WLD_CloseFile))
   {
@@ -4645,7 +4645,7 @@ agl_int32_t AGL_API AGL_WLD_CloseFile(agl_ptrdiff_t Handle)
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_ReadAllBlockCount(agl_ptrdiff_t Handle, LPALL_BLOCK_COUNT pBC)
+agl_int32_t AGL_API AGL_WLD_ReadAllBlockCount(const agl_ptrdiff_t Handle, LPALL_BLOCK_COUNT pBC)
 {
   if( Loaded(pAGL_WLD_ReadAllBlockCount))
   {
@@ -4654,7 +4654,7 @@ agl_int32_t AGL_API AGL_WLD_ReadAllBlockCount(agl_ptrdiff_t Handle, LPALL_BLOCK_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_ReadBlockCount(agl_ptrdiff_t Handle, agl_int32_t BlockType, agl_int32_t* BlockCount)
+agl_int32_t AGL_API AGL_WLD_ReadBlockCount(const agl_ptrdiff_t Handle, const agl_int32_t BlockType, agl_int32_t* const BlockCount)
 {
   if( Loaded(pAGL_WLD_ReadBlockCount))
   {
@@ -4663,7 +4663,7 @@ agl_int32_t AGL_API AGL_WLD_ReadBlockCount(agl_ptrdiff_t Handle, agl_int32_t Blo
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_ReadBlockList(agl_ptrdiff_t Handle, agl_int32_t BlockType, agl_int32_t* BlockCount, agl_uint16_t* BlockList)
+agl_int32_t AGL_API AGL_WLD_ReadBlockList(const agl_ptrdiff_t Handle, const agl_int32_t BlockType, agl_int32_t* const BlockCount, agl_uint16_t* const BlockList)
 {
   if( Loaded(pAGL_WLD_ReadBlockList))
   {
@@ -4672,7 +4672,7 @@ agl_int32_t AGL_API AGL_WLD_ReadBlockList(agl_ptrdiff_t Handle, agl_int32_t Bloc
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_ReadBlockLen(agl_ptrdiff_t Handle, agl_int32_t BlockType, agl_int32_t BlockNr, agl_int32_t* BlockLen)
+agl_int32_t AGL_API AGL_WLD_ReadBlockLen(const agl_ptrdiff_t Handle, const agl_int32_t BlockType, const agl_int32_t BlockNr, agl_int32_t* const BlockLen)
 {
   if( Loaded(pAGL_WLD_ReadBlockLen))
   {
@@ -4681,7 +4681,7 @@ agl_int32_t AGL_API AGL_WLD_ReadBlockLen(agl_ptrdiff_t Handle, agl_int32_t Block
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_DeleteBlocks(agl_ptrdiff_t Handle, const agl_cstr8_t Blocks)
+agl_int32_t AGL_API AGL_WLD_DeleteBlocks(const agl_ptrdiff_t Handle, const agl_cstr8_t const Blocks)
 {
   if( Loaded(pAGL_WLD_DeleteBlocks))
   {
@@ -4690,7 +4690,7 @@ agl_int32_t AGL_API AGL_WLD_DeleteBlocks(agl_ptrdiff_t Handle, const agl_cstr8_t
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_WLD_GetReport(agl_ptrdiff_t Handle, agl_int32_t* Length, agl_cstr8_t Buffer)
+agl_int32_t AGL_API AGL_WLD_GetReport(const agl_ptrdiff_t Handle, agl_int32_t* const Length, agl_cstr8_t const Buffer)
 {
   if( Loaded(pAGL_WLD_GetReport))
   {
@@ -4699,7 +4699,7 @@ agl_int32_t AGL_API AGL_WLD_GetReport(agl_ptrdiff_t Handle, agl_int32_t* Length,
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLC_Backup(agl_int32_t ConnNr, agl_ptrdiff_t Handle, const agl_cstr8_t Blocks, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLC_Backup(const agl_int32_t ConnNr, const agl_ptrdiff_t Handle, const agl_cstr8_t Blocks, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLC_Backup))
   {
@@ -4708,7 +4708,7 @@ agl_int32_t AGL_API AGL_PLC_Backup(agl_int32_t ConnNr, agl_ptrdiff_t Handle, con
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLC_Restore(agl_int32_t ConnNr, agl_ptrdiff_t Handle, const agl_cstr8_t Blocks, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLC_Restore(const agl_int32_t ConnNr, const agl_ptrdiff_t Handle, const agl_cstr8_t Blocks, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLC_Restore))
   {
@@ -4717,7 +4717,7 @@ agl_int32_t AGL_API AGL_PLC_Restore(agl_int32_t ConnNr, agl_ptrdiff_t Handle, co
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_PLC_DeleteBlocks(agl_int32_t ConnNr, const agl_cstr8_t Blocks, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_PLC_DeleteBlocks(const agl_int32_t ConnNr, const agl_cstr8_t Blocks, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_PLC_DeleteBlocks))
   {
@@ -4726,7 +4726,7 @@ agl_int32_t AGL_API AGL_PLC_DeleteBlocks(agl_int32_t ConnNr, const agl_cstr8_t B
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Compress(agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Compress(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Compress))
   {
@@ -4735,7 +4735,7 @@ agl_int32_t AGL_API AGL_Compress(agl_int32_t ConnNr, agl_int32_t Timeout, agl_pt
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_ReadMixEx(agl_int32_t ConnNr, SymbolicRW_t* SymbolicRW, agl_int32_t Num, agl_int32_t* SError, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Symbolic_ReadMixEx(const agl_int32_t ConnNr, SymbolicRW_t* const SymbolicRW, const agl_int32_t Num, agl_int32_t* const SError, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Symbolic_ReadMixEx))
   {
@@ -4744,7 +4744,7 @@ agl_int32_t AGL_API AGL_Symbolic_ReadMixEx(agl_int32_t ConnNr, SymbolicRW_t* Sym
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_WriteMixEx(agl_int32_t ConnNr, SymbolicRW_t* SymbolicRW, agl_int32_t Num, agl_int32_t* SError, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Symbolic_WriteMixEx(const agl_int32_t ConnNr, SymbolicRW_t* const SymbolicRW, const agl_int32_t Num, agl_int32_t* const SError, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Symbolic_WriteMixEx))
   {
@@ -4753,7 +4753,7 @@ agl_int32_t AGL_API AGL_Symbolic_WriteMixEx(agl_int32_t ConnNr, SymbolicRW_t* Sy
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, agl_int32_t AutoExpand)
+agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, const agl_int32_t AutoExpand)
 {
   if( Loaded(pAGL_Symbolic_LoadTIAProjectSymbols))
   {
@@ -4771,7 +4771,7 @@ agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbolsWithFilter(const agl_cstr8
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, HandleType* const RootNodeHandle)
+agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(const agl_int32_t ConnNr, HandleType* const RootNodeHandle)
 {
   if( Loaded(pAGL_Symbolic_LoadAGLinkSymbolsFromPLC))
   {
@@ -4780,7 +4780,7 @@ agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, Ha
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags)
+agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(const agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags)
 {
   if( Loaded(pAGL_Symbolic_LoadAGLinkSymbolsFromPLCEx))
   {
@@ -4789,7 +4789,7 @@ agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(agl_int32_t ConnNr, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFile(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile)
+agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFile(const HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile)
 {
   if( Loaded(pAGL_Symbolic_SaveAGLinkSymbolsToFile))
   {
@@ -4798,7 +4798,7 @@ agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFile(HandleType RootNodeHand
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos)
+agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter(const HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos)
 {
   if( Loaded(pAGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter))
   {
@@ -4870,7 +4870,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetLocalOffset(const HandleType NodeHandle, agl
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* SystemType)
+agl_int32_t AGL_API AGL_Symbolic_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* const SystemType)
 {
   if( Loaded(pAGL_Symbolic_GetSystemType))
   {
@@ -4879,7 +4879,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetSystemType(const HandleType NodeHandle, Syst
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetHierarchyType(const HandleType NodeHandle, HierarchyType_t::enum_t* HierarchyType)
+agl_int32_t AGL_API AGL_Symbolic_GetHierarchyType(const HandleType NodeHandle, HierarchyType_t::enum_t* const HierarchyType)
 {
   if( Loaded(pAGL_Symbolic_GetHierarchyType))
   {
@@ -4888,7 +4888,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetHierarchyType(const HandleType NodeHandle, H
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetArrayDimensionCount(const HandleType ArrayNodeHandle, agl_int32_t* DimensionCount)
+agl_int32_t AGL_API AGL_Symbolic_GetArrayDimensionCount(const HandleType ArrayNodeHandle, agl_int32_t* const DimensionCount)
 {
   if( Loaded(pAGL_Symbolic_GetArrayDimensionCount))
   {
@@ -4897,7 +4897,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetArrayDimensionCount(const HandleType ArrayNo
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetArrayDimension(const HandleType ArrayNodeHandle, const agl_int32_t Dimension, agl_int32_t* Lower, agl_int32_t* Upper)
+agl_int32_t AGL_API AGL_Symbolic_GetArrayDimension(const HandleType ArrayNodeHandle, const agl_int32_t Dimension, agl_int32_t* const Lower, agl_int32_t* const Upper)
 {
   if( Loaded(pAGL_Symbolic_GetArrayDimension))
   {
@@ -4915,7 +4915,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetMaxStringSize(const HandleType StringNodeHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* ValueType)
+agl_int32_t AGL_API AGL_Symbolic_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* const ValueType)
 {
   if( Loaded(pAGL_Symbolic_GetValueType))
   {
@@ -4924,7 +4924,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetValueType(const HandleType NodeHandle, Value
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetTypeState(const HandleType NodeHandle, TypeState_t::enum_t* TypeState)
+agl_int32_t AGL_API AGL_Symbolic_GetTypeState(const HandleType NodeHandle, TypeState_t::enum_t* const TypeState)
 {
   if( Loaded(pAGL_Symbolic_GetTypeState))
   {
@@ -4933,7 +4933,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetTypeState(const HandleType NodeHandle, TypeS
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetSegmentType(const HandleType NodeHandle, SegmentType_t::enum_t* SegementType)
+agl_int32_t AGL_API AGL_Symbolic_GetSegmentType(const HandleType NodeHandle, SegmentType_t::enum_t* const SegementType)
 {
   if( Loaded(pAGL_Symbolic_GetSegmentType))
   {
@@ -4942,7 +4942,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetSegmentType(const HandleType NodeHandle, Seg
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* PermissionType)
+agl_int32_t AGL_API AGL_Symbolic_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* const PermissionType)
 {
   if( Loaded(pAGL_Symbolic_GetPermissionType))
   {
@@ -4951,7 +4951,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetPermissionType(const HandleType NodeHandle, 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_EscapeString(const agl_cstr8_t const RawString, agl_cstr8_t const EscapedString, const agl_int32_t EscapedStringMaxSize, agl_int32_t* ErrorPosition)
+agl_int32_t AGL_API AGL_Symbolic_EscapeString(const agl_cstr8_t const RawString, agl_cstr8_t const EscapedString, const agl_int32_t EscapedStringMaxSize, agl_int32_t* const ErrorPosition)
 {
   if( Loaded(pAGL_Symbolic_EscapeString))
   {
@@ -4969,7 +4969,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetNodeByPath(const HandleType NodeHandle, cons
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetIndexSize(const HandleType IndexNodeHandle, agl_size_t* IndexSize)
+agl_int32_t AGL_API AGL_Symbolic_GetIndexSize(const HandleType IndexNodeHandle, agl_size_t* const IndexSize)
 {
   if( Loaded(pAGL_Symbolic_GetIndexSize))
   {
@@ -4996,7 +4996,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetLinearIndex(const HandleType IndexNodeHandle
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetArrayElementCount(const HandleType ArrayNodeHandle, agl_int32_t* ElementCount)
+agl_int32_t AGL_API AGL_Symbolic_GetArrayElementCount(const HandleType ArrayNodeHandle, agl_int32_t* const ElementCount)
 {
   if( Loaded(pAGL_Symbolic_GetArrayElementCount))
   {
@@ -5032,7 +5032,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetSystemScope(const HandleType NodeHandle, Sys
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetSystemTypeState(const HandleType NodeHandle, SystemTypeState_t::enum_t* SystemTypeState)
+agl_int32_t AGL_API AGL_Symbolic_GetSystemTypeState(const HandleType NodeHandle, SystemTypeState_t::enum_t* const SystemTypeState)
 {
   if( Loaded(pAGL_Symbolic_GetSystemTypeState))
   {
@@ -5194,7 +5194,7 @@ agl_int32_t AGL_API AGL_Symbolic_CreateArrayRangeAccessByIndex(const HandleType 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt8(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint8_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt8(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint8_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferUInt8))
   {
@@ -5203,7 +5203,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt8(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt16(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt16(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferUInt16))
   {
@@ -5212,7 +5212,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt16(const HandleType AccessHa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt32(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt32(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint32_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferUInt32))
   {
@@ -5221,7 +5221,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt32(const HandleType AccessHa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt64(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint64_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt64(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint64_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferUInt64))
   {
@@ -5230,7 +5230,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt64(const HandleType AccessHa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt8(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int8_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt8(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int8_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferInt8))
   {
@@ -5239,7 +5239,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt8(const HandleType AccessHand
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt16(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int16_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt16(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int16_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferInt16))
   {
@@ -5248,7 +5248,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt16(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt32(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int32_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt32(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int32_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferInt32))
   {
@@ -5257,7 +5257,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt32(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt64(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int64_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt64(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int64_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferInt64))
   {
@@ -5266,7 +5266,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt64(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat32(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float32_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat32(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_float32_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferFloat32))
   {
@@ -5275,7 +5275,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat32(const HandleType AccessH
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat64(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float64_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat64(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_float64_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferFloat64))
   {
@@ -5284,7 +5284,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat64(const HandleType AccessH
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar8(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_cstr8_t const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar8(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_cstr8_t const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferChar8))
   {
@@ -5293,7 +5293,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar8(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar16(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar16(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_char16_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferChar16))
   {
@@ -5302,7 +5302,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar16(const HandleType AccessHa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString8(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_cstr8_t const StringBuffer, agl_int32_t MaxCharCount, agl_int32_t* const CharCount)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString8(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_cstr8_t const StringBuffer, const agl_int32_t MaxCharCount, agl_int32_t* const CharCount)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferString8))
   {
@@ -5311,7 +5311,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString8(const HandleType AccessH
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString16(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t* const StringBuffer, agl_int32_t MaxCharCount, agl_int32_t* const CharCount)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString16(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_char16_t* const StringBuffer, const agl_int32_t MaxCharCount, agl_int32_t* const CharCount)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferString16))
   {
@@ -5320,7 +5320,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString16(const HandleType Access
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_DTLParts(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint32_t* const Nanoseconds)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_DTLParts(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint32_t* const Nanoseconds)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferS7_DTLParts))
   {
@@ -5329,7 +5329,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_DTLParts(const HandleType Acc
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const TimeBase, agl_uint16_t* const TimeValue)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const TimeBase, agl_uint16_t* const TimeValue)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferS7_S5TimeParts))
   {
@@ -5338,7 +5338,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeParts(const HandleType 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t* const Milliseconds)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint32_t* const Milliseconds)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferS7_S5TimeMs))
   {
@@ -5347,7 +5347,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeMs(const HandleType Acc
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Counter(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Value)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Counter(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Value)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferS7_Counter))
   {
@@ -5356,7 +5356,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Counter(const HandleType Acce
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint16_t* const Millisecond)
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint16_t* const Millisecond)
 {
   if( Loaded(pAGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts))
   {
@@ -5365,7 +5365,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts(const Hand
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt8(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint8_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt8(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint8_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferUInt8))
   {
@@ -5374,7 +5374,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt8(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt16(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt16(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferUInt16))
   {
@@ -5383,7 +5383,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt16(const HandleType AccessHa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt32(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt32(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint32_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferUInt32))
   {
@@ -5392,7 +5392,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt32(const HandleType AccessHa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt64(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint64_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt64(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint64_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferUInt64))
   {
@@ -5401,7 +5401,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt64(const HandleType AccessHa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt8(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int8_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt8(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int8_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferInt8))
   {
@@ -5410,7 +5410,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt8(const HandleType AccessHand
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt16(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int16_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt16(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int16_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferInt16))
   {
@@ -5419,7 +5419,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt16(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt32(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int32_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt32(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int32_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferInt32))
   {
@@ -5428,7 +5428,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt32(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt64(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int64_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt64(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int64_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferInt64))
   {
@@ -5437,7 +5437,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt64(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat32(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float32_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat32(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_float32_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferFloat32))
   {
@@ -5446,7 +5446,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat32(const HandleType AccessH
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat64(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float64_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat64(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_float64_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferFloat64))
   {
@@ -5455,7 +5455,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat64(const HandleType AccessH
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar8(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char8_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar8(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char8_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferChar8))
   {
@@ -5464,7 +5464,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar8(const HandleType AccessHan
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar16(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar16(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char16_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferChar16))
   {
@@ -5473,7 +5473,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar16(const HandleType AccessHa
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString8(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_cstr8_t const StringBuffer, const agl_int32_t CharCount)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString8(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_cstr8_t const StringBuffer, const agl_int32_t CharCount)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferString8))
   {
@@ -5482,7 +5482,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString8(const HandleType AccessH
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString16(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_char16_t* const StringBuffer, const agl_int32_t CharCount)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString16(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char16_t* const StringBuffer, const agl_int32_t CharCount)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferString16))
   {
@@ -5491,7 +5491,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString16(const HandleType Access
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_DTLParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint32_t Nanoseconds)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_DTLParts(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint32_t Nanoseconds)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferS7_DTLParts))
   {
@@ -5500,7 +5500,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_DTLParts(const HandleType Acc
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t TimeBase, const agl_uint16_t TimeValue)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t TimeBase, const agl_uint16_t TimeValue)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferS7_S5TimeParts))
   {
@@ -5509,7 +5509,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeParts(const HandleType 
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint32_t Milliseconds, const agl_int32_t Round)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint32_t Milliseconds, const agl_int32_t Round)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferS7_S5TimeMs))
   {
@@ -5518,7 +5518,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeMs(const HandleType Acc
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Counter(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Value)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Counter(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Value)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferS7_Counter))
   {
@@ -5527,7 +5527,7 @@ agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Counter(const HandleType Acce
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint16_t Milliseconds)
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint16_t Milliseconds)
 {
   if( Loaded(pAGL_Symbolic_SetAccessBufferS7_Date_and_TimeParts))
   {
@@ -5752,7 +5752,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetSingleValueAccessSymbolPath(const HandleType
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_FindFirstAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr)
+agl_int32_t AGL_API AGL_Symbolic_FindFirstAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* const AlarmNr)
 {
   if( Loaded(pAGL_Symbolic_FindFirstAlarmData))
   {
@@ -5761,7 +5761,7 @@ agl_int32_t AGL_API AGL_Symbolic_FindFirstAlarmData(const HandleType PlcNodeHand
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_FindNextAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr)
+agl_int32_t AGL_API AGL_Symbolic_FindNextAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* const AlarmNr)
 {
   if( Loaded(pAGL_Symbolic_FindNextAlarmData))
   {
@@ -5833,7 +5833,7 @@ agl_int32_t AGL_API AGL_Symbolic_ReadOpenMsg(const agl_int32_t ConnNr, LPS7_ALAR
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_InitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Symbolic_InitAlarmMsg(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Symbolic_InitAlarmMsg))
   {
@@ -5842,7 +5842,7 @@ agl_int32_t AGL_API AGL_Symbolic_InitAlarmMsg(const agl_int32_t ConnNr, agl_int3
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Symbolic_ExitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Symbolic_ExitAlarmMsg(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Symbolic_ExitAlarmMsg))
   {
@@ -5878,7 +5878,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetCurrentProtectionLevel(const agl_int32_t Con
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Simotion_LoadSTISymbols(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, agl_bool_t FlatArrays)
+agl_int32_t AGL_API AGL_Simotion_LoadSTISymbols(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, const agl_bool_t FlatArrays)
 {
   if( Loaded(pAGL_Simotion_LoadSTISymbols))
   {
@@ -5905,7 +5905,7 @@ agl_int32_t AGL_API AGL_Simotion_GetName(const HandleType NodeHandle, agl_cstr8_
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Simotion_GetHierarchyType(const HandleType NodeHandle, HierarchyType_t::enum_t* HierarchyType)
+agl_int32_t AGL_API AGL_Simotion_GetHierarchyType(const HandleType NodeHandle, HierarchyType_t::enum_t* const HierarchyType)
 {
   if( Loaded(pAGL_Simotion_GetHierarchyType))
   {
@@ -5914,7 +5914,7 @@ agl_int32_t AGL_API AGL_Simotion_GetHierarchyType(const HandleType NodeHandle, H
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Simotion_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* ValueType)
+agl_int32_t AGL_API AGL_Simotion_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* const ValueType)
 {
   if( Loaded(pAGL_Simotion_GetValueType))
   {
@@ -5923,7 +5923,7 @@ agl_int32_t AGL_API AGL_Simotion_GetValueType(const HandleType NodeHandle, Value
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Simotion_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* SystemType)
+agl_int32_t AGL_API AGL_Simotion_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* const SystemType)
 {
   if( Loaded(pAGL_Simotion_GetSystemType))
   {
@@ -5932,7 +5932,7 @@ agl_int32_t AGL_API AGL_Simotion_GetSystemType(const HandleType NodeHandle, Syst
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Simotion_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* PermissionType)
+agl_int32_t AGL_API AGL_Simotion_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* const PermissionType)
 {
   if( Loaded(pAGL_Simotion_GetPermissionType))
   {
@@ -5986,7 +5986,7 @@ agl_int32_t AGL_API AGL_Simotion_CreateAccessByPath(const HandleType ParentNodeH
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Simotion_ReadMixEx(agl_int32_t ConnNr, SymbolicRW_t* Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Simotion_ReadMixEx(const agl_int32_t ConnNr, SymbolicRW_t* const Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Simotion_ReadMixEx))
   {
@@ -5995,7 +5995,7 @@ agl_int32_t AGL_API AGL_Simotion_ReadMixEx(agl_int32_t ConnNr, SymbolicRW_t* Buf
   return AGL40_DYN_DLL_ERROR;
 }
 
-agl_int32_t AGL_API AGL_Simotion_WriteMixEx(agl_int32_t ConnNr, SymbolicRW_t* Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal)
+agl_int32_t AGL_API AGL_Simotion_WriteMixEx(const agl_int32_t ConnNr, SymbolicRW_t* const Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal)
 {
   if( Loaded(pAGL_Simotion_WriteMixEx))
   {

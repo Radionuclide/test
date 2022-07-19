@@ -49,7 +49,7 @@
 //   UserVal - Benutzerspezifischer Parameter zur Kennung bei z.b. asynchronen Aufrufen.
 // Ausgabe
 //   SError - Bei einem Lesenfehler wird hier der interne Siemensfehlercode abgelegt (darf NULL sein wenn nicht gebraucht)
-agl_int32_t AGL_API AGL_Symbolic_ReadMixEx( agl_int32_t ConnNr, SymbolicRW_t* SymbolicRW, agl_int32_t Num, agl_int32_t* SError, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
+agl_int32_t AGL_API AGL_Symbolic_ReadMixEx( const agl_int32_t ConnNr, SymbolicRW_t* const SymbolicRW, const agl_int32_t Num, agl_int32_t* const SError, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal );
 
 // *******************************
 // Schreiben der Daten in die SPS
@@ -62,7 +62,7 @@ agl_int32_t AGL_API AGL_Symbolic_ReadMixEx( agl_int32_t ConnNr, SymbolicRW_t* Sy
 //   UserVal - Benutzerspezifischer Parameter zur Kennung bei z.b. asynchronen Aufrufen.
 // Ausgabe
 //   SError - Bei einem Schreibfehler wird hier der interne Siemensfehlercode abgelegt (darf NULL sein wenn nicht gebraucht)
-agl_int32_t AGL_API AGL_Symbolic_WriteMixEx( agl_int32_t ConnNr, SymbolicRW_t* SymbolicRW, agl_int32_t Num, agl_int32_t* SError, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
+agl_int32_t AGL_API AGL_Symbolic_WriteMixEx( const agl_int32_t ConnNr, SymbolicRW_t* const SymbolicRW, const agl_int32_t Num, agl_int32_t* const SError, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal );
 
 // *******************************
 // Öffnen eines TIA Projektes.
@@ -74,7 +74,7 @@ agl_int32_t AGL_API AGL_Symbolic_WriteMixEx( agl_int32_t ConnNr, SymbolicRW_t* S
 //  Große Arrays mit vielen Knoten (Hundertausende, Millionen) können mit aktiviertem AutoExpand und einem direkten Knotenzugriff auf solche Arrays zu einem sofortigem sehr hohem Speicherverbrauch und Ladezeit führen.
 // Ausgabe:
 //  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes - das ist der Startpunkt für alle Knoten Funktionen
-agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, agl_int32_t AutoExpand);
+agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbols(const agl_cstr8_t const ProjectFile, HandleType* const RootNodeHandle, const agl_int32_t AutoExpand);
 
 // *******************************
 // Öffnen eines TIA Projektes mit Filter
@@ -100,7 +100,7 @@ agl_int32_t AGL_API AGL_Symbolic_LoadTIAProjectSymbolsWithFilter(const agl_cstr8
 //  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes
 // Hinweis: bei Verwendung dieser Funktion heisst bei Symbol-Pfadangaben der SPS-Knoten immer 'PLC'. Beispiel: PLC.Blocks.DB_Name.VariablenName
 //
-agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, HandleType* const RootNodeHandle);
+agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(const agl_int32_t ConnNr, HandleType* const RootNodeHandle);
 
 // *******************************
 // Laden von Symbolen aus einer PLC
@@ -111,7 +111,7 @@ agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLC(agl_int32_t ConnNr, Ha
 //  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes
 // Hinweis: Im Gegensatz zur Funktion AGL_Symbolic_LoadAGLinkSymbolsFromPLC wird bei dieser Funktion der Projektierte SPS Name verwendet
 //
-agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags);
+agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(const agl_int32_t ConnNr, HandleType* const RootNodeHandle, const agl_uint32_t Flags);
 
 // *******************************
 // Speichern von Symbolen in einer AGLink Symbolformat Datei
@@ -120,7 +120,7 @@ agl_int32_t AGL_API AGL_Symbolic_LoadAGLinkSymbolsFromPLCEx(agl_int32_t ConnNr, 
 //  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes
 //  TIASymbolsFile - Datei in welche die Symboldaten gespeichert werden
 //  Hinweis: Der Zielorder muss bereits existieren und wird nicht automatisch erstellt
-agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFile(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile);
+agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFile(const HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile);
 
 // *******************************
 // Speichern von Symbolen in einer AGLink Symbolformat Datei mit Filter
@@ -133,7 +133,7 @@ agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFile(HandleType RootNodeHand
 //  ErrorLine      - Bei einem fehlerhaften Filterstring steht hier die Zeile des Fehlers. Zeile beginnt bei 0
 //  ErrorPos       - Bei einem fehlerhaften Filterstring steht hier die Position des Fehlers. Position beginnt bei 0
 //  Hinweis: Der Zielorder muss bereits existieren und wird nicht automatisch erstellt
-agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter(HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
+agl_int32_t AGL_API AGL_Symbolic_SaveAGLinkSymbolsToFileWithFilter(const HandleType RootNodeHandle, const agl_cstr8_t const AGLinkSymbolsFile, const agl_cstr8_t const SymbolFilter, const agl_uint32_t Flags, agl_int32_t* const ErrorLine, agl_int32_t* const ErrorPos);
 
 // *******************************
 // Laden von Symbolen aus einer AGLink Symbolformat Datei
@@ -210,7 +210,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetLocalOffset(const HandleType NodeHandle, agl
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   SystemType - Systemtyp z.B. auf einer SPS, z.b. S7-Time, S7-Bool, DTL.
-agl_int32_t AGL_API AGL_Symbolic_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* SystemType);
+agl_int32_t AGL_API AGL_Symbolic_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* const SystemType);
 
 // *******************************
 // Bestimmt ob ein Knoten eine Struktur, Array oder Einzelelement ist.
@@ -219,7 +219,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetSystemType(const HandleType NodeHandle, Syst
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   HierarchyType - Der Hierarchytyp des Knotens
-agl_int32_t AGL_API AGL_Symbolic_GetHierarchyType(const HandleType NodeHandle, HierarchyType_t::enum_t* HierarchyType);
+agl_int32_t AGL_API AGL_Symbolic_GetHierarchyType(const HandleType NodeHandle, HierarchyType_t::enum_t* const HierarchyType);
 
 // *******************************
 // Ermittelt die Anzahl der Dimensionen eines Arrays. Z.b. Array[1..2] of agl_int32_t => 1. Array[1..2, 1..2] of agl_int32_t => 2.
@@ -228,7 +228,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetHierarchyType(const HandleType NodeHandle, H
 //   NodeHandle - Arrayknoten im Baum
 // Ausgabe:
 //   DimensionCount - Anzahl der Dimensionen
-agl_int32_t AGL_API AGL_Symbolic_GetArrayDimensionCount(const HandleType ArrayNodeHandle, agl_int32_t* DimensionCount);
+agl_int32_t AGL_API AGL_Symbolic_GetArrayDimensionCount(const HandleType ArrayNodeHandle, agl_int32_t* const DimensionCount);
 
 // *******************************
 // Ermittelt für eine Arraydimension den unterne und oberen Indexwert. Array[1..20] of agl_int32_t => {1, 20}. Array[-1..20, 1..10] of agl_int32_t => für Dimension 0 = {-1, 20}, bzw. für Dimension 1 = {1, 10}
@@ -239,7 +239,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetArrayDimensionCount(const HandleType ArrayNo
 // Ausgabe:
 //   Lower - Untereer Indexwert
 //   Upper - Oberer Indexwert
-agl_int32_t AGL_API AGL_Symbolic_GetArrayDimension(const HandleType ArrayNodeHandle, const agl_int32_t Dimension, agl_int32_t* Lower, agl_int32_t* Upper);
+agl_int32_t AGL_API AGL_Symbolic_GetArrayDimension(const HandleType ArrayNodeHandle, const agl_int32_t Dimension, agl_int32_t* const Lower, agl_int32_t* const Upper);
 
 // *******************************
 // Ermittelt die maximal erlaubte Anzahl an Zeichen eines S7-Strings, S7-WStrings, etc. 
@@ -258,7 +258,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetMaxStringSize(const HandleType StringNodeHan
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   ValueType - Der Werttyp
-agl_int32_t AGL_API AGL_Symbolic_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* ValueType);
+agl_int32_t AGL_API AGL_Symbolic_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* const ValueType);
 
 // *******************************
 // Liefert den Zustand des Symbols aus dem Projekt zurück. D.h. Nutzbar, nicht Nutzbar, Fehlerhaft, etc.
@@ -267,7 +267,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetValueType(const HandleType NodeHandle, Value
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   TypeState - Der Zustand des Symbols
-agl_int32_t AGL_API AGL_Symbolic_GetTypeState(const HandleType NodeHandle, TypeState_t::enum_t* TypeState);
+agl_int32_t AGL_API AGL_Symbolic_GetTypeState(const HandleType NodeHandle, TypeState_t::enum_t* const TypeState);
 
 // *******************************
 // Differenziert die Knotenarten. Handelt es sich dabei um ein normales Feld, einen Index in einem Array oder ist es der Root-Knoten.
@@ -276,7 +276,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetTypeState(const HandleType NodeHandle, TypeS
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   SegementType - Die Knotenart
-agl_int32_t AGL_API AGL_Symbolic_GetSegmentType(const HandleType NodeHandle, SegmentType_t::enum_t* SegementType);
+agl_int32_t AGL_API AGL_Symbolic_GetSegmentType(const HandleType NodeHandle, SegmentType_t::enum_t* const SegementType);
 
 // *******************************
 // Gibt zurück ob ein Knoten Gelesen und/oder Geschrieben werden kann
@@ -285,7 +285,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetSegmentType(const HandleType NodeHandle, Seg
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   PermissionType - Die Zugriffsmöglichkeiten auf diesen Knoten
-agl_int32_t AGL_API AGL_Symbolic_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* PermissionType);
+agl_int32_t AGL_API AGL_Symbolic_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* const PermissionType);
 
 // *******************************
 // Maskiert Sonderzeichen in Elementbezeichnungen, wie  . ( ) [ ] und "
@@ -297,7 +297,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetPermissionType(const HandleType NodeHandle, 
 // Ausgabe:
 //   EscapedString - Variable für maskierten Text
 //   ErrorPosition - Bei Maskierungsfehler, die Position im Text an der der Fehler auftrat
-agl_int32_t AGL_API AGL_Symbolic_EscapeString(const agl_cstr8_t const RawString, agl_cstr8_t const EscapedString, const agl_int32_t EscapedStringMaxSize, agl_int32_t* ErrorPosition);
+agl_int32_t AGL_API AGL_Symbolic_EscapeString(const agl_cstr8_t const RawString, agl_cstr8_t const EscapedString, const agl_int32_t EscapedStringMaxSize, agl_int32_t* const ErrorPosition);
 
 // *******************************
 // Zugriff auf einen Kindknoten über den vollständigen Knotennamen, wenn als NodeHandle der Root mitgegegebn wird. Z.B. PLC_1.Blocks.Datenblock_1.ElementX
@@ -319,7 +319,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetNodeByPath(const HandleType NodeHandle, cons
 //   IndexNodeHandle - Indexknoten
 // Ausgabe:
 //   IndexSize - Die Dimensionsanzahl
-agl_int32_t AGL_API AGL_Symbolic_GetIndexSize(const HandleType IndexNodeHandle, agl_size_t* IndexSize);
+agl_int32_t AGL_API AGL_Symbolic_GetIndexSize(const HandleType IndexNodeHandle, agl_size_t* const IndexSize);
 
 // *******************************
 // Ermittelt den Systemspezifischen Wert der Indexkomponete. Z.b für [1,2,4] die einzelne 1, die 2 oder die 4.
@@ -347,7 +347,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetLinearIndex(const HandleType IndexNodeHandle
 //   ArrayNodeHandle - Arrayknoten
 // Ausgabe:
 //   ElementCount - Anzahl der Elemente
-agl_int32_t AGL_API AGL_Symbolic_GetArrayElementCount(const HandleType ArrayNodeHandle, agl_int32_t* ElementCount);
+agl_int32_t AGL_API AGL_Symbolic_GetArrayElementCount(const HandleType ArrayNodeHandle, agl_int32_t* const ElementCount);
 
 // *******************************
 // Expandiert einen Knoten und lädt dessen Kindelemente. Notwendig vor Arrayzugriffen, sofern AutoExpand beim Aufruf von AGL_Symbolic_LoadTIAProjectSymbols deaktiviert (0) wurde. 
@@ -381,7 +381,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetSystemScope(const HandleType NodeHandle, Sys
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   TypeState - Der Zustand des Symbols
-agl_int32_t AGL_API AGL_Symbolic_GetSystemTypeState(const HandleType NodeHandle, SystemTypeState_t::enum_t* SystemTypeState);
+agl_int32_t AGL_API AGL_Symbolic_GetSystemTypeState(const HandleType NodeHandle, SystemTypeState_t::enum_t* const SystemTypeState);
 
 // *******************************
 // Erzeugt einen Zugriffshandle, über den Daten geschrieben/gelesen werden können.
@@ -588,26 +588,26 @@ agl_int32_t AGL_API AGL_Symbolic_CreateArrayRangeAccessByIndex(const HandleType 
 //   Element - Auf welches Element zugegriffen werden soll bei Array oder Ranges. Mit 0 beginnend. Bei einzelelementen muss mit 0 begonnen werden.
 // Ausgabe:
 //   Value - Werttyp
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt8(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint8_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt16(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt32(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt64(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint64_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt8(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int8_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt16(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int16_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt32(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int32_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt64(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int64_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat32(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float32_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat64(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float64_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar8(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_cstr8_t const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar16(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString8(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_cstr8_t const StringBuffer, agl_int32_t MaxCharCount, agl_int32_t* const CharCount);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString16(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t* const StringBuffer, agl_int32_t MaxCharCount, agl_int32_t* const CharCount);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt8(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint8_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt16(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt32(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint32_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferUInt64(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint64_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt8(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int8_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt16(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int16_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt32(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int32_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferInt64(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_int64_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat32(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_float32_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferFloat64(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_float64_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar8(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_cstr8_t const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferChar16(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_char16_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString8(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_cstr8_t const StringBuffer, const agl_int32_t MaxCharCount, agl_int32_t* const CharCount);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferString16(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_char16_t* const StringBuffer, const agl_int32_t MaxCharCount, agl_int32_t* const CharCount);
 // Ausgabe: Systemtypspezifisch
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_DTLParts(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint32_t* const Nanoseconds);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const TimeBase, agl_uint16_t* const TimeValue);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t* const Milliseconds);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Counter(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Value);
-agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, const void* const Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint16_t* const Millisecond);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_DTLParts(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint32_t* const Nanoseconds);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const TimeBase, agl_uint16_t* const TimeValue);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint32_t* const Milliseconds);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Counter(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Value);
+agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, const void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, agl_uint16_t* const Year, agl_uint8_t* const Month, agl_uint8_t* const Day, agl_uint8_t* const WeekDay, agl_uint8_t* const Hour, agl_uint8_t* const Minute, agl_uint8_t* const Second, agl_uint16_t* const Millisecond);
 
 //----------------------
 
@@ -620,27 +620,27 @@ agl_int32_t AGL_API AGL_Symbolic_GetAccessBufferS7_Date_and_TimeParts(const Hand
 //   BufferLen - Datenbytebufferlänge - Entspricht der normalweise der AccessBufferSize
 //   Element - Auf welches Element zugegriffen werden soll bei Array oder Ranges. Mit 0 beginnend. Bei einzelelementen muss mit 0 begonnen werden.
 //   Value - Werttyp
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt8(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint8_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt16(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint16_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt32(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint32_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt64(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_uint64_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt8(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int8_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt16(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int16_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt32(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int32_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt64(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_int64_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat32(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float32_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat64(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_float64_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar8(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char8_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar16(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, agl_char16_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString8(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_cstr8_t const StringBuffer, const agl_int32_t CharCount);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString16(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_char16_t* const StringBuffer, const agl_int32_t CharCount);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt8(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint8_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt16(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt32(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint32_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferUInt64(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint64_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt8(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int8_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt16(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int16_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt32(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int32_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferInt64(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_int64_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat32(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_float32_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferFloat64(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_float64_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar8(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char8_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferChar16(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char16_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString8(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_cstr8_t const StringBuffer, const agl_int32_t CharCount);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferString16(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_char16_t* const StringBuffer, const agl_int32_t CharCount);
 
 // Eingabe: Systemtypspezifisch
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_DTLParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint32_t Nanoseconds);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t TimeBase, const agl_uint16_t TimeValue);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint32_t Milliseconds, const agl_int32_t Round);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Counter(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Value);
-agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, void* Buffer, agl_long32_t BufferLen, agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint16_t Milliseconds);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_DTLParts(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint32_t Nanoseconds);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeParts(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t TimeBase, const agl_uint16_t TimeValue);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_S5TimeMs(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint32_t Milliseconds, const agl_int32_t Round);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Counter(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Value);
+agl_int32_t AGL_API AGL_Symbolic_SetAccessBufferS7_Date_and_TimeParts(const HandleType AccessHandle, void* const Buffer, const agl_long32_t BufferLen, const agl_int32_t Element, const agl_uint16_t Year, const agl_uint8_t Month, const agl_uint8_t Day, const agl_uint8_t WeekDay, const agl_uint8_t Hour, const agl_uint8_t Minute, const agl_uint8_t Second, const agl_uint16_t Milliseconds);
 
 // Kommentare
 
@@ -829,8 +829,8 @@ agl_int32_t AGL_API AGL_Symbolic_GetSingleValueAccessSymbolPath(const HandleType
 // *******************************
 
 //Alarminformation aus Symboldaten extrahieren
-agl_int32_t AGL_API AGL_Symbolic_FindFirstAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr);
-agl_int32_t AGL_API AGL_Symbolic_FindNextAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* AlarmNr);
+agl_int32_t AGL_API AGL_Symbolic_FindFirstAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* const AlarmNr);
+agl_int32_t AGL_API AGL_Symbolic_FindNextAlarmData(const HandleType PlcNodeHandle, agl_uint32_t* const AlarmNr);
 agl_int32_t AGL_API AGL_Symbolic_FindCloseAlarmData(const HandleType PlcNodeHandle);
 agl_int32_t AGL_API AGL_Symbolic_GetAlarmData(const HandleType PlcNodeHandle, agl_uint32_t AlarmNr, const agl_int32_t Language, LPDATA_ALARM40_TIA Buff);
 agl_int32_t AGL_API AGL_Symbolic_GetAlarmText(const HandleType PlcNodeHandle, const agl_uint32_t AlarmNr, const agl_int32_t Language, agl_cstr8_t const TextBuff, const agl_int32_t BuffLen, agl_int32_t* const NeededBuffLen);
@@ -844,8 +844,8 @@ agl_int32_t AGL_API AGL_Symbolic_FormatAlarmMessage(const LPS7_ALARM_TIA AlarmDa
 agl_int32_t AGL_API AGL_Symbolic_ReadOpenMsg(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t AlarmCount, agl_int32_t* const NeededAlarmCount, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
 
 //an Alarm-Meldungen der SPS anmelden
-agl_int32_t AGL_API AGL_Symbolic_InitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
-agl_int32_t AGL_API AGL_Symbolic_ExitAlarmMsg(const agl_int32_t ConnNr, agl_int32_t Timeout, agl_ptrdiff_t UserVal);
+agl_int32_t AGL_API AGL_Symbolic_InitAlarmMsg(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
+agl_int32_t AGL_API AGL_Symbolic_ExitAlarmMsg(const agl_int32_t ConnNr, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
 agl_int32_t AGL_API AGL_Symbolic_GetAlarmMsg(const agl_int32_t ConnNr, LPS7_ALARM_TIA AlarmData, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal);
 
 //Alarm quittieren
@@ -867,7 +867,7 @@ agl_int32_t AGL_API AGL_Symbolic_GetCurrentProtectionLevel(const agl_int32_t Con
 //  FlatArrays - Arrays werden flach ausgeprägt. (Zerlegen wird noch nicht unterstützt)
 // Ausgabe:
 //  RootNodeHandle - Handle auf den Root-Knoten des Symbolbaumes - das ist der Startpunkt für alle Knoten Funktionen
-agl_int32_t AGL_API AGL_Simotion_LoadSTISymbols(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, agl_bool_t FlatArrays);
+agl_int32_t AGL_API AGL_Simotion_LoadSTISymbols(const agl_cstr8_t const STIFile, HandleType* const RootNodeHandle, const agl_bool_t FlatArrays);
 
 // *******************************
 // Gibt den Speicher für den angegebenen Knoten frei.
@@ -894,7 +894,7 @@ agl_int32_t AGL_API AGL_Simotion_GetName(const HandleType NodeHandle, agl_cstr8_
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   HierarchyType - Der Hierarchytyp des Knotens
-agl_int32_t AGL_API AGL_Simotion_GetHierarchyType(const HandleType NodeHandle, HierarchyType_t::enum_t* HierarchyType);
+agl_int32_t AGL_API AGL_Simotion_GetHierarchyType(const HandleType NodeHandle, HierarchyType_t::enum_t* const HierarchyType);
 
 //*******************************
 // Bestimmt den Datentyp, der für die Abbildung des Systemdatentyps der Steuerung auf dem "PC" notwendig ist.
@@ -904,7 +904,7 @@ agl_int32_t AGL_API AGL_Simotion_GetHierarchyType(const HandleType NodeHandle, H
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   ValueType - Der Werttyp
-agl_int32_t AGL_API AGL_Simotion_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* ValueType);
+agl_int32_t AGL_API AGL_Simotion_GetValueType(const HandleType NodeHandle, ValueType_t::enum_t* const ValueType);
 
 
 // *******************************
@@ -914,7 +914,7 @@ agl_int32_t AGL_API AGL_Simotion_GetValueType(const HandleType NodeHandle, Value
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   SystemType - Systemtyp z.B. auf einer Simotion, z.b. Time, DateAndTime, TOD.
-agl_int32_t AGL_API AGL_Simotion_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* SystemType);
+agl_int32_t AGL_API AGL_Simotion_GetSystemType(const HandleType NodeHandle, SystemType_t::enum_t* const SystemType);
 
 
 // *******************************
@@ -924,7 +924,7 @@ agl_int32_t AGL_API AGL_Simotion_GetSystemType(const HandleType NodeHandle, Syst
 //   NodeHandle - Knoten im Baum
 // Ausgabe:
 //   PermissionType - Die Zugriffsmöglichkeiten auf diesen Knoten
-agl_int32_t AGL_API AGL_Simotion_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* PermissionType);
+agl_int32_t AGL_API AGL_Simotion_GetPermissionType(const HandleType NodeHandle, PermissionType_t::enum_t* const PermissionType);
 
 // *******************************
 // Ermittelt die Anzahl der direkten Kindknoten des gegebenen Ausgangsknotens
@@ -988,7 +988,7 @@ agl_int32_t AGL_API AGL_Simotion_CreateAccessByPath(const HandleType ParentNodeH
 //   Num - Anzahl der SymbolicRW Strukturen
 //   Timeout - Maximale Wartezeit auf eine Anfrage
 //   UserVal - Benutzerspezifischer Parameter zur Kennung bei z.b. asynchronen Aufrufen.
-agl_int32_t AGL_API AGL_Simotion_ReadMixEx( agl_int32_t ConnNr, SymbolicRW_t* Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
+agl_int32_t AGL_API AGL_Simotion_ReadMixEx( const agl_int32_t ConnNr, SymbolicRW_t* const Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal );
 
 // *******************************
 // Schreiben der Daten auf eine SIMOTION Steuerung
@@ -999,7 +999,7 @@ agl_int32_t AGL_API AGL_Simotion_ReadMixEx( agl_int32_t ConnNr, SymbolicRW_t* Bu
 //   Num - Anzahl der SymbolicRW Strukturen
 //   Timeout - Maximale Wartezeit auf eine Anfrage
 //   UserVal - Benutzerspezifischer Parameter zur Kennung bei z.b. asynchronen Aufrufen.
-agl_int32_t AGL_API AGL_Simotion_WriteMixEx( agl_int32_t ConnNr, SymbolicRW_t* Buff, agl_int32_t Num, agl_int32_t Timeout, agl_ptrdiff_t UserVal );
+agl_int32_t AGL_API AGL_Simotion_WriteMixEx( const agl_int32_t ConnNr, SymbolicRW_t* const Buff, const agl_int32_t Num, const agl_int32_t Timeout, const agl_ptrdiff_t UserVal );
 
 #if defined( __cplusplus )
   }

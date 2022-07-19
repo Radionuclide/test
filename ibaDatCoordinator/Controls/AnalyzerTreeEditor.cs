@@ -155,20 +155,27 @@ namespace iba.Controls
 
         public void UpdateSource(string pdoFile, string datFile, string datFilePassword, IJobData data)
         {
-            lock (lockAnalyzer)
+            try
             {
-                this.pdoFile = pdoFile;
-                this.datFile = datFile;
-                if (Path.GetExtension(datFile) == ".hdq")
+                lock (lockAnalyzer)
                 {
-                    this.user = data.HdUser;
-                    this.datFilePassword = data.HdPass;
+                    this.pdoFile = pdoFile;
+                    this.datFile = datFile;
+                    if (Path.GetExtension(datFile) == ".hdq")
+                    {
+                        this.user = data.HdUser;
+                        this.datFilePassword = data.HdPass;
+                    }
+                    else this.datFilePassword = datFilePassword;
+                    UnsafeClose();
                 }
-                else this.datFilePassword = datFilePassword;
-                UnsafeClose();
-            }
 
-            SourceUpdated?.Invoke();
+                SourceUpdated?.Invoke();
+            }
+            catch
+            {
+                //illegal characters in path...
+            }
         }
 
         public void UnLoadAnalysis()

@@ -29,21 +29,9 @@
 
  *******************************************************************************/
 
-#if defined( __TIXI__ )
+#if defined( __WINCE__ ) || defined( AGLINK_SE )
 
-  #if defined( __MQX__ )
-    #define MAX_DEVICES               2           // Maximale Anzahl Devices
-    #define MAX_PLCS                  8           // Maximale Anzahl SPSen (Verbindungen) je Device
-    #define ZERO_SIZE                 0           // Offene Arrays sind hier unbeliebt
-  #else
-    #define MAX_DEVICES             256           // Maximale Anzahl Devices
-    #define MAX_PLCS                 16           // Maximale Anzahl SPSen (Verbindungen) je Device
-    #define ZERO_SIZE                             // Offene Arrays sind hier möglich
-  #endif
-
-#elif defined( __WINCE__ ) || defined( AGLINK_SE )
-
-  #define MAX_DEVICES               4             // Maximale Anzahl Devices
+  #define MAX_DEVICES               8             // Maximale Anzahl Devices
   #define MAX_PLCS                  8             // Maximale Anzahl SPSen (Verbindungen) je Device
   #define ZERO_SIZE                               // Offene Arrays sind hier möglich
 
@@ -111,32 +99,32 @@
 //
 // Abfragebits für die verschiedenen Verbindungswege
 //
-#define MASK_S7CONN_IE              (1<<TYPE_S7CONN_IE)
-#define MASK_S7_TCPIP               (1<<TYPE_S7_TCPIP)
-#define MASK_S7_TCPIP_TIA           (1<<TYPE_S7_TCPIP_TIA)
-#define MASK_S7_NL                  (1<<TYPE_S7_NL)
-#define MASK_S7_NL50                (1<<TYPE_S7_NL50)
-#define MASK_S7_NLPRO               (1<<TYPE_S7_NLPRO)
-#define MASK_S7_NLUSB               (1<<TYPE_S7_NLUSB)
-#define MASK_S7_SOFTING             (1<<TYPE_S7_SOFTING)
-#define MASK_S7_CIF                 (1<<TYPE_S7_CIF)
-#define MASK_S7_CIFX                (1<<TYPE_S7_CIFX)
-#define MASK_S7_MPI_SER             (1<<TYPE_S7_MPI_SER)
-#define MASK_S7_TS_AT               (1<<TYPE_S7_TS_AT)
-#define MASK_S7_TS_TAPI             (1<<TYPE_S7_TS_TAPI)
-#define MASK_S7_PCCP                (1<<TYPE_S7_PCCP)
-#define MASK_S7_PPI                 (1<<TYPE_S7_PPI)
-#define MASK_S5_TCPIP               (1<<TYPE_S5_TCPIP)
-#define MASK_S5_AS511               (1<<TYPE_S5_AS511)
-#define MASK_RK                     (1<<TYPE_RK)
-#define MASK_S7_RED_CONN            (1<<TYPE_S7_RED_CONN)
-#define MASK_RFC_1006               (1<<TYPE_RFC_1006)
+#define MASK_S7CONN_IE              (1u<<TYPE_S7CONN_IE)
+#define MASK_S7_TCPIP               (1u<<TYPE_S7_TCPIP)
+#define MASK_S7_TCPIP_TIA           (1u<<TYPE_S7_TCPIP_TIA)
+#define MASK_S7_NL                  (1u<<TYPE_S7_NL)
+#define MASK_S7_NL50                (1u<<TYPE_S7_NL50)
+#define MASK_S7_NLPRO               (1u<<TYPE_S7_NLPRO)
+#define MASK_S7_NLUSB               (1u<<TYPE_S7_NLUSB)
+#define MASK_S7_SOFTING             (1u<<TYPE_S7_SOFTING)
+#define MASK_S7_CIF                 (1u<<TYPE_S7_CIF)
+#define MASK_S7_CIFX                (1u<<TYPE_S7_CIFX)
+#define MASK_S7_MPI_SER             (1u<<TYPE_S7_MPI_SER)
+#define MASK_S7_TS_AT               (1u<<TYPE_S7_TS_AT)
+#define MASK_S7_TS_TAPI             (1u<<TYPE_S7_TS_TAPI)
+#define MASK_S7_PCCP                (1u<<TYPE_S7_PCCP)
+#define MASK_S7_PPI                 (1u<<TYPE_S7_PPI)
+#define MASK_S5_TCPIP               (1u<<TYPE_S5_TCPIP)
+#define MASK_S5_AS511               (1u<<TYPE_S5_AS511)
+#define MASK_RK                     (1u<<TYPE_RK)
+#define MASK_S7_RED_CONN            (1u<<TYPE_S7_RED_CONN)
+#define MASK_RFC_1006               (1u<<TYPE_RFC_1006)
 
-#define MASK_S5_ISO                 (1<<TYPE_S5_ISO)
-#define MASK_S7_ISO                 (1<<TYPE_S7_ISO)
+#define MASK_S5_ISO                 (1u<<TYPE_S5_ISO)
+#define MASK_S7_ISO                 (1u<<TYPE_S7_ISO)
 
-#define MASK_S7_SYMBOLIK_TIA        (1<<TYPE_S7_SYMBOLIK_TIA)
-#define MASK_S7_SYMBOLIK            (1<<TYPE_S7_SYMBOLIK)
+#define MASK_S7_SYMBOLIK_TIA        (1u<<TYPE_S7_SYMBOLIK_TIA)
+#define MASK_S7_SYMBOLIK            (1u<<TYPE_S7_SYMBOLIK)
 
 
 //
@@ -216,6 +204,7 @@
 #define AGL40_REENTRANCY_ERROR              (ERROR_CLASS_GLOBAL+31) // Funktion ist nicht reentrant
 #define AGL40_FUNC_REMOVED                  (ERROR_CLASS_GLOBAL+32) // Funktion zur Codereduzierung entfernt
 #define AGL40_PARA_APPLY_ERROR              (ERROR_CLASS_GLOBAL+33) // Parameter(änderung) (momentan) nicht anwendbar
+#define AGL40_INVALID_HANDLE                (ERROR_CLASS_GLOBAL+34)
 
 #define AGL40_NO_QUEUE                      (ERROR_CLASS_L5+0)
 #define AGL40_INVALID_PACKET                (ERROR_CLASS_L5+1)

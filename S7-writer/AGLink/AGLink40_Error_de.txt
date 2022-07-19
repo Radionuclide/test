@@ -42,6 +42,7 @@
 0xFFF0001F;Funktion ist nicht reentrant
 0xFFF00020;Funktion zur Codegroessenreduzierung entfernt
 0xFFF00021;Wegen Parameteraenderung (momentan) nicht anwendbar
+0xFFF00022;Ungueltiges Handle
 
 0xFFF50000;Kein freier Auftragspuffer verfuegbar
 0xFFF50001;Ungueltiges Paket
@@ -103,9 +104,6 @@
 0xFFF50039;Fehler beim Disconnect
 0xFFF5003A;Uebertragen und ausfuehren auf die NCK wurde abgebrochen
 
-0xFFF40000;Fehler in Layer4
-0xFFF40001;Es stehen keine Sendbuffer zur Verfügung
-
 0xFFF30000;Fehler beim Lesen der Geraeteinfo
 0xFFF30001;Fehler beim Lesen der Busparameter
 0xFFF30002;Fehler beim Schreiben der Busparameter
@@ -114,6 +112,8 @@
 0xFFF30005;Adapter wurde nicht gefunden
 0xFFF30006;Benoetigter Geraetetreiber wurde nicht gefunden
 
+0xFFF40000;Fehler in Layer4
+0xFFF40001;Es stehen keine Sendbuffer zur Verfügung
 0xFFF20000;Die gewuenschte Adapteradresse existiert bereits
 0xFFF20001;Die HSA ist ungueltig (kleiner als groesster aktiver Teilnehmer)
 0xFFF20002;Der Adapter ist nicht im logischen Ring
