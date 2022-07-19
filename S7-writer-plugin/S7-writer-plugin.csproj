@@ -57,9 +57,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="S7TaskControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="S7TaskControl.cs" />
     <Compile Include="S7TaskControl.Designer.cs">
       <DependentUpon>S7TaskControl.cs</DependentUpon>
     </Compile>

@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using DevExpress.XtraGrid.Views.Grid;
+using iba;
 
 namespace AM_OSPC_plugin
 {
@@ -27,6 +28,7 @@ namespace AM_OSPC_plugin
         {
             m_datcoHost = PluginCollection.Host;
             InitializeComponent();
+            InitializeIcons();
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
 			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;
 			dataGV.IndicatorWidth = 50;
@@ -35,6 +37,27 @@ namespace AM_OSPC_plugin
             gridColumn7.Caption = Properties.Resources.ExprTblProcessName;
             gridColumn8.Caption = Properties.Resources.ExprTblVarName;
             gridColumn9.Caption = Properties.Resources.ExprTblTestVal;
+        }
+
+
+        private void InitializeIcons()
+        {
+            //expressionRemoveButton.Image = Icons.Gui.All.Images.CrossRed();
+            //paramRemoveButton.Image = Icons.Gui.All.Images.CrossRed();
+
+            //paramAddButton.Image = Icons.Gui.All.Images.PlusGreen();
+            //expressionAddButton.Image = Icons.Gui.All.Images.PlusGreen();
+
+            //importParamButton.Image = Icons.Gui.All.Images.Import();
+            //exportParamButton.Image = Icons.Gui.All.Images.Export();
+            m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
+            m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
+            //expressionCopyButton.Image = Icons.Gui.All.Images.Copy();
+            //downButton.Image = Icons.Gui.All.Images.ArrowDownBoxed();
+            //upButton.Image = Icons.Gui.All.Images.ArrowUpBoxed();
         }
 
         protected override void OnLoad(EventArgs e)

@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using DevExpress.XtraGrid.Views.Grid;
+using iba;
 
 namespace S7_writer_plugin
 {
@@ -26,6 +27,7 @@ namespace S7_writer_plugin
             m_datcoHost = PluginCollection.Host;
 
             InitializeComponent();
+            InitializeIcons();
             ((Bitmap)m_testButton.Image).MakeTransparent(Color.Magenta);
 			dataGV.CustomDrawRowIndicator += gridExpressionTest_CustomDrawRowIndicator;
 			dataGV.IndicatorWidth = 50;
@@ -38,7 +40,19 @@ namespace S7_writer_plugin
             gridColumn11.Caption = Properties.Resources.ExprTblTestValue;
         }
 
-		protected override void OnLoad(EventArgs e)
+        private void InitializeIcons()
+        {
+            buttonEndpointRemove.Image = Icons.Gui.All.Images.CrossRed();
+            buttonEndpointAdd.Image = Icons.Gui.All.Images.PlusGreen();
+            m_executeIBAAButton.Image = Icons.SystemTray.Images.IbaAnalyzer();
+            m_browseDatFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            m_browsePDOFileButton.Image = Icons.Gui.All.Images.FolderOpen();
+            m_btnUploadPDO.Image = Icons.Gui.All.Images.FilePdoUpload();
+            m_testButton.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
+            buttonEndpointCopy.Image = Icons.Gui.All.Images.Copy();
+        }
+
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             WindowsAPI.SHAutoComplete(m_pdoFileTextBox.Handle, SHAutoCompleteFlags.SHACF_FILESYS_ONLY |

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(S7TaskControl));
             this.label2 = new System.Windows.Forms.Label();
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
@@ -37,7 +38,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.m_datFileTextBox = new System.Windows.Forms.TextBox();
             this.m_testButton = new System.Windows.Forms.Button();
-            this.m_toolTip = new System.Windows.Forms.ToolTip();
+            this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.m_btnUploadPDO = new System.Windows.Forms.Button();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_monitorGroup = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -69,7 +71,6 @@
             this.buttonEndpointAdd = new System.Windows.Forms.Button();
             this.buttonEndpointRemove = new System.Windows.Forms.Button();
             this.buttonEndpointCopy = new System.Windows.Forms.Button();
-            this.m_btnUploadPDO = new System.Windows.Forms.Button();
             this.m_btTakeParentPass = new System.Windows.Forms.Button();
             this.m_tbPwdDAT = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -99,7 +100,6 @@
             // m_browsePDOFileButton
             // 
             resources.ApplyResources(this.m_browsePDOFileButton, "m_browsePDOFileButton");
-            this.m_browsePDOFileButton.Image = global::S7_writer_plugin.Properties.Resources.open;
             this.m_browsePDOFileButton.Name = "m_browsePDOFileButton";
             this.m_toolTip.SetToolTip(this.m_browsePDOFileButton, resources.GetString("m_browsePDOFileButton.ToolTip"));
             this.m_browsePDOFileButton.UseVisualStyleBackColor = true;
@@ -108,7 +108,6 @@
             // m_executeIBAAButton
             // 
             resources.ApplyResources(this.m_executeIBAAButton, "m_executeIBAAButton");
-            this.m_executeIBAAButton.Image = global::S7_writer_plugin.Properties.Resources.ibaAnalyzer_16x16;
             this.m_executeIBAAButton.Name = "m_executeIBAAButton";
             this.m_toolTip.SetToolTip(this.m_executeIBAAButton, resources.GetString("m_executeIBAAButton.ToolTip"));
             this.m_executeIBAAButton.UseVisualStyleBackColor = true;
@@ -117,7 +116,6 @@
             // m_browseDatFileButton
             // 
             resources.ApplyResources(this.m_browseDatFileButton, "m_browseDatFileButton");
-            this.m_browseDatFileButton.Image = global::S7_writer_plugin.Properties.Resources.open;
             this.m_browseDatFileButton.Name = "m_browseDatFileButton";
             this.m_toolTip.SetToolTip(this.m_browseDatFileButton, resources.GetString("m_browseDatFileButton.ToolTip"));
             this.m_browseDatFileButton.UseVisualStyleBackColor = true;
@@ -138,11 +136,18 @@
             // m_testButton
             // 
             resources.ApplyResources(this.m_testButton, "m_testButton");
-            this.m_testButton.Image = global::S7_writer_plugin.Properties.Resources.select;
             this.m_testButton.Name = "m_testButton";
             this.m_toolTip.SetToolTip(this.m_testButton, resources.GetString("m_testButton.ToolTip"));
             this.m_testButton.UseVisualStyleBackColor = true;
             this.m_testButton.Click += new System.EventHandler(this.m_testButton_Click);
+            // 
+            // m_btnUploadPDO
+            // 
+            resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
+            this.m_btnUploadPDO.Name = "m_btnUploadPDO";
+            this.m_toolTip.SetToolTip(this.m_btnUploadPDO, resources.GetString("m_btnUploadPDO.ToolTip"));
+            this.m_btnUploadPDO.UseVisualStyleBackColor = true;
+            this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
             // 
             // m_monitorGroup
             // 
@@ -421,15 +426,6 @@
             this.buttonEndpointCopy.TabStop = false;
             this.buttonEndpointCopy.UseVisualStyleBackColor = true;
             this.buttonEndpointCopy.Click += new System.EventHandler(this.buttonEndpointCopy_Click);
-            // 
-            // m_btnUploadPDO
-            // 
-            resources.ApplyResources(this.m_btnUploadPDO, "m_btnUploadPDO");
-            this.m_btnUploadPDO.Image = global::S7_writer_plugin.Properties.Resources.img_pdo_upload;
-            this.m_btnUploadPDO.Name = "m_btnUploadPDO";
-            this.m_toolTip.SetToolTip(this.m_btnUploadPDO, resources.GetString("m_btnUploadPDO.ToolTip"));
-            this.m_btnUploadPDO.UseVisualStyleBackColor = true;
-            this.m_btnUploadPDO.Click += new System.EventHandler(this.m_btnUploadPDO_Click);
             // 
             // m_btTakeParentPass
             // 
