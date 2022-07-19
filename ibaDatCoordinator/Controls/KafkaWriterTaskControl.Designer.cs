@@ -1063,7 +1063,6 @@
             this.dataTypeGridColumn.FieldName = "DataTypeAsString";
             this.dataTypeGridColumn.MinWidth = 27;
             this.dataTypeGridColumn.Name = "dataTypeGridColumn";
-            this.dataTypeGridColumn.OptionsColumn.AllowEdit = false;
             this.dataTypeGridColumn.Visible = true;
             this.dataTypeGridColumn.VisibleIndex = 2;
             this.dataTypeGridColumn.Width = 100;
