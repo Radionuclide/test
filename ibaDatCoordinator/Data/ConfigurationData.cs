@@ -728,12 +728,18 @@ namespace iba.Data
             get { return m_email; }
             set { m_email = value; }
         }
+
+        /*
         private string m_host;
+        
         public string Host
         {
             get { return m_host; }
             set { m_host = value; }
         }
+
+        */
+
         private string m_smtpServer;
         public string SMTPServer
         {
@@ -776,13 +782,17 @@ namespace iba.Data
             set { m_username = value; }
         }
 
+        /*
         public enum NotifyOutputChoice { EMAIL, NETSEND };
+        
+
         private NotifyOutputChoice m_outputChoice;
         public NotifyOutputChoice NotifyOutput
         {
             get { return m_outputChoice; }
             set { m_outputChoice = value; }
         }
+        */
 
         private TimeSpan m_time;
         [XmlIgnore]
@@ -810,10 +820,10 @@ namespace iba.Data
             //m_sender = "ibaDatCoordinator <noreply@iba-ag.com>";
             m_sender = "";
             m_email = "";
-            m_host = "";
+            //m_host = "";
             m_smtpServer = "";
             m_time = new TimeSpan(0, 10, 0);
-            m_outputChoice = NotifyOutputChoice.EMAIL;
+            //m_outputChoice = NotifyOutputChoice.EMAIL;
             m_notifyImmediately = true;
             m_username = "";
             m_pass = "";
@@ -825,9 +835,10 @@ namespace iba.Data
             NotificationData nd = new NotificationData();
             nd.m_time = m_time;
             nd.m_email = m_email;
-            nd.m_host = m_host;
+           // nd.m_host = m_host;
             nd.m_notifyImmediately = m_notifyImmediately;
-            nd.m_outputChoice = m_outputChoice;
+            //nd.m_outputChoice = m_outputChoice;
+            //nd.m_outputChoice = NotifyOutputChoice.EMAIL;
             nd.m_smtpServer = m_smtpServer;
             nd.m_authenticationRequired = m_authenticationRequired;
             nd.m_pass = m_pass;
@@ -840,9 +851,9 @@ namespace iba.Data
         {
             return other.m_time == m_time &&
             other.m_email == m_email &&
-            other.m_host == m_host &&
+            //other.m_host == m_host &&
             other.m_notifyImmediately == m_notifyImmediately &&
-            other.m_outputChoice == m_outputChoice &&
+            /*other.m_outputChoice == m_outputChoice &&*/
             other.m_smtpServer == m_smtpServer &&
             other.m_authenticationRequired == m_authenticationRequired &&
             other.m_pass == m_pass &&

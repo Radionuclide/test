@@ -104,96 +104,98 @@ namespace iba.Processing
             {
                 if (m_failures.Count == 0 && m_successes.Count == 0) return;
             }
-            if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
+            //if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
+            //{
+            string logFailed = null;
+            MailMessage message = new MailMessage();
+            try
             {
-                string logFailed = null;
-                MailMessage message = new MailMessage();
-                try
-                {
-                    message.From = new MailAddress(m_cd.NotificationData.Sender);
-                }
-                catch (System.Exception)
-                {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidSender;
-                }
-                if (logFailed != null)
-                {
-                    if (LogData.Data.Logger.IsOpen)
-                    {
-                        LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
-                        LogData.Data.Logger.Log(Logging.Level.Exception, logFailed, (object)data);
-                    }
-                    return;
-                }
-
-                try
-                {
-                    foreach (string adress in m_cd.NotificationData.Email.Split(';'))
-                    {
-                        message.To.Add(new MailAddress(adress));
-                    }
-                }
-                catch (ArgumentNullException)
-                {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
-                }
-                catch (ArgumentException)
-                {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
-                }
-                catch (FormatException)
-                {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
-                }
-                if (logFailed != null)
-                {
-                    if (LogData.Data.Logger.IsOpen)
-                    {
-                        LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
-                        LogData.Data.Logger.Log(Logging.Level.Exception, logFailed, (object)data);
-                    }
-                    return;
-                }
-
-                message.Subject = iba.Properties.Resources.NotificationEmailSubject;
-                message.IsBodyHtml = false;
-                message.Body = composeMessage(true);
-                // Use the application or machine configuration to get the 
-                // host, port, and credentials.
-                SmtpClient client = new SmtpClient();
-                client.Host = m_cd.NotificationData.SMTPServer;
-                if (m_cd.NotificationData.AuthenticationRequired)
-                {
-                    System.Net.NetworkCredential SMTPUserInfo = new System.Net.NetworkCredential(m_cd.NotificationData.Username, m_cd.NotificationData.Password);
-                    client.UseDefaultCredentials = false;
-                    client.Credentials = SMTPUserInfo;
-                }
-                else
-                    client.UseDefaultCredentials = true;
-
-                try
-                {
-                    client.Send(message);
-                    m_lastSend = DateTime.Now;
-                }
-                catch (InvalidOperationException e1)
-                {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e1.Message;
-                }
-                catch (SmtpFailedRecipientException e2)
-                {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e2.Message;
-                }
-                catch (SmtpException e3)
-                {
-                    logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e3.Message;
-                }
-                if (logFailed != null && LogData.Data.Logger.IsOpen)
+                message.From = new MailAddress(m_cd.NotificationData.Sender);
+            }
+            catch (System.Exception)
+            {
+                logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidSender;
+            }
+            if (logFailed != null)
+            {
+                if (LogData.Data.Logger.IsOpen)
                 {
                     LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
                     LogData.Data.Logger.Log(Logging.Level.Exception, logFailed, (object)data);
                 }
+                return;
             }
+
+            try
+            {
+                foreach (string adress in m_cd.NotificationData.Email.Split(';'))
+                {
+                    message.To.Add(new MailAddress(adress));
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
+            }
+            catch (ArgumentException)
+            {
+                logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
+            }
+            catch (FormatException)
+            {
+                logFailed = iba.Properties.Resources.logNotificationFailed + ": " + iba.Properties.Resources.invalidEmail;
+            }
+            if (logFailed != null)
+            {
+                if (LogData.Data.Logger.IsOpen)
+                {
+                    LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
+                    LogData.Data.Logger.Log(Logging.Level.Exception, logFailed, (object)data);
+                }
+                return;
+            }
+
+            message.Subject = iba.Properties.Resources.NotificationEmailSubject;
+            message.IsBodyHtml = false;
+            message.Body = composeMessage(true);
+            // Use the application or machine configuration to get the 
+            // host, port, and credentials.
+            SmtpClient client = new SmtpClient();
+            client.Host = m_cd.NotificationData.SMTPServer;
+            if (m_cd.NotificationData.AuthenticationRequired)
+            {
+                System.Net.NetworkCredential SMTPUserInfo = new System.Net.NetworkCredential(m_cd.NotificationData.Username, m_cd.NotificationData.Password);
+                client.UseDefaultCredentials = false;
+                client.Credentials = SMTPUserInfo;
+            }
+            else
+                client.UseDefaultCredentials = true;
+
+            try
+            {
+                client.Send(message);
+                m_lastSend = DateTime.Now;
+            }
+            catch (InvalidOperationException e1)
+            {
+                logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e1.Message;
+            }
+            catch (SmtpFailedRecipientException e2)
+            {
+                logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e2.Message;
+            }
+            catch (SmtpException e3)
+            {
+                logFailed = iba.Properties.Resources.logNotificationFailed + ": " + e3.Message;
+            }
+            if (logFailed != null && LogData.Data.Logger.IsOpen)
+            {
+                LogExtraData data = new LogExtraData(String.Empty, null, m_cd);
+                LogData.Data.Logger.Log(Logging.Level.Exception, logFailed, (object)data);
+            }
+        } 
+    
+        /*
             else // net send
             {
                 string message = composeMessage(false);
@@ -244,7 +246,7 @@ namespace iba.Processing
                 m_failures.Clear();
                 m_successes.Clear();
             }
-        }
+        }*/
 
         [DllImport("Netapi32", CharSet = CharSet.Unicode)]
         public static extern int NetMessageBufferSend(
@@ -256,8 +258,8 @@ namespace iba.Processing
 
         public void Test()
         {
-            if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
-            {
+            //if (m_cd.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.EMAIL)
+            //{
                 MailMessage message = new MailMessage();
                 string logFailed = null;
                 try
@@ -337,7 +339,7 @@ namespace iba.Processing
                 {
                     throw new Exception(logFailed);
                 }
-            }
+           /* }
             else // net send
             {
                 string message = iba.Properties.Resources.notifyTestMessage;
@@ -363,7 +365,7 @@ namespace iba.Processing
                     case 666:
                         throw new Exception(logFailed);
                 }
-            }
+            }*/
         }
     }
 }

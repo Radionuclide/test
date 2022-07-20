@@ -264,7 +264,7 @@ namespace iba.Controls
 
             m_tbEmail.Text = m_data.NotificationData.Email;
             m_tbSMTP.Text = m_data.NotificationData.SMTPServer;
-            m_tbNetSend.Text = m_data.NotificationData.Host;
+            //m_tbNetSend.Text = m_data.NotificationData.Host;
             m_tbMailPass.Text = m_data.NotificationData.Password;
             m_tbMailUsername.Text = m_data.NotificationData.Username;
             m_cbAuthentication.Checked = m_data.NotificationData.AuthenticationRequired;
@@ -283,16 +283,16 @@ namespace iba.Controls
                 tbExtension.Text = m_data.GetFileFormatExtension(m_data.FileFormat);
             }
 
-            if (m_data.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.NETSEND)
-            {
-                m_rbNetSend.Checked = true;
-                m_rbEmail.Checked = false;
-            }
-            else
-            {
-                m_rbNetSend.Checked = false;
-                m_rbEmail.Checked = true;
-            }
+            //if (m_data.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.NETSEND)
+            //{
+            //    m_rbNetSend.Checked = true;
+            //    m_rbEmail.Checked = false;
+            //}
+            //else
+            //{
+            //    m_rbNetSend.Checked = false;
+            //    m_rbEmail.Checked = true;
+            //}
             if (m_nudNotifyTime.Minimum > (decimal)m_data.NotificationData.TimeInterval.TotalMinutes)
                 m_data.NotificationData.TimeInterval = TimeSpan.FromMinutes((double)m_nudNotifyTime.Minimum);
             else if (m_nudNotifyTime.Maximum < (decimal)m_data.NotificationData.TimeInterval.TotalMinutes)
@@ -358,8 +358,8 @@ namespace iba.Controls
             m_data.AutoStart = m_autoStartCheckBox.Checked;
             m_data.NotificationData.Email = m_tbEmail.Text;
             m_data.NotificationData.SMTPServer = m_tbSMTP.Text;
-            m_data.NotificationData.Host = m_tbNetSend.Text;
-            m_data.NotificationData.NotifyOutput = m_rbNetSend.Checked ? NotificationData.NotifyOutputChoice.NETSEND : NotificationData.NotifyOutputChoice.EMAIL;
+            //m_data.NotificationData.Host = m_tbNetSend.Text;
+            //m_data.NotificationData.NotifyOutput = /*m_rbNetSend.Checked ?*/ NotificationData.NotifyOutputChoice.NETSEND /*: NotificationData.NotifyOutputChoice.EMAIL*/;
             m_data.NotificationData.NotifyImmediately = m_rbImmediate.Checked;
             m_data.NotificationData.TimeInterval = TimeSpan.FromMinutes((double)m_nudNotifyTime.Value);
             m_data.NotificationData.AuthenticationRequired = m_cbAuthentication.Checked;
@@ -671,15 +671,15 @@ namespace iba.Controls
             m_nudNotifyTime.Enabled = m_rbTime.Checked;
         }
 
-        private void m_rbOutputCheckedChanged(object sender, EventArgs e)
-        {
-            labelnetsendhost.Enabled = m_tbNetSend.Enabled = !m_rbEmail.Checked;
-            labelmailrecipient.Enabled = m_tbEmail.Enabled = !m_rbNetSend.Checked;
-            labelmailsmtp.Enabled = m_tbSMTP.Enabled = !m_rbNetSend.Checked;
-            m_tbMailPass.Enabled = labelmailpass.Enabled
-            = m_tbMailUsername.Enabled = labelmailuser.Enabled
-            = m_cbAuthentication.Checked && m_rbEmail.Checked;
-        }
+        //private void m_rbOutputCheckedChanged(object sender, EventArgs e)
+        //{
+        //    labelnetsendhost.Enabled = m_tbNetSend.Enabled = !m_rbEmail.Checked;
+        //    labelmailrecipient.Enabled = m_tbEmail.Enabled = !m_rbNetSend.Checked;
+        //    labelmailsmtp.Enabled = m_tbSMTP.Enabled = !m_rbNetSend.Checked;
+        //    m_tbMailPass.Enabled = labelmailpass.Enabled
+        //    = m_tbMailUsername.Enabled = labelmailuser.Enabled
+        //    = m_cbAuthentication.Checked && m_rbEmail.Checked;
+        //}
 
         private void m_applyToRunningButton_Click(object sender, EventArgs e)
         {
@@ -743,7 +743,7 @@ namespace iba.Controls
         {
             m_tbMailPass.Enabled = labelmailpass.Enabled
             = m_tbMailUsername.Enabled = labelmailuser.Enabled
-            = m_cbAuthentication.Checked && m_rbEmail.Checked;
+            = m_cbAuthentication.Checked/* && m_rbEmail.Checked*/;
         }
 
         public void UpdatePlugins()

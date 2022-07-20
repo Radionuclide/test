@@ -47,14 +47,10 @@ namespace iba.Controls
             this.m_tbMailUsername = new System.Windows.Forms.TextBox();
             this.m_cbAuthentication = new System.Windows.Forms.CheckBox();
             this.m_testNotification = new System.Windows.Forms.Button();
-            this.labelnetsendhost = new System.Windows.Forms.Label();
             this.labelmailsmtp = new System.Windows.Forms.Label();
             this.labelmailrecipient = new System.Windows.Forms.Label();
-            this.m_rbNetSend = new System.Windows.Forms.RadioButton();
             this.m_tbSMTP = new System.Windows.Forms.TextBox();
             this.m_tbEmail = new System.Windows.Forms.TextBox();
-            this.m_rbEmail = new System.Windows.Forms.RadioButton();
-            this.m_tbNetSend = new System.Windows.Forms.TextBox();
             this.gbNewTask = new iba.Utility.CollapsibleGroupBox();
             this.m_newTaskToolstrip = new System.Windows.Forms.ToolStrip();
             this.m_newReportButton = new System.Windows.Forms.ToolStripButton();
@@ -68,9 +64,9 @@ namespace iba.Controls
             this.m_newCleanupTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newSplitterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newHdCreateEventTaskButton = new System.Windows.Forms.ToolStripButton();
-            this.m_newKafkaWriterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newOPCUAWriterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newSNMPWriterTaskButton = new System.Windows.Forms.ToolStripButton();
+            this.m_newKafkaWriterTaskButton = new System.Windows.Forms.ToolStripButton();
             this.m_newDataTransferTaskButton = new System.Windows.Forms.ToolStripButton();
             this.gbJobName = new iba.Utility.CollapsibleGroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -159,14 +155,10 @@ namespace iba.Controls
             this.m_subfolderGroupBox.Controls.Add(this.m_tbMailUsername);
             this.m_subfolderGroupBox.Controls.Add(this.m_cbAuthentication);
             this.m_subfolderGroupBox.Controls.Add(this.m_testNotification);
-            this.m_subfolderGroupBox.Controls.Add(this.labelnetsendhost);
             this.m_subfolderGroupBox.Controls.Add(this.labelmailsmtp);
             this.m_subfolderGroupBox.Controls.Add(this.labelmailrecipient);
-            this.m_subfolderGroupBox.Controls.Add(this.m_rbNetSend);
             this.m_subfolderGroupBox.Controls.Add(this.m_tbSMTP);
             this.m_subfolderGroupBox.Controls.Add(this.m_tbEmail);
-            this.m_subfolderGroupBox.Controls.Add(this.m_rbEmail);
-            this.m_subfolderGroupBox.Controls.Add(this.m_tbNetSend);
             this.m_subfolderGroupBox.Name = "m_subfolderGroupBox";
             this.m_subfolderGroupBox.TabStop = false;
             // 
@@ -215,11 +207,6 @@ namespace iba.Controls
             this.m_testNotification.UseVisualStyleBackColor = true;
             this.m_testNotification.Click += new System.EventHandler(this.m_testNotification_Click);
             // 
-            // labelnetsendhost
-            // 
-            resources.ApplyResources(this.labelnetsendhost, "labelnetsendhost");
-            this.labelnetsendhost.Name = "labelnetsendhost";
-            // 
             // labelmailsmtp
             // 
             resources.ApplyResources(this.labelmailsmtp, "labelmailsmtp");
@@ -230,14 +217,6 @@ namespace iba.Controls
             resources.ApplyResources(this.labelmailrecipient, "labelmailrecipient");
             this.labelmailrecipient.Name = "labelmailrecipient";
             // 
-            // m_rbNetSend
-            // 
-            resources.ApplyResources(this.m_rbNetSend, "m_rbNetSend");
-            this.m_rbNetSend.Name = "m_rbNetSend";
-            this.m_rbNetSend.TabStop = true;
-            this.m_rbNetSend.UseVisualStyleBackColor = true;
-            this.m_rbNetSend.CheckedChanged += new System.EventHandler(this.m_rbOutputCheckedChanged);
-            // 
             // m_tbSMTP
             // 
             resources.ApplyResources(this.m_tbSMTP, "m_tbSMTP");
@@ -247,19 +226,6 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_tbEmail, "m_tbEmail");
             this.m_tbEmail.Name = "m_tbEmail";
-            // 
-            // m_rbEmail
-            // 
-            resources.ApplyResources(this.m_rbEmail, "m_rbEmail");
-            this.m_rbEmail.Name = "m_rbEmail";
-            this.m_rbEmail.TabStop = true;
-            this.m_rbEmail.UseVisualStyleBackColor = true;
-            this.m_rbEmail.CheckedChanged += new System.EventHandler(this.m_rbOutputCheckedChanged);
-            // 
-            // m_tbNetSend
-            // 
-            resources.ApplyResources(this.m_tbNetSend, "m_tbNetSend");
-            this.m_tbNetSend.Name = "m_tbNetSend";
             // 
             // gbNewTask
             // 
@@ -449,10 +415,7 @@ namespace iba.Controls
         private System.Windows.Forms.ToolTip m_toolTip;
         private iba.Utility.CollapsibleGroupBox gbNewTask;
         private System.Windows.Forms.GroupBox m_subfolderGroupBox;
-        private System.Windows.Forms.RadioButton m_rbNetSend;
         private System.Windows.Forms.TextBox m_tbEmail;
-        private System.Windows.Forms.RadioButton m_rbEmail;
-        private System.Windows.Forms.TextBox m_tbNetSend;
         private iba.Utility.CollapsibleGroupBox gbNotifications;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.RadioButton m_rbTime;
@@ -461,7 +424,6 @@ namespace iba.Controls
         private System.Windows.Forms.NumericUpDown m_nudNotifyTime;
         private System.Windows.Forms.Label labelmailrecipient;
         private System.Windows.Forms.TextBox m_tbSMTP;
-        private System.Windows.Forms.Label labelnetsendhost;
         private System.Windows.Forms.Label labelmailsmtp;
         private System.Windows.Forms.ToolStrip m_newTaskToolstrip;
         private System.Windows.Forms.ToolStripButton m_newReportButton;
