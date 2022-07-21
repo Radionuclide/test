@@ -70,13 +70,14 @@ namespace iba.Dialogs
             ckAutoConnect.Visible = false;
             //ckAutoConnect.Checked = clientConfig.AutoReconnect;
 
-            ImageList list = new ImageList();
-            list.ImageSize = new System.Drawing.Size(16, 16);
-            list.TransparentColor = Color.Magenta;
-            list.ColorDepth = ColorDepth.Depth24Bit;
-            list.Images.AddStrip(iba.Properties.Resources.Toolbars16);
+            var list = new ImageList();
+            
+            list.Images.Add(Icons.Gui.All.Images.ConnectorCenterEdit());
+            list.Images.Add(Icons.Gui.All.Images.ConnectorCenterDelete());
+            list.Images.Add(Icons.Gui.All.Images.ConnectorCenter());
+
             cbAddress.ImageList = list;
-            cbAddress.DefaultImageIndex = 21;
+            cbAddress.DefaultImageIndex = 0;
 
             if(serverConfig.Enabled)
             {
@@ -105,7 +106,7 @@ namespace iba.Dialogs
             cbAddress.Items.Clear();
 
             //Add none item
-            noneItem = new iba.Controls.ImageComboBoxItem(iba.Properties.Resources.NotConnected, 15);
+            noneItem = new iba.Controls.ImageComboBoxItem(iba.Properties.Resources.NotConnected, 1);
             cbAddress.Items.Add(noneItem);
 
             String mruList = "";
@@ -116,7 +117,7 @@ namespace iba.Dialogs
                 if(s.Length == 0)
                     continue;
 
-                cbAddress.Items.Add(new iba.Controls.ImageComboBoxItem(s.ToUpper(), 14));
+                cbAddress.Items.Add(new iba.Controls.ImageComboBoxItem(s.ToUpper(), 2));
             }
 
             cbAddress.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
