@@ -120,7 +120,7 @@ namespace iba.Data
                     return (double)rec.Value >= 0.5 ? "1" : "0";
             }
             else 
-                return rec.Value.ToString();
+                return ((double)rec.Value).ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
         [Serializable]
