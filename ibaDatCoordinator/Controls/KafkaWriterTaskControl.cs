@@ -822,7 +822,6 @@ namespace iba.Controls
             addressTextBox.Text = eventHubControl.connectionString;
             enableSSLVerificationCb.Checked = eventHubControl.enableSSLVerification;
             messageTimeout = eventHubControl.messageTimeout;
-            CACertParams.Thumbprint = eventHubControl.ceThumbprint;
         }
 
         private void metadataComboBox_EditValueChanged(object sender, EventArgs e)
@@ -835,7 +834,6 @@ namespace iba.Controls
         {
             eventHubControl.connectionString = addressTextBox.Text;
             eventHubControl.enableSSLVerification = enableSSLVerificationCb.Checked;
-            eventHubControl.ceThumbprint = CACertParams.Thumbprint;
             eventHubControl.messageTimeout = messageTimeout ;
         }
         private void OnImportParameters(object sender, EventArgs e)

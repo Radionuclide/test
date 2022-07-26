@@ -32,8 +32,6 @@ namespace iba.Controls
             this.clusterAddressLabel = new System.Windows.Forms.Label();
             this.addressTextBox = new System.Windows.Forms.TextBox();
             this.enableSSLVerificationCb = new System.Windows.Forms.CheckBox();
-            this.CACertPlaceholder = new System.Windows.Forms.ComboBox();
-            this.CACertificateLabel = new System.Windows.Forms.Label();
             this.secLabel = new System.Windows.Forms.Label();
             this.timeoutNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.messageTimeoutLabel = new System.Windows.Forms.Label();
@@ -69,32 +67,11 @@ namespace iba.Controls
             this.enableSSLVerificationCb.TabIndex = 80;
             this.enableSSLVerificationCb.Text = "Enable SSL verification";
             this.enableSSLVerificationCb.UseVisualStyleBackColor = true;
-            this.enableSSLVerificationCb.CheckedChanged += new System.EventHandler(this.enableSSLVerificationCb_CheckedChanged);
-            // 
-            // CACertPlaceholder
-            // 
-            this.CACertPlaceholder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.CACertPlaceholder.FormattingEnabled = true;
-            this.CACertPlaceholder.Location = new System.Drawing.Point(279, 79);
-            this.CACertPlaceholder.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.CACertPlaceholder.Name = "CACertPlaceholder";
-            this.CACertPlaceholder.Size = new System.Drawing.Size(587, 24);
-            this.CACertPlaceholder.TabIndex = 85;
-            // 
-            // CACertificateLabel
-            // 
-            this.CACertificateLabel.AutoSize = true;
-            this.CACertificateLabel.Location = new System.Drawing.Point(11, 82);
-            this.CACertificateLabel.Name = "CACertificateLabel";
-            this.CACertificateLabel.Size = new System.Drawing.Size(95, 17);
-            this.CACertificateLabel.TabIndex = 84;
-            this.CACertificateLabel.Text = "CA certificate:";
             // 
             // secLabel
             // 
             this.secLabel.AutoSize = true;
-            this.secLabel.Location = new System.Drawing.Point(340, 113);
+            this.secLabel.Location = new System.Drawing.Point(340, 85);
             this.secLabel.Name = "secLabel";
             this.secLabel.Size = new System.Drawing.Size(15, 17);
             this.secLabel.TabIndex = 99;
@@ -102,7 +79,7 @@ namespace iba.Controls
             // 
             // timeoutNumericUpDown
             // 
-            this.timeoutNumericUpDown.Location = new System.Drawing.Point(279, 111);
+            this.timeoutNumericUpDown.Location = new System.Drawing.Point(279, 80);
             this.timeoutNumericUpDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.timeoutNumericUpDown.Minimum = new decimal(new int[] {
             1,
@@ -121,7 +98,7 @@ namespace iba.Controls
             // messageTimeoutLabel
             // 
             this.messageTimeoutLabel.AutoSize = true;
-            this.messageTimeoutLabel.Location = new System.Drawing.Point(11, 116);
+            this.messageTimeoutLabel.Location = new System.Drawing.Point(11, 80);
             this.messageTimeoutLabel.Name = "messageTimeoutLabel";
             this.messageTimeoutLabel.Size = new System.Drawing.Size(119, 17);
             this.messageTimeoutLabel.TabIndex = 98;
@@ -134,13 +111,11 @@ namespace iba.Controls
             this.Controls.Add(this.clusterAddressLabel);
             this.Controls.Add(this.secLabel);
             this.Controls.Add(this.addressTextBox);
-            this.Controls.Add(this.CACertPlaceholder);
             this.Controls.Add(this.timeoutNumericUpDown);
-            this.Controls.Add(this.CACertificateLabel);
             this.Controls.Add(this.enableSSLVerificationCb);
             this.Controls.Add(this.messageTimeoutLabel);
             this.Name = "KafkaWriterTaskControlEventHub";
-            this.Size = new System.Drawing.Size(910, 151);
+            this.Size = new System.Drawing.Size(910, 114);
             ((System.ComponentModel.ISupportInitialize)(this.timeoutNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -152,8 +127,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label clusterAddressLabel;
         private System.Windows.Forms.TextBox addressTextBox;
         private System.Windows.Forms.CheckBox enableSSLVerificationCb;
-        private System.Windows.Forms.ComboBox CACertPlaceholder;
-        private System.Windows.Forms.Label CACertificateLabel;
         private System.Windows.Forms.Label secLabel;
         private System.Windows.Forms.NumericUpDown timeoutNumericUpDown;
         private System.Windows.Forms.Label messageTimeoutLabel;
