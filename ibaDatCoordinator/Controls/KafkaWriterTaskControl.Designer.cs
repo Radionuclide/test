@@ -1217,6 +1217,7 @@
             this.dataFormatComboBox.Name = "dataFormatComboBox";
             this.dataFormatComboBox.Size = new System.Drawing.Size(153, 24);
             this.dataFormatComboBox.TabIndex = 10;
+            this.dataFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.dataFormatComboBox_SelectedIndexChanged);
             // 
             // m_btnUploadPDO
             // 

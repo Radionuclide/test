@@ -886,6 +886,14 @@ namespace iba.Controls
             }
         }
 
+        private void dataFormatComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((KafkaWriterTaskData.DataFormat)dataFormatComboBox.SelectedIndex == KafkaWriterTaskData.DataFormat.AVRO)
+                digitalFormatComboBox.Enabled = false;
+            else
+                digitalFormatComboBox.Enabled = true;
+        }
+
         private void clusterConnectionSecurityComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if ((KafkaWriterTaskData.ClusterSecurityType)clusterConnectionSecurityComboBox.SelectedIndex == KafkaWriterTaskData.ClusterSecurityType.SSL ||
