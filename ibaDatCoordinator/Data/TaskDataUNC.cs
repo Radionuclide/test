@@ -150,7 +150,6 @@ namespace iba.Data
         {
             return other.m_numbFolders == m_numbFolders &&
             other.m_destinationMap == m_destinationMap &&
-            other.m_destinationMapUNC == m_destinationMapUNC &&
             other.m_extension == m_extension &&
             other.m_username == m_username &&
             other.m_pass == m_pass &&
