@@ -176,7 +176,7 @@ namespace iba.Processing
                     }
 
 
-                    if (m_data.metadata.Contains("Timestamp") || m_data.Format == KafkaWriterTaskData.DataFormat.AVRO)
+                    if (m_data.metadata.Contains("Timestamp") && m_data.Format != KafkaWriterTaskData.DataFormat.AVRO)
                     {
                         var fileInfo = IbaFileReader.ReadShortFileInfo(filename);
 
@@ -211,7 +211,6 @@ namespace iba.Processing
                             UTCOffset = new TimeSpan(0, fileInfo.UtcOffset, 0); // fileInfo.UtcOffset in minutes
                         else 
                             UTCOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow); // use local UTC
-                        UTCOffset = UTCOffset.Add(new TimeSpan(15, 30, 0));
 
                         string sighn;
 
