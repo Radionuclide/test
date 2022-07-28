@@ -434,7 +434,10 @@ namespace iba.Controls
             }
         }
 
-        public void LeaveCleanup() { }
+        public void LeaveCleanup()
+        {
+            _analyzerManager.OnLeave();
+        }
 
         public void SaveData()
         {

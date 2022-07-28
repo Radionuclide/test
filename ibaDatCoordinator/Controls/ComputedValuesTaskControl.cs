@@ -222,6 +222,7 @@ namespace iba.Controls
         public void LeaveCleanup()
         {
             MainForm.InformExtMonDataAboutTreeStructureChange();
+            _analyzerManager.OnLeave();
         }
 
 		public void SaveData()
