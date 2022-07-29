@@ -238,14 +238,15 @@ namespace iba.Controls
             m_kafkaIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
             m_kafkaIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.ApacheKafka()));
 
-            m_convertExtFileIcons.Add(DatFileStatus.State.RUNNING, iba.Properties.Resources.external_files_configuration);
-            m_convertExtFileIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, iba.Properties.Resources.external_files_configuration));
-            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.external_files_configuration));
-            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, iba.Properties.Resources.external_files_configuration));
-            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, iba.Properties.Resources.external_files_configuration));
-            m_convertExtFileIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, iba.Properties.Resources.external_files_configuration));
-            m_convertExtFileIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, iba.Properties.Resources.external_files_configuration));
-            m_convertExtFileIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, iba.Properties.Resources.external_files_configuration));
+            m_convertExtFileIcons.Add(DatFileStatus.State.NOT_STARTED, m_blankIcon);
+            m_convertExtFileIcons.Add(DatFileStatus.State.RUNNING, (Bitmap)Icons.Gui.All.Images.FileExtFolder());
+            m_convertExtFileIcons.Add(DatFileStatus.State.NO_ACCESS, MergeIcons(DatFileStatus.State.NO_ACCESS, (Bitmap)Icons.Gui.All.Images.FileExtFolder()));
+            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_FAILURE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.FileExtFolder()));
+            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_SUCCESFULY, MergeIcons(DatFileStatus.State.COMPLETED_SUCCESFULY, (Bitmap)Icons.Gui.All.Images.FileExtFolder()));
+            m_convertExtFileIcons.Add(DatFileStatus.State.COMPLETED_FALSE, MergeIcons(DatFileStatus.State.COMPLETED_FAILURE, (Bitmap)Icons.Gui.All.Images.FileExtFolder()));
+            m_convertExtFileIcons.Add(DatFileStatus.State.TIMED_OUT, MergeIcons(DatFileStatus.State.TIMED_OUT, (Bitmap)Icons.Gui.All.Images.FileExtFolder()));
+            m_convertExtFileIcons.Add(DatFileStatus.State.MEMORY_EXCEEDED, MergeIcons(DatFileStatus.State.MEMORY_EXCEEDED, (Bitmap)Icons.Gui.All.Images.FileExtFolder()));
+            m_convertExtFileIcons.Add(DatFileStatus.State.TRIED_TOO_MANY_TIMES, MergeIcons(DatFileStatus.State.TRIED_TOO_MANY_TIMES, (Bitmap)Icons.Gui.All.Images.FileExtFolder()));
 
             UpdatePlugins();
 

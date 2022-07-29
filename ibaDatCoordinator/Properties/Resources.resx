@@ -1224,9 +1224,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="snmpStatusStopped" xml:space="preserve">
     <value>SNMP agent was successfully stopped. Current status: {0}</value>
   </data>
-  <data name="snmp_images" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\snmp_images.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="cannotAccessTargetSystem" xml:space="preserve">
     <value>The target system cannot be accessed:</value>
   </data>
@@ -1847,9 +1844,6 @@ Please either start the job or enable scans for .dat files before attempting thi
   </data>
   <data name="File_Format" xml:space="preserve">
     <value>File Format</value>
-  </data>
-  <data name="external_files_configuration" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refresh_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ExtractAnalysisFile" xml:space="preserve">
     <value>Analysis to read datafile</value>

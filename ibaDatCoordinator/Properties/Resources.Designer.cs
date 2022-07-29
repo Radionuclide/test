@@ -1223,16 +1223,6 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap external_files_configuration {
-            get {
-                object obj = ResourceManager.GetObject("external_files_configuration", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to External file directory.
         /// </summary>
         internal static string ExternalFileDirectory {
@@ -4464,16 +4454,6 @@ namespace iba.Properties {
         internal static string SharedKey {
             get {
                 return ResourceManager.GetString("SharedKey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap snmp_images {
-            get {
-                object obj = ResourceManager.GetObject("snmp_images", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
