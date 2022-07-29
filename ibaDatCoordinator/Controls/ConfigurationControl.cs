@@ -40,7 +40,13 @@ namespace iba.Controls
                 m_panelDatFilesJob.Location = m_sourcePanel.Location;
                 this.Controls.Add(m_panelDatFilesJob);
 
-                if(m_jobType == ConfigurationData.JobTypeEnum.OneTime)
+                if (m_jobType == ConfigurationData.JobTypeEnum.ExtFile)
+                {
+                    m_panelDatFilesJob.MinimumSize = new Size(m_sourcePanel.Width, 210);
+                    m_panelDatFilesJob.Size = new Size(m_sourcePanel.Width, 210);
+                }
+
+                if (m_jobType == ConfigurationData.JobTypeEnum.OneTime)
                 {
                     m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
                     gbNewTask.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
@@ -801,8 +807,6 @@ namespace iba.Controls
             rbMove = new RadioButton();
 
             m_panelDatFilesJob.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            m_panelDatFilesJob.Height -= 50;
-            m_sourcePanel.Height -= 50;
 
             //FileFormat
             gbFileFormat.Height = 80;

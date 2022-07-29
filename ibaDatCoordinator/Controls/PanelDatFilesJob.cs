@@ -80,12 +80,14 @@ namespace iba.Controls
             {
                 gbDatFiles.Text = Resources.ExternalFiles;
                 label2.Text = $"{Resources.ExternalFileDirectory}:";
+                
                 m_cbDetectNewFiles.Text = Resources.ProcessExternalFilesInstantly;
                 m_cbRescanEnabled.Text = Resources.RescanForUnprocessedFilesEvery;
 
                 gbCycle.Height -= 50;
+                gbDatFiles.Height -= 30;
+
                 gbDatFiles.Location = new Point(gbDatFiles.Location.X, gbDatFiles.Location.Y - 50);
-                MinimumSize = new Size(Width, Height - 50);
 
                 m_browseDatFilesButton.Visible = false;
                 m_refreshDats.Visible = false;
@@ -96,8 +98,8 @@ namespace iba.Controls
                 m_retryUpDown.Visible = false;
                 label14.Visible = false;
                 label10.Visible = false;
-                //lblFilePassword.Visible = false;
-                //tbFilePassword.Visible = false;
+                lblFilePassword.Visible = false;
+                tbFilePassword.Visible = false;
 
                 foreach (Control c in gbCycle.Controls)
                 {
