@@ -403,7 +403,10 @@ namespace iba.Processing
             }
             catch (Exception e)
             {
-                m_confWorker.Log(Logging.Level.Exception, e.Message, filename, m_data);
+                string m = e.Message;
+                if (e.InnerException != null && e.InnerException.Message == "Local: Message timed out")
+                    m = "Message timed out";
+                m_confWorker.Log(Logging.Level.Exception, m, filename, m_data);
                 lock (m_sd.DatFileStates)
                 {
                     m_sd.DatFileStates[filename].States[m_data] = DatFileStatus.State.COMPLETED_FAILURE;
