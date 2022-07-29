@@ -907,7 +907,7 @@
             this.timestampUTCCombobox.Items.AddRange(new object[] {
             "Ignore",
             "Convert timestamp to Universal Time",
-            "Appent to timestamp string"});
+            "Append to timestamp string"});
             this.timestampUTCCombobox.Location = new System.Drawing.Point(547, 204);
             this.timestampUTCCombobox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.timestampUTCCombobox.Name = "timestampUTCCombobox";
