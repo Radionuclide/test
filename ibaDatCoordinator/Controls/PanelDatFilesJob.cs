@@ -34,7 +34,7 @@ namespace iba.Controls
                 m_startButton.Location = new Point(m_undoChangesBtn.Location.X, 18);
                 m_stopButton.Location = new Point(m_refreshDats.Location.X, 18);
                 //m_stopButton.Anchor = m_startButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-                foreach(Control c in groupBox3.Controls)
+                foreach(Control c in gbCycle.Controls)
                 {
                     if(c != m_startButton && c != m_stopButton && c != m_enableCheckBox)
                     {
@@ -42,10 +42,10 @@ namespace iba.Controls
                         c.Visible = false;
                     }
                 }
-                int groupbox3OldHeight = groupBox3.Size.Height;
+                int groupbox3OldHeight = gbCycle.Size.Height;
                 int groupbox3NewHeight = m_stopButton.Size.Height + 16 + 8;
                 int diff = groupbox3OldHeight - groupbox3NewHeight;
-                groupBox3.Size = new Size(groupBox3.Size.Width, groupbox3NewHeight);
+                gbCycle.Size = new Size(gbCycle.Size.Width, groupbox3NewHeight);
 
                 m_datDirTextBox.Multiline = true;
                 m_datDirTextBox.ScrollBars = ScrollBars.Vertical;
@@ -53,7 +53,7 @@ namespace iba.Controls
                 m_datDirTextBox.TextChanged += eh;
                 m_datDirTextBox.ClientSizeChanged += eh;
 
-                foreach(Control c in groupBox1.Controls)
+                foreach(Control c in gbDatFiles.Controls)
                 {
                     if(c == label2)
                         c.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -65,11 +65,11 @@ namespace iba.Controls
                         c.Anchor = (c.Anchor & ~AnchorStyles.Top) | AnchorStyles.Bottom;
                 }
 
-                groupBox1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
-                groupBox1.Location = new Point(groupBox1.Location.X, groupBox1.Location.Y - diff);
-                int newHeight = groupBox1.Size.Height + diff;
-                groupBox1.Size = new Size(groupBox1.Size.Width, newHeight);
-                groupBox1.MinimumSize = new Size(0,newHeight);
+                gbDatFiles.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
+                gbDatFiles.Location = new Point(gbDatFiles.Location.X, gbDatFiles.Location.Y - diff);
+                int newHeight = gbDatFiles.Size.Height + diff;
+                gbDatFiles.Size = new Size(gbDatFiles.Size.Width, newHeight);
+                gbDatFiles.MinimumSize = new Size(0,newHeight);
                 m_toolTip.SetToolTip(m_datDirTextBox, iba.Properties.Resources.DatDirDragAndDrop);
                 m_autoStartCheckBox.Visible = false;
                 this.ResumeLayout();
@@ -78,13 +78,13 @@ namespace iba.Controls
             }
             else if (m_jobType == ConfigurationData.JobTypeEnum.ExtFile)
             {
-                groupBox1.Text = Resources.ExternalFiles;
+                gbDatFiles.Text = Resources.ExternalFiles;
                 label2.Text = $"{Resources.ExternalFileDirectory}:";
                 m_cbDetectNewFiles.Text = Resources.ProcessExternalFilesInstantly;
                 m_cbRescanEnabled.Text = Resources.RescanForUnprocessedFilesEvery;
-                
-                groupBox3.Height -= 50;
-                groupBox1.Location = new Point(groupBox1.Location.X, groupBox1.Location.Y - 50);
+
+                gbCycle.Height -= 50;
+                gbDatFiles.Location = new Point(gbDatFiles.Location.X, gbDatFiles.Location.Y - 50);
                 MinimumSize = new Size(Width, Height - 50);
 
                 m_browseDatFilesButton.Visible = false;
@@ -96,8 +96,10 @@ namespace iba.Controls
                 m_retryUpDown.Visible = false;
                 label14.Visible = false;
                 label10.Visible = false;
+                //lblFilePassword.Visible = false;
+                //tbFilePassword.Visible = false;
 
-                foreach (Control c in groupBox3.Controls)
+                foreach (Control c in gbCycle.Controls)
                 {
                     if (c is Button)
                     {
@@ -212,7 +214,7 @@ namespace iba.Controls
             m_tbPass.Text = m_data.Password;
             m_tbUserName.Text = m_data.Username;
             m_cbDetectNewFiles.Checked = m_data.DetectNewFiles;
-            m_tbFilePwd.Text = m_data.FileEncryptionPassword;
+            tbFilePassword.Text = m_data.FileEncryptionPassword;
         }
 
 
@@ -232,7 +234,7 @@ namespace iba.Controls
             m_data.Username = m_tbUserName.Text;
             m_data.UpdateUNC();
             m_data.DetectNewFiles = m_cbDetectNewFiles.Checked;
-            m_data.FileEncryptionPassword = m_tbFilePwd.Text;
+            m_data.FileEncryptionPassword = tbFilePassword.Text;
         }
 
         public void LeaveCleanup() {}
@@ -631,12 +633,12 @@ namespace iba.Controls
 
         private void btnShowFilePwd_MouseDown(object sender, MouseEventArgs e)
         {
-            m_tbFilePwd.UseSystemPasswordChar = false;
+            tbFilePassword.UseSystemPasswordChar = false;
         }
 
         private void btnShowFilePwd_MouseUp(object sender, MouseEventArgs e)
         {
-            m_tbFilePwd.UseSystemPasswordChar = true;
+            tbFilePassword.UseSystemPasswordChar = true;
         }
 
     }

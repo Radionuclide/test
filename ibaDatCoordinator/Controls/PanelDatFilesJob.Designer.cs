@@ -32,7 +32,7 @@
 			this.m_toolTip = new System.Windows.Forms.ToolTip();
 			this.m_folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
 			this.m_selectDatFilesDialog = new System.Windows.Forms.OpenFileDialog();
-			this.groupBox3 = new iba.Utility.CollapsibleGroupBox();
+			this.gbCycle = new iba.Utility.CollapsibleGroupBox();
 			this.m_cbRepErr = new System.Windows.Forms.CheckBox();
 			this.m_undoChangesBtn = new System.Windows.Forms.Button();
 			this.m_cbDetectNewFiles = new System.Windows.Forms.CheckBox();
@@ -51,9 +51,9 @@
 			this.label10 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.m_scanTimeUpDown = new System.Windows.Forms.NumericUpDown();
-			this.groupBox1 = new iba.Utility.CollapsibleGroupBox();
-			this.m_tbFilePwd = new System.Windows.Forms.TextBox();
-			this.label21 = new System.Windows.Forms.Label();
+			this.gbDatFiles = new iba.Utility.CollapsibleGroupBox();
+			this.tbFilePassword = new System.Windows.Forms.TextBox();
+			this.lblFilePassword = new System.Windows.Forms.Label();
 			this.m_browseDatFilesButton = new System.Windows.Forms.Button();
 			this.m_tbPass = new System.Windows.Forms.TextBox();
 			this.label12 = new System.Windows.Forms.Label();
@@ -64,11 +64,11 @@
 			this.m_subMapsCheckBox = new System.Windows.Forms.CheckBox();
 			this.m_datDirTextBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.groupBox3.SuspendLayout();
+			this.gbCycle.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).BeginInit();
-			this.groupBox1.SuspendLayout();
+			this.gbDatFiles.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// m_selectDatFilesDialog
@@ -79,27 +79,27 @@
 			// 
 			// groupBox3
 			// 
-			resources.ApplyResources(this.groupBox3, "groupBox3");
-			this.groupBox3.Controls.Add(this.m_cbRepErr);
-			this.groupBox3.Controls.Add(this.m_undoChangesBtn);
-			this.groupBox3.Controls.Add(this.m_cbDetectNewFiles);
-			this.groupBox3.Controls.Add(this.m_cbInitialScanEnabled);
-			this.groupBox3.Controls.Add(this.m_cbRetry);
-			this.groupBox3.Controls.Add(this.m_retryUpDown);
-			this.groupBox3.Controls.Add(this.label14);
-			this.groupBox3.Controls.Add(this.m_cbRescanEnabled);
-			this.groupBox3.Controls.Add(this.m_refreshDats);
-			this.groupBox3.Controls.Add(this.m_stopButton);
-			this.groupBox3.Controls.Add(this.m_applyToRunningBtn);
-			this.groupBox3.Controls.Add(this.m_startButton);
-			this.groupBox3.Controls.Add(this.m_autoStartCheckBox);
-			this.groupBox3.Controls.Add(this.m_enableCheckBox);
-			this.groupBox3.Controls.Add(this.m_failTimeUpDown);
-			this.groupBox3.Controls.Add(this.label10);
-			this.groupBox3.Controls.Add(this.label4);
-			this.groupBox3.Controls.Add(this.m_scanTimeUpDown);
-			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.TabStop = false;
+			resources.ApplyResources(this.gbCycle, "gbCycle");
+			this.gbCycle.Controls.Add(this.m_cbRepErr);
+			this.gbCycle.Controls.Add(this.m_undoChangesBtn);
+			this.gbCycle.Controls.Add(this.m_cbDetectNewFiles);
+			this.gbCycle.Controls.Add(this.m_cbInitialScanEnabled);
+			this.gbCycle.Controls.Add(this.m_cbRetry);
+			this.gbCycle.Controls.Add(this.m_retryUpDown);
+			this.gbCycle.Controls.Add(this.label14);
+			this.gbCycle.Controls.Add(this.m_cbRescanEnabled);
+			this.gbCycle.Controls.Add(this.m_refreshDats);
+			this.gbCycle.Controls.Add(this.m_stopButton);
+			this.gbCycle.Controls.Add(this.m_applyToRunningBtn);
+			this.gbCycle.Controls.Add(this.m_startButton);
+			this.gbCycle.Controls.Add(this.m_autoStartCheckBox);
+			this.gbCycle.Controls.Add(this.m_enableCheckBox);
+			this.gbCycle.Controls.Add(this.m_failTimeUpDown);
+			this.gbCycle.Controls.Add(this.label10);
+			this.gbCycle.Controls.Add(this.label4);
+			this.gbCycle.Controls.Add(this.m_scanTimeUpDown);
+			this.gbCycle.Name = "gbCycle";
+			this.gbCycle.TabStop = false;
 			// 
 			// m_cbRepErr
 			// 
@@ -257,32 +257,32 @@
 			// 
 			// groupBox1
 			// 
-			resources.ApplyResources(this.groupBox1, "groupBox1");
-			this.groupBox1.Controls.Add(this.m_tbFilePwd);
-			this.groupBox1.Controls.Add(this.label21);
-			this.groupBox1.Controls.Add(this.m_browseDatFilesButton);
-			this.groupBox1.Controls.Add(this.m_tbPass);
-			this.groupBox1.Controls.Add(this.label12);
-			this.groupBox1.Controls.Add(this.m_tbUserName);
-			this.groupBox1.Controls.Add(this.label3);
-			this.groupBox1.Controls.Add(this.m_checkPathButton);
-			this.groupBox1.Controls.Add(this.m_browseFolderButton);
-			this.groupBox1.Controls.Add(this.m_subMapsCheckBox);
-			this.groupBox1.Controls.Add(this.m_datDirTextBox);
-			this.groupBox1.Controls.Add(this.label2);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.TabStop = false;
+			resources.ApplyResources(this.gbDatFiles, "gbDatFiles");
+			this.gbDatFiles.Controls.Add(this.tbFilePassword);
+			this.gbDatFiles.Controls.Add(this.lblFilePassword);
+			this.gbDatFiles.Controls.Add(this.m_browseDatFilesButton);
+			this.gbDatFiles.Controls.Add(this.m_tbPass);
+			this.gbDatFiles.Controls.Add(this.label12);
+			this.gbDatFiles.Controls.Add(this.m_tbUserName);
+			this.gbDatFiles.Controls.Add(this.label3);
+			this.gbDatFiles.Controls.Add(this.m_checkPathButton);
+			this.gbDatFiles.Controls.Add(this.m_browseFolderButton);
+			this.gbDatFiles.Controls.Add(this.m_subMapsCheckBox);
+			this.gbDatFiles.Controls.Add(this.m_datDirTextBox);
+			this.gbDatFiles.Controls.Add(this.label2);
+			this.gbDatFiles.Name = "gbDatFiles";
+			this.gbDatFiles.TabStop = false;
 			// 
 			// m_tbFilePwd
 			// 
-			resources.ApplyResources(this.m_tbFilePwd, "m_tbFilePwd");
-			this.m_tbFilePwd.Name = "m_tbFilePwd";
-			this.m_tbFilePwd.UseSystemPasswordChar = true;
+			resources.ApplyResources(this.tbFilePassword, "tbFilePassword");
+			this.tbFilePassword.Name = "tbFilePassword";
+			this.tbFilePassword.UseSystemPasswordChar = true;
 			// 
 			// label21
 			// 
-			resources.ApplyResources(this.label21, "label21");
-			this.label21.Name = "label21";
+			resources.ApplyResources(this.lblFilePassword, "lblFilePassword");
+			this.lblFilePassword.Name = "lblFilePassword";
 			// 
 			// m_browseDatFilesButton
 			// 
@@ -351,23 +351,23 @@
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.groupBox3);
-			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.gbCycle);
+			this.Controls.Add(this.gbDatFiles);
 			this.Name = "PanelDatFilesJob";
-			this.groupBox3.ResumeLayout(false);
-			this.groupBox3.PerformLayout();
+			this.gbCycle.ResumeLayout(false);
+			this.gbCycle.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.m_retryUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.m_failTimeUpDown)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.m_scanTimeUpDown)).EndInit();
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
+			this.gbDatFiles.ResumeLayout(false);
+			this.gbDatFiles.PerformLayout();
 			this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private iba.Utility.CollapsibleGroupBox groupBox3;
+        private iba.Utility.CollapsibleGroupBox gbCycle;
         public System.Windows.Forms.Button m_undoChangesBtn;
         private System.Windows.Forms.CheckBox m_cbDetectNewFiles;
         private System.Windows.Forms.CheckBox m_cbInitialScanEnabled;
@@ -385,7 +385,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown m_scanTimeUpDown;
-        private iba.Utility.CollapsibleGroupBox groupBox1;
+        private iba.Utility.CollapsibleGroupBox gbDatFiles;
         private System.Windows.Forms.TextBox m_tbPass;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox m_tbUserName;
@@ -400,7 +400,7 @@
         private System.Windows.Forms.OpenFileDialog m_selectDatFilesDialog;
         private System.Windows.Forms.CheckBox m_cbRepErr;
         internal System.Windows.Forms.Button m_browseDatFilesButton;
-        private System.Windows.Forms.TextBox m_tbFilePwd;
-        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox tbFilePassword;
+        private System.Windows.Forms.Label lblFilePassword;
     }
 }

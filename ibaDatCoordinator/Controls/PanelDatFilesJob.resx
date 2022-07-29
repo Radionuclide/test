@@ -127,7 +127,7 @@
     <value>653, 17</value>
   </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="groupBox3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="gbCycle.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -157,7 +157,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbRepErr.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_cbRepErr.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -188,7 +188,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_undoChangesBtn.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_undoChangesBtn.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -221,7 +221,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbDetectNewFiles.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_cbDetectNewFiles.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -254,7 +254,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbInitialScanEnabled.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_cbInitialScanEnabled.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -284,7 +284,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbRetry.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_cbRetry.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -305,7 +305,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_retryUpDown.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_retryUpDown.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -335,7 +335,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label14.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -365,7 +365,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbRescanEnabled.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_cbRescanEnabled.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -392,7 +392,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_refreshDats.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_refreshDats.ZOrder" xml:space="preserve">
     <value>8</value>
@@ -419,7 +419,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_stopButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_stopButton.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -450,7 +450,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_applyToRunningBtn.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_applyToRunningBtn.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -477,7 +477,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_startButton.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_startButton.ZOrder" xml:space="preserve">
     <value>11</value>
@@ -510,7 +510,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_autoStartCheckBox.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_autoStartCheckBox.ZOrder" xml:space="preserve">
     <value>12</value>
@@ -543,7 +543,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_enableCheckBox.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_enableCheckBox.ZOrder" xml:space="preserve">
     <value>13</value>
@@ -564,7 +564,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_failTimeUpDown.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_failTimeUpDown.ZOrder" xml:space="preserve">
     <value>14</value>
@@ -594,7 +594,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
     <value>15</value>
@@ -624,7 +624,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>16</value>
@@ -645,90 +645,90 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scanTimeUpDown.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>gbCycle</value>
   </data>
   <data name="&gt;&gt;m_scanTimeUpDown.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="gbCycle.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="gbCycle.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 143</value>
   </data>
-  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
+  <data name="gbCycle.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
+  <data name="gbCycle.Text" xml:space="preserve">
     <value>Cycle</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="&gt;&gt;gbCycle.Name" xml:space="preserve">
+    <value>gbCycle</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
+  <data name="&gt;&gt;gbCycle.Type" xml:space="preserve">
     <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;gbCycle.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;gbCycle.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="gbDatFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_tbFilePwd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="tbFilePassword.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_tbFilePwd.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tbFilePassword.Location" type="System.Drawing.Point, System.Drawing">
     <value>171, 97</value>
   </data>
-  <data name="m_tbFilePwd.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tbFilePassword.Size" type="System.Drawing.Size, System.Drawing">
     <value>386, 20</value>
   </data>
-  <data name="m_tbFilePwd.TabIndex" type="System.Int32, mscorlib">
+  <data name="tbFilePassword.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
   </data>
-  <data name="&gt;&gt;m_tbFilePwd.Name" xml:space="preserve">
-    <value>m_tbFilePwd</value>
+  <data name="&gt;&gt;tbFilePassword.Name" xml:space="preserve">
+    <value>tbFilePassword</value>
   </data>
-  <data name="&gt;&gt;m_tbFilePwd.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbFilePassword.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tbFilePwd.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;tbFilePassword.Parent" xml:space="preserve">
+    <value>gbDatFiles</value>
   </data>
-  <data name="&gt;&gt;m_tbFilePwd.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbFilePassword.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="label21.AutoSize" type="System.Boolean, mscorlib">
+  <data name="lblFilePassword.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label21.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="lblFilePassword.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lblFilePassword.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 100</value>
   </data>
-  <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lblFilePassword.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 13</value>
   </data>
-  <data name="label21.TabIndex" type="System.Int32, mscorlib">
+  <data name="lblFilePassword.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
   </data>
-  <data name="label21.Text" xml:space="preserve">
+  <data name="lblFilePassword.Text" xml:space="preserve">
     <value>File password:</value>
   </data>
-  <data name="&gt;&gt;label21.Name" xml:space="preserve">
-    <value>label21</value>
+  <data name="&gt;&gt;lblFilePassword.Name" xml:space="preserve">
+    <value>lblFilePassword</value>
   </data>
-  <data name="&gt;&gt;label21.Type" xml:space="preserve">
+  <data name="&gt;&gt;lblFilePassword.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label21.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;lblFilePassword.Parent" xml:space="preserve">
+    <value>gbDatFiles</value>
   </data>
-  <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lblFilePassword.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_browseDatFilesButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -753,7 +753,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_browseDatFilesButton.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;m_browseDatFilesButton.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -777,7 +777,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbPass.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;m_tbPass.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -807,7 +807,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label12.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -831,7 +831,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbUserName.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;m_tbUserName.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -861,7 +861,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -888,7 +888,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_checkPathButton.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;m_checkPathButton.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -915,7 +915,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_browseFolderButton.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;m_browseFolderButton.ZOrder" xml:space="preserve">
     <value>8</value>
@@ -945,7 +945,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_subMapsCheckBox.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;m_subMapsCheckBox.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -972,7 +972,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_datDirTextBox.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;m_datDirTextBox.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -1002,33 +1002,33 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>gbDatFiles</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="gbDatFiles.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 149</value>
   </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="gbDatFiles.Size" type="System.Drawing.Size, System.Drawing">
     <value>702, 134</value>
   </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="gbDatFiles.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
+  <data name="gbDatFiles.Text" xml:space="preserve">
     <value>Dat files</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;gbDatFiles.Name" xml:space="preserve">
+    <value>gbDatFiles</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;gbDatFiles.Type" xml:space="preserve">
     <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;gbDatFiles.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;gbDatFiles.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
