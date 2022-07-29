@@ -36,20 +36,12 @@ namespace iba.Controls
 
         private void SnmpControl_Load(object sender, EventArgs e)
         {
-            ImageList pdaList = new ImageList
-            {
-                ImageSize = new Size(16, 16),
-                TransparentColor = Color.Magenta,
-                ColorDepth = ColorDepth.Depth24Bit
-            };
-            pdaList.Images.AddStrip(Resources.snmp_images);
-
-            // image list for objects TreeView
+            // image list for tags TreeView
             ImageList tvObjectsImageList = new ImageList();
             // folder
-            tvObjectsImageList.Images.Add(pdaList.Images[0]);
+            tvObjectsImageList.Images.Add(Icons.Gui.All.Images.FolderOpen());
             // leaf
-            tvObjectsImageList.Images.Add(pdaList.Images[2]);
+            tvObjectsImageList.Images.Add(Icons.Gui.All.Images.TagBlueOutline());
             tvObjects.ImageList = tvObjectsImageList;
             tvObjects.ImageIndex = ImageIndexFolder;
         }
