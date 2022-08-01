@@ -523,6 +523,22 @@ namespace iba.Controls
             if (e.Column != expressionGridColumn || e.Value is null) return;
             string expression = e.Value.ToString();
 
+            if (_analyzerManager.Analyzer is null)
+                _analyzerManager.OpenAnalyzer(out _);
+
+            if (_analyzerManager.Analyzer != null)
+            {
+                var t = _analyzerManager.Analyzer.EvaluateDataType(expression, 0); // the second parameter is useless
+                if (t == 1)
+                    _viewExpr.SetRowCellValue(e.RowHandle, dataTypeGridColumn,
+                        KafkaWriterTaskData.KafkaRecord.DataTypes[(int)KafkaWriterTaskData.KafkaRecord.ExpressionType.Digital]); 
+                else if (t == 2)
+                    _viewExpr.SetRowCellValue(e.RowHandle, dataTypeGridColumn,
+                        KafkaWriterTaskData.KafkaRecord.DataTypes[(int)KafkaWriterTaskData.KafkaRecord.ExpressionType.Text]);
+                else _viewExpr.SetRowCellValue(e.RowHandle, dataTypeGridColumn,
+                        KafkaWriterTaskData.KafkaRecord.DataTypes[(int)KafkaWriterTaskData.KafkaRecord.ExpressionType.Double]);
+            }
+
             if (expression.StartsWith("[") && expression.EndsWith("]"))
                 expression = expression.Substring(1, expression.Length - 2);
 

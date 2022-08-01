@@ -134,7 +134,7 @@ namespace iba.Data
             };
             public enum ExpressionType
             {
-                Number = 0,
+                Double = 0,
                 Text = 1,
                 Digital = 2
             }
@@ -150,8 +150,8 @@ namespace iba.Data
                 get => DataTypes[(int)DataType];
                 set
                 {
-                    if (value == DataTypes[(int)ExpressionType.Number])
-                        DataType = ExpressionType.Number;
+                    if (value == DataTypes[(int)ExpressionType.Double])
+                        DataType = ExpressionType.Double;
                     else if (value == DataTypes[(int)ExpressionType.Text])
                         DataType = ExpressionType.Text;
                     else if (value == DataTypes[(int)ExpressionType.Digital])
