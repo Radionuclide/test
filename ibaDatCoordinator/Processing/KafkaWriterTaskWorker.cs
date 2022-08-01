@@ -312,7 +312,7 @@ namespace iba.Processing
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.AVRO)
                         {
                             var schemaFingerPrint = schemaFingerPrintDefault;
-                            if (m_data.schemaRegistryAddress != "")
+                            if (m_data.schemaRegistryAddress != "" && m_data.ClusterMode == ClusterType.Kafka)
                                 schemaFingerPrint = GetSchemaFingerprint(m_data);
                             var schema = schemaDefault;
                             
@@ -508,6 +508,63 @@ namespace iba.Processing
             if (data.ClusterMode == KafkaWriterTaskData.ClusterType.Kafka)
             {
                 config.BootstrapServers = data.clusterAddress;
+
+                switch (data.AckMode)
+                {
+                    case KafkaWriterTaskData.RequiredAcks.None:
+                        config.Acks = Acks.None;
+                        break;
+                    case KafkaWriterTaskData.RequiredAcks.Leader:
+                        config.Acks = Acks.Leader;
+                        break;
+                    case KafkaWriterTaskData.RequiredAcks.All:
+                        config.Acks = Acks.All;
+                        break;
+                }
+
+                switch (data.ClusterSecurityMode)
+                {
+                    case KafkaWriterTaskData.ClusterSecurityType.PLAINTEXT:
+                        config.SecurityProtocol = SecurityProtocol.Plaintext;
+                        break;
+                    case KafkaWriterTaskData.ClusterSecurityType.SSL:
+                        config.SecurityProtocol = SecurityProtocol.Ssl;
+                        break;
+                    case KafkaWriterTaskData.ClusterSecurityType.SASL_PLAINTEXT:
+                        config.SecurityProtocol = SecurityProtocol.SaslPlaintext;
+                        break;
+                    case KafkaWriterTaskData.ClusterSecurityType.SASL_SSL:
+                        config.SecurityProtocol = SecurityProtocol.SaslSsl;
+                        break;
+                }
+
+                if (data.ClusterSecurityMode == KafkaWriterTaskData.ClusterSecurityType.SASL_PLAINTEXT ||
+                    data.ClusterSecurityMode == KafkaWriterTaskData.ClusterSecurityType.SASL_SSL)
+                {
+                    switch (data.SASLMechanismMode)
+                    {
+                        case KafkaWriterTaskData.SASLMechanismType.PLAIN:
+                            config.SaslMechanism = SaslMechanism.Plain;
+                            break;
+                        case KafkaWriterTaskData.SASLMechanismType.SCRAM_SHA_256:
+                            config.SaslMechanism = SaslMechanism.ScramSha256;
+                            break;
+                        case KafkaWriterTaskData.SASLMechanismType.SCRAM_SHA_512:
+                            config.SaslMechanism = SaslMechanism.ScramSha512;
+                            break;
+
+                    }
+                    config.SaslUsername = data.SASLUsername;
+                    config.SaslPassword = data.SASLPass;
+                }
+                // Add expert parameters
+                foreach (var kvp in data.Params)
+                {
+                    if (string.IsNullOrEmpty(kvp.Key) || kvp.Key.StartsWith("schema.registry."))
+                        continue;
+
+                    config.Set(kvp.Key, kvp.Value);
+                }
             }
             else
             {
@@ -537,68 +594,14 @@ namespace iba.Processing
             config.EnableSslCertificateVerification = data.enableSSLVerification;
             config.ClientId = data.identifier;
             config.MessageTimeoutMs = (int)(data.timeout * 1000);
-            switch (data.AckMode)
-            {
-                case KafkaWriterTaskData.RequiredAcks.None:
-                    config.Acks = Acks.None;
-                    break;
-                case KafkaWriterTaskData.RequiredAcks.Leader:
-                    config.Acks = Acks.Leader;
-                    break;
-                case KafkaWriterTaskData.RequiredAcks.All:
-                    config.Acks = Acks.All;
-                    break;
-            }
-
-            switch (data.ClusterSecurityMode)
-            {
-                case KafkaWriterTaskData.ClusterSecurityType.PLAINTEXT:
-                    config.SecurityProtocol = SecurityProtocol.Plaintext;
-                    break;
-                case KafkaWriterTaskData.ClusterSecurityType.SSL:
-                    config.SecurityProtocol = SecurityProtocol.Ssl;
-                    break;
-                case KafkaWriterTaskData.ClusterSecurityType.SASL_PLAINTEXT:
-                    config.SecurityProtocol = SecurityProtocol.SaslPlaintext;
-                    break;
-                case KafkaWriterTaskData.ClusterSecurityType.SASL_SSL:
-                    config.SecurityProtocol = SecurityProtocol.SaslSsl;
-                    break;
-            }
-
-            if (data.ClusterSecurityMode == KafkaWriterTaskData.ClusterSecurityType.SASL_PLAINTEXT ||
-                data.ClusterSecurityMode == KafkaWriterTaskData.ClusterSecurityType.SASL_SSL)
-            {
-                switch (data.SASLMechanismMode)
-                {
-                    case KafkaWriterTaskData.SASLMechanismType.PLAIN:
-                        config.SaslMechanism = SaslMechanism.Plain;
-                        break;
-                    case KafkaWriterTaskData.SASLMechanismType.SCRAM_SHA_256:
-                        config.SaslMechanism = SaslMechanism.ScramSha256;
-                        break;
-                    case KafkaWriterTaskData.SASLMechanismType.SCRAM_SHA_512:
-                        config.SaslMechanism = SaslMechanism.ScramSha512;
-                        break;
-
-                }
-                config.SaslUsername = data.SASLUsername;
-                config.SaslPassword = data.SASLPass;
-            }
-            // Add expert parameters
-            foreach (var kvp in data.Params)
-            {
-                if (string.IsNullOrEmpty(kvp.Key) || kvp.Key.StartsWith("schema.registry."))
-                    continue;
-
-                config.Set(kvp.Key, kvp.Value);
-            }
 
             return config;
         }
 
         internal static void InitIBuilder(KafkaWriterTaskData data, IBuilder builder)
         {
+            if (data.ClusterMode == ClusterType.EventHub)
+                return;
             if (data.SSLClientThumbprint != null && data.SSLClientThumbprint != "")
             {
                 var cert = TaskManager.Manager.CertificateManager.GetCertificate(data.SSLClientThumbprint, CertificateStore.CertificateRequirement.None, out var _);
@@ -628,7 +631,7 @@ namespace iba.Processing
 
                 Metadata m = adminClient.GetMetadata(TimeSpan.FromSeconds(data.timeout));
                 topics = m.Topics.Select(t => t.Topic).ToArray();
-                if (!data.enableSchema || data.schemaRegistryAddress == "")
+                if (!data.enableSchema || data.schemaRegistryAddress == "" || data.ClusterMode == ClusterType.EventHub)
                     return topics;
 
                 Confluent.SchemaRegistry.SchemaRegistryConfig schemRegConfig = new Confluent.SchemaRegistry.SchemaRegistryConfig();
