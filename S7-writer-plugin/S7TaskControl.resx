@@ -1070,7 +1070,7 @@
     <value>6</value>
   </data>
   <data name="buttonEndpointRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="buttonEndpointRemove.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial Narrow, 8.25pt</value>
@@ -1079,7 +1079,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonEndpointRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>568, 183</value>
+    <value>568, 294</value>
   </data>
   <data name="buttonEndpointRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 24</value>
@@ -1109,7 +1109,7 @@
     <value>NoControl</value>
   </data>
   <data name="buttonEndpointCopy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>568, 213</value>
+    <value>568, 183</value>
   </data>
   <data name="buttonEndpointCopy.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 24</value>
