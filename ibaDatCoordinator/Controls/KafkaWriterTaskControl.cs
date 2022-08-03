@@ -159,12 +159,13 @@ namespace iba.Controls
             exprGrid.RepositoryItems.Add(m_channelEditor);
             expressionGridColumn.ColumnEdit = m_channelEditor;
 
+            metadataComboBox.Properties.Items.Add("Name");
+            metadataComboBox.Properties.Items.Add("ID");
+            metadataComboBox.Properties.Items.Add("Identifier");
+            metadataComboBox.Properties.Items.Add("Timestamp");
             metadataComboBox.Properties.Items.Add("Unit");
             metadataComboBox.Properties.Items.Add("Comment 1");
             metadataComboBox.Properties.Items.Add("Comment 2");
-            metadataComboBox.Properties.Items.Add("Name");
-            metadataComboBox.Properties.Items.Add("Identifier");
-            metadataComboBox.Properties.Items.Add("Timestamp");
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             foreach (var t in KafkaWriterTaskData.KafkaRecord.DataTypes)
@@ -522,28 +523,35 @@ namespace iba.Controls
         {
             if (e.Column != expressionGridColumn || e.Value is null) return;
             string expression = e.Value.ToString();
+            string name = "";
 
             if (_analyzerManager.Analyzer is null)
                 _analyzerManager.OpenAnalyzer(out _);
 
             if (_analyzerManager.Analyzer != null)
             {
-                var t = _analyzerManager.Analyzer.EvaluateDataType(expression, 0); // the second parameter is useless
-                if (t == 1)
+                var type = _analyzerManager.Analyzer.EvaluateDataType(expression, 0); // the second parameter is useless
+                if (type == 0) _viewExpr.SetRowCellValue(e.RowHandle, dataTypeGridColumn,
+                        KafkaWriterTaskData.KafkaRecord.DataTypes[(int)KafkaWriterTaskData.KafkaRecord.ExpressionType.Double]);
+                else if (type == 1)
                     _viewExpr.SetRowCellValue(e.RowHandle, dataTypeGridColumn,
                         KafkaWriterTaskData.KafkaRecord.DataTypes[(int)KafkaWriterTaskData.KafkaRecord.ExpressionType.Digital]); 
-                else if (t == 2)
+                else if (type == 2)
                     _viewExpr.SetRowCellValue(e.RowHandle, dataTypeGridColumn,
                         KafkaWriterTaskData.KafkaRecord.DataTypes[(int)KafkaWriterTaskData.KafkaRecord.ExpressionType.Text]);
-                else _viewExpr.SetRowCellValue(e.RowHandle, dataTypeGridColumn,
-                        KafkaWriterTaskData.KafkaRecord.DataTypes[(int)KafkaWriterTaskData.KafkaRecord.ExpressionType.Double]);
+
+                var channelMetaData = _analyzerManager.Analyzer.GetChannelMetaData(expression);
+                if (channelMetaData != null)
+                    name = channelMetaData.name;
+                
             }
+            if (name == "")
+                name = expression;
+            if (name.StartsWith("[") && name.EndsWith("]"))
+                name = name.Substring(1, name.Length - 2);
 
-            if (expression.StartsWith("[") && expression.EndsWith("]"))
-                expression = expression.Substring(1, expression.Length - 2);
-
-            if (_viewExpr.GetRowCellValue(e.RowHandle, nameGridColumn).ToString() == "" && expression != "")
-                _viewExpr.SetRowCellValue(e.RowHandle, nameGridColumn, expression);
+            if (_viewExpr.GetRowCellValue(e.RowHandle, nameGridColumn).ToString() == "" && name != "")
+                _viewExpr.SetRowCellValue(e.RowHandle, nameGridColumn, name);
         }
 
         private void buttonExpressionAdd_Click(object sender, System.EventArgs e)

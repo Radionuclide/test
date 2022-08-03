@@ -72,9 +72,10 @@ namespace iba.Processing
             m_ibaAnalyzer = worker.m_ibaAnalyzer;
         }
 
-        string ReplacePlaceholders(KafkaWriterTaskData.KafkaRecord rec, string str)
+        string SubstitutePlaceholders(KafkaWriterTaskData.KafkaRecord rec, string str)
         {
             str = str.Replace("$identifier", m_data.identifier);
+            str = str.Replace("ID", rec.Expression);
             str = str.Replace("$signalname", rec.Name);
             str = str.Replace("$unit", rec.Unit);
             str = str.Replace("$comment1", rec.Comment1);
@@ -83,9 +84,10 @@ namespace iba.Processing
             return str;
         }
 
-        string ReplacePlaceholdersKey(string str)
+        string SubstitutePlaceholdersKeyGrouped(string str)
         {
             str = str.Replace("$identifier", m_data.identifier);
+            str = str.Replace("ID", "");
             str = str.Replace("$signalname", "");
             str = str.Replace("$unit", "");
             str = str.Replace("$comment1", "");
@@ -195,7 +197,7 @@ namespace iba.Processing
                             mon.Execute(delegate () { timeOffset = m_ibaAnalyzer.Evaluate(m_data.timeStampExpression, 0); });
                             if (double.IsNaN(timeOffset))
                             {
-                                m_confWorker.Log(Logging.Level.Warning, $"Cannot evaluate expression {m_data.timeStampExpression}", filename, m_data);
+                                timeStampDt = DateTime.MinValue; // incorrect value if we cant evaluate expression
                             }
                             else
                             {
@@ -250,62 +252,69 @@ namespace iba.Processing
 
                     try
                     {
-                        if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONGrouped)
+                        if (m_data.Format == DataFormat.JSONGrouped)
                         {
                             var producerBuilder = new ProducerBuilder<string, string>(config);
                             InitIBuilder(m_data, producerBuilder);
-                            
-                            string message = "{ \n";
+
+                            var d = new Dictionary<string, string>();
 
                             for (int i = 0; i < m_data.Records.Count; i++)
                             {
                                 var rec = m_data.Records[i];
-                                var sigRef = ReplacePlaceholders(rec, m_data.signalReference);
-                                if (i > 0)  
-                                    message += ",\n ";
-                                message += $"\"{sigRef}\": {m_data.ToText(rec)}";
-                                if (m_data.metadata.Contains("Identifier"))
-                                    message += $",\n \"{sigRef}.Identifier\": \"{m_data.identifier}\"";
+                                var sigRef = SubstitutePlaceholders(rec, m_data.signalReference);
+                                d.Add(sigRef, m_data.ToText(rec));
+                                if (m_data.metadata.Contains("ID"))
+                                    d.Add(sigRef + ".ID", rec.Expression);
                                 if (m_data.metadata.Contains("Name"))
-                                    message += $",\n \"{sigRef}.Name\": \"{rec.Name}\"";
+                                    d.Add(sigRef + ".Name", rec.Name);
                                 if (m_data.metadata.Contains("Unit"))
-                                    message += $",\n \"{sigRef}.Unit\": \"{rec.Unit}\"";
+                                    d.Add(sigRef + ".Unit", rec.Unit);
                                 if (m_data.metadata.Contains("Comment 1"))
-                                    message += $",\n \"{sigRef}.Comment1\": \"{rec.Comment1}\"";
+                                    d.Add(sigRef + ".Comment 1", rec.Comment1);
                                 if (m_data.metadata.Contains("Comment 2"))
-                                    message += $",\n \"{sigRef}.Comment2\": \"{rec.Comment2}\"";
+                                    d.Add(sigRef + ".Comment 2", rec.Comment2);
+                                if (m_data.metadata.Contains("Identifier"))
+                                    d.Add(sigRef + ".Identifier", m_data.identifier);
                                 if (m_data.metadata.Contains("Timestamp"))
-                                    message += $",\n \"{sigRef}.Timestamp\": \"{timeStamp}\"";
+                                    d.Add(sigRef + ".Timestamp", timeStamp);
                             }
-                            message += "\n}";
+
+                            string message = Newtonsoft.Json.JsonConvert.SerializeObject(d);
                             using (var p = producerBuilder.Build())
                             {
-                                _ = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholdersKey(m_data.key), Value = message }).Result;
+                                _ = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = SubstitutePlaceholdersKeyGrouped(m_data.key), Value = message }).Result;
                             }
                         }
-                        else if (m_data.Format == KafkaWriterTaskData.DataFormat.JSONPerSignal)
+                        else if (m_data.Format == DataFormat.JSONPerSignal)
                         {
                             var producerBuilder = new ProducerBuilder<string, string>(config);
                             InitIBuilder(m_data, producerBuilder);
                             foreach (var rec in m_data.Records)
                             {
-                                string message = $"{{ \n\"Signal\": \"{ReplacePlaceholders(rec, m_data.signalReference)}\",\n \"Value\":{m_data.ToText(rec)}";
-                                if (m_data.metadata.Contains("Identifier"))
-                                    message += $",\n \"Identifier\": \"{m_data.identifier}\"";
+                                var d = new Dictionary<string, string>();
+
+                                d.Add("Signal", SubstitutePlaceholders(rec, m_data.signalReference));
+                                d.Add("Value", m_data.ToText(rec));
+                                if (m_data.metadata.Contains("ID"))
+                                    d.Add("ID", rec.Expression);
                                 if (m_data.metadata.Contains("Name"))
-                                    message += $",\n \"Name\": \"{rec.Name}\"";
+                                    d.Add("Name", rec.Name);
                                 if (m_data.metadata.Contains("Unit"))
-                                    message += $",\n \"Unit\": \"{rec.Unit}\"";
+                                    d.Add("Unit", rec.Unit);
                                 if (m_data.metadata.Contains("Comment 1"))
-                                    message += $",\n \"Comment1\": \"{rec.Comment1}\"";
+                                    d.Add("Comment 1", rec.Comment1);
                                 if (m_data.metadata.Contains("Comment 2"))
-                                    message += $",\n \"Comment2\": \"{rec.Comment2}\"";
+                                    d.Add("Comment 2", rec.Comment2);
+                                if (m_data.metadata.Contains("Identifier"))
+                                    d.Add("Identifier", m_data.identifier);
                                 if (m_data.metadata.Contains("Timestamp"))
-                                    message += $",\n \"Timestamp\": \"{timeStamp}\"";
-                                message += "\n}";
+                                    d.Add("Timestamp", timeStamp);
+
+                                string message = Newtonsoft.Json.JsonConvert.SerializeObject(d);
                                 using (var p = producerBuilder.Build())
                                 {
-                                    _ = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = ReplacePlaceholders(rec, m_data.key), Value = message }).Result;
+                                    _ = p.ProduceAsync(m_data.topicName, new Message<string, string> { Key = SubstitutePlaceholders(rec, m_data.key), Value = message }).Result;
                                 }
                             }
                         }
@@ -330,9 +339,9 @@ namespace iba.Processing
                                 schema.TryGetField("ValueType", out Avro.Field enumField);
                                 Avro.EnumSchema valTypeSchema = enumField.Schema as Avro.EnumSchema;
                                 r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
-                                r.Add("Signal", ReplacePlaceholders(rec, m_data.signalReference));
+                                r.Add("Signal", SubstitutePlaceholders(rec, m_data.signalReference));
                                 r.Add("Identifier", m_data.identifier);
-                                r.Add("ID", "");
+                                r.Add("ID", rec.Expression);
                                 r.Add("Name", rec.Name);
                                 r.Add("Unit", rec.Unit);
                                 r.Add("Comment1", rec.Comment1);
@@ -358,7 +367,7 @@ namespace iba.Processing
                                     msg.Value = ms.ToArray();
                                 }
 
-                                msg.Key = Encoding.UTF8.GetBytes(ReplacePlaceholders(rec, m_data.key).ToCharArray());
+                                msg.Key = Encoding.UTF8.GetBytes(SubstitutePlaceholders(rec, m_data.key).ToCharArray());
                                 using (var p = producerBuilder.Build())
                                 {
                                     _ = p.ProduceAsync(m_data.topicName, msg).Result;

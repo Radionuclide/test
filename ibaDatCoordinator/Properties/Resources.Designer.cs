@@ -1655,7 +1655,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ibaAnalyzer Expression.
+        ///   Looks up a localized string similar to ibaAnalyzer Expression (ID).
         /// </summary>
         internal static string ibaAnalyzerExpression {
             get {
@@ -1876,6 +1876,7 @@ namespace iba.Properties {
         ///   Looks up a localized string similar to The following placeholders are available:
         ///
         ///$identifier: Identifier defined in data storage configuration
+        ///$ID: ibaAnalyzer Expression (ID)
         ///$signalname: Signal name
         ///$unit: Signal unit
         ///$comment1: Signal comment 1
@@ -1893,6 +1894,7 @@ namespace iba.Properties {
         ///   Looks up a localized string similar to The following placeholders are available:
         ///
         ///$identifier: Identifier defined in data storage configuration
+        ///$ID: ibaAnalyzer Expression (ID)
         ///$signalname: Signal name
         ///$unit: Signal unit
         ///$comment1: Signal comment 1
