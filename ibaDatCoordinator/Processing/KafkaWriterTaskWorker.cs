@@ -16,6 +16,7 @@ using System.Xml.Serialization;
 using static iba.Data.KafkaWriterTaskData;
 using IbaAnalyzer;
 using iba.CertificateStore;
+using System.Text.RegularExpressions;
 
 namespace iba.Processing
 {
@@ -74,24 +75,24 @@ namespace iba.Processing
 
         string SubstitutePlaceholders(KafkaWriterTaskData.KafkaRecord rec, string str)
         {
-            str = str.Replace("$identifier", m_data.identifier);
-            str = str.Replace("ID", rec.Expression);
-            str = str.Replace("$signalname", rec.Name);
-            str = str.Replace("$unit", rec.Unit);
-            str = str.Replace("$comment1", rec.Comment1);
-            str = str.Replace("$comment2", rec.Comment2);
+            str = Regex.Replace(str, "\\$identifier", m_data.identifier, RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$ID", rec.Expression, RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$signalname", rec.Name, RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$unit", rec.Unit, RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$comment1", rec.Comment1, RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$comment2", rec.Comment2, RegexOptions.IgnoreCase);
 
             return str;
         }
 
         string SubstitutePlaceholdersKeyGrouped(string str)
         {
-            str = str.Replace("$identifier", m_data.identifier);
-            str = str.Replace("ID", "");
-            str = str.Replace("$signalname", "");
-            str = str.Replace("$unit", "");
-            str = str.Replace("$comment1", "");
-            str = str.Replace("$comment2", "");
+            str = Regex.Replace(str, "\\$identifier", m_data.identifier, RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$ID", "", RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$signalname", "", RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$unit", "", RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$comment1", "", RegexOptions.IgnoreCase);
+            str = Regex.Replace(str, "\\$comment2", "", RegexOptions.IgnoreCase);
 
             return str;
         }
