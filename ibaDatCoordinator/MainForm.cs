@@ -121,9 +121,9 @@ namespace iba
             m_opcUaPane.LargeImage = m_opcUaPane.SmallImage = Icons.Gui.All.Images.Opcua();
             // added by kolesnik - end
             m_dataTransferPane.LargeImage = m_dataTransferPane.SmallImage = Icons.Gui.All.Images.SendReceive();
-            m_statusPane.LargeImage = m_statusPane.SmallImage = Icons.Gui.All.Images.Report();
+            m_statusPane.LargeImage = m_statusPane.SmallImage = Icons.Gui.All.Images.Table();
             m_configPane.LargeImage = m_configPane.SmallImage = Icons.Gui.All.Images.Batch();
-            m_loggingPane.LargeImage = m_loggingPane.SmallImage = Icons.Gui.All.Images.Table();
+            m_loggingPane.LargeImage = m_loggingPane.SmallImage = Icons.Gui.All.Images.Report();
             m_settingsPane.LargeImage = m_settingsPane.SmallImage = Icons.Gui.All.Images.ToolboxService();
             m_toolTip.SetToolTip(m_startButton, Properties.Resources.toolTipStartAll);
             m_toolTip.SetToolTip(m_stopButton, Properties.Resources.toolTipStopAll);
@@ -205,8 +205,8 @@ namespace iba
 
             configurationToolStripMenuItem.Image = Icons.Gui.All.Images.Batch();
             dataTransferToolStripMenuItem.Image = Icons.Gui.All.Images.SendReceive();
-            statusToolStripMenuItem.Image = Icons.Gui.All.Images.Report();
-            loggingToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
+            statusToolStripMenuItem.Image = Icons.Gui.All.Images.Table();
+            loggingToolStripMenuItem.Image = Icons.Gui.All.Images.Report();
             watchdogToolStripMenuItem.Image = Icons.Gui.All.Images.TcpIp();
             snmpToolStripMenuItem.Image = Icons.Gui.All.Images.Snmp();
             opcUaToolStripMenuItem.Image = Icons.Gui.All.Images.Opcua();
