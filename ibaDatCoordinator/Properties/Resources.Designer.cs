@@ -2141,6 +2141,24 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to convert task stared.
+        /// </summary>
+        internal static string logConvertStarded {
+            get {
+                return ResourceManager.GetString("logConvertStarded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to convert task successfully completed.
+        /// </summary>
+        internal static string logConvertSuccess {
+            get {
+                return ResourceManager.GetString("logConvertSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to failed to copy file.
         /// </summary>
         internal static string logCopyTaskFailed {
@@ -4808,6 +4826,15 @@ namespace iba.Properties {
         internal static string TargetDirectory {
             get {
                 return ResourceManager.GetString("TargetDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target directory not specified.
+        /// </summary>
+        internal static string TargetDirectoryNotSpecified {
+            get {
+                return ResourceManager.GetString("TargetDirectoryNotSpecified", resourceCulture);
             }
         }
         

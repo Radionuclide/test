@@ -1945,4 +1945,13 @@ $comment2: Signal comment 2</value>
   <data name="FileExtension" xml:space="preserve">
     <value>File extension</value>
   </data>
+  <data name="logConvertStarded" xml:space="preserve">
+    <value>convert task stared</value>
+  </data>
+  <data name="logConvertSuccess" xml:space="preserve">
+    <value>convert task successfully completed</value>
+  </data>
+  <data name="TargetDirectoryNotSpecified" xml:space="preserve">
+    <value>Target directory not specified</value>
+  </data>
 </root>

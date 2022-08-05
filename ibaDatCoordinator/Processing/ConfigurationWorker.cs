@@ -5438,7 +5438,7 @@ namespace iba.Processing
 
         private void DoConvertExtFileTask(string filename, ConvertExtFileTaskData taskData)
         {
-            new ConvertExtFileTaskWorker(this, taskData).DoWork(filename, m_cd.FileFormat, m_cd.PdoFile);
+            new ConvertExtFileTaskWorker(this, taskData).DoWork(filename, m_cd);
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 

@@ -20,11 +20,17 @@ namespace iba.Processing
             m_ibaAnalyzer = worker.m_ibaAnalyzer;
         }
 
-        public void DoWork(string filename, ConfigurationData.FileFormatEnum fileFormat, string pdoForTextFile)
+        public void DoWork(string filename, ConfigurationData data)
         {
             if (!String.IsNullOrEmpty(m_task.AnalysisFile) && !File.Exists(m_task.AnalysisFile))
             {
                 SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(data.ProcessedFileTargedDirectory) && data.MoveExtFile)
+            {
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.TargetDirectoryNotSpecified);
                 return;
             }
 
@@ -43,7 +49,7 @@ namespace iba.Processing
 
                 SetSate(filename, DatFileStatus.State.RUNNING);
 
-                m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logExtractStarted, filename, m_task); //todo rename massage
+                m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logConvertStarded, filename, m_task);
 
                 const string extension = ".dat";
                 var outFile = GetOutputFile(filename, extension);
@@ -61,11 +67,18 @@ namespace iba.Processing
                     m_confWorker.CleanupDirs(outFile, m_task, extension);
                 }
 
-                if (fileFormat == ConfigurationData.FileFormatEnum.TEXTFILE)
+                if (data.FileFormat == ConfigurationData.FileFormatEnum.TEXTFILE)
                 {
-                    mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(pdoForTextFile); });
+                    string pdoForTextFile = data.PdoFile;
 
-                    mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
+                    if (string.IsNullOrEmpty(pdoForTextFile))
+                    {
+                        mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
+                    }
+                    else
+                    {
+                        mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(pdoForTextFile); });
+                    }
                 }
 
                 if (string.IsNullOrEmpty(m_task.AnalysisFile))
@@ -91,7 +104,7 @@ namespace iba.Processing
                 {
                     m_sd.DatFileStates[filename].States[m_task] = DatFileStatus.State.COMPLETED_SUCCESFULY;
                 }
-                m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logExtractSuccess, filename, m_task);
+                m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logConvertSuccess, filename, m_task);
             }
             catch (IbaAnalyzerExceedingTimeLimitException te)
             {

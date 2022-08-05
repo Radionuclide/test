@@ -923,8 +923,10 @@ namespace iba.Controls
             rbDelete = new RadioButton
             {
                 Text = Resources.Delete,
-                Location = new Point(20, 15)
+                Location = new Point(20, 15),
+                
             };
+
             rbMove = new RadioButton
             {
                 Text = Resources.Move,
@@ -991,6 +993,9 @@ namespace iba.Controls
             btnTestPath.Width = 24;
             btnTestPath.Click += (sender, args) =>
                 m_panelDatFilesJob?.CheckPathButton(m_tbTargetDirectory, m_tbUsername, m_tbPassword, btnTestPath);
+
+            rbDelete.CheckedChanged += (_, _) =>
+                m_tbTargetDirectory.Enabled = m_tbUsername.Enabled = m_tbPassword.Enabled = btnBrowse.Enabled = btnTestPath.Enabled = !rbDelete.Checked;
 
             gbDirectoryForProcessedFiles.Controls.AddRange(new Control[]
             {
