@@ -240,16 +240,16 @@ namespace iba.Processing
                                     timeStampDt = timeStampDt.Add(UTCOffset);
                                 timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") + "Z";
                             }
-                            else if (m_data.timestampUTCOffset == TimestampUTCOffset.ConcatenateWithTimestamp || m_data.Format != KafkaWriterTaskData.DataFormat.AVRO)
+                            else if (m_data.timestampUTCOffset == TimestampUTCOffset.ConcatenateWithTimestamp)
                             {
                                 timeStamp =
                                     timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") +
                                     sighn +
                                     UTCOffset.ToString(@"hh\:mm");
                             }
-                            else
+                            else // ignore
                             {
-                                timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") + "Z";
+                                timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff");
                             }
                         }
 
