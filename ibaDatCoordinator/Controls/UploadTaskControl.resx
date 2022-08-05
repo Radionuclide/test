@@ -117,10 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>14, 21</value>
-  </data>
+  </metadata>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_gbOption.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -131,333 +130,190 @@
   <data name="m_tplOptions.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_panelChkBoxControls.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;panel5.Name" xml:space="preserve">
+    <value>panel5</value>
   </data>
-  <data name="m_chkAcceptAnySshHostKey.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;panel5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel5.Parent" xml:space="preserve">
+    <value>m_tplOptions</value>
+  </data>
+  <data name="&gt;&gt;panel5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panel6.Name" xml:space="preserve">
+    <value>panel6</value>
+  </data>
+  <data name="&gt;&gt;panel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel6.Parent" xml:space="preserve">
+    <value>m_tplOptions</value>
+  </data>
+  <data name="&gt;&gt;panel6.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_chkAcceptAnySshHostKey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_tplOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <data name="m_chkAcceptAnySshHostKey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_tplOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
   </data>
-  <data name="m_chkAcceptAnySshHostKey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 27</value>
-  </data>
-  <data name="m_chkAcceptAnySshHostKey.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_chkAcceptAnySshHostKey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 27</value>
-  </data>
-  <data name="m_chkAcceptAnySshHostKey.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="m_chkAcceptAnySshHostKey.Text" xml:space="preserve">
-    <value>Accept any SSH host key</value>
-  </data>
-  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Name" xml:space="preserve">
-    <value>m_chkAcceptAnySshHostKey</value>
-  </data>
-  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Parent" xml:space="preserve">
-    <value>m_panelChkBoxControls</value>
-  </data>
-  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_chkAcceptAnyTlsCertificate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_chkAcceptAnyTlsCertificate.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_chkAcceptAnyTlsCertificate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_chkAcceptAnyTlsCertificate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_chkAcceptAnyTlsCertificate.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_chkAcceptAnyTlsCertificate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 27</value>
-  </data>
-  <data name="m_chkAcceptAnyTlsCertificate.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="m_chkAcceptAnyTlsCertificate.Text" xml:space="preserve">
-    <value>Accept any TLS Certificate</value>
-  </data>
-  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Name" xml:space="preserve">
-    <value>m_chkAcceptAnyTlsCertificate</value>
-  </data>
-  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Parent" xml:space="preserve">
-    <value>m_panelChkBoxControls</value>
-  </data>
-  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_panelChkBoxControls.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_panelChkBoxControls.Location" type="System.Drawing.Point, System.Drawing">
-    <value>614, 35</value>
-  </data>
-  <data name="m_panelChkBoxControls.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 54</value>
-  </data>
-  <data name="m_panelChkBoxControls.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tplOptions.RowCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_panelChkBoxControls.Name" xml:space="preserve">
-    <value>m_panelChkBoxControls</value>
+  <data name="m_tplOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>779, 52</value>
   </data>
-  <data name="&gt;&gt;m_panelChkBoxControls.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_tplOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;m_panelChkBoxControls.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tplOptions.Name" xml:space="preserve">
     <value>m_tplOptions</value>
   </data>
-  <data name="&gt;&gt;m_panelChkBoxControls.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_panelFilePath.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_tlpPathToKey.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_tlpPathToKey.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_tbPathToPrivateKey.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_tbPathToPrivateKey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 3</value>
-  </data>
-  <data name="m_tbPathToPrivateKey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>495, 20</value>
-  </data>
-  <data name="m_tbPathToPrivateKey.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
-  </data>
-  <data name="&gt;&gt;m_tbPathToPrivateKey.Name" xml:space="preserve">
-    <value>m_tbPathToPrivateKey</value>
-  </data>
-  <data name="&gt;&gt;m_tbPathToPrivateKey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbPathToPrivateKey.Parent" xml:space="preserve">
-    <value>m_tlpPathToKey</value>
-  </data>
-  <data name="&gt;&gt;m_tbPathToPrivateKey.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lbFileToPrivateKey.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="m_lbFileToPrivateKey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbFileToPrivateKey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 6</value>
-  </data>
-  <data name="m_lbFileToPrivateKey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_lbFileToPrivateKey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 13</value>
-  </data>
-  <data name="m_lbFileToPrivateKey.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="m_lbFileToPrivateKey.Text" xml:space="preserve">
-    <value>File with private key:</value>
-  </data>
-  <data name="&gt;&gt;m_lbFileToPrivateKey.Name" xml:space="preserve">
-    <value>m_lbFileToPrivateKey</value>
-  </data>
-  <data name="&gt;&gt;m_lbFileToPrivateKey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbFileToPrivateKey.Parent" xml:space="preserve">
-    <value>m_tlpPathToKey</value>
-  </data>
-  <data name="&gt;&gt;m_lbFileToPrivateKey.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpPathToKey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_tlpPathToKey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 26</value>
-  </data>
-  <data name="m_tlpPathToKey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tlpPathToKey.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tlpPathToKey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>605, 26</value>
-  </data>
-  <data name="m_tlpPathToKey.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tlpPathToKey.Name" xml:space="preserve">
-    <value>m_tlpPathToKey</value>
-  </data>
-  <data name="&gt;&gt;m_tlpPathToKey.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tplOptions.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tlpPathToKey.Parent" xml:space="preserve">
-    <value>m_panelFilePath</value>
+  <data name="&gt;&gt;m_tplOptions.Parent" xml:space="preserve">
+    <value>m_gbOption</value>
   </data>
-  <data name="&gt;&gt;m_tlpPathToKey.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tplOptions.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_tlpPathToKey.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tbPathToPrivateKey" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbFileToPrivateKey" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,17,33333,Percent,82,66666" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="m_tplOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel5" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="panel6" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,78,52522,Percent,21,47477" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="m_tlpPathtoCertificate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_tlpPathtoCertificate.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_tbPathToCertificate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_tbPathToCertificate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 3</value>
-  </data>
-  <data name="m_tbPathToCertificate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>494, 20</value>
-  </data>
-  <data name="m_tbPathToCertificate.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;m_tbPathToCertificate.Name" xml:space="preserve">
-    <value>m_tbPathToCertificate</value>
-  </data>
-  <data name="&gt;&gt;m_tbPathToCertificate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbPathToCertificate.Parent" xml:space="preserve">
-    <value>m_tlpPathtoCertificate</value>
-  </data>
-  <data name="&gt;&gt;m_tbPathToCertificate.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lbFileWithCertificate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="m_lbFileWithCertificate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbFileWithCertificate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 6</value>
-  </data>
-  <data name="m_lbFileWithCertificate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_lbFileWithCertificate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 13</value>
-  </data>
-  <data name="m_lbFileWithCertificate.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
-  </data>
-  <data name="m_lbFileWithCertificate.Text" xml:space="preserve">
-    <value>File with certificate:</value>
-  </data>
-  <data name="&gt;&gt;m_lbFileWithCertificate.Name" xml:space="preserve">
-    <value>m_lbFileWithCertificate</value>
-  </data>
-  <data name="&gt;&gt;m_lbFileWithCertificate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbFileWithCertificate.Parent" xml:space="preserve">
-    <value>m_tlpPathtoCertificate</value>
-  </data>
-  <data name="&gt;&gt;m_lbFileWithCertificate.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpPathtoCertificate.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_gbOption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <data name="m_tlpPathtoCertificate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="m_gbOption.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 274</value>
   </data>
-  <data name="m_tlpPathtoCertificate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="m_gbOption.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 71</value>
   </data>
-  <data name="m_tlpPathtoCertificate.RowCount" type="System.Int32, mscorlib">
+  <data name="m_gbOption.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_tlpPathtoCertificate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>605, 26</value>
+  <data name="m_gbOption.Text" xml:space="preserve">
+    <value>Option</value>
   </data>
-  <data name="m_tlpPathtoCertificate.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+  <data name="&gt;&gt;m_gbOption.Name" xml:space="preserve">
+    <value>m_gbOption</value>
   </data>
-  <data name="&gt;&gt;m_tlpPathtoCertificate.Name" xml:space="preserve">
-    <value>m_tlpPathtoCertificate</value>
+  <data name="&gt;&gt;m_gbOption.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;m_tlpPathtoCertificate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_gbOption.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_tlpPathtoCertificate.Parent" xml:space="preserve">
-    <value>m_panelFilePath</value>
-  </data>
-  <data name="&gt;&gt;m_tlpPathtoCertificate.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpPathtoCertificate.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tbPathToCertificate" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbFileWithCertificate" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,17,5,Percent,82,5" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_panelFilePath.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_panelFilePath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 35</value>
-  </data>
-  <data name="m_panelFilePath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>605, 54</value>
-  </data>
-  <data name="m_panelFilePath.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_panelFilePath.Name" xml:space="preserve">
-    <value>m_panelFilePath</value>
-  </data>
-  <data name="&gt;&gt;m_panelFilePath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_panelFilePath.Parent" xml:space="preserve">
-    <value>m_tplOptions</value>
-  </data>
-  <data name="&gt;&gt;m_panelFilePath.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_gbOption.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="panel5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel5.Name" xml:space="preserve">
+    <value>tableLayoutPanel5</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel5.Parent" xml:space="preserve">
+    <value>panel5</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel5.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblRemotePath" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbRemotePath" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,13,6897,Percent,86,3103" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="panel5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panel5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="panel5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>773, 26</value>
+  </data>
+  <data name="panel5.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panel5.Name" xml:space="preserve">
+    <value>panel5</value>
+  </data>
+  <data name="&gt;&gt;panel5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel5.Parent" xml:space="preserve">
+    <value>m_tplOptions</value>
+  </data>
+  <data name="&gt;&gt;panel5.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="tableLayoutPanel5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="tableLayoutPanel5.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_lblRemotePath.Name" xml:space="preserve">
+    <value>m_lblRemotePath</value>
+  </data>
+  <data name="&gt;&gt;m_lblRemotePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblRemotePath.Parent" xml:space="preserve">
+    <value>tableLayoutPanel5</value>
+  </data>
+  <data name="&gt;&gt;m_lblRemotePath.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tbRemotePath.Name" xml:space="preserve">
+    <value>m_tbRemotePath</value>
+  </data>
+  <data name="&gt;&gt;m_tbRemotePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbRemotePath.Parent" xml:space="preserve">
+    <value>tableLayoutPanel5</value>
+  </data>
+  <data name="&gt;&gt;m_tbRemotePath.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="tableLayoutPanel5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tableLayoutPanel5.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>773, 26</value>
+  </data>
+  <data name="tableLayoutPanel5.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel5.Name" xml:space="preserve">
+    <value>tableLayoutPanel5</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel5.Parent" xml:space="preserve">
+    <value>panel5</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel5.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblRemotePath" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbRemotePath" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,13,6897,Percent,86,3103" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_lblRemotePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -516,59 +372,41 @@
   <data name="&gt;&gt;m_tbRemotePath.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tableLayoutPanel5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="&gt;&gt;m_createZipArchive.Name" xml:space="preserve">
+    <value>m_createZipArchive</value>
   </data>
-  <data name="tableLayoutPanel5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="&gt;&gt;m_createZipArchive.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tableLayoutPanel5.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="&gt;&gt;m_createZipArchive.Parent" xml:space="preserve">
+    <value>panel6</value>
   </data>
-  <data name="tableLayoutPanel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>773, 26</value>
-  </data>
-  <data name="tableLayoutPanel5.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel5.Name" xml:space="preserve">
-    <value>tableLayoutPanel5</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel5.Parent" xml:space="preserve">
-    <value>panel5</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel5.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_createZipArchive.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tableLayoutPanel5.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblRemotePath" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbRemotePath" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,13,6897,Percent,86,3103" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="panel5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="panel6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="panel5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+  <data name="panel6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 35</value>
   </data>
-  <data name="panel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>773, 26</value>
+  <data name="panel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>773, 14</value>
   </data>
-  <data name="panel5.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="panel6.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;panel5.Name" xml:space="preserve">
-    <value>panel5</value>
+  <data name="&gt;&gt;panel6.Name" xml:space="preserve">
+    <value>panel6</value>
   </data>
-  <data name="&gt;&gt;panel5.Type" xml:space="preserve">
+  <data name="&gt;&gt;panel6.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel5.Parent" xml:space="preserve">
+  <data name="&gt;&gt;panel6.Parent" xml:space="preserve">
     <value>m_tplOptions</value>
   </data>
-  <data name="&gt;&gt;panel5.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;panel6.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_createZipArchive.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -606,87 +444,6 @@
   <data name="&gt;&gt;m_createZipArchive.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="panel6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="panel6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 95</value>
-  </data>
-  <data name="panel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>773, 14</value>
-  </data>
-  <data name="panel6.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;panel6.Name" xml:space="preserve">
-    <value>panel6</value>
-  </data>
-  <data name="&gt;&gt;panel6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel6.Parent" xml:space="preserve">
-    <value>m_tplOptions</value>
-  </data>
-  <data name="&gt;&gt;panel6.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_tplOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_tplOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="m_tplOptions.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_tplOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>779, 112</value>
-  </data>
-  <data name="m_tplOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tplOptions.Name" xml:space="preserve">
-    <value>m_tplOptions</value>
-  </data>
-  <data name="&gt;&gt;m_tplOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tplOptions.Parent" xml:space="preserve">
-    <value>m_gbOption</value>
-  </data>
-  <data name="&gt;&gt;m_tplOptions.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tplOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_panelChkBoxControls" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_panelFilePath" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel5" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="panel6" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,78,52522,Percent,21,47477" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_gbOption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_gbOption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 214</value>
-  </data>
-  <data name="m_gbOption.Size" type="System.Drawing.Size, System.Drawing">
-    <value>785, 131</value>
-  </data>
-  <data name="m_gbOption.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_gbOption.Text" xml:space="preserve">
-    <value>Option</value>
-  </data>
-  <data name="&gt;&gt;m_gbOption.Name" xml:space="preserve">
-    <value>m_gbOption</value>
-  </data>
-  <data name="&gt;&gt;m_gbOption.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_gbOption.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbOption.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_gbProtocol.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -695,6 +452,114 @@
   </data>
   <data name="m_tplAuthorization.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="m_panelChkBoxControls.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Name" xml:space="preserve">
+    <value>m_chkAcceptAnySshHostKey</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Parent" xml:space="preserve">
+    <value>m_panelChkBoxControls</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Name" xml:space="preserve">
+    <value>m_chkAcceptAnyTlsCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Parent" xml:space="preserve">
+    <value>m_panelChkBoxControls</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_panelChkBoxControls.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_panelChkBoxControls.Location" type="System.Drawing.Point, System.Drawing">
+    <value>626, 90</value>
+  </data>
+  <data name="m_panelChkBoxControls.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 54</value>
+  </data>
+  <data name="m_panelChkBoxControls.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="&gt;&gt;m_panelChkBoxControls.Name" xml:space="preserve">
+    <value>m_panelChkBoxControls</value>
+  </data>
+  <data name="&gt;&gt;m_panelChkBoxControls.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_panelChkBoxControls.Parent" xml:space="preserve">
+    <value>m_tplAuthorization</value>
+  </data>
+  <data name="&gt;&gt;m_panelChkBoxControls.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_panelFilePath.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathToKey.Name" xml:space="preserve">
+    <value>m_tlpPathToKey</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathToKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathToKey.Parent" xml:space="preserve">
+    <value>m_panelFilePath</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathToKey.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpPathToKey.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tbPathToPrivateKey" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbFileToPrivateKey" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,20,Percent,80" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathtoCertificate.Name" xml:space="preserve">
+    <value>m_tlpPathtoCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathtoCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathtoCertificate.Parent" xml:space="preserve">
+    <value>m_panelFilePath</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathtoCertificate.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tbPathToCertificate" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbFileWithCertificate" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,20,Percent,80" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_panelFilePath.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_panelFilePath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 90</value>
+  </data>
+  <data name="m_panelFilePath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>617, 54</value>
+  </data>
+  <data name="m_panelFilePath.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="&gt;&gt;m_panelFilePath.Name" xml:space="preserve">
+    <value>m_panelFilePath</value>
+  </data>
+  <data name="&gt;&gt;m_panelFilePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_panelFilePath.Parent" xml:space="preserve">
+    <value>m_tplAuthorization</value>
+  </data>
+  <data name="&gt;&gt;m_panelFilePath.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_panelFtp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -742,7 +607,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_chkAnonymous.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 61</value>
+    <value>12, 61</value>
   </data>
   <data name="m_chkAnonymous.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 17</value>
@@ -805,7 +670,7 @@
     <value>100, 35</value>
   </data>
   <data name="m_tbPassword.Size" type="System.Drawing.Size, System.Drawing">
-    <value>619, 20</value>
+    <value>514, 20</value>
   </data>
   <data name="m_tbPassword.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -829,7 +694,7 @@
     <value>100, 10</value>
   </data>
   <data name="m_tbUsername.Size" type="System.Drawing.Size, System.Drawing">
-    <value>619, 20</value>
+    <value>514, 20</value>
   </data>
   <data name="m_tbUsername.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -850,7 +715,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_panelFtp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>722, 81</value>
+    <value>617, 81</value>
   </data>
   <data name="m_panelFtp.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -865,7 +730,7 @@
     <value>m_tplAuthorization</value>
   </data>
   <data name="&gt;&gt;m_panelFtp.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_btnCheckConnection.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -898,7 +763,7 @@
     <value>m_tplAuthorization</value>
   </data>
   <data name="&gt;&gt;m_btnCheckConnection.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_tplAuthorization.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -907,10 +772,10 @@
     <value>3, 82</value>
   </data>
   <data name="m_tplAuthorization.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_tplAuthorization.Size" type="System.Drawing.Size, System.Drawing">
-    <value>779, 87</value>
+    <value>779, 147</value>
   </data>
   <data name="m_tplAuthorization.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -928,7 +793,7 @@
     <value>0</value>
   </data>
   <data name="m_tplAuthorization.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_panelFtp" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnCheckConnection" Row="0" RowSpan="2" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_panelChkBoxControls" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_panelFilePath" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_panelFtp" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnCheckConnection" Row="0" RowSpan="2" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,80,Percent,20" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tplProtocol.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -936,8 +801,473 @@
   <data name="m_tplProtocol.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;m_panelFtpEncryption.Name" xml:space="preserve">
+    <value>m_panelFtpEncryption</value>
+  </data>
+  <data name="&gt;&gt;m_panelFtpEncryption.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_panelFtpEncryption.Parent" xml:space="preserve">
+    <value>m_tplProtocol</value>
+  </data>
+  <data name="&gt;&gt;m_panelFtpEncryption.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>m_tplProtocol</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tplProtocol.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_tplProtocol.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="m_tplProtocol.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tplProtocol.Size" type="System.Drawing.Size, System.Drawing">
+    <value>779, 66</value>
+  </data>
+  <data name="m_tplProtocol.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_tplProtocol.Name" xml:space="preserve">
+    <value>m_tplProtocol</value>
+  </data>
+  <data name="&gt;&gt;m_tplProtocol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tplProtocol.Parent" xml:space="preserve">
+    <value>m_gbProtocol</value>
+  </data>
+  <data name="&gt;&gt;m_tplProtocol.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tplProtocol.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_panelFtpEncryption" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,57,95602,Percent,42,04398" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_gbProtocol.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_gbProtocol.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 42</value>
+  </data>
+  <data name="m_gbProtocol.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 232</value>
+  </data>
+  <data name="m_gbProtocol.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_gbProtocol.Text" xml:space="preserve">
+    <value>Connection</value>
+  </data>
+  <data name="&gt;&gt;m_gbProtocol.Name" xml:space="preserve">
+    <value>m_gbProtocol</value>
+  </data>
+  <data name="&gt;&gt;m_gbProtocol.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_gbProtocol.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gbProtocol.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_chkAcceptAnySshHostKey.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkAcceptAnySshHostKey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_chkAcceptAnySshHostKey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_chkAcceptAnySshHostKey.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 27</value>
+  </data>
+  <data name="m_chkAcceptAnySshHostKey.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_chkAcceptAnySshHostKey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 27</value>
+  </data>
+  <data name="m_chkAcceptAnySshHostKey.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="m_chkAcceptAnySshHostKey.Text" xml:space="preserve">
+    <value>Accept any SSH host key</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Name" xml:space="preserve">
+    <value>m_chkAcceptAnySshHostKey</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.Parent" xml:space="preserve">
+    <value>m_panelChkBoxControls</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnySshHostKey.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_chkAcceptAnyTlsCertificate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkAcceptAnyTlsCertificate.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_chkAcceptAnyTlsCertificate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_chkAcceptAnyTlsCertificate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_chkAcceptAnyTlsCertificate.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_chkAcceptAnyTlsCertificate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 27</value>
+  </data>
+  <data name="m_chkAcceptAnyTlsCertificate.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="m_chkAcceptAnyTlsCertificate.Text" xml:space="preserve">
+    <value>Accept any TLS Certificate</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Name" xml:space="preserve">
+    <value>m_chkAcceptAnyTlsCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.Parent" xml:space="preserve">
+    <value>m_panelChkBoxControls</value>
+  </data>
+  <data name="&gt;&gt;m_chkAcceptAnyTlsCertificate.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpPathToKey.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_tlpPathToKey.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToPrivateKey.Name" xml:space="preserve">
+    <value>m_tbPathToPrivateKey</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToPrivateKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToPrivateKey.Parent" xml:space="preserve">
+    <value>m_tlpPathToKey</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToPrivateKey.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileToPrivateKey.Name" xml:space="preserve">
+    <value>m_lbFileToPrivateKey</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileToPrivateKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileToPrivateKey.Parent" xml:space="preserve">
+    <value>m_tlpPathToKey</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileToPrivateKey.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpPathToKey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_tlpPathToKey.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 26</value>
+  </data>
+  <data name="m_tlpPathToKey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpPathToKey.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpPathToKey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>617, 26</value>
+  </data>
+  <data name="m_tlpPathToKey.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathToKey.Name" xml:space="preserve">
+    <value>m_tlpPathToKey</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathToKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathToKey.Parent" xml:space="preserve">
+    <value>m_panelFilePath</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathToKey.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpPathToKey.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tbPathToPrivateKey" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbFileToPrivateKey" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,20,Percent,80" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_tbPathToPrivateKey.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbPathToPrivateKey.Location" type="System.Drawing.Point, System.Drawing">
+    <value>126, 3</value>
+  </data>
+  <data name="m_tbPathToPrivateKey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>488, 20</value>
+  </data>
+  <data name="m_tbPathToPrivateKey.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToPrivateKey.Name" xml:space="preserve">
+    <value>m_tbPathToPrivateKey</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToPrivateKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToPrivateKey.Parent" xml:space="preserve">
+    <value>m_tlpPathToKey</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToPrivateKey.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lbFileToPrivateKey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbFileToPrivateKey.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lbFileToPrivateKey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_lbFileToPrivateKey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 22</value>
+  </data>
+  <data name="m_lbFileToPrivateKey.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="m_lbFileToPrivateKey.Text" xml:space="preserve">
+    <value>File with private key:</value>
+  </data>
+  <data name="m_lbFileToPrivateKey.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileToPrivateKey.Name" xml:space="preserve">
+    <value>m_lbFileToPrivateKey</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileToPrivateKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileToPrivateKey.Parent" xml:space="preserve">
+    <value>m_tlpPathToKey</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileToPrivateKey.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToCertificate.Name" xml:space="preserve">
+    <value>m_tbPathToCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToCertificate.Parent" xml:space="preserve">
+    <value>m_tlpPathtoCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToCertificate.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileWithCertificate.Name" xml:space="preserve">
+    <value>m_lbFileWithCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileWithCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileWithCertificate.Parent" xml:space="preserve">
+    <value>m_tlpPathtoCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileWithCertificate.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>617, 26</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathtoCertificate.Name" xml:space="preserve">
+    <value>m_tlpPathtoCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathtoCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathtoCertificate.Parent" xml:space="preserve">
+    <value>m_panelFilePath</value>
+  </data>
+  <data name="&gt;&gt;m_tlpPathtoCertificate.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpPathtoCertificate.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tbPathToCertificate" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbFileWithCertificate" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,20,Percent,80" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_tbPathToCertificate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbPathToCertificate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>126, 3</value>
+  </data>
+  <data name="m_tbPathToCertificate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>488, 20</value>
+  </data>
+  <data name="m_tbPathToCertificate.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToCertificate.Name" xml:space="preserve">
+    <value>m_tbPathToCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToCertificate.Parent" xml:space="preserve">
+    <value>m_tlpPathtoCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_tbPathToCertificate.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lbFileWithCertificate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbFileWithCertificate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lbFileWithCertificate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_lbFileWithCertificate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 17</value>
+  </data>
+  <data name="m_lbFileWithCertificate.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="m_lbFileWithCertificate.Text" xml:space="preserve">
+    <value>File with certificate:</value>
+  </data>
+  <data name="m_lbFileWithCertificate.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileWithCertificate.Name" xml:space="preserve">
+    <value>m_lbFileWithCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileWithCertificate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileWithCertificate.Parent" xml:space="preserve">
+    <value>m_tlpPathtoCertificate</value>
+  </data>
+  <data name="&gt;&gt;m_lbFileWithCertificate.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_panelFtpEncryption.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;m_lbFtpMode.Name" xml:space="preserve">
+    <value>m_lbFtpMode</value>
+  </data>
+  <data name="&gt;&gt;m_lbFtpMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbFtpMode.Parent" xml:space="preserve">
+    <value>m_panelFtpEncryption</value>
+  </data>
+  <data name="&gt;&gt;m_lbFtpMode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_lbEncryption.Name" xml:space="preserve">
+    <value>m_lbEncryption</value>
+  </data>
+  <data name="&gt;&gt;m_lbEncryption.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbEncryption.Parent" xml:space="preserve">
+    <value>m_panelFtpEncryption</value>
+  </data>
+  <data name="&gt;&gt;m_lbEncryption.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_cbEncryption.Name" xml:space="preserve">
+    <value>m_cbEncryption</value>
+  </data>
+  <data name="&gt;&gt;m_cbEncryption.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbEncryption.Parent" xml:space="preserve">
+    <value>m_panelFtpEncryption</value>
+  </data>
+  <data name="&gt;&gt;m_cbEncryption.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMode.Name" xml:space="preserve">
+    <value>m_cmbMode</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMode.Parent" xml:space="preserve">
+    <value>m_panelFtpEncryption</value>
+  </data>
+  <data name="&gt;&gt;m_cmbMode.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_panelFtpEncryption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_panelFtpEncryption.Location" type="System.Drawing.Point, System.Drawing">
+    <value>454, 3</value>
+  </data>
+  <data name="m_panelFtpEncryption.Size" type="System.Drawing.Size, System.Drawing">
+    <value>322, 60</value>
+  </data>
+  <data name="m_panelFtpEncryption.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_panelFtpEncryption.Name" xml:space="preserve">
+    <value>m_panelFtpEncryption</value>
+  </data>
+  <data name="&gt;&gt;m_panelFtpEncryption.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_panelFtpEncryption.Parent" xml:space="preserve">
+    <value>m_tplProtocol</value>
+  </data>
+  <data name="&gt;&gt;m_panelFtpEncryption.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_lbFtpMode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1065,32 +1395,104 @@
   <data name="&gt;&gt;m_cmbMode.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_panelFtpEncryption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_panelFtpEncryption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>454, 3</value>
-  </data>
-  <data name="m_panelFtpEncryption.Size" type="System.Drawing.Size, System.Drawing">
-    <value>322, 60</value>
-  </data>
-  <data name="m_panelFtpEncryption.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_panelFtpEncryption.Name" xml:space="preserve">
-    <value>m_panelFtpEncryption</value>
-  </data>
-  <data name="&gt;&gt;m_panelFtpEncryption.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_panelFtpEncryption.Parent" xml:space="preserve">
-    <value>m_tplProtocol</value>
-  </data>
-  <data name="&gt;&gt;m_panelFtpEncryption.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="panel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;m_tbPort.Name" xml:space="preserve">
+    <value>m_tbPort</value>
+  </data>
+  <data name="&gt;&gt;m_tbPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbPort.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_tbPort.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_lbPort.Name" xml:space="preserve">
+    <value>m_lbPort</value>
+  </data>
+  <data name="&gt;&gt;m_lbPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbPort.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbPort.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_cbProtocol.Name" xml:space="preserve">
+    <value>m_cbProtocol</value>
+  </data>
+  <data name="&gt;&gt;m_cbProtocol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbProtocol.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_cbProtocol.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_lbProtocol.Name" xml:space="preserve">
+    <value>m_lbProtocol</value>
+  </data>
+  <data name="&gt;&gt;m_lbProtocol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbProtocol.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbProtocol.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_lbServer.Name" xml:space="preserve">
+    <value>m_lbServer</value>
+  </data>
+  <data name="&gt;&gt;m_lbServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbServer.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_lbServer.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tbServer.Name" xml:space="preserve">
+    <value>m_tbServer</value>
+  </data>
+  <data name="&gt;&gt;m_tbServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbServer.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;m_tbServer.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>445, 59</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>m_tplProtocol</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_tbPort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1272,95 +1674,110 @@
   <data name="&gt;&gt;m_tbServer.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 59</value>
-  </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>m_tplProtocol</value>
-  </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tplProtocol.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_tplProtocol.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="m_tplProtocol.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tplProtocol.Size" type="System.Drawing.Size, System.Drawing">
-    <value>779, 66</value>
-  </data>
-  <data name="m_tplProtocol.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_tplProtocol.Name" xml:space="preserve">
-    <value>m_tplProtocol</value>
-  </data>
-  <data name="&gt;&gt;m_tplProtocol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tplProtocol.Parent" xml:space="preserve">
-    <value>m_gbProtocol</value>
-  </data>
-  <data name="&gt;&gt;m_tplProtocol.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tplProtocol.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_panelFtpEncryption" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,57,95602,Percent,42,04398" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_gbProtocol.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_gbProtocol.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 42</value>
-  </data>
-  <data name="m_gbProtocol.Size" type="System.Drawing.Size, System.Drawing">
-    <value>785, 172</value>
-  </data>
-  <data name="m_gbProtocol.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_gbProtocol.Text" xml:space="preserve">
-    <value>Protocol</value>
-  </data>
-  <data name="&gt;&gt;m_gbProtocol.Name" xml:space="preserve">
-    <value>m_gbProtocol</value>
-  </data>
-  <data name="&gt;&gt;m_gbProtocol.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_gbProtocol.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbProtocol.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_gbSource.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel4.Name" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel4.Parent" xml:space="preserve">
+    <value>m_gbSource</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel4.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbPrevOutput" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDatFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_gbSource.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_gbSource.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_gbSource.Size" type="System.Drawing.Size, System.Drawing">
+    <value>785, 42</value>
+  </data>
+  <data name="m_gbSource.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_gbSource.Text" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="&gt;&gt;m_gbSource.Name" xml:space="preserve">
+    <value>m_gbSource</value>
+  </data>
+  <data name="&gt;&gt;m_gbSource.Type" xml:space="preserve">
+    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;m_gbSource.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gbSource.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="tableLayoutPanel4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="tableLayoutPanel4.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_rbPrevOutput.Name" xml:space="preserve">
+    <value>m_rbPrevOutput</value>
+  </data>
+  <data name="&gt;&gt;m_rbPrevOutput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbPrevOutput.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
+  </data>
+  <data name="&gt;&gt;m_rbPrevOutput.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_rbDatFile.Name" xml:space="preserve">
+    <value>m_rbDatFile</value>
+  </data>
+  <data name="&gt;&gt;m_rbDatFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbDatFile.Parent" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
+  </data>
+  <data name="&gt;&gt;m_rbDatFile.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="tableLayoutPanel4.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>779, 23</value>
+  </data>
+  <data name="tableLayoutPanel4.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel4.Name" xml:space="preserve">
+    <value>tableLayoutPanel4</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel4.Parent" xml:space="preserve">
+    <value>m_gbSource</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel4.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbPrevOutput" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDatFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_rbPrevOutput.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1422,78 +1839,6 @@
   <data name="&gt;&gt;m_rbDatFile.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tableLayoutPanel4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tableLayoutPanel4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="tableLayoutPanel4.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tableLayoutPanel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>779, 23</value>
-  </data>
-  <data name="tableLayoutPanel4.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel4.Name" xml:space="preserve">
-    <value>tableLayoutPanel4</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel4.Parent" xml:space="preserve">
-    <value>m_gbSource</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel4.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tableLayoutPanel4.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbPrevOutput" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbDatFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_gbSource.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_gbSource.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_gbSource.Size" type="System.Drawing.Size, System.Drawing">
-    <value>785, 42</value>
-  </data>
-  <data name="m_gbSource.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_gbSource.Text" xml:space="preserve">
-    <value>Source</value>
-  </data>
-  <data name="&gt;&gt;m_gbSource.Name" xml:space="preserve">
-    <value>m_gbSource</value>
-  </data>
-  <data name="&gt;&gt;m_gbSource.Type" xml:space="preserve">
-    <value>iba.Utility.CollapsibleGroupBox, ibaDatCoordinator, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_gbSource.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbSource.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="panelOut.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="panelOut.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="panelOut.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
-  </data>
-  <data name="panelOut.Size" type="System.Drawing.Size, System.Drawing">
-    <value>779, 301</value>
-  </data>
-  <data name="panelOut.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;panelOut.Name" xml:space="preserve">
     <value>panelOut</value>
   </data>
@@ -1533,12 +1878,39 @@
   <data name="&gt;&gt;m_gbTarget.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+  <data name="panelOut.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
-    <value>60</value>
+  <data name="panelOut.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
+  <data name="panelOut.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="panelOut.Size" type="System.Drawing.Size, System.Drawing">
+    <value>779, 301</value>
+  </data>
+  <data name="panelOut.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panelOut.Name" xml:space="preserve">
+    <value>panelOut</value>
+  </data>
+  <data name="&gt;&gt;panelOut.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelOut.Parent" xml:space="preserve">
+    <value>m_gbTarget</value>
+  </data>
+  <data name="&gt;&gt;panelOut.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>60</value>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>

@@ -33,6 +33,14 @@ namespace iba.Controls
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.m_gbOption = new iba.Utility.CollapsibleGroupBox();
             this.m_tplOptions = new System.Windows.Forms.TableLayoutPanel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.m_lblRemotePath = new System.Windows.Forms.Label();
+            this.m_tbRemotePath = new System.Windows.Forms.TextBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.m_createZipArchive = new System.Windows.Forms.CheckBox();
+            this.m_gbProtocol = new iba.Utility.CollapsibleGroupBox();
+            this.m_tplAuthorization = new System.Windows.Forms.TableLayoutPanel();
             this.m_panelChkBoxControls = new System.Windows.Forms.Panel();
             this.m_chkAcceptAnySshHostKey = new System.Windows.Forms.CheckBox();
             this.m_chkAcceptAnyTlsCertificate = new System.Windows.Forms.CheckBox();
@@ -43,14 +51,6 @@ namespace iba.Controls
             this.m_tlpPathtoCertificate = new System.Windows.Forms.TableLayoutPanel();
             this.m_tbPathToCertificate = new System.Windows.Forms.TextBox();
             this.m_lbFileWithCertificate = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.m_lblRemotePath = new System.Windows.Forms.Label();
-            this.m_tbRemotePath = new System.Windows.Forms.TextBox();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.m_createZipArchive = new System.Windows.Forms.CheckBox();
-            this.m_gbProtocol = new iba.Utility.CollapsibleGroupBox();
-            this.m_tplAuthorization = new System.Windows.Forms.TableLayoutPanel();
             this.m_panelFtp = new System.Windows.Forms.Panel();
             this.m_lbUsername = new System.Windows.Forms.Label();
             this.m_chkAnonymous = new System.Windows.Forms.CheckBox();
@@ -79,15 +79,15 @@ namespace iba.Controls
             this.panelOut = new System.Windows.Forms.Panel();
             this.m_gbOption.SuspendLayout();
             this.m_tplOptions.SuspendLayout();
-            this.m_panelChkBoxControls.SuspendLayout();
-            this.m_panelFilePath.SuspendLayout();
-            this.m_tlpPathToKey.SuspendLayout();
-            this.m_tlpPathtoCertificate.SuspendLayout();
             this.panel5.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.m_gbProtocol.SuspendLayout();
             this.m_tplAuthorization.SuspendLayout();
+            this.m_panelChkBoxControls.SuspendLayout();
+            this.m_panelFilePath.SuspendLayout();
+            this.m_tlpPathToKey.SuspendLayout();
+            this.m_tlpPathtoCertificate.SuspendLayout();
             this.m_panelFtp.SuspendLayout();
             this.m_tplProtocol.SuspendLayout();
             this.m_panelFtpEncryption.SuspendLayout();
@@ -108,11 +108,65 @@ namespace iba.Controls
             // m_tplOptions
             // 
             resources.ApplyResources(this.m_tplOptions, "m_tplOptions");
-            this.m_tplOptions.Controls.Add(this.m_panelChkBoxControls, 1, 1);
-            this.m_tplOptions.Controls.Add(this.m_panelFilePath, 0, 1);
             this.m_tplOptions.Controls.Add(this.panel5, 0, 0);
             this.m_tplOptions.Controls.Add(this.panel6, 0, 2);
             this.m_tplOptions.Name = "m_tplOptions";
+            // 
+            // panel5
+            // 
+            resources.ApplyResources(this.panel5, "panel5");
+            this.m_tplOptions.SetColumnSpan(this.panel5, 2);
+            this.panel5.Controls.Add(this.tableLayoutPanel5);
+            this.panel5.Name = "panel5";
+            // 
+            // tableLayoutPanel5
+            // 
+            resources.ApplyResources(this.tableLayoutPanel5, "tableLayoutPanel5");
+            this.tableLayoutPanel5.Controls.Add(this.m_lblRemotePath, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.m_tbRemotePath, 1, 0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            // 
+            // m_lblRemotePath
+            // 
+            resources.ApplyResources(this.m_lblRemotePath, "m_lblRemotePath");
+            this.m_lblRemotePath.Name = "m_lblRemotePath";
+            // 
+            // m_tbRemotePath
+            // 
+            resources.ApplyResources(this.m_tbRemotePath, "m_tbRemotePath");
+            this.m_tbRemotePath.Name = "m_tbRemotePath";
+            // 
+            // panel6
+            // 
+            this.m_tplOptions.SetColumnSpan(this.panel6, 2);
+            this.panel6.Controls.Add(this.m_createZipArchive);
+            resources.ApplyResources(this.panel6, "panel6");
+            this.panel6.Name = "panel6";
+            // 
+            // m_createZipArchive
+            // 
+            resources.ApplyResources(this.m_createZipArchive, "m_createZipArchive");
+            this.m_createZipArchive.Name = "m_createZipArchive";
+            this.m_createZipArchive.UseVisualStyleBackColor = true;
+            // 
+            // m_gbProtocol
+            // 
+            resources.ApplyResources(this.m_gbProtocol, "m_gbProtocol");
+            this.m_gbProtocol.BackColor = System.Drawing.SystemColors.Control;
+            this.m_gbProtocol.Controls.Add(this.m_tplAuthorization);
+            this.m_gbProtocol.Controls.Add(this.m_tplProtocol);
+            this.m_gbProtocol.Name = "m_gbProtocol";
+            this.m_gbProtocol.TabStop = false;
+            // 
+            // m_tplAuthorization
+            // 
+            resources.ApplyResources(this.m_tplAuthorization, "m_tplAuthorization");
+            this.m_tplAuthorization.BackColor = System.Drawing.SystemColors.Control;
+            this.m_tplAuthorization.Controls.Add(this.m_panelChkBoxControls, 1, 2);
+            this.m_tplAuthorization.Controls.Add(this.m_panelFilePath, 0, 2);
+            this.m_tplAuthorization.Controls.Add(this.m_panelFtp, 0, 0);
+            this.m_tplAuthorization.Controls.Add(this.m_btnCheckConnection, 1, 0);
+            this.m_tplAuthorization.Name = "m_tplAuthorization";
             // 
             // m_panelChkBoxControls
             // 
@@ -173,60 +227,6 @@ namespace iba.Controls
             // 
             resources.ApplyResources(this.m_lbFileWithCertificate, "m_lbFileWithCertificate");
             this.m_lbFileWithCertificate.Name = "m_lbFileWithCertificate";
-            // 
-            // panel5
-            // 
-            resources.ApplyResources(this.panel5, "panel5");
-            this.m_tplOptions.SetColumnSpan(this.panel5, 2);
-            this.panel5.Controls.Add(this.tableLayoutPanel5);
-            this.panel5.Name = "panel5";
-            // 
-            // tableLayoutPanel5
-            // 
-            resources.ApplyResources(this.tableLayoutPanel5, "tableLayoutPanel5");
-            this.tableLayoutPanel5.Controls.Add(this.m_lblRemotePath, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.m_tbRemotePath, 1, 0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            // 
-            // m_lblRemotePath
-            // 
-            resources.ApplyResources(this.m_lblRemotePath, "m_lblRemotePath");
-            this.m_lblRemotePath.Name = "m_lblRemotePath";
-            // 
-            // m_tbRemotePath
-            // 
-            resources.ApplyResources(this.m_tbRemotePath, "m_tbRemotePath");
-            this.m_tbRemotePath.Name = "m_tbRemotePath";
-            // 
-            // panel6
-            // 
-            this.m_tplOptions.SetColumnSpan(this.panel6, 2);
-            this.panel6.Controls.Add(this.m_createZipArchive);
-            resources.ApplyResources(this.panel6, "panel6");
-            this.panel6.Name = "panel6";
-            // 
-            // m_createZipArchive
-            // 
-            resources.ApplyResources(this.m_createZipArchive, "m_createZipArchive");
-            this.m_createZipArchive.Name = "m_createZipArchive";
-            this.m_createZipArchive.UseVisualStyleBackColor = true;
-            // 
-            // m_gbProtocol
-            // 
-            resources.ApplyResources(this.m_gbProtocol, "m_gbProtocol");
-            this.m_gbProtocol.BackColor = System.Drawing.SystemColors.Control;
-            this.m_gbProtocol.Controls.Add(this.m_tplAuthorization);
-            this.m_gbProtocol.Controls.Add(this.m_tplProtocol);
-            this.m_gbProtocol.Name = "m_gbProtocol";
-            this.m_gbProtocol.TabStop = false;
-            // 
-            // m_tplAuthorization
-            // 
-            resources.ApplyResources(this.m_tplAuthorization, "m_tplAuthorization");
-            this.m_tplAuthorization.BackColor = System.Drawing.SystemColors.Control;
-            this.m_tplAuthorization.Controls.Add(this.m_panelFtp, 0, 0);
-            this.m_tplAuthorization.Controls.Add(this.m_btnCheckConnection, 1, 0);
-            this.m_tplAuthorization.Name = "m_tplAuthorization";
             // 
             // m_panelFtp
             // 
@@ -432,14 +432,6 @@ namespace iba.Controls
             this.m_gbOption.PerformLayout();
             this.m_tplOptions.ResumeLayout(false);
             this.m_tplOptions.PerformLayout();
-            this.m_panelChkBoxControls.ResumeLayout(false);
-            this.m_panelChkBoxControls.PerformLayout();
-            this.m_panelFilePath.ResumeLayout(false);
-            this.m_panelFilePath.PerformLayout();
-            this.m_tlpPathToKey.ResumeLayout(false);
-            this.m_tlpPathToKey.PerformLayout();
-            this.m_tlpPathtoCertificate.ResumeLayout(false);
-            this.m_tlpPathtoCertificate.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -450,6 +442,14 @@ namespace iba.Controls
             this.m_gbProtocol.PerformLayout();
             this.m_tplAuthorization.ResumeLayout(false);
             this.m_tplAuthorization.PerformLayout();
+            this.m_panelChkBoxControls.ResumeLayout(false);
+            this.m_panelChkBoxControls.PerformLayout();
+            this.m_panelFilePath.ResumeLayout(false);
+            this.m_panelFilePath.PerformLayout();
+            this.m_tlpPathToKey.ResumeLayout(false);
+            this.m_tlpPathToKey.PerformLayout();
+            this.m_tlpPathtoCertificate.ResumeLayout(false);
+            this.m_tlpPathtoCertificate.PerformLayout();
             this.m_panelFtp.ResumeLayout(false);
             this.m_panelFtp.PerformLayout();
             this.m_tplProtocol.ResumeLayout(false);
@@ -484,14 +484,6 @@ namespace iba.Controls
         private System.Windows.Forms.Label m_lbEncryption;
         private System.Windows.Forms.ComboBox m_cmbMode;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.CheckBox m_chkAcceptAnyTlsCertificate;
-        private System.Windows.Forms.CheckBox m_chkAcceptAnySshHostKey;
-        private System.Windows.Forms.TableLayoutPanel m_tlpPathtoCertificate;
-        private System.Windows.Forms.TextBox m_tbPathToCertificate;
-        private System.Windows.Forms.Label m_lbFileWithCertificate;
-        private System.Windows.Forms.TableLayoutPanel m_tlpPathToKey;
-        private System.Windows.Forms.TextBox m_tbPathToPrivateKey;
-        private System.Windows.Forms.Label m_lbFileToPrivateKey;
         private System.Windows.Forms.ComboBox m_cbEncryption;
         private System.Windows.Forms.TableLayoutPanel m_tplProtocol;
         private System.Windows.Forms.Panel m_panelFtpEncryption;
@@ -504,19 +496,27 @@ namespace iba.Controls
         private System.Windows.Forms.TextBox m_tbPassword;
         private System.Windows.Forms.TextBox m_tbUsername;
         private System.Windows.Forms.TableLayoutPanel m_tplOptions;
-        private System.Windows.Forms.Panel m_panelChkBoxControls;
-        private System.Windows.Forms.Panel m_panelFilePath;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label m_lbFtpMode;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label m_lblRemotePath;
         private System.Windows.Forms.TextBox m_tbRemotePath;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.CheckBox m_createZipArchive;
         private System.Windows.Forms.Button m_btnCheckConnection;
         private System.Windows.Forms.TextBox m_tbPort;
         private System.Windows.Forms.Label m_lbPort;
         private Utility.CollapsibleGroupBox m_gbTarget;
         private System.Windows.Forms.Panel panelOut;
+        private System.Windows.Forms.Panel m_panelFilePath;
+        private System.Windows.Forms.TableLayoutPanel m_tlpPathToKey;
+        private System.Windows.Forms.TextBox m_tbPathToPrivateKey;
+        private System.Windows.Forms.Label m_lbFileToPrivateKey;
+        private System.Windows.Forms.TableLayoutPanel m_tlpPathtoCertificate;
+        private System.Windows.Forms.TextBox m_tbPathToCertificate;
+        private System.Windows.Forms.Label m_lbFileWithCertificate;
+        private System.Windows.Forms.Panel m_panelChkBoxControls;
+        private System.Windows.Forms.CheckBox m_chkAcceptAnySshHostKey;
+        private System.Windows.Forms.CheckBox m_chkAcceptAnyTlsCertificate;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.CheckBox m_createZipArchive;
     }
 }
