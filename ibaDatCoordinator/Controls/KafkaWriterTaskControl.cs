@@ -159,13 +159,14 @@ namespace iba.Controls
             exprGrid.RepositoryItems.Add(m_channelEditor);
             expressionGridColumn.ColumnEdit = m_channelEditor;
 
-            metadataComboBox.Properties.Items.Add("Name");
+            
             metadataComboBox.Properties.Items.Add("ID");
-            metadataComboBox.Properties.Items.Add("Identifier");
-            metadataComboBox.Properties.Items.Add("Timestamp");
+            metadataComboBox.Properties.Items.Add("Name");
             metadataComboBox.Properties.Items.Add("Unit");
             metadataComboBox.Properties.Items.Add("Comment 1");
             metadataComboBox.Properties.Items.Add("Comment 2");
+            metadataComboBox.Properties.Items.Add("Timestamp");
+            metadataComboBox.Properties.Items.Add("Identifier");
 
             var typeComboBox = new DevExpress.XtraEditors.Repository.RepositoryItemComboBox();
             foreach (var t in KafkaWriterTaskData.KafkaRecord.DataTypes)

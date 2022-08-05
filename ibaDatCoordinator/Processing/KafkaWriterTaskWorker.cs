@@ -33,29 +33,33 @@ namespace iba.Processing
         static KafkaWriterTaskWorker()
         {
             schemaDefault = (Avro.RecordSchema)Avro.RecordSchema.Parse(
-                                                            @"{""namespace"": ""de.iba"",
-                                                ""type"": ""record"",
-                                                ""name"": ""DatCoordinatorRecord"",
-                                                ""fields"": [
-                                                    {""name"": ""Signal"", ""type"": ""string""},
-                                                    {""name"": ""ID"", ""type"": [""null"", ""string""]},
-                                                    {""name"": ""Name"", ""type"": [""null"", ""string""]},
-                                                    {""name"": ""Unit"", ""type"": [""null"", ""string""]},
-                                                    {""name"": ""Comment1"", ""type"": [""null"", ""string""]},
-                                                    {""name"": ""Comment2"", ""type"": [""null"", ""string""]},
-                                                    {""name"": ""Identifier"", ""type"": [""null"", ""string""]},
-                                                    {""name"": ""ValueType"", ""type"": { 
-                                                        ""type"": ""enum"",
-                                                        ""name"": ""ValueTypeEnum"",
-                                                        ""symbols"" : [""BOOLEAN"", ""DOUBLE"", ""STRING""]
-                                                    }},
-                                                    {""name"": ""BooleanValue"", ""type"": [""null"", ""boolean""]},
-                                                    {""name"": ""DoubleValue"", ""type"": [""null"", ""double""]},
-                                                    {""name"": ""StringValue"", ""type"": [""null"", ""string""]}
-                                                ]
-                                            }
-                                            "
-                                );
+            @"{ ""namespace"": ""de.iba"",
+                ""type"": ""record"",
+                ""name"": ""DatCoordinatorRecord"",
+                ""fields"": [
+                    {""name"": ""Signal"", ""type"": ""string""},
+                    {""name"": ""ID"", ""type"": [""null"", ""string""]},
+                    {""name"": ""Name"", ""type"": [""null"", ""string""]},
+                    {""name"": ""Unit"", ""type"": [""null"", ""string""]},
+                    {""name"": ""Comment1"", ""type"": [""null"", ""string""]},
+                    {""name"": ""Comment2"", ""type"": [""null"", ""string""]},
+                    {""name"": ""Timestamp"",  ""type"": [""null"", {
+                        ""type"" : ""long"",
+                        ""logicalType"" : ""timestamp-micros""
+                    }]},
+                    {""name"": ""Identifier"", ""type"": [""null"", ""string""]},
+                    {""name"": ""ValueType"", ""type"": { 
+                        ""type"": ""enum"",
+                        ""name"": ""ValueTypeEnum"",
+                        ""symbols"" : [""BOOLEAN"", ""DOUBLE"", ""STRING""]
+                    }},
+                    {""name"": ""BooleanValue"", ""type"": [""null"", ""boolean""]},
+                    {""name"": ""DoubleValue"", ""type"": [""null"", ""double""]},
+                    {""name"": ""StringValue"", ""type"": [""null"", ""string""]}
+                  ]
+                }
+            "
+            );
             var estSize = schemaDefault.Count * 4;
             using (var ms = new System.IO.MemoryStream(estSize))
             {
@@ -127,7 +131,7 @@ namespace iba.Processing
 
                     bool getMetadata = IsAnalyzerVersionNewer(m_ibaAnalyzer, 7, 3, 2);
                     string timeStamp = "";
-                    DateTime timeStampDt = DateTime.Now;
+                    DateTime timeStampDt = DateTime.MinValue;
 
                     foreach (var record in m_data.Records)
                     {
@@ -183,7 +187,8 @@ namespace iba.Processing
                     {
                         var fileInfo = IbaFileReader.ReadShortFileInfo(filename);
 
-                        if (m_data.timeStampExpression == StartTime)
+                        if (fileInfo is null) { }
+                        else if (m_data.timeStampExpression == StartTime)
                         {
                             timeStampDt = fileInfo.StartTime;
                         }
@@ -225,24 +230,28 @@ namespace iba.Processing
                         else
                             sighn = "+";
 
-                        if (m_data.timestampUTCOffset == TimestampUTCOffset.ConvertToUniversalTime)
+                        if (timeStampDt != DateTime.MinValue)
                         {
-                            if (sighn == "+")
-                                timeStampDt = timeStampDt.Subtract(UTCOffset);
+                            if (m_data.timestampUTCOffset == TimestampUTCOffset.ConvertToUniversalTime)
+                            {
+                                if (sighn == "+")
+                                    timeStampDt = timeStampDt.Subtract(UTCOffset);
+                                else
+                                    timeStampDt = timeStampDt.Add(UTCOffset);
+                                timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") + "Z";
+                            }
+                            else if (m_data.timestampUTCOffset == TimestampUTCOffset.ConcatenateWithTimestamp || m_data.Format != KafkaWriterTaskData.DataFormat.AVRO)
+                            {
+                                timeStamp =
+                                    timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") +
+                                    sighn +
+                                    UTCOffset.ToString(@"hh\:mm");
+                            }
                             else
-                                timeStampDt = timeStampDt.Add(UTCOffset);
-                            timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") + "Z";
+                            {
+                                timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") + "Z";
+                            }
                         }
-                        else if(m_data.timestampUTCOffset == TimestampUTCOffset.ConcatenateWithTimestamp || m_data.Format != KafkaWriterTaskData.DataFormat.AVRO)
-                        {
-
-
-                            timeStamp = 
-                                timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") +
-                                sighn +
-                                UTCOffset.ToString(@"hh\:mm");
-                        }
-                        // else ignore
 
                     }
                     var config = InitConfig(m_data);
@@ -275,10 +284,10 @@ namespace iba.Processing
                                     d.Add(sigRef + ".Comment 1", rec.Comment1);
                                 if (m_data.metadata.Contains("Comment 2"))
                                     d.Add(sigRef + ".Comment 2", rec.Comment2);
-                                if (m_data.metadata.Contains("Identifier"))
-                                    d.Add(sigRef + ".Identifier", m_data.identifier);
                                 if (m_data.metadata.Contains("Timestamp"))
                                     d.Add(sigRef + ".Timestamp", timeStamp);
+                                if (m_data.metadata.Contains("Identifier"))
+                                    d.Add(sigRef + ".Identifier", m_data.identifier);
                             }
 
                             string message = Newtonsoft.Json.JsonConvert.SerializeObject(d);
@@ -307,10 +316,10 @@ namespace iba.Processing
                                     d.Add("Comment 1", rec.Comment1);
                                 if (m_data.metadata.Contains("Comment 2"))
                                     d.Add("Comment 2", rec.Comment2);
-                                if (m_data.metadata.Contains("Identifier"))
-                                    d.Add("Identifier", m_data.identifier);
                                 if (m_data.metadata.Contains("Timestamp"))
                                     d.Add("Timestamp", timeStamp);
+                                if (m_data.metadata.Contains("Identifier"))
+                                    d.Add("Identifier", m_data.identifier);
 
                                 string message = Newtonsoft.Json.JsonConvert.SerializeObject(d);
                                 using (var p = producerBuilder.Build())
@@ -334,20 +343,23 @@ namespace iba.Processing
                                 var record = rec.Value.ToString();
 
                                 var msg = new Confluent.Kafka.Message<byte[], byte[]>();
-                                msg.Timestamp = new Confluent.Kafka.Timestamp(timeStampDt, Confluent.Kafka.TimestampType.CreateTime); 
 
                                 var r = new Avro.Generic.GenericRecord(schema);
                                 schema.TryGetField("ValueType", out Avro.Field enumField);
                                 Avro.EnumSchema valTypeSchema = enumField.Schema as Avro.EnumSchema;
-                                r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
                                 r.Add("Signal", SubstitutePlaceholders(rec, m_data.signalReference));
-                                r.Add("Identifier", m_data.identifier);
                                 r.Add("ID", rec.Expression);
                                 r.Add("Name", rec.Name);
                                 r.Add("Unit", rec.Unit);
                                 r.Add("Comment1", rec.Comment1);
                                 r.Add("Comment2", rec.Comment2);
+                                if (timeStampDt != DateTime.MinValue)
+                                    r.Add("Timestamp", timeStampDt);
+                                else
+                                    r.Add("Timestamp", null);
 
+                                r.Add("Identifier", m_data.identifier);
+                                r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
                                 r.Add("BooleanValue", rec.Value as bool?);
                                 r.Add("DoubleValue", rec.Value as double?);
                                 r.Add("StringValue", rec.Value as string);
