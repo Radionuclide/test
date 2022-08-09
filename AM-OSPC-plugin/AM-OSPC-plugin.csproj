@@ -110,6 +110,12 @@
       <Version>2.13.2</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OSPC_PNG.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OSPC.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)ibaDatCoordinator\bin\$(ConfigurationName)\plugins"

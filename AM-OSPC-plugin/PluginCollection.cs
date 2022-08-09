@@ -15,7 +15,7 @@ namespace AM_OSPC_plugin
         {
             if(m_info == null)
             {
-                m_info = new PluginTaskInfo("OSPC", "A.M. OSPC", Properties.Resources.OSPC.ToBitmap());
+                m_info = new PluginTaskInfo("OSPC", "A.M. OSPC", Properties.Resources.OSPC_PNG);
                 return new PluginTaskInfo[] { m_info };
             }
 

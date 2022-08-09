@@ -161,6 +161,16 @@ namespace AM_OSPC_plugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OSPC_PNG {
+            get {
+                object obj = ResourceManager.GetObject("OSPC_PNG", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ibaAnalyzer PDO files (*.pdo)|*.pdo.
         /// </summary>
         internal static string PdoFileFilter {
