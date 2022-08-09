@@ -56,11 +56,21 @@ Var EmbeddedCodeMeterBuild
   IfSilent installCodeMeterSilent_${UniqueID} installCodeMeterAlmostSilent_${UniqueID}
 
   installCodeMeterAlmostSilent_${UniqueID}:
-  nsExec::Exec '"${CODEMETER_INSTALLER_PATH}" /i /q /nosplash /ComponentArgs "*:/qb"'
-  Goto installCodeMeterFinished_${UniqueID}
+  nsExec::Exec '"${CODEMETER_INSTALLER_PATH}" /i /q /nosplash /ComponentArgs "*:/qb /norestart"'
+  Goto checkCodeMeterExitCode_${UniqueID}
 
   installCodeMeterSilent_${UniqueID}:
-  nsExec::Exec '"${CODEMETER_INSTALLER_PATH}" /i /q /nosplash /ComponentArgs "*:/q"'
+  nsExec::Exec '"${CODEMETER_INSTALLER_PATH}" /i /q /nosplash /ComponentArgs "*:/q /norestart"'
+  Goto checkCodeMeterExitCode_${UniqueID}
+  
+  checkCodeMeterExitCode_${UniqueID}:
+  Pop $R2
+  !insertmacro WriteToInstallHistory "CodeMeter Runtime installer exited with error code $R2"
+  ${If} $R2 == 3010
+  ${OrIf} $R2 == 1306
+    !insertmacro WriteToInstallHistory "CodeMeter Runtime installer requires reboot"
+    SetRebootFlag true
+  ${EndIf}
   Goto installCodeMeterFinished_${UniqueID}
   
   skipUpdateBecauseSilent_${UniqueID}:
@@ -82,4 +92,3 @@ Var EmbeddedCodeMeterBuild
 LangString TEXT_INSTALL_CODEMETER         ${LANG_ENGLISH} "Installing CodeMeter Runtime"
 LangString TEXT_INSTALL_CODEMETER         ${LANG_GERMAN}  "CodeMeter Runtime wird installiert"
 LangString TEXT_INSTALL_CODEMETER         ${LANG_FRENCH}  "Installation du CodeMeter Runtime"
-LangString TEXT_INSTALL_CODEMETER         ${LANG_SPANISH} "Instalación de CodeMeter Runtime"
