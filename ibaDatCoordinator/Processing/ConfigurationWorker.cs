@@ -3187,7 +3187,7 @@ namespace iba.Processing
                 }
                 else if(task is ConvertExtFileTaskData)
                 {
-                    DoConvertExtFileTask(DatFile, task as ConvertExtFileTaskData);
+                    DoConvertExtFileTask(DatFile, task as ConvertExtFileTaskData, lic);
                     IbaAnalyzerCollection.Collection.AddCall(m_ibaAnalyzer);
                     memoryUsed = ((ConvertExtFileTaskData)task).MonitorData.MemoryUsed;
                 }
@@ -3453,11 +3453,15 @@ namespace iba.Processing
         void Extract(string filename, ExtractData task, License lic)
         {
             bool bLicenseTransferred = TaskManager.Manager.LicenseManager.TransferLicense(lic, m_ibaAnalyzer);
-
-            (new ExtractTaskWorker(this, task)).DoWork(filename);
-
-            if(bLicenseTransferred)
-                TaskManager.Manager.LicenseManager.RevokeLicense(lic, m_ibaAnalyzer);
+            try
+            {
+                (new ExtractTaskWorker(this, task)).DoWork(filename);
+            }
+            finally
+            {
+                if (bLicenseTransferred)
+                    TaskManager.Manager.LicenseManager.RevokeLicense(lic, m_ibaAnalyzer);
+            }
         }
 
         internal string GetOutputDirectoryName(string filename, TaskDataUNC task)
@@ -5436,9 +5440,18 @@ namespace iba.Processing
             (new KafkaWriterTaskWorker(this, task)).DoWork(filename);
         }
 
-        private void DoConvertExtFileTask(string filename, ConvertExtFileTaskData taskData)
+        private void DoConvertExtFileTask(string filename, ConvertExtFileTaskData taskData, License lic)
         {
-            new ConvertExtFileTaskWorker(this, taskData).DoWork(filename, m_cd);
+            bool bLicenseTransferred = TaskManager.Manager.LicenseManager.TransferLicense(lic, m_ibaAnalyzer);
+            try
+            {
+                new ConvertExtFileTaskWorker(this, taskData).DoWork(filename, m_cd);
+            }
+            finally
+            {
+                if (bLicenseTransferred)
+                    TaskManager.Manager.LicenseManager.RevokeLicense(lic, m_ibaAnalyzer);
+            }
         }
 
         private void DoCleanupAnyway(string DatFile, TaskDataUNC task) //a unc task has free space cleanup strategy, 

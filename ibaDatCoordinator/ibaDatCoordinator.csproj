@@ -216,7 +216,9 @@
     <Compile Include="Controls\OpcUaControl.Designer.cs">
       <DependentUpon>OpcUaControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\OpcUaEndpointSelectionForm.cs" />
+    <Compile Include="Controls\OpcUaEndpointSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\OpcUaEndpointSelectionForm.Designer.cs">
       <DependentUpon>OpcUaEndpointSelectionForm.cs</DependentUpon>
     </Compile>
@@ -238,7 +240,9 @@
     <Compile Include="Controls\PasswordEditWithConfirmation.Designer.cs">
       <DependentUpon>PasswordEditWithConfirmation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ServerFolderBrowser.cs" />
+    <Compile Include="Controls\ServerFolderBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\SnmpControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -260,7 +264,9 @@
     <Compile Include="Controls\PercentUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\HDEventWizard.cs" />
+    <Compile Include="Controls\HDEventWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\HDEventWizard.Designer.cs">
       <DependentUpon>HDEventWizard.cs</DependentUpon>
     </Compile>
@@ -285,7 +291,6 @@
     <Compile Include="Data\DataTransferData.cs" />
     <Compile Include="Data\ErrorPluginTaskData.cs" />
     <Compile Include="Data\DataTransferTaskData.cs" />
-    <Compile Include="Data\ExternalFileJobData.cs" />
     <Compile Include="Data\OpcUaWriterTaskData.cs" />
     <Compile Include="Data\SnmpWriterTaskData.cs" />
     <Compile Include="Data\ConvertExtFileTaskData.cs" />
@@ -298,19 +303,27 @@
     <Compile Include="Data\ComputedValuesTaskData.cs" />
     <Compile Include="Data\PluginTaskDataWrapper.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
-    <Compile Include="Dialogs\AskForPassphrase.cs" />
+    <Compile Include="Dialogs\AskForPassphrase.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\AskForPassphrase.Designer.cs">
       <DependentUpon>AskForPassphrase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\GenerateEventJobTestFileDlg.cs" />
+    <Compile Include="Dialogs\GenerateEventJobTestFileDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\GenerateEventJobTestFileDlg.Designer.cs">
       <DependentUpon>GenerateEventJobTestFileDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\PasswordEditForm.cs" />
+    <Compile Include="Dialogs\PasswordEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\PasswordEditForm.Designer.cs">
       <DependentUpon>PasswordEditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\ServerSelectionForm.cs" />
+    <Compile Include="Dialogs\ServerSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Data\SnmpData.cs" />
     <Compile Include="Data\ExtMonData.cs" />
     <Compile Include="Controls\KafkaWriterTaskControl.cs">
@@ -347,7 +360,9 @@
     <Compile Include="Processing\KafkaWriterTaskWorker.cs" />
     <Compile Include="Processing\OpcUaWorker.cs" />
     <Compile Include="Processing\SnmpWorker.cs" />
-    <Compile Include="Dialogs\TestSplitterTaskDialog.cs" />
+    <Compile Include="Dialogs\TestSplitterTaskDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\TestSplitterTaskDialog.Designer.cs">
       <DependentUpon>TestSplitterTaskDialog.cs</DependentUpon>
     </Compile>
@@ -362,8 +377,12 @@
     <Compile Include="Remoting\FileDownloaderImpl.cs" />
     <Compile Include="Remoting\ibaAnalyzerExt.cs" />
     <Compile Include="Remoting\RemoteFileLoader.cs" />
-    <Compile Include="Remoting\FilesDownloaderForm.cs" />
-    <Compile Include="Remoting\FilesUploaderForm.cs" />
+    <Compile Include="Remoting\FilesDownloaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remoting\FilesUploaderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Remoting\FileUploaderImpl.cs" />
     <Compile Include="Remoting\ServerRemotingManager.cs" />
     <Compile Include="Utility\Btea.cs" />
@@ -417,7 +436,9 @@
       <DependentUpon>WeeklyTriggerSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\ScheduledJobData.cs" />
-    <Compile Include="Dialogs\PasswordConfirm.cs" />
+    <Compile Include="Dialogs\PasswordConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\PasswordConfirm.Designer.cs">
       <DependentUpon>PasswordConfirm.cs</DependentUpon>
     </Compile>
@@ -427,7 +448,9 @@
     <Compile Include="Controls\PauseTaskControl.Designer.cs">
       <DependentUpon>PauseTaskControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\RemoveMarkingsDialog.cs" />
+    <Compile Include="Dialogs\RemoveMarkingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\RemoveMarkingsDialog.Designer.cs">
       <DependentUpon>RemoveMarkingsDialog.cs</DependentUpon>
     </Compile>
@@ -467,7 +490,9 @@
     <Compile Include="Controls\LogControl.Designer.cs">
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\DeleteDatFilesDialog.cs" />
+    <Compile Include="Dialogs\DeleteDatFilesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\DeleteDatFilesDialog.Designer.cs">
       <DependentUpon>DeleteDatFilesDialog.cs</DependentUpon>
     </Compile>
@@ -489,11 +514,15 @@
     <Compile Include="Controls\StatusControl.Designer.cs">
       <DependentUpon>StatusControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\SpecifyPasswordDialog.cs" />
+    <Compile Include="Dialogs\SpecifyPasswordDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\SpecifyPasswordDialog.Designer.cs">
       <DependentUpon>SpecifyPasswordDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\StopWaitDialog.cs" />
+    <Compile Include="Dialogs\StopWaitDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\StopWaitDialog.Designer.cs">
       <DependentUpon>StopWaitDialog.cs</DependentUpon>
     </Compile>
@@ -530,7 +559,9 @@
     <Compile Include="Data\TaskDataUNC.cs" />
     <Compile Include="Data\UpdateDataTaskData.cs" />
     <Compile Include="Data\WatchDogData.cs" />
-    <Compile Include="Dialogs\TestScriptDlg.cs" />
+    <Compile Include="Dialogs\TestScriptDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\TestScriptDlg.Designer.cs">
       <DependentUpon>TestScriptDlg.cs</DependentUpon>
     </Compile>
@@ -542,7 +573,9 @@
     </Compile>
     <Compile Include="Processing\ExtractTaskWorker.cs" />
     <Compile Include="GeneralInterfaces.cs" />
-    <Compile Include="MainForm.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
@@ -556,7 +589,9 @@
     <Compile Include="Processing\TCPWatchdog.cs" />
     <Compile Include="Processing\TriggerCalculator.cs" />
     <Compile Include="Processing\UpdateDataTaskWorker.cs" />
-    <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.cs" />
+    <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\UploadOrDownloadConfigurationsDialog.Designer.cs">
       <DependentUpon>UploadOrDownloadConfigurationsDialog.cs</DependentUpon>
     </Compile>
@@ -570,7 +605,9 @@
       <DependentUpon>CollapsibleGroupBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\crypt.cs" />
-    <Compile Include="Utility\CustomComboBox.cs" />
+    <Compile Include="Utility\CustomComboBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Utility\DataPath.cs" />
     <Compile Include="Utility\DatCoordinatorHostImpl.cs" />
     <Compile Include="Utility\FastDirectoryEnumerator.cs" />

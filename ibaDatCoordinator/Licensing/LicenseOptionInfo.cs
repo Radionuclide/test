@@ -53,11 +53,11 @@ namespace iba.Licensing
             new LicenseOptionInfo(LicenseId.DBExtract, "Database extract", LicenseOptionType.Counter, new int[] {49, 169 }, new int[] {LicenseId.AnalyzerDBExtract }, 5),
             new LicenseOptionInfo(LicenseId.FileExtract, "File extract", LicenseOptionType.Counter, new int[] {50, 170 }, new int[] {LicenseId.AnalyzerFileExtract }, 3),
 
-            new LicenseOptionInfo(LicenseId.ConvertCSV, "Convert CSV to dat", LicenseOptionType.Counter),
-            new LicenseOptionInfo(LicenseId.ConvertDAS, "Convert DAS to dat", LicenseOptionType.Counter),
-            new LicenseOptionInfo(LicenseId.ConvertCOMTRADE, "Convert COMTRADE to dat", LicenseOptionType.Counter),
-            new LicenseOptionInfo(LicenseId.ConvertPARQUET, "Convert PARQUET to dat", LicenseOptionType.Counter),
             new LicenseOptionInfo(LicenseId.Publish, "Publish task", LicenseOptionType.Counter,null,null,9),
+            new LicenseOptionInfo(LicenseId.ConvertCSV, "Convert CSV to dat", LicenseOptionType.Counter,null,null,10),
+            new LicenseOptionInfo(LicenseId.ConvertDAS, "Convert DAS to dat", LicenseOptionType.Counter,null,null,11),
+            new LicenseOptionInfo(LicenseId.ConvertCOMTRADE, "Convert COMTRADE to dat", LicenseOptionType.Counter,null,null,12),
+            new LicenseOptionInfo(LicenseId.ConvertPARQUET, "Convert PARQUET to dat", LicenseOptionType.Counter,null,null,13),
 
             new LicenseOptionInfo(LicenseId.SinecH1, "Sinec H1 task", LicenseOptionType.YesNo, new int[] {61001 }),
             new LicenseOptionInfo(LicenseId.UpdateData, "Update data task", LicenseOptionType.YesNo, new int[] {61002 }),
