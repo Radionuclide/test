@@ -291,6 +291,7 @@
     <Compile Include="Data\DataTransferData.cs" />
     <Compile Include="Data\ErrorPluginTaskData.cs" />
     <Compile Include="Data\DataTransferTaskData.cs" />
+    <Compile Include="Data\ExternalFileJobData.cs" />
     <Compile Include="Data\OpcUaWriterTaskData.cs" />
     <Compile Include="Data\SnmpWriterTaskData.cs" />
     <Compile Include="Data\ConvertExtFileTaskData.cs" />
