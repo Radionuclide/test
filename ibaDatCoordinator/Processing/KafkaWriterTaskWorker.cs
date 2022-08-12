@@ -238,18 +238,18 @@ namespace iba.Processing
                                     timeStampDt = timeStampDt.Subtract(UTCOffset);
                                 else
                                     timeStampDt = timeStampDt.Add(UTCOffset);
-                                timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") + "Z";
+                                timeStamp = timeStampDt.ToString("yyyy-MM-ddTHH:mm:ss:fffffff") + "Z";
                             }
                             else if (m_data.timestampUTCOffset == TimestampUTCOffset.ConcatenateWithTimestamp)
                             {
                                 timeStamp =
-                                    timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff") +
+                                    timeStampDt.ToString("yyyy-MM-ddTHH:mm:ss:fffffff") +
                                     sighn +
                                     UTCOffset.ToString(@"hh\:mm");
                             }
                             else // ignore
                             {
-                                timeStamp = timeStampDt.ToString("yyyy.MM.ddTHH:mm:ss:fffffff");
+                                timeStamp = timeStampDt.ToString("yyyy-MM-ddTHH:mm:ss:fffffff");
                             }
                         }
 
@@ -284,11 +284,11 @@ namespace iba.Processing
                                     d.Add(sigRef + ".Comment 1", rec.Comment1);
                                 if (m_data.metadata.Contains("Comment 2"))
                                     d.Add(sigRef + ".Comment 2", rec.Comment2);
-                                if (m_data.metadata.Contains("Timestamp"))
-                                    d.Add(sigRef + ".Timestamp", timeStamp);
-                                if (m_data.metadata.Contains("Identifier"))
-                                    d.Add(sigRef + ".Identifier", m_data.identifier);
                             }
+                            if (m_data.metadata.Contains("Timestamp"))
+                                d.Add("Timestamp", timeStamp);
+                            if (m_data.metadata.Contains("Identifier"))
+                                d.Add("Identifier", m_data.identifier);
 
                             string message = Newtonsoft.Json.JsonConvert.SerializeObject(d);
                             using (var p = producerBuilder.Build())
