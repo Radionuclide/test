@@ -166,14 +166,12 @@ namespace iba.Processing
                             mon.Execute(delegate () { channelMetaData = m_ibaAnalyzer.GetChannelMetaData(record.Expression); });
                             if (channelMetaData != null)
                             {
-                                record.Name = channelMetaData.name;
                                 record.Unit = channelMetaData.Unit;
                                 record.Comment1 = channelMetaData.Comment1;
                                 record.Comment2 = channelMetaData.Comment2;
                             }
                             else
                             {
-                                record.Name = "";
                                 record.Unit = "";
                                 record.Comment1 = "";
                                 record.Comment2 = "";
@@ -220,31 +218,19 @@ namespace iba.Processing
                         else 
                             UTCOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow); // use local UTC
 
-                        string sighn;
-
-                        if (UTCOffset.Hours > 14)
-                        {
-                            UTCOffset = new TimeSpan(1, 0, 0, 0).Subtract(UTCOffset);
-                            sighn = "-";
-                        }
-                        else
-                            sighn = "+";
-
                         if (timeStampDt != DateTime.MinValue)
                         {
                             if (m_data.timestampUTCOffset == TimestampUTCOffset.ConvertToUniversalTime)
                             {
-                                if (sighn == "+")
-                                    timeStampDt = timeStampDt.Subtract(UTCOffset);
-                                else
-                                    timeStampDt = timeStampDt.Add(UTCOffset);
+                                timeStampDt = timeStampDt.Subtract(UTCOffset);
                                 timeStamp = timeStampDt.ToString("yyyy-MM-ddTHH:mm:ss:fffffff") + "Z";
                             }
                             else if (m_data.timestampUTCOffset == TimestampUTCOffset.ConcatenateWithTimestamp)
                             {
+                                var s = UTCOffset.Ticks >= 0 ? "+" : "-"; //add "+" sighn if time offset is positive
                                 timeStamp =
                                     timeStampDt.ToString("yyyy-MM-ddTHH:mm:ss:fffffff") +
-                                    sighn +
+                                    s +
                                     UTCOffset.ToString(@"hh\:mm");
                             }
                             else // ignore
@@ -268,11 +254,27 @@ namespace iba.Processing
                             InitIBuilder(m_data, producerBuilder);
 
                             var d = new Dictionary<string, string>();
+                            var sigRefs = new List<string>();
 
                             for (int i = 0; i < m_data.Records.Count; i++)
                             {
                                 var rec = m_data.Records[i];
                                 var sigRef = SubstitutePlaceholders(rec, m_data.signalReference);
+
+                                if (sigRefs.Contains(sigRef))
+                                {
+                                    int ind = 1;
+                                    string temp;
+                                    do
+                                    {
+                                        temp = sigRef + "_" + ind.ToString();
+                                        ind++;
+                                    } while (sigRefs.Contains(temp));
+                                    sigRef = temp;
+                                }
+                                sigRefs.Add(sigRef);
+
+
                                 d.Add(sigRef, m_data.ToText(rec));
                                 if (m_data.metadata.Contains("ID"))
                                     d.Add(sigRef + ".ID", rec.Expression);
