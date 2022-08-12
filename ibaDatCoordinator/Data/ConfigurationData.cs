@@ -29,20 +29,16 @@ namespace iba.Data
             get { return m_jobType; }
             set { m_jobType = value; }
         }
-        public enum FileFormatEnum { TEXTFILE, DAS, COMTRADE, PARQUET }
 
-        public FileFormatEnum FileFormat { get; set; }
-        public string TextFileExtension = "txt";
 
-        public string GetFileFormatExtension(ConfigurationData.FileFormatEnum fileFormat)
+        public string GetFileFormatExtension(ExternalFileJobData.FileFormatEnum fileFormat)
         {
-
             return fileFormat switch
             {
-                ConfigurationData.FileFormatEnum.TEXTFILE => TextFileExtension,
-                ConfigurationData.FileFormatEnum.COMTRADE => "dat",
-                ConfigurationData.FileFormatEnum.DAS => "das",
-                ConfigurationData.FileFormatEnum.PARQUET => "parquet",
+                ExternalFileJobData.FileFormatEnum.TEXTFILE => ExternalFileJobData.TextFileExtension,
+                ExternalFileJobData.FileFormatEnum.COMTRADE => "dat",
+                ExternalFileJobData.FileFormatEnum.DAS => "das",
+                ExternalFileJobData.FileFormatEnum.PARQUET => "parquet",
                 _ => "dat"
             };
         }
@@ -183,23 +179,7 @@ namespace iba.Data
             set { m_pass = Crypt.Decrypt(value); }
         }
 
-        private string m_ProcessedFileDirectoryPassword;
 
-        [XmlIgnore]
-        public string ProcessedFileDirectoryPassword
-        {
-            get { return m_ProcessedFileDirectoryPassword; }
-            set { m_ProcessedFileDirectoryPassword = value; }
-        }
-
-        public string ProcessedFileDirectoryPasswordCrypted
-        {
-            get { return Crypt.Encrypt(m_ProcessedFileDirectoryPassword); }
-            set { m_ProcessedFileDirectoryPassword = Crypt.Decrypt(value); }
-        }
-
-        public string ProcessedFileUesername  { get; set; }
-        public string ProcessedFileTargedDirectory { get; set; }
 
         private string m_fileEncryptionPass;
 
@@ -356,15 +336,16 @@ namespace iba.Data
             get { return m_eventData; }
             set { m_eventData = value; }
         }
-        public bool DeleteExtFile { get; set; }
-        public bool MoveExtFile { get; set; }
-        public  string PdoFile { get; set; }
+
+        public ExternalFileJobData ExternalFileJobData { get; set; }
 
         public ConfigurationData(string name, JobTypeEnum jobType)
         {
             m_jobType = jobType;
             if (m_jobType == JobTypeEnum.Scheduled) m_scheduleData = new ScheduledJobData();
             if (m_jobType == JobTypeEnum.Event) m_eventData = new EventJobData();
+            if (m_jobType == JobTypeEnum.ExtFile) ExternalFileJobData = new ExternalFileJobData();
+
             m_reproccessTime = new TimeSpan(0, 10, 0);
             m_rescanTime = new TimeSpan(0, 60, 0);
             m_name = name;
@@ -397,7 +378,6 @@ namespace iba.Data
             m_bLimitTimesTried = false;
             m_nrTimes = 10;
             m_fileEncryptionPass = "";
-            DeleteExtFile = true;
         }
 
         public void relinkChildData()
@@ -417,6 +397,8 @@ namespace iba.Data
                 cd.m_scheduleData = m_scheduleData.Clone() as ScheduledJobData;
             if (m_jobType == JobTypeEnum.Event)
                 cd.m_eventData = m_eventData.Clone() as EventJobData;
+            if(m_jobType == JobTypeEnum.ExtFile)
+                cd.ExternalFileJobData = ExternalFileJobData.Clone() as ExternalFileJobData;
             cd.relinkChildData();
             cd.m_enabled = m_enabled;
             cd.m_autoStart = m_autoStart;
@@ -436,14 +418,7 @@ namespace iba.Data
             cd.m_nrTimes = m_nrTimes;
             cd.m_treePosition = m_treePosition;
             cd.m_fileEncryptionPass = m_fileEncryptionPass;
-            cd.FileFormat = FileFormat;
-            cd.DeleteExtFile = DeleteExtFile;
-            cd.MoveExtFile = MoveExtFile;
-            cd.PdoFile = PdoFile;
-            cd.ProcessedFileDirectoryPassword = m_ProcessedFileDirectoryPassword;
-            cd.ProcessedFileTargedDirectory = ProcessedFileTargedDirectory;
-            cd.ProcessedFileUesername = ProcessedFileUesername;
-            cd.TextFileExtension = TextFileExtension;
+            
             return cd;
         }
 
@@ -463,7 +438,9 @@ namespace iba.Data
             }
             if(m_jobType != other.m_jobType) return false;
             if(m_jobType == JobTypeEnum.Scheduled && !m_scheduleData.IsSame(other.m_scheduleData)) return false;
-            if (m_jobType == JobTypeEnum.Event && !m_eventData.IsSame(other.m_eventData)) return false;
+            if(m_jobType == JobTypeEnum.Event && !m_eventData.IsSame(other.m_eventData)) return false;
+            if(m_jobType == JobTypeEnum.ExtFile && !ExternalFileJobData.IsSame(other.ExternalFileJobData)) return  false;
+
             return
                 other.m_enabled == m_enabled &&
                 other.m_autoStart == m_autoStart &&
@@ -482,15 +459,7 @@ namespace iba.Data
                 other.m_bLimitTimesTried == m_bLimitTimesTried &&
                 //other.m_treePosition == m_treePosition && //don't care about this one
                 other.m_nrTimes == m_nrTimes &&
-                other.m_fileEncryptionPass == m_fileEncryptionPass &&
-                other.FileFormat == FileFormat &&
-                other.DeleteExtFile == DeleteExtFile &&
-                other.MoveExtFile == MoveExtFile &&
-                other.PdoFile == PdoFile &&
-                other.ProcessedFileDirectoryPassword == ProcessedFileDirectoryPassword &&
-                other.ProcessedFileTargedDirectory == ProcessedFileTargedDirectory &&
-                other.ProcessedFileUesername == ProcessedFileUesername &&
-                other.TextFileExtension == TextFileExtension;
+                other.m_fileEncryptionPass == m_fileEncryptionPass;
         }
 
         public ConfigurationData Clone_AlsoCopyGuids()

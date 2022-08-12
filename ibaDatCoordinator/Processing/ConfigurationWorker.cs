@@ -166,7 +166,7 @@ namespace iba.Processing
         void RenewFswt()
         {
             var extension = m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile
-                ? $"*.{m_cd.GetFileFormatExtension(m_cd.FileFormat)}"
+                ? $"*.{m_cd.GetFileFormatExtension(m_cd.ExternalFileJobData.FileFormat)}"
                 : "*.dat";
 
             lock (m_fswtLock)
@@ -1231,12 +1231,12 @@ namespace iba.Processing
 
         private int MapFileFormatToLicenceId()
         {
-            return m_cd.FileFormat switch
+            return m_cd.ExternalFileJobData.FileFormat switch
             {
-                ConfigurationData.FileFormatEnum.TEXTFILE => LicenseId.ConvertCSV,
-                ConfigurationData.FileFormatEnum.COMTRADE => LicenseId.ConvertCOMTRADE,
-                ConfigurationData.FileFormatEnum.DAS => LicenseId.ConvertDAS,
-                ConfigurationData.FileFormatEnum.PARQUET => LicenseId.ConvertPARQUET,
+                ExternalFileJobData.FileFormatEnum.TEXTFILE => LicenseId.ConvertCSV,
+                ExternalFileJobData.FileFormatEnum.COMTRADE => LicenseId.ConvertCOMTRADE,
+                ExternalFileJobData.FileFormatEnum.DAS => LicenseId.ConvertDAS,
+                ExternalFileJobData.FileFormatEnum.PARQUET => LicenseId.ConvertPARQUET,
                 _ => LicenseId.None
             };
         }
@@ -1549,7 +1549,7 @@ namespace iba.Processing
 
             String searchPattern = m_cd.JobType switch
             {
-                ConfigurationData.JobTypeEnum.ExtFile => $"*.{m_cd.GetFileFormatExtension(m_cd.FileFormat)}",
+                ConfigurationData.JobTypeEnum.ExtFile => $"*.{m_cd.GetFileFormatExtension(m_cd.ExternalFileJobData.FileFormat)}",
                 ConfigurationData.JobTypeEnum.DatTriggered => "*.dat",
                 _ => "*.hdq"
             };
@@ -3482,7 +3482,7 @@ namespace iba.Processing
             string maindir = dir;
 
             var extension = m_cd.JobType == ConfigurationData.JobTypeEnum.ExtFile
-                ? $"*.{m_cd.GetFileFormatExtension(m_cd.FileFormat)}"
+                ? $"*.{m_cd.GetFileFormatExtension(m_cd.ExternalFileJobData.FileFormat)}"
                 : "*.dat";
 
             if (dir == m_cd.DatDirectoryUNC && task.Extension == extension)

@@ -28,7 +28,7 @@ namespace iba.Processing
                 return;
             }
 
-            if (string.IsNullOrEmpty(data.ProcessedFileTargedDirectory) && data.MoveExtFile)
+            if (string.IsNullOrEmpty(data.ExternalFileJobData.ProcessedFileTargedDirectory) && data.ExternalFileJobData.MoveExtFile)
             {
                 SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.TargetDirectoryNotSpecified);
                 return;
@@ -36,7 +36,7 @@ namespace iba.Processing
 
             if (m_confWorker.RunningConfiguration.SubDirs)
             {
-                if (CheckIfTargetIsSubdirectory(m_confWorker.RunningConfiguration.DatDirectory, m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory))
+                if (CheckIfTargetIsSubdirectory(m_confWorker.RunningConfiguration.DatDirectory, m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory))
                 {
                     SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.SubdirectoryNotAllowed);
                     return;
@@ -67,9 +67,9 @@ namespace iba.Processing
                     m_confWorker.CleanupDirs(outFile, m_task, extension);
                 }
 
-                if (data.FileFormat == ConfigurationData.FileFormatEnum.TEXTFILE)
+                if (data.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.TEXTFILE)
                 {
-                    string pdoForTextFile = data.PdoFile;
+                    string pdoForTextFile = data.ExternalFileJobData.PdoFile;
 
                     if (string.IsNullOrEmpty(pdoForTextFile))
                     {
@@ -147,9 +147,9 @@ namespace iba.Processing
 
         private void DeleteOrMoveSourceFile(string filename)
         {
-            if (m_confWorker.RunningConfiguration.DeleteExtFile)
+            if (m_confWorker.RunningConfiguration.ExternalFileJobData.DeleteExtFile)
             {
-                if (m_confWorker.RunningConfiguration.FileFormat == ConfigurationData.FileFormatEnum.COMTRADE)
+                if (m_confWorker.RunningConfiguration.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.COMTRADE)
                 {
                     File.Delete(filename);
                     File.Delete(Path.ChangeExtension(filename, "cfg"));
@@ -161,13 +161,13 @@ namespace iba.Processing
             }
             else
             {
-                if (!string.IsNullOrEmpty(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory))
+                if (!string.IsNullOrEmpty(m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory))
                 {
-                    if (m_confWorker.RunningConfiguration.FileFormat == ConfigurationData.FileFormatEnum.COMTRADE)
+                    if (m_confWorker.RunningConfiguration.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.COMTRADE)
                     {
                         var cfgFilename = Path.ChangeExtension(filename, "cfg");
 
-                        var pathToCopy = Path.Combine(Path.Combine(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory, Path.GetFileName(filename)));
+                        var pathToCopy = Path.Combine(Path.Combine(m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory, Path.GetFileName(filename)));
 
                         var cfgPathToCopy = Path.ChangeExtension(pathToCopy, "cfg");
 
@@ -180,7 +180,7 @@ namespace iba.Processing
                     }
                     else
                     {
-                        var pathToCopy = Path.Combine(Path.Combine(m_confWorker.RunningConfiguration.ProcessedFileTargedDirectory, Path.GetFileName(filename)));
+                        var pathToCopy = Path.Combine(Path.Combine(m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory, Path.GetFileName(filename)));
                         File.Copy(filename, pathToCopy, true);
                         File.Delete(filename);
                     }

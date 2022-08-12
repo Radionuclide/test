@@ -278,15 +278,15 @@ namespace iba.Controls
 
             if (m_jobType == ConfigurationData.JobTypeEnum.ExtFile)
             {
-                cbFileFormat.DataSource = Enum.GetNames(typeof(ConfigurationData.FileFormatEnum));
-                cbFileFormat.SelectedItem = m_data.FileFormat.ToString();
-                rbDelete.Checked = m_data.DeleteExtFile;
-                rbMove.Checked = m_data.MoveExtFile;
-                m_tbPdoFilePath.Text = m_data.PdoFile;
-                m_tbPassword.Text = m_data.ProcessedFileDirectoryPassword;
-                m_tbUsername.Text = m_data.ProcessedFileUesername;
-                m_tbTargetDirectory.Text = m_data.ProcessedFileTargedDirectory;
-                tbExtension.Text = m_data.GetFileFormatExtension(m_data.FileFormat);
+                cbFileFormat.DataSource = Enum.GetNames(typeof(ExternalFileJobData.FileFormatEnum));
+                cbFileFormat.SelectedItem = m_data.ExternalFileJobData.FileFormat.ToString();
+                rbDelete.Checked = m_data.ExternalFileJobData.DeleteExtFile;
+                rbMove.Checked = m_data.ExternalFileJobData.MoveExtFile;
+                m_tbPdoFilePath.Text = m_data.ExternalFileJobData.PdoFile;
+                m_tbPassword.Text = m_data.ExternalFileJobData.ProcessedFileDirectoryPassword;
+                m_tbUsername.Text = m_data.ExternalFileJobData.ProcessedFileUesername;
+                m_tbTargetDirectory.Text = m_data.ExternalFileJobData.ProcessedFileTargedDirectory;
+                tbExtension.Text = m_data.GetFileFormatExtension(m_data.ExternalFileJobData.FileFormat);
             }
 
             //if (m_data.NotificationData.NotifyOutput == NotificationData.NotifyOutputChoice.NETSEND)
@@ -376,17 +376,17 @@ namespace iba.Controls
             {
                 if (cbFileFormat.SelectedIndex != -1)
                 {
-                    m_data.FileFormat = (ConfigurationData.FileFormatEnum)cbFileFormat.SelectedIndex;
+                    m_data.ExternalFileJobData.FileFormat = (ExternalFileJobData.FileFormatEnum)cbFileFormat.SelectedIndex;
                 }
-                m_data.DeleteExtFile = rbDelete.Checked;
-                m_data.MoveExtFile = rbMove.Checked;
-                m_data.PdoFile = m_tbPdoFilePath.Text;
-                m_data.ProcessedFileDirectoryPassword = m_tbPassword.Text;
-                m_data.ProcessedFileUesername = m_tbUsername.Text;
-                m_data.ProcessedFileTargedDirectory = m_tbTargetDirectory.Text;
-                if (m_data.FileFormat == ConfigurationData.FileFormatEnum.TEXTFILE)
+                m_data.ExternalFileJobData.DeleteExtFile = rbDelete.Checked;
+                m_data.ExternalFileJobData.MoveExtFile = rbMove.Checked;
+                m_data.ExternalFileJobData.PdoFile = m_tbPdoFilePath.Text;
+                m_data.ExternalFileJobData.ProcessedFileDirectoryPassword = m_tbPassword.Text;
+                m_data.ExternalFileJobData.ProcessedFileUesername = m_tbUsername.Text;
+                m_data.ExternalFileJobData.ProcessedFileTargedDirectory = m_tbTargetDirectory.Text;
+                if (m_data.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.TEXTFILE)
                 {
-                    m_data.TextFileExtension = tbExtension.Text;
+                    m_data.ExternalFileJobData.TextFileExtension = tbExtension.Text;
                 }
             }
 
@@ -818,7 +818,7 @@ namespace iba.Controls
             cbFileFormat.Location = new Point(10, 20);
             cbFileFormat.DropDownStyle = ComboBoxStyle.DropDownList;
             cbFileFormat.Width = 160;
-            cbFileFormat.DataSource = Enum.GetNames(typeof(ConfigurationData.FileFormatEnum));
+            cbFileFormat.DataSource = Enum.GetNames(typeof(ExternalFileJobData.FileFormatEnum));
 
             var lblFileExtension = new Label();
             lblFileExtension.Text = $"{Resources.FileExtension}:";
@@ -833,7 +833,7 @@ namespace iba.Controls
             tbExtension.KeyUp += (sender, _) =>
             {
                 var textBox = (TextBox)sender;
-                m_data.TextFileExtension = textBox.Text;
+                m_data.ExternalFileJobData.TextFileExtension = textBox.Text;
             };
 
             var lblAnalysisFile = new Label();
@@ -892,7 +892,7 @@ namespace iba.Controls
                     lblAnalysisFile.Enabled = tbExtension.Enabled = m_tbPdoFilePath.Enabled =
                         btnBrowseFile.Enabled = btnExecuteIbaAnalyzer.Enabled = btnUploadPdo.Enabled = false;
 
-                tbExtension.Text = m_data.GetFileFormatExtension((ConfigurationData.FileFormatEnum)combobox.SelectedIndex);
+                tbExtension.Text = m_data.GetFileFormatExtension((ExternalFileJobData.FileFormatEnum)combobox.SelectedIndex);
             };
 
             this.Controls.Add(gbFileFormat);
