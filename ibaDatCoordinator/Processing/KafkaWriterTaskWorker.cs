@@ -30,6 +30,7 @@ namespace iba.Processing
         private string schemaRegistryAddressCached;
         private byte[] schemaFingerprintCached;
         public static readonly Avro.RecordSchema schemaDefault;
+        private int estSize;
         static KafkaWriterTaskWorker()
         {
             schemaDefault = (Avro.RecordSchema)Avro.RecordSchema.Parse(
@@ -60,13 +61,7 @@ namespace iba.Processing
                 }
             "
             );
-            var estSize = schemaDefault.Count * 4;
-            using (var ms = new System.IO.MemoryStream(estSize))
-            {
-                byte[] marker = { 0xC3, 0x01 };
-                ms.Write(marker, 0, marker.Length);
-                schemaFingerPrintDefault = Avro.SchemaNormalization.ParsingFingerprint("CRC-64-AVRO", schemaDefault);
-            }
+            schemaFingerPrintDefault = Avro.SchemaNormalization.ParsingFingerprint("CRC-64-AVRO", schemaDefault);
         }
 
         internal KafkaWriterTaskWorker(ConfigurationWorker worker, KafkaWriterTaskData task)
@@ -75,6 +70,7 @@ namespace iba.Processing
             m_data = task;
             m_sd = worker.m_sd;
             m_ibaAnalyzer = worker.m_ibaAnalyzer;
+            estSize = schemaDefault.Count * 4;
         }
 
         string SubstitutePlaceholders(KafkaWriterTaskData.KafkaRecord rec, string str)
@@ -367,9 +363,10 @@ namespace iba.Processing
                                 r.Add("StringValue", rec.Value as string);
                                 var datumWriter = new Avro.Generic.GenericDatumWriter<Avro.Generic.GenericRecord>(schema);
 
-                                var estSize = schema.Count * 4;
                                 using (var ms = new System.IO.MemoryStream(estSize))
                                 {
+                                    byte[] marker = m_data.enableSchema ? new byte[] { 0x00 } : new byte[] { 0xC3, 0x01 };
+                                    ms.Write(marker, 0, marker.Length);
                                     ms.Write(schemaFingerPrint, 0, schemaFingerPrint.Length);
 
                                     Avro.IO.BinaryEncoder encoder = new Avro.IO.BinaryEncoder(ms);
