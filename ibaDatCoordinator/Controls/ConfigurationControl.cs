@@ -986,8 +986,7 @@ namespace iba.Controls
                 m_panelDatFilesJob?.FolderBrowserButton(m_tbTargetDirectory, new FolderBrowserDialog());
 
             var btnTestPath = new Button();
-            btnTestPath.Image = null;
-            btnTestPath.Text = "?";
+            btnTestPath.Image = btnTestPath.Image = Icons.Gui.All.Images.CircleQuestionFilledBlue();
             btnTestPath.Location = new Point(630, 20);
             btnTestPath.Height = 24;
             btnTestPath.Width = 24;

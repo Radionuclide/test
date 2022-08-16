@@ -432,13 +432,13 @@ namespace iba.Controls
             }
             if (ok)
             {
-                m_checkPathButton.Text = null;
-                m_checkPathButton.Image = Icons.Gui.All.Images.ThumbUp(16);
+                checkPathButton.Text = null;
+                checkPathButton.Image = Icons.Gui.All.Images.ThumbUp(16);
             }
             else
             {
                 MessageBox.Show(errormessage, iba.Properties.Resources.invalidPath, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                m_checkPathButton.Image = Icons.Gui.All.Images.ThumbDown(16);
+                checkPathButton.Image = Icons.Gui.All.Images.ThumbDown(16);
             }
         }
 
