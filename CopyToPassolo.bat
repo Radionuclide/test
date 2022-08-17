@@ -18,5 +18,4 @@ robocopy Alunorf-sinec-h1-plugin\bin\Release \\iba-fue-dokuv6.iba-ag.local\Passo
 
 popd
 
-pause
 exit
