@@ -177,7 +177,7 @@ namespace iba.Processing
                     }
 
 
-                    if (m_data.metadata.Contains("Timestamp") && m_data.Format != KafkaWriterTaskData.DataFormat.AVRO)
+                    if (m_data.metadata.Contains("Timestamp"))
                     {
                         var fileInfo = IbaFileReader.ReadShortFileInfo(filename);
 
@@ -329,7 +329,7 @@ namespace iba.Processing
                         else if (m_data.Format == KafkaWriterTaskData.DataFormat.AVRO)
                         {
                             var schemaFingerPrint = schemaFingerPrintDefault;
-                            if (m_data.schemaRegistryAddress != "" && m_data.ClusterMode == ClusterType.Kafka)
+                            if (m_data.schemaRegistryAddress != "" && m_data.ClusterMode == ClusterType.Kafka && m_data.enableSchema)
                                 schemaFingerPrint = GetSchemaFingerprint(m_data);
                             var schema = schemaDefault;
                             
