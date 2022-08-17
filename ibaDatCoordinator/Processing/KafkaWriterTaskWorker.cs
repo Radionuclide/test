@@ -338,30 +338,34 @@ namespace iba.Processing
 
                             foreach (var rec in m_data.Records)
                             {
-                                var record = rec.Value.ToString();
-
-                                var msg = new Confluent.Kafka.Message<byte[], byte[]>();
 
                                 var r = new Avro.Generic.GenericRecord(schema);
                                 schema.TryGetField("ValueType", out Avro.Field enumField);
                                 Avro.EnumSchema valTypeSchema = enumField.Schema as Avro.EnumSchema;
                                 r.Add("Signal", SubstitutePlaceholders(rec, m_data.signalReference));
-                                r.Add("ID", rec.Expression);
-                                r.Add("Name", rec.Name);
-                                r.Add("Unit", rec.Unit);
-                                r.Add("Comment1", rec.Comment1);
-                                r.Add("Comment2", rec.Comment2);
-                                if (timeStampDt != DateTime.MinValue)
+                                if (m_data.metadata.Contains("ID"))
+                                    r.Add("ID", rec.Expression);
+                                if (m_data.metadata.Contains("Name"))
+                                    r.Add("Name", rec.Name);
+                                if (m_data.metadata.Contains("Unit"))
+                                    r.Add("Unit", rec.Unit);
+                                if (m_data.metadata.Contains("Comment 1"))
+                                    r.Add("Comment1", rec.Comment1);
+                                if (m_data.metadata.Contains("Comment 2"))
+                                    r.Add("Comment2", rec.Comment2);
+                                if (m_data.metadata.Contains("Identifier"))
+                                    r.Add("Identifier", m_data.identifier);
+                                if (timeStampDt != DateTime.MinValue && m_data.metadata.Contains("Timestamp"))
                                     r.Add("Timestamp", timeStampDt);
-                                else
-                                    r.Add("Timestamp", null);
 
-                                r.Add("Identifier", m_data.identifier);
                                 r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
                                 r.Add("BooleanValue", rec.Value as bool?);
                                 r.Add("DoubleValue", rec.Value as double?);
                                 r.Add("StringValue", rec.Value as string);
+
                                 var datumWriter = new Avro.Generic.GenericDatumWriter<Avro.Generic.GenericRecord>(schema);
+
+                                var msg = new Confluent.Kafka.Message<byte[], byte[]>();
 
                                 using (var ms = new System.IO.MemoryStream(estSize))
                                 {
