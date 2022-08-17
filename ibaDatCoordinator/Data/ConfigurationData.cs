@@ -352,7 +352,7 @@ namespace iba.Data
             m_enabled = true;
             m_autoStart = false;
             m_doSubDirs = false;
-            m_bInitialScanEnabled = m_jobType == JobTypeEnum.DatTriggered;
+            m_bInitialScanEnabled = m_jobType == JobTypeEnum.DatTriggered || m_jobType == JobTypeEnum.ExtFile;
             m_bDetectNewFiles = m_jobType == JobTypeEnum.DatTriggered || m_jobType == JobTypeEnum.ExtFile;
             m_bRescanEnabled = m_jobType == JobTypeEnum.DatTriggered || m_jobType == JobTypeEnum.ExtFile;
             m_bReprocessErrors = m_jobType == JobTypeEnum.DatTriggered;

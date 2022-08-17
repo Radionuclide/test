@@ -10,7 +10,7 @@ namespace iba.Processing
         private readonly ConvertExtFileTaskData m_task;
         private readonly ConfigurationWorker m_confWorker;
         private readonly StatusData m_sd;
-        private IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer;
+        private readonly IbaAnalyzer.IbaAnalyzer m_ibaAnalyzer;
 
         public ConvertExtFileTaskWorker(ConfigurationWorker worker, ConvertExtFileTaskData task)
         {
@@ -22,31 +22,43 @@ namespace iba.Processing
 
         public void DoWork(string filename, ConfigurationData data)
         {
-            if (!String.IsNullOrEmpty(m_task.AnalysisFile) && !File.Exists(m_task.AnalysisFile))
+            if (!string.IsNullOrEmpty(m_task.AnalysisFile) && !File.Exists(m_task.AnalysisFile))
             {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile);
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                    Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile);
                 return;
             }
 
-            if (string.IsNullOrEmpty(data.ExternalFileJobData.ProcessedFileTargedDirectory) && data.ExternalFileJobData.MoveExtFile)
+            if (!string.IsNullOrEmpty(data.ExternalFileJobData.PdoForReadText) 
+                && !File.Exists(data.ExternalFileJobData.PdoForReadText)
+                && data.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.TEXTFILE)
             {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.TargetDirectoryNotSpecified);
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                    Properties.Resources.AnalysisFileNotFound + data.ExternalFileJobData.PdoForReadText);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(data.ExternalFileJobData.ProcessedFileTargedDirectory) &&
+                data.ExternalFileJobData.MoveExtFile)
+            {
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                    Properties.Resources.TargetDirectoryNotSpecified);
                 return;
             }
 
             if (m_confWorker.RunningConfiguration.SubDirs)
             {
-                if (CheckIfTargetIsSubdirectory(m_confWorker.RunningConfiguration.DatDirectory, m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory))
+                if (CheckIfTargetIsSubdirectory(m_confWorker.RunningConfiguration.DatDirectory,
+                        m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory))
                 {
-                    SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, Properties.Resources.SubdirectoryNotAllowed);
+                    SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                        Properties.Resources.SubdirectoryNotAllowed);
                     return;
                 }
             }
 
             try
             {
-                using IbaAnalyzerMonitor mon = new(m_ibaAnalyzer, m_task.MonitorData);
-
                 SetSate(filename, DatFileStatus.State.RUNNING);
 
                 m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logConvertStarded, filename, m_task);
@@ -67,31 +79,16 @@ namespace iba.Processing
                     m_confWorker.CleanupDirs(outFile, m_task, extension);
                 }
 
+                using IbaAnalyzerMonitor mon = new(m_ibaAnalyzer, m_task.MonitorData);
+                
                 if (data.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.TEXTFILE)
                 {
-                    string pdoForTextFile = data.ExternalFileJobData.PdoFile;
-
-                    if (string.IsNullOrEmpty(pdoForTextFile))
-                    {
-                        mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
-                    }
-                    else
-                    {
-                        mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(pdoForTextFile); });
-                    }
-                }
-
-                if (string.IsNullOrEmpty(m_task.AnalysisFile))
-                {
-                    mon.Execute(() => { m_ibaAnalyzer.ExtractAll(1, outFile); });
+                    ExtractFromTextFile(filename, data, mon, outFile);
                 }
                 else
                 {
-                    mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
-
-                    mon.Execute(() => { m_ibaAnalyzer.Extract(1, outFile); });
+                    ExtractFromFile(filename, mon, outFile);
                 }
-                mon.Execute(() => m_ibaAnalyzer.CloseDataFile(0));
 
                 if (m_task.UsesQuota)
                 {
@@ -135,6 +132,44 @@ namespace iba.Processing
                     }
                 }
             }
+        }
+
+        private void ExtractFromFile(string filename, IIbaAnalyzerMonitor mon, string outFile)
+        {
+            if (string.IsNullOrEmpty(m_task.AnalysisFile))
+            {
+                mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
+                mon.Execute(() => { m_ibaAnalyzer.ExtractAll(1, outFile); });
+                mon.Execute(() => { m_ibaAnalyzer.CloseDataFile(0); });
+                return;
+            }
+
+            mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
+            mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
+            mon.Execute(() => { m_ibaAnalyzer.Extract(1, outFile); });
+            mon.Execute(() => m_ibaAnalyzer.CloseDataFile(0));
+            mon.Execute(() => { m_ibaAnalyzer.CloseAnalysis(); });
+        }
+
+        private void ExtractFromTextFile(string filename, ConfigurationData data, IIbaAnalyzerMonitor mon, string outFile)
+        {
+            if (string.IsNullOrEmpty(m_task.AnalysisFile))
+            {
+                mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(data.ExternalFileJobData.PdoForReadText); });
+                mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
+                mon.Execute(() => { m_ibaAnalyzer.CloseAnalysis(); });
+                mon.Execute(() => { m_ibaAnalyzer.ExtractAll(1, outFile); });
+                mon.Execute(() => { m_ibaAnalyzer.CloseDataFile(0); });
+                return;
+            }
+
+            mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(data.ExternalFileJobData.PdoForReadText); });
+            mon.Execute(() => { m_ibaAnalyzer.OpenDataFile(0, filename); });
+            mon.Execute(() => { m_ibaAnalyzer.CloseAnalysis(); });
+            mon.Execute(() => { m_ibaAnalyzer.OpenAnalysis(m_task.AnalysisFile); });
+            mon.Execute(() => { m_ibaAnalyzer.Extract(1, outFile); });
+            mon.Execute(() => { m_ibaAnalyzer.CloseDataFile(0); });
+            mon.Execute(() => { m_ibaAnalyzer.CloseAnalysis(); });
         }
 
         private string GetOutputFile(string filename, string extension)
@@ -196,11 +231,10 @@ namespace iba.Processing
                 m_sd.DatFileStates[filename].States[m_task] = state;
             }
 
-            if (message != null)
-            {
-                loggingLevel ??= Logging.Level.Exception;
-                m_confWorker.Log(loggingLevel, message, filename, m_task);
-            }
+            if (message == null) return;
+            
+            loggingLevel ??= Logging.Level.Exception;
+            m_confWorker.Log(loggingLevel, message, filename, m_task);
         }
 
         private bool CheckIfTargetIsSubdirectory(string source, string target)

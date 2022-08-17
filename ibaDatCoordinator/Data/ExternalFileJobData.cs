@@ -38,7 +38,7 @@ namespace iba.Data
         public string ProcessedFileUesername { get; set; }
         public string ProcessedFileTargedDirectory { get; set; }
         public bool MoveExtFile { get; set; }
-        public string PdoFile { get; set; }
+        public string PdoForReadText { get; set; }
 
         public ExternalFileJobData()
         {
@@ -56,7 +56,7 @@ namespace iba.Data
             jobData.ProcessedFileUesername = ProcessedFileUesername;
             jobData.ProcessedFileTargedDirectory = ProcessedFileTargedDirectory;
             jobData.MoveExtFile = MoveExtFile;
-            jobData.PdoFile = PdoFile;
+            jobData.PdoForReadText = PdoForReadText;
             jobData.ProcessedFileDirectoryPasswordCrypted = ProcessedFileDirectoryPasswordCrypted;
 
             return jobData;
@@ -74,7 +74,7 @@ namespace iba.Data
                     other.ProcessedFileUesername == ProcessedFileUesername &&
                     other.ProcessedFileTargedDirectory == ProcessedFileTargedDirectory &&
                     other.MoveExtFile == MoveExtFile &&
-                    other.PdoFile == PdoFile &&
+                    other.PdoForReadText == PdoForReadText &&
                     other.ProcessedFileDirectoryPasswordCrypted == ProcessedFileDirectoryPasswordCrypted;
             
             return result;

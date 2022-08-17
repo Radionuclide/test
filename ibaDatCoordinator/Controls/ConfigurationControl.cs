@@ -282,7 +282,7 @@ namespace iba.Controls
                 cbFileFormat.SelectedItem = m_data.ExternalFileJobData.FileFormat.ToString();
                 rbDelete.Checked = m_data.ExternalFileJobData.DeleteExtFile;
                 rbMove.Checked = m_data.ExternalFileJobData.MoveExtFile;
-                m_tbPdoFilePath.Text = m_data.ExternalFileJobData.PdoFile;
+                m_tbPdoFilePath.Text = m_data.ExternalFileJobData.PdoForReadText;
                 m_tbPassword.Text = m_data.ExternalFileJobData.ProcessedFileDirectoryPassword;
                 m_tbUsername.Text = m_data.ExternalFileJobData.ProcessedFileUesername;
                 m_tbTargetDirectory.Text = m_data.ExternalFileJobData.ProcessedFileTargedDirectory;
@@ -380,7 +380,7 @@ namespace iba.Controls
                 }
                 m_data.ExternalFileJobData.DeleteExtFile = rbDelete.Checked;
                 m_data.ExternalFileJobData.MoveExtFile = rbMove.Checked;
-                m_data.ExternalFileJobData.PdoFile = m_tbPdoFilePath.Text;
+                m_data.ExternalFileJobData.PdoForReadText = m_tbPdoFilePath.Text;
                 m_data.ExternalFileJobData.ProcessedFileDirectoryPassword = m_tbPassword.Text;
                 m_data.ExternalFileJobData.ProcessedFileUesername = m_tbUsername.Text;
                 m_data.ExternalFileJobData.ProcessedFileTargedDirectory = m_tbTargetDirectory.Text;
