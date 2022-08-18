@@ -208,15 +208,16 @@ namespace iba.Processing
 
                         var infofields = new IbaFileReader(filename, false).InfoFields;
 
-                        TimeSpan UTCOffset;
-                        if (fileInfo.UtcOffsetValid)
-                            UTCOffset = new TimeSpan(0, fileInfo.UtcOffset, 0); // fileInfo.UtcOffset in minutes
-                        else 
-                            UTCOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow); // use local UTC
 
                         if (timeStampDt != DateTime.MinValue)
                         {
-                            if (m_data.timestampUTCOffset == TimestampUTCOffset.ConvertToUniversalTime)
+                            TimeSpan UTCOffset;
+                            if (fileInfo.UtcOffsetValid)
+                                UTCOffset = new TimeSpan(0, fileInfo.UtcOffset, 0); // fileInfo.UtcOffset in minutes
+                            else 
+                                UTCOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow); // use local UTC
+
+                            if (m_data.timestampUTCOffset == TimestampUTCOffset.ConvertToUniversalTime || m_data.Format == DataFormat.AVRO) // always convert AVRO time to UTC
                             {
                                 timeStampDt = timeStampDt.Subtract(UTCOffset);
                                 timeStamp = timeStampDt.ToString("yyyy-MM-ddTHH:mm:ss:fffffff") + "Z";
@@ -343,20 +344,13 @@ namespace iba.Processing
                                 schema.TryGetField("ValueType", out Avro.Field enumField);
                                 Avro.EnumSchema valTypeSchema = enumField.Schema as Avro.EnumSchema;
                                 r.Add("Signal", SubstitutePlaceholders(rec, m_data.signalReference));
-                                if (m_data.metadata.Contains("ID"))
-                                    r.Add("ID", rec.Expression);
-                                if (m_data.metadata.Contains("Name"))
-                                    r.Add("Name", rec.Name);
-                                if (m_data.metadata.Contains("Unit"))
-                                    r.Add("Unit", rec.Unit);
-                                if (m_data.metadata.Contains("Comment 1"))
-                                    r.Add("Comment1", rec.Comment1);
-                                if (m_data.metadata.Contains("Comment 2"))
-                                    r.Add("Comment2", rec.Comment2);
-                                if (m_data.metadata.Contains("Identifier"))
-                                    r.Add("Identifier", m_data.identifier);
-                                if (timeStampDt != DateTime.MinValue && m_data.metadata.Contains("Timestamp"))
-                                    r.Add("Timestamp", timeStampDt);
+                                r.Add("ID", m_data.metadata.Contains("ID") ? rec.Expression : null);
+                                r.Add("Name", m_data.metadata.Contains("Name") ? rec.Name : null);
+                                r.Add("Unit", m_data.metadata.Contains("Unit") ? rec.Unit : null);
+                                r.Add("Comment1", m_data.metadata.Contains("Comment 1") ? rec.Comment1 : null);
+                                r.Add("Comment2", m_data.metadata.Contains("Comment 2") ? rec.Comment2 : null);
+                                r.Add("Identifier", m_data.metadata.Contains("Identifier") ? m_data.identifier : null);
+                                r.Add("Timestamp", timeStampDt != DateTime.MinValue && m_data.metadata.Contains("Timestamp") ? timeStampDt : null);
 
                                 r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
                                 r.Add("BooleanValue", rec.Value as bool?);

@@ -917,9 +917,16 @@ namespace iba.Controls
         private void dataFormatComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if ((KafkaWriterTaskData.DataFormat)dataFormatComboBox.SelectedIndex == KafkaWriterTaskData.DataFormat.AVRO)
+            {
                 digitalFormatComboBox.Enabled = false;
+                timestampUTCCombobox.SelectedIndex = 1; //convert to UTC
+                timestampUTCCombobox.Enabled = false;
+            }
             else
+            {
                 digitalFormatComboBox.Enabled = true;
+                timestampUTCCombobox.Enabled = true;
+            }
         }
 
         private void clusterConnectionSecurityComboBox_SelectedIndexChanged(object sender, EventArgs e)
