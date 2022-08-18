@@ -1954,4 +1954,7 @@ $comment2: Signal comment 2</value>
   <data name="TargetDirectoryNotSpecified" xml:space="preserve">
     <value>Target directory not specified</value>
   </data>
+  <data name="AnalysisToReadDataFileNotSpecified" xml:space="preserve">
+    <value>Analysis file to read datafile not specified</value>
+  </data>
 </root>

@@ -169,6 +169,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analysis file to read datafile not specified.
+        /// </summary>
+        internal static string AnalysisToReadDataFileNotSpecified {
+            get {
+                return ResourceManager.GetString("AnalysisToReadDataFileNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading ibaAnalyzer....
         /// </summary>
         internal static string AnalyzerTree_Loading {

@@ -22,40 +22,7 @@ namespace iba.Processing
 
         public void DoWork(string filename, ConfigurationData data)
         {
-            if (!string.IsNullOrEmpty(m_task.AnalysisFile) && !File.Exists(m_task.AnalysisFile))
-            {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
-                    Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile);
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(data.ExternalFileJobData.PdoForReadText) 
-                && !File.Exists(data.ExternalFileJobData.PdoForReadText)
-                && data.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.TEXTFILE)
-            {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
-                    Properties.Resources.AnalysisFileNotFound + data.ExternalFileJobData.PdoForReadText);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(data.ExternalFileJobData.ProcessedFileTargedDirectory) &&
-                data.ExternalFileJobData.MoveExtFile)
-            {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
-                    Properties.Resources.TargetDirectoryNotSpecified);
-                return;
-            }
-
-            if (m_confWorker.RunningConfiguration.SubDirs)
-            {
-                if (CheckIfTargetIsSubdirectory(m_confWorker.RunningConfiguration.DatDirectory,
-                        m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory))
-                {
-                    SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
-                        Properties.Resources.SubdirectoryNotAllowed);
-                    return;
-                }
-            }
+            if (!IsInputValid(filename, data)) return;
 
             try
             {
@@ -132,6 +99,55 @@ namespace iba.Processing
                     }
                 }
             }
+        }
+
+        private bool IsInputValid(string filename, ConfigurationData data)
+        {
+            if (!string.IsNullOrEmpty(m_task.AnalysisFile) 
+                && !File.Exists(m_task.AnalysisFile))
+            {
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                    Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile);
+                return false;
+            }
+
+            if (data.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.TEXTFILE
+                && string.IsNullOrEmpty(data.ExternalFileJobData.PdoForReadText))
+            {
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                    Properties.Resources.AnalysisToReadDataFileNotSpecified);
+                return false;
+            }
+
+            if (data.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.TEXTFILE
+                && !string.IsNullOrEmpty(data.ExternalFileJobData.PdoForReadText)
+                && !File.Exists(data.ExternalFileJobData.PdoForReadText))
+            {
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                    Properties.Resources.AnalysisFileNotFound + data.ExternalFileJobData.PdoForReadText);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(data.ExternalFileJobData.ProcessedFileTargedDirectory) 
+                && data.ExternalFileJobData.MoveExtFile)
+            {
+                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                    Properties.Resources.TargetDirectoryNotSpecified);
+                return false;
+            }
+
+            if (m_confWorker.RunningConfiguration.SubDirs)
+            {
+                if (CheckIfTargetIsSubdirectory(m_confWorker.RunningConfiguration.DatDirectory,
+                        m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory))
+                {
+                    SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                        Properties.Resources.SubdirectoryNotAllowed);
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void ExtractFromFile(string filename, IIbaAnalyzerMonitor mon, string outFile)
