@@ -250,6 +250,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Authorizationfailed {
+            get {
+                return ResourceManager.GetString("Authorizationfailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not evaluate expression for operand {0}.
         /// </summary>
         internal static string BadEvaluate {
@@ -922,6 +931,15 @@ namespace iba.Properties {
         internal static string determiningQuota {
             get {
                 return ResourceManager.GetString("determiningQuota", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directory {0} already in use.
+        /// </summary>
+        internal static string DirectoryAlreadyInUse {
+            get {
+                return ResourceManager.GetString("DirectoryAlreadyInUse", resourceCulture);
             }
         }
         
@@ -4235,6 +4253,15 @@ namespace iba.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remote Path {0} is not valid.
+        /// </summary>
+        internal static string RemotePathNotValid {
+            get {
+                return ResourceManager.GetString("RemotePathNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem removing markings: .
         /// </summary>
         internal static string RemoveMarkingsProblem {
@@ -4762,6 +4789,15 @@ namespace iba.Properties {
         internal static string StopStr {
             get {
                 return ResourceManager.GetString("StopStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authorization failed.
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

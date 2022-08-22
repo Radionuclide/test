@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraPrinting.Native;
 using iba.Data;
+using iba.HD.Client.Properties;
 using iba.Logging;
 using Messages.V1;
 
@@ -29,21 +30,21 @@ namespace iba.Processing.IbaGrpc
                 {
                     if (!CheckVersion(configuration))
                     {
-                        return CreateConnectionResponse(Status.Error, "Client version does not match Server Version");
+                        return CreateConnectionResponse(Status.Error, string.Format(Properties.Resources.IncompatibleClientVersion, DatCoVersion.MinimumClientVersion()));
                     }
 
                     if (!CheckIfDirectoryIsFree(configuration))
                     {
-                        return CreateConnectionResponse(Status.Error, "Directory already in use");
+                        return CreateConnectionResponse(Status.Error, string.Format(Properties.Resources.DirectoryAlreadyInUse, configuration.Path) );
                     }
 
                     if (!CheckAuthorization(configuration))
                     {
-                        return CreateConnectionResponse(Status.Error, "Authorization failed");
+                        return CreateConnectionResponse(Status.Error, Properties.Resources.Authorizationfailed);
                     }
                     if (!CheckRemotePath(configuration))
                     {
-                        return CreateConnectionResponse(Status.Error, "Remote Path not valid");
+                        return CreateConnectionResponse(Status.Error, string.Format(Properties.Resources.RemotePathNotValid, configuration.Path));
                     }
                 }
                 catch (Exception e)

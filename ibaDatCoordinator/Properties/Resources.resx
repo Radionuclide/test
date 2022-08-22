@@ -1957,4 +1957,16 @@ $comment2: Signal comment 2</value>
   <data name="AnalysisToReadDataFileNotSpecified" xml:space="preserve">
     <value>Analysis file to read datafile not specified</value>
   </data>
+  <data name="Authorizationfailed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DirectoryAlreadyInUse" xml:space="preserve">
+    <value>Directory {0} already in use</value>
+  </data>
+  <data name="RemotePathNotValid" xml:space="preserve">
+    <value>Remote Path {0} is not valid</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Authorization failed</value>
+  </data>
 </root>

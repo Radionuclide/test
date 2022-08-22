@@ -26,7 +26,7 @@ namespace iba.Processing
 
             try
             {
-                SetSate(filename, DatFileStatus.State.RUNNING);
+                SetState(filename, DatFileStatus.State.RUNNING);
 
                 m_confWorker.Log(Logging.Level.Info, iba.Properties.Resources.logConvertStarded, filename, m_task);
 
@@ -72,17 +72,17 @@ namespace iba.Processing
             }
             catch (IbaAnalyzerExceedingTimeLimitException te)
             {
-                SetSate(filename,DatFileStatus.State.TIMED_OUT, te.Message);
+                SetState(filename,DatFileStatus.State.TIMED_OUT, te.Message);
                 m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (IbaAnalyzerExceedingMemoryLimitException me)
             {
-                SetSate(filename,DatFileStatus.State.MEMORY_EXCEEDED, me.Message);
+                SetState(filename,DatFileStatus.State.MEMORY_EXCEEDED, me.Message);
                 m_confWorker.RestartIbaAnalyzerAndOpenDatFile(filename);
             }
             catch (Exception ex)
             {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE, ex.Message + "   " + m_confWorker.IbaAnalyzerErrorMessage());
+                SetState(filename, DatFileStatus.State.COMPLETED_FAILURE, ex.Message + "   " + m_confWorker.IbaAnalyzerErrorMessage());
             }
             finally
             {
@@ -106,7 +106,7 @@ namespace iba.Processing
             if (!string.IsNullOrEmpty(m_task.AnalysisFile) 
                 && !File.Exists(m_task.AnalysisFile))
             {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                SetState(filename, DatFileStatus.State.COMPLETED_FAILURE,
                     Properties.Resources.AnalysisFileNotFound + m_task.AnalysisFile);
                 return false;
             }
@@ -114,7 +114,7 @@ namespace iba.Processing
             if (data.ExternalFileJobData.FileFormat == ExternalFileJobData.FileFormatEnum.TEXTFILE
                 && string.IsNullOrEmpty(data.ExternalFileJobData.PdoForReadText))
             {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                SetState(filename, DatFileStatus.State.COMPLETED_FAILURE,
                     Properties.Resources.AnalysisToReadDataFileNotSpecified);
                 return false;
             }
@@ -123,7 +123,7 @@ namespace iba.Processing
                 && !string.IsNullOrEmpty(data.ExternalFileJobData.PdoForReadText)
                 && !File.Exists(data.ExternalFileJobData.PdoForReadText))
             {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                SetState(filename, DatFileStatus.State.COMPLETED_FAILURE,
                     Properties.Resources.AnalysisFileNotFound + data.ExternalFileJobData.PdoForReadText);
                 return false;
             }
@@ -131,7 +131,7 @@ namespace iba.Processing
             if (string.IsNullOrEmpty(data.ExternalFileJobData.ProcessedFileTargedDirectory) 
                 && data.ExternalFileJobData.MoveExtFile)
             {
-                SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                SetState(filename, DatFileStatus.State.COMPLETED_FAILURE,
                     Properties.Resources.TargetDirectoryNotSpecified);
                 return false;
             }
@@ -141,7 +141,7 @@ namespace iba.Processing
                 if (CheckIfTargetIsSubdirectory(m_confWorker.RunningConfiguration.DatDirectory,
                         m_confWorker.RunningConfiguration.ExternalFileJobData.ProcessedFileTargedDirectory))
                 {
-                    SetSate(filename, DatFileStatus.State.COMPLETED_FAILURE,
+                    SetState(filename, DatFileStatus.State.COMPLETED_FAILURE,
                         Properties.Resources.SubdirectoryNotAllowed);
                     return false;
                 }
@@ -240,7 +240,7 @@ namespace iba.Processing
             }
         }
 
-        private void SetSate(string filename, DatFileStatus.State state, string message = null, Logging.Level loggingLevel = null)
+        private void SetState(string filename, DatFileStatus.State state, string message = null, Logging.Level loggingLevel = null)
         {
             lock (m_sd.DatFileStates)
             {
