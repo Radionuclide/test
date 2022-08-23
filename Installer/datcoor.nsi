@@ -1053,6 +1053,16 @@ Function un.UninstallTasks
   ; runtime
   Delete "$INSTDIR\ibaRuntime.dll"
   
+  
+  ;plugins
+  Delete "$INSTDIR\plugins\hd_plugin.dll"
+  Delete "..\S7-writer\AGLink40.dll"
+  Delete "$INSTDIR\plugins\hd_plugin.dll"
+  Delete "$INSTDIR\S7-writer.dll"
+  Delete "$INSTDIR\S7-writer-plugin.dll"
+  Delete "$INSTDIR\de\S7-writer-plugin.resources.dll"
+  Delete "$INSTDIR\fr\S7-writer-plugin.resources.dll"
+  
   ;Remove resources
   !insertmacro UnInstallLanguageCommon "de" "German"
   !insertmacro UnInstallLanguageCommon "fr" "French"
@@ -1063,8 +1073,9 @@ Function un.UninstallTasks
   ;!insertmacro UnInstallLanguageCommon "ja" "Japanese"
   ;!insertmacro UnInstallLanguageCommon "pt" "Portuguese"
 
-  ;plugins
-  Delete "$INSTDIR\plugins\hd_plugin.dll"
+  
+  
+  
   RMDir "$INSTDIR\plugins"
   ;Remove install dir
   RMDir "$INSTDIR"
