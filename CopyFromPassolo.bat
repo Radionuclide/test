@@ -14,7 +14,7 @@ robocopy  \\iba-fue-dokuv6.iba-ag.local\Passolo\ibaDatCoordinator\%datCoVer%\Bin
 robocopy  \\iba-fue-dokuv6.iba-ag.local\Passolo\ibaDatCoordinator\%datCoVer%\Binaries\ru Passolo\ru *.dll
 robocopy  \\iba-fue-dokuv6.iba-ag.local\Passolo\ibaDatCoordinator\%datCoVer%\Binaries\zh-Hans Passolo\zh-Hans *.dll
 robocopy  \\iba-fue-dokuv6.iba-ag.local\Passolo\ibaDatCoordinator\%datCoVer%\Binaries\pt Passolo\pt *.dll
-robocopy  \\iba-fue-dokuv6.iba-ag.local\Passolo\ibaDatCoordinator\%datCoVer%\Binaries\ja Passolo\ja *.dll
+rem robocopy  \\iba-fue-dokuv6.iba-ag.local\Passolo\ibaDatCoordinator\%datCoVer%\Binaries\ja Passolo\ja *.dll
 
 popd
 

@@ -103,7 +103,7 @@
 				<tr><th class="head" colspan="3">Current version</th></tr>
 				<tr><th width="15%">Version</th><th width="35%">Application version</th><th width="50%">Notes</th></tr>
 
-				<tr><th rowspan="12">v3.0.0</th><td>.NET framework v4.8</td><td></td></tr>
+				<tr><th rowspan="12">v3.0.0</th><td>.NET framework v4.8</td><td>.NET framework v4.8.1 also supported</td></tr>
 				<tr><td>Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64), 2012 Server R2 (x64), Windows 10 (x86/x64), Windows Server 2016, Windows Server 2019</td><td></td></tr>
 				<tr><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
 				<tr><td>CodeMeter Runtime v7.40b (v7.40.5001.502)</td><td>v7.10a or higher is required when using a WIBU license.</td></tr>
@@ -123,6 +123,9 @@
 				<tr><th>Version</th><th>Application version</th><th>Notes</th></tr>
 
 				<tr><th rowspan="1">v3.0.0</th><td>CodeMeter Runtime v7.40b (v7.40.5001.502)</td><td>v7.10a or higher is required when using a WIBU license.</td></tr>
+				<tr><td class="empty" /></tr>
+
+				<tr><th rowspan="1">v2.4.4</th><td>.NET framework v4.8</td><td>.NET framework v4.8.1 also supported</td></tr>
 				<tr><td class="empty" /></tr>
 
 				<tr><th rowspan="2">v2.4.0</th><td>.NET framework v4.8</td><td></td></tr>
@@ -213,14 +216,24 @@
 			</OL>
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
+			<li>Exception when typing illegal characters in file paths for plugin tasks.</li>
+			<li>CodeMeter installer could cause a reboot before ibaDatCoordinator was completely installed. #21873</li>
+			</OL>
+		<p>&nbsp; </p>
+		<P class="header1">Version 2.4.4 - 2022-08-23</P>
+			<p class="header2">Improvements (I)</p>
+			<OL>
+			<li>.NET framework 4.8.1 is supported. #22183</li>
+			</OL>
+			
+			<p class="header2">Bugfixes (B)</p>
+			<OL>
 			<li>Offline event task: 
 				<ol>
 				<li>The event config was not saved to the ibaHD-Server in case only events were added or removed without modifications to the event properties. #20769</li>
 				<li>The ibaHD-Server could crash and event store configurations could be corrupted when saving an event configuration without active events. #20833</li>
 				</ol>
 			</li>
-			<li>Exception when typing illegal characters in file paths for plugin tasks.</li>
-			<li>CodeMeter installer could cause a reboot before ibaDatCoordinator was completely installed. #21873</li>
 			</OL>
 		<p>&nbsp; </p>
 		<P class="header1">Version 2.4.3 - 2022-02-03</P>
