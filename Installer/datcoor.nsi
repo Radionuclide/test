@@ -565,8 +565,10 @@ Section -Common
   File "..\Dependencies\hd_plugin.dll"
   File "..\S7-writer-plugin\bin\Release\S7-writer.dll"
   File "..\S7-writer-plugin\bin\Release\S7-writer-plugin.dll"
-  
-  
+  SetOutPath "$INSTDIR\de"
+  File "..\Passolo\de\S7-writer-plugin.resources.dll"
+  SetOutPath "$INSTDIR\fr"
+  File "..\Passolo\fr\S7-writer-plugin.resources.dll"
 SectionEnd
 
 !include "Include\installCodeMeter.nsh"
