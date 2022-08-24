@@ -39,6 +39,7 @@ namespace iba.Controls
             this.m_pdoFileTextBox = new System.Windows.Forms.TextBox();
             this.m_openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox3 = new iba.Utility.CollapsibleGroupBox();
+            this.m_cbKPIOnly = new System.Windows.Forms.CheckBox();
             this.m_rbDbase = new System.Windows.Forms.RadioButton();
             this.m_rbFile = new System.Windows.Forms.RadioButton();
             this.m_panelFile = new System.Windows.Forms.Panel();
@@ -56,7 +57,6 @@ namespace iba.Controls
             this.m_cbTime = new System.Windows.Forms.CheckBox();
             this.m_cbMemory = new System.Windows.Forms.CheckBox();
             this.m_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.m_cbKPIOnly = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.m_panelFile.SuspendLayout();
@@ -126,6 +126,12 @@ namespace iba.Controls
             this.groupBox3.Controls.Add(this.m_panelFile);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            // 
+            // m_cbKPIOnly
+            // 
+            resources.ApplyResources(this.m_cbKPIOnly, "m_cbKPIOnly");
+            this.m_cbKPIOnly.Name = "m_cbKPIOnly";
+            this.m_cbKPIOnly.UseVisualStyleBackColor = true;
             // 
             // m_rbDbase
             // 
@@ -268,12 +274,6 @@ namespace iba.Controls
             resources.ApplyResources(this.m_cbMemory, "m_cbMemory");
             this.m_cbMemory.Name = "m_cbMemory";
             this.m_cbMemory.UseVisualStyleBackColor = true;
-            // 
-            // m_cbKPIOnly
-            // 
-            resources.ApplyResources(this.m_cbKPIOnly, "m_cbKPIOnly");
-            this.m_cbKPIOnly.Name = "m_cbKPIOnly";
-            this.m_cbKPIOnly.UseVisualStyleBackColor = true;
             // 
             // ExtractControl
             // 
