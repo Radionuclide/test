@@ -115,8 +115,8 @@ namespace iba.Controls
             dgvClients.Columns[nameof(DiagnosticsData.TaskName)].HeaderText = Resources.TaskName;
             dgvClients.Columns[nameof(DiagnosticsData.TaskName)].DisplayIndex = 2;
 
-            dgvClients.Columns[Resources.Path].HeaderText = Resources.Path;
-            dgvClients.Columns[Resources.Path].DisplayIndex = 3;
+            dgvClients.Columns[nameof(DiagnosticsData.Path)].HeaderText = Resources.Path;
+            dgvClients.Columns[nameof(DiagnosticsData.Path)].DisplayIndex = 3;
 
             dgvClients.Columns[nameof(DiagnosticsData.TransferredFiles)].HeaderText = Resources.TransferredFiles;
             dgvClients.Columns[nameof(DiagnosticsData.TransferredFiles)].DisplayIndex = 4;
