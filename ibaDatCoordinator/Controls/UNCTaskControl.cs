@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+
 namespace iba.Controls
 {
     using iba.Data;
@@ -53,6 +54,35 @@ namespace iba.Controls
                 m_tbPass.Visible = false;
                 m_subfolderGroupBox.Dock = DockStyle.Top;
                 flowLayoutPanel1.Dock = DockStyle.Top;
+            }
+
+            //disable using InfoFields
+            if (data.GetType() == typeof(ConvertExtFileTaskData))
+            {
+                m_tbInfoFieldDir.Enabled = false;
+                m_rbInfofieldForDir.Enabled = false;
+                m_lblInfoStartDir.Enabled = false;
+                m_nudInfoStartDir.Enabled = false;
+                m_nudInfoLengthDir.Enabled = false;
+
+                m_tbInfoField.Enabled = false;
+                m_cbInfoEndBlanksDir.Enabled = false;
+                m_cbInfoAllBlanksDir.Enabled = false;
+                m_lblInfoLengthDir.Enabled = false;
+                m_cbInfoEndBlanks.Enabled = false;
+                m_nudInfoStart.Enabled = false;
+                m_nudInfoLength.Enabled = false;
+                m_cbInfoEndBlanks.Enabled = false;
+                m_cbInfoAllBlanks.Enabled = false;
+                m_lblInfoStart.Enabled = false;
+                m_lblInfoLength.Enabled = false;
+                m_cbUseInfofieldForName.Checked = false;
+                m_cbUseInfofieldForName.Enabled = false;
+
+                if (m_cbTimeDir.Items.Count > 3)
+                {
+                    m_cbTimeDir.Items.RemoveAt(3);       
+                }
             }
 
             m_rbNONE.Checked = m_data.Subfolder == TaskDataUNC.SubfolderChoice.NONE;
