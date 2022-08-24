@@ -1615,22 +1615,22 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Failed to write events</value>
   </data>
   <data name="snmpWriterTaskButton" xml:space="preserve">
-    <value>add a new SNMP Writer Task</value>
+    <value>add a new SNMP Publish Task</value>
   </data>
   <data name="opcUaWriterTaskButton" xml:space="preserve">
-    <value>add a new OPC-UA Writer Task</value>
+    <value>add a new OPC-UA Publish Task</value>
   </data>
   <data name="opcUaWriterTaskTitle" xml:space="preserve">
-    <value>OPC UA writer</value>
+    <value>OPC UA Publish</value>
   </data>
   <data name="snmpWriterTaskTitle" xml:space="preserve">
-    <value>SNMP writer</value>
+    <value>SNMP Publish</value>
   </data>
   <data name="deleteOPCUATastQuestion" xml:space="preserve">
-    <value>Are you sure you want to delete the OPC UA Computed values options "{0}" of Job "{1}" ?</value>
+    <value>Are you sure you want to delete the OPC UA Publish tash options "{0}" of Job "{1}" ?</value>
   </data>
   <data name="deleteSNMPTaskQuestion" xml:space="preserve">
-    <value>Are you sure you want to delete the SNMP Computed values options "{0}" of Job "{1}" ?</value>
+    <value>Are you sure you want to delete the SNMP Publish task options "{0}" of Job "{1}" ?</value>
   </data>
   <data name="logComputedValuesUpdated" xml:space="preserve">
     <value>computed values updated</value>
@@ -1723,13 +1723,13 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>file successfully uploaded</value>
   </data>
   <data name="addKafkaWriterTask" xml:space="preserve">
-    <value>add a new Kafka Writer Task</value>
+    <value>add a new Kafka Publish Task</value>
   </data>
   <data name="kafkaWriterTastTitle" xml:space="preserve">
-    <value>Kafka</value>
+    <value>Kafka Publish</value>
   </data>
   <data name="deleteKafkaTaskQuestion" xml:space="preserve">
-    <value>Are you sure you want to delete the Kafka options "{0}" of Job "{1}" ?</value>
+    <value>Are you sure you want to delete the Kafka Publish task options "{0}" of Job "{1}" ?</value>
   </data>
   <data name="Key" xml:space="preserve">
     <value>Key</value>
@@ -1756,13 +1756,13 @@ Please either start the job or enable scans for .dat files before attempting thi
     <value>Name</value>
   </data>
   <data name="NewKafkaTaskTitle" xml:space="preserve">
-    <value>Add Kafka Task</value>
+    <value>Add Kafka Publish Task</value>
   </data>
   <data name="NewOpcUaTaskTitle" xml:space="preserve">
-    <value>Add OPC UA Writer Task</value>
+    <value>Add OPC UA Publish Task</value>
   </data>
   <data name="NewSnmpTaskTitle" xml:space="preserve">
-    <value>Add SNMP Writer Task</value>
+    <value>Add SNMP Publish Task</value>
   </data>
   <data name="ImportParametersFromCSV" xml:space="preserve">
     <value>Import parameters from a CSV file</value>

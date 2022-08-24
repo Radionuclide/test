@@ -19,7 +19,7 @@ namespace iba.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -115,7 +115,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add a new Kafka Writer Task.
+        ///   Looks up a localized string similar to add a new Kafka Publish Task.
         /// </summary>
         internal static string addKafkaWriterTask {
             get {
@@ -827,7 +827,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete the Kafka options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        ///   Looks up a localized string similar to Are you sure you want to delete the Kafka Publish task options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteKafkaTaskQuestion {
             get {
@@ -836,7 +836,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete the OPC UA Computed values options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        ///   Looks up a localized string similar to Are you sure you want to delete the OPC UA Publish tash options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteOPCUATastQuestion {
             get {
@@ -881,7 +881,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete the SNMP Computed values options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        ///   Looks up a localized string similar to Are you sure you want to delete the SNMP Publish task options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
         internal static string deleteSNMPTaskQuestion {
             get {
@@ -1934,7 +1934,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kafka.
+        ///   Looks up a localized string similar to Kafka Publish.
         /// </summary>
         internal static string kafkaWriterTastTitle {
             get {
@@ -3168,7 +3168,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Kafka Task.
+        ///   Looks up a localized string similar to Add Kafka Publish Task.
         /// </summary>
         internal static string NewKafkaTaskTitle {
             get {
@@ -3177,7 +3177,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add OPC UA Writer Task.
+        ///   Looks up a localized string similar to Add OPC UA Publish Task.
         /// </summary>
         internal static string NewOpcUaTaskTitle {
             get {
@@ -3204,7 +3204,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add SNMP Writer Task.
+        ///   Looks up a localized string similar to Add SNMP Publish Task.
         /// </summary>
         internal static string NewSnmpTaskTitle {
             get {
@@ -3780,7 +3780,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add a new OPC-UA Writer Task.
+        ///   Looks up a localized string similar to add a new OPC-UA Publish Task.
         /// </summary>
         internal static string opcUaWriterTaskButton {
             get {
@@ -3789,7 +3789,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OPC UA writer.
+        ///   Looks up a localized string similar to OPC UA Publish.
         /// </summary>
         internal static string opcUaWriterTaskTitle {
             get {
@@ -4631,7 +4631,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to add a new SNMP Writer Task.
+        ///   Looks up a localized string similar to add a new SNMP Publish Task.
         /// </summary>
         internal static string snmpWriterTaskButton {
             get {
@@ -4640,7 +4640,7 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SNMP writer.
+        ///   Looks up a localized string similar to SNMP Publish.
         /// </summary>
         internal static string snmpWriterTaskTitle {
             get {
