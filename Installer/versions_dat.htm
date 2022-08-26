@@ -101,13 +101,23 @@
 		<div class="box">
 			<table>
 				<tr><th class="head" colspan="3">Current version</th></tr>
-				<tr><th width="15%">Version</th><th width="35%">Application version</th><th width="50%">Notes</th></tr>
+				<tr><th width="15%">Version</th><th width="35%">Operating system</th><th width="50%">Notes</th></tr>
 
-				<tr><th rowspan="12">v3.0.0</th><td>.NET framework v4.8</td><td>.NET framework v4.8.1 also supported</td></tr>
-				<tr><td>Windows 7 (x86/x64), Windows 2008 Server R2 (x64), Windows 8 (x86/x64), Windows 2012 Server (x64), Windows 8.1 (x86/x64), 2012 Server R2 (x64), Windows 10 (x86/x64), Windows Server 2016, Windows Server 2019</td><td></td></tr>
-				<tr><td>ibaAnalyzer v7.0.1</td><td>Required for for processing PDA3 .dat files.</td></tr>
-				<tr><td>CodeMeter Runtime v7.40b (v7.40.5001.502)</td><td>v7.10a or higher is required when using a WIBU license.</td></tr>
-				<tr><td>ibaHD v2.6.0</td><td>Required for Active Directory users.</td></tr>
+            	<tr><th rowspan="23">v3.0.0</th><td>Windows 8.1 (x86/x64)</td><td>.NET Framework 4.8</td></tr>
+        	    <tr><td>Windows 10 (x86/x64)</td><td>Version 1607 or later<br />.NET Framework 4.8 (integrated in OS in version 1903 and later)</td></tr>
+        	    <tr><td>Windows 11 (x64)</td><td>.NET Framework 4.8 (integrated in OS)</td></tr>
+ 				<tr><td>Windows Server 2012 (x64)</td><td>.NET Framework 4.8</td></tr>
+    	        <tr><td>Windows Server 2012 R2 (x64)</td><td>.NET Framework 4.8</td></tr>
+        	    <tr><td>Windows Server 2016 (x64)</td><td>.NET Framework 4.8</td></tr>
+            	<tr><td>Windows Server 2019 (x64)</td><td>.NET Framework 4.8</td></tr>
+        		<tr><td>Windows Server 2022 (x64)</td><td>.NET Framework 4.8 (integrated in OS)</td></tr>
+
+            	<tr><th width="35%">Software</th><th width="50%">Remarks</th></tr>
+	            <tr><td>.NET framework 4.8</td><td>Required</td></tr>
+				<tr><td>ibaAnalyzer v8.0.0</td><td>Required for license forwarding<br />Processing PDA3 .dat files (v7.0.1)<br />PARQUET extract</td></tr>
+				<tr><td>ibaHD v2.6.0</td><td>Required for Active Directory users<br /> User management (HD v1.5.0)<br /> Query time-based signals (HD v1.3.0)</td></tr>
+				<tr><td>ibaPDA v7.0.0</td><td>new dat-file format (files from older PDA versions are supported as well) <br /> dat-files with length-based infofields (PDA v6.35.0) </td></tr>
+            	<tr><td>CodeMeter Runtime v7.40b (v7.40.5001.502)</td><td>v7.10a or higher is required when using a WIBU license.</td></tr>
 
 				<tr><th width="35%">Plugins</th><th width="50%">Notes</th></tr>
 				<tr><td>ibaSinecH1 v3.0.0</td><td></td></tr>
@@ -117,18 +127,23 @@
 				<tr><td>ibaDBSync v3.0.0</td><td></td></tr>
 				<tr><td>ibaDatawyzer-ICC v3.0.0</td><td></td></tr>
 
+				<tr><th width="35%">Hardware</th><th width="50%">Remarks</th></tr>
+				<tr><td>License</td><td>WIBU CmStick or CmActLicense<br />MARX dongle</td></tr>
 
 				<tr><td class="sep" /></tr>
 				<tr><th class="head" colspan="3">History</th></tr>
 				<tr><th>Version</th><th>Application version</th><th>Notes</th></tr>
 
-				<tr><th rowspan="1">v3.0.0</th><td>CodeMeter Runtime v7.40b (v7.40.5001.502)</td><td>v7.10a or higher is required when using a WIBU license.</td></tr>
+				<tr><td class="empty" /></tr>
+				<tr><th rowspan="3">v8.0.0</th><td>WIBU license support</td><td>WIBU CmDongle or CmActLicense</td></tr>
+				<tr><td>CodeMeter Runtime v7.40b (v7.40.5001.502)</td><td>v7.10a or higher is required when using a WIBU license.</td></tr>
+				<tr><td>ibaAnalyzer v8.0.0</td><td>Required for license forwarding</td></tr>
 				<tr><td class="empty" /></tr>
 
-				<tr><th rowspan="1">v2.4.4</th><td>.NET framework v4.8</td><td>.NET framework v4.8.1 also supported</td></tr>
+				<tr><th rowspan="1">v2.4.4</th><td>.NET Framework 4.8.1</td><td>supported</td></tr>
 				<tr><td class="empty" /></tr>
 
-				<tr><th rowspan="2">v2.4.0</th><td>.NET framework v4.8</td><td></td></tr>
+				<tr><th rowspan="2">v2.4.0</th><td>.NET framework v4.8</td><td><p class="warning">REQUIRED</p></td></tr>
 				<tr><td>ibaHD v2.6.0</td><td>Required for Active Directory users.</td></tr>
 				<tr><td class="empty" /></tr>
 				
@@ -171,7 +186,7 @@
 
 	<div id="hist">
 		<div class="box">
-		<P class="header1">Version 3.0.0 - 2022-??-??</P>
+		<P class="header1">Version 3.0.0 - 2022-08-26</P>
 			<p class="header2">New features (N)</p>
 			<OL>
 				<li>
@@ -183,27 +198,42 @@
 					</ol>
 				</li>
 				<li>
-					Added new Job type for processing external files.
-				</li>
-				<li>
-					Added Task for Uploading .dat files (FTP, SFTP, SCP, Azure Data Lake, Amazon S3)
-				</li>
-				<li>
-					Added Data Transfer Server and Data Transfer Task.
-				</li>
-				<li>
-					Added 3 publish tasks. Each one provides the possibility to calculate multiple expressions through ibaAnalyzer. Expressions can be taken from .pdo file or written manually similar to S7 writer.
+					New Job type for processing external (non dat) files.
 					<ol>
-						<li>Kafka task. #21845</li>
-						<ol>
-							<li>It supports SASL/SSL encryption. Data formats JSON grouped, JSON per signal and AVRO. It is possible to use the signal name, ID and other placeholders as the message key.</li>
-						</ol>
-						<li>OPC UA writer task. #13409</li>
-						<li>SNMP writer task. #19175</li>
+						<li>Automatically convert external files into .dat-files</li>
+						<li>Supported formats: Text, Danieli FDA DAS, Comtrade, Parquet</li>
 					</ol>
 				</li>
 				<li>
-					Added a central certificate storage to simplify certificate management for all tasks, which use certificates. #19349
+					New Upload Task:
+					<ol>
+						<li>Upload files (*.dat, *.pdf, etc.) to external systems</li>
+						<li>Supports FTP, SFTP, SCP, Azure Data Lake, and AWS S3</li>
+					</ol>
+				</li>
+				<li>
+					Added Data Transfer functionality:
+					<ol>
+						<li>Data transfer server for receiving files and data transfer task for sending files</li>
+						<li>Transferring files between two ibaDatCoordinator instances</li>
+						<li>Communication port and max. used bandwidth is configurable</li>
+					</ol>
+				</li>
+				<li>
+					New publish tasks:
+					<ol>
+						<li>Publish multiple computed expressions with each task</li>
+						<li>Option to use only computed columns and info colmuns in the DB extract task</li>
+						<li>Send values to Apache Kafka Cluster #21845</li>
+						<li>Publish values via the integrated OPC UA server #13409</li>
+						<li>Publish values via the integrated SNMP server #19175</li>
+					</ol>
+				</li>
+				<li>
+					Central certificate store (like in ibaPDA) to simplify the certificate management for all tasks, which use certificates. #19349
+				</li>
+				<li>
+					Tasks which move files (copy, upload, transfer) have an option to compress (*.zip) the files before transfer. #18713
 				</li>
 			</OL>
 			<p class="header2">Improvements (I)</p>
