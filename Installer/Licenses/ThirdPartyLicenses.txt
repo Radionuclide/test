@@ -3,38 +3,44 @@ Software components using the MIT license
 (license text see below or https://opensource.org/licenses/MIT)
 ===================================================================================== 
 
-Newtonsoft.Json.dll			|	Copyright (c) 2007 James Newton-King
-ICSharpCode.SharpZipLib.dll		|	Copyright © 2002-2020 SharpZipLib Contributors
-GenuineChannels.dll			|	Copyright (c) 2005-2015 Dmitry Belikov, 
-					|	Sergey Tkachev
-					|	Copyright (c) 2018 Genuine Channels Contributors
+Newtonsoft.Json.dll        |	Copyright (c) 2007 James Newton-King
 
-#SNMP library				|	Copyright (c) 2008 Malcolm Crowe, Lex Li,
-					|	and other contributors.
-
-Zyan.SafeDeserializationHelpers.dll	|	Copyright (c) 2018 Alexey Yakovlev
+GenuineChannels.dll		   |	Copyright (c) 2005-2015 Dmitry Belikov, Sergey Tkachev
+					            |	Copyright (c) 2018 Genuine Channels Contributors
 
 BouncyCastle.Crypto.dll		|	Copyright (c) 2000 - 2017 The Legion of 
-					|	the Bouncy Castle Inc.
+					            |	the Bouncy Castle Inc.
 
-Azure.Core				|	(c) Microsoft Corporation. All rights reserved. 
-Azure.Storage				|	(c) Microsoft Corporation. All rights reserved.
+Azure.Core				      |	(c) Microsoft Corporation. All rights reserved. 
+Azure.Storage				   |	(c) Microsoft Corporation. All rights reserved.
+#SNMP library              |	Copyright (c) 2008 Malcolm Crowe, Lex Li,
+					            |	and other contributors.
+
+ICSharpCode.SharpZipLib.dll	      |	Copyright (c) 2002-2020 SharpZipLib Contributors
+Zyan.SafeDeserializationHelpers.dll	|	Copyright (c) 2018 Alexey Yakovlev
 
 ===================================================================================== 
 Software components using the Apache License 2.0 
 (license text see below or https://www.apache.org/licenses/LICENSE-2.0.txt)
 ===================================================================================== 
 
-hdProtoBuf.dll			|	Copyright 2008 onwards Marc Gravell
-Confluent.Kafka.dll		|	Copyright 2016-2020 Confluent Inc., Andreas Heider
+hdProtoBuf.dll	               |	Copyright 2008 onwards Marc Gravell
+Confluent.Kafka.dll		      |	Copyright 2016-2020 Confluent Inc., Andreas Heider
 Confluent.SchemaRegistry.dll	|	Copyright 2017-2020 Confluent Inc.
 
 ===================================================================================== 
-Software components using the Eclipse Publice License v2.0 
+Software components using the Eclipse Public License v2.0 
 (license text see below or https://www.eclipse.org/legal/epl-2.0/)
 ===================================================================================== 
 
 PowerCollections.dll	|	Copyright (c) 2004-2005, Wintellect
+
+===================================================================================== 
+Software components using the Mozilla Publice License v2.0 
+(see https://www.mozilla.org/en-US/MPL/2.0/)
+===================================================================================== 
+
+WinSCPnet.dll  
 
 ===================================================================================== 
 License note for the zlib library

@@ -7,13 +7,13 @@
         <assembly>
             <path>.\ibaDatCoordinator.exe</path>
         </assembly>
-		<assembly>
+        <assembly>
             <path>.\ibaDatCoordinatorService.exe</path>
         </assembly>
-		<assembly>
+        <assembly>
             <path>.\hdClient.dll</path>
         </assembly>
-		<assembly>
+        <assembly>
             <path>.\hdCore.dll</path>
         </assembly>
     </Assemblies>
@@ -21,9 +21,30 @@
         <path>.\Output</path>
         <runtime rename ="true">ibaRuntime.dll</runtime>
         <runtime64>HVMRun64.dll</runtime64>
+        <LibMode>0</LibMode>
+        <EmbedRuntime>0</EmbedRuntime>
+        <shrink>false</shrink>
+        <EXE>
+            <Main>ibaDatCoordinator.exe</Main>
+            <PackType>1</PackType>
+            <EntryType>0</EntryType>
+            <LoadType>0</LoadType>
+            <Assemblies>
+                <SplashConfig>
+                    <Width>600</Width>
+                    <Height>400</Height>
+                    <iAutoClose>0</iAutoClose>
+                    <Image></Image>
+                    <msg1>Loading...</msg1>
+                    <msg2>Starting...</msg2>
+                    <title></title>
+                </SplashConfig>
+            </Assemblies>
+        </EXE>
     </Output>
     <Settings>
-	    <AntiIldasm>true</AntiIldasm>
+        <AntiIldasm>true</AntiIldasm>
+        <AntiDump>false</AntiDump>
         <EncryptNew>true</EncryptNew>
         <EncryptBlob>true</EncryptBlob>
         <AntiDis>true</AntiDis>
@@ -31,10 +52,18 @@
         <HVMSig>true</HVMSig>
         <HVMEH>true</HVMEH>
         <Level>3</Level>
+        <Level2>3</Level2>
+        <CompatLevel>0</CompatLevel>
+        <HVMProxyCompat>true</HVMProxyCompat>
     </Settings>
     <Obfuscation>
         <RenameMode>0</RenameMode>
     </Obfuscation>
     <TrialSettings>
     </TrialSettings>
+    <LicenseSettings>
+        <AddBiosID>true</AddBiosID>
+        <AddMacID>true</AddMacID>
+        <MasterKey></MasterKey>
+    </LicenseSettings>
 </HVMProject>
