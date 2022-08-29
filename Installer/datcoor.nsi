@@ -559,7 +559,9 @@ Section -Common
   ;!insertmacro InstallLanguageCommon "ja" "Japanese"
   ;!insertmacro InstallLanguageCommon "pt" "Portuguese"
   
+  
   ;plugins
+  SetOutPath "$INSTDIR" ;was set to language because of InstallIssue...
   File "..\S7-writer\AGLink\AGLink40.dll"
   SetOutPath "$INSTDIR\plugins"
   File "..\Dependencies\hd_plugin.dll"
