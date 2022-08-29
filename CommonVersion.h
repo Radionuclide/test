@@ -4,8 +4,8 @@
 
 #define MAJOR	3
 #define MINOR	0
-#define BUILD	0
-#define BETATAG ""
+#define BUILD	1
+#define BETATAG "beta1"
 
 
 
