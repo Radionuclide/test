@@ -350,6 +350,7 @@ namespace iba.Processing
                                 r.Add("Comment1", m_data.metadata.Contains("Comment 1") ? rec.Comment1 : null);
                                 r.Add("Comment2", m_data.metadata.Contains("Comment 2") ? rec.Comment2 : null);
                                 r.Add("Identifier", m_data.metadata.Contains("Identifier") ? m_data.identifier : null);
+                                timeStampDt = DateTime.SpecifyKind(timeStampDt, DateTimeKind.Utc);
                                 r.Add("Timestamp", timeStampDt != DateTime.MinValue && m_data.metadata.Contains("Timestamp") ? timeStampDt : null);
 
                                 r.Add("ValueType", new Avro.Generic.GenericEnum(valTypeSchema, rec.DataTypeAsString));
