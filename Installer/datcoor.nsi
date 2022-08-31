@@ -481,11 +481,11 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\System.Numerics.Vectors.dll"
   File "..\ibaDatCoordinator\bin\Release\Newtonsoft.Json.dll" ;Use the one from the NuGet package and not the one from OpcUa
   ;OPC UA
-  File "..\Dependencies\OpcUa\Opc.Ua.Configuration.dll"
-  File "..\Dependencies\OpcUa\Opc.Ua.Core.dll"
-  File "..\Dependencies\OpcUa\Opc.Ua.Server.dll"
-  File "..\Dependencies\OpcUa\BouncyCastle.Crypto.dll"
-  File "..\Dependencies\OpcUa\ibaDatCoordinatorOpcUaServerConfig.xml"
+  File "..\ibaDatCoordinator\bin\Release\Opc.Ua.Configuration.dll"
+  File "..\ibaDatCoordinator\bin\Release\Opc.Ua.Core.dll"
+  File "..\ibaDatCoordinator\bin\Release\Opc.Ua.Server.dll"
+  File "..\ibaDatCoordinator\bin\Release\BouncyCastle.Crypto.dll"
+  File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinatorOpcUaServerConfig.xml"
   ;HD-stuff
   File "..\InstallFiles\${PROTECT_DIR}hdCore.dll"
   File "..\InstallFiles\${PROTECT_DIR}hdClient.dll"
