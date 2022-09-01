@@ -484,6 +484,7 @@ Section -Common
   File "..\ibaDatCoordinator\bin\Release\Opc.Ua.Configuration.dll"
   File "..\ibaDatCoordinator\bin\Release\Opc.Ua.Core.dll"
   File "..\ibaDatCoordinator\bin\Release\Opc.Ua.Server.dll"
+  File "..\ibaDatCoordinator\bin\Release\Opc.Ua.Security.Certificates.dll"
   File "..\ibaDatCoordinator\bin\Release\BouncyCastle.Crypto.dll"
   File "..\ibaDatCoordinator\bin\Release\ibaDatCoordinatorOpcUaServerConfig.xml"
   ;HD-stuff
