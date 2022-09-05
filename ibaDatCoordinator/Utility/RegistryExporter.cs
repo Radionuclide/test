@@ -1,17 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Win32;
+using System;
+using System.Diagnostics;
 using System.IO;
-using Microsoft.Win32;
+using System.Text;
 
 namespace iba.Utility
 {
     public class RegistryExporter
     {
-        public static bool ExportRegistry(RegistryKey key, string destFile, bool bRecursive)
+        /// <summary>
+        /// Exports a registry key into a file
+        /// </summary>
+        /// <param name="key">The registry key to export</param>
+        /// <param name="destFile">The file to export the registry key into</param>
+        /// <param name="bRecursive">Recurse into subkeys. Shallow export otherwise.</param>
+        /// <param name="useRegExe">Use the system tool reg.exe for a recursive export</param>
+        /// <returns>Whether the registry export was successful</returns>
+        public static bool ExportRegistry(RegistryKey key, string destFile, bool bRecursive, bool useRegExe = false)
         {
             if(key == null)
                 return false;
+
+            if (bRecursive && useRegExe)
+            {
+                return ExportRegistryRegExe(key, destFile);
+            }
 
             StreamWriter writer = null;
             try
@@ -40,6 +53,28 @@ namespace iba.Utility
             return true;
         }
 
+        private static bool ExportRegistryRegExe(RegistryKey key, string destFile)
+        {
+            string regExe = Path.Combine(Environment.SystemDirectory, "reg.exe");
+            if (!File.Exists(regExe))
+                return false;
+
+            Process proc = new()
+            {
+                StartInfo = new ProcessStartInfo(regExe, $"export {key.Name} \"{destFile}\" /y")
+                {
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    CreateNoWindow = true,
+                }
+            };
+            proc.Start();
+            proc.WaitForExit();
+
+            return proc.ExitCode == 0;
+        }
+
+
         static void WriteKey(StreamWriter writer, RegistryKey key, bool bRecursive)
         {
             writer.WriteLine("[{0}]", key.Name);
@@ -60,7 +95,10 @@ namespace iba.Utility
 
                     case RegistryValueKind.String:
                         {
-                            writer.WriteLine("\"{0}\"=\"{1}\"", valueName, data.ToString());
+                            writer.WriteLine("\"{0}\"=\"{1}\"", valueName, data
+                                .ToString()
+                                .Replace("\\", @"\\")
+                                .Replace("\n", Environment.NewLine));
                             break;
                         }
 
@@ -153,9 +191,9 @@ namespace iba.Utility
             return sb.ToString();
         }
 
-        public static bool ExportIbaAnalyzerKey(string regFileName)
+        public static bool ExportIbaAnalyzerKey(string regFileName, bool useRegExe = false)
         {
-            Microsoft.Win32.RegistryKey analyzerKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\iba\ibaAnalyzer");
+            using RegistryKey analyzerKey = Registry.CurrentUser.OpenSubKey(@"Software\iba\ibaAnalyzer");
             if (analyzerKey != null)
             {
                 return (RegistryExporter.ExportRegistry(analyzerKey, regFileName, true));
