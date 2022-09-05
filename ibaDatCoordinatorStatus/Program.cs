@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//#define DEBUG_SERVICE_COMMANDS
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -8,6 +8,7 @@ using iba.DatCoordinator.Status.Utility;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace iba.DatCoordinator.Status
 {
@@ -19,6 +20,14 @@ namespace iba.DatCoordinator.Status
         [STAThread]
         static void Main(string[] args)
         {
+
+#if DEBUG && DEBUG_SERVICE_COMMANDS
+            // uncomment the first line to debug commands in the status application
+            if (!Debugger.IsAttached)
+            {
+                Debugger.Launch();
+            }
+#endif
             System.Security.Principal.WindowsIdentity identity = System.Security.Principal.WindowsIdentity.GetCurrent();
             System.Security.Principal.WindowsPrincipal principal = new System.Security.Principal.WindowsPrincipal(identity);
             m_IsAdmin = principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
