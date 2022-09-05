@@ -130,7 +130,10 @@
     <value>Stop Service</value>
   </data>
   <data name="TransferIbaAnalyzerSettingsSuccess" xml:space="preserve">
-    <value>ibaAnalyzer settings successfully transfered from local account to service account</value>
+    <value>ibaAnalyzer settings successfully transferred from local account to service account</value>
+  </data>
+  <data name="TransferIbaAnalyzerSettingsFailed" xml:space="preserve">
+    <value>ibaAnalyzer settings could not be transferred from local account to service account</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="shield" type="System.Resources.ResXFileRef, System.Windows.Forms">

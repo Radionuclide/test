@@ -195,9 +195,9 @@ namespace iba.DatCoordinator.Status
                 StopForceFully();
                 return;
             }
-            else if (args.Length > 2 && args[0].Contains("/transfersettings"))
+            else if (args.Length > 1 && args[0].Contains("/transfersettings"))
             {
-                StatusForm.OnTransferSettings(args[1], args[2]);
+                StatusForm.OnTransferSettings(args[1]);
                 return;
             }
 

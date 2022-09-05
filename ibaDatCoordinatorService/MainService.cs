@@ -1,22 +1,17 @@
+using iba.Data;
+using iba.Logging;
+using iba.Processing;
+using iba.Utility;
+using Microsoft.Win32;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.ServiceProcess;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
-using System.Text;
-using System.Xml.Serialization;
 using System.IO;
-
-using iba.Processing;
-using iba.Data;
-using iba.Utility;
-using System.IO.Pipes;
 using System.Linq;
+using System.ServiceProcess;
+using System.Threading;
+using System.Xml.Serialization;
 
 namespace iba.Services
 {
@@ -45,8 +40,8 @@ namespace iba.Services
                 TaskManager.Manager = m_communicationObject.Manager;
 
                 string filename = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "lastsaved.xml");
-				string filename2 = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "lastsaved_backup.xml");
-				m_communicationObject.FileName = filename;
+                string filename2 = Path.Combine(Path.GetDirectoryName(typeof(IbaDatCoordinatorService).Assembly.Location), "lastsaved_backup.xml");
+                m_communicationObject.FileName = filename;
 
                 SetServicePriority();
 
@@ -56,39 +51,39 @@ namespace iba.Services
                 //return;
                 try
                 {
-					if (File.Exists(filename))
-					{
-						XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
-						List<ConfigurationData> confs;
-						using (FileStream myFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-						{
-							ibaDatCoordinatorData dat = null;
-							dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
-							confs = dat.ApplyToManager(m_communicationObject.Manager, null);
-						}
-						foreach (ConfigurationData dat in confs)
-						{
-							dat.relinkChildData();
-						}
-						m_communicationObject.Manager.Configurations = confs;
-						m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
-						foreach (ConfigurationData dat in confs)
-						{
-							if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);
-						}
-					}
-					else if (File.Exists(filename2))
-					{
-						m_communicationObject.Manager.ServiceRestartedClean = true;
-						try
-						{
-							File.Delete(filename2);
-						}
-						catch
-						{
+                    if (File.Exists(filename))
+                    {
+                        XmlSerializer mySerializer = new XmlSerializer(typeof(ibaDatCoordinatorData));
+                        List<ConfigurationData> confs;
+                        using (FileStream myFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            ibaDatCoordinatorData dat = null;
+                            dat = ibaDatCoordinatorData.SerializeFromStream(mySerializer, myFileStream);
+                            confs = dat.ApplyToManager(m_communicationObject.Manager, null);
+                        }
+                        foreach (ConfigurationData dat in confs)
+                        {
+                            dat.relinkChildData();
+                        }
+                        m_communicationObject.Manager.Configurations = confs;
+                        m_communicationObject.Manager.StartAllEnabledGlobalCleanups();
+                        foreach (ConfigurationData dat in confs)
+                        {
+                            if (dat.AutoStart && dat.Enabled) m_communicationObject.Manager.StartConfiguration(dat);
+                        }
+                    }
+                    else if (File.Exists(filename2))
+                    {
+                        m_communicationObject.Manager.ServiceRestartedClean = true;
+                        try
+                        {
+                            File.Delete(filename2);
+                        }
+                        catch
+                        {
 
-						}
-					}
+                        }
+                    }
                 }
                 catch (Exception ex)
                 { //last saved could not be deserialised, could be from a previous install or otherwise corrupted file
@@ -163,7 +158,7 @@ namespace iba.Services
                 }
             }
             m_servicePublisher = null;
-            
+
             Remoting.ServerRemotingManager.StopRemoting(m_communicationObject);
 
             LogData.StopLogger();
@@ -185,33 +180,72 @@ namespace iba.Services
             base.OnShutdown();
         }
 
-        protected override void OnCustomCommand(int command)
+        protected override void OnCustomCommand(int command) => OnCustomCommand((DatCoServiceCommand)command);
+        private void OnCustomCommand(DatCoServiceCommand command)
         {
             switch (command)
             {
-                case 128:
+                case DatCoServiceCommand.TransferSettings:
                     TransferSettings();
-                    return;
-                case 130:
+                    break;
+                case DatCoServiceCommand.SetPriority:
                     SetServicePriority();
-                    return;
+                    break;
+
+                default:
+                    string msg = $"Unknown datCoordinator service command: {command}";
+                    Debug.Assert(false, msg);
+                    LogData.Data.Log(Level.Warning, msg);
+                    break;
             }
         }
 
         private void TransferSettings()
         {
+            LogData logger = LogData.Data;
+            string localUserSid = null;
             try
             {
-                var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
+                logger.Log(Level.Info, "Transfer ibaAnalyzer settings");
+
+                // TODO: add feedback in registry
+                //using var datCoKey = Registry.CurrentUser.OpenSubKey(@"Software\iba\ibaDatCoordinator");
+                //datCoKey.SetValue("TransferComplete", false);
+
+                using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
                 if (key == null) return;
-                string sourcePath  = (string)key.GetValue("AnalyzerFolder", "");
-                string regFile = (string)key.GetValue("RegFile", "");
-                key.Close();
+                string sourcePath = (string)key.GetValue("AnalyzerFolder", "");
+                localUserSid = key.GetValue("AnalyzerUser", "") as string;
+
                 CopyIbaAnalyzerFiles(sourcePath);
-                RegisterIbaAnalyzerSettings(regFile);
+
+                bool transferred = RegisterIbaAnalyzerSettings(localUserSid);
+
+                // TODO: add feedback in registry
+                //datCoKey.SetValue("TransferComplete", true);
             }
-            catch
+            catch (Exception e)
             {
+                logger.Log(Level.Exception, e.Message);
+            }
+            finally
+            {
+                string waitHandleName = $"Global\\ibaDatCo-transfer-settings-{localUserSid}";
+                if (EventWaitHandle.TryOpenExisting(waitHandleName, out EventWaitHandle fileLock))
+                {
+                    try
+                    {
+                        fileLock.Set(); // allows the status application to delete regFile
+                    }
+                    catch
+                    {
+                        logger.Log(Level.Warning, $"Failed to unlock the status application");
+                    }
+                    finally
+                    {
+                        fileLock.Dispose(); // should leave the kernel object manager when the status application also releases it.
+                    }
+                }
             }
             return;
         }
@@ -225,7 +259,7 @@ namespace iba.Services
                 if (key == null)
                     number = 2;
                 else
-                { 
+                {
                     number = (int)key.GetValue("Priority", 2);
                     key.Close();
                 }
@@ -271,10 +305,36 @@ namespace iba.Services
             }
         }
 
-        public virtual void RegisterIbaAnalyzerSettings(string outFile)
+        private bool RegisterIbaAnalyzerSettings(string localUserSid)
         {
-            System.Diagnostics.Process regeditProcess = System.Diagnostics.Process.Start("regedit.exe", "/s \"" + outFile + "\"");
-            regeditProcess.WaitForExit();
+            // TODO reg view depending on the following?
+            //Environment.Is64BitOperatingSystem
+            //Environment.Is64BitProcess
+            string regExe = Path.Combine(Environment.SystemDirectory, "reg.exe");
+            Process proc = new Process()
+            {
+                StartInfo = new ProcessStartInfo(regExe, $@"copy ""HKEY_USERS\{localUserSid}\Software\iba\ibaAnalyzer"" ""HKCU\Software\iba\ibaAnalyzer"" /s /f")
+                {
+                    UseShellExecute = false,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    StandardOutputEncoding = System.Text.Encoding.UTF8,
+                    StandardErrorEncoding = System.Text.Encoding.UTF8,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                }
+            };
+
+            proc.Start();
+
+            proc.WaitForExit();
+            string stdError = proc.StandardError.ReadToEnd();
+
+            if (proc.ExitCode != 0)
+            {
+                LogData.Data.Log(Level.Exception, stdError);
+                return false;
+            }
+            return true;
         }
     }
 }
