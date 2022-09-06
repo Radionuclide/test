@@ -1285,6 +1285,11 @@
             Updates tree control localization
             </summary>
         </member>
+        <member name="M:iba.HD.Client.Interfaces.IHdSignalTree.RefreshSearch">
+            <summary>
+            Reexecute the search of the signal tree
+            </summary>
+        </member>
         <member name="T:iba.HD.Client.Interfaces.IHdUserManager">
             <summary>
             HD server user management

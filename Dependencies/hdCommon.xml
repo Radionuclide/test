@@ -460,6 +460,16 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.Comment1">
+            <summary>
+              Looks up a localized string similar to Comment1.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.Comment2">
+            <summary>
+              Looks up a localized string similar to Comment2.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.DurationDays">
             <summary>
               Looks up a localized string similar to days.
@@ -483,6 +493,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.FeatureAuthentication">
             <summary>
               Looks up a localized string similar to Connection authentication.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.FeatureFixedFieldsEventQuery">
+            <summary>
+              Looks up a localized string similar to Execute event queries filtering on pre defined fields.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.FeatureNotification">
@@ -695,6 +710,11 @@
               Looks up a localized string similar to Text.
             </summary>
         </member>
+        <member name="P:iba.HD.Common.Properties.Resources.MessageTemplate">
+            <summary>
+              Looks up a localized string similar to Message template.
+            </summary>
+        </member>
         <member name="P:iba.HD.Common.Properties.Resources.NewValueSignal">
             <summary>
               Looks up a localized string similar to &lt;Select signal&gt;.
@@ -703,6 +723,11 @@
         <member name="P:iba.HD.Common.Properties.Resources.NewValueText">
             <summary>
               Looks up a localized string similar to &lt;Text value&gt;.
+            </summary>
+        </member>
+        <member name="P:iba.HD.Common.Properties.Resources.Priority">
+            <summary>
+              Looks up a localized string similar to Priority.
             </summary>
         </member>
         <member name="P:iba.HD.Common.Properties.Resources.Unlimited">
@@ -720,6 +745,9 @@
             Windows application event log stamp accuracy = 1 second. Counter is
             used to differentiate log entries that are generated within 1 second.
             </summary>
+        </member>
+        <member name="M:iba.HD.Common.OpcConfig.Validate">
+            <exception cref="!:Default exception with message"></exception>
         </member>
         <member name="P:iba.HD.Common.HdReaderStore.SignalCount">
             <summary>
@@ -864,10 +892,10 @@
             When true the server will return the last valid value in case no data is found for the requested time range
             </summary>
         </member>
-        <member name="F:iba.HD.Common.TimeRequest.ApproximateNumberOfEdges">
+        <member name="F:iba.HD.Common.TimeRequest.ApproximateNumberOfSamples">
             <summary>
-            Response will consist of minimal number of slices required for displaying that number of edges
-            <b>This will increase respond time and decrease disk usage</b>
+            Response will consist of minimal number of slices required for displaying that number of samples
+            <b>This will increase a time for opearaions with an objects in RAM but will decrease a disk usage</b>
             </summary>
         </member>
         <member name="M:iba.HD.Common.EventStoreSubset.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{iba.HD.Common.InfoFieldFilter})">
@@ -1131,6 +1159,11 @@
         <member name="M:iba.HD.Common.IHdUserContract.ReloadUsers(iba.HD.Common.HdUserType,System.String)">
             <summary>
             Reload all users of given type from file at given path
+            </summary>
+        </member>
+        <member name="F:iba.HD.Common.AssemblyResolver.lowerAssemblyVersionsFound">
+            <summary>
+            An item is added when an assembly is found, but has a lower version than the assembly that was originally expected
             </summary>
         </member>
         <member name="P:iba.HD.Common.Bitrate.bps">
