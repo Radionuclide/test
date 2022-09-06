@@ -203,7 +203,6 @@ namespace iba.Services
         private void TransferSettings()
         {
             LogData logger = LogData.Data;
-            string localUserSid = null;
             try
             {
                 logger.Log(Level.Info, "Transfer ibaAnalyzer settings");
@@ -212,7 +211,7 @@ namespace iba.Services
                 using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
                 if (key == null) return;
                 string sourcePath = (string)key.GetValue("AnalyzerFolder", "");
-                localUserSid = key.GetValue("AnalyzerUser", "") as string;
+                string localUserSid = key.GetValue("AnalyzerUser", "") as string;
 
                 CopyIbaAnalyzerFiles(sourcePath);
 
