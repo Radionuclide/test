@@ -294,6 +294,7 @@
     <Compile Include="Data\ComputedValuesTaskData.cs" />
     <Compile Include="Data\PluginTaskDataWrapper.cs" />
     <Compile Include="Data\RemoteLogger.cs" />
+    <Compile Include="DatCoServiceCommand.cs" />
     <Compile Include="Dialogs\AskForPassphrase.cs">
       <SubType>Form</SubType>
     </Compile>

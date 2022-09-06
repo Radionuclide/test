@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using iba.DatCoordinator.Status.Dialogs;
+using iba.DatCoordinator.Status.Utility;
+using iba.Services;
+using Microsoft.Win32;
+using System;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Pipes;
-using System.Linq;
+using System.Security.Principal;
 using System.ServiceProcess;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using iba.Controls;
-using iba.Data;
-using iba.DatCoordinator.Status.Dialogs;
-using iba.DatCoordinator.Status.Utility;
-using Microsoft.Win32;
 
 namespace iba.DatCoordinator.Status
 {
@@ -23,7 +19,7 @@ namespace iba.DatCoordinator.Status
     {
         private static Icon ServiceRunningIcon = Icons.SystemTray.Ico.IbaDatcoordinatorStart();
         private static Icon ServiceStoppedIcon = Icons.SystemTray.Ico.IbaDatcoordinatorStop();
-        private static Icon ServiceDisconnectedIcon = Icons.SystemTray.Ico.IbaDatcoordinatorServerDisconnected(); 
+        private static Icon ServiceDisconnectedIcon = Icons.SystemTray.Ico.IbaDatcoordinatorServerDisconnected();
 
         private static Icon ServiceRunningIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorStart(), SystemInformation.SmallIconSize);
         private static Icon ServiceStoppedIconSmall = new Icon(Icons.SystemTray.Ico.IbaDatcoordinatorStart(), SystemInformation.SmallIconSize);
@@ -32,7 +28,7 @@ namespace iba.DatCoordinator.Status
         public StatusForm()
         {
             InitializeComponent();
-			WindowState = FormWindowState.Minimized; //DO NOT set this in resources, gives issues with localization.
+            WindowState = FormWindowState.Minimized; //DO NOT set this in resources, gives issues with localization.
             m_quitForm = new QuitForm(this, "ibaDatCoordinatorStatusCloseForm", true);
             m_quitForm.CreateHandle(new CreateParams());
 
@@ -71,7 +67,7 @@ namespace iba.DatCoordinator.Status
 
             //m_toolTip.SetToolTip(m_registerButton, iba.Properties.Resources.RegisterIbaAnalyzer);
 
-            Text = Text +  " " + DatCoVersion.GetVersion();
+            Text = Text + " " + DatCoVersion.GetVersion();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -241,9 +237,9 @@ namespace iba.DatCoordinator.Status
                     key.Close();
                 }
 
-                System.ServiceProcess.ServiceController myController =
-                    new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                myController.ExecuteCommand(130);
+                ServiceController myController =
+                    new ServiceController("IbaDatCoordinatorService");
+                myController.ExecuteCommand((int)DatCoServiceCommand.SetPriority);
                 myController.Close();
             }
             catch
@@ -280,7 +276,8 @@ namespace iba.DatCoordinator.Status
             get { return m_iconEx; }
         }
 
-        public int PortNr {
+        public int PortNr
+        {
             get
             {
                 return int.Parse(m_tbPort.Text);
@@ -411,7 +408,7 @@ namespace iba.DatCoordinator.Status
                 {
                     ssd.StartPosition = FormStartPosition.CenterScreen;
                     ssd.ShowDialog();
-                    result = ssd.Result; 
+                    result = ssd.Result;
                 }
                 else
                 {
@@ -420,8 +417,8 @@ namespace iba.DatCoordinator.Status
                     result = ssd.Result;
                 }
             }
-			//string lastsaved = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastSaved.xml");
-			//MessageBox.Show(File.Exists(lastsaved).ToString() + lastsaved);
+            //string lastsaved = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "lastSaved.xml");
+            //MessageBox.Show(File.Exists(lastsaved).ToString() + lastsaved);
 
             if (result)
             {
@@ -484,69 +481,95 @@ namespace iba.DatCoordinator.Status
 
         private void m_btTransferAnalyzerSettings_Click(object sender, EventArgs e)
         {
-            iba.Utility.Pair<String, String> res = GetFilesForTransfer();
+            string res = GetFilesForTransfer();
             //if (!Program.IsAdmin) //elevated process start the service
             //{
-                if (System.Environment.OSVersion.Version.Major < 6)
-                {
-                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+            if (System.Environment.OSVersion.Version.Major < 6)
+            {
+                MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-                System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
-                procInfo.UseShellExecute = true;
-                procInfo.ErrorDialog = true;
+            System.Diagnostics.ProcessStartInfo procInfo = new System.Diagnostics.ProcessStartInfo();
+            procInfo.UseShellExecute = true;
+            procInfo.ErrorDialog = true;
 
-                procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-                procInfo.FileName = Application.ExecutablePath;
+            procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+            procInfo.FileName = Application.ExecutablePath;
 
-                procInfo.Arguments = string.Format("/transfersettings: \"{0}\" \"{1}\"",res.First,res.Second);
-                procInfo.Verb = "runas";
+            procInfo.Arguments = string.Format("/transfersettings: \"{0}\"", res);
+            procInfo.Verb = "runas";
 
-                try
-                {
-                    System.Diagnostics.Process.Start(procInfo);
-                }
-                catch
-                {
-                    MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+            try
+            {
+                System.Diagnostics.Process.Start(procInfo);
+            }
+            catch
+            {
+                MessageBox.Show(this, Properties.Resources.UACText, Properties.Resources.UACCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             //}
             //else
-              //  OnTransferSettings(res.First, res.Second);
+            //  OnTransferSettings(res.First, res.Second);
         }
 
-        private iba.Utility.Pair<string, string> GetFilesForTransfer()
+        private string GetFilesForTransfer()
         {
             string IbaAnalyzerPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             IbaAnalyzerPath = Path.Combine(IbaAnalyzerPath, "iba", "ibaAnalyzer");
             string tempDir = System.IO.Path.GetTempPath();
-            string outFile = Path.Combine(tempDir, "ibaAnalyzer.reg");
-            iba.Utility.RegistryExporter.ExportIbaAnalyzerKey(outFile);
-            return new iba.Utility.Pair<string, string>(IbaAnalyzerPath, outFile);
+            return IbaAnalyzerPath;
         }
 
-        public static void OnTransferSettings(string AnalyzerFolder, string regFile)
+        public static void OnTransferSettings(string AnalyzerFolder)
         {
             try
             {
-                var key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                // send SID of the current user to the service, so that it can copy the settings
+                // from the user's registry
+                string sid = WindowsIdentity.GetCurrent().User.Value;
+
+                RegistryKey key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
                 if (key != null)
                 {
-                    key.SetValue("RegFile", regFile);
                     key.SetValue("AnalyzerFolder", AnalyzerFolder);
+                    key.SetValue("AnalyzerUser", sid);
                     key.Close();
                 }
                 else
                     return;
-                System.ServiceProcess.ServiceController myController =
-                    new System.ServiceProcess.ServiceController("IbaDatCoordinatorService");
-                //instruct service to register
-                myController.ExecuteCommand(128);//instruct service to connect to the named pipe
+
+                // create a wait handle BEFORE signaling the service
+
+                // The wait handle must be named, so that the service can retrieve it
+                // from the kernel's Object Manager by name
+
+                // The Global namespace is required for kernel objects that can be seen
+                // by both interactive users and LocalSystem.
+                string waitHandleName = $"Global\\ibaDatCo-transfer-settings-{sid}";
+                using EventWaitHandle fileLock = new(false, EventResetMode.ManualReset, waitHandleName); // false ==> handle is reset, will block
+
+                // tell the service to handle the transfer
+                //instruct service to copy the files and the registry key
+                using ServiceController myController = new("IbaDatCoordinatorService");
+                myController.ExecuteCommand((int)DatCoServiceCommand.TransferSettings);
                 myController.Close();
-                File.Delete(regFile);
-                MessageBox.Show(Properties.Resources.TransferIbaAnalyzerSettingsSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Let the service decide when the status application can provide feedback
+                // but don't wait for it indefinitely
+                // If the wait handle times out, assume that the service couldn't handle the request
+                TimeSpan timeout = TimeSpan.FromSeconds(3);
+                bool probablySuccessful = fileLock.WaitOne(timeout); // wait a couple of seconds before deciding that the transfer failed
+
+                if (probablySuccessful)
+                {
+                    MessageBox.Show(Properties.Resources.TransferIbaAnalyzerSettingsSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(Properties.Resources.TransferIbaAnalyzerSettingsFailed, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (System.Exception ex)
             {
@@ -629,7 +652,7 @@ namespace iba.DatCoordinator.Status
         }
 
         private bool updatingAutoStart;
-		
+
         private void m_cbAutoStart_CheckedChanged(object sender, EventArgs e)
         {
             ServiceControllerEx service = new ServiceControllerEx("ibaDatCoordinatorService");
@@ -669,13 +692,13 @@ namespace iba.DatCoordinator.Status
             updatingAutoStart = false;
         }
 
-        
+
         private void m_executeIBAAButton_Click(object sender, EventArgs e)
         {
             if (!File.Exists(m_tbAnalyzerExe.Text)) //in case filesystemwatcher did not fire...
             {
                 UpdateIbaAnalyzerExe();
-                if (!File.Exists(m_tbAnalyzerExe.Text)) 
+                if (!File.Exists(m_tbAnalyzerExe.Text))
                     return;
             }
 
@@ -831,7 +854,7 @@ namespace iba.DatCoordinator.Status
             procInfo.ErrorDialog = true;
             string dir = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
             procInfo.WorkingDirectory = dir;
-            procInfo.FileName = Path.Combine(dir,"ibaDatCoordinator.exe");
+            procInfo.FileName = Path.Combine(dir, "ibaDatCoordinator.exe");
             procInfo.Arguments = "/service";
             System.Diagnostics.Process.Start(procInfo);
         }

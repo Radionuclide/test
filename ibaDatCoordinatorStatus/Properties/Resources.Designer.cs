@@ -244,7 +244,16 @@ namespace iba.DatCoordinator.Status.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ibaAnalyzer settings successfully transfered from local account to service account.
+        ///   Looks up a localized string similar to ibaAnalyzer settings could not be transferred from local account to service account.
+        /// </summary>
+        internal static string TransferIbaAnalyzerSettingsFailed {
+            get {
+                return ResourceManager.GetString("TransferIbaAnalyzerSettingsFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ibaAnalyzer settings successfully transferred from local account to service account.
         /// </summary>
         internal static string TransferIbaAnalyzerSettingsSuccess {
             get {
