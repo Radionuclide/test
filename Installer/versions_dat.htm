@@ -186,7 +186,19 @@
 
 	<div id="hist">
 		<div class="box">
-		<P class="header1">Version 3.0.0 - 2022-08-26</P>
+			<P class="header1">Version 3.0.1 - 2022-??-??</P>
+			<p class="header2">New features (N)</p>
+			<ol>
+			</ol>
+			<p class="header2">Improvements (I)</p>
+			<OL>
+			</OL>
+			<p class="header2">Bugfixes (B)</p>
+			<OL>
+				<li>Fixed a race condition when transferring settings from ibaAnalyzer. #22309</li>
+			</OL>
+			<p>&nbsp; </p>
+			<P class="header1">Version 3.0.0 - 2022-08-26</P>
 			<p class="header2">New features (N)</p>
 			<OL>
 				<li>
@@ -246,86 +258,87 @@
 			</OL>
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
-			<li>Exception when typing illegal characters in file paths for plugin tasks.</li>
-			<li>CodeMeter installer could cause a reboot before ibaDatCoordinator was completely installed. #21873</li>
+				<li>Exception when typing illegal characters in file paths for plugin tasks.</li>
+				<li>CodeMeter installer could cause a reboot before ibaDatCoordinator was completely installed. #21873</li>
 			</OL>
-		<p>&nbsp; </p>
-		<P class="header1">Version 2.4.4 - 2022-08-23</P>
+			<p>&nbsp; </p>
+			<P class="header1">Version 2.4.4 - 2022-08-23</P>
 			<p class="header2">Improvements (I)</p>
 			<OL>
-			<li>.NET framework 4.8.1 is supported. #22183</li>
+				<li>.NET framework 4.8.1 is supported. #22183</li>
 			</OL>
-			
+
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
-			<li>Offline event task: 
-				<ol>
-				<li>The event config was not saved to the ibaHD-Server in case only events were added or removed without modifications to the event properties. #20769</li>
-				<li>The ibaHD-Server could crash and event store configurations could be corrupted when saving an event configuration without active events. #20833</li>
-				</ol>
-			</li>
+				<li>
+					Offline event task:
+					<ol>
+						<li>The event config was not saved to the ibaHD-Server in case only events were added or removed without modifications to the event properties. #20769</li>
+						<li>The ibaHD-Server could crash and event store configurations could be corrupted when saving an event configuration without active events. #20833</li>
+					</ol>
+				</li>
 			</OL>
-		<p>&nbsp; </p>
-		<P class="header1">Version 2.4.3 - 2022-02-03</P>
+			<p>&nbsp; </p>
+			<P class="header1">Version 2.4.3 - 2022-02-03</P>
 
 			<p class="header2">Improvements (I)</p>
 			<OL>
-			<li>Event job: Calculate the range between incoming and outgoing events using the duration field if available. This allows to match overlapping events. #20437</li>
-			<li>The path to the ibaAnalyzer executable was never updated after program start. Now the path is updated when ibaAnalyzer is uninstalled and can be updated by clicking on it after ibaAnalyzer is reinstalled. #20475</li>
+				<li>Event job: Calculate the range between incoming and outgoing events using the duration field if available. This allows to match overlapping events. #20437</li>
+				<li>The path to the ibaAnalyzer executable was never updated after program start. Now the path is updated when ibaAnalyzer is uninstalled and can be updated by clicking on it after ibaAnalyzer is reinstalled. #20475</li>
 			</OL>
-			
+
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
-			<li>Starting the ibaHD import task could crash the ibaDatCoodinator service. #20282</li>
-			<li>Offline events created on .dat files which have a different utc offset than the system could have wrong duration values. #20438</li>
-			<li>When loading an XML file while the current configuration is modified, the modifications could overwrite the settings from the loaded file. #20475</li>
+				<li>Starting the ibaHD import task could crash the ibaDatCoodinator service. #20282</li>
+				<li>Offline events created on .dat files which have a different utc offset than the system could have wrong duration values. #20438</li>
+				<li>When loading an XML file while the current configuration is modified, the modifications could overwrite the settings from the loaded file. #20475</li>
 			</OL>
-		<p>&nbsp; </p>
-		<P class="header1">Version 2.4.2 - 2021-12-16</P>
+			<p>&nbsp; </p>
+			<P class="header1">Version 2.4.2 - 2021-12-16</P>
 			<p class="header2">New features (N)</p>
 			<OL>
-			<li>The installer will query if the user wants to perform the registry optimizations to allow for more ibaAnalyzers to run simultaneously.</li>
-			<li>While stopping the ibaDatCoodinator service through the status application, a button is present that provides the option to abort the service and related ibaAnalyzer processes forcefully.</li>
+				<li>The installer will query if the user wants to perform the registry optimizations to allow for more ibaAnalyzers to run simultaneously.</li>
+				<li>While stopping the ibaDatCoodinator service through the status application, a button is present that provides the option to abort the service and related ibaAnalyzer processes forcefully.</li>
 			</OL>
 			<p class="header2">Improvements (I)</p>
 			<OL>
-			<li>Selecting an infofield or expression for the subfolder or output filename: specifiying a length that exceeds the infofield length will no longer result in an error, the remainder of the infofield will be used.</li>
-			<li>When the report task fails, a better error message is given, it will also advice to start the print spooler service if the print spooler service was not started already.  #18050</li>
-			<li>Support for Windows 11, Windows Server 2022.  #19994</li>
-			<li>Performance improvement while starting jobs.</li>
+				<li>Selecting an infofield or expression for the subfolder or output filename: specifiying a length that exceeds the infofield length will no longer result in an error, the remainder of the infofield will be used.</li>
+				<li>When the report task fails, a better error message is given, it will also advice to start the print spooler service if the print spooler service was not started already.  #18050</li>
+				<li>Support for Windows 11, Windows Server 2022.  #19994</li>
+				<li>Performance improvement while starting jobs.</li>
 			</OL>
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
-			<li>Saving changes to the event configuration in the ibaHD Offline event tasks could lead to a crash of the connected ibaHD-Server. #19178</li>
-			<li>Crash when processing certain files with corrupt headers, fixed with updating ibaFiles to 7.3.1</li>
-			<li>The "clean and reprocess" button for the .dat triggered jobs had vanished. #19464</li>
-			<li>Undeterministic release of ibaAnalyzer instances caused problems when too many were still in existance and newly ones were trying to be created.</li>
+				<li>Saving changes to the event configuration in the ibaHD Offline event tasks could lead to a crash of the connected ibaHD-Server. #19178</li>
+				<li>Crash when processing certain files with corrupt headers, fixed with updating ibaFiles to 7.3.1</li>
+				<li>The "clean and reprocess" button for the .dat triggered jobs had vanished. #19464</li>
+				<li>Undeterministic release of ibaAnalyzer instances caused problems when too many were still in existance and newly ones were trying to be created.</li>
 			</OL>
-		<p>&nbsp; </p>
-		<P class="header1">Version 2.4.1 - 2021-06-14</P>
+			<p>&nbsp; </p>
+			<P class="header1">Version 2.4.1 - 2021-06-14</P>
 			<p class="header2">New features (N)</p>
 			<OL>
-			<li>Added an option to discard event pairs in the event job when no outgoing event is received within the maximum time range. #18893</li>
-			<li>Historical data can be processed by scheduled jobs by setting the start time in the past. #16339</li>
+				<li>Added an option to discard event pairs in the event job when no outgoing event is received within the maximum time range. #18893</li>
+				<li>Historical data can be processed by scheduled jobs by setting the start time in the past. #16339</li>
 			</OL>
 			<p class="header2">Improvements (I)</p>
 			<OL>
-			<li>A better error message is given when processing V1 or V2 files and the necessary license is missing. #18764</li>
-			<li>A malformed .hdq file will be deleted in order to prevent reprocessing and hence spurious log messages. #18720</li>
-			<li>When .pdo files are down- or uploaded, .lst files will be copied as well if they are in the same folder.</li>
-			<li>Removed the test for checking whether an HD store was specified in a scheduled or event job, as those jobs are also used without any data.</li>
-			<li>A significant number of tooltips was missing for various buttons.</li>
+				<li>A better error message is given when processing V1 or V2 files and the necessary license is missing. #18764</li>
+				<li>A malformed .hdq file will be deleted in order to prevent reprocessing and hence spurious log messages. #18720</li>
+				<li>When .pdo files are down- or uploaded, .lst files will be copied as well if they are in the same folder.</li>
+				<li>Removed the test for checking whether an HD store was specified in a scheduled or event job, as those jobs are also used without any data.</li>
+				<li>A significant number of tooltips was missing for various buttons.</li>
 			</OL>
 			<p class="header2">Bugfixes (B)</p>
 			<OL>
-			<li>ibaDatCoordinator installer referred to ibaPDA installer when .NET framework 4.8 is missing.</li>
-			<li>When uploading a .pdo file, the original file was not overwritten, instead a new file was created with the _(ibaDatCoodinator) suffix still attached. #18726</li>
-			<li>Update data task - ODBC connections failed. #18626</li>
-			<li>Black images could be  shown in ibaAnalyzer tree.</li> 
-			<li>Test button did not update (enabled or disabled) for the Splittertask and conditional task if the specified .dat file was changed.</li>
+				<li>ibaDatCoordinator installer referred to ibaPDA installer when .NET framework 4.8 is missing.</li>
+				<li>When uploading a .pdo file, the original file was not overwritten, instead a new file was created with the _(ibaDatCoodinator) suffix still attached. #18726</li>
+				<li>Update data task - ODBC connections failed. #18626</li>
+				<li>Black images could be  shown in ibaAnalyzer tree.</li>
+				<li>Test button did not update (enabled or disabled) for the Splittertask and conditional task if the specified .dat file was changed.</li>
 			</OL>
-		<p>&nbsp; </p>
-		<P class="header1">Version 2.4.0 - 2021-04-12</P>
+			<p>&nbsp; </p>
+			<P class="header1">Version 2.4.0 - 2021-04-12</P>
 			<p class="warning">
 				.NET framework 4.8 is required.<br>
 				ibaDatCoordinator client and server connections are only allowed when both client and server have version 2.4.0 or later.<br>
@@ -360,7 +373,7 @@
 				<li>No passwords were set for signal trees in various tasks.</li>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 2.3.1 - 2020-10-06</P>
 			<P class="header2">Improvements (I)</P>
 			<OL>
@@ -371,7 +384,7 @@
 				<li>Fix ibaDatCoodinator service crash when starting an ibaHD import task </li>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 2.3.0 - 2020-09-28</P>
 			<P class="header2">New features (N)</P>
 			<OL>
@@ -389,7 +402,7 @@
 				<li>ibaAnalyzer buttons missing in status application for French and German localizations #16958</li>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 2.2.5 - 2020-04-24</P>
 			<P class="header2">Improvement (I)</P>
 			<OL>
@@ -402,27 +415,27 @@
 				<li>Status view did not jump to correct job after job start.</li>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 2.2.4 - 2020-01-24</P>
 			<P class="header2">Improvement (I)</P>
 			<OL>
 				<li>Splitter task now supports non-equidistant data and text channels.</li>
 				<li>Support for older .dat file formats through license server (version 2.4.0 of license server required).</li>
 				<li>Improved installation process.</li>
-			</OL>	
+			</OL>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
 				<li>Text expressions for alternative file names for output producing tasks were not working.</li>
 				<li>QDR5 files couldn't be processed anymore.</li>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 2.2.3 - 2019-11-19</P>
 			<P class="header2">Improvement (I)</P>
 			<OL>
 				<li>A text signal can be used as report filename or folder in file output producing tasks #15078</li>
 				<li>The .dat file that is currently being written by ibaPDA was skipped during the initial scan and postponed processing until the next error cycle scan. Now the file is processed whenever ibaPDA is ready.</li>
-			</OL>	
+			</OL>
 			<P class="header2">Bugfix (B)</P>
 			<OL>
 				<li>French resources missing.</li>
@@ -474,9 +487,9 @@
 			<p>&nbsp; </p>
 			<P class="header1">Version 2.1.0 - 2019-01-28</P>
 			<p class="header2">New features (N)</p>
-            <ol>
+			<ol>
 				<li>Addition of event-triggered jobs. #12737</li>
-            </ol>
+			</ol>
 			<P class="header2">Improvements (I)</P>
 			<OL>
 				<li>ibaDongleViewer updated to version 1.8.2</li>
@@ -494,9 +507,9 @@
 			<p>&nbsp; </p>
 			<P class="header1">Version 2.0.7 - 2018-08-14</P>
 			<p class="header2">New features (N)</p>
-            <ol>
-                <li>"Support" contact information for further support added to help menu.</li>
-            </ol>
+			<ol>
+				<li>"Support" contact information for further support added to help menu.</li>
+			</ol>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
 				<li>Maximum number of resource intensive tasks was reset to 1 when reentering the settings pane. #13222</li>
@@ -519,7 +532,7 @@
 				<li>Issue with subdirectory choice for output producing tasks.</li>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 2.0.5 - 2018-03-26</P>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
@@ -528,7 +541,7 @@
 				<li>Status program showed "no ibaAnalyzer registered" for ibaAnalyzer versions 6.10.0, 6.10.1 and 6.10.2</li>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 2.0.4 - 2018-02-09</P>
 			<P class="header2">Improvements (I)</P>
 			<OL>
@@ -537,9 +550,11 @@
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
 				<li>Support file did not contain the server log files when the server was installed locally.</li>
-				<li>Issues with jobs that have a large amount of tasks. 
-				Issues with GUI adressed and with the infofields written into the .dat files to keep track of the succesfully processed tasks. 
-				Currently up to 1000 tasks per job are supported.</li>
+				<li>
+					Issues with jobs that have a large amount of tasks.
+					Issues with GUI adressed and with the infofields written into the .dat files to keep track of the succesfully processed tasks.
+					Currently up to 1000 tasks per job are supported.
+				</li>
 				<li>Import of ibaHD camera signals didn't work in 2.0.3 release version</li>
 				<li>Global cleanup showed the local disks instead of the ones from the connected remote machine. #12125</li>
 				<li>When ibaAnalyzer crashes while opening a .dat file, it caused the entire application/service to halt.</li>
@@ -565,7 +580,7 @@
 			</OL>
 			<p>&nbsp; </p>
 
-		<P class="header1">Version 2.0.2 - 2017-09-27</P>
+			<P class="header1">Version 2.0.2 - 2017-09-27</P>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
 				<LI>Cleanup tasks did load properly from XML when the XML was generated with a version prior to 2.0.1. #11732</LI>
@@ -573,7 +588,7 @@
 				<LI>Resetting the processed flag for a large collection caused the network connection to the server to time out. #11729</LI>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 2.0.1 - 2017-09-13</P>
 			<P class="header2">New features (N)</P>
 			<OL>
@@ -594,7 +609,8 @@
 			<P class="header2">New features (N)</P>
 			<OL>
 				<li>The entire ibaDatCoordinator has been migrated to a Client-Server architecture where multiple ibaDatCoordinator clients can connect to a central ibaDatCoordinator server.</li>
-				<li>ibaDatCoordinator is an SNMP server:
+				<li>
+					ibaDatCoordinator is an SNMP server:
 					<ol type="a">
 						<li>SNMP protocol V1, V2c and V3 are supported.</li>
 						<li>MIB files can be generated. #8911</li>
@@ -614,7 +630,7 @@
 				<LI>The Roh-plugin did not recover when the target ftp server had issues (e.g. being full) that were resolved.</LI>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 1.25.1 - 2017-04-19</P>
 			<P class="header2">Improvements (I)</P>
 			<OL>
@@ -639,7 +655,7 @@
 				<LI>GlobalCleanup will delete only iba .dat files. #10528</LI>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 1.24.0 - 2016-10-20</P>
 			<p class="warning">Windows XP and Windows 2003 Server are no longer supported</p>
 			<P class="header2">Bugfixes (B)</P>
@@ -648,7 +664,7 @@
 				<LI>Crashed after certain updates of the .NET framework were installed.</LI>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 1.23.3 - 2016-02-15</P>
 			<P class="header2">New features (N)</P>
 			<OL>
@@ -658,7 +674,7 @@
 				<LI>ibaDongleViewer v1.5.5</LI>
 			</OL>
 			<p>&nbsp; </p>
-			
+
 			<P class="header1">Version 1.23.2 - 2015-12-07</P>
 			<P class="header2">Bugfixes (B)</P>
 			<OL>
