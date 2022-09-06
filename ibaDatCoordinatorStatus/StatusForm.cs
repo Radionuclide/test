@@ -530,7 +530,7 @@ namespace iba.DatCoordinator.Status
                 // from the user's registry
                 string sid = WindowsIdentity.GetCurrent().User.Value;
 
-                var key = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(String.Format(@"SOFTWARE\{0}\{1}", "iba", "ibaDatCoordinator"));
+                RegistryKey key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
                 if (key != null)
                 {
                     key.SetValue("AnalyzerFolder", AnalyzerFolder);
@@ -558,16 +558,11 @@ namespace iba.DatCoordinator.Status
 
                 // Let the service decide when the status application can provide feedback
                 // but don't wait for it indefinitely
+                // If the wait handle times out, assume that the service couldn't handle the request
                 TimeSpan timeout = TimeSpan.FromSeconds(3);
                 bool probablySuccessful = fileLock.WaitOne(timeout); // wait a couple of seconds before deciding that the transfer failed
 
                 if (probablySuccessful)
-                {
-                    // The service didn't time out.
-                    // TODO: Check whether the service wrote "TransferComplete"=true in the registry
-                }
-
-                if(probablySuccessful)
                 {
                     MessageBox.Show(Properties.Resources.TransferIbaAnalyzerSettingsSuccess, "ibaDatCoordinator", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

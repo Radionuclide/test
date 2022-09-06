@@ -208,9 +208,6 @@ namespace iba.Services
             {
                 logger.Log(Level.Info, "Transfer ibaAnalyzer settings");
 
-                // TODO: add feedback in registry
-                //using var datCoKey = Registry.CurrentUser.OpenSubKey(@"Software\iba\ibaDatCoordinator");
-                //datCoKey.SetValue("TransferComplete", false);
 
                 using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\iba\ibaDatCoordinator");
                 if (key == null) return;
@@ -221,15 +218,8 @@ namespace iba.Services
 
                 bool transferred = RegisterIbaAnalyzerSettings(localUserSid);
 
-                // TODO: add feedback in registry
-                //datCoKey.SetValue("TransferComplete", true);
-            }
-            catch (Exception e)
-            {
-                logger.Log(Level.Exception, e.Message);
-            }
-            finally
-            {
+                // Set the wait handle, so that the status application can continue and assume
+                // that the transfer is successful
                 string waitHandleName = $"Global\\ibaDatCo-transfer-settings-{localUserSid}";
                 if (EventWaitHandle.TryOpenExisting(waitHandleName, out EventWaitHandle fileLock))
                 {
@@ -237,16 +227,17 @@ namespace iba.Services
                     {
                         fileLock.Set(); // allows the status application to delete regFile
                     }
-                    catch
-                    {
-                        logger.Log(Level.Warning, $"Failed to unlock the status application");
-                    }
                     finally
                     {
                         fileLock.Dispose(); // should leave the kernel object manager when the status application also releases it.
                     }
                 }
             }
+            catch (Exception e)
+            {
+                logger.Log(Level.Exception, e.Message);
+            }
+
             return;
         }
 
