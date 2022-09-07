@@ -555,7 +555,7 @@ Section -Common
   !insertmacro InstallLanguageCommon "fr" "French"
   !insertmacro InstallLanguageCommon "es" "Spanish"
   ;!insertmacro InstallLanguageCommon "it" "Italian"
-  ;!insertmacro InstallLanguageCommon "ru" "Russian"
+  !insertmacro InstallLanguageCommon "ru" "Russian"
   ;!insertmacro InstallLanguageCommon "zh-Hans" "Chinese"
   ;!insertmacro InstallLanguageCommon "ja" "Japanese"
   ;!insertmacro InstallLanguageCommon "pt" "Portuguese"
