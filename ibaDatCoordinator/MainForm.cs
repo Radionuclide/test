@@ -3735,8 +3735,8 @@ namespace iba
             supportedCultures.Add(CultureInfo.GetCultureInfo("en"));
             supportedCultures.Add(CultureInfo.GetCultureInfo("fr"));
 			supportedCultures.Add(CultureInfo.GetCultureInfo("es"));
-
-			foreach (var supportedCulture in supportedCultures)
+            supportedCultures.Add(CultureInfo.GetCultureInfo("ru"));
+            foreach (var supportedCulture in supportedCultures)
             {
                 mi = new ToolStripMenuItem(supportedCulture.NativeName, null, OnChangeLanguage)
                 {
