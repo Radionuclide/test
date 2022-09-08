@@ -86,10 +86,12 @@ namespace ibaDatCoordinatorTests
                 (p.DeclaringType != typeof(IfTaskData)           || p.Name != "EncryptedDatFilePassword") &&
                 (p.DeclaringType != typeof(UpdateDataTaskData)   || p.Name != "DbPasswordCrypted") &&
                 (p.DeclaringType != typeof(UploadTaskData)       || p.Name != "PasswordCrypted") &&
+                (p.DeclaringType != typeof(UploadTaskData)       || p.Name != "PasswordCryptedFtp") &&
                 (p.DeclaringType != typeof(UploadTaskData)       || p.Name != "PrivateKeyPassphraseCrypted") &&
                 (p.DeclaringType != typeof(HDCreateEventTaskData)|| p.Name != "EncryptedDatFilePassword") &&
                 (p.DeclaringType != typeof(HDCreateEventTaskData)|| p.Name != "EncryptedHDPassword") &&
-                (p.DeclaringType != typeof(TaskWithTargetDirData)|| p.Name != "PasswordCrypted");
+                (p.DeclaringType != typeof(TaskWithTargetDirData)|| p.Name != "PasswordCrypted") &&
+                (p.DeclaringType != typeof(TaskWithTargetDirData)|| p.Name != "DestinationMapUNC");
         }
 
         static readonly Random rand = new Random();
