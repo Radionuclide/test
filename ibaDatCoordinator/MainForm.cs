@@ -1239,7 +1239,7 @@ namespace iba
                         (((CustomTaskTreeItemData)(node.Tag)).DataSource as ICustomTaskData).Plugin.NameInfo,
                             node.Text, node.Parent.Text);
                     else if (node.Tag is OpcUaWriterTaskTreeItemData)
-                        msg = String.Format(iba.Properties.Resources.deleteOPCUATastQuestion, node.Text, node.Parent.Text);
+                        msg = String.Format(iba.Properties.Resources.deleteOPCUATaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is SnmpWriterTaskTreeItemData)
                         msg = String.Format(iba.Properties.Resources.deleteSNMPTaskQuestion, node.Text, node.Parent.Text);
                     else if (node.Tag is KafkaWriterTaskTreeItemData)

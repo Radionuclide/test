@@ -836,11 +836,11 @@ namespace iba.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete the OPC UA Publish tash options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
+        ///   Looks up a localized string similar to Are you sure you want to delete the OPC UA Publish task options &quot;{0}&quot; of Job &quot;{1}&quot; ?.
         /// </summary>
-        internal static string deleteOPCUATastQuestion {
+        internal static string deleteOPCUATaskQuestion {
             get {
-                return ResourceManager.GetString("deleteOPCUATastQuestion", resourceCulture);
+                return ResourceManager.GetString("deleteOPCUATaskQuestion", resourceCulture);
             }
         }
         

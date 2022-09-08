@@ -1626,8 +1626,8 @@ Please either start the job or enable scans for .dat files before attempting thi
   <data name="snmpWriterTaskTitle" xml:space="preserve">
     <value>SNMP Publish</value>
   </data>
-  <data name="deleteOPCUATastQuestion" xml:space="preserve">
-    <value>Are you sure you want to delete the OPC UA Publish tash options "{0}" of Job "{1}" ?</value>
+  <data name="deleteOPCUATaskQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete the OPC UA Publish task options "{0}" of Job "{1}" ?</value>
   </data>
   <data name="deleteSNMPTaskQuestion" xml:space="preserve">
     <value>Are you sure you want to delete the SNMP Publish task options "{0}" of Job "{1}" ?</value>
