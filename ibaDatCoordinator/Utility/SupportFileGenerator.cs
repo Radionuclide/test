@@ -147,7 +147,7 @@ namespace iba.Utility
             sb.AppendLine("Customer: " + licInfo.Customer);
         }
 
-        static private void GenerateInfo(ZipFile zip, string destDir, string targetFile)
+        static private void GenerateInfo(ZipFileCreator zip, string destDir, string targetFile)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -193,9 +193,7 @@ namespace iba.Utility
             {
                 string fullPath = Path.Combine(destDir, targetFile);
                 SystemInfoCollector.SaveSystemInfo(sb.ToString(), "", fullPath);
-                zip.BeginUpdate();
-                zip.Add(fullPath, targetFile);
-                zip.CommitUpdate();
+                zip.AddFile(fullPath, targetFile);
                 File.Delete(fullPath);
             }
             catch
@@ -207,7 +205,7 @@ namespace iba.Utility
             {
                 string softwareInfoFile = Path.Combine(destDir, "software_info.txt");
                 SystemInfoCollector.SaveInstalledSoftware(softwareInfoFile);
-                zip.Add(softwareInfoFile);
+                zip.AddFile(softwareInfoFile);
                 File.Delete(softwareInfoFile);
             }
             catch
@@ -220,9 +218,9 @@ namespace iba.Utility
                 string installHistoryX64;
                 SystemInfoCollector.GetInstallHistoryFiles(out installHistoryX86, out installHistoryX64);
                 if (installHistoryX86 != null)
-                    zip.Add(installHistoryX86, "InstallHistory_x86.txt");
+                    zip.AddFile(installHistoryX86, "InstallHistory_x86.txt");
                 if (installHistoryX64 != null)
-                    zip.Add(installHistoryX64, "InstallHistory_x64.txt");
+                    zip.AddFile(installHistoryX64, "InstallHistory_x64.txt");
             }
             catch
             { }
@@ -233,14 +231,14 @@ namespace iba.Utility
                 string appEventLog = SystemInfoCollector.ExportEventLog("Application", destDir);
                 if (appEventLog != null)
                 {
-                    zip.Add(appEventLog, "Eventlog\\" + Path.GetFileName(appEventLog));
+                    zip.AddFile(appEventLog, "Eventlog\\" + Path.GetFileName(appEventLog));
                     File.Delete(appEventLog);
                 }
 
                 string systemEventLog = SystemInfoCollector.ExportEventLog("System",destDir);
                 if (systemEventLog != null)
                 {
-                    zip.Add(systemEventLog, "Eventlog\\" + Path.GetFileName(systemEventLog));
+                    zip.AddFile(systemEventLog, "Eventlog\\" + Path.GetFileName(systemEventLog));
                     File.Delete(systemEventLog);
                 }
             }
@@ -253,7 +251,7 @@ namespace iba.Utility
         {
             using (WaitCursor wait = new WaitCursor())
             {
-                ZipFile zip = ZipFile.Create(target);
+                ZipFileCreator zip = new ZipFileCreator(target);
 
                 GenerateInfo(zip, Path.GetDirectoryName(target), "clientinfo.txt");
 
@@ -262,10 +260,7 @@ namespace iba.Utility
                     string outFile = Path.Combine(destDir, "ibaAnalyzer.reg");
                     if (RegistryExporter.ExportIbaAnalyzerKey(outFile))
                     {
-                        zip.BeginUpdate();
-                        zip.Add(outFile, "ibaAnalyzer.reg");
-                        zip.CommitUpdate();
-
+                        zip.AddFile(outFile, "ibaAnalyzer.reg");
                         File.Delete(outFile);
                     }
                 }
@@ -285,9 +280,7 @@ namespace iba.Utility
                         {
                             try
                             {
-                                zip.BeginUpdate();
-                                zip.Add(file, @"logging\" + Path.GetFileName(file));
-                                zip.CommitUpdate();
+                                zip.AddFile(file, @"logging\" + Path.GetFileName(file));
                             }
                             catch
                             {
@@ -304,29 +297,12 @@ namespace iba.Utility
                     //localconf //if exists
                     if (!String.IsNullOrEmpty(fileNameClientConfiguration) && File.Exists(fileNameClientConfiguration))
                     {
-                        zip.BeginUpdate();
-                        zip.Add(fileNameClientConfiguration, Path.GetFileName(fileNameClientConfiguration));
-                        zip.CommitUpdate();
+                        zip.AddFile(fileNameClientConfiguration, Path.GetFileName(fileNameClientConfiguration));
                     }
                 }
                 catch
                 {
                 }
-
-                // Create list of installed software
-                try
-                {
-                    string softwareInfoFile = Path.Combine(destDir, "software_info.txt");
-                    SystemInfoCollector.SaveInstalledSoftware(softwareInfoFile);
-                    
-                    zip.BeginUpdate();
-                    zip.Add(softwareInfoFile, Path.GetFileName(softwareInfoFile));
-                    zip.CommitUpdate();
-
-                    File.Delete(softwareInfoFile);
-                }
-                catch
-                { }
 
                 zip.Close();
                 zip = null;
@@ -354,21 +330,10 @@ namespace iba.Utility
         //This is running on the server!
         public static void GenerateServerZipFile(string target, string serverConfigFile)
         {
-            ZipFile zip = ZipFile.Create(target);
+            ZipFileCreator zip =  new ZipFileCreator(target);
             string destDir = Path.GetDirectoryName(target);
 
             GenerateInfo(zip, destDir, "serverinfo.txt");
-
-            // Create list of installed software
-            try
-            {
-                string softwareInfoFile = Path.Combine(destDir, "software_info.txt");
-                SystemInfoCollector.SaveInstalledSoftware(softwareInfoFile);
-
-                AddFile(zip, softwareInfoFile, delete: true);
-            }
-            catch
-            { }
 
             try
             {
@@ -378,7 +343,7 @@ namespace iba.Utility
                 {
                     string[] logFiles = Directory.GetFiles(logdir, "ibaDatCoordinatorLog*.txt");
                     foreach (string file in logFiles)
-                        AddFile(zip, file, @"logging\" + Path.GetFileName(file));
+                        zip.AddFile(file, @"logging\" + Path.GetFileName(file));
                 }
             }
             catch
@@ -390,7 +355,7 @@ namespace iba.Utility
             { //exception.txt
                 string file = Path.Combine(programdir, "exception.txt");
                 if (File.Exists(file))
-                    AddFile(zip, file);
+                    zip.AddFile(file);
             }
             catch
             {
@@ -412,7 +377,10 @@ namespace iba.Utility
                 //Zip all generated .reg files
                 string[] regFiles = Directory.GetFiles(tempDir, "*.reg");
                 foreach (string file in regFiles)
-                    AddFile(zip, file, delete: true);
+                {
+                    zip.AddFile(file);
+                    File.Delete(file);
+                }
             }
             catch
             {
@@ -424,7 +392,7 @@ namespace iba.Utility
                     serverConfigFile = Path.Combine(Path.GetDirectoryName(typeof(MainForm).Assembly.Location), "lastsaved.xml");
 
                 if (File.Exists(serverConfigFile))
-                    AddFile(zip, serverConfigFile);
+                    zip.AddFile(serverConfigFile);
             }
             catch
             {
@@ -432,32 +400,13 @@ namespace iba.Utility
 
             var myList = TaskManager.Manager.AdditionalFileNames();
             foreach (var p in myList)
-                AddFile(zip, p.Key, p.Value);
+                zip.AddFile(p.Key, p.Value);
 
             //Save license info
             TaskManager.Manager.AddLicenseInfoToSupportFile(zip, destDir);
 
             zip.Close();
             zip = null;
-        }
-
-        public static void AddFile(ZipFile zip, string file, string nameInZip = null, bool delete = false)
-        {
-            try
-            {
-                if (nameInZip == null)
-                    nameInZip = Path.GetFileName(file);
-
-                zip.BeginUpdate();
-                zip.Add(file, nameInZip);
-                zip.CommitUpdate();
-
-                if (delete)
-                    File.Delete(file);
-            }
-            catch
-            {
-            }
         }
     }
 }

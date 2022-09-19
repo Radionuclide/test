@@ -40,11 +40,18 @@ namespace iba.Utility
 
         public void AddFile(string fileName, string relName)
         {
+            if (!File.Exists(fileName))
+                return;
+
+            if (relName.StartsWith("\\"))
+                relName = relName.Substring(1);
+
             //This is a copy of the CreateEntryFromFile extension method that also works for files that are being written to!
             using (Stream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 CompressionLevel level = CompressionLevel.Optimal;
-                if (String.Compare(Path.GetExtension(fileName), ".zip", true) == 0)
+                if (String.Compare(Path.GetExtension(fileName), ".zip", true) == 0 ||
+                    String.Compare(Path.GetExtension(fileName), ".layouts", true) == 0)
                     level = CompressionLevel.NoCompression;
 
                 ZipArchiveEntry zipArchiveEntry = zipFile.CreateEntry(relName, level);
@@ -63,6 +70,9 @@ namespace iba.Utility
 
         public void AddDirectory(string dir, string relName)
         {
+            if (!Directory.Exists(dir))
+                return;
+
             AddDirectory(dir, relName, true);
         }
 

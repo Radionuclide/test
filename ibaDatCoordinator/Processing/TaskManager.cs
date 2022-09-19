@@ -1814,7 +1814,7 @@ namespace iba.Processing
             licenseManager?.Uninitialize();
         }
 
-        internal void AddLicenseInfoToSupportFile(ICSharpCode.SharpZipLib.Zip.ZipFile zip, string tempDir)
+        internal void AddLicenseInfoToSupportFile(ZipFileCreator zip, string tempDir)
         {
             LicenseManager.AddInfoToSupportFile(zip, tempDir);
 
@@ -1829,7 +1829,8 @@ namespace iba.Processing
                 {
                     string infoFile = Path.Combine(tempDir, "UsedLicenses.txt");
                     File.WriteAllText(infoFile, sb.ToString());
-                    SupportFileGenerator.AddFile(zip, infoFile, "License\\" + Path.GetFileName(infoFile), delete: true);
+                    zip.AddFile(infoFile, "License\\" + Path.GetFileName(infoFile));
+                    File.Delete(infoFile);
                 }
             }
         }

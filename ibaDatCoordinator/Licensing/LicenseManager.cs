@@ -221,7 +221,7 @@ namespace iba.Licensing
             lic.Update(newLic);
         }
 
-        public void AddInfoToSupportFile(ICSharpCode.SharpZipLib.Zip.ZipFile zip, string tempDir)
+        public void AddInfoToSupportFile(ZipFileCreator zip, string tempDir)
         {
             //MARX info
             LicenseContents marxContents = marxDongle?.Contents;
@@ -229,7 +229,10 @@ namespace iba.Licensing
             {
                 string dongleFile = Path.Combine(tempDir, !String.IsNullOrEmpty(marxContents.Identifier) ? marxContents.Identifier + ".vwr" : "dongle.vwr");
                 if (SystemInfoCollector.ExportDongleInfo(dongleFile))
-                    SupportFileGenerator.AddFile(zip, dongleFile, "License\\" + Path.GetFileName(dongleFile), delete: true);
+                {
+                    zip.AddFile(dongleFile, "License\\" + Path.GetFileName(dongleFile));
+                    File.Delete(dongleFile);
+                }
             }
 
             //WIBU info
@@ -238,8 +241,11 @@ namespace iba.Licensing
             {
                 WibuInfoCollector wibuColl = new WibuInfoCollector();
                 string dongleFile = wibuColl.CollectInfo(wibuContents, tempDir);
-                if(dongleFile != null)
-                    SupportFileGenerator.AddFile(zip, dongleFile, "License\\" + Path.GetFileName(dongleFile), delete: true);
+                if (dongleFile != null)
+                {
+                    zip.AddFile(dongleFile, "License\\" + Path.GetFileName(dongleFile));
+                    File.Delete(dongleFile);
+                }
             }
         }
     }
