@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Microsoft.Win32;
-using System.Windows.Forms;
 using System.Management;
 using System.Globalization;
 using System.Diagnostics;
@@ -31,6 +30,8 @@ namespace iba.Utility
                 writer.Write(prefix);
 
                 WriteOSVersion(writer);
+                writer.WriteLine($"Platform: {(Environment.Is64BitProcess ? "64 bit" : "32 bit")}");
+
                 writer.WriteLine("Current culture: " + CultureInfo.CurrentCulture.EnglishName);
                 writer.WriteLine("Current UI culture: " + CultureInfo.CurrentUICulture.EnglishName);
                 writer.WriteLine("CLR version: " + Environment.Version.ToString());
@@ -600,6 +601,23 @@ namespace iba.Utility
             }
         }
 
+        public static void GetProgramFiles(out string programFilesX86, out string programFilesX64)
+        {
+            programFilesX86 = null;
+            programFilesX64 = null;
+
+            if (Environment.Is64BitOperatingSystem)
+            {
+                programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                programFilesX64 = Environment.GetEnvironmentVariable("ProgramW6432");
+            }
+            else
+            {
+                programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                programFilesX64 = null;
+            }
+        }
+
         private static string FindFileInParentDirectories(string dirName, string fileName)
         {
             DirectoryInfo dirInfo = Directory.GetParent(dirName);
@@ -638,7 +656,7 @@ namespace iba.Utility
                         string proxy = Path.Combine(installDir, "ibaPDA-S7-Xplorer Proxy\\ibaPDA-S7-Xplorer Proxy.exe");
                         System.Diagnostics.FileVersionInfo verInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(proxy);
                         if (verInfo != null)
-                            writer.WriteLine("ibaPDA S7-Xplorer Proxy: {0}", verInfo.FileVersion);
+                            writer.WriteLine("ibaPDA S7-Xplorer Proxy: {0}.{1}.{2}", verInfo.FileMajorPart, verInfo.FileMinorPart, verInfo.FileBuildPart);
                     }
                     if (pdaKey.GetValue("ExcludeNonIbaHW") != null)
                     {

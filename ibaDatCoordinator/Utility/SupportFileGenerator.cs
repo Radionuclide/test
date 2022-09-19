@@ -147,7 +147,7 @@ namespace iba.Utility
             sb.AppendLine("Customer: " + licInfo.Customer);
         }
 
-        static private void GenerateInfo(ZipFile zip, string targetDir, string targetFile)
+        static private void GenerateInfo(ZipFile zip, string destDir, string targetFile)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -191,7 +191,7 @@ namespace iba.Utility
 
             try
             {
-                string fullPath = Path.Combine(targetDir, targetFile);
+                string fullPath = Path.Combine(destDir, targetFile);
                 SystemInfoCollector.SaveSystemInfo(sb.ToString(), "", fullPath);
                 zip.BeginUpdate();
                 zip.Add(fullPath, targetFile);
@@ -200,6 +200,53 @@ namespace iba.Utility
             }
             catch
             { }
+
+
+            // Create list of installed software
+            try
+            {
+                string softwareInfoFile = Path.Combine(destDir, "software_info.txt");
+                SystemInfoCollector.SaveInstalledSoftware(softwareInfoFile);
+                zip.Add(softwareInfoFile);
+                File.Delete(softwareInfoFile);
+            }
+            catch
+            { }
+
+            //Export installation history files
+            try
+            {
+                string installHistoryX86;
+                string installHistoryX64;
+                SystemInfoCollector.GetInstallHistoryFiles(out installHistoryX86, out installHistoryX64);
+                if (installHistoryX86 != null)
+                    zip.Add(installHistoryX86, "InstallHistory_x86.txt");
+                if (installHistoryX64 != null)
+                    zip.Add(installHistoryX64, "InstallHistory_x64.txt");
+            }
+            catch
+            { }
+
+
+            try
+            {
+                string appEventLog = SystemInfoCollector.ExportEventLog("Application", destDir);
+                if (appEventLog != null)
+                {
+                    zip.Add(appEventLog, "Eventlog\\" + Path.GetFileName(appEventLog));
+                    File.Delete(appEventLog);
+                }
+
+                string systemEventLog = SystemInfoCollector.ExportEventLog("System",destDir);
+                if (systemEventLog != null)
+                {
+                    zip.Add(systemEventLog, "Eventlog\\" + Path.GetFileName(systemEventLog));
+                    File.Delete(systemEventLog);
+                }
+            }
+            catch
+            { }
+
         }
 
         private void GenerateClientZipFile(string target)
@@ -281,23 +328,6 @@ namespace iba.Utility
                 catch
                 { }
 
-                //Export installation history files
-                try
-                {
-                    string installHistoryX86;
-                    string installHistoryX64;
-                    SystemInfoCollector.GetInstallHistoryFiles(out installHistoryX86, out installHistoryX64);
-                    
-                    zip.BeginUpdate();
-                    if (installHistoryX86 != null && File.Exists(installHistoryX86))
-                        zip.Add(installHistoryX86, "InstallHistory_x86.txt");
-                    if (installHistoryX64 != null && File.Exists(installHistoryX64))
-                        zip.Add(installHistoryX64, "InstallHistory_x64.txt");
-                    zip.CommitUpdate();
-                }
-                catch
-                { }
-
                 zip.Close();
                 zip = null;
             }
@@ -336,23 +366,6 @@ namespace iba.Utility
                 SystemInfoCollector.SaveInstalledSoftware(softwareInfoFile);
 
                 AddFile(zip, softwareInfoFile, delete: true);
-            }
-            catch
-            { }
-
-            //Export installation history files
-            try
-            {
-                string installHistoryX86;
-                string installHistoryX64;
-                SystemInfoCollector.GetInstallHistoryFiles(out installHistoryX86, out installHistoryX64);
-
-                zip.BeginUpdate();
-                if (installHistoryX86 != null && File.Exists(installHistoryX86))
-                    zip.Add(installHistoryX86, "InstallHistory_x86.txt");
-                if (installHistoryX64 != null && File.Exists(installHistoryX64))
-                    zip.Add(installHistoryX64, "InstallHistory_x64.txt");
-                zip.CommitUpdate();
             }
             catch
             { }
